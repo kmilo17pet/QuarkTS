@@ -25,8 +25,8 @@ static void _qTaskChainSortbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
 
 /*================================================================================================================================================*/
-qReturnValue_t _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
-    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return QueueError;
+int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
+    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
     qPriority_t PriorityValue = TasktoQueue->Priority;
     qQueueStack_t qtmp;
     qTask_t *TaskFromQueue;
@@ -41,7 +41,7 @@ qReturnValue_t _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
 
     QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1) return QueueSuccess;
+    if(QUARKTS.QueueIndex==1) return 0;
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
@@ -52,7 +52,7 @@ qReturnValue_t _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
-    return QueueSuccess;
+    return 0;
 }
 /*================================================================================================================================================*/
 static qTask_t* _qDequeueTaskEvent(void){
@@ -73,10 +73,8 @@ static qTask_t* _qDequeueTaskEvent(void){
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
     QUARKTS.First = NULL;
-    QUARKTS.Last = NULL;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
-    
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL; 
@@ -87,7 +85,7 @@ void _qISRHandler(void){
     if(!QUARKTS.Init) return;  
     qTask_t *Task =  QUARKTS.First;
     while(Task != NULL){
-        if( Task->State != DISABLE  && Task->Interval>0){
+        if( Task->Flag.State  && Task->Interval>0){
             Task->TimeElapsed++;
             if(Task->TimeElapsed >= Task->Interval){ 
                 Task->Flag.TimedTaskRun++;
@@ -107,16 +105,9 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->Priority = Priority;
     Task->Iterations = nExecutions;
     Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->State = InitialState != 0;
-    Task->Next = NULL;
-    if(QUARKTS.First == NULL){
-        QUARKTS.First = Task;
-        QUARKTS.Last = Task;
-    }
-    else{
-        QUARKTS.Last->Next = Task;
-        QUARKTS.Last = Task;
-    }
+    Task->Flag.State = InitialState != 0;
+    Task->Next = QUARKTS.First;
+    QUARKTS.First = Task;
     return 0;
 }
 /*================================================================================================================================================*/
@@ -170,10 +161,10 @@ void _qStart(void){
     Task = QUARKTS.First;
     while(Task != NULL){
         if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
-        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->State!=DISABLE){
+        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
-            if(Task->Iterations == 0) Task->State = DISABLE;
+            if(Task->Iterations == 0) Task->Flag.State = 0;
             _qTriggerEvent(Task, byTimeElapsed);
         }
         else if( Task->Flag.AsyncRun){
@@ -191,9 +182,3 @@ void _qStart(void){
     }
     goto pMainSchedule;
 }
-/*============================================================================*/
-void _qSendEvent(qTask_t *Task, void* UserData){
-    Task->AsyncData = UserData;
-    Task->Flag.AsyncRun = 1;
-}
-/*============================================================================*/

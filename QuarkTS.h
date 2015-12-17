@@ -31,12 +31,11 @@ extern "C" {
     
 
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
-    typedef enum {QueueSuccess = 0, QueueError = -1} qReturnValue_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
     typedef unsigned char qPriority_t;
-    typedef unsigned short qIteration_t;
-    typedef enum { DISABLE=0, ENABLE=1} qState_t;
+    typedef unsigned char qIteration_t;
+    typedef unsigned char qState_t;
     
     #define LOWEST_Priority     (qPriority_t)(0)
     #define MEDIUM_Priority     (qPriority_t)(127)
@@ -44,6 +43,9 @@ extern "C" {
     #define PERIODIC            ((qIteration_t)-1)
     #define SINGLESHOT          ((qIteration_t)1)
     #define TIME_INMEDIATE      ((qTime_t)(0))
+    
+    #define ENABLE              0x01
+    #define DISABLE             0x00
     
     typedef struct{
         qTrigger_t Trigger;
@@ -58,6 +60,7 @@ extern "C" {
         unsigned TimedTaskRun:8;
         unsigned InitFlag:1;
         unsigned AsyncRun:1;
+        unsigned State:1;
     }qTaskFlags_t;
     
     struct _qTask_t{
@@ -67,7 +70,6 @@ extern "C" {
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
-        volatile qState_t State;
         volatile struct _qTask_t *Next;
     };
     #define qTask_t     volatile struct _qTask_t
@@ -81,7 +83,7 @@ extern "C" {
         qTaskFcn_t IDLECallback;    
         qTime_t Tick;
         qEvent_t EventInfo;
-        qTask_t *First, *Last;
+        qTask_t *First;
         unsigned char Init;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize;
@@ -94,17 +96,19 @@ extern "C" {
     void _qISRHandler(void);
     int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
-    void _qSendEvent(qTask_t *Task, void* UserData);
-    qReturnValue_t _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata);
+    int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata);
     
     #define qSetup(ISRTick, IDLE_Callback, QueueSize)                                    volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     #define qISRHandler()                                                               _qISRHandler()
     #define qCreateTask(TASK, CALLBACK, PRIORITY, TIME, NEXEC, INITSTATE, USERDATA)     _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, (qTime_t)TIME, (qIteration_t)NEXEC, INITSTATE, (void*)USERDATA)
-    #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, DISABLE, (void*)USERDATA)  
+    #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, 0, (void*)USERDATA)  
     #define qSchedule()                                                                 _qStart()
-    #define qSendEvent(TASK, EVENTDATA)                                                 _qSendEvent(&TASK, (void*)EVENTDATA)  
+    #define qSendEvent(TASK, EVENTDATA)                                                 TASK.Flag.AsyncRun = 1; TASK.AsyncData = (void*)EVENTDATA  
     #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
+    #define qChangePeriod(TASK, VALUE)                                                  TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
+    #define qChangeIterations(TASK, VALUE)                                              TASK.Iterations = VALUE
+    #define qChangePriority(TASK,VALUE)                                                 QUARKTS.Init = 0; TASK.Priority = VALUE 
     
 #ifdef	__cplusplus
 }

@@ -2610,13 +2610,12 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 1 "QuarkTS.h" 1
 # 33 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
-    typedef enum {QueueSuccess = 0, QueueError = -1} qReturnValue_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
     typedef unsigned char qPriority_t;
-    typedef unsigned short qIteration_t;
-    typedef enum { DISABLE=0, ENABLE=1} qState_t;
-# 48 "QuarkTS.h"
+    typedef unsigned char qIteration_t;
+    typedef unsigned char qState_t;
+# 50 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -2630,6 +2629,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         unsigned TimedTaskRun:8;
         unsigned InitFlag:1;
         unsigned AsyncRun:1;
+        unsigned State:1;
     }qTaskFlags_t;
 
     struct _qTask_t{
@@ -2639,7 +2639,6 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
-        volatile qState_t State;
         volatile struct _qTask_t *Next;
     };
 
@@ -2653,7 +2652,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         qTaskFcn_t IDLECallback;
         qTime_t Tick;
         qEvent_t EventInfo;
-        volatile struct _qTask_t *First, *Last;
+        volatile struct _qTask_t *First;
         unsigned char Init;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize;
@@ -2666,8 +2665,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     void _qISRHandler(void);
     int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
-    void _qSendEvent(volatile struct _qTask_t *Task, void* UserData);
-    qReturnValue_t _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
+    int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
 # 15 "main.c" 2
 
 pthread_t TimerEmulation;
@@ -2696,7 +2694,7 @@ void Task3Callback(qEvent_t Data){
 
 void Task4Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
-    _qSendEvent(&Task1, (void*)"ASYNC");
+    Task1.Flag.AsyncRun = 1; Task1.AsyncData = (void*)"ASYNC";
     _qEnqueueTaskEvent(&Task2, (void*)"data 1 t2");
     _qEnqueueTaskEvent(&Task3, (void*)"hello");
     _qEnqueueTaskEvent(&Task1, (void*)"hi!");
@@ -2713,11 +2711,11 @@ int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
 
     volatile qQueueStack_t _qQueueStack[5]; _qInitScheduler(0.01, ((void *)0), _qQueueStack, 5);
-    _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(255), ((qTime_t)(0)), ((qIteration_t)1), DISABLE, (void*)"TASK1");
-    _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)1.0, (qIteration_t)((qIteration_t)-1), ENABLE, (void*)"TASK2");
-    _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(127), (qTime_t)1.0, (qIteration_t)2, ENABLE, (void*)"TASK3");
-    _qCreateTask(&Task4, Task4Callback, (qPriority_t)8, (qTime_t)1.5, (qIteration_t)2, ENABLE, (void*)"TASK4");
-    _qCreateTask(&Task5, Task5Callback, (qPriority_t)8, (qTime_t)2.0, (qIteration_t)((qIteration_t)1), ENABLE, (void*)"TASK5");
+    _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(255), ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK1");
+    _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)1.0, (qIteration_t)((qIteration_t)-1), 0x01, (void*)"TASK2");
+    _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(127), (qTime_t)1.0, (qIteration_t)2, 0x01, (void*)"TASK3");
+    _qCreateTask(&Task4, Task4Callback, (qPriority_t)8, (qTime_t)1.5, (qIteration_t)2, 0x01, (void*)"TASK4");
+    _qCreateTask(&Task5, Task5Callback, (qPriority_t)8, (qTime_t)2.0, (qIteration_t)((qIteration_t)1), 0x01, (void*)"TASK5");
     _qStart();
 
     return (0);

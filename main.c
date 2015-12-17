@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
     qCreateTask(Task4, Task4Callback, 8, 1.5, 2, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, 8, 2.0, SINGLESHOT, ENABLE, "TASK5");
     qSchedule();
-    
+
     return (EXIT_SUCCESS);
 }
 
