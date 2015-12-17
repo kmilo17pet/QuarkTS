@@ -183,7 +183,7 @@ Task3Callback:
 .LC4:
 	.ascii "hi!\0"
 .LC5:
-	.ascii "pkernel\0"
+	.ascii "qurakts\0"
 .LC6:
 	.ascii "task 2 t2\0"
 	.text

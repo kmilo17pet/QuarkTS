@@ -109,7 +109,8 @@ extern "C" {
     #define qChangePeriod(TASK, VALUE)                                                  TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
     #define qChangeIterations(TASK, VALUE)                                              TASK.Iterations = VALUE
     #define qChangePriority(TASK,VALUE)                                                 QUARKTS.Init = 0; TASK.Priority = VALUE 
-    
+    #define qEnable(TASK)                                                               TASK.Flag.State = 1
+    #define qDisable(TASK)                                                              TASK.Flag.State = 0   
 #ifdef	__cplusplus
 }
 #endif

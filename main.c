@@ -43,7 +43,7 @@ void Task4Callback(qEvent_t Data){
     qQueueEvent(Task2, "data 1 t2");
     qQueueEvent(Task3, "hello");  
     qQueueEvent(Task1, "hi!");
-    qQueueEvent(Task1, "pkernel");
+    qQueueEvent(Task1, "qurakts");
     qQueueEvent(Task2, "task 2 t2");    
 }
 
