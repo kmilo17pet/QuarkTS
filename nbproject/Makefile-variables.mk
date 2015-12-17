@@ -7,21 +7,21 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=Cygwin_4.x-Windows
-CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin_4.x-Windows
+CND_PLATFORM_Debug=Cygwin-Windows
+CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
 CND_ARTIFACT_NAME_Debug=quarkts
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/quarkts
-CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin_4.x-Windows/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/quarkts
+CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
 CND_PACKAGE_NAME_Debug=quarkts.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/package/quarkts.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/quarkts.tar
 # Release configuration
-CND_PLATFORM_Release=Cygwin_4.x-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/Cygwin_4.x-Windows
+CND_PLATFORM_Release=Cygwin-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
 CND_ARTIFACT_NAME_Release=quarkts
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin_4.x-Windows/quarkts
-CND_PACKAGE_DIR_Release=dist/Release/Cygwin_4.x-Windows/package
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/quarkts
+CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
 CND_PACKAGE_NAME_Release=quarkts.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin_4.x-Windows/package/quarkts.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/quarkts.tar
 #
 # include compiler specific variables
 #

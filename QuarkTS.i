@@ -5,273 +5,242 @@
 # 1 "QuarkTS.c"
 # 20 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
-# 31 "QuarkTS.h"
-typedef enum {LOWEST_Priority=0, MEDIUM_Priority=30, HIGH_Priority=61} qPriorityValue_t;
-typedef enum {byPriority, byTimeElapse, byAsyncEvent, byQueueEvent} qTrigger_t;
-typedef enum {qQueueSuccess, qQueueError, qNoValidTask=0xFF} qReturnValue_t;
-typedef enum {qQueueEND_Empty=0xFF} qCoreValue_t;
-typedef unsigned int qIter_t;
-# 50 "QuarkTS.h"
-typedef unsigned char qTaskID_t;
-typedef unsigned char qPriority_t;
-typedef unsigned long qPeriod_t;
-typedef unsigned long qClock_t;
-typedef unsigned char qFlag_t;
-typedef float qTime_t;
+# 33 "QuarkTS.h"
+    typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
+    typedef enum {QueueSuccess = 0, QueueError = -1} qReturnValue_t;
+    typedef float qTime_t;
+    typedef volatile unsigned long qClock_t;
+    typedef unsigned char qPriority_t;
+    typedef unsigned short qIteration_t;
+    typedef enum { DISABLE=0, ENABLE=1} qState_t;
+# 48 "QuarkTS.h"
+    typedef struct{
+        qTrigger_t Trigger;
+        void *UserData;
+        void *EventData;
+        unsigned char FirstCall;
+    }qEvent_t;
 
-typedef struct{
-    unsigned char FirstCall, LastTaskID, Trigger;
-    void *UserData, *TaskData;
-}qEventInfo_t;
+    typedef void (*qTaskFcn_t)(qEvent_t);
 
-typedef void (*qTask)(qEventInfo_t);
+    typedef struct{
+        unsigned TimedTaskRun:8;
+        unsigned InitFlag:1;
+        unsigned AsyncRun:1;
+    }qTaskFlags_t;
 
-typedef struct{
-    volatile qTaskID_t *TaskID;
-    void *UserData;
-}qQueueStack_t;
-
-typedef struct{
-    unsigned Enable:1;
-    unsigned TimedTaskRun:8;
-    unsigned AsyncRun:1;
-    unsigned FcnInitFlag:1;
-}qTaskFlags_t;
-
-typedef struct{
-    qTask Function;
-    qPeriod_t Period;
-    volatile qClock_t TimeElapsed;
-    qPriority_t Priority;
-    volatile qTaskFlags_t Flags;
-    volatile qTaskID_t *idptr;
-    volatile qIter_t Iterations, N;
-    void* TaskData;
-}qTaskStack_t;
-
-typedef struct{
-    unsigned Init:1;
-    unsigned OnISRCheck:1;
-}qCoreFlags_t;
-
-typedef struct{
-    volatile qTaskStack_t *TaskStack;
-    volatile qQueueStack_t *QueueStack;
-    qTask IdleTaskCallback;
-    qTime_t KernelTick;
-    unsigned char QueueIndex;
-    unsigned char MaxTasks;
-    unsigned char QueueSize;
-    unsigned char TaskCnt;
-    qCoreFlags_t Flag;
-    volatile unsigned char iISR;
-    volatile qEventInfo_t EventData;
-}qCoreData_t;
-extern volatile qCoreData_t QuarkTS;
+    struct _qTask_t{
+        void *UserData,*AsyncData;
+        qClock_t Interval, TimeElapsed;
+        qIteration_t Iterations;
+        qPriority_t Priority;
+        qTaskFcn_t Callback;
+        volatile qTaskFlags_t Flag;
+        volatile qState_t State;
+        volatile struct _qTask_t *Next;
+    };
 
 
-void __qInit(volatile qTaskStack_t *T_Stack, unsigned char Size_T_Stack, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack, qTime_t ISRTickPeriod, qTask IdleTask_CallbackFcn);
-void __qISRHandler(void);
-void __qStartScheduler(void);
-qReturnValue_t __qQueueTaskEvent(volatile qTaskID_t *TaskID, void* Userdata);
-void __qSendEvent(qTaskID_t TaskID);
-void __qSetTaskState(qTaskID_t TaskID, unsigned char state);
-void __qChangeParameter(qTaskID_t TaskID, qPriority_t NewPriority, qTime_t NewTimeInSec, qIter_t n);
-void __qSetIdleTask(qTask Idle_CallbackFcn);
-qReturnValue_t __qTaskAttach(volatile qTaskID_t *id, qTask Task_CallbackFcn, qPriorityValue_t Priority, qTime_t TimeInSec, qIter_t n, unsigned char Enable, void* data);
+    typedef struct{
+        volatile struct _qTask_t *Task;
+        void *QueueData;
+    }qQueueStack_t;
+
+    typedef volatile struct{
+        qTaskFcn_t IDLECallback;
+        qTime_t Tick;
+        qEvent_t EventInfo;
+        volatile struct _qTask_t *First, *Last;
+        unsigned char Init;
+        volatile qQueueStack_t *QueueStack;
+        unsigned char QueueSize;
+        unsigned char QueueIndex;
+    }QuarkTSCoreData_t;
+
+    extern QuarkTSCoreData_t QUARKTS;
+
+    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
+    void _qISRHandler(void);
+    int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
+    void _qStart(void);
+    void _qSendEvent(volatile struct _qTask_t *Task, void* UserData);
+    qReturnValue_t _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
 # 21 "QuarkTS.c" 2
 
-volatile qCoreData_t QuarkTS;
-static void __qQueueInit(void);
-static qTaskID_t __qDequeue(void);
-static void __qTriggerEvent(qTaskID_t TaskID, qTrigger_t Trigger);
-static qReturnValue_t __qEnqueue(qTaskID_t TaskIDtoQueue, void* userdata);
-static void __qSortByPriority(void);
+QuarkTSCoreData_t QUARKTS;
+static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
+static void _qTaskChainSortbyPriority(void);
+static volatile struct _qTask_t* _qDequeueTaskEvent(void);
 
 
-void __qSendEvent(qTaskID_t TaskID){
-    if(TaskID!=qNoValidTask) QuarkTS.TaskStack[TaskID].Flags.AsyncRun = 1;
-}
-
-void __qSetTaskState(qTaskID_t TaskID, unsigned char state){
-    if(TaskID==qNoValidTask) return;
-    if((QuarkTS.TaskStack[TaskID].Flags.Enable = (state==1)) )
-        QuarkTS.TaskStack[QuarkTS.TaskCnt].Iterations = QuarkTS.TaskStack[QuarkTS.TaskCnt].N;
-}
-
-void __qSetIdleTask(qTask Idle_CallbackFcn){
-    QuarkTS.IdleTaskCallback = Idle_CallbackFcn;
-}
-
-void __qInit( volatile qTaskStack_t *T_Stack, unsigned char Size_T_Stack, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack, qTime_t ISRTickPeriod, qTask IdleTask_CallbackFcn){
-    unsigned char i;
-    QuarkTS.QueueStack = Q_Stack;
-    QuarkTS.TaskStack = T_Stack;
-    QuarkTS.MaxTasks = Size_T_Stack;
-    QuarkTS.QueueSize = Size_Q_Stack;
-    for(i=0; i< QuarkTS.MaxTasks; i++){
-        QuarkTS.TaskStack[i].Function = ((void *)0);
-        QuarkTS.TaskStack[i].Flags.Enable = 0;
-        QuarkTS.TaskStack[i].Priority = LOWEST_Priority;
-        QuarkTS.TaskStack[i].Flags.TimedTaskRun = 0;
-        QuarkTS.TaskStack[i].TimeElapsed = 0;
-        QuarkTS.TaskStack[i].Flags.FcnInitFlag = 0;
-        QuarkTS.TaskStack[i].Flags.AsyncRun = 0;
-        QuarkTS.TaskStack[i].Period = 0;
-        QuarkTS.TaskStack[i].Iterations = 0;
-        QuarkTS.TaskStack[i].N = 0;
-        QuarkTS.TaskStack[i].idptr = ((void *)0);
-    }
-    QuarkTS.TaskCnt = 0;
-    QuarkTS.IdleTaskCallback = IdleTask_CallbackFcn;
-    QuarkTS.KernelTick = ISRTickPeriod;
-    QuarkTS.Flag.Init = 0;
-}
-
-qReturnValue_t __qTaskAttach(volatile qTaskID_t *id, qTask Task_CallbackFcn, qPriorityValue_t Priority, qTime_t TimeInSec, qIter_t n, unsigned char Enable, void* data){
-    if (QuarkTS.TaskCnt>60 || QuarkTS.TaskCnt>=QuarkTS.MaxTasks || ((TimeInSec/2)<QuarkTS.KernelTick && TimeInSec>0)) return (qTaskID_t)qNoValidTask;
-    Priority = (Priority>=60)? 60 : Priority;
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Iterations = QuarkTS.TaskStack[QuarkTS.TaskCnt].N = n;
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Function = Task_CallbackFcn;
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Flags.Enable = Enable;
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Period = (qPeriod_t)(TimeInSec/QuarkTS.KernelTick);
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Priority = Priority;
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].idptr = id;QuarkTS.TaskStack[QuarkTS.TaskCnt].TaskData = data;
-    *id = QuarkTS.TaskCnt;
-    QuarkTS.TaskCnt++;
-    QuarkTS.Flag.Init = 0;
-    return (qReturnValue_t)(QuarkTS.TaskCnt);
-}
-
-void __qISRHandler(void){
-    if(!QuarkTS.Flag.Init) return;
-    QuarkTS.Flag.OnISRCheck = 1;
-    for(QuarkTS.iISR=0; QuarkTS.iISR< QuarkTS.TaskCnt ;QuarkTS.iISR++){
-        if(QuarkTS.TaskStack[QuarkTS.iISR].Flags.Enable && QuarkTS.TaskStack[QuarkTS.iISR].Period>0){
-            QuarkTS.TaskStack[QuarkTS.iISR].TimeElapsed++;
-            if(QuarkTS.TaskStack[QuarkTS.iISR].TimeElapsed >= QuarkTS.TaskStack[QuarkTS.iISR].Period){
-                QuarkTS.TaskStack[QuarkTS.iISR].Flags.TimedTaskRun++;
-                QuarkTS.TaskStack[QuarkTS.iISR].TimeElapsed=0;
-            }
-        }
-    }
-    QuarkTS.Flag.OnISRCheck = 0;
-}
-
-static void __qSortByPriority(void){
-    qTaskStack_t tmp;
-    unsigned char i,j;
-    for(i=0;i<QuarkTS.TaskCnt-1;i++){
-        for(j=i+1;j<QuarkTS.TaskCnt;j++){
-            if(QuarkTS.TaskStack[i].Priority < QuarkTS.TaskStack[j].Priority){
-                *QuarkTS.TaskStack[i].idptr = j;
-                *QuarkTS.TaskStack[j].idptr = i;
-                tmp=QuarkTS.TaskStack[i];
-                QuarkTS.TaskStack[i]=QuarkTS.TaskStack[j];
-                QuarkTS.TaskStack[j]=tmp;
-            }
-        }
-    }
-}
-
-static void __qQueueInit(void){
-    unsigned char i;
-    for(i=0;i<QuarkTS.QueueSize;i++) QuarkTS.QueueStack[i].TaskID = ((void *)0);
-    QuarkTS.QueueIndex = 0;
-}
-
-qReturnValue_t __qQueueTaskEvent(volatile qTaskID_t *TaskIDtoQueue, void* userdata){
-    if(QuarkTS.QueueIndex>QuarkTS.QueueSize-1 || *TaskIDtoQueue==qNoValidTask) return qQueueError;
-    qPriority_t PriorityValue = QuarkTS.TaskStack[*TaskIDtoQueue].Priority;
+qReturnValue_t _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
+    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return QueueError;
+    qPriority_t PriorityValue = TasktoQueue->Priority;
     qQueueStack_t qtmp;
-    volatile qTaskID_t *TaskID_FromQueue;
-    qtmp.TaskID = TaskIDtoQueue;
-    qtmp.UserData = userdata;
-    if( (TaskID_FromQueue = QuarkTS.QueueStack[QuarkTS.QueueIndex].TaskID)!=((void *)0)){
-        if(PriorityValue<=QuarkTS.TaskStack[*TaskID_FromQueue].Priority){
-        QuarkTS.QueueStack[QuarkTS.QueueIndex] = QuarkTS.QueueStack[QuarkTS.QueueIndex-1];
-        QuarkTS.QueueStack[QuarkTS.QueueIndex-1] = qtmp;
+    volatile struct _qTask_t *TaskFromQueue;
+    qtmp.Task = TasktoQueue;
+    qtmp.QueueData = eventdata;
+    if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=((void*)0)){
+        if(PriorityValue<=TaskFromQueue->Priority){
+        QUARKTS.QueueStack[QUARKTS.QueueIndex] = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
+        QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = qtmp;
         }
     }
-    else QuarkTS.QueueStack[QuarkTS.QueueIndex] = qtmp;
+    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
 
-    QuarkTS.QueueIndex++;
-    if(QuarkTS.QueueIndex==1) return qQueueSuccess;
-    qTaskID_t i;
-    for(i=0; i<QuarkTS.QueueSize; i++){
-        if( (TaskID_FromQueue = QuarkTS.QueueStack[i].TaskID)!=((void *)0)){
-            if(PriorityValue<= QuarkTS.TaskStack[*TaskID_FromQueue].Priority){
-                qtmp = QuarkTS.QueueStack[QuarkTS.QueueIndex-1];
-                QuarkTS.QueueStack[QuarkTS.QueueIndex-1] = QuarkTS.QueueStack[i];
-                QuarkTS.QueueStack[i] = qtmp;
+    QUARKTS.QueueIndex++;
+    if(QUARKTS.QueueIndex==1) return QueueSuccess;
+    unsigned char i;
+    for(i=0; i<QUARKTS.QueueSize; i++){
+        if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void*)0)){
+            if(PriorityValue<= TaskFromQueue->Priority){
+                qtmp = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
+                QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = QUARKTS.QueueStack[i];
+                QUARKTS.QueueStack[i] = qtmp;
             }
         }
     }
-    return qQueueSuccess;
+    return QueueSuccess;
 }
 
-static qTaskID_t __qDequeue(void){
+static volatile struct _qTask_t* _qDequeueTaskEvent(void){
     int i;
-    unsigned char TaskID;
-    for( i=QuarkTS.QueueIndex-1; i>=0; i--){
-        if( QuarkTS.QueueStack[i].TaskID != ((void *)0)){
-            TaskID = *QuarkTS.QueueStack[i].TaskID;
-            QuarkTS.QueueStack[i].TaskID = ((void *)0);
-            if( QuarkTS.QueueIndex>0) QuarkTS.QueueIndex--;
-            QuarkTS.EventData.UserData = QuarkTS.QueueStack[i].UserData;
-            return TaskID;
+    volatile struct _qTask_t *Task;
+    for( i=QUARKTS.QueueIndex-1; i>=0; i--){
+        if( QUARKTS.QueueStack[i].Task != ((void*)0)){
+            Task = QUARKTS.QueueStack[i].Task;
+            QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
+            QUARKTS.QueueStack[i].Task = ((void*)0);
+            if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
+            return Task;
         }
     }
-    return qQueueEND_Empty;
+    return ((void*)0);
 }
 
-static void __qTriggerEvent(qTaskID_t TaskID, qTrigger_t Trigger){
-    QuarkTS.EventData.Trigger = Trigger;
-    QuarkTS.EventData.FirstCall = !QuarkTS.TaskStack[TaskID].Flags.FcnInitFlag;
-    if(Trigger == byAsyncEvent) QuarkTS.TaskStack[TaskID].Flags.AsyncRun = 0;
-    QuarkTS.EventData.TaskData = QuarkTS.TaskStack[TaskID].TaskData;
-    (*QuarkTS.TaskStack[TaskID].Function)(QuarkTS.EventData);
-    QuarkTS.TaskStack[TaskID].Flags.FcnInitFlag = 1;
-    QuarkTS.EventData.UserData = QuarkTS.EventData.TaskData = ((void *)0);
-    QuarkTS.EventData.LastTaskID = TaskID;
+void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
+    unsigned char i;
+    QUARKTS.First = ((void*)0);
+    QUARKTS.Last = ((void*)0);
+    QUARKTS.Tick = ISRTick;
+    QUARKTS.IDLECallback = IdleCallback;
+
+    QUARKTS.QueueStack = Q_Stack;
+    QUARKTS.QueueSize = Size_Q_Stack;
+    for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = ((void*)0);
+    QUARKTS.QueueIndex = 0;
 }
 
-void __qChangeParameter(qTaskID_t TaskID, qPriority_t NewPriority, qTime_t NewTimeInSec, qIter_t n){
-    if(TaskID==qNoValidTask) return;
-    if (QuarkTS.TaskStack[TaskID].Period > 0) QuarkTS.TaskStack[TaskID].Period=(qPeriod_t)(NewTimeInSec/QuarkTS.KernelTick);
-    QuarkTS.TaskStack[QuarkTS.TaskCnt].Iterations = QuarkTS.TaskStack[QuarkTS.TaskCnt].N = n;
-    QuarkTS.TaskStack[TaskID].Priority = (NewPriority>=60)? 60 : NewPriority;
-    QuarkTS.Flag.Init= 0;
+void _qISRHandler(void){
+    if(!QUARKTS.Init) return;
+    volatile struct _qTask_t *Task = QUARKTS.First;
+    while(Task != ((void*)0)){
+        if( Task->State != DISABLE && Task->Interval>0){
+            Task->TimeElapsed++;
+            if(Task->TimeElapsed >= Task->Interval){
+                Task->Flag.TimedTaskRun++;
+                Task->TimeElapsed = 0;
+            }
+        }
+        Task = Task->Next;
+    }
 }
 
-void __qStartScheduler(void){
-    qTaskID_t TaskID, dequeueTaskID;
+int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
+    if ((Time/2)<QUARKTS.Tick && Time) return -1;
+    Task->Callback = CallbackFcn;
+    Task->TimeElapsed = 0;
+    Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
+    Task->UserData = arg;
+    Task->Priority = Priority;
+    Task->Iterations = nExecutions;
+    Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
+    Task->State = InitialState != 0;
+    Task->Next = ((void*)0);
+    if(QUARKTS.First == ((void*)0)){
+        QUARKTS.First = Task;
+        QUARKTS.Last = Task;
+    }
+    else{
+        QUARKTS.Last->Next = Task;
+        QUARKTS.Last = Task;
+    }
+    return 0;
+}
+
+static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event){
+    QUARKTS.EventInfo.Trigger = Event;
+    QUARKTS.EventInfo.FirstCall = !Task->Flag.InitFlag;
+    QUARKTS.EventInfo.UserData = Task->UserData;
+    Task->Callback(QUARKTS.EventInfo);
+    Task->Flag.InitFlag = 1;
+    QUARKTS.EventInfo.EventData = ((void*)0);
+}
+
+static void _qTaskChainSortbyPriority(void){
+    volatile struct _qTask_t *a = ((void*)0);
+    volatile struct _qTask_t *b = ((void*)0);
+    volatile struct _qTask_t *c = ((void*)0);
+    volatile struct _qTask_t *e = ((void*)0);
+    volatile struct _qTask_t *tmp = ((void*)0);
+    volatile struct _qTask_t *head = QUARKTS.First;
+    while(e != head->Next) {
+        c = a = head;
+        b = a->Next;
+        while(a != e) {
+            if(a->Priority < b->Priority) {
+                tmp = b->Next;
+                b->Next = a;
+                if(a == head) QUARKTS.First = head = b;
+                else c->Next = b;
+                c = b;
+                a->Next = tmp;
+            }
+            else {
+                c = a;
+                a = a->Next;
+            }
+            b = a->Next;
+            if(b == e)
+            e = a;
+        }
+    }
+}
+
+void _qStart(void){
+    volatile struct _qTask_t *Task, *qTask;
     unsigned char fcal_idlefcn=0;
-    __qQueueInit();
-
-    QuarkTSLoop: if(!QuarkTS.Flag.Init){
-        __qSortByPriority();
-        QuarkTS.Flag.Init= 1;
-        QuarkTS.EventData.LastTaskID = qNoValidTask;
+    pMainSchedule:
+    if(!QUARKTS.Init){
+        _qTaskChainSortbyPriority();
+        QUARKTS.Init= 1;
     }
-    for( TaskID=0; TaskID< QuarkTS.TaskCnt; TaskID++){
-        if ((dequeueTaskID = __qDequeue())!=qQueueEND_Empty) __qTriggerEvent(dequeueTaskID, byQueueEvent);
-        if(QuarkTS.TaskStack[TaskID].Period == 0 && QuarkTS.TaskStack[TaskID].Flags.Enable) __qTriggerEvent(TaskID, byTimeElapse);
-
-        if( QuarkTS.TaskStack[TaskID].Flags.TimedTaskRun && (QuarkTS.TaskStack[TaskID].Iterations>0 || QuarkTS.TaskStack[TaskID].Iterations==((qIter_t)-1)) && QuarkTS.TaskStack[TaskID].Flags.Enable){
-            QuarkTS.TaskStack[TaskID].Flags.TimedTaskRun--;
-            if(QuarkTS.TaskStack[TaskID].Iterations != ((qIter_t)-1)) QuarkTS.TaskStack[TaskID].Iterations--;
-            if(QuarkTS.TaskStack[TaskID].Iterations == 0) QuarkTS.TaskStack[TaskID].Flags.Enable = 0;
-            __qTriggerEvent(TaskID, byTimeElapse);
+    Task = QUARKTS.First;
+    while(Task != ((void*)0)){
+        if ((qTask = _qDequeueTaskEvent())!=((void*)0)) _qTriggerEvent(qTask, byQueueExtraction);
+        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->State!=DISABLE){
+            Task->Flag.TimedTaskRun--;
+            if(Task->Iterations!= ((qIteration_t)-1)) Task->Iterations--;
+            if(Task->Iterations == 0) Task->State = DISABLE;
+            _qTriggerEvent(Task, byTimeElapsed);
         }
-        else if( QuarkTS.TaskStack[TaskID].Flags.AsyncRun) __qTriggerEvent(TaskID, byAsyncEvent);
-        else if( QuarkTS.IdleTaskCallback != ((void *)0)){
-            QuarkTS.EventData.FirstCall = !fcal_idlefcn;
-            QuarkTS.EventData.Trigger = byPriority;
-            (*QuarkTS.IdleTaskCallback)(QuarkTS.EventData);
+        else if( Task->Flag.AsyncRun){
+            QUARKTS.EventInfo.EventData = Task->AsyncData;
+            Task->Flag.AsyncRun = 0;
+            _qTriggerEvent(Task, byAsyncEvent);
+        }
+        else if( QUARKTS.IDLECallback!= ((void*)0)){
+            QUARKTS.EventInfo.FirstCall = !fcal_idlefcn;
+            QUARKTS.EventInfo.Trigger = byPriority;
+            QUARKTS.IDLECallback(QUARKTS.EventInfo);
             fcal_idlefcn = 1;
-            QuarkTS.EventData.LastTaskID = qNoValidTask;
         }
+        Task = Task->Next;
     }
-    goto QuarkTSLoop;
+    goto pMainSchedule;
+}
+
+void _qSendEvent(volatile struct _qTask_t *Task, void* UserData){
+    Task->AsyncData = UserData;
+    Task->Flag.AsyncRun = 1;
 }
