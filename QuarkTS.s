@@ -1311,19 +1311,17 @@ _qStart:
 	.ascii "QuarkTSCoreData_t\0"
 	.byte	0x2
 	.byte	0x5b
-	.long	0x402
-	.uleb128 0x6
 	.long	0x34e
 	.uleb128 0x10
 	.ascii "_qEnqueueTaskEvent\0"
 	.byte	0x1
 	.byte	0x1c
-	.long	0x4ad
+	.long	0x4a8
 	.quad	.LFB0
 	.quad	.LFE0-.LFB0
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x4ad
+	.long	0x4a8
 	.uleb128 0x11
 	.ascii "TasktoQueue\0"
 	.byte	0x1
@@ -1386,12 +1384,12 @@ _qStart:
 	.quad	.LFE1-.LFB1
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x4ff
+	.long	0x4fa
 	.uleb128 0x12
 	.ascii "i\0"
 	.byte	0x1
 	.byte	0x3b
-	.long	0x4ad
+	.long	0x4a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
@@ -1412,7 +1410,7 @@ _qStart:
 	.quad	.LFE2-.LFB2
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x587
+	.long	0x582
 	.uleb128 0x11
 	.ascii "ISRTick\0"
 	.byte	0x1
@@ -1462,7 +1460,7 @@ _qStart:
 	.quad	.LFE3-.LFB3
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x5bc
+	.long	0x5b7
 	.uleb128 0x14
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1476,12 +1474,12 @@ _qStart:
 	.ascii "_qCreateTask\0"
 	.byte	0x1
 	.byte	0x63
-	.long	0x4ad
+	.long	0x4a8
 	.quad	.LFB4
 	.quad	.LFE4-.LFB4
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x663
+	.long	0x65e
 	.uleb128 0x16
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1547,7 +1545,7 @@ _qStart:
 	.quad	.LFE5-.LFB5
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6aa
+	.long	0x6a5
 	.uleb128 0x16
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1573,7 +1571,7 @@ _qStart:
 	.quad	.LFE6-.LFB6
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x72b
+	.long	0x726
 	.uleb128 0x12
 	.ascii "a\0"
 	.byte	0x1
@@ -1631,7 +1629,7 @@ _qStart:
 	.quad	.LFE7-.LFB7
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x79b
+	.long	0x796
 	.uleb128 0x14
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1666,10 +1664,12 @@ _qStart:
 	.ascii "QUARKTS\0"
 	.byte	0x1
 	.byte	0x16
-	.long	0x3e9
+	.long	0x7af
 	.uleb128 0x9
 	.byte	0x3
 	.quad	QUARKTS
+	.uleb128 0x6
+	.long	0x3e9
 	.byte	0
 	.section	.debug_abbrev,"dr"
 .Ldebug_abbrev0:

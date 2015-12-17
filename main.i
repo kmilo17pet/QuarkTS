@@ -2648,7 +2648,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         void *QueueData;
     }qQueueStack_t;
 
-    typedef volatile struct{
+    typedef struct{
         qTaskFcn_t IDLECallback;
         qTime_t Tick;
         qEvent_t EventInfo;
@@ -2659,7 +2659,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         unsigned char QueueIndex;
     }QuarkTSCoreData_t;
 
-    extern QuarkTSCoreData_t QUARKTS;
+    extern volatile QuarkTSCoreData_t QUARKTS;
 
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
     void _qISRHandler(void);
@@ -2714,8 +2714,8 @@ int main(int argc, char** argv) {
     _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(255), ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK1");
     _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)1.0, (qIteration_t)((qIteration_t)-1), 0x01, (void*)"TASK2");
     _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(127), (qTime_t)1.0, (qIteration_t)2, 0x01, (void*)"TASK3");
-    _qCreateTask(&Task4, Task4Callback, (qPriority_t)8, (qTime_t)1.5, (qIteration_t)2, 0x01, (void*)"TASK4");
-    _qCreateTask(&Task5, Task5Callback, (qPriority_t)8, (qTime_t)2.0, (qIteration_t)((qIteration_t)1), 0x01, (void*)"TASK5");
+    _qCreateTask(&Task4, Task4Callback, (qPriority_t)(qPriority_t)(127), (qTime_t)1.5, (qIteration_t)2, 0x01, (void*)"TASK4");
+    _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(127), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), 0x01, (void*)"TASK5");
     _qStart();
 
     return (0);

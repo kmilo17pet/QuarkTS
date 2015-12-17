@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.1
+ *  Version : 2.8
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -79,7 +79,7 @@ extern "C" {
         void *QueueData;
     }qQueueStack_t;
     
-    typedef volatile struct{
+    typedef struct{
         qTaskFcn_t IDLECallback;    
         qTime_t Tick;
         qEvent_t EventInfo;
@@ -90,7 +90,7 @@ extern "C" {
         unsigned char QueueIndex;
     }QuarkTSCoreData_t;
    
-    extern QuarkTSCoreData_t QUARKTS;
+    extern volatile QuarkTSCoreData_t QUARKTS;
 
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
     void _qISRHandler(void);
@@ -106,7 +106,7 @@ extern "C" {
     #define qSendEvent(TASK, EVENTDATA)                                                 TASK.Flag.AsyncRun = 1; TASK.AsyncData = (void*)EVENTDATA  
     #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
-    #define qChangePeriod(TASK, VALUE)                                                  TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
+    #define qChangeTime(TASK, VALUE)                                                  TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
     #define qChangeIterations(TASK, VALUE)                                              TASK.Iterations = VALUE
     #define qChangePriority(TASK,VALUE)                                                 QUARKTS.Init = 0; TASK.Priority = VALUE 
     #define qEnable(TASK)                                                               TASK.Flag.State = 1

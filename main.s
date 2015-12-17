@@ -391,7 +391,7 @@ main:
 	movl	$1, 40(%rsp)
 	movl	$2, 32(%rsp)
 	movss	.LC14(%rip), %xmm3
-	movl	$8, %r8d
+	movl	$127, %r8d
 	leaq	Task4Callback(%rip), %rdx
 	leaq	Task4(%rip), %rax
 	movq	%rax, %rcx
@@ -402,7 +402,7 @@ main:
 	movl	$1, 40(%rsp)
 	movl	$1, 32(%rsp)
 	movss	.LC16(%rip), %xmm3
-	movl	$8, %r8d
+	movl	$127, %r8d
 	leaq	Task5Callback(%rip), %rdx
 	leaq	Task5(%rip), %rax
 	movq	%rax, %rcx

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.1
+ *  Version : 2.8
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -19,7 +19,7 @@
 
 #include "QuarkTS.h"
 
-QuarkTSCoreData_t QUARKTS;
+volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainSortbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);

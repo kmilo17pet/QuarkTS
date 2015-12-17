@@ -59,8 +59,8 @@ int main(int argc, char** argv) {
     qCreateEventTask(Task1, Task1Callback, HIGH_Priority, "TASK1");
     qCreateTask(Task2, Task2Callback, 20, 1.0, PERIODIC, ENABLE, "TASK2");
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
-    qCreateTask(Task4, Task4Callback, 8, 1.5, 2, ENABLE, "TASK4");
-    qCreateTask(Task5, Task5Callback, 8, 2.0, SINGLESHOT, ENABLE, "TASK5");
+    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, 2, ENABLE, "TASK4");
+    qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
     qSchedule();
 
     return (EXIT_SUCCESS);

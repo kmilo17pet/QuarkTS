@@ -45,7 +45,7 @@
         void *QueueData;
     }qQueueStack_t;
 
-    typedef volatile struct{
+    typedef struct{
         qTaskFcn_t IDLECallback;
         qTime_t Tick;
         qEvent_t EventInfo;
@@ -56,7 +56,7 @@
         unsigned char QueueIndex;
     }QuarkTSCoreData_t;
 
-    extern QuarkTSCoreData_t QUARKTS;
+    extern volatile QuarkTSCoreData_t QUARKTS;
 
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
     void _qISRHandler(void);
@@ -65,7 +65,7 @@
     int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
 # 21 "QuarkTS.c" 2
 
-QuarkTSCoreData_t QUARKTS;
+volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainSortbyPriority(void);
 static volatile struct _qTask_t* _qDequeueTaskEvent(void);
