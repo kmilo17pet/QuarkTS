@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.8.5
+ *  Version : 2.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -23,11 +23,13 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-        
+    
+    
     #ifndef NULL
-    #define NULL ((void*)0)
+        #define NULL ((void*)0)
     #endif
     
+
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -36,14 +38,13 @@ extern "C" {
     typedef unsigned char qState_t;
     
     #define LOWEST_Priority     (qPriority_t)(0)
-    #define MEDIUM_Priority     (qPriority_t)(0x7F)
-    #define HIGH_Priority       (qPriority_t)(0xFF)
+    #define MEDIUM_Priority     (qPriority_t)(127)
+    #define HIGH_Priority       (qPriority_t)(255)
     #define PERIODIC            ((qIteration_t)-1)
     #define SINGLESHOT          ((qIteration_t)1)
     #define TIME_INMEDIATE      ((qTime_t)(0))
-    
-    #define ENABLE              (1)
-    #define DISABLE             (0)
+    #define ENABLE              (0x01)
+    #define DISABLE             (0x00)
     
     typedef struct{
         qTrigger_t Trigger;
@@ -61,37 +62,33 @@ extern "C" {
         unsigned State:1;
     }qTaskFlags_t;
     
-    struct _qTask_t{
+    typedef volatile struct{
         void *UserData,*AsyncData;
         qClock_t Interval, TimeElapsed;
         qIteration_t Iterations;
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
-        volatile struct _qTask_t *Next;
-    };
-    #define qTask_t volatile struct _qTask_t
+        volatile struct qTask_t *Next;
+    }qTask_t;
 
     typedef struct{
         qTask_t *Task;
         void *QueueData;
     }qQueueStack_t;
-        
-    typedef struct{
-        unsigned Init:1;
-        unsigned FCallIdle:1;
-    }qTaskCoreFlags_t;
     
-    typedef struct{
+    typedef volatile struct{
         qTaskFcn_t IDLECallback;    
         qTime_t Tick;
         qEvent_t EventInfo;
         qTask_t *First;
-        qTaskCoreFlags_t Flag;
+        //qTask_t *Last;
+        unsigned char Init;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
     }QuarkTSCoreData_t;
-    extern volatile QuarkTSCoreData_t QUARKTS;
+   
+    extern QuarkTSCoreData_t QUARKTS;
 
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
     void _qISRHandler(void);
@@ -101,18 +98,17 @@ extern "C" {
     
     #define qSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     #define qISRHandler()                                                               _qISRHandler()
-    #define qCreateTask(TASK, CALLBACK, PRIORITY, TIME, NEXEC, INITSTATE, USERDATA)     _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, (qTime_t)TIME, (qIteration_t)NEXEC, INITSTATE, (void*)USERDATA)
-    #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, 0, (void*)USERDATA)  
+    #define qCreateTask(TASK, CALLBACK, PRIORITY, TIME, NEXEC, INITSTATE, USERDATA)     _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, (qTime_t)TIME, (qIteration_t)NEXEC, INITSTATE, USERDATA)
+    #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, DISABLE, USERDATA)  
     #define qSchedule()                                                                 _qStart()
-    #define qSendEvent(TASK, EVENTDATA)                                                 TASK.Flag.AsyncRun = 1; TASK.AsyncData = (void*)EVENTDATA  
-    #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
+    #define qSendEvent(TASK, EVENTDATA)                                                 TASK.AsyncData = EVENTDATA; TASK.Flag.AsyncRun = 1
+    #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, EVENTDATA)
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
-    #define qSetTime(TASK, VALUE)                                                       TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
-    #define qSetIterations(TASK, VALUE)                                                 TASK.Iterations = VALUE
-    #define qSetPriority(TASK,VALUE)                                                    QUARKTS.Flag.Init = 0; TASK.Priority = VALUE 
-    #define qEnable(TASK)                                                               TASK.Flag.State = 1
-    #define qDisable(TASK)                                                              TASK.Flag.State = 0   
-    #define qSetCallback(TASK, CALLBACK)                                                TASK.Callback = CALLBACK
+    #define qChangeTime(TASK, NEWVALUE)                                                 TASK.Interval = (qClock_t)(NEWVALUE/QUARKTS.Tick)                       
+    #define qChangePriority(TASK, NEWVALUE)                                             QUARKTS.Init = 0; TASK.Priority = NEWVALUE                     
+    #define qChangeIterations(TASK, NEWVALUE)                                           TASK.Iterations = NEWVALUE 
+    #define qEnable(TASK)                                                               TASK.Flag.State  = 1
+    #define qDisable(TASK)                                                              TASK.Flag.State  = 0
     
 #ifdef	__cplusplus
 }

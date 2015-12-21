@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.8.5
+ *  Version : 2.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -19,7 +19,7 @@
 
 #include "QuarkTS.h"
 
-volatile QuarkTSCoreData_t QUARKTS;
+QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainSortbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
@@ -73,17 +73,17 @@ static qTask_t* _qDequeueTaskEvent(void){
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
     QUARKTS.First = NULL;
+//    QUARKTS.Last = NULL;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL; 
     QUARKTS.QueueIndex = 0;    
-    QUARKTS.Flag.Init = 0;
 }
 /*============================================================================*/
 void _qISRHandler(void){
-    if(!QUARKTS.Flag.Init) return;  
+    if(!QUARKTS.Init) return;  
     qTask_t *Task =  QUARKTS.First;
     while(Task != NULL){
         if( Task->Flag.State  && Task->Interval>0){
@@ -93,12 +93,12 @@ void _qISRHandler(void){
                 Task->TimeElapsed = 0; 
             }
         }
-        Task = Task->Next;
+        Task = (qTask_t*) Task->Next;
     }
 }
 /*============================================================================*/
 int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if ((Time/2)<QUARKTS.Tick && Time || CallbackFcn == NULL) return -1;    
+    if ((Time/2)<QUARKTS.Tick && Time) return -1;    
     Task->Callback = CallbackFcn;
     Task->TimeElapsed = 0;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
@@ -106,9 +106,22 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->Priority = Priority;
     Task->Iterations = nExecutions;
     Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->Flag.State = InitialState != 0;
-    Task->Next = QUARKTS.First;
-    QUARKTS.First = Task;
+    Task->Flag.State  = InitialState != 0;
+    //Task->Next = NULL;
+
+    Task->Next = (volatile struct qTask_t*)QUARKTS.First;
+    QUARKTS.First   = Task;
+    
+    /*
+    if(QUARKTS.First == NULL){
+        QUARKTS.First = Task;
+        QUARKTS.Last = Task;
+    }
+    else{
+        QUARKTS.Last->Next = (volatile struct qTask_t*)Task;
+        QUARKTS.Last = Task;
+    }
+  */    
     return 0;
 }
 /*================================================================================================================================================*/
@@ -116,7 +129,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger =  Event;
     QUARKTS.EventInfo.FirstCall = !Task->Flag.InitFlag;
     QUARKTS.EventInfo.UserData = Task->UserData;
-    if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
+    Task->Callback(QUARKTS.EventInfo);
     Task->Flag.InitFlag = 1;
     QUARKTS.EventInfo.EventData = NULL;
 }
@@ -128,42 +141,44 @@ static void _qTaskChainSortbyPriority(void){
     qTask_t *e = NULL;
     qTask_t *tmp = NULL; 
     qTask_t *head = QUARKTS.First;
-    while(e != head->Next) {
+    while(e != (qTask_t*)head->Next) {
         c = a = head;
-        b = a->Next;
+        b = (qTask_t*)a->Next;
         while(a != e) {
             if(a->Priority < b->Priority) {
-                tmp = b->Next;
-                b->Next = a;
+                tmp = (qTask_t*)b->Next;
+                b->Next = (volatile struct qTask_t*)a;
                 if(a == head)  QUARKTS.First = head = b;
-                else  c->Next = b;
+                else  c->Next = (volatile struct qTask_t*)b;
                 c = b;
-                a->Next = tmp;
+                a->Next = (volatile struct qTask_t*)tmp;
             } 
             else {
                 c = a;
-                a = a->Next;
+                a = (qTask_t*)a->Next;
             }
-            b = a->Next;
-            if(b == e) e = a;
+            b = (qTask_t*)a->Next;
+            if(b == e)
+            e = a;
         }
     }
 }
 /*============================================================================*/
 void _qStart(void){
     qTask_t *Task, *qTask;
+    unsigned char fcal_idlefcn=0;
     pMainSchedule:
-    if(!QUARKTS.Flag.Init){    
+    if(!QUARKTS.Init){    
         _qTaskChainSortbyPriority();
-        QUARKTS.Flag.Init= 1;
+        QUARKTS.Init= 1;
     }
     Task = QUARKTS.First;
     while(Task != NULL){
         if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
-        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
+        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State ){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
-            if(Task->Iterations == 0) Task->Flag.State = 0;
+            if(Task->Iterations == 0) Task->Flag.State  = 0;
             _qTriggerEvent(Task, byTimeElapsed);
         }
         else if( Task->Flag.AsyncRun){
@@ -172,12 +187,12 @@ void _qStart(void){
             _qTriggerEvent(Task, byAsyncEvent);
         }
         else if( QUARKTS.IDLECallback!= NULL){
-            QUARKTS.EventInfo.FirstCall = !QUARKTS.Flag.FCallIdle;
+            QUARKTS.EventInfo.FirstCall = !fcal_idlefcn;
             QUARKTS.EventInfo.Trigger = byPriority;
             QUARKTS.IDLECallback(QUARKTS.EventInfo);
-            QUARKTS.Flag.Init = 1;        
+            fcal_idlefcn = 1;        
         }
-        Task = Task->Next;
+        Task = (qTask_t*) Task->Next;
     }
     goto pMainSchedule;
 }
