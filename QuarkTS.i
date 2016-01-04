@@ -12,12 +12,13 @@
     typedef unsigned char qPriority_t;
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
-# 48 "QuarkTS.h"
+    typedef unsigned char qBool_t;
+# 49 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
         void *EventData;
-        unsigned char FirstCall;
+        qBool_t FirstCall;
     }qEvent_t;
 
     typedef void (*qTaskFcn_t)(qEvent_t);
@@ -70,7 +71,7 @@
 
 volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
-static void _qTaskChainSortbyPriority(void);
+static void _qTaskChainbyPriority(void);
 static volatile struct _qTask_t* _qDequeueTaskEvent(void);
 
 
@@ -170,12 +171,8 @@ static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.EventData = ((void*)0);
 }
 
-static void _qTaskChainSortbyPriority(void){
-    volatile struct _qTask_t *a = ((void*)0);
-    volatile struct _qTask_t *b = ((void*)0);
-    volatile struct _qTask_t *c = ((void*)0);
-    volatile struct _qTask_t *e = ((void*)0);
-    volatile struct _qTask_t *tmp = ((void*)0);
+static void _qTaskChainbyPriority(void){
+    volatile struct _qTask_t *a = ((void*)0), *b = ((void*)0), *c = ((void*)0), *e = ((void*)0), *tmp = ((void*)0);
     volatile struct _qTask_t *head = QUARKTS.First;
     while(e != head->Next) {
         c = a = head;
@@ -203,13 +200,13 @@ void _qStart(void){
     volatile struct _qTask_t *Task, *qTask;
     pMainSchedule:
     if(!QUARKTS.Flag.Init){
-        _qTaskChainSortbyPriority();
+        _qTaskChainbyPriority();
         QUARKTS.Flag.Init= 1;
     }
     Task = QUARKTS.First;
     while(Task != ((void*)0)){
         if ((qTask = _qDequeueTaskEvent())!=((void*)0)) _qTriggerEvent(qTask, byQueueExtraction);
-        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.State){
+        if((Task->Flag.TimedTaskRun || Task->Interval == ((qTime_t)(0))) && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.State){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= ((qIteration_t)-1)) Task->Iterations--;
             if(Task->Iterations == 0) Task->Flag.State = 0;

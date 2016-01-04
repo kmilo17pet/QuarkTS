@@ -1,6 +1,6 @@
 /*******************************************************************************
- *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.8.5
+ *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
+ *  Version : 2.8.6
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -21,7 +21,7 @@
 
 volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
-static void _qTaskChainSortbyPriority(void);
+static void _qTaskChainbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
 
 /*================================================================================================================================================*/
@@ -121,12 +121,8 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.EventData = NULL;
 }
 /*============================================================================*/
-static void _qTaskChainSortbyPriority(void){
-    qTask_t *a = NULL;
-    qTask_t *b = NULL;
-    qTask_t *c = NULL;
-    qTask_t *e = NULL;
-    qTask_t *tmp = NULL; 
+static void _qTaskChainbyPriority(void){
+    qTask_t *a = NULL, *b = NULL, *c = NULL, *e = NULL, *tmp = NULL; 
     qTask_t *head = QUARKTS.First;
     while(e != head->Next) {
         c = a = head;
@@ -154,13 +150,13 @@ void _qStart(void){
     qTask_t *Task, *qTask;
     pMainSchedule:
     if(!QUARKTS.Flag.Init){    
-        _qTaskChainSortbyPriority();
+        _qTaskChainbyPriority();
         QUARKTS.Flag.Init= 1;
     }
     Task = QUARKTS.First;
     while(Task != NULL){
         if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
-        if(Task->Flag.TimedTaskRun && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
+        if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
             if(Task->Iterations == 0) Task->Flag.State = 0;

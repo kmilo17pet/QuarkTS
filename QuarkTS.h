@@ -1,6 +1,6 @@
 /*******************************************************************************
- *  QuarkTS - A Non-Preemptive Scheduler for low-range MCUs
- *  Version : 2.8.5
+ *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
+ *  Version : 2.8.6
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -34,6 +34,7 @@ extern "C" {
     typedef unsigned char qPriority_t;
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
+    typedef unsigned char qBool_t;
     
     #define LOWEST_Priority     (qPriority_t)(0)
     #define MEDIUM_Priority     (qPriority_t)(0x7F)
@@ -49,7 +50,7 @@ extern "C" {
         qTrigger_t Trigger;
         void *UserData;
         void *EventData;
-        unsigned char FirstCall;
+        qBool_t FirstCall;
     }qEvent_t;
     
     typedef void (*qTaskFcn_t)(qEvent_t);
@@ -118,5 +119,5 @@ extern "C" {
 }
 #endif
 
-#endif	/* PTASKSCHEDULER_H */
+#endif	/* H_QuarkTS */
 
