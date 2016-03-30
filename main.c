@@ -47,9 +47,13 @@ void Task5Callback(qEvent_t Data){
     
 }
 
+void IdleTaskCallback(qEvent_t Data){
+    puts("IDLE");
+}
+
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
-    qSetup(0.01, NULL, 5);
+    qSetup(0.01, IdleTaskCallback, 5);
     qCreateEventTask(Task1, Task1Callback, HIGH_Priority, "TASK1");
     qCreateTask(Task2, Task2Callback, 20, 1.0, PERIODIC, ENABLE, "TASK2");
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
