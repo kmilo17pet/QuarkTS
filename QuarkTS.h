@@ -56,12 +56,12 @@ extern "C" {
     typedef void (*qTaskFcn_t)(qEvent_t);
     
     typedef struct{
-        unsigned TimedTaskRun:8;
-        unsigned InitFlag:1;
-        unsigned AsyncRun:1;
-        unsigned State:1;
+    	volatile unsigned char TimedTaskRun;
+        volatile unsigned char InitFlag;
+        volatile unsigned char AsyncRun;
+        volatile unsigned char State;
     }qTaskFlags_t;
-    
+
     struct _qTask_t{
         void *UserData,*AsyncData;
         qClock_t Interval, TimeElapsed;
@@ -77,18 +77,19 @@ extern "C" {
         qTask_t *Task;
         void *QueueData;
     }qQueueStack_t;
-        
+
     typedef struct{
-        unsigned Init:1;
-        unsigned FCallIdle:1;
+    	unsigned char Init;
+        unsigned char FCallIdle;
     }qTaskCoreFlags_t;
+
     
     typedef struct{
         qTaskFcn_t IDLECallback;    
         qTime_t Tick;
         qEvent_t EventInfo;
         qTask_t *First;
-        qTaskCoreFlags_t Flag;
+        volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
     }QuarkTSCoreData_t;
@@ -99,21 +100,29 @@ extern "C" {
     int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
     int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata);
+    void _qSendEvent(qTask_t *Task, void* eventdata);
+    void _qSetTime(qTask_t *Task, qTime_t Value);
+    void _qSetIterations(qTask_t *Task, qIteration_t Value);
+    void _qSetPriority(qTask_t *Task, qPriority_t Value);
+    void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn);
+    void _qEnableDisable(qTask_t *Task, unsigned char Value);
     
     #define qSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     #define qISRHandler()                                                               _qISRHandler()
     #define qCreateTask(TASK, CALLBACK, PRIORITY, TIME, NEXEC, INITSTATE, USERDATA)     _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, (qTime_t)TIME, (qIteration_t)NEXEC, INITSTATE, (void*)USERDATA)
     #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, 0, (void*)USERDATA)  
     #define qSchedule()                                                                 _qStart()
-    #define qSendEvent(TASK, EVENTDATA)                                                 TASK.Flag.AsyncRun = 1; TASK.AsyncData = (void*)EVENTDATA  
+    #define qSendEvent(TASK, EVENTDATA)                                                 _qSendEvent(&TASK, (void*)EVENTDATA)
     #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
+
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
-    #define qSetTime(TASK, VALUE)                                                       TASK.Interval = (qClock_t)(VALUE/QUARKTS.Tick)
-    #define qSetIterations(TASK, VALUE)                                                 TASK.Iterations = VALUE
-    #define qSetPriority(TASK,VALUE)                                                    QUARKTS.Flag.Init = 0; TASK.Priority = VALUE 
-    #define qEnable(TASK)                                                               TASK.Flag.State = 1
-    #define qDisable(TASK)                                                              TASK.Flag.State = 0   
-    #define qSetCallback(TASK, CALLBACK)                                                TASK.Callback = CALLBACK
+
+    #define qSetTime(TASK, VALUE)                                                       _qSetTime(&TASK, VALUE)  
+    #define qSetIterations(TASK, VALUE)                                                 _qSetIterations(&TASK, VALUE) 
+    #define qSetPriority(TASK,VALUE)                                                    _qSetPriority(&TASK,VALUE)   
+    #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
+    #define qDisable(TASK)                                                              _qEnableDisable(&TASK, 0) 
+    #define qSetCallback(TASK, CALLBACK)                                                _qSetCallback(&TASK, CALLBACK) 
     
 #ifdef	__cplusplus
 }

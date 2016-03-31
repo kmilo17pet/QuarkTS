@@ -24,6 +24,33 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
 
+
+/*================================================================================================================================================*/
+void _qSendEvent(qTask_t *Task, void* eventdata){
+    Task->Flag.AsyncRun = 1;
+    Task->AsyncData = eventdata;
+}
+/*================================================================================================================================================*/
+void _qSetTime(qTask_t *Task, qTime_t Value){
+    Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
+}
+/*================================================================================================================================================*/
+void _qSetIterations(qTask_t *Task, qIteration_t Value){
+    Task->Iterations = Value;
+}
+/*================================================================================================================================================*/
+void _qSetPriority(qTask_t *Task, qPriority_t Value){
+    QUARKTS.Flag.Init = 0; 
+    Task->Priority = Value; 
+}
+/*================================================================================================================================================*/
+void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
+    Task->Callback = CallbackFcn;
+}
+/*================================================================================================================================================*/
+void _qEnableDisable(qTask_t *Task, unsigned char Value){
+    Task->Flag.State = Value;
+}
 /*================================================================================================================================================*/
 int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;

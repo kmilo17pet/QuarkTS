@@ -2620,10 +2620,10 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     typedef void (*qTaskFcn_t)(qEvent_t);
 
     typedef struct{
-        unsigned TimedTaskRun:8;
-        unsigned InitFlag:1;
-        unsigned AsyncRun:1;
-        unsigned State:1;
+     volatile unsigned char TimedTaskRun;
+        volatile unsigned char InitFlag;
+        volatile unsigned char AsyncRun;
+        volatile unsigned char State;
     }qTaskFlags_t;
 
     struct _qTask_t{
@@ -2643,16 +2643,17 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     }qQueueStack_t;
 
     typedef struct{
-        unsigned Init:1;
-        unsigned FCallIdle:1;
+     unsigned char Init;
+        unsigned char FCallIdle;
     }qTaskCoreFlags_t;
+
 
     typedef struct{
         qTaskFcn_t IDLECallback;
         qTime_t Tick;
         qEvent_t EventInfo;
         volatile struct _qTask_t *First;
-        qTaskCoreFlags_t Flag;
+        volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
     }QuarkTSCoreData_t;
@@ -2663,6 +2664,12 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
     int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
+    void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata);
+    void _qSetTime(volatile struct _qTask_t *Task, qTime_t Value);
+    void _qSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
+    void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
+    void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
+    void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
 # 8 "main.c" 2
 
 pthread_t TimerEmulation;
@@ -2692,13 +2699,13 @@ void Task3Callback(qEvent_t Data){
 
 void Task4Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
-    Task1.Flag.AsyncRun = 1; Task1.AsyncData = (void*)"ASYNC";
+    _qSendEvent(&Task1, (void*)"ASYNC");
     _qEnqueueTaskEvent(&Task2, (void*)"A");
 
     _qEnqueueTaskEvent(&Task1, (void*)"C");
     _qEnqueueTaskEvent(&Task1, (void*)"D");
     _qEnqueueTaskEvent(&Task2, (void*)"E");
-    QUARKTS.Flag.Init = 0; Task1.Priority = 10;
+    _qSetPriority(&Task1,10);
 }
 
 void Task5Callback(qEvent_t Data){
@@ -2707,7 +2714,7 @@ void Task5Callback(qEvent_t Data){
 }
 
 void IdleTaskCallback(qEvent_t Data){
-    puts("IDLE");
+
 }
 
 int main(int argc, char** argv) {

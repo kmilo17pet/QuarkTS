@@ -48,7 +48,7 @@ void Task5Callback(qEvent_t Data){
 }
 
 void IdleTaskCallback(qEvent_t Data){
-    puts("IDLE");
+    //puts("IDLE");
 }
 
 int main(int argc, char** argv) {
