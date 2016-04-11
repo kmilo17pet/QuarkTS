@@ -2656,6 +2656,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
+        volatile unsigned char NotSafeQueue;
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
@@ -2681,7 +2682,7 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 
-volatile struct _qTask_t Task1, Task2, Task3, Task4, Task5;
+volatile struct _qTask_t Task1, Task2, Task3, Task4, Task5, Task6;
 
 void Task1Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
@@ -2713,8 +2714,14 @@ void Task5Callback(qEvent_t Data){
 
 }
 
-void IdleTaskCallback(qEvent_t Data){
+void Task6Callback(qEvent_t Data){
+    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+}
 
+
+void IdleTaskCallback(qEvent_t Data){
+    puts("IDLE");
+    _qEnqueueTaskEvent(&Task6, (void*)"async");
 }
 
 int main(int argc, char** argv) {
@@ -2724,7 +2731,8 @@ int main(int argc, char** argv) {
     _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)1.0, (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK2");
     _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.0, (qIteration_t)2, (1), (void*)"TASK3");
     _qCreateTask(&Task4, Task4Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.5, (qIteration_t)2, (1), (void*)"TASK4");
-    _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), (1), (void*)"TASK5");;
+    _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), (1), (void*)"TASK5");
+    _qCreateTask(&Task6, Task6Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)((qTime_t)(0)), (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK6");
     _qStart();
 
     return (0);

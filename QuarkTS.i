@@ -60,6 +60,7 @@
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
+        volatile unsigned char NotSafeQueue;
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
@@ -111,6 +112,8 @@ void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value){
 
 int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
+    while (QUARKTS.NotSafeQueue){}
+    QUARKTS.NotSafeQueue = 1;
     qPriority_t PriorityValue = TasktoQueue->Priority;
     qQueueStack_t qtmp;
     volatile struct _qTask_t *TaskFromQueue;
@@ -125,7 +128,10 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
     else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
 
     QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1) return 0;
+    if(QUARKTS.QueueIndex==1){
+        QUARKTS.NotSafeQueue = 0;
+        return 0;
+    }
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void*)0)){
@@ -136,6 +142,7 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
+    QUARKTS.NotSafeQueue = 0;
     return 0;
 }
 
@@ -144,6 +151,7 @@ static volatile struct _qTask_t* _qDequeueTaskEvent(void){
     volatile struct _qTask_t *Task;
     for( i=QUARKTS.QueueIndex-1; i>=0; i--){
         if( QUARKTS.QueueStack[i].Task != ((void*)0)){
+            while (QUARKTS.NotSafeQueue){}
             Task = QUARKTS.QueueStack[i].Task;
             QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
             QUARKTS.QueueStack[i].Task = ((void*)0);
@@ -164,6 +172,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = ((void*)0);
     QUARKTS.QueueIndex = 0;
     QUARKTS.Flag.Init = 0;
+    QUARKTS.NotSafeQueue = 0;
 }
 
 void _qISRHandler(void){

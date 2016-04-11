@@ -15,7 +15,7 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 
-qTask_t Task1, Task2, Task3, Task4, Task5;
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6;
 
 void Task1Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
@@ -47,8 +47,14 @@ void Task5Callback(qEvent_t Data){
     
 }
 
+void Task6Callback(qEvent_t Data){
+    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);   
+}
+
+
 void IdleTaskCallback(qEvent_t Data){
-    //puts("IDLE");
+    puts("IDLE");
+    qQueueEvent(Task6,"async");
 }
 
 int main(int argc, char** argv) {
@@ -58,7 +64,8 @@ int main(int argc, char** argv) {
     qCreateTask(Task2, Task2Callback, 20, 1.0, PERIODIC, ENABLE, "TASK2");
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
     qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, 2, ENABLE, "TASK4");
-    qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");;
+    qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
+    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, "TASK6");
     qSchedule();
 
     return (EXIT_SUCCESS);

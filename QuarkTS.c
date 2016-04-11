@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 2.8.6
+ *  Version : 2.9.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -54,6 +54,8 @@ void _qEnableDisable(qTask_t *Task, unsigned char Value){
 /*================================================================================================================================================*/
 int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
+    while (QUARKTS.NotSafeQueue){} //
+    QUARKTS.NotSafeQueue = 1;
     qPriority_t PriorityValue = TasktoQueue->Priority;
     qQueueStack_t qtmp;
     qTask_t *TaskFromQueue;
@@ -68,7 +70,10 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
 
     QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1) return 0;
+    if(QUARKTS.QueueIndex==1){ 
+        QUARKTS.NotSafeQueue = 0;
+        return 0;
+    }
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
@@ -79,6 +84,7 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
+    QUARKTS.NotSafeQueue = 0;
     return 0;
 }
 /*================================================================================================================================================*/
@@ -87,6 +93,7 @@ static qTask_t* _qDequeueTaskEvent(void){
     qTask_t *Task;
     for( i=QUARKTS.QueueIndex-1; i>=0; i--){
         if( QUARKTS.QueueStack[i].Task != NULL){
+            while (QUARKTS.NotSafeQueue){} 
             Task = QUARKTS.QueueStack[i].Task;
             QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
             QUARKTS.QueueStack[i].Task = NULL;
@@ -107,6 +114,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL; 
     QUARKTS.QueueIndex = 0;    
     QUARKTS.Flag.Init = 0;
+    QUARKTS.NotSafeQueue = 0;
 }
 /*============================================================================*/
 void _qISRHandler(void){
