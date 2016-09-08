@@ -40,7 +40,6 @@ extern "C" {
     #define MEDIUM_Priority     (qPriority_t)(0x7F)
     #define HIGH_Priority       (qPriority_t)(0xFF)
     #define PERIODIC            ((qIteration_t)-1)
-    #define INDEFINITE          ((qIteration_t)-1)
     #define SINGLESHOT          ((qIteration_t)1)
     #define TIME_INMEDIATE      ((qTime_t)(0))
     

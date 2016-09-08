@@ -2609,7 +2609,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 50 "QuarkTS.h"
+# 49 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -2720,8 +2720,8 @@ void Task6Callback(qEvent_t Data){
 
 
 void IdleTaskCallback(qEvent_t Data){
-
-
+    puts("IDLE");
+    _qEnqueueTaskEvent(&Task6, (void*)"async");
 }
 
 int main(int argc, char** argv) {
@@ -2732,7 +2732,7 @@ int main(int argc, char** argv) {
     _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.0, (qIteration_t)2, (1), (void*)"TASK3");
     _qCreateTask(&Task4, Task4Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.5, (qIteration_t)2, (1), (void*)"TASK4");
     _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), (1), (void*)"TASK5");
-    _qCreateTask(&Task6, Task6Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)((qTime_t)(0)), (qIteration_t)5, (1), (void*)"TASK6");
+    _qCreateTask(&Task6, Task6Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)((qTime_t)(0)), (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK6");
     _qStart();
 
     return (0);

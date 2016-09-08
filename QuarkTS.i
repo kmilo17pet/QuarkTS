@@ -13,7 +13,7 @@
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 49 "QuarkTS.h"
+# 50 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -107,7 +107,9 @@ void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
 }
 
 void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value){
+    Task->TimeElapsed = 0;
     Task->Flag.State = Value;
+    if(!Value) Task->TimeElapsed = 0;
 }
 
 int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){

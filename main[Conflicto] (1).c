@@ -53,8 +53,8 @@ void Task6Callback(qEvent_t Data){
 
 
 void IdleTaskCallback(qEvent_t Data){
-    //puts("IDLE");
-    //qQueueEvent(Task6,"async");
+    puts("IDLE");
+    qQueueEvent(Task6,"async");
 }
 
 int main(int argc, char** argv) {
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
     qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, 2, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
-    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
+    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, "TASK6");
     qSchedule();
 
     return (EXIT_SUCCESS);
