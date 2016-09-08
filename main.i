@@ -2671,6 +2671,8 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
     void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
+    void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
+    void _qClearTimeElapse(volatile struct _qTask_t *Task);
 # 8 "main.c" 2
 
 pthread_t TimerEmulation;

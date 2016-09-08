@@ -75,6 +75,8 @@
     void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
     void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
+    void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
+    void _qClearTimeElapse(volatile struct _qTask_t *Task);
 # 21 "QuarkTS.c" 2
 
 volatile QuarkTSCoreData_t QUARKTS;
@@ -107,9 +109,17 @@ void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
 }
 
 void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value){
-    Task->TimeElapsed = 0;
+    if(Value) Task->TimeElapsed = 0;
     Task->Flag.State = Value;
     if(!Value) Task->TimeElapsed = 0;
+}
+
+void _qSetUserData(volatile struct _qTask_t *Task, void* arg){
+    Task->UserData = arg;
+}
+
+void _qClearTimeElapse(volatile struct _qTask_t *Task){
+    Task->TimeElapsed = 0;
 }
 
 int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){

@@ -49,9 +49,17 @@ void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
 }
 /*================================================================================================================================================*/
 void _qEnableDisable(qTask_t *Task, unsigned char Value){
-    Task->TimeElapsed = 0;
+    if(Value) Task->TimeElapsed = 0;
     Task->Flag.State = Value;
     if(!Value) Task->TimeElapsed = 0;
+}
+/*================================================================================================================================================*/
+void _qSetUserData(qTask_t *Task, void* arg){
+    Task->UserData = arg;
+}
+/*================================================================================================================================================*/
+void _qClearTimeElapse(qTask_t *Task){
+    Task->TimeElapsed = 0;
 }
 /*================================================================================================================================================*/
 int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){

@@ -108,6 +108,8 @@ extern "C" {
     void _qSetPriority(qTask_t *Task, qPriority_t Value);
     void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn);
     void _qEnableDisable(qTask_t *Task, unsigned char Value);
+    void _qSetUserData(qTask_t *Task, void* arg);
+    void _qClearTimeElapse(qTask_t *Task);
     
     #define qSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     #define qISRHandler()                                                               _qISRHandler()
@@ -125,6 +127,8 @@ extern "C" {
     #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
     #define qDisable(TASK)                                                              _qEnableDisable(&TASK, 0) 
     #define qSetCallback(TASK, CALLBACK)                                                _qSetCallback(&TASK, CALLBACK) 
+    #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
+    #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
     
 #ifdef	__cplusplus
 }
