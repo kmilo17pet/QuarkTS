@@ -123,12 +123,16 @@ extern "C" {
 
     #define qSetTime(TASK, VALUE)                                                       _qSetTime(&TASK, VALUE)  
     #define qSetIterations(TASK, VALUE)                                                 _qSetIterations(&TASK, VALUE) 
+    #define qSetSpec(TASK, TVALUE, IVALUE)                                              _qSetTime(&TASK, TVALUE); \
+                                                                                        _qSetIterations(&TASK, IVALUE); 
+
     #define qSetPriority(TASK,VALUE)                                                    _qSetPriority(&TASK,VALUE)   
     #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
     #define qDisable(TASK)                                                              _qEnableDisable(&TASK, 0) 
     #define qSetCallback(TASK, CALLBACK)                                                _qSetCallback(&TASK, CALLBACK) 
     #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
     #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
+    #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
     
 #ifdef	__cplusplus
 }
