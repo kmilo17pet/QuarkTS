@@ -1251,7 +1251,7 @@ _qStart:
 	call	*%rdx
 	.loc 1 219 0
 	leaq	QUARKTS(%rip), %rax
-	movb	$1, 56(%rax)
+	movb	$1, 57(%rax)
 .L74:
 	.loc 1 221 0
 	movq	-8(%rbp), %rax

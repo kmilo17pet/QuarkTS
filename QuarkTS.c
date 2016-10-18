@@ -216,7 +216,7 @@ void _qStart(void){
             QUARKTS.EventInfo.FirstCall = !QUARKTS.Flag.FCallIdle;
             QUARKTS.EventInfo.Trigger = byPriority;
             QUARKTS.IDLECallback(QUARKTS.EventInfo);
-            QUARKTS.Flag.Init = 1;        
+            QUARKTS.Flag.FCallIdle = 1;        
         }
         Task = Task->Next;
     }
