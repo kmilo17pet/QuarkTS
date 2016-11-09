@@ -66,11 +66,12 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
     while (QUARKTS.NotSafeQueue){} //
     QUARKTS.NotSafeQueue = 1;
-    qPriority_t PriorityValue = TasktoQueue->Priority;
     qQueueStack_t qtmp;
-    qTask_t *TaskFromQueue;
     qtmp.Task = TasktoQueue;
     qtmp.QueueData = eventdata;
+#ifdef QPRIORITY_FIFO_QUEUE
+    qTask_t *TaskFromQueue;
+    qPriority_t PriorityValue = TasktoQueue->Priority;
     if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=NULL){
         if(PriorityValue<=TaskFromQueue->Priority){
         QUARKTS.QueueStack[QUARKTS.QueueIndex] = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
@@ -78,12 +79,17 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
         }
     }
     else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
-
+#else
+    QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
+#endif
+    
     QUARKTS.QueueIndex++;
     if(QUARKTS.QueueIndex==1){ 
         QUARKTS.NotSafeQueue = 0;
         return 0;
     }
+    
+#ifdef QPRIORITY_FIFO_QUEUE
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
@@ -94,10 +100,12 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
+#endif
     QUARKTS.NotSafeQueue = 0;
     return 0;
 }
 /*================================================================================================================================================*/
+#if defined(QPRIORITY_FIFO_QUEUE)
 static qTask_t* _qDequeueTaskEvent(void){
     int i;
     qTask_t *Task;
@@ -113,6 +121,22 @@ static qTask_t* _qDequeueTaskEvent(void){
     }
     return NULL;
 }
+#endif
+#if defined(QSIMPLE_FIFO_QUEUE)
+static qTask_t* _qDequeueTaskEvent(void){
+    qTask_t *Task;
+    if( QUARKTS.QueueStack[0].Task != NULL){
+        while (QUARKTS.NotSafeQueue){} 
+        Task = QUARKTS.QueueStack[0].Task;
+        QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[0].QueueData;
+        QUARKTS.QueueStack[0].Task = NULL;
+        if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
+        memmove((void*)QUARKTS.QueueStack, (const void*)(QUARKTS.QueueStack+1), QUARKTS.QueueSize*sizeof(qQueueStack_t));
+        return Task;
+    }
+    return NULL;
+}
+#endif
 /*============================================================================*/
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
@@ -143,7 +167,7 @@ void _qISRHandler(void){
 }
 /*============================================================================*/
 int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if ((Time/2)<QUARKTS.Tick && Time || CallbackFcn == NULL) return -1;    
+    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return -1;    
     Task->Callback = CallbackFcn;
     Task->TimeElapsed = 0;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
@@ -151,7 +175,7 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->Priority = Priority;
     Task->Iterations = nExecutions;
     Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->Flag.State = InitialState != 0;
+    Task->Flag.State = (unsigned char)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     return 0;
@@ -159,7 +183,7 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
 /*================================================================================================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger =  Event;
-    QUARKTS.EventInfo.FirstCall = !Task->Flag.InitFlag;
+    QUARKTS.EventInfo.FirstCall = (unsigned char)(!Task->Flag.InitFlag);
     QUARKTS.EventInfo.UserData = Task->UserData;
     if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
     Task->Flag.InitFlag = 1;
@@ -200,7 +224,7 @@ void _qStart(void){
     }
     Task = QUARKTS.First;
     while(Task != NULL){
-        if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
+        if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction); //if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
         if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
@@ -213,7 +237,7 @@ void _qStart(void){
             _qTriggerEvent(Task, byAsyncEvent);
         }
         else if( QUARKTS.IDLECallback!= NULL){
-            QUARKTS.EventInfo.FirstCall = !QUARKTS.Flag.FCallIdle;
+            QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = byPriority;
             QUARKTS.IDLECallback(QUARKTS.EventInfo);
             QUARKTS.Flag.FCallIdle = 1;        
@@ -222,3 +246,4 @@ void _qStart(void){
     }
     goto pMainSchedule;
 }
+/*============================================================================*/

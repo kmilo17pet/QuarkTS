@@ -28,6 +28,8 @@ extern "C" {
     #define NULL ((void*)0)
     #endif
     
+    #include <string.h>
+    
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -38,7 +40,7 @@ extern "C" {
     
     #define LOWEST_Priority     (qPriority_t)(0)
     #define MEDIUM_Priority     (qPriority_t)(0x7F)
-    #define HIGH_Priority       (qPriority_t)(0xFF)
+    #define HIGH_Priority       (qPriority_t)(0xFE)
     #define PERIODIC            ((qIteration_t)-1)
     #define INDEFINITE          ((qIteration_t)-1)
     #define SINGLESHOT          ((qIteration_t)1)
@@ -84,7 +86,6 @@ extern "C" {
         unsigned char FCallIdle;
     }qTaskCoreFlags_t;
 
-    
     typedef struct{
         qTaskFcn_t IDLECallback;    
         qTime_t Tick;
@@ -117,7 +118,7 @@ extern "C" {
     #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, 0, (void*)USERDATA)  
     #define qSchedule()                                                                 _qStart()
     #define qSendEvent(TASK, EVENTDATA)                                                 _qSendEvent(&TASK, (void*)EVENTDATA)
-    #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
+    #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)//_qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
 
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
 
@@ -133,6 +134,12 @@ extern "C" {
     #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
     #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
     #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
+    
+    
+    #if !defined(QPRIORITY_FIFO_QUEUE) && !defined(QSIMPLE_FIFO_QUEUE) 
+        #warning "QPRIORITY_FIFO_QUEUE or QSIMPLE_FIFO_QUEUE not defined, using QSIMPLE_FIFO_QUEUE by default"
+        #define QSIMPLE_FIFO_QUEUE
+    #endif
     
 #ifdef	__cplusplus
 }
