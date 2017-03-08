@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "QuarkTS.h"
+#include "QuarkSM.h"
 
 
 qSM_Status_t primero(qSM_t* Machine);
@@ -21,13 +22,13 @@ qSM_Status_t primero(qSM_t* Machine){
         puts("again");
     }
     Machine->NextState = segundo;
-    return SM_OK;
+    return qSM_EXIT_SUCCESS;
 }
 
 qSM_Status_t segundo(qSM_t* Machine){
     puts("2");
     Machine->NextState = tercero;
-    return SM_OK;
+    return qSM_EXIT_SUCCESS;
 }
 
 qSM_Status_t tercero(qSM_t* Machine){
@@ -36,9 +37,9 @@ qSM_Status_t tercero(qSM_t* Machine){
     Machine->NextState = primero;
     if(++x>=3){
         x = 0;
-        return SM_ERROR;
+        return qSM_EXIT_FAILURE;
     }
-    return SM_OK;
+    return qSM_EXIT_SUCCESS;
 }
 
 qSM_Status_t smerror(qSM_t* Machine){

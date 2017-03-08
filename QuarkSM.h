@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkSM - State Machine API extension for QuakTS
- *  Version : 2.9.3
+ *  Version : 2.9.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkSM is free software: you can redistribute it and/or modify it
@@ -25,8 +25,8 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
-    
-typedef enum state {SM_ERROR = 0xFEEF, SM_OK = 0xFEAF} qSM_Status_t;
+
+    typedef enum state {qSM_EXIT_SUCCESS = 0xFEEF, qSM_EXIT_FAILURE = 0xFEAF} qSM_Status_t;
 
 struct _qSM_t{
     qSM_Status_t (*NextState)(volatile struct _qSM_t*);
@@ -37,10 +37,10 @@ struct _qSM_t{
 #define qSM_t volatile struct _qSM_t
 typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
 
-int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t OKState, qSM_State_t ErrorState, qSM_State_t UnexpectedState);
+int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
 int _qStateMachine_Run(qSM_t *obj);
 
-#define qStateMachine_Init(OBJ, INIT_STATE, OKSTATE, ERRORSTATE, UNEXPECTEDSTATE)   _qStateMachine_Init(&OBJ, INIT_STATE, OKSTATE, ERRORSTATE, UNEXPECTEDSTATE) 
+#define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
 #define qStateMachine_Run(OBJ)   _qStateMachine_Run(&OBJ) 
 
 #ifdef __cplusplus
