@@ -2601,7 +2601,24 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 6 "main.c" 2
 
 # 1 "QuarkTS.h" 1
-# 33 "QuarkTS.h"
+# 32 "QuarkTS.h"
+# 1 "QuarkSM.h" 1
+# 29 "QuarkSM.h"
+typedef enum state {SM_ERROR = 0xFEEF, SM_OK = 0xFEAF} qSM_Status_t;
+
+struct _qSM_t{
+    qSM_Status_t (*NextState)(volatile struct _qSM_t*);
+    qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
+    qSM_Status_t PreviousReturnStatus;
+};
+
+
+typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
+
+int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t OKState, qSM_State_t ErrorState, qSM_State_t UnexpectedState);
+int _qStateMachine_Run(volatile struct _qSM_t *obj);
+# 33 "QuarkTS.h" 2
+
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -2609,7 +2626,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 52 "QuarkTS.h"
+# 53 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -2624,12 +2641,14 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         volatile unsigned char InitFlag;
         volatile unsigned char AsyncRun;
         volatile unsigned char State;
+        volatile unsigned char IgnoreOveruns;
     }qTaskFlags_t;
 
     struct _qTask_t{
         void *UserData,*AsyncData;
         qClock_t Interval, TimeElapsed;
         qIteration_t Iterations;
+        unsigned long Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
@@ -2645,10 +2664,13 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     typedef struct{
      unsigned char Init;
         unsigned char FCallIdle;
+        unsigned char ReleaseSched;
+        unsigned char FCallReleased;
     }qTaskCoreFlags_t;
 
     typedef struct{
         qTaskFcn_t IDLECallback;
+        qTaskFcn_t ReleaseSchedCallback;
         qTime_t Tick;
         qEvent_t EventInfo;
         volatile struct _qTask_t *First;
@@ -2674,6 +2696,51 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
 # 8 "main.c" 2
 
+
+qSM_Status_t primero(volatile struct _qSM_t* Machine);
+qSM_Status_t segundo(volatile struct _qSM_t* Machine);
+qSM_Status_t tercero(volatile struct _qSM_t* Machine);
+
+
+qSM_Status_t primero(volatile struct _qSM_t* Machine){
+    puts("1");
+    if(Machine->PreviousState == ((void *)0)){
+        puts("oelo");
+    }
+    if(Machine->PreviousState == tercero){
+        puts("again");
+    }
+    Machine->NextState = segundo;
+    return SM_OK;
+}
+
+qSM_Status_t segundo(volatile struct _qSM_t* Machine){
+    puts("2");
+    Machine->NextState = tercero;
+    return SM_OK;
+}
+
+qSM_Status_t tercero(volatile struct _qSM_t* Machine){
+    static int x = 0;
+    puts("3");
+    Machine->NextState = primero;
+    if(++x>=3){
+        x = 0;
+        return SM_ERROR;
+    }
+    return SM_OK;
+}
+
+qSM_Status_t smerror(volatile struct _qSM_t* Machine){
+    puts("error");
+}
+
+qSM_Status_t smok(volatile struct _qSM_t* Machine){
+    puts("ok...");
+}
+
+
+
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* varargin){
     struct timespec tick={0, 0.01*1E9};
@@ -2690,7 +2757,12 @@ void Task1Callback(qEvent_t Data){
 }
 
 void Task2Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    static volatile struct _qSM_t Maquina1;
+    if(Data.FirstCall){
+        _qStateMachine_Init(&Maquina1, primero, smok, smerror, ((void *)0));
+    }
+    _qStateMachine_Run(&Maquina1);
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, (Task2.Cycles));
 }
 
 void Task3Callback(qEvent_t Data){
@@ -2713,7 +2785,6 @@ void Task4Callback(qEvent_t Data){
 
 
 
-
 }
 
 void Task5Callback(qEvent_t Data){
@@ -2728,19 +2799,23 @@ void Task6Callback(qEvent_t Data){
 
 void IdleTaskCallback(qEvent_t Data){
 
+}
 
+void SchedReleaseCallback(qEvent_t Data){
+    puts("\r\nScheduler Released");
 }
 
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
+    QUARKTS.ReleaseSchedCallback = SchedReleaseCallback;
     _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(0xFE), ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK1");
     _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)1.0, (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK2");
+    (Task2.Flag.IgnoreOveruns = 1!=0);
     _qCreateTask(&Task3, Task3Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.0, (qIteration_t)2, (1), (void*)"TASK3");
     _qCreateTask(&Task4, Task4Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)1.5, (qIteration_t)2, (1), (void*)"TASK4");
     _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), (1), (void*)"TASK5");
 
     _qStart();
-
     return (0);
 }

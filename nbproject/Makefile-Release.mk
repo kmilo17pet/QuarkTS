@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/QuarkSM.o \
 	${OBJECTDIR}/QuarkTS.o \
 	${OBJECTDIR}/main.o
 
@@ -63,12 +64,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/quarkts.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/quarkts ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/QuarkTS.o: QuarkTS.c 
+${OBJECTDIR}/QuarkSM.o: QuarkSM.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/QuarkSM.o QuarkSM.c
+
+${OBJECTDIR}/QuarkTS.o: QuarkTS.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/QuarkTS.o QuarkTS.c
 
-${OBJECTDIR}/main.o: main.c 
+${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
@@ -79,7 +85,6 @@ ${OBJECTDIR}/main.o: main.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/quarkts.exe
 
 # Subprojects
 .clean-subprojects:

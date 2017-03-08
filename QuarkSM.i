@@ -1,13 +1,14 @@
-# 1 "QuarkTS.c"
+# 1 "QuarkSM.c"
 # 1 "/cygdrive/e/GDrive/Proyects/libs/c/QuarkTS//"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "QuarkTS.c"
-# 20 "QuarkTS.c"
-# 1 "QuarkTS.h" 1
-# 31 "QuarkTS.h"
-# 1 "/usr/include/string.h" 1 3 4
-# 10 "/usr/include/string.h" 3 4
+# 1 "QuarkSM.c"
+# 1 "QuarkSM.h" 1
+# 27 "QuarkSM.h"
+# 1 "/usr/include/stdlib.h" 1 3 4
+# 10 "/usr/include/stdlib.h" 3 4
+# 1 "/usr/include/machine/ieeefp.h" 1 3 4
+# 11 "/usr/include/stdlib.h" 2 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 15 "/usr/include/_ansi.h" 3 4
 # 1 "/usr/include/newlib.h" 1 3 4
@@ -24,7 +25,18 @@
 # 1 "/usr/include/cygwin/config.h" 1 3 4
 # 235 "/usr/include/sys/config.h" 2 3 4
 # 17 "/usr/include/_ansi.h" 2 3 4
-# 11 "/usr/include/string.h" 2 3 4
+# 12 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
+# 212 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 324 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+typedef short unsigned int wchar_t;
+# 17 "/usr/include/stdlib.h" 2 3 4
+
 # 1 "/usr/include/sys/reent.h" 1 3 4
 # 13 "/usr/include/sys/reent.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
@@ -32,10 +44,6 @@
 # 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
 # 147 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
 typedef long int ptrdiff_t;
-# 212 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
-typedef long unsigned int size_t;
-# 324 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
-typedef short unsigned int wchar_t;
 # 15 "/usr/include/sys/reent.h" 2 3 4
 # 1 "/usr/include/sys/_types.h" 1 3 4
 # 12 "/usr/include/sys/_types.h" 3 4
@@ -427,158 +435,12 @@ void _reclaim_reent (struct _reent *);
 
 
   struct _reent * __attribute__((__cdecl__)) __getreent (void);
-# 12 "/usr/include/string.h" 2 3 4
+# 19 "/usr/include/stdlib.h" 2 3 4
 # 1 "/usr/include/sys/cdefs.h" 1 3 4
 # 45 "/usr/include/sys/cdefs.h" 3 4
 # 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
 # 46 "/usr/include/sys/cdefs.h" 2 3 4
-# 13 "/usr/include/string.h" 2 3 4
-
-
-
-
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 18 "/usr/include/string.h" 2 3 4
-
-
-
-void * __attribute__((__cdecl__)) memchr (const void *, int, size_t);
-int __attribute__((__cdecl__)) memcmp (const void *, const void *, size_t);
-void * __attribute__((__cdecl__)) memcpy (void * , const void * , size_t);
-void * __attribute__((__cdecl__)) memmove (void *, const void *, size_t);
-void * __attribute__((__cdecl__)) memset (void *, int, size_t);
-char *__attribute__((__cdecl__)) strcat (char *, const char *);
-char *__attribute__((__cdecl__)) strchr (const char *, int);
-int __attribute__((__cdecl__)) strcmp (const char *, const char *);
-int __attribute__((__cdecl__)) strcoll (const char *, const char *);
-char *__attribute__((__cdecl__)) strcpy (char *, const char *);
-size_t __attribute__((__cdecl__)) strcspn (const char *, const char *);
-char *__attribute__((__cdecl__)) strerror (int);
-size_t __attribute__((__cdecl__)) strlen (const char *);
-char *__attribute__((__cdecl__)) strncat (char *, const char *, size_t);
-int __attribute__((__cdecl__)) strncmp (const char *, const char *, size_t);
-char *__attribute__((__cdecl__)) strncpy (char *, const char *, size_t);
-char *__attribute__((__cdecl__)) strpbrk (const char *, const char *);
-char *__attribute__((__cdecl__)) strrchr (const char *, int);
-size_t __attribute__((__cdecl__)) strspn (const char *, const char *);
-char *__attribute__((__cdecl__)) strstr (const char *, const char *);
-
-char *__attribute__((__cdecl__)) strtok (char *, const char *);
-
-size_t __attribute__((__cdecl__)) strxfrm (char *, const char *, size_t);
-
-
-char *__attribute__((__cdecl__)) strtok_r (char *, const char *, char **);
-
-
-int __attribute__((__cdecl__)) bcmp (const void *, const void *, size_t);
-void __attribute__((__cdecl__)) bcopy (const void *, void *, size_t);
-void __attribute__((__cdecl__)) bzero (void *, size_t);
-int __attribute__((__cdecl__)) ffs (int);
-char *__attribute__((__cdecl__)) index (const char *, int);
-
-
-void * __attribute__((__cdecl__)) memccpy (void * , const void * , int, size_t);
-
-
-
-
-
-void * __attribute__((__cdecl__)) memrchr (const void *, int, size_t);
-
-
-
-
-char *__attribute__((__cdecl__)) rindex (const char *, int);
-
-char *__attribute__((__cdecl__)) stpcpy (char *, const char *);
-char *__attribute__((__cdecl__)) stpncpy (char *, const char *, size_t);
-
-int __attribute__((__cdecl__)) strcasecmp (const char *, const char *);
-
-
-
-
-
-
-char *__attribute__((__cdecl__)) strdup (const char *);
-
-
-char *__attribute__((__cdecl__)) _strdup_r (struct _reent *, const char *);
-
-
-char *__attribute__((__cdecl__)) strndup (const char *, size_t);
-
-
-
-char *__attribute__((__cdecl__)) _strndup_r (struct _reent *, const char *, size_t);
-# 106 "/usr/include/string.h" 3 4
-int __attribute__((__cdecl__)) strerror_r (int, char *, size_t)
-
-             __asm__ ("" "__xpg_strerror_r")
-
-  ;
-
-
-
-
-
-
-
-char * __attribute__((__cdecl__)) _strerror_r (struct _reent *, int, int, int *);
-
-
-size_t __attribute__((__cdecl__)) strlcat (char *, const char *, size_t);
-size_t __attribute__((__cdecl__)) strlcpy (char *, const char *, size_t);
-
-
-int __attribute__((__cdecl__)) strncasecmp (const char *, const char *, size_t);
-
-
-
-size_t __attribute__((__cdecl__)) strnlen (const char *, size_t);
-
-
-char *__attribute__((__cdecl__)) strsep (char **, const char *);
-
-
-
-
-
-
-
-char *__attribute__((__cdecl__)) strlwr (char *);
-char *__attribute__((__cdecl__)) strupr (char *);
-
-
-
-char *__attribute__((__cdecl__)) strsignal (int __signo);
-
-
-
-int __attribute__((__cdecl__)) strtosigno (const char *__name);
-# 182 "/usr/include/string.h" 3 4
-# 1 "/usr/include/sys/string.h" 1 3 4
-# 183 "/usr/include/string.h" 2 3 4
-
-
-# 32 "QuarkTS.h" 2
-# 1 "QuarkSM.h" 1
-# 27 "QuarkSM.h"
-# 1 "/usr/include/stdlib.h" 1 3 4
-# 10 "/usr/include/stdlib.h" 3 4
-# 1 "/usr/include/machine/ieeefp.h" 1 3 4
-# 11 "/usr/include/stdlib.h" 2 3 4
-
-
-
-
-
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 17 "/usr/include/stdlib.h" 2 3 4
-
-
-
+# 20 "/usr/include/stdlib.h" 2 3 4
 # 1 "/usr/include/machine/stdlib.h" 1 3 4
 # 17 "/usr/include/machine/stdlib.h" 3 4
 char *mkdtemp (char *);
@@ -876,305 +738,41 @@ typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
 
 int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t OKState, qSM_State_t ErrorState, qSM_State_t UnexpectedState);
 int _qStateMachine_Run(volatile struct _qSM_t *obj);
-# 33 "QuarkTS.h" 2
+# 2 "QuarkSM.c" 2
 
-    typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
-    typedef float qTime_t;
-    typedef volatile unsigned long qClock_t;
-    typedef unsigned char qPriority_t;
-    typedef unsigned char qIteration_t;
-    typedef unsigned char qState_t;
-    typedef unsigned char qBool_t;
-# 53 "QuarkTS.h"
-    typedef struct{
-        qTrigger_t Trigger;
-        void *UserData;
-        void *EventData;
-        qBool_t FirstCall;
-    }qEvent_t;
-
-    typedef void (*qTaskFcn_t)(qEvent_t);
-
-    typedef struct{
-     volatile unsigned char TimedTaskRun;
-        volatile unsigned char InitFlag;
-        volatile unsigned char AsyncRun;
-        volatile unsigned char State;
-        volatile unsigned char IgnoreOveruns;
-    }qTaskFlags_t;
-
-    struct _qTask_t{
-        void *UserData,*AsyncData;
-        qClock_t Interval, TimeElapsed;
-        qIteration_t Iterations;
-        unsigned long Cycles;
-        qPriority_t Priority;
-        qTaskFcn_t Callback;
-        volatile qTaskFlags_t Flag;
-        volatile struct _qTask_t *Next;
-    };
+static qSM_Status_t (*__qSM_Error)(volatile struct _qSM_t*) = ((void *)0);
+static qSM_Status_t (*__qSM_OK)(volatile struct _qSM_t*) = ((void *)0);
+static qSM_Status_t (*__qSM_Unexpected)(volatile struct _qSM_t*) = ((void *)0);
 
 
-    typedef struct{
-        volatile struct _qTask_t *Task;
-        void *QueueData;
-    }qQueueStack_t;
-
-    typedef struct{
-     unsigned char Init;
-        unsigned char FCallIdle;
-        unsigned char ReleaseSched;
-        unsigned char FCallReleased;
-    }qTaskCoreFlags_t;
-
-    typedef struct{
-        qTaskFcn_t IDLECallback;
-        qTaskFcn_t ReleaseSchedCallback;
-        qTime_t Tick;
-        qEvent_t EventInfo;
-        volatile struct _qTask_t *First;
-        volatile qTaskCoreFlags_t Flag;
-        volatile qQueueStack_t *QueueStack;
-        unsigned char QueueSize, QueueIndex;
-        volatile unsigned char NotSafeQueue;
-    }QuarkTSCoreData_t;
-    extern volatile QuarkTSCoreData_t QUARKTS;
-
-    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
-    void _qISRHandler(void);
-    int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
-    void _qStart(void);
-    int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata);
-    void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata);
-    void _qSetTime(volatile struct _qTask_t *Task, qTime_t Value);
-    void _qSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
-    void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
-    void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
-    void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
-    void _qClearTimeElapse(volatile struct _qTask_t *Task);
-# 21 "QuarkTS.c" 2
-
-volatile QuarkTSCoreData_t QUARKTS;
-static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
-static void _qTaskChainbyPriority(void);
-static volatile struct _qTask_t* _qDequeueTaskEvent(void);
-
-
-void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata){
-    Task->Flag.AsyncRun = 1;
-    Task->AsyncData = eventdata;
+int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t OKState, qSM_State_t ErrorState, qSM_State_t UnexpectedState){
+    obj->NextState = InitState;
+    obj->PreviousState = ((void *)0);
+    __qSM_Error = ErrorState;
+    __qSM_OK = OKState;
+    __qSM_Unexpected = UnexpectedState;
 }
 
-void _qSetTime(volatile struct _qTask_t *Task, qTime_t Value){
-    Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
-}
-
-void _qSetIterations(volatile struct _qTask_t *Task, qIteration_t Value){
-    Task->Iterations = Value;
-}
-
-void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value){
-    QUARKTS.Flag.Init = 0;
-    Task->Priority = Value;
-}
-
-void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
-    Task->Callback = CallbackFcn;
-}
-
-void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value){
-    if(Value) Task->TimeElapsed = 0;
-    Task->Flag.State = Value;
-    if(!Value) Task->TimeElapsed = 0;
-}
-
-void _qSetUserData(volatile struct _qTask_t *Task, void* arg){
-    Task->UserData = arg;
-}
-
-void _qClearTimeElapse(volatile struct _qTask_t *Task){
-    Task->TimeElapsed = 0;
-}
-
-int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
-    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
-    while (QUARKTS.NotSafeQueue){}
-    QUARKTS.NotSafeQueue = 1;
-    qQueueStack_t qtmp;
-    qtmp.Task = TasktoQueue;
-    qtmp.QueueData = eventdata;
-
-    volatile struct _qTask_t *TaskFromQueue;
-    qPriority_t PriorityValue = TasktoQueue->Priority;
-    if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=((void *)0)){
-        if(PriorityValue<=TaskFromQueue->Priority){
-        QUARKTS.QueueStack[QUARKTS.QueueIndex] = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-        QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = qtmp;
-        }
+int _qStateMachine_Run(volatile struct _qSM_t *obj){
+    qSM_State_t prev = ((void *)0);
+    if(obj->NextState!=((void *)0)){
+        prev = obj->NextState;
+        obj->PreviousReturnStatus = obj->NextState(obj);
+        obj->PreviousState = prev;
     }
-    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
+    else obj->PreviousReturnStatus = SM_ERROR;
 
-
-
-
-    QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1){
-        QUARKTS.NotSafeQueue = 0;
-        return 0;
+    switch(obj->PreviousReturnStatus){
+        case SM_ERROR:
+            if(__qSM_Error != ((void *)0)) __qSM_Error(obj);
+            break;
+        case SM_OK:
+            if(__qSM_OK != ((void *)0)) __qSM_OK(obj);
+            break;
+        default:
+            if(__qSM_Unexpected != ((void *)0)) __qSM_Unexpected(obj);
+            break;
     }
 
-
-    unsigned char i;
-    for(i=0; i<QUARKTS.QueueSize; i++){
-        if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void *)0)){
-            if(PriorityValue<= TaskFromQueue->Priority){
-                qtmp = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-                QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = QUARKTS.QueueStack[i];
-                QUARKTS.QueueStack[i] = qtmp;
-            }
-        }
-    }
-
-    QUARKTS.NotSafeQueue = 0;
     return 0;
-}
-
-
-static volatile struct _qTask_t* _qDequeueTaskEvent(void){
-    int i;
-    volatile struct _qTask_t *Task;
-    for( i=QUARKTS.QueueIndex-1; i>=0; i--){
-        if( QUARKTS.QueueStack[i].Task != ((void *)0)){
-            while (QUARKTS.NotSafeQueue){}
-            Task = QUARKTS.QueueStack[i].Task;
-            QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
-            QUARKTS.QueueStack[i].Task = ((void *)0);
-            if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
-            return Task;
-        }
-    }
-    return ((void *)0);
-}
-# 140 "QuarkTS.c"
-void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
-    unsigned char i;
-    QUARKTS.First = ((void *)0);
-    QUARKTS.Tick = ISRTick;
-    QUARKTS.IDLECallback = IdleCallback;
-    QUARKTS.ReleaseSchedCallback = ((void *)0);
-    QUARKTS.QueueStack = Q_Stack;
-    QUARKTS.QueueSize = Size_Q_Stack;
-    for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = ((void *)0);
-    QUARKTS.QueueIndex = 0;
-    QUARKTS.Flag.Init = 0;
-    QUARKTS.NotSafeQueue = 0;
-    QUARKTS.Flag.ReleaseSched = 0;
-    QUARKTS.Flag.FCallReleased = 0;
-}
-
-void _qISRHandler(void){
-    if(!QUARKTS.Flag.Init) return;
-    volatile struct _qTask_t *Task = QUARKTS.First;
-    while(Task != ((void *)0)){
-        if( Task->Flag.State && Task->Interval>0){
-            Task->TimeElapsed++;
-            if(Task->TimeElapsed >= Task->Interval){
-                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;
-                Task->TimeElapsed = 0;
-            }
-        }
-        Task = Task->Next;
-    }
-}
-
-int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == ((void *)0)) return -1;
-    Task->Callback = CallbackFcn;
-    Task->TimeElapsed = 0;
-    Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
-    Task->UserData = arg;
-    Task->Priority = Priority;
-    Task->Iterations = nExecutions;
-    Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->Flag.State = (unsigned char)(InitialState != 0);
-    Task->Next = QUARKTS.First;
-    QUARKTS.First = Task;
-    Task->Cycles = 0;
-    return 0;
-}
-
-static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event){
-    QUARKTS.EventInfo.Trigger = Event;
-    QUARKTS.EventInfo.FirstCall = (unsigned char)(!Task->Flag.InitFlag);
-    QUARKTS.EventInfo.UserData = Task->UserData;
-    if (Task->Callback != ((void *)0)) Task->Callback(QUARKTS.EventInfo);
-    Task->Flag.InitFlag = 1;
-    QUARKTS.EventInfo.EventData = ((void *)0);
-    Task->Cycles++;
-}
-
-static void _qTaskChainbyPriority(void){
-    volatile struct _qTask_t *a = ((void *)0), *b = ((void *)0), *c = ((void *)0), *e = ((void *)0), *tmp = ((void *)0);
-    volatile struct _qTask_t *head = QUARKTS.First;
-    while(e != head->Next) {
-        c = a = head;
-        b = a->Next;
-        while(a != e) {
-            if(a->Priority < b->Priority) {
-                tmp = b->Next;
-                b->Next = a;
-                if(a == head) QUARKTS.First = head = b;
-                else c->Next = b;
-                c = b;
-                a->Next = tmp;
-            }
-            else {
-                c = a;
-                a = a->Next;
-            }
-            b = a->Next;
-            if(b == e) e = a;
-        }
-    }
-}
-
-void _qStart(void){
-    volatile struct _qTask_t *Task, *qTask;
-    pMainSchedule:
-    if(QUARKTS.Flag.ReleaseSched) goto pReleasedSchedule;
-    if(!QUARKTS.Flag.Init){
-        _qTaskChainbyPriority();
-        QUARKTS.Flag.Init= 1;
-    }
-    Task = QUARKTS.First;
-    while(Task != ((void *)0)){
-        if ((qTask = _qDequeueTaskEvent())!=((void *)0)) _qTriggerEvent(qTask, byQueueExtraction);
-        if((Task->Flag.TimedTaskRun || Task->Interval == ((qTime_t)(0))) && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.State){
-            Task->Flag.TimedTaskRun--;
-            if(Task->Iterations!= ((qIteration_t)-1)) Task->Iterations--;
-            if(Task->Iterations == 0) Task->Flag.State = 0;
-            _qTriggerEvent(Task, byTimeElapsed);
-        }
-        else if( Task->Flag.AsyncRun){
-            QUARKTS.EventInfo.EventData = Task->AsyncData;
-            Task->Flag.AsyncRun = 0;
-            _qTriggerEvent(Task, byAsyncEvent);
-        }
-        else if( QUARKTS.IDLECallback!= ((void *)0)){
-            QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallIdle);
-            QUARKTS.EventInfo.Trigger = byPriority;
-            QUARKTS.IDLECallback(QUARKTS.EventInfo);
-            QUARKTS.Flag.FCallIdle = 1;
-        }
-        Task = Task->Next;
-    }
-    goto pMainSchedule;
-    pReleasedSchedule:
-    QUARKTS.Flag.Init = 0;
-    QUARKTS.Flag.ReleaseSched = 0;
-    QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallReleased);
-    QUARKTS.EventInfo.Trigger = byAsyncEvent;
-    if(QUARKTS.ReleaseSchedCallback!=((void *)0)) QUARKTS.ReleaseSchedCallback(QUARKTS.EventInfo);
-    QUARKTS.Flag.FCallIdle = 1;
-}
+ }

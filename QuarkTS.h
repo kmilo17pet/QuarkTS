@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 2.9.1
+ *  Version : 2.9.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -29,6 +29,7 @@ extern "C" {
     #endif
     
     #include <string.h>
+    #include "QuarkSM.h"
     
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
@@ -63,12 +64,14 @@ extern "C" {
         volatile unsigned char InitFlag;
         volatile unsigned char AsyncRun;
         volatile unsigned char State;
+        volatile unsigned char IgnoreOveruns;
     }qTaskFlags_t;
 
     struct _qTask_t{
         void *UserData,*AsyncData;
         qClock_t Interval, TimeElapsed;
         qIteration_t Iterations;
+        unsigned long Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
@@ -84,10 +87,13 @@ extern "C" {
     typedef struct{
     	unsigned char Init;
         unsigned char FCallIdle;
+        unsigned char ReleaseSched;
+        unsigned char FCallReleased;
     }qTaskCoreFlags_t;
 
     typedef struct{
         qTaskFcn_t IDLECallback;    
+        qTaskFcn_t ReleaseSchedCallback;
         qTime_t Tick;
         qEvent_t EventInfo;
         qTask_t *First;
@@ -125,7 +131,7 @@ extern "C" {
     #define qSetTime(TASK, VALUE)                                                       _qSetTime(&TASK, VALUE)  
     #define qSetIterations(TASK, VALUE)                                                 _qSetIterations(&TASK, VALUE) 
     #define qSetSpec(TASK, TVALUE, IVALUE)                                              _qSetTime(&TASK, TVALUE); \
-                                                                                        _qSetIterations(&TASK, IVALUE); 
+                                                                                        _qSetIterations(&TASK, IVALUE) 
 
     #define qSetPriority(TASK,VALUE)                                                    _qSetPriority(&TASK,VALUE)   
     #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
@@ -134,11 +140,15 @@ extern "C" {
     #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
     #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
     #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
-    
+    #define qGetCycles(TASK)                                                            (TASK.Cycles)
+    #define qIgnoreOverruns(TASK, _TF_)                                                 (TASK.Flag.IgnoreOveruns = _TF_!=0)            
+
+    #define qReleaseSchedule()                                                          QUARKTS.Flag.ReleaseSched = 1
+    #define qSetReleaseSchedCallback(RELEASE_Callback)                                  QUARKTS.ReleaseSchedCallback = RELEASE_Callback
     
     #if !defined(QPRIORITY_FIFO_QUEUE) && !defined(QSIMPLE_FIFO_QUEUE) 
-        #warning "QPRIORITY_FIFO_QUEUE or QSIMPLE_FIFO_QUEUE not defined, using QSIMPLE_FIFO_QUEUE by default"
-        #define QSIMPLE_FIFO_QUEUE
+        #warning "QPRIORITY_FIFO_QUEUE or QSIMPLE_FIFO_QUEUE not defined, using QPRIORITY_FIFO_QUEUE by default"
+        #define QPRIORITY_FIFO_QUEUE
     #endif
     
 #ifdef	__cplusplus

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 2.9.1
+ *  Version : 2.9.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -23,7 +23,6 @@ volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
-
 
 /*================================================================================================================================================*/
 void _qSendEvent(qTask_t *Task, void* eventdata){
@@ -143,12 +142,15 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.First = NULL;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
+    QUARKTS.ReleaseSchedCallback = NULL;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL; 
     QUARKTS.QueueIndex = 0;    
     QUARKTS.Flag.Init = 0;
     QUARKTS.NotSafeQueue = 0;
+    QUARKTS.Flag.ReleaseSched = 0;
+    QUARKTS.Flag.FCallReleased = 0;
 }
 /*============================================================================*/
 void _qISRHandler(void){
@@ -158,7 +160,7 @@ void _qISRHandler(void){
         if( Task->Flag.State  && Task->Interval>0){
             Task->TimeElapsed++;
             if(Task->TimeElapsed >= Task->Interval){ 
-                Task->Flag.TimedTaskRun++;
+                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;
                 Task->TimeElapsed = 0; 
             }
         }
@@ -178,6 +180,7 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->Flag.State = (unsigned char)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
+    Task->Cycles = 0;
     return 0;
 }
 /*================================================================================================================================================*/
@@ -188,6 +191,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
     Task->Flag.InitFlag = 1;
     QUARKTS.EventInfo.EventData = NULL;
+    Task->Cycles++;
 }
 /*============================================================================*/
 static void _qTaskChainbyPriority(void){
@@ -218,6 +222,7 @@ static void _qTaskChainbyPriority(void){
 void _qStart(void){
     qTask_t *Task, *qTask;
     pMainSchedule:
+    if(QUARKTS.Flag.ReleaseSched) goto pReleasedSchedule;
     if(!QUARKTS.Flag.Init){    
         _qTaskChainbyPriority();
         QUARKTS.Flag.Init= 1;
@@ -245,5 +250,12 @@ void _qStart(void){
         Task = Task->Next;
     }
     goto pMainSchedule;
+    pReleasedSchedule:
+    QUARKTS.Flag.Init = 0;
+    QUARKTS.Flag.ReleaseSched = 0;
+    QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallReleased);
+    QUARKTS.EventInfo.Trigger = byAsyncEvent;
+    if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback(QUARKTS.EventInfo);
+    QUARKTS.Flag.FCallIdle = 1;  
 }
 /*============================================================================*/
