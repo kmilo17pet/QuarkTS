@@ -1,5 +1,3 @@
-build/Debug/Cygwin-Windows/main.o: main.c QuarkTS.h QuarkSM.h
+build/Debug/Cygwin-Windows/main.o: main.c QuarkTS.h
 
 QuarkTS.h:
-
-QuarkSM.h:

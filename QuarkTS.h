@@ -27,9 +27,7 @@ extern "C" {
     #ifndef NULL
     #define NULL ((void*)0)
     #endif
-    
-    #include <string.h>
-    
+       
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -146,9 +144,25 @@ extern "C" {
     #define qSetReleaseSchedCallback(RELEASE_Callback)                                  QUARKTS.ReleaseSchedCallback = RELEASE_Callback
     
     #if !defined(QPRIORITY_FIFO_QUEUE) && !defined(QSIMPLE_FIFO_QUEUE) 
-        #warning "QPRIORITY_FIFO_QUEUE or QSIMPLE_FIFO_QUEUE not defined, using QPRIORITY_FIFO_QUEUE by default"
         #define QPRIORITY_FIFO_QUEUE
     #endif
+
+    typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
+
+    struct _qSM_t{
+        qSM_Status_t (*NextState)(volatile struct _qSM_t*);
+        qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
+        qSM_Status_t PreviousReturnStatus;
+    };
+
+    #define qSM_t volatile struct _qSM_t
+    typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
+
+    int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
+    int _qStateMachine_Run(qSM_t *obj);
+
+    #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
+    #define qStateMachine_Run(OBJ)   _qStateMachine_Run(&OBJ) 
     
 #ifdef	__cplusplus
 }

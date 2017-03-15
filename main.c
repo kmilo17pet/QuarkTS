@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
 #include "QuarkTS.h"
-#include "QuarkSM.h"
 
 
 qSM_Status_t primero(qSM_t* Machine);
@@ -13,14 +11,14 @@ qSM_Status_t segundo(qSM_t* Machine);
 qSM_Status_t tercero(qSM_t* Machine);
 
 /*MACHINE STATES =============================================================*/
-qSM_Status_t primero(qSM_t* Machine){
-    puts("1");
+qSM_Status_t primero(qSM_t* Machine){   
     if(Machine->PreviousState == NULL){
-        puts("oelo");
+        puts("Running by first time.");
     }
     if(Machine->PreviousState == tercero){
-        puts("again");
+        puts("Sequence started again.");
     }
+    puts("1");
     Machine->NextState = segundo;
     return qSM_EXIT_SUCCESS;
 }
@@ -121,7 +119,7 @@ int main(int argc, char** argv) {
     qSetup(0.01, IdleTaskCallback, 10);
     qSetReleaseSchedCallback(SchedReleaseCallback);
     qCreateEventTask(Task1, Task1Callback, HIGH_Priority, "TASK1");
-    qCreateTask(Task2, Task2Callback, 20, 1.0, PERIODIC, ENABLE, "TASK2");
+    qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
     qIgnoreOverruns(Task2, 1);
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
     qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, 2, ENABLE, "TASK4");

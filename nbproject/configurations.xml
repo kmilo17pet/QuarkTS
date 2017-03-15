@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>QuarkSM.h</itemPath>
       <itemPath>QuarkTS.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -14,7 +13,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>QuarkSM.c</itemPath>
       <itemPath>QuarkTS.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -45,10 +43,6 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="QuarkSM.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="QuarkSM.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="QuarkTS.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="QuarkTS.h" ex="false" tool="3" flavor2="0">
@@ -76,10 +70,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="QuarkSM.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="QuarkSM.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="QuarkTS.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="QuarkTS.h" ex="false" tool="3" flavor2="0">

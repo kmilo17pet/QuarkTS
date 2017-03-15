@@ -35,7 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/QuarkSM.o \
 	${OBJECTDIR}/QuarkTS.o \
 	${OBJECTDIR}/main.o
 
@@ -63,11 +62,6 @@ LDLIBSOPTIONS=-lpthread
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/quarkts.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/quarkts ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/QuarkSM.o: QuarkSM.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/QuarkSM.o QuarkSM.c
 
 ${OBJECTDIR}/QuarkTS.o: QuarkTS.c
 	${MKDIR} -p ${OBJECTDIR}
