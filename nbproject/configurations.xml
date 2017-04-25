@@ -37,6 +37,9 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <commandLine>--save-temps</commandLine>
+        </cTool>
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>-lpthread</linkerOptionItem>

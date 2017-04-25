@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 2.9.3
+ *  Version : 3.2.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -192,7 +192,7 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
 /*================================================================================================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger =  Event;
-    QUARKTS.EventInfo.FirstCall = (unsigned char)(!Task->Flag.InitFlag);
+    QUARKTS.EventInfo.FirstCall = (unsigned char)(!Task->Flag.InitFlag);   
     QUARKTS.EventInfo.UserData = Task->UserData;
     if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
     Task->Flag.InitFlag = 1;

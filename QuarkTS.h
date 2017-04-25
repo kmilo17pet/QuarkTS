@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 2.9.4
+ *  Version : 3.2.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -163,6 +163,12 @@ extern "C" {
 
     #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
     #define qStateMachine_Run(OBJ)   _qStateMachine_Run(&OBJ) 
+    
+ 
+    #define qCoroutineBegin         static int __qCurrentTaskState=0;  switch(__qCurrentTaskState) { case 0:; while(1)
+    #define qCoroutineYield         { __qCurrentTaskState =__LINE__; return; case __LINE__:; }            
+    #define qCoroutineEnd          }return
+    #define qCoroutineRestart      { __qCurrentTaskState=0; return;}        
     
 #ifdef	__cplusplus
 }

@@ -82,18 +82,29 @@ void Task3Callback(qEvent_t Data){
 
 void Task4Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
-    qQueueEvent(Task1, "A");
-    qQueueEvent(Task2, "B");
-    qQueueEvent(Task3, "C");
-    qQueueEvent(Task3, "D");
-    qQueueEvent(Task2, "F");
-    qQueueEvent(Task2, "G");
-    //qQueueEvent(Task2, "A");
- 
-    //qQueueEvent(Task1, "C");
-    //qQueueEvent(Task1, "D");
-    //qQueueEvent(Task2, "E");   
-    //qSetPriority(Task1, 10);
+    qCoroutineBegin{              
+        qQueueEvent(Task1, "A");
+        qCoroutineYield;
+        
+        qQueueEvent(Task1, "B");
+        qCoroutineYield;
+        
+        qQueueEvent(Task1, "C");       
+        qQueueEvent(Task1, "D");
+        qCoroutineYield;
+        
+        qQueueEvent(Task1, "F");
+        qCoroutineYield;
+        
+        qQueueEvent(Task1, "G");
+        qCoroutineYield;
+        //qQueueEvent(Task2, "A");
+
+        //qQueueEvent(Task1, "C");
+        //qQueueEvent(Task1, "D");
+        //qQueueEvent(Task2, "E");   
+        //qSetPriority(Task1, 10);
+    }qCoroutineEnd;
 }
 
 void Task5Callback(qEvent_t Data){
@@ -122,9 +133,9 @@ int main(int argc, char** argv) {
     qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
     qIgnoreOverruns(Task2, 1);
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
-    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, 2, ENABLE, "TASK4");
+    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, PERIODIC, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
-    //qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
+    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
     qSchedule();
     return (EXIT_SUCCESS);
 }
