@@ -1,6 +1,5 @@
 Use only the source files
 QuarkTS.h
 QuarkTS.c
-QuarkSM.h
-QuarkSM.c
 
+Read the Wiki: https://github.com/kmilo17pet/QuarkTS/wiki
