@@ -12,6 +12,8 @@ qSM_Status_t tercero(qSM_t* Machine);
 
 /*MACHINE STATES =============================================================*/
 qSM_Status_t primero(qSM_t* Machine){   
+    qEvent_t *TaskEventData = (qEvent_t *)Machine->UserData;
+    printf("%s %s \r\n",TaskEventData->EventData, TaskEventData->UserData);
     if(Machine->PreviousState == NULL){
         puts("Running by first time.");
     }
@@ -70,7 +72,7 @@ void Task2Callback(qEvent_t Data){
     if(Data.FirstCall){
         qStateMachine_Init(Maquina1, primero, smok, smerror, NULL);
     }
-    qStateMachine_Run(Maquina1);
+    qStateMachine_Run(Maquina1, &Data);
     printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, qGetCycles(Task2));
 }
 

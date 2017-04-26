@@ -88,13 +88,14 @@
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
+        void *UserData;
     };
 
 
     typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
-    int _qStateMachine_Run(volatile struct _qSM_t *obj);
+    void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData);
 # 21 "QuarkTS.c" 2
 
 volatile QuarkTSCoreData_t QUARKTS;
@@ -328,15 +329,18 @@ void _qStart(void){
 }
 
 int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState){
+    if(InitState == ((void*)0)) return -1;
     obj->NextState = InitState;
     obj->PreviousState = ((void*)0);
     __qSM_Failure = FailureState;
     __qSM_Success = SuccessState;
     __qSM_Unexpected = UnexpectedState;
+    return 0;
 }
 
-int _qStateMachine_Run(volatile struct _qSM_t *obj){
+void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData){
     qSM_State_t prev = ((void*)0);
+    obj->UserData = UserData;
     if(obj->NextState!=((void*)0)){
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
@@ -355,6 +359,4 @@ int _qStateMachine_Run(volatile struct _qSM_t *obj){
             if(__qSM_Unexpected != ((void*)0)) __qSM_Unexpected(obj);
             break;
     }
-
-    return 0;
  }

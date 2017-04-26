@@ -2556,13 +2556,14 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
+        void *UserData;
     };
 
 
     typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
-    int _qStateMachine_Run(volatile struct _qSM_t *obj);
+    void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData);
 # 7 "main.c" 2
 
 
@@ -2572,6 +2573,8 @@ qSM_Status_t tercero(volatile struct _qSM_t* Machine);
 
 
 qSM_Status_t primero(volatile struct _qSM_t* Machine){
+    qEvent_t *TaskEventData = (qEvent_t *)Machine->UserData;
+    printf("%s %s \r\n",TaskEventData->EventData, TaskEventData->UserData);
     if(Machine->PreviousState == ((void *)0)){
         puts("Running by first time.");
     }
@@ -2630,7 +2633,7 @@ void Task2Callback(qEvent_t Data){
     if(Data.FirstCall){
         _qStateMachine_Init(&Maquina1, primero, smok, smerror, ((void *)0));
     }
-    _qStateMachine_Run(&Maquina1);
+    _qStateMachine_Run(&Maquina1, &Data);
     printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, (Task2.Cycles));
 }
 
@@ -2644,20 +2647,20 @@ void Task4Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
     static int __qCurrentTaskState=0; switch(__qCurrentTaskState) { case 0:; while(1){
         _qEnqueueTaskEvent(&Task1, (void*)"A");
-        { __qCurrentTaskState =87; return; case 87:; };
+        { __qCurrentTaskState =89; return; case 89:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"B");
-        { __qCurrentTaskState =90; return; case 90:; };
+        { __qCurrentTaskState =92; return; case 92:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"C");
         _qEnqueueTaskEvent(&Task1, (void*)"D");
-        { __qCurrentTaskState =94; return; case 94:; };
+        { __qCurrentTaskState =96; return; case 96:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"F");
-        { __qCurrentTaskState =97; return; case 97:; };
+        { __qCurrentTaskState =99; return; case 99:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"G");
-        { __qCurrentTaskState =100; return; case 100:; };
+        { __qCurrentTaskState =102; return; case 102:; };
 
 
 

@@ -1375,22 +1375,32 @@ _qStateMachine_Init:
 	movq	%r8, 32(%rbp)
 	movq	%r9, 40(%rbp)
 	.loc 1 269 0
+	cmpq	$0, 24(%rbp)
+	jne	.L84
+	.loc 1 269 0 is_stmt 0 discriminator 1
+	movl	$-1, %eax
+	jmp	.L85
+.L84:
+	.loc 1 270 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, (%rax)
-	.loc 1 270 0
+	.loc 1 271 0
 	movq	16(%rbp), %rax
 	movq	$0, 8(%rax)
-	.loc 1 271 0
+	.loc 1 272 0
 	movq	40(%rbp), %rax
 	movq	%rax, __qSM_Failure(%rip)
-	.loc 1 272 0
+	.loc 1 273 0
 	movq	32(%rbp), %rax
 	movq	%rax, __qSM_Success(%rip)
-	.loc 1 273 0
+	.loc 1 274 0
 	movq	48(%rbp), %rax
 	movq	%rax, __qSM_Unexpected(%rip)
-	.loc 1 274 0
+	.loc 1 275 0
+	movl	$0, %eax
+.L85:
+	.loc 1 276 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -1403,7 +1413,7 @@ _qStateMachine_Init:
 	.seh_proc	_qStateMachine_Run
 _qStateMachine_Run:
 .LFB17:
-	.loc 1 276 0
+	.loc 1 278 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1416,18 +1426,23 @@ _qStateMachine_Run:
 	.seh_stackalloc	48
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 277 0
+	movq	%rdx, 24(%rbp)
+	.loc 1 279 0
 	movq	$0, -8(%rbp)
-	.loc 1 278 0
+	.loc 1 280 0
+	movq	16(%rbp), %rax
+	movq	24(%rbp), %rdx
+	movq	%rdx, 24(%rax)
+	.loc 1 281 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	testq	%rax, %rax
-	je	.L85
-	.loc 1 279 0
+	je	.L87
+	.loc 1 282 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 280 0
+	.loc 1 283 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	movq	16(%rbp), %rcx
@@ -1435,69 +1450,64 @@ _qStateMachine_Run:
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 16(%rax)
-	.loc 1 281 0
+	.loc 1 284 0
 	movq	16(%rbp), %rax
 	movq	-8(%rbp), %rdx
 	movq	%rdx, 8(%rax)
-	jmp	.L86
-.L85:
-	.loc 1 283 0
+	jmp	.L88
+.L87:
+	.loc 1 286 0
 	movq	16(%rbp), %rax
 	movl	$-32767, 16(%rax)
-.L86:
-	.loc 1 285 0
+.L88:
+	.loc 1 288 0
 	movq	16(%rbp), %rax
 	movl	16(%rax), %eax
 	cmpl	$-32768, %eax
-	je	.L88
-	cmpl	$-32767, %eax
-	jne	.L95
-	.loc 1 287 0
-	movq	__qSM_Failure(%rip), %rax
-	testq	%rax, %rax
 	je	.L90
-	.loc 1 287 0 is_stmt 0 discriminator 1
+	cmpl	$-32767, %eax
+	jne	.L96
+	.loc 1 290 0
 	movq	__qSM_Failure(%rip), %rax
-	movq	16(%rbp), %rcx
-	call	*%rax
-	.loc 1 288 0 is_stmt 1 discriminator 1
-	jmp	.L91
-.L90:
-	.loc 1 288 0 is_stmt 0
-	jmp	.L91
-.L88:
-	.loc 1 290 0 is_stmt 1
-	movq	__qSM_Success(%rip), %rax
 	testq	%rax, %rax
 	je	.L92
 	.loc 1 290 0 is_stmt 0 discriminator 1
-	movq	__qSM_Success(%rip), %rax
+	movq	__qSM_Failure(%rip), %rax
 	movq	16(%rbp), %rcx
 	call	*%rax
 	.loc 1 291 0 is_stmt 1 discriminator 1
-	jmp	.L91
+	jmp	.L86
 .L92:
 	.loc 1 291 0 is_stmt 0
-	jmp	.L91
-.L95:
+	jmp	.L86
+.L90:
 	.loc 1 293 0 is_stmt 1
-	movq	__qSM_Unexpected(%rip), %rax
+	movq	__qSM_Success(%rip), %rax
 	testq	%rax, %rax
-	je	.L93
+	je	.L94
 	.loc 1 293 0 is_stmt 0 discriminator 1
-	movq	__qSM_Unexpected(%rip), %rax
+	movq	__qSM_Success(%rip), %rax
 	movq	16(%rbp), %rcx
 	call	*%rax
 	.loc 1 294 0 is_stmt 1 discriminator 1
-	jmp	.L96
-.L93:
-.L96:
+	jmp	.L86
+.L94:
 	.loc 1 294 0 is_stmt 0
-	nop
-.L91:
+	jmp	.L86
+.L96:
+	.loc 1 296 0 is_stmt 1
+	movq	__qSM_Unexpected(%rip), %rax
+	testq	%rax, %rax
+	je	.L95
+	.loc 1 296 0 is_stmt 0 discriminator 1
+	movq	__qSM_Unexpected(%rip), %rax
+	movq	16(%rbp), %rcx
+	call	*%rax
+.L95:
 	.loc 1 297 0 is_stmt 1
-	movl	$0, %eax
-	.loc 1 298 0
+	nop
+.L86:
+	.loc 1 299 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1518,7 +1528,7 @@ _qStateMachine_Run:
 	.file 2 "QuarkTS.h"
 	.section	.debug_info,"dr"
 .Ldebug_info0:
-	.long	0xca1
+	.long	0xcb8
 	.word	0x4
 	.secrel32	.Ldebug_abbrev0
 	.byte	0x8
@@ -1920,21 +1930,21 @@ _qStateMachine_Run:
 	.long	0x4c1
 	.uleb128 0xe
 	.ascii "_qSM_t\0"
-	.byte	0x18
+	.byte	0x20
 	.byte	0x2
 	.byte	0x98
-	.long	0x563
+	.long	0x56f
 	.uleb128 0x8
 	.ascii "NextState\0"
 	.byte	0x2
 	.byte	0x99
-	.long	0x57d
+	.long	0x589
 	.byte	0
 	.uleb128 0x8
 	.ascii "PreviousState\0"
 	.byte	0x2
 	.byte	0x9a
-	.long	0x57d
+	.long	0x589
 	.byte	0x8
 	.uleb128 0x8
 	.ascii "PreviousReturnStatus\0"
@@ -1942,26 +1952,32 @@ _qStateMachine_Run:
 	.byte	0x9b
 	.long	0x4fa
 	.byte	0x10
+	.uleb128 0x9
+	.secrel32	.LASF0
+	.byte	0x2
+	.byte	0x9c
+	.long	0x1bf
+	.byte	0x18
 	.byte	0
 	.uleb128 0x10
 	.long	0x4fa
-	.long	0x572
+	.long	0x57e
 	.uleb128 0xd
-	.long	0x572
+	.long	0x57e
 	.byte	0
 	.uleb128 0xb
 	.byte	0x8
-	.long	0x578
+	.long	0x584
 	.uleb128 0x6
 	.long	0x50e
 	.uleb128 0xb
 	.byte	0x8
-	.long	0x563
+	.long	0x56f
 	.uleb128 0x4
 	.ascii "qSM_State_t\0"
 	.byte	0x2
-	.byte	0x9f
-	.long	0x57d
+	.byte	0xa0
+	.long	0x589
 	.uleb128 0x11
 	.ascii "_qSendEvent\0"
 	.byte	0x1
@@ -1970,7 +1986,7 @@ _qStateMachine_Run:
 	.quad	.LFE0-.LFB0
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x5d8
+	.long	0x5e4
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1996,7 +2012,7 @@ _qStateMachine_Run:
 	.quad	.LFE1-.LFB1
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x618
+	.long	0x624
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2022,7 +2038,7 @@ _qStateMachine_Run:
 	.quad	.LFE2-.LFB2
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x65e
+	.long	0x66a
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2048,7 +2064,7 @@ _qStateMachine_Run:
 	.quad	.LFE3-.LFB3
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6a2
+	.long	0x6ae
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2074,7 +2090,7 @@ _qStateMachine_Run:
 	.quad	.LFE4-.LFB4
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6e6
+	.long	0x6f2
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2100,7 +2116,7 @@ _qStateMachine_Run:
 	.quad	.LFE5-.LFB5
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x72c
+	.long	0x738
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2126,7 +2142,7 @@ _qStateMachine_Run:
 	.quad	.LFE6-.LFB6
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x770
+	.long	0x77c
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2152,7 +2168,7 @@ _qStateMachine_Run:
 	.quad	.LFE7-.LFB7
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x7aa
+	.long	0x7b6
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2166,12 +2182,12 @@ _qStateMachine_Run:
 	.ascii "_qEnqueueTaskEvent\0"
 	.byte	0x1
 	.byte	0x46
-	.long	0x84a
+	.long	0x856
 	.quad	.LFB8
 	.quad	.LFE8-.LFB8
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x84a
+	.long	0x856
 	.uleb128 0x13
 	.ascii "TasktoQueue\0"
 	.byte	0x1
@@ -2234,12 +2250,12 @@ _qStateMachine_Run:
 	.quad	.LFE9-.LFB9
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x89c
+	.long	0x8a8
 	.uleb128 0x15
 	.ascii "i\0"
 	.byte	0x1
 	.byte	0x73
-	.long	0x84a
+	.long	0x856
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
@@ -2260,7 +2276,7 @@ _qStateMachine_Run:
 	.quad	.LFE10-.LFB10
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x924
+	.long	0x930
 	.uleb128 0x13
 	.ascii "ISRTick\0"
 	.byte	0x1
@@ -2310,7 +2326,7 @@ _qStateMachine_Run:
 	.quad	.LFE11-.LFB11
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x959
+	.long	0x965
 	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2324,12 +2340,12 @@ _qStateMachine_Run:
 	.ascii "_qCreateTask\0"
 	.byte	0x1
 	.byte	0xb1
-	.long	0x84a
+	.long	0x856
 	.quad	.LFB12
 	.quad	.LFE12-.LFB12
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x9f8
+	.long	0xa04
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2395,7 +2411,7 @@ _qStateMachine_Run:
 	.quad	.LFE13-.LFB13
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xa3f
+	.long	0xa4b
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2421,7 +2437,7 @@ _qStateMachine_Run:
 	.quad	.LFE14-.LFB14
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xabc
+	.long	0xac8
 	.uleb128 0x15
 	.ascii "a\0"
 	.byte	0x1
@@ -2479,7 +2495,7 @@ _qStateMachine_Run:
 	.quad	.LFE15-.LFB15
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xb33
+	.long	0xb3f
 	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
@@ -2511,17 +2527,17 @@ _qStateMachine_Run:
 	.ascii "_qStateMachine_Init\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x84a
+	.long	0x856
 	.quad	.LFB16
 	.quad	.LFE16-.LFB16
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xbd5
+	.long	0xbe1
 	.uleb128 0x1e
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x572
+	.long	0x57e
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -2529,7 +2545,7 @@ _qStateMachine_Run:
 	.ascii "InitState\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x583
+	.long	0x58f
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2537,7 +2553,7 @@ _qStateMachine_Run:
 	.ascii "SuccessState\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x583
+	.long	0x58f
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
@@ -2545,7 +2561,7 @@ _qStateMachine_Run:
 	.ascii "FailureState\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x583
+	.long	0x58f
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 24
@@ -2553,7 +2569,7 @@ _qStateMachine_Run:
 	.ascii "UnexpectedState\0"
 	.byte	0x1
 	.word	0x10c
-	.long	0x583
+	.long	0x58f
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 32
@@ -2561,26 +2577,33 @@ _qStateMachine_Run:
 	.uleb128 0x1f
 	.ascii "_qStateMachine_Run\0"
 	.byte	0x1
-	.word	0x114
-	.long	0x84a
+	.word	0x116
 	.quad	.LFB17
 	.quad	.LFE17-.LFB17
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xc26
+	.long	0xc3d
 	.uleb128 0x1e
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x114
-	.long	0x572
+	.word	0x116
+	.long	0x57e
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
 	.uleb128 0x20
+	.secrel32	.LASF0
+	.byte	0x1
+	.word	0x116
+	.long	0x1bf
+	.uleb128 0x2
+	.byte	0x91
+	.sleb128 8
+	.uleb128 0x21
 	.ascii "prev\0"
 	.byte	0x1
-	.word	0x115
-	.long	0x583
+	.word	0x117
+	.long	0x58f
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
@@ -2589,7 +2612,7 @@ _qStateMachine_Run:
 	.ascii "__qSM_Failure\0"
 	.byte	0x1
 	.byte	0x1c
-	.long	0x57d
+	.long	0x589
 	.uleb128 0x9
 	.byte	0x3
 	.quad	__qSM_Failure
@@ -2597,7 +2620,7 @@ _qStateMachine_Run:
 	.ascii "__qSM_Success\0"
 	.byte	0x1
 	.byte	0x1d
-	.long	0x57d
+	.long	0x589
 	.uleb128 0x9
 	.byte	0x3
 	.quad	__qSM_Success
@@ -2605,15 +2628,15 @@ _qStateMachine_Run:
 	.ascii "__qSM_Unexpected\0"
 	.byte	0x1
 	.byte	0x1e
-	.long	0x57d
+	.long	0x589
 	.uleb128 0x9
 	.byte	0x3
 	.quad	__qSM_Unexpected
-	.uleb128 0x21
+	.uleb128 0x22
 	.ascii "QUARKTS\0"
 	.byte	0x1
 	.byte	0x16
-	.long	0xc9f
+	.long	0xcb6
 	.uleb128 0x9
 	.byte	0x3
 	.quad	QUARKTS
@@ -3099,8 +3122,6 @@ _qStateMachine_Run:
 	.uleb128 0x5
 	.uleb128 0x27
 	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
 	.uleb128 0x11
 	.uleb128 0x1
 	.uleb128 0x12
@@ -3114,6 +3135,21 @@ _qStateMachine_Run:
 	.byte	0
 	.byte	0
 	.uleb128 0x20
+	.uleb128 0x5
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.uleb128 0x21
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -3128,7 +3164,7 @@ _qStateMachine_Run:
 	.uleb128 0x18
 	.byte	0
 	.byte	0
-	.uleb128 0x21
+	.uleb128 0x22
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3

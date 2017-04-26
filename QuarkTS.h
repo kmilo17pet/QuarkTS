@@ -153,20 +153,21 @@ extern "C" {
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
+        void *UserData;
     };
 
     #define qSM_t volatile struct _qSM_t
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
 
     int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
-    int _qStateMachine_Run(qSM_t *obj);
+    void _qStateMachine_Run(qSM_t *obj, void *UserData);
 
     #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
-    #define qStateMachine_Run(OBJ)   _qStateMachine_Run(&OBJ) 
+    #define qStateMachine_Run(OBJ, USERDATA)   _qStateMachine_Run(&OBJ, USERDATA) 
     
  
-    #define qCoroutineBegin         static int __qCurrentTaskState=0;  switch(__qCurrentTaskState) { case 0:; while(1)
-    #define qCoroutineYield         { __qCurrentTaskState =__LINE__; return; case __LINE__:; }            
+    #define qCoroutineBegin        static int __qCurrentTaskState=0;  switch(__qCurrentTaskState) { case 0:; while(1)
+    #define qCoroutineYield        { __qCurrentTaskState =__LINE__; return; case __LINE__:; }            
     #define qCoroutineEnd          }return
     #define qCoroutineRestart      { __qCurrentTaskState=0; return;}        
     

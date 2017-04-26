@@ -266,15 +266,18 @@ void _qStart(void){
 }
 /*============================================================================*/
 int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState){
+    if(InitState == NULL) return -1;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
     __qSM_Failure = FailureState;
     __qSM_Success = SuccessState;
     __qSM_Unexpected = UnexpectedState;
+    return 0;
 }
 /*============================================================================*/
-int _qStateMachine_Run(qSM_t *obj){
+void _qStateMachine_Run(qSM_t *obj, void *UserData){
     qSM_State_t prev  = NULL;
+    obj->UserData = UserData;
     if(obj->NextState!=NULL){
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
@@ -293,7 +296,5 @@ int _qStateMachine_Run(qSM_t *obj){
             if(__qSM_Unexpected != NULL) __qSM_Unexpected(obj);
             break;
     }
-    
-    return 0;
  }
 /*=================================================================================================*/
