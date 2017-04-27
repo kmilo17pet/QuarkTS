@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.2.1
+ *  Version : 3.2.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -24,10 +24,35 @@
 extern "C" {
 #endif
         
+    #define _QUARKTS_CR_DEFS_
     #ifndef NULL
-    #define NULL ((void*)0)
+        #define NULL ((void*)0)
     #endif
-       
+
+    #define QSTIMER
+
+    #ifdef _QUARKTS_CR_DEFS_
+        typedef int _qTaskPC_t;            
+        #define _infloop ;;
+        #define $qLoopKeeper            for
+        #define $qCRKeep                $qLoopKeeper(_infloop)
+        #define $qPersistent            static _qTaskPC_t
+        #define $qTaskProgress          __LINE__
+        #define $qAssert(_COND_)        if(!(_COND_))
+        #define $qPCInitVal             0
+        #define $qTaskPCVar             __qCurrentTaskState
+        #define $qSetPC(_VAL_)          $qTaskPCVar = _VAL_
+        #define $qTaskSaveState         $qSetPC($qTaskProgress) 
+        #define $qTaskInitState         $qSetPC($qPCInitVal) 
+        #define $qTaskCheckPCJump(_PC_) switch(_PC_){      
+        #define $qExit                  return
+        #define $qTaskYield             $qExit;
+        #define $qCRDispose             }$qExit
+        #define $qRestorator(_VAL_)     case _VAL_:            
+        #define $RestoreAfterYield      $qRestorator($qTaskProgress)
+        #define $RestoreFromBegin       $qRestorator($qPCInitVal)
+    #endif
+    
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -36,6 +61,7 @@ extern "C" {
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
     
+
     #define LOWEST_Priority     (qPriority_t)(0)
     #define MEDIUM_Priority     (qPriority_t)(0x7F)
     #define HIGH_Priority       (qPriority_t)(0xFE)
@@ -46,7 +72,7 @@ extern "C" {
     
     #define ENABLE              (1)
     #define DISABLE             (0)
-    
+       
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -88,6 +114,7 @@ extern "C" {
         unsigned char FCallReleased;
     }qTaskCoreFlags_t;
 
+    
     typedef struct{
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
@@ -98,6 +125,9 @@ extern "C" {
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
         volatile unsigned char NotSafeQueue;
+        #ifdef QSTIMER
+        volatile qClock_t epochs;
+        #endif
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
@@ -165,11 +195,30 @@ extern "C" {
     #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
     #define qStateMachine_Run(OBJ, USERDATA)   _qStateMachine_Run(&OBJ, USERDATA) 
     
- 
-    #define qCoroutineBegin        static int __qCurrentTaskState=0;  switch(__qCurrentTaskState) { case 0:; while(1)
-    #define qCoroutineYield        { __qCurrentTaskState =__LINE__; return; case __LINE__:; }            
-    #define qCoroutineEnd          }return
-    #define qCoroutineRestart      { __qCurrentTaskState=0; return;}        
+    
+    #define $qCRStart               $qPersistent  $qTaskInitState ;  $qTaskCheckPCJump($qTaskPCVar) $RestoreFromBegin ; $qCRKeep
+    #define $qCRYield               { $qTaskSaveState ; $qTaskYield  $RestoreAfterYield; }
+    #define $qCRRestart             { $qTaskInitState ; $qTaskYield }
+    #define $qCR_wu_Assert(_cond_)  { $qTaskSaveState ; $RestoreAfterYield ; $qAssert(_cond_) $qTaskYield }
+    
+    #define qCoroutineBegin                         $qCRStart
+    #define qCoroutineYield                         $qCRYield            
+    #define qCoroutineEnd                           $qCRDispose
+    #define qCoroutineRestart                       $qCRRestart        
+    #define qCoroutineWaitUntil(_condition_)        $qCR_wu_Assert(_condition_)
+
+    #ifdef QSTIMER
+        typedef struct{
+            unsigned char SR;
+            qClock_t Start;
+            qClock_t TV;
+        }qSTimer_t;
+
+        int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
+        unsigned char _qSTimerExpired(qSTimer_t *obj);
+        #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, Time)
+        #define qSTimerExpired(OBJ)   _qSTimerExpired(&OBJ)
+    #endif
     
 #ifdef	__cplusplus
 }

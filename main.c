@@ -61,7 +61,7 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6;
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST;
 
 void Task1Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
@@ -83,7 +83,11 @@ void Task3Callback(qEvent_t Data){
 }
 
 void Task4Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    static qSTimer_t Timer;
+    if(Data.FirstCall){
+        qSTimerSet(Timer, 5.0);
+    }  
+    //printf("Userdata : %s  Eventdata:%s   %s\r\n", Data.UserData, Data.EventData );
     qCoroutineBegin{              
         qQueueEvent(Task1, "A");
         qCoroutineYield;
@@ -91,6 +95,8 @@ void Task4Callback(qEvent_t Data){
         qQueueEvent(Task1, "B");
         qCoroutineYield;
         
+        qCoroutineWaitUntil(qSTimerExpired(Timer));
+        qSTimerSet(Timer, 2.0);
         qQueueEvent(Task1, "C");       
         qQueueEvent(Task1, "D");
         qCoroutineYield;
@@ -100,12 +106,6 @@ void Task4Callback(qEvent_t Data){
         
         qQueueEvent(Task1, "G");
         qCoroutineYield;
-        //qQueueEvent(Task2, "A");
-
-        //qQueueEvent(Task1, "C");
-        //qQueueEvent(Task1, "D");
-        //qQueueEvent(Task2, "E");   
-        //qSetPriority(Task1, 10);
     }qCoroutineEnd;
 }
 
@@ -127,6 +127,12 @@ void SchedReleaseCallback(qEvent_t Data){
     puts("\r\nScheduler Released");
 }
 
+void TaskTestSTCallback(qEvent_t Data){
+
+
+}
+
+
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qSetup(0.01, IdleTaskCallback, 10);
@@ -135,9 +141,11 @@ int main(int argc, char** argv) {
     qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
     qIgnoreOverruns(Task2, 1);
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
-    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 1.5, PERIODIC, ENABLE, "TASK4");
+    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
     qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
+    
+    //qCreateTask(TaskTestST,  TaskTestSTCallback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, NULL);
     qSchedule();
     return (EXIT_SUCCESS);
 }

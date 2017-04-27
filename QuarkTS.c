@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.2.1
+ *  Version : 3.2.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -157,6 +157,9 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
+    #ifdef QSTIMER
+        QUARKTS.epochs++;
+    #endif
 }
 /*============================================================================*/
 void _qISRHandler(void){
@@ -172,6 +175,10 @@ void _qISRHandler(void){
         }
         Task = Task->Next;
     }
+    #ifdef QSTIMER
+        QUARKTS.epochs++;
+    #endif
+    
 }
 /*============================================================================*/
 int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
@@ -297,4 +304,20 @@ void _qStateMachine_Run(qSM_t *obj, void *UserData){
             break;
     }
  }
+
+#ifdef QSTIMER
 /*=================================================================================================*/
+int _qSTimerSet(qSTimer_t *obj, qTime_t Time){    
+    if ( (Time/2)<QUARKTS.Tick ) return -1;    
+    obj->TV = (qClock_t)(Time/QUARKTS.Tick);
+    obj->Start = QUARKTS.epochs;
+    obj->SR = 1;
+    return 0;
+}
+/*=================================================================================================*/
+unsigned char _qSTimerExpired(qSTimer_t *obj){
+    if(!obj->SR) return 0; 
+    return ((QUARKTS.epochs - obj->Start)>obj->TV);
+}
+/*=================================================================================================*/
+#endif

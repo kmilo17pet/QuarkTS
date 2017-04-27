@@ -5,7 +5,9 @@
 # 1 "QuarkTS.c"
 # 20 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
-# 31 "QuarkTS.h"
+# 35 "QuarkTS.h"
+        typedef int _qTaskPC_t;
+# 56 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -13,7 +15,7 @@
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 50 "QuarkTS.h"
+# 76 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -55,6 +57,7 @@
         unsigned char FCallReleased;
     }qTaskCoreFlags_t;
 
+
     typedef struct{
         qTaskFcn_t IDLECallback;
         qTaskFcn_t ReleaseSchedCallback;
@@ -65,6 +68,9 @@
         volatile qQueueStack_t *QueueStack;
         unsigned char QueueSize, QueueIndex;
         volatile unsigned char NotSafeQueue;
+
+        volatile qClock_t epochs;
+
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
@@ -81,7 +87,7 @@
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
-# 150 "QuarkTS.h"
+# 180 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
     struct _qSM_t{
@@ -96,6 +102,15 @@
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData);
+# 211 "QuarkTS.h"
+        typedef struct{
+            unsigned char SR;
+            qClock_t Start;
+            qClock_t TV;
+        }qSTimer_t;
+
+        int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
+        unsigned char _qSTimerExpired(qSTimer_t *obj);
 # 21 "QuarkTS.c" 2
 
 volatile QuarkTSCoreData_t QUARKTS;
@@ -220,6 +235,9 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
+
+        QUARKTS.epochs++;
+
 }
 
 void _qISRHandler(void){
@@ -235,6 +253,10 @@ void _qISRHandler(void){
         }
         Task = Task->Next;
     }
+
+        QUARKTS.epochs++;
+
+
 }
 
 int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
@@ -360,3 +382,18 @@ void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData){
             break;
     }
  }
+
+
+
+int _qSTimerSet(qSTimer_t *obj, qTime_t Time){
+    if ( (Time/2)<QUARKTS.Tick ) return -1;
+    obj->TV = (qClock_t)(Time/QUARKTS.Tick);
+    obj->Start = QUARKTS.epochs;
+    obj->SR = 1;
+    return 0;
+}
+
+unsigned char _qSTimerExpired(qSTimer_t *obj){
+    if(!obj->SR) return 0;
+    return ((QUARKTS.epochs - obj->Start)>obj->TV);
+}
