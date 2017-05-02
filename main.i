@@ -2663,7 +2663,7 @@ void Task4Callback(qEvent_t Data){
     if(Data.FirstCall){
         _qSTimerSet(&Timer, 5.0);
     }
-
+    printf("Userdata : %s  Eventdata:%s    %d\r\n", Data.UserData, Data.EventData,(Task4.Cycles));
     static _qTaskPC_t __qCurrentTaskState = 0 ; switch(__qCurrentTaskState){ case 0: ; for(;;){
         _qEnqueueTaskEvent(&Task1, (void*)"A");
         { __qCurrentTaskState = 93 ; return; case 93:; };

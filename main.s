@@ -440,17 +440,20 @@ Task3Callback:
 .LFE15:
 	.seh_endproc
 	.section .rdata,"dr"
+	.align 8
 .LC11:
-	.ascii "A\0"
+	.ascii "Userdata : %s  Eventdata:%s    %d\15\12\0"
 .LC12:
+	.ascii "A\0"
+.LC13:
 	.ascii "B\0"
-.LC14:
-	.ascii "C\0"
 .LC15:
-	.ascii "D\0"
+	.ascii "C\0"
 .LC16:
-	.ascii "F\0"
+	.ascii "D\0"
 .LC17:
+	.ascii "F\0"
+.LC18:
 	.ascii "G\0"
 	.text
 	.globl	Task4Callback
@@ -485,6 +488,16 @@ Task4Callback:
 	leaq	Timer.4550(%rip), %rcx
 	call	_qSTimerSet
 .L19:
+	.loc 1 90 0
+	leaq	Task4(%rip), %rax
+	movq	40(%rax), %rcx
+	movq	16(%rbx), %rdx
+	movq	8(%rbx), %rax
+	movq	%rcx, %r9
+	movq	%rdx, %r8
+	movq	%rax, %rdx
+	leaq	.LC11(%rip), %rcx
+	call	printf
 	.loc 1 91 0
 	movl	__qCurrentTaskState.4551(%rip), %eax
 	cmpl	$98, %eax
@@ -513,7 +526,7 @@ Task4Callback:
 	nop
 .L25:
 	.loc 1 92 0
-	leaq	.LC11(%rip), %rdx
+	leaq	.LC12(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
@@ -522,7 +535,7 @@ Task4Callback:
 	jmp	.L18
 .L23:
 	.loc 1 95 0
-	leaq	.LC12(%rip), %rdx
+	leaq	.LC13(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
@@ -542,16 +555,16 @@ Task4Callback:
 	jmp	.L18
 .L30:
 	.loc 1 99 0 is_stmt 1
-	movss	.LC13(%rip), %xmm1
+	movss	.LC14(%rip), %xmm1
 	leaq	Timer.4550(%rip), %rcx
 	call	_qSTimerSet
 	.loc 1 100 0
-	leaq	.LC14(%rip), %rdx
+	leaq	.LC15(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
 	.loc 1 101 0
-	leaq	.LC15(%rip), %rdx
+	leaq	.LC16(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
@@ -560,7 +573,7 @@ Task4Callback:
 	jmp	.L18
 .L28:
 	.loc 1 104 0
-	leaq	.LC16(%rip), %rdx
+	leaq	.LC17(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
@@ -569,7 +582,7 @@ Task4Callback:
 	jmp	.L18
 .L26:
 	.loc 1 107 0
-	leaq	.LC17(%rip), %rdx
+	leaq	.LC18(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
@@ -696,7 +709,7 @@ IdleTaskCallback:
 .LFE19:
 	.seh_endproc
 	.section .rdata,"dr"
-.LC18:
+.LC19:
 	.ascii "\15\12Scheduler Released\0"
 	.text
 	.globl	SchedReleaseCallback
@@ -717,7 +730,7 @@ SchedReleaseCallback:
 	.seh_stackalloc	32
 	.seh_endprologue
 	.loc 1 127 0
-	leaq	.LC18(%rip), %rcx
+	leaq	.LC19(%rip), %rcx
 	call	puts
 	nop
 	.loc 1 128 0
@@ -754,17 +767,17 @@ TaskTestSTCallback:
 	.seh_endproc
 	.def	__main;	.scl	2;	.type	32;	.endef
 	.section .rdata,"dr"
-.LC20:
+.LC21:
 	.ascii "TASK1\0"
-.LC22:
+.LC23:
 	.ascii "TASK2\0"
-.LC24:
+.LC25:
 	.ascii "TASK3\0"
-.LC26:
+.LC27:
 	.ascii "TASK4\0"
-.LC28:
-	.ascii "TASK5\0"
 .LC29:
+	.ascii "TASK5\0"
+.LC30:
 	.ascii "TASK6\0"
 	.text
 	.globl	main
@@ -800,14 +813,14 @@ main:
 	movl	$10, %r9d
 	movq	%rax, %r8
 	leaq	IdleTaskCallback(%rip), %rdx
-	movss	.LC19(%rip), %xmm0
+	movss	.LC20(%rip), %xmm0
 	call	_qInitScheduler
 	.loc 1 139 0
 	movq	.refptr.QUARKTS(%rip), %rax
 	leaq	SchedReleaseCallback(%rip), %rdx
 	movq	%rdx, 8(%rax)
 	.loc 1 140 0
-	leaq	.LC20(%rip), %rax
+	leaq	.LC21(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$0, 40(%rsp)
 	movl	$1, 32(%rsp)
@@ -818,11 +831,11 @@ main:
 	movq	%rax, %rcx
 	call	_qCreateTask
 	.loc 1 141 0
-	leaq	.LC22(%rip), %rax
+	leaq	.LC23(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$255, 32(%rsp)
-	movss	.LC23(%rip), %xmm3
+	movss	.LC24(%rip), %xmm3
 	movl	$20, %r8d
 	leaq	Task2Callback(%rip), %rdx
 	leaq	Task2(%rip), %rax
@@ -832,40 +845,40 @@ main:
 	leaq	Task2(%rip), %rax
 	movb	$1, 68(%rax)
 	.loc 1 143 0
-	leaq	.LC24(%rip), %rax
+	leaq	.LC25(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$2, 32(%rsp)
-	movss	.LC25(%rip), %xmm3
+	movss	.LC26(%rip), %xmm3
 	movl	$127, %r8d
 	leaq	Task3Callback(%rip), %rdx
 	leaq	Task3(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
 	.loc 1 144 0
-	leaq	.LC26(%rip), %rax
+	leaq	.LC27(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$255, 32(%rsp)
-	movss	.LC27(%rip), %xmm3
+	movss	.LC28(%rip), %xmm3
 	movl	$127, %r8d
 	leaq	Task4Callback(%rip), %rdx
 	leaq	Task4(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
 	.loc 1 145 0
-	leaq	.LC28(%rip), %rax
+	leaq	.LC29(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$1, 32(%rsp)
-	movss	.LC13(%rip), %xmm3
+	movss	.LC14(%rip), %xmm3
 	movl	$127, %r8d
 	leaq	Task5Callback(%rip), %rdx
 	leaq	Task5(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
 	.loc 1 146 0
-	leaq	.LC29(%rip), %rax
+	leaq	.LC30(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$5, 32(%rsp)
@@ -897,19 +910,19 @@ main:
 .LC10:
 	.long	1084227584
 	.align 4
-.LC13:
+.LC14:
 	.long	1073741824
 	.align 4
-.LC19:
+.LC20:
 	.long	1008981770
 	.align 4
-.LC23:
+.LC24:
 	.long	1056964608
 	.align 4
-.LC25:
+.LC26:
 	.long	1065353216
 	.align 4
-.LC27:
+.LC28:
 	.long	1036831949
 	.text
 .Letext0:

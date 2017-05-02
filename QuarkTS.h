@@ -218,6 +218,7 @@ extern "C" {
         unsigned char _qSTimerExpired(qSTimer_t *obj);
         #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, Time)
         #define qSTimerExpired(OBJ)   _qSTimerExpired(&OBJ)
+        #define qSTimerDisarm(OBJ)      (OBJ.SR = 0)
     #endif
     
 #ifdef	__cplusplus

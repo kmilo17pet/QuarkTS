@@ -87,7 +87,7 @@ void Task4Callback(qEvent_t Data){
     if(Data.FirstCall){
         qSTimerSet(Timer, 5.0);
     }  
-    //printf("Userdata : %s  Eventdata:%s   %s\r\n", Data.UserData, Data.EventData );
+    printf("Userdata : %s  Eventdata:%s    %d\r\n", Data.UserData, Data.EventData,qGetCycles(Task4));
     qCoroutineBegin{              
         qQueueEvent(Task1, "A");
         qCoroutineYield;
