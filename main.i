@@ -2474,8 +2474,8 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 
 # 1 "QuarkTS.h" 1
 # 35 "QuarkTS.h"
-        typedef int _qTaskPC_t;
-# 56 "QuarkTS.h"
+        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
+# 55 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -2483,7 +2483,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 76 "QuarkTS.h"
+# 75 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -2573,8 +2573,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 211 "QuarkTS.h"
         typedef struct{
             unsigned char SR;
-            qClock_t Start;
-            qClock_t TV;
+            qClock_t Start, TV;
         }qSTimer_t;
 
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
@@ -2661,28 +2660,30 @@ void Task3Callback(qEvent_t Data){
 void Task4Callback(qEvent_t Data){
     static qSTimer_t Timer;
     if(Data.FirstCall){
-        _qSTimerSet(&Timer, 5.0);
+        _qSTimerSet(&Timer, (qTime_t)5.0);
     }
     printf("Userdata : %s  Eventdata:%s    %d\r\n", Data.UserData, Data.EventData,(Task4.Cycles));
-    static _qTaskPC_t __qCurrentTaskState = 0 ; switch(__qCurrentTaskState){ case 0: ; for(;;){
+    static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
         _qEnqueueTaskEvent(&Task1, (void*)"A");
-        { __qCurrentTaskState = 93 ; return; case 93:; };
+        { _qCRTaskState_ = 93 ; return; case (_qTaskPC_t)93:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"B");
-        { __qCurrentTaskState = 96 ; return; case 96:; };
+        { _qCRTaskState_ = 96 ; return; case (_qTaskPC_t)96:; };
 
-        { __qCurrentTaskState = 98 ; case 98: ; if(!(_qSTimerExpired(&Timer))) return; };
-        _qSTimerSet(&Timer, 2.0);
+        { _qCRTaskState_ = 98 ; case (_qTaskPC_t)98: ; if(!(_qSTimerExpired(&Timer))) return; };
+        _qSTimerSet(&Timer, (qTime_t)2.0);
         _qEnqueueTaskEvent(&Task1, (void*)"C");
         _qEnqueueTaskEvent(&Task1, (void*)"D");
-        { __qCurrentTaskState = 102 ; return; case 102:; };
+        _qSTimerSet(&Timer, (qTime_t)4.0);
+        { _qCRTaskState_ = 103 ; return; case (_qTaskPC_t)103:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"F");
-        { __qCurrentTaskState = 105 ; return; case 105:; };
+
+        { _qCRTaskState_ = 107 ; case (_qTaskPC_t)107: ; if(!(_qSTimerExpired(&Timer))) return; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"G");
-        { __qCurrentTaskState = 108 ; return; case 108:; };
-    }}return;
+        { _qCRTaskState_ = 110 ; return; case (_qTaskPC_t)110:; };
+    }goto _qCR_BEGIN_;}return;
 }
 
 void Task5Callback(qEvent_t Data){
@@ -2708,11 +2709,36 @@ void TaskTestSTCallback(qEvent_t Data){
 
 }
 
+volatile struct _qTask_t TaskX, TaskY;
+void TaskX_Callback(qEvent_t Data){
+    static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
+        printf("a");
+        { _qCRTaskState_ = 141 ; return; case (_qTaskPC_t)141:; };
+        printf("b");
+        { _qCRTaskState_ = 143 ; return; case (_qTaskPC_t)143:; };
+        printf("c");
+        { _qCRTaskState_ = 145 ; return; case (_qTaskPC_t)145:; };
+
+    }goto _qCR_BEGIN_;}return;
+}
+
+void TaskY_Callback(qEvent_t Data){
+    int i;
+    static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
+        printf("1");
+        { _qCRTaskState_ = 154 ; return; case (_qTaskPC_t)154:; };
+        printf("2");
+        { _qCRTaskState_ = 156 ; return; case (_qTaskPC_t)156:; };
+        puts("3");
+        { _qCRTaskState_ = 158 ; return; case (_qTaskPC_t)158:; };
+
+    }goto _qCR_BEGIN_;}return;
+}
 
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
-    QUARKTS.ReleaseSchedCallback = SchedReleaseCallback;
+
     _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(0xFE), ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK1");
     _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, (qTime_t)0.5, (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK2");
     (Task2.Flag.IgnoreOveruns = 1!=0);
@@ -2720,6 +2746,8 @@ int main(int argc, char** argv) {
     _qCreateTask(&Task4, Task4Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)0.1, (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK4");
     _qCreateTask(&Task5, Task5Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)2.0, (qIteration_t)((qIteration_t)1), (1), (void*)"TASK5");
     _qCreateTask(&Task6, Task6Callback, (qPriority_t)(qPriority_t)(0x7F), (qTime_t)((qTime_t)(0)), (qIteration_t)5, (1), (void*)"TASK6");
+
+
 
 
     _qStart();

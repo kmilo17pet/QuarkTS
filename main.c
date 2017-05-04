@@ -99,10 +99,12 @@ void Task4Callback(qEvent_t Data){
         qSTimerSet(Timer, 2.0);
         qQueueEvent(Task1, "C");       
         qQueueEvent(Task1, "D");
+        qSTimerSet(Timer, 4.0);
         qCoroutineYield;
         
         qQueueEvent(Task1, "F");
-        qCoroutineYield;
+        //qCoroutineRestart;
+        qCoroutineWaitUntil(qSTimerExpired(Timer));
         
         qQueueEvent(Task1, "G");
         qCoroutineYield;
@@ -132,11 +134,36 @@ void TaskTestSTCallback(qEvent_t Data){
 
 }
 
+qTask_t TaskX, TaskY;
+void TaskX_Callback(qEvent_t Data){
+    qCoroutineBegin{
+        printf("a");
+        qCoroutineYield;
+        printf("b");
+        qCoroutineYield;
+        printf("c");        
+        qCoroutineYield;
+        
+    }qCoroutineEnd;
+}
+
+void TaskY_Callback(qEvent_t Data){
+    int i;
+    qCoroutineBegin{
+        printf("1");
+        qCoroutineYield;
+        printf("2");
+        qCoroutineYield;
+        puts("3");      
+        qCoroutineYield;
+        
+    }qCoroutineEnd;    
+}
 
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qSetup(0.01, IdleTaskCallback, 10);
-    qSetReleaseSchedCallback(SchedReleaseCallback);
+    //qSetReleaseSchedCallback(SchedReleaseCallback);
     qCreateEventTask(Task1, Task1Callback, HIGH_Priority, "TASK1");
     qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
     qIgnoreOverruns(Task2, 1);
@@ -144,6 +171,8 @@ int main(int argc, char** argv) {
     qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
     qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
+    //qCreateTask(TaskY, TaskY_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
+    //qCreateTask(TaskX, TaskX_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
     
     //qCreateTask(TaskTestST,  TaskTestSTCallback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, NULL);
     qSchedule();

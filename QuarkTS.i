@@ -6,8 +6,8 @@
 # 20 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
 # 35 "QuarkTS.h"
-        typedef int _qTaskPC_t;
-# 56 "QuarkTS.h"
+        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
+# 55 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile unsigned long qClock_t;
@@ -15,7 +15,7 @@
     typedef unsigned char qIteration_t;
     typedef unsigned char qState_t;
     typedef unsigned char qBool_t;
-# 76 "QuarkTS.h"
+# 75 "QuarkTS.h"
     typedef struct{
         qTrigger_t Trigger;
         void *UserData;
@@ -105,8 +105,7 @@
 # 211 "QuarkTS.h"
         typedef struct{
             unsigned char SR;
-            qClock_t Start;
-            qClock_t TV;
+            qClock_t Start, TV;
         }qSTimer_t;
 
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
