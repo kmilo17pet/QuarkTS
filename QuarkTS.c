@@ -25,9 +25,9 @@ static void _qTaskChainbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
 
 
-static qSM_Status_t (*__qSM_Failure)(volatile struct _qSM_t*) = NULL;
-static qSM_Status_t (*__qSM_Success)(volatile struct _qSM_t*) = NULL;
-static qSM_Status_t (*__qSM_Unexpected)(volatile struct _qSM_t*) = NULL;
+//static qSM_Status_t (*__qSM_Failure)(volatile struct _qSM_t*) = NULL;
+//static qSM_Status_t (*__qSM_Success)(volatile struct _qSM_t*) = NULL;
+//static qSM_Status_t (*__qSM_Unexpected)(volatile struct _qSM_t*) = NULL;
 
 
 /*================================================================================================================================================*/
@@ -276,9 +276,9 @@ int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessSt
     if(InitState == NULL) return -1;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
-    __qSM_Failure = FailureState;
-    __qSM_Success = SuccessState;
-    __qSM_Unexpected = UnexpectedState;
+    obj->__Failure = FailureState;
+    obj->__Success = SuccessState;
+    obj->__Unexpected = UnexpectedState;
     return 0;
 }
 /*============================================================================*/
@@ -294,13 +294,13 @@ void _qStateMachine_Run(qSM_t *obj, void *UserData){
     
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE:
-            if(__qSM_Failure != NULL) __qSM_Failure(obj);
+            if(obj->__Failure != NULL) obj->__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:
-            if(__qSM_Success != NULL) __qSM_Success(obj);
+            if(obj->__Success != NULL) obj->__Success(obj);
             break;
         default:
-            if(__qSM_Unexpected != NULL) __qSM_Unexpected(obj);
+            if(obj->__Unexpected != NULL) obj->__Unexpected(obj);
             break;
     }
  }

@@ -151,14 +151,14 @@ tercero:
 	leaq	primero(%rip), %rdx
 	movq	%rdx, (%rax)
 	.loc 1 38 0
-	movl	x.4519(%rip), %eax
+	movl	x.4525(%rip), %eax
 	addl	$1, %eax
-	movl	%eax, x.4519(%rip)
-	movl	x.4519(%rip), %eax
+	movl	%eax, x.4525(%rip)
+	movl	x.4525(%rip), %eax
 	cmpl	$2, %eax
 	jle	.L8
 	.loc 1 39 0
-	movl	$0, x.4519(%rip)
+	movl	$0, x.4525(%rip)
 	.loc 1 40 0
 	movl	$-32767, %eax
 	jmp	.L9
@@ -368,12 +368,12 @@ Task2Callback:
 	leaq	smerror(%rip), %r9
 	leaq	smok(%rip), %r8
 	leaq	primero(%rip), %rdx
-	leaq	Maquina1.4545(%rip), %rcx
+	leaq	Maquina1.4551(%rip), %rcx
 	call	_qStateMachine_Init
 .L16:
 	.loc 1 75 0
 	movq	%rbx, %rdx
-	leaq	Maquina1.4545(%rip), %rcx
+	leaq	Maquina1.4551(%rip), %rcx
 	call	_qStateMachine_Run
 	.loc 1 76 0
 	leaq	Task2(%rip), %rax
@@ -485,7 +485,7 @@ Task4Callback:
 	je	.L19
 	.loc 1 88 0
 	movss	.LC10(%rip), %xmm1
-	leaq	Timer.4552(%rip), %rcx
+	leaq	Timer.4558(%rip), %rcx
 	call	_qSTimerSet
 .L19:
 	.loc 1 90 0
@@ -499,7 +499,7 @@ Task4Callback:
 	leaq	.LC11(%rip), %rcx
 	call	printf
 	.loc 1 91 0
-	movl	_qCRTaskState_.4553(%rip), %eax
+	movl	_qCRTaskState_.4559(%rip), %eax
 	cmpl	$98, %eax
 	je	.L21
 	cmpl	$98, %eax
@@ -531,7 +531,7 @@ Task4Callback:
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
 	.loc 1 93 0
-	movl	$93, _qCRTaskState_.4553(%rip)
+	movl	$93, _qCRTaskState_.4559(%rip)
 	jmp	.L18
 .L23:
 	.loc 1 95 0
@@ -540,14 +540,14 @@ Task4Callback:
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
 	.loc 1 96 0
-	movl	$96, _qCRTaskState_.4553(%rip)
+	movl	$96, _qCRTaskState_.4559(%rip)
 	jmp	.L18
 .L24:
 	.loc 1 98 0
-	movl	$98, _qCRTaskState_.4553(%rip)
+	movl	$98, _qCRTaskState_.4559(%rip)
 .L21:
 	.loc 1 98 0 is_stmt 0 discriminator 1
-	leaq	Timer.4552(%rip), %rcx
+	leaq	Timer.4558(%rip), %rcx
 	call	_qSTimerExpired
 	testb	%al, %al
 	jne	.L30
@@ -556,7 +556,7 @@ Task4Callback:
 .L30:
 	.loc 1 99 0 is_stmt 1
 	movss	.LC14(%rip), %xmm1
-	leaq	Timer.4552(%rip), %rcx
+	leaq	Timer.4558(%rip), %rcx
 	call	_qSTimerSet
 	.loc 1 100 0
 	leaq	.LC15(%rip), %rdx
@@ -570,10 +570,10 @@ Task4Callback:
 	call	_qEnqueueTaskEvent
 	.loc 1 102 0
 	movss	.LC17(%rip), %xmm1
-	leaq	Timer.4552(%rip), %rcx
+	leaq	Timer.4558(%rip), %rcx
 	call	_qSTimerSet
 	.loc 1 103 0
-	movl	$103, _qCRTaskState_.4553(%rip)
+	movl	$103, _qCRTaskState_.4559(%rip)
 	jmp	.L18
 .L28:
 	.loc 1 105 0
@@ -582,10 +582,10 @@ Task4Callback:
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
 	.loc 1 107 0
-	movl	$107, _qCRTaskState_.4553(%rip)
+	movl	$107, _qCRTaskState_.4559(%rip)
 .L26:
 	.loc 1 107 0 is_stmt 0 discriminator 1
-	leaq	Timer.4552(%rip), %rcx
+	leaq	Timer.4558(%rip), %rcx
 	call	_qSTimerExpired
 	testb	%al, %al
 	jne	.L31
@@ -598,7 +598,7 @@ Task4Callback:
 	movq	%rax, %rcx
 	call	_qEnqueueTaskEvent
 	.loc 1 110 0
-	movl	$110, _qCRTaskState_.4553(%rip)
+	movl	$110, _qCRTaskState_.4559(%rip)
 	nop
 .L18:
 	.loc 1 112 0
@@ -796,7 +796,7 @@ TaskX_Callback:
 	.seh_stackalloc	32
 	.seh_endprologue
 	.loc 1 139 0
-	movl	_qCRTaskState_.4582(%rip), %eax
+	movl	_qCRTaskState_.4588(%rip), %eax
 	cmpl	$141, %eax
 	je	.L40
 	cmpl	$141, %eax
@@ -820,21 +820,21 @@ TaskX_Callback:
 	movl	$97, %ecx
 	call	putchar
 	.loc 1 141 0
-	movl	$141, _qCRTaskState_.4582(%rip)
+	movl	$141, _qCRTaskState_.4588(%rip)
 	jmp	.L38
 .L40:
 	.loc 1 142 0
 	movl	$98, %ecx
 	call	putchar
 	.loc 1 143 0
-	movl	$143, _qCRTaskState_.4582(%rip)
+	movl	$143, _qCRTaskState_.4588(%rip)
 	jmp	.L38
 .L43:
 	.loc 1 144 0
 	movl	$99, %ecx
 	call	putchar
 	.loc 1 145 0
-	movl	$145, _qCRTaskState_.4582(%rip)
+	movl	$145, _qCRTaskState_.4588(%rip)
 	nop
 .L38:
 	.loc 1 148 0
@@ -864,7 +864,7 @@ TaskY_Callback:
 	.seh_stackalloc	32
 	.seh_endprologue
 	.loc 1 152 0
-	movl	_qCRTaskState_.4592(%rip), %eax
+	movl	_qCRTaskState_.4598(%rip), %eax
 	cmpl	$154, %eax
 	je	.L49
 	cmpl	$154, %eax
@@ -888,21 +888,21 @@ TaskY_Callback:
 	movl	$49, %ecx
 	call	putchar
 	.loc 1 154 0
-	movl	$154, _qCRTaskState_.4592(%rip)
+	movl	$154, _qCRTaskState_.4598(%rip)
 	jmp	.L47
 .L49:
 	.loc 1 155 0
 	movl	$50, %ecx
 	call	putchar
 	.loc 1 156 0
-	movl	$156, _qCRTaskState_.4592(%rip)
+	movl	$156, _qCRTaskState_.4598(%rip)
 	jmp	.L47
 .L52:
 	.loc 1 157 0
 	leaq	.LC5(%rip), %rcx
 	call	puts
 	.loc 1 158 0
-	movl	$158, _qCRTaskState_.4592(%rip)
+	movl	$158, _qCRTaskState_.4598(%rip)
 	nop
 .L47:
 	.loc 1 161 0
@@ -1046,18 +1046,18 @@ main:
 	.cfi_endproc
 .LFE24:
 	.seh_endproc
-.lcomm x.4519,4,4
-.lcomm Maquina1.4545,32,32
-.lcomm Timer.4552,24,16
+.lcomm x.4525,4,4
+.lcomm Maquina1.4551,56,32
+.lcomm Timer.4558,24,16
 	.data
 	.align 4
-_qCRTaskState_.4553:
+_qCRTaskState_.4559:
 	.long	-32766
 	.align 4
-_qCRTaskState_.4582:
+_qCRTaskState_.4588:
 	.long	-32766
 	.align 4
-_qCRTaskState_.4592:
+_qCRTaskState_.4598:
 	.long	-32766
 	.section .rdata,"dr"
 	.align 4
@@ -1089,7 +1089,7 @@ _qCRTaskState_.4592:
 	.file 5 "QuarkTS.h"
 	.section	.debug_info,"dr"
 .Ldebug_info0:
-	.long	0xbaf
+	.long	0xbe8
 	.word	0x4
 	.secrel32	.Ldebug_abbrev0
 	.byte	0x8
@@ -1476,78 +1476,96 @@ _qCRTaskState_.4592:
 	.long	0x4ab
 	.uleb128 0x6
 	.ascii "_qSM_t\0"
-	.byte	0x20
+	.byte	0x38
 	.byte	0x5
-	.byte	0xb6
-	.long	0x559
+	.byte	0xb7
+	.long	0x592
 	.uleb128 0x7
 	.ascii "NextState\0"
 	.byte	0x5
-	.byte	0xb7
-	.long	0x573
+	.byte	0xb8
+	.long	0x5ac
 	.byte	0
 	.uleb128 0x7
 	.ascii "PreviousState\0"
 	.byte	0x5
-	.byte	0xb8
-	.long	0x573
+	.byte	0xb9
+	.long	0x5ac
 	.byte	0x8
 	.uleb128 0x7
 	.ascii "PreviousReturnStatus\0"
 	.byte	0x5
-	.byte	0xb9
+	.byte	0xba
 	.long	0x4e4
 	.byte	0x10
 	.uleb128 0xd
 	.secrel32	.LASF0
 	.byte	0x5
-	.byte	0xba
+	.byte	0xbb
 	.long	0x102
 	.byte	0x18
+	.uleb128 0x7
+	.ascii "__Failure\0"
+	.byte	0x5
+	.byte	0xbc
+	.long	0x5ac
+	.byte	0x20
+	.uleb128 0x7
+	.ascii "__Success\0"
+	.byte	0x5
+	.byte	0xbd
+	.long	0x5ac
+	.byte	0x28
+	.uleb128 0x7
+	.ascii "__Unexpected\0"
+	.byte	0x5
+	.byte	0xbe
+	.long	0x5ac
+	.byte	0x30
 	.byte	0
 	.uleb128 0x10
 	.long	0x4e4
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0xf
-	.long	0x568
+	.long	0x5a1
 	.byte	0
 	.uleb128 0x4
 	.byte	0x8
-	.long	0x56e
+	.long	0x5a7
 	.uleb128 0xb
 	.long	0x4f8
 	.uleb128 0x4
 	.byte	0x8
-	.long	0x559
+	.long	0x592
 	.uleb128 0xc
 	.byte	0x18
 	.byte	0x5
-	.byte	0xd3
-	.long	0x5a6
+	.byte	0xd7
+	.long	0x5df
 	.uleb128 0x7
 	.ascii "SR\0"
 	.byte	0x5
-	.byte	0xd4
+	.byte	0xd8
 	.long	0x8e
 	.byte	0
 	.uleb128 0x7
 	.ascii "Start\0"
 	.byte	0x5
-	.byte	0xd5
+	.byte	0xd9
 	.long	0x267
 	.byte	0x8
 	.uleb128 0x7
 	.ascii "TV\0"
 	.byte	0x5
-	.byte	0xd5
+	.byte	0xd9
 	.long	0x267
 	.byte	0x10
 	.byte	0
 	.uleb128 0x5
 	.ascii "qSTimer_t\0"
 	.byte	0x5
-	.byte	0xd6
-	.long	0x579
+	.byte	0xda
+	.long	0x5b2
 	.uleb128 0x11
 	.ascii "primero\0"
 	.byte	0x1
@@ -1557,12 +1575,12 @@ _qCRTaskState_.4592:
 	.quad	.LFE7-.LFB7
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x603
+	.long	0x63c
 	.uleb128 0x12
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0xe
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -1570,7 +1588,7 @@ _qCRTaskState_.4592:
 	.ascii "TaskEventData\0"
 	.byte	0x1
 	.byte	0xf
-	.long	0x603
+	.long	0x63c
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
@@ -1587,12 +1605,12 @@ _qCRTaskState_.4592:
 	.quad	.LFE8-.LFB8
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x63d
+	.long	0x676
 	.uleb128 0x12
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x1c
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -1606,12 +1624,12 @@ _qCRTaskState_.4592:
 	.quad	.LFE9-.LFB9
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x684
+	.long	0x6bd
 	.uleb128 0x12
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x22
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -1622,7 +1640,7 @@ _qCRTaskState_.4592:
 	.long	0xc2
 	.uleb128 0x9
 	.byte	0x3
-	.quad	x.4519
+	.quad	x.4525
 	.byte	0
 	.uleb128 0x11
 	.ascii "smerror\0"
@@ -1633,12 +1651,12 @@ _qCRTaskState_.4592:
 	.quad	.LFE10-.LFB10
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6b8
+	.long	0x6f1
 	.uleb128 0x12
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x2d
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -1652,12 +1670,12 @@ _qCRTaskState_.4592:
 	.quad	.LFE11-.LFB11
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6e9
+	.long	0x722
 	.uleb128 0x12
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x31
-	.long	0x568
+	.long	0x5a1
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -1671,7 +1689,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE12-.LFB12
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x741
+	.long	0x77a
 	.uleb128 0x14
 	.ascii "varargin\0"
 	.byte	0x1
@@ -1697,7 +1715,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE13-.LFB13
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x777
+	.long	0x7b0
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1715,7 +1733,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE14-.LFB14
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x7c7
+	.long	0x800
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1728,10 +1746,10 @@ _qCRTaskState_.4592:
 	.ascii "Maquina1\0"
 	.byte	0x1
 	.byte	0x47
-	.long	0x56e
+	.long	0x5a7
 	.uleb128 0x9
 	.byte	0x3
-	.quad	Maquina1.4545
+	.quad	Maquina1.4551
 	.byte	0
 	.uleb128 0x15
 	.ascii "Task3Callback\0"
@@ -1741,7 +1759,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE15-.LFB15
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x7fd
+	.long	0x836
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1759,7 +1777,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE16-.LFB16
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x86e
+	.long	0x8a7
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1772,10 +1790,10 @@ _qCRTaskState_.4592:
 	.ascii "Timer\0"
 	.byte	0x1
 	.byte	0x56
-	.long	0x5a6
+	.long	0x5df
 	.uleb128 0x9
 	.byte	0x3
-	.quad	Timer.4552
+	.quad	Timer.4558
 	.uleb128 0x16
 	.secrel32	.LASF3
 	.byte	0x1
@@ -1783,7 +1801,7 @@ _qCRTaskState_.4592:
 	.long	0x1e2
 	.uleb128 0x9
 	.byte	0x3
-	.quad	_qCRTaskState_.4553
+	.quad	_qCRTaskState_.4559
 	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
@@ -1798,7 +1816,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE17-.LFB17
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x8a4
+	.long	0x8dd
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1816,7 +1834,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE18-.LFB18
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x8da
+	.long	0x913
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1834,7 +1852,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE19-.LFB19
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x913
+	.long	0x94c
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1852,7 +1870,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE20-.LFB20
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x950
+	.long	0x989
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1870,7 +1888,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE21-.LFB21
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x98b
+	.long	0x9c4
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1888,7 +1906,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE22-.LFB22
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x9e6
+	.long	0xa1f
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1904,7 +1922,7 @@ _qCRTaskState_.4592:
 	.long	0x1e2
 	.uleb128 0x9
 	.byte	0x3
-	.quad	_qCRTaskState_.4582
+	.quad	_qCRTaskState_.4588
 	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
@@ -1919,7 +1937,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE23-.LFB23
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xa4a
+	.long	0xa83
 	.uleb128 0x12
 	.secrel32	.LASF2
 	.byte	0x1
@@ -1940,7 +1958,7 @@ _qCRTaskState_.4592:
 	.long	0x1e2
 	.uleb128 0x9
 	.byte	0x3
-	.quad	_qCRTaskState_.4592
+	.quad	_qCRTaskState_.4598
 	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
@@ -1956,7 +1974,7 @@ _qCRTaskState_.4592:
 	.quad	.LFE24-.LFB24
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xaa3
+	.long	0xadc
 	.uleb128 0x14
 	.ascii "argc\0"
 	.byte	0x1
@@ -1969,7 +1987,7 @@ _qCRTaskState_.4592:
 	.ascii "argv\0"
 	.byte	0x1
 	.byte	0xa3
-	.long	0xaa3
+	.long	0xadc
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -1977,7 +1995,7 @@ _qCRTaskState_.4592:
 	.ascii "_qQueueStack\0"
 	.byte	0x1
 	.byte	0xa5
-	.long	0xab9
+	.long	0xaf2
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -176
@@ -1987,13 +2005,13 @@ _qCRTaskState_.4592:
 	.long	0x121
 	.uleb128 0x1a
 	.long	0x496
-	.long	0xab9
+	.long	0xaf2
 	.uleb128 0x1b
 	.long	0x115
 	.byte	0x9
 	.byte	0
 	.uleb128 0xb
-	.long	0xaa9
+	.long	0xae2
 	.uleb128 0x1c
 	.ascii "TimerEmulation\0"
 	.byte	0x1

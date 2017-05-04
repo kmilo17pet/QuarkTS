@@ -2558,11 +2558,15 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 180 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
+
     struct _qSM_t{
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
         void *UserData;
+        qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Success)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
     };
 
 
@@ -2570,7 +2574,7 @@ int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData);
-# 211 "QuarkTS.h"
+# 215 "QuarkTS.h"
         typedef struct{
             unsigned char SR;
             qClock_t Start, TV;

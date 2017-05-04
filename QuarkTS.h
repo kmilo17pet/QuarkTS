@@ -179,11 +179,15 @@ extern "C" {
     
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
+      
     struct _qSM_t{
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
         void *UserData;
+        qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Success)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
     };
 
     #define qSM_t volatile struct _qSM_t

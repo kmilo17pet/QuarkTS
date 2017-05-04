@@ -90,11 +90,15 @@
 # 180 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
+
     struct _qSM_t{
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
         void *UserData;
+        qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Success)(volatile struct _qSM_t*);
+        qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
     };
 
 
@@ -102,7 +106,7 @@
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData);
-# 211 "QuarkTS.h"
+# 215 "QuarkTS.h"
         typedef struct{
             unsigned char SR;
             qClock_t Start, TV;
@@ -116,14 +120,7 @@ volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static volatile struct _qTask_t* _qDequeueTaskEvent(void);
-
-
-static qSM_Status_t (*__qSM_Failure)(volatile struct _qSM_t*) = ((void*)0);
-static qSM_Status_t (*__qSM_Success)(volatile struct _qSM_t*) = ((void*)0);
-static qSM_Status_t (*__qSM_Unexpected)(volatile struct _qSM_t*) = ((void*)0);
-
-
-
+# 34 "QuarkTS.c"
 void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata){
     Task->Flag.AsyncRun = 1;
     Task->AsyncData = eventdata;
@@ -353,9 +350,9 @@ int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_
     if(InitState == ((void*)0)) return -1;
     obj->NextState = InitState;
     obj->PreviousState = ((void*)0);
-    __qSM_Failure = FailureState;
-    __qSM_Success = SuccessState;
-    __qSM_Unexpected = UnexpectedState;
+    obj->__Failure = FailureState;
+    obj->__Success = SuccessState;
+    obj->__Unexpected = UnexpectedState;
     return 0;
 }
 
@@ -371,13 +368,13 @@ void _qStateMachine_Run(volatile struct _qSM_t *obj, void *UserData){
 
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE:
-            if(__qSM_Failure != ((void*)0)) __qSM_Failure(obj);
+            if(obj->__Failure != ((void*)0)) obj->__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:
-            if(__qSM_Success != ((void*)0)) __qSM_Success(obj);
+            if(obj->__Success != ((void*)0)) obj->__Success(obj);
             break;
         default:
-            if(__qSM_Unexpected != ((void*)0)) __qSM_Unexpected(obj);
+            if(obj->__Unexpected != ((void*)0)) obj->__Unexpected(obj);
             break;
     }
  }
