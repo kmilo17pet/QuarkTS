@@ -24,12 +24,6 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static qTask_t* _qDequeueTaskEvent(void);
 
-
-//static qSM_Status_t (*__qSM_Failure)(volatile struct _qSM_t*) = NULL;
-//static qSM_Status_t (*__qSM_Success)(volatile struct _qSM_t*) = NULL;
-//static qSM_Status_t (*__qSM_Unexpected)(volatile struct _qSM_t*) = NULL;
-
-
 /*================================================================================================================================================*/
 void _qSendEvent(qTask_t *Task, void* eventdata){
     Task->Flag.AsyncRun = 1;
@@ -55,7 +49,7 @@ void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
 /*================================================================================================================================================*/
 void _qEnableDisable(qTask_t *Task, unsigned char Value){
     if(Value) Task->TimeElapsed = 0;
-    Task->Flag.State = Value;
+    Task->Flag.Enabled = Value;
     if(!Value) Task->TimeElapsed = 0;
 }
 /*================================================================================================================================================*/
@@ -147,7 +141,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     unsigned char i;
     QUARKTS.First = NULL;
     QUARKTS.Tick = ISRTick;
-    QUARKTS.IDLECallback = IdleCallback;
+    //QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = NULL;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
@@ -166,10 +160,10 @@ void _qISRHandler(void){
     if(!QUARKTS.Flag.Init) return;  
     qTask_t *Task =  QUARKTS.First;
     while(Task != NULL){
-        if( Task->Flag.State  && Task->Interval>0){
+        if( Task->Flag.Enabled  && Task->Interval>0){
             Task->TimeElapsed++;
             if(Task->TimeElapsed >= Task->Interval){ 
-                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;
+                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;              
                 Task->TimeElapsed = 0; 
             }
         }
@@ -178,7 +172,6 @@ void _qISRHandler(void){
     #ifdef QSTIMER
         QUARKTS.epochs++;
     #endif
-    
 }
 /*============================================================================*/
 int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
@@ -188,9 +181,9 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->UserData = arg;
     Task->Priority = Priority;
-    Task->Iterations = nExecutions;
+    Task->Iterations = nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->Flag.State = (unsigned char)(InitialState != 0);
+    Task->Flag.Enabled = (unsigned char)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     Task->Cycles = 0;
@@ -234,19 +227,20 @@ static void _qTaskChainbyPriority(void){
 /*============================================================================*/
 void _qStart(void){
     qTask_t *Task, *qTask;
-    pMainSchedule:
-    if(QUARKTS.Flag.ReleaseSched) goto pReleasedSchedule;
+    qMainSchedule:
+    if(QUARKTS.Flag.ReleaseSched) goto qReleasedSchedule;
     if(!QUARKTS.Flag.Init){    
         _qTaskChainbyPriority();
         QUARKTS.Flag.Init= 1;
     }
     Task = QUARKTS.First;
     while(Task != NULL){
-        if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction); //if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);         
-        if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.State){
+        if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);          
+        
+        if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.Enabled){
             Task->Flag.TimedTaskRun--;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
-            if(Task->Iterations == 0) Task->Flag.State = 0;
+            if(Task->Iterations == 0) Task->Flag.Enabled = 0;
             _qTriggerEvent(Task, byTimeElapsed);
         }
         else if( Task->Flag.AsyncRun){
@@ -262,8 +256,8 @@ void _qStart(void){
         }
         Task = Task->Next;
     }
-    goto pMainSchedule;
-    pReleasedSchedule:
+    goto qMainSchedule;
+    qReleasedSchedule:
     QUARKTS.Flag.Init = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallReleased);
@@ -282,9 +276,9 @@ int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessSt
     return 0;
 }
 /*============================================================================*/
-void _qStateMachine_Run(qSM_t *obj, void *UserData){
+void _qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL;
-    obj->UserData = UserData;
+    obj->Data = Data;
     if(obj->NextState!=NULL){
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
@@ -304,7 +298,6 @@ void _qStateMachine_Run(qSM_t *obj, void *UserData){
             break;
     }
  }
-
 #ifdef QSTIMER
 /*=================================================================================================*/
 int _qSTimerSet(qSTimer_t *obj, qTime_t Time){    
@@ -317,7 +310,7 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time){
 /*=================================================================================================*/
 unsigned char _qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return 0; 
-    return ((QUARKTS.epochs - obj->Start)>obj->TV);
+    return ((QUARKTS.epochs - obj->Start)>=obj->TV);
 }
 /*=================================================================================================*/
 #endif

@@ -12,7 +12,7 @@ qSM_Status_t tercero(qSM_t* Machine);
 
 /*MACHINE STATES =============================================================*/
 qSM_Status_t primero(qSM_t* Machine){   
-    qEvent_t *TaskEventData = (qEvent_t *)Machine->UserData;
+    qEvent_t *TaskEventData = (qEvent_t *)Machine->Data;
     printf("%s %s \r\n",TaskEventData->EventData, TaskEventData->UserData);
     if(Machine->PreviousState == NULL){
         puts("Running by first time.");
@@ -24,13 +24,13 @@ qSM_Status_t primero(qSM_t* Machine){
     Machine->NextState = segundo;
     return qSM_EXIT_SUCCESS;
 }
-
+/*============================================================================*/
 qSM_Status_t segundo(qSM_t* Machine){
     puts("2");
     Machine->NextState = tercero;
     return qSM_EXIT_SUCCESS;
 }
-
+/*============================================================================*/
 qSM_Status_t tercero(qSM_t* Machine){
     static int x = 0;
     puts("3");
@@ -41,17 +41,16 @@ qSM_Status_t tercero(qSM_t* Machine){
     }
     return qSM_EXIT_SUCCESS;
 }
-
+/*============================================================================*/
 qSM_Status_t smerror(qSM_t* Machine){
     puts("error");
 }
-
+/*============================================================================*/
 qSM_Status_t smok(qSM_t* Machine){
     puts("ok...");
 }
 
 /*============================================================================*/
-
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* varargin){
     struct timespec tick={0, 0.01*1E9};
@@ -60,13 +59,13 @@ void* TimerInterruptEmulation(void* varargin){
         qISRHandler();
     }
 }
-
+/*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST;
 
 void Task1Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
 }
-
+/*============================================================================*/
 void Task2Callback(qEvent_t Data){
     static qSM_t Maquina1;
     if(Data.FirstCall){
@@ -75,17 +74,17 @@ void Task2Callback(qEvent_t Data){
     qStateMachine_Run(Maquina1, &Data);
     printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, qGetCycles(Task2));
 }
-
+/*============================================================================*/
 void Task3Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
     //qQueueEvent(Task2, "B"); 
     //qQueueEvent(Task1, "Z"); 
 }
-
+/*============================================================================*/
 void Task4Callback(qEvent_t Data){
     static qSTimer_t Timer;
     if(Data.FirstCall){
-        qSTimerSet(Timer, 5.0);
+        
     }  
     printf("Userdata : %s  Eventdata:%s    %d\r\n", Data.UserData, Data.EventData,qGetCycles(Task4));
     qCoroutineBegin{              
@@ -94,7 +93,7 @@ void Task4Callback(qEvent_t Data){
         
         qQueueEvent(Task1, "B");
         qCoroutineYield;
-        
+        qSTimerSet(Timer, 5.0);
         qCoroutineWaitUntil(qSTimerExpired(Timer));
         qSTimerSet(Timer, 2.0);
         qQueueEvent(Task1, "C");       
@@ -110,30 +109,29 @@ void Task4Callback(qEvent_t Data){
         qCoroutineYield;
     }qCoroutineEnd;
 }
-
+/*============================================================================*/
 void Task5Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
     
 }
-
+/*============================================================================*/
 void Task6Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);   
 }
-
-
+/*============================================================================*/
 void IdleTaskCallback(qEvent_t Data){
 
 }
-
+/*============================================================================*/
 void SchedReleaseCallback(qEvent_t Data){
     puts("\r\nScheduler Released");
 }
-
+/*============================================================================*/
 void TaskTestSTCallback(qEvent_t Data){
 
 
 }
-
+/*============================================================================*/
 qTask_t TaskX, TaskY;
 void TaskX_Callback(qEvent_t Data){
     qCoroutineBegin{
@@ -146,7 +144,7 @@ void TaskX_Callback(qEvent_t Data){
         
     }qCoroutineEnd;
 }
-
+/*============================================================================*/
 void TaskY_Callback(qEvent_t Data){
     int i;
     qCoroutineBegin{
@@ -159,7 +157,7 @@ void TaskY_Callback(qEvent_t Data){
         
     }qCoroutineEnd;    
 }
-
+/*============================================================================*/
 int main(int argc, char** argv) {
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qSetup(0.01, IdleTaskCallback, 10);
@@ -170,10 +168,9 @@ int main(int argc, char** argv) {
     qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
     qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, "TASK4");
     qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
-    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");
+    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");   
     //qCreateTask(TaskY, TaskY_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
-    //qCreateTask(TaskX, TaskX_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
-    
+    //qCreateTask(TaskX, TaskX_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);    
     //qCreateTask(TaskTestST,  TaskTestSTCallback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, NULL);
     qSchedule();
     return (EXIT_SUCCESS);

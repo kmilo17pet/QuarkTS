@@ -24,6 +24,9 @@
 extern "C" {
 #endif
         
+    
+    #include <stdint.h>
+
     #define _QUARKTS_CR_DEFS_
     #ifndef NULL
         #define NULL ((void*)0)
@@ -49,16 +52,14 @@ extern "C" {
         #define $RestoreAfterYield      $qRestorator($qTaskProgress)
         #define $RestoreFromBegin       $qRestorator(qCR_PCInitVal)
     #endif
- 
 
-        
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
-    typedef volatile unsigned long qClock_t;
-    typedef unsigned char qPriority_t;
-    typedef unsigned char qIteration_t;
-    typedef unsigned char qState_t;
-    typedef unsigned char qBool_t;
+    typedef volatile uint32_t qClock_t;
+    typedef uint8_t qPriority_t;
+    typedef uint8_t qIteration_t;
+    typedef uint8_t qState_t;
+    typedef uint8_t qBool_t;
     
 
     #define LOWEST_Priority     (qPriority_t)(0)
@@ -79,41 +80,34 @@ extern "C" {
         qBool_t FirstCall;
     }qEvent_t;
     
-    typedef void (*qTaskFcn_t)(qEvent_t);
-    
+    typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{
-    	volatile unsigned char TimedTaskRun;
-        volatile unsigned char InitFlag;
-        volatile unsigned char AsyncRun;
-        volatile unsigned char State;
-        volatile unsigned char IgnoreOveruns;
+    	volatile uint8_t TimedTaskRun, InitFlag, AsyncRun, IgnoreOveruns, Enabled;
     }qTaskFlags_t;
-
+       
+    typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
+   
     struct _qTask_t{
         void *UserData,*AsyncData;
         qClock_t Interval, TimeElapsed;
         qIteration_t Iterations;
-        unsigned long Cycles;
+        uint32_t Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
         volatile struct _qTask_t *Next;
     };
     #define qTask_t volatile struct _qTask_t
-
+             
     typedef struct{
         qTask_t *Task;
         void *QueueData;
     }qQueueStack_t;
 
     typedef struct{
-    	unsigned char Init;
-        unsigned char FCallIdle;
-        unsigned char ReleaseSched;
-        unsigned char FCallReleased;
+    	uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
     }qTaskCoreFlags_t;
-
-    
+   
     typedef struct{
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
@@ -122,8 +116,8 @@ extern "C" {
         qTask_t *First;
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
-        unsigned char QueueSize, QueueIndex;
-        volatile unsigned char NotSafeQueue;
+        uint8_t QueueSize, QueueIndex;
+        volatile uint8_t NotSafeQueue;
         #ifdef QSTIMER
         volatile qClock_t epochs;
         #endif
@@ -175,35 +169,32 @@ extern "C" {
     #if !defined(QPRIORITY_FIFO_QUEUE) && !defined(QSIMPLE_FIFO_QUEUE) 
         #define QPRIORITY_FIFO_QUEUE
     #endif
-
-    
+   
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
-
-      
-    struct _qSM_t{
-        qSM_Status_t (*NextState)(volatile struct _qSM_t*);
-        qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
-        qSM_Status_t PreviousReturnStatus;
-        void *UserData;
-        qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
-        qSM_Status_t (*__Success)(volatile struct _qSM_t*);
-        qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
-    };
-
+     
     #define qSM_t volatile struct _qSM_t
+    struct _qSM_t{
+        qSM_Status_t (*NextState)(qSM_t*);
+        qSM_Status_t (*PreviousState)(qSM_t*);
+        qSM_Status_t PreviousReturnStatus;
+        void *Data;
+        qSM_Status_t (*__Failure)(qSM_t*);
+        qSM_Status_t (*__Success)(qSM_t*);
+        qSM_Status_t (*__Unexpected)(qSM_t*);
+    };    
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
 
     int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
-    void _qStateMachine_Run(qSM_t *obj, void *UserData);
+    void _qStateMachine_Run(qSM_t *obj, void *Data);
 
     #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
     #define qStateMachine_Run(OBJ, USERDATA)   _qStateMachine_Run(&OBJ, USERDATA) 
     
     #ifdef _QUARKTS_CR_DEFS_    
-        #define $qCRStart               $qPersistent  $qTaskInitState ;  $qTaskCheckPCJump($qTaskPCVar) $RestoreFromBegin ; $qCRKeep
-        #define $qCRYield               { $qTaskSaveState ; $qTaskYield  $RestoreAfterYield; }
-        #define $qCRRestart             { $qTaskInitState ; $qTaskYield }
-        #define $qCR_wu_Assert(_cond_)  { $qTaskSaveState ; $RestoreAfterYield ; $qAssert(_cond_) $qTaskYield }
+        #define $qCRStart                               $qPersistent  $qTaskInitState ;  $qTaskCheckPCJump($qTaskPCVar) $RestoreFromBegin ; $qCRKeep
+        #define $qCRYield                               { $qTaskSaveState ; $qTaskYield  $RestoreAfterYield; }
+        #define $qCRRestart                             { $qTaskInitState ; $qTaskYield }
+        #define $qCR_wu_Assert(_cond_)                  { $qTaskSaveState ; $RestoreAfterYield ; $qAssert(_cond_) $qTaskYield }
 
         #define qCoroutineBegin                         $qCRStart
         #define qCoroutineYield                         $qCRYield            
@@ -213,17 +204,16 @@ extern "C" {
     #endif
     #ifdef QSTIMER
         typedef struct{
-            unsigned char SR;
+            uint8_t SR;
             qClock_t Start, TV;
         }qSTimer_t;
-
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
         unsigned char _qSTimerExpired(qSTimer_t *obj);
         #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time)
         #define qSTimerExpired(OBJ)   _qSTimerExpired(&OBJ)
         #define qSTimerDisarm(OBJ)      (OBJ.SR = 0)
     #endif
-    
+        
 #ifdef	__cplusplus
 }
 #endif
