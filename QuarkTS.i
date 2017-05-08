@@ -3,7 +3,7 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "QuarkTS.c"
-# 20 "QuarkTS.c"
+# 19 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
 # 28 "QuarkTS.h"
 # 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
@@ -238,13 +238,12 @@ typedef __uint_least64_t uint_least64_t;
         }qSTimer_t;
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
         unsigned char _qSTimerExpired(qSTimer_t *obj);
-# 21 "QuarkTS.c" 2
+# 20 "QuarkTS.c" 2
 
 volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static volatile struct _qTask_t* _qDequeueTaskEvent(void);
-
 
 void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata){
     Task->Flag.AsyncRun = 1;
@@ -302,13 +301,11 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
 
 
 
-
     QUARKTS.QueueIndex++;
     if(QUARKTS.QueueIndex==1){
         QUARKTS.NotSafeQueue = 0;
         return 0;
     }
-
 
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
@@ -341,12 +338,12 @@ static volatile struct _qTask_t* _qDequeueTaskEvent(void){
     }
     return ((void*)0);
 }
-# 140 "QuarkTS.c"
+# 136 "QuarkTS.c"
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
     QUARKTS.First = ((void*)0);
     QUARKTS.Tick = ISRTick;
-
+    QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = ((void*)0);
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
@@ -388,7 +385,7 @@ int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriori
     Task->Priority = Priority;
     Task->Iterations = nExecutions;
     Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
-    Task->Flag.Enabled = (unsigned char)(InitialState != 0);
+    Task->Flag.Enabled = (uint8_t)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     Task->Cycles = 0;
@@ -397,7 +394,7 @@ int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriori
 
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger = Event;
-    QUARKTS.EventInfo.FirstCall = (unsigned char)(!Task->Flag.InitFlag);
+    QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);
     QUARKTS.EventInfo.UserData = Task->UserData;
     if (Task->Callback != ((void*)0)) Task->Callback(QUARKTS.EventInfo);
     Task->Flag.InitFlag = 1;
@@ -454,7 +451,7 @@ void _qStart(void){
             _qTriggerEvent(Task, byAsyncEvent);
         }
         else if( QUARKTS.IDLECallback!= ((void*)0)){
-            QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallIdle);
+            QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = byPriority;
             QUARKTS.IDLECallback(QUARKTS.EventInfo);
             QUARKTS.Flag.FCallIdle = 1;
@@ -465,7 +462,7 @@ void _qStart(void){
     qReleasedSchedule:
     QUARKTS.Flag.Init = 0;
     QUARKTS.Flag.ReleaseSched = 0;
-    QUARKTS.EventInfo.FirstCall = (unsigned char)(!QUARKTS.Flag.FCallReleased);
+    QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallReleased);
     QUARKTS.EventInfo.Trigger = byAsyncEvent;
     if(QUARKTS.ReleaseSchedCallback!=((void*)0)) QUARKTS.ReleaseSchedCallback(QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = 1;
