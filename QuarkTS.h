@@ -177,6 +177,7 @@ extern "C" {
         qSM_Status_t (*NextState)(qSM_t*);
         qSM_Status_t (*PreviousState)(qSM_t*);
         qSM_Status_t PreviousReturnStatus;
+        qBool_t StateJustChanged;
         void *Data;
         qSM_Status_t (*__Failure)(qSM_t*);
         qSM_Status_t (*__Success)(qSM_t*);

@@ -222,6 +222,7 @@ typedef __uint_least64_t uint_least64_t;
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
         qSM_Status_t PreviousReturnStatus;
+        qBool_t StateJustChanged;
         void *Data;
         qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
         qSM_Status_t (*__Success)(volatile struct _qSM_t*);
@@ -231,7 +232,7 @@ typedef __uint_least64_t uint_least64_t;
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 206 "QuarkTS.h"
+# 207 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -482,6 +483,7 @@ void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data){
     qSM_State_t prev = ((void*)0);
     obj->Data = Data;
     if(obj->NextState!=((void*)0)){
+        obj->StateJustChanged = obj->PreviousState != obj->NextState;
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
         obj->PreviousState = prev;

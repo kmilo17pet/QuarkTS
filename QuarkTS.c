@@ -276,6 +276,7 @@ void _qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL;
     obj->Data = Data;
     if(obj->NextState!=NULL){
+        obj->StateJustChanged = obj->PreviousState != obj->NextState;
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
         obj->PreviousState = prev;

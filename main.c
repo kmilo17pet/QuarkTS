@@ -33,6 +33,9 @@ qSM_Status_t segundo(qSM_t* Machine){
 /*============================================================================*/
 qSM_Status_t tercero(qSM_t* Machine){
     static int x = 0;
+    if(Machine->StateJustChanged){
+        
+    }
     puts("3");
     Machine->NextState = primero;
     if(++x>=3){
@@ -86,7 +89,7 @@ void Task4Callback(qEvent_t Data){
     if(Data.FirstCall){
         
     }  
-    printf("Userdata : %s  Eventdata:%s    %d\r\n", Data.UserData, Data.EventData,qGetCycles(Task4));
+    printf("Userdata : %s  Eventdata:%s    %d  \r\n", Data.UserData, Data.EventData,qGetCycles(Task4));
     qCoroutineBegin{              
         qQueueEvent(Task1, "A");
         qCoroutineYield;
