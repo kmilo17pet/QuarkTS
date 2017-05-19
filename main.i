@@ -2548,6 +2548,8 @@ typedef __uint_least64_t uint_least64_t;
 # 95 "QuarkTS.h"
         qTrigger_t Trigger;
 
+
+
         void *UserData;
 
 
@@ -2617,33 +2619,43 @@ typedef __uint_least64_t uint_least64_t;
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
-# 472 "QuarkTS.h"
+# 482 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
 
     struct _qSM_t{
 
+
+
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
+
+
 
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
 
+
+
         qSM_Status_t PreviousReturnStatus;
+
+
 
         qBool_t StateJustChanged;
 
+
+
         void *Data;
-        struct __{
-            qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
-            qSM_Status_t (*__Success)(volatile struct _qSM_t*);
-            qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
-        };
+        struct {
+            void (*__Failure)(volatile struct _qSM_t*);
+            void (*__Success)(volatile struct _qSM_t*);
+            void (*__Unexpected)(volatile struct _qSM_t*);
+        }_;
     };
     typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
-
-    int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
+    typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
+    int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 595 "QuarkTS.h"
+# 607 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -2682,6 +2694,8 @@ qSM_Status_t tercero(volatile struct _qSM_t* Machine){
     static int x = 0;
     if(Machine->StateJustChanged){
 
+
+
     }
     puts("3");
     Machine->NextState = primero;
@@ -2692,11 +2706,11 @@ qSM_Status_t tercero(volatile struct _qSM_t* Machine){
     return qSM_EXIT_SUCCESS;
 }
 
-qSM_Status_t smerror(volatile struct _qSM_t* Machine){
+void smerror(volatile struct _qSM_t* Machine){
     puts("error");
 }
 
-qSM_Status_t smok(volatile struct _qSM_t* Machine){
+void smok(volatile struct _qSM_t* Machine){
     puts("ok...");
 }
 
@@ -2739,23 +2753,23 @@ void Task4Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s    %d  \r\n", Data.UserData, Data.EventData,(Task4.Cycles));
     static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
         _qEnqueueTaskEvent(&Task1, (void*)"A");
-        { _qCRTaskState_ = 95 ; return; case (_qTaskPC_t)95:; };
+        { _qCRTaskState_ = 97 ; return; case (_qTaskPC_t)97:; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"B");
-        { _qCRTaskState_ = 98 ; return; case (_qTaskPC_t)98:; };
+        { _qCRTaskState_ = 100 ; return; case (_qTaskPC_t)100:; };
         _qSTimerSet(&Timer, (qTime_t)5.0);
-        { _qCRTaskState_ = 100 ; case (_qTaskPC_t)100: ; if(!(_qSTimerExpired(&Timer))) return; };
+        { _qCRTaskState_ = 102 ; case (_qTaskPC_t)102: ; if(!(_qSTimerExpired(&Timer))) return; };
         _qSTimerSet(&Timer, (qTime_t)2.0);
         _qEnqueueTaskEvent(&Task1, (void*)"C");
         _qEnqueueTaskEvent(&Task1, (void*)"D");
         _qSTimerSet(&Timer, (qTime_t)4.0);
-        { _qCRTaskState_ = 105 ; return; case (_qTaskPC_t)105:; };
+        { _qCRTaskState_ = 107 ; return; case (_qTaskPC_t)107:; };
         _qEnqueueTaskEvent(&Task1, (void*)"F");
 
-        { _qCRTaskState_ = 108 ; case (_qTaskPC_t)108: ; if(!(_qSTimerExpired(&Timer))) return; };
+        { _qCRTaskState_ = 110 ; case (_qTaskPC_t)110: ; if(!(_qSTimerExpired(&Timer))) return; };
 
         _qEnqueueTaskEvent(&Task1, (void*)"G");
-        { _qCRTaskState_ = 111 ; return; case (_qTaskPC_t)111:; };
+        { _qCRTaskState_ = 113 ; return; case (_qTaskPC_t)113:; };
     }goto _qCR_BEGIN_;}return;
 }
 
@@ -2785,11 +2799,11 @@ volatile struct _qTask_t TaskX, TaskY;
 void TaskX_Callback(qEvent_t Data){
     static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
         printf("a");
-        { _qCRTaskState_ = 141 ; return; case (_qTaskPC_t)141:; };
-        printf("b");
         { _qCRTaskState_ = 143 ; return; case (_qTaskPC_t)143:; };
-        printf("c");
+        printf("b");
         { _qCRTaskState_ = 145 ; return; case (_qTaskPC_t)145:; };
+        printf("c");
+        { _qCRTaskState_ = 147 ; return; case (_qTaskPC_t)147:; };
 
     }goto _qCR_BEGIN_;}return;
 }
@@ -2798,11 +2812,11 @@ void TaskY_Callback(qEvent_t Data){
     int i;
     static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
         printf("1");
-        { _qCRTaskState_ = 154 ; return; case (_qTaskPC_t)154:; };
-        printf("2");
         { _qCRTaskState_ = 156 ; return; case (_qTaskPC_t)156:; };
-        puts("3");
+        printf("2");
         { _qCRTaskState_ = 158 ; return; case (_qTaskPC_t)158:; };
+        puts("3");
+        { _qCRTaskState_ = 160 ; return; case (_qTaskPC_t)160:; };
 
     }goto _qCR_BEGIN_;}return;
 }

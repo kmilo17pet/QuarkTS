@@ -34,7 +34,9 @@ qSM_Status_t segundo(qSM_t* Machine){
 qSM_Status_t tercero(qSM_t* Machine){
     static int x = 0;
     if(Machine->StateJustChanged){
-        
+        /*
+         * TODO
+        */
     }
     puts("3");
     Machine->NextState = primero;
@@ -45,11 +47,11 @@ qSM_Status_t tercero(qSM_t* Machine){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-qSM_Status_t smerror(qSM_t* Machine){
+void smerror(qSM_t* Machine){
     puts("error");
 }
 /*============================================================================*/
-qSM_Status_t smok(qSM_t* Machine){
+void smok(qSM_t* Machine){
     puts("ok...");
 }
 

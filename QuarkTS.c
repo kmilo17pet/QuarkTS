@@ -262,13 +262,13 @@ void _qStart(void){
     QUARKTS.Flag.FCallIdle = 1;  
 }
 /*============================================================================*/
-int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState){
+int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState){
     if(InitState == NULL) return -1;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
-    obj->__Failure = FailureState;
-    obj->__Success = SuccessState;
-    obj->__Unexpected = UnexpectedState;
+    obj->_.__Failure = FailureState;
+    obj->_.__Success = SuccessState;
+    obj->_.__Unexpected = UnexpectedState;
     return 0;
 }
 /*============================================================================*/
@@ -285,13 +285,13 @@ void _qStateMachine_Run(qSM_t *obj, void *Data){
     
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE:           
-            if(obj->__Failure != NULL) obj->__Failure(obj);
+            if(obj->_.__Failure != NULL) obj->_.__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:
-            if(obj->__Success != NULL) obj->__Success(obj);
+            if(obj->_.__Success != NULL) obj->_.__Success(obj);
             break;
         default:
-            if(obj->__Unexpected != NULL) obj->__Unexpected(obj);
+            if(obj->_.__Unexpected != NULL) obj->_.__Unexpected(obj);
             break;
     }
  }
