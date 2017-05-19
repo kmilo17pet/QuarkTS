@@ -74,9 +74,35 @@ extern "C" {
     #define DISABLE             (0)
        
     typedef struct{
+        /*
+        This flag indicates the event source that triggers the task execution.
+        
+         
+        This flag can only have 4 possible values:        
+        
+        - byTimeElapsed : When the time specified for the task elapsed.
+        
+        - byPriority: When the execution chain does, according to the 
+                      priority value
+        
+        - byQueueExtraction: When the scheduler performs extraction of 
+                      task-associated data at the beginning of the 
+                      priority-queue.
+        
+        - byAsyncEvent: When the execution chain does, according to a 
+                        requirement of asynchronous event prompted by qSendEvent
+        */
         qTrigger_t Trigger;
+        /*Task arguments defined at the time of its creation.*/
         void *UserData;
+        /*
+        Associated data of the event. Only available when the trigger is 
+        <byQueueExtraction> or <byAsyncEvent>, Otherwise, this field is NULL.*/
         void *EventData;
+        /*
+        This flag indicates that a task is running for the first time. 
+        This flag can be used for data initialization purposes.
+        */
         qBool_t FirstCall;
     }qEvent_t;
     
@@ -138,31 +164,304 @@ extern "C" {
     void _qSetUserData(qTask_t *Task, void* arg);
     void _qClearTimeElapse(qTask_t *Task);
     
+    /*
+void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
+    
+Task Scheduler Setup. This function is required and must be called once in 
+the application main thread befone any tasks creation.
+
+Parameters:
+
+    - ISRTick : This parameter specifies the ISR background timer period in 
+                seconds(Floating-point format).
+
+    - IDLE_Callback : Callback function to the Idle Task. To disable the 
+                      Idle Task functionality, pass NULL as argument.
+
+    - QueueSize : Size of the priority queue. This argument should be an integer
+                  number greater than zero
+     */
     #define qSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
+    /*
+void qISRHandler(void)
+
+Feed the scheduler tick and triggers time-elapsed tasks. This function is 
+required, and must be called once inside the dedicated timer interrupt
+service routine. 
+     */    
     #define qISRHandler()                                                               _qISRHandler()
+    /*
+int qCreateTask(qTask_t Identifier, qTaskFcn_t Callback, qPriority_t pValue, qTime_t tValue, qIteration_t iValue, qState_t  InitValue, void* USERDATA)
+
+Creates a task defined by Identifier, that is scheduled to run every tValue 
+seconds, iValue times and executing Callback method on every pass with 
+pValue Priority.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Callback : A pointer to a void callback method with a qEvent_t parameter 
+                 as input argument.
+
+    - pValue : Task priority Value. [0(min) - 255(max)]
+
+    - tValue : Execution interval defined in seconds (floating-point format). 
+               For inmediate execution (tValue = TIME_INMEDIATE).
+
+    - iValue : Number of task executions (Integer value). For indefinite 
+               execution (iValue = PERIODIC or INDEFINITE). Tasks do not 
+               remember the number of iteration set initially. After the 
+               iterations are done, internal iteration counter is 0. If you 
+               need to perform another set of iterations, you need to set the 
+               number of iterations again.
+    >Note 1: Tasks which performed all their iterations put their own 
+             state to DISABLED.
+    >Note 2: Asynchronous triggers do not affect the iteration counter.
+
+    - InitValue : Specifies the initial state of the task (ENABLED or DISABLED).
+
+    - USERDATA : Represents the task arguments. All arguments must be passed by
+                 reference and cast to (void *). Only one argument is allowed, 
+                 so, for multiple arguments, create a structure that contains 
+                 all of the arguments and pass a pointer to that structure.
+
+Return value:
+
+    Returns 0 on successs, otherwise returns -1;
+    */
     #define qCreateTask(TASK, CALLBACK, PRIORITY, TIME, NEXEC, INITSTATE, USERDATA)     _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, (qTime_t)TIME, (qIteration_t)NEXEC, INITSTATE, (void*)USERDATA)
+    /*
+int qCreateEventTask(qTask_t Identifier, qTaskFcn_t Callback, qPriority_t pValue, void* USERDATA)
+
+Creates a task defined by Identifier that is scheduled with pValue Priority, 
+executing Callback method on every pass. This API creates a task with DISABLED 
+state by default , so this task will be oriented to be executed only, when 
+asynchronous events occurs. However, this behavior can be changed in execution
+time using qSetTime or qSetIterations.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Callback : A pointer to a void callback method with a qEvent_t parameter
+                 as input argument.
+
+    - pValue : Task priority Value. [0(min) - 255(max)]
+
+    - USERDATA : Represents the task arguments. All arguments must be passed by
+                 reference and cast to (void *). Only one argument is allowed, 
+                 so, for multiple arguments, create a structure that contains 
+                 all of the arguments and pass a pointer to that structure.
+     
+Return value:
+
+    Returns 0 on successs, otherwise returns -1;     
+     */
     #define qCreateEventTask(TASK, CALLBACK, PRIORITY, USERDATA)                        _qCreateTask(&TASK, CALLBACK, (qPriority_t)PRIORITY, TIME_INMEDIATE, SINGLESHOT, 0, (void*)USERDATA)  
+    /*
+    void qSchedule(void)
+    
+    Execute the task-scheduler algorithm. It must be called once, after all 
+    tasks are created.
+    */
     #define qSchedule()                                                                 _qStart()
+/*
+void qSendEvent(qTask_t Identifier, void* eventdata)
+
+Sends a simple asyncrohous event. This method marks the task as ready for 
+execution, therefore, the planner will launch the task immediately according to
+the execution chain (even if task is disabled) and setting the Trigger flag to
+"byAsyncEvent". Specific user-data can be passed through, and will be available
+inside the EventData field, only in corresponding launch.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - eventdata : Specific event user-data.
+*/
     #define qSendEvent(TASK, EVENTDATA)                                                 _qSendEvent(&TASK, (void*)EVENTDATA)
+/*
+int qQueueEvent(qTask_t Identifier, void* eventdata)
+
+Insert an asyncrohous event in the FIFO priority queue. The task will be ready 
+for execution according to the queue extraction (determined by priority), even 
+if task is disabled (More info here). When extracted, the scheduler will set 
+Trigger flag to "byQueueExtraction". Specific user-data can be passed through, 
+and will be available inside the EventData field, only in corresponding launch.
+
+Parameters:
+
+    - Identifier - The task node identifier.
+
+    - eventdata - Specific event user-data.
+
+Return value:
+
+    Return 0 if the event has been inserted in the queue, or -1 if an error 
+    occurred (The queue exceeds the size).
+*/
     #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)//_qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
+/*
+void qSetIdleTask(qTask_t Identifier, qTaskFcn_t IDLE_Callback)
 
+Establish the IDLE Task Callback
+
+Parameters:
+
+    - IDLE_Callback : A pointer to a void callback method with a qEvent_t 
+                      parameter as input argument.
+*/
     #define qSetIdleTask(IDLE_Callback)                                                 QUARKTS.IDLECallback = IDLE_Callback
+/*
+void qSetTime(qTask_t Identifier, qTime_t Value)
 
+Set/Change the Task execution interval
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Value : Execution interval defined in seconds (floating-point format). 
+              For inmediate execution (tValue = TIME_INMEDIATE).
+*/
     #define qSetTime(TASK, VALUE)                                                       _qSetTime(&TASK,  (qTime_t)VALUE)  
+/*
+void qSetIterations(qTask_t Identifier, qIteration_t Value)
+
+Set/Change the number of task iterations
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Value : Number of task executions (Integer value). For indefinite 
+              execution (iValue = PERIODIC or INDEFINITE). Tasks do not remember
+              the number of iteration set initially. After the iterations are 
+              done, internal iteration counter is 0. If you need to perform
+              another set of iterations, you need to set the number of 
+              iterations again.
+*/
     #define qSetIterations(TASK, VALUE)                                                 _qSetIterations(&TASK, (qIteration_t)VALUE) 
+/*
+void qSetSpec(qTask_t Identifier, qTime_t tValue, qIteration_t iValue)
+
+Set/Change the task time-interval and the number of task iterations.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - tValue : Execution interval defined in seconds (floating-point format). 
+               For inmediate execution (tValue = TIME_INMEDIATE).
+
+    - iValue : Number of task executions (Integer value). For indefinite 
+               execution (iValue = PERIODIC or INDEFINITE). Tasks do not 
+               remember the number of iteration set initially. After the 
+               iterations are done, internal iteration counter is 0. If you need
+               to perform another set of iterations, you need to set the number 
+               of iterations again.
+*/
     #define qSetSpec(TASK, TVALUE, IVALUE)                                              _qSetTime(&TASK, (qTime_t)TVALUE); \
                                                                                         _qSetIterations(&TASK, (qIteration_t)IVALUE) 
 
+    
+/*
+void qSetPriority(qTask_t Identifier, qPriority_t Value)
+
+Set/Change the task priority value
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Value : Priority Value. [0(min) - 255(max)]
+*/    
     #define qSetPriority(TASK,VALUE)                                                    _qSetPriority(&TASK, (qPriority_t)VALUE)   
+
     #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
     #define qDisable(TASK)                                                              _qEnableDisable(&TASK, 0) 
-    #define qSetCallback(TASK, CALLBACK)                                                _qSetCallback(&TASK, CALLBACK) 
-    #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
-    #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
-    #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
-    #define qGetCycles(TASK)                                                            (TASK.Cycles)
-    #define qIgnoreOverruns(TASK, _TF_)                                                 (TASK.Flag.IgnoreOveruns = _TF_!=0)            
+/*
+void qSetCallback(qTask_t Identifier, qTaskFcn_t Callback)
 
+Set/Change the task callback function
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+    - Callback : A pointer to a void callback method with a qEvent_t parameter 
+                 as input argument.
+*/
+    #define qSetCallback(TASK, CALLBACK)                                                _qSetCallback(&TASK, CALLBACK) 
+/*
+void qSetUserData(qTask_t Identifier, void* UserData)
+
+Retrieve the task user data
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+Return value:
+
+    A void pointer to the task user data.
+*/
+    #define qSetUserData(TASK, USERDATA)                                                _qSetUserData(&TASK, (void*)USERDATA)
+/*
+void qClearTimeElapsed(qTask_t Identifier)
+
+Clear the elapsed time of the task. Restart the internal task tick;
+
+Parameters:
+
+    - Identifier : The task node identifier.
+*/
+    #define qClearTimeElapsed(TASK)                                                     _qClearTimeElapse(TASK)
+/*
+unsigned char qIsEnabled(qTask_t Identifier)
+
+Retrieve the enabled/disabled state
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+Return value:
+
+    True if the task in on Enabled state, otherwise returns false.
+*/
+    #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
+/*
+unsigned long qGetCycles(qTask_t Identifier)
+
+Retrieve the number of task activations.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+Return value:
+
+    A unsigned long value containing the number of task activations.
+*/
+    #define qGetCycles(TASK)                                                            (TASK.Cycles)
+/*
+void qIgnoreOverruns(qTask_t Identifier)
+ 
+Disable delayed activations when the task is behind the schedule.
+
+Parameters:
+
+    - Identifier : The task node identifier.
+*/
+    #define qIgnoreOverruns(TASK, _TF_)                                                 (TASK.Flag.IgnoreOveruns = _TF_!=0)            
+/*
+void qReleaseSchedule(void)
+
+Disables the QuarkTS scheduling. The main thread will continue after the qSchedule() call.
+*/
     #define qReleaseSchedule()                                                          QUARKTS.Flag.ReleaseSched = 1
     #define qSetReleaseSchedCallback(RELEASE_Callback)                                  QUARKTS.ReleaseSchedCallback = RELEASE_Callback
     
@@ -173,22 +472,75 @@ extern "C" {
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
      
     #define qSM_t volatile struct _qSM_t
-    struct _qSM_t{
+
+    struct _qSM_t{ 
+        /*Next state to be performed after this state finish*/
         qSM_Status_t (*NextState)(qSM_t*);
+        /*State executed before this state*/
         qSM_Status_t (*PreviousState)(qSM_t*);
+        /*The return status of <PreviusStateState>*/
         qSM_Status_t PreviousReturnStatus;
+        /*True when  <PreviousState> !=  <NextState>*/
         qBool_t StateJustChanged;
+        /*State-machine associated data*/
         void *Data;
-        qSM_Status_t (*__Failure)(qSM_t*);
-        qSM_Status_t (*__Success)(qSM_t*);
-        qSM_Status_t (*__Unexpected)(qSM_t*);
+        struct __{
+            qSM_Status_t (*__Failure)(qSM_t*);
+            qSM_Status_t (*__Success)(qSM_t*);
+            qSM_Status_t (*__Unexpected)(qSM_t*);  
+        };
     };    
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
 
     int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(qSM_t *obj, void *Data);
+/*
+int qStateMachine_Init(qSM_t FSM, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
 
+Initializes a finite state machine (FSM).
+
+Parameters:
+
+    - OBJ : The FSM object.
+
+    - InitState : The first state to be performed. This argument is a pointer 
+                  to a callback function, returning qSM_Status_t and with a 
+                  qFSM_t pointer as input argument.
+
+    - SuccessState : State performed after a state finish with return status 
+                     qSM_EXIT_SUCCESS. This argument is a pointer to a callback
+                     function, returning qSM_Status_t and with a qFSM_t pointer
+                     as input argument.
+
+    - FailureState : State performed after a state finish with return status 
+                     qSM_EXIT_FAILURE. This argument is a pointer to a callback
+                     function, returning qSM_Status_t and with a qFSM_t pointer 
+                     as input argument.
+
+    - UnexpectedState : State performed after a state finish with return status
+                        value between -32766 and 32767. This argument is a 
+                        pointer to a callback function, returning qSM_Status_t
+                        and with a qFSM_t pointer as input argument.
+
+Return value:
+
+    Returns 0 on successs, otherwise returns -1;
+*/
     #define qStateMachine_Init(OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE)   _qStateMachine_Init(&OBJ, INIT_STATE, SUCCESS_STATE, FAILURE_STATE, UNEXPECTED_STATE) 
+/*
+void qStateMachine_Run(qSM_t FSM, void* Data)
+
+Execute the Finite State Machine (FSM).
+
+Parameters:
+
+    - FSM : The FSM object.
+
+    - Data : Represents the FSM arguments. All arguments must be passed by 
+             reference and cast to (void *). Only one argument is allowed, so,
+             for multiple arguments, create a structure that contains all of 
+             the arguments and pass a pointer to that structure.
+*/    
     #define qStateMachine_Run(OBJ, USERDATA)   _qStateMachine_Run(&OBJ, USERDATA) 
     
     #ifdef _QUARKTS_CR_DEFS_    
@@ -196,11 +548,47 @@ extern "C" {
         #define $qCRYield                               { $qTaskSaveState ; $qTaskYield  $RestoreAfterYield; }
         #define $qCRRestart                             { $qTaskInitState ; $qTaskYield }
         #define $qCR_wu_Assert(_cond_)                  { $qTaskSaveState ; $RestoreAfterYield ; $qAssert(_cond_) $qTaskYield }
+/*
+qCoroutineBegin{
+  
+}qCoroutineEnd;
 
+Defines a Coroutine segment. Only one segment is allowed inside a task; 
+The qCoroutineBegin statement is used to declare the starting point of 
+a Coroutine. It should be placed at the start of the function in which the 
+Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
+It must always be used together with a matching qCoroutineBegin statement.
+*/
         #define qCoroutineBegin                         $qCRStart
-        #define qCoroutineYield                         $qCRYield            
+/*
+This statement is only allowed inside a Coroutine segment. qCoroutineYield 
+return the CPU control back to the scheduler but saving the execution progress. 
+With the next task activation, the Coroutine will resume the execution after 
+the last 'qCoroutineYield' statement.
+*/
+        #define qCoroutineYield                         $qCRYield          
+/*
+qCoroutineBegin{
+  
+}qCoroutineEnd;
+
+Defines a Coroutine segment. Only one segment is allowed inside a task; 
+The qCoroutineBegin statement is used to declare the starting point of 
+a Coroutine. It should be placed at the start of the function in which the 
+Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
+It must always be used together with a matching qCoroutineBegin statement.
+*/    
         #define qCoroutineEnd                           $qCRDispose
-        #define qCoroutineRestart                       $qCRRestart        
+/*
+This statement cause the running Coroutine to restart its execution at the 
+place of the qCoroutineBegin statement.
+*/
+        #define qCoroutineRestart                       $qCRRestart  
+/*
+qCoroutineWaitUntil(_CONDITION_)
+
+Yields until the logical condition being true
+*/    
         #define qCoroutineWaitUntil(_condition_)        $qCR_wu_Assert(_condition_)
     #endif
     #ifdef QSTIMER
@@ -210,8 +598,51 @@ extern "C" {
         }qSTimer_t;
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
         unsigned char _qSTimerExpired(qSTimer_t *obj);
+/*
+int qSTimerSet(qSTimer_t OBJ, qTime_t Time)
+ 
+Set the expiration time for a STimer. On success, the Stimer gets armed immediately
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+    - Time : The expiration time(Must be specified in seconds).
+
+>Note 1: The scheduler must be running before using STimers.
+>Note 2: The expiration time should be at least, two times greather than the 
+         scheduler-Tick.
+
+Return value:
+
+    Returns 0 on success, otherwise, returns -1.
+*/        
         #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time)
+/*
+unsigned char qSTimerExpired(qSTimer_t OBJ)
+
+Non-Blocking Stimer check
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+Return value:
+
+    Returns true when Stimer expires, otherwise, returns false.
+    > Note 1: A disarmed STimer also returns false.
+
+*/
         #define qSTimerExpired(OBJ)   _qSTimerExpired(&OBJ)
+/*
+void qSTimerDisarm(qSTimer_t OBJ)
+
+Disarms the STimer
+
+Parameters:
+
+    - OBJ : The STimer object.
+*/
         #define qSTimerDisarm(OBJ)      (OBJ.SR = 0)
     #endif
         

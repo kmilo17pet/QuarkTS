@@ -103,7 +103,6 @@ void Task4Callback(qEvent_t Data){
         qQueueEvent(Task1, "D");
         qSTimerSet(Timer, 4.0);
         qCoroutineYield;
-        
         qQueueEvent(Task1, "F");
         //qCoroutineRestart;
         qCoroutineWaitUntil(qSTimerExpired(Timer));

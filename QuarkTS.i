@@ -151,9 +151,18 @@ typedef __uint_least64_t uint_least64_t;
     typedef uint8_t qBool_t;
 # 76 "QuarkTS.h"
     typedef struct{
+# 95 "QuarkTS.h"
         qTrigger_t Trigger;
+
         void *UserData;
+
+
+
         void *EventData;
+
+
+
+
         qBool_t FirstCall;
     }qEvent_t;
 
@@ -214,25 +223,33 @@ typedef __uint_least64_t uint_least64_t;
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
-# 173 "QuarkTS.h"
+# 472 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
+
     struct _qSM_t{
+
         qSM_Status_t (*NextState)(volatile struct _qSM_t*);
+
         qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
+
         qSM_Status_t PreviousReturnStatus;
+
         qBool_t StateJustChanged;
+
         void *Data;
-        qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
-        qSM_Status_t (*__Success)(volatile struct _qSM_t*);
-        qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
+        struct __{
+            qSM_Status_t (*__Failure)(volatile struct _qSM_t*);
+            qSM_Status_t (*__Success)(volatile struct _qSM_t*);
+            qSM_Status_t (*__Unexpected)(volatile struct _qSM_t*);
+        };
     };
     typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
 
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_State_t SuccessState, qSM_State_t FailureState, qSM_State_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 207 "QuarkTS.h"
+# 595 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;

@@ -284,7 +284,7 @@ void _qStateMachine_Run(qSM_t *obj, void *Data){
     else    obj->PreviousReturnStatus = qSM_EXIT_FAILURE;
     
     switch(obj->PreviousReturnStatus){
-        case qSM_EXIT_FAILURE:
+        case qSM_EXIT_FAILURE:           
             if(obj->__Failure != NULL) obj->__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:

@@ -1639,7 +1639,7 @@ _qSTimerExpired:
 	.file 4 "QuarkTS.h"
 	.section	.debug_info,"dr"
 .Ldebug_info0:
-	.long	0xe19
+	.long	0xe3d
 	.word	0x4
 	.secrel32	.Ldebug_abbrev0
 	.byte	0x8
@@ -1770,25 +1770,25 @@ _qSTimerExpired:
 	.uleb128 0x8
 	.ascii "Trigger\0"
 	.byte	0x4
-	.byte	0x4d
+	.byte	0x5f
 	.long	0x188
 	.byte	0
 	.uleb128 0x9
 	.secrel32	.LASF0
 	.byte	0x4
-	.byte	0x4e
+	.byte	0x61
 	.long	0x256
 	.byte	0x8
 	.uleb128 0x8
 	.ascii "EventData\0"
 	.byte	0x4
-	.byte	0x4f
+	.byte	0x65
 	.long	0x256
 	.byte	0x10
 	.uleb128 0x8
 	.ascii "FirstCall\0"
 	.byte	0x4
-	.byte	0x50
+	.byte	0x6a
 	.long	0x1fe
 	.byte	0x18
 	.byte	0
@@ -1797,12 +1797,12 @@ _qSTimerExpired:
 	.uleb128 0x3
 	.ascii "qEvent_t\0"
 	.byte	0x4
-	.byte	0x51
+	.byte	0x6b
 	.long	0x20d
 	.uleb128 0x3
 	.ascii "qTaskFcn_t\0"
 	.byte	0x4
-	.byte	0x53
+	.byte	0x6d
 	.long	0x27a
 	.uleb128 0xb
 	.byte	0x8
@@ -1815,36 +1815,36 @@ _qSTimerExpired:
 	.uleb128 0x7
 	.byte	0x5
 	.byte	0x4
-	.byte	0x54
+	.byte	0x6e
 	.long	0x2f1
 	.uleb128 0x8
 	.ascii "TimedTaskRun\0"
 	.byte	0x4
-	.byte	0x55
+	.byte	0x6f
 	.long	0x2f1
 	.byte	0
 	.uleb128 0x8
 	.ascii "InitFlag\0"
 	.byte	0x4
-	.byte	0x55
+	.byte	0x6f
 	.long	0x2f1
 	.byte	0x1
 	.uleb128 0x8
 	.ascii "AsyncRun\0"
 	.byte	0x4
-	.byte	0x55
+	.byte	0x6f
 	.long	0x2f1
 	.byte	0x2
 	.uleb128 0x8
 	.ascii "IgnoreOveruns\0"
 	.byte	0x4
-	.byte	0x55
+	.byte	0x6f
 	.long	0x2f1
 	.byte	0x3
 	.uleb128 0x8
 	.ascii "Enabled\0"
 	.byte	0x4
-	.byte	0x55
+	.byte	0x6f
 	.long	0x2f1
 	.byte	0x4
 	.byte	0
@@ -1853,72 +1853,72 @@ _qSTimerExpired:
 	.uleb128 0x3
 	.ascii "qTaskFlags_t\0"
 	.byte	0x4
-	.byte	0x56
+	.byte	0x70
 	.long	0x28b
 	.uleb128 0xe
 	.ascii "_qTask_t\0"
 	.byte	0x40
 	.byte	0x4
-	.byte	0x5a
+	.byte	0x74
 	.long	0x3b8
 	.uleb128 0x9
 	.secrel32	.LASF0
 	.byte	0x4
-	.byte	0x5b
+	.byte	0x75
 	.long	0x256
 	.byte	0
 	.uleb128 0x8
 	.ascii "AsyncData\0"
 	.byte	0x4
-	.byte	0x5b
+	.byte	0x75
 	.long	0x256
 	.byte	0x8
 	.uleb128 0x8
 	.ascii "Interval\0"
 	.byte	0x4
-	.byte	0x5c
+	.byte	0x76
 	.long	0x1b2
 	.byte	0x10
 	.uleb128 0x8
 	.ascii "TimeElapsed\0"
 	.byte	0x4
-	.byte	0x5c
+	.byte	0x76
 	.long	0x1b2
 	.byte	0x14
 	.uleb128 0x8
 	.ascii "Iterations\0"
 	.byte	0x4
-	.byte	0x5d
+	.byte	0x77
 	.long	0x1da
 	.byte	0x18
 	.uleb128 0x8
 	.ascii "Cycles\0"
 	.byte	0x4
-	.byte	0x5e
+	.byte	0x78
 	.long	0x12f
 	.byte	0x1c
 	.uleb128 0x9
 	.secrel32	.LASF1
 	.byte	0x4
-	.byte	0x5f
+	.byte	0x79
 	.long	0x1c7
 	.byte	0x20
 	.uleb128 0x8
 	.ascii "Callback\0"
 	.byte	0x4
-	.byte	0x60
+	.byte	0x7a
 	.long	0x268
 	.byte	0x28
 	.uleb128 0x8
 	.ascii "Flag\0"
 	.byte	0x4
-	.byte	0x61
+	.byte	0x7b
 	.long	0x3b8
 	.byte	0x30
 	.uleb128 0x8
 	.ascii "Next\0"
 	.byte	0x4
-	.byte	0x62
+	.byte	0x7c
 	.long	0x3bd
 	.byte	0x38
 	.byte	0
@@ -1932,130 +1932,130 @@ _qSTimerExpired:
 	.uleb128 0x7
 	.byte	0x10
 	.byte	0x4
-	.byte	0x66
+	.byte	0x80
 	.long	0x3ef
 	.uleb128 0x9
 	.secrel32	.LASF2
 	.byte	0x4
-	.byte	0x67
+	.byte	0x81
 	.long	0x3bd
 	.byte	0
 	.uleb128 0x8
 	.ascii "QueueData\0"
 	.byte	0x4
-	.byte	0x68
+	.byte	0x82
 	.long	0x256
 	.byte	0x8
 	.byte	0
 	.uleb128 0x3
 	.ascii "qQueueStack_t\0"
 	.byte	0x4
-	.byte	0x69
+	.byte	0x83
 	.long	0x3c8
 	.uleb128 0x7
 	.byte	0x4
 	.byte	0x4
-	.byte	0x6b
+	.byte	0x85
 	.long	0x457
 	.uleb128 0x8
 	.ascii "Init\0"
 	.byte	0x4
-	.byte	0x6c
+	.byte	0x86
 	.long	0x120
 	.byte	0
 	.uleb128 0x8
 	.ascii "FCallIdle\0"
 	.byte	0x4
-	.byte	0x6c
+	.byte	0x86
 	.long	0x120
 	.byte	0x1
 	.uleb128 0x8
 	.ascii "ReleaseSched\0"
 	.byte	0x4
-	.byte	0x6c
+	.byte	0x86
 	.long	0x120
 	.byte	0x2
 	.uleb128 0x8
 	.ascii "FCallReleased\0"
 	.byte	0x4
-	.byte	0x6c
+	.byte	0x86
 	.long	0x120
 	.byte	0x3
 	.byte	0
 	.uleb128 0x3
 	.ascii "qTaskCoreFlags_t\0"
 	.byte	0x4
-	.byte	0x6d
+	.byte	0x87
 	.long	0x404
 	.uleb128 0x7
 	.byte	0x58
 	.byte	0x4
-	.byte	0x6f
+	.byte	0x89
 	.long	0x540
 	.uleb128 0x8
 	.ascii "IDLECallback\0"
 	.byte	0x4
-	.byte	0x70
+	.byte	0x8a
 	.long	0x268
 	.byte	0
 	.uleb128 0x8
 	.ascii "ReleaseSchedCallback\0"
 	.byte	0x4
-	.byte	0x71
+	.byte	0x8b
 	.long	0x268
 	.byte	0x8
 	.uleb128 0x8
 	.ascii "Tick\0"
 	.byte	0x4
-	.byte	0x72
+	.byte	0x8c
 	.long	0x19a
 	.byte	0x10
 	.uleb128 0x8
 	.ascii "EventInfo\0"
 	.byte	0x4
-	.byte	0x73
+	.byte	0x8d
 	.long	0x258
 	.byte	0x18
 	.uleb128 0x8
 	.ascii "First\0"
 	.byte	0x4
-	.byte	0x74
+	.byte	0x8e
 	.long	0x3bd
 	.byte	0x38
 	.uleb128 0x8
 	.ascii "Flag\0"
 	.byte	0x4
-	.byte	0x75
+	.byte	0x8f
 	.long	0x540
 	.byte	0x40
 	.uleb128 0x8
 	.ascii "QueueStack\0"
 	.byte	0x4
-	.byte	0x76
+	.byte	0x90
 	.long	0x545
 	.byte	0x48
 	.uleb128 0x8
 	.ascii "QueueSize\0"
 	.byte	0x4
-	.byte	0x77
+	.byte	0x91
 	.long	0x120
 	.byte	0x50
 	.uleb128 0x8
 	.ascii "QueueIndex\0"
 	.byte	0x4
-	.byte	0x77
+	.byte	0x91
 	.long	0x120
 	.byte	0x51
 	.uleb128 0x8
 	.ascii "NotSafeQueue\0"
 	.byte	0x4
-	.byte	0x78
+	.byte	0x92
 	.long	0x2f1
 	.byte	0x52
 	.uleb128 0x8
 	.ascii "epochs\0"
 	.byte	0x4
-	.byte	0x7a
+	.byte	0x94
 	.long	0x1b2
 	.byte	0x54
 	.byte	0
@@ -2069,14 +2069,14 @@ _qSTimerExpired:
 	.uleb128 0x3
 	.ascii "QuarkTSCoreData_t\0"
 	.byte	0x4
-	.byte	0x7c
+	.byte	0x96
 	.long	0x46f
 	.uleb128 0xf
 	.ascii "state\0"
 	.byte	0x4
 	.byte	0x4
-	.byte	0xad
-	.long	0x5a2
+	.word	0x1d8
+	.long	0x5a3
 	.uleb128 0x5
 	.ascii "qSM_EXIT_SUCCESS\0"
 	.sleb128 -32768
@@ -2084,115 +2084,125 @@ _qSTimerExpired:
 	.ascii "qSM_EXIT_FAILURE\0"
 	.sleb128 -32767
 	.byte	0
-	.uleb128 0x3
+	.uleb128 0x10
 	.ascii "qSM_Status_t\0"
 	.byte	0x4
-	.byte	0xad
+	.word	0x1d8
 	.long	0x569
-	.uleb128 0xe
+	.uleb128 0x11
+	.ascii "__\0"
+	.byte	0x18
+	.byte	0x4
+	.word	0x1e7
+	.long	0x601
+	.uleb128 0x12
+	.ascii "__Failure\0"
+	.byte	0x4
+	.word	0x1e8
+	.long	0x6a2
+	.byte	0
+	.uleb128 0x12
+	.ascii "__Success\0"
+	.byte	0x4
+	.word	0x1e9
+	.long	0x6a2
+	.byte	0x8
+	.uleb128 0x12
+	.ascii "__Unexpected\0"
+	.byte	0x4
+	.word	0x1ea
+	.long	0x6a2
+	.byte	0x10
+	.byte	0
+	.uleb128 0x13
+	.long	0x5a3
+	.long	0x610
+	.uleb128 0xd
+	.long	0x610
+	.byte	0
+	.uleb128 0xb
+	.byte	0x8
+	.long	0x616
+	.uleb128 0x6
+	.long	0x61b
+	.uleb128 0x11
 	.ascii "_qSM_t\0"
 	.byte	0x38
 	.byte	0x4
-	.byte	0xb0
-	.long	0x66a
-	.uleb128 0x8
+	.word	0x1dc
+	.long	0x6a2
+	.uleb128 0x12
 	.ascii "NextState\0"
 	.byte	0x4
-	.byte	0xb1
-	.long	0x684
+	.word	0x1de
+	.long	0x6a2
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "PreviousState\0"
 	.byte	0x4
-	.byte	0xb2
-	.long	0x684
+	.word	0x1e0
+	.long	0x6a2
 	.byte	0x8
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "PreviousReturnStatus\0"
 	.byte	0x4
-	.byte	0xb3
-	.long	0x5a2
+	.word	0x1e2
+	.long	0x5a3
 	.byte	0x10
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "StateJustChanged\0"
 	.byte	0x4
-	.byte	0xb4
+	.word	0x1e4
 	.long	0x1fe
 	.byte	0x14
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "Data\0"
 	.byte	0x4
-	.byte	0xb5
+	.word	0x1e6
 	.long	0x256
 	.byte	0x18
-	.uleb128 0x8
-	.ascii "__Failure\0"
-	.byte	0x4
-	.byte	0xb6
-	.long	0x684
+	.uleb128 0x14
+	.long	0x5b8
 	.byte	0x20
-	.uleb128 0x8
-	.ascii "__Success\0"
-	.byte	0x4
-	.byte	0xb7
-	.long	0x684
-	.byte	0x28
-	.uleb128 0x8
-	.ascii "__Unexpected\0"
-	.byte	0x4
-	.byte	0xb8
-	.long	0x684
-	.byte	0x30
 	.byte	0
+	.uleb128 0xb
+	.byte	0x8
+	.long	0x601
 	.uleb128 0x10
-	.long	0x5a2
-	.long	0x679
-	.uleb128 0xd
-	.long	0x679
-	.byte	0
-	.uleb128 0xb
-	.byte	0x8
-	.long	0x67f
-	.uleb128 0x6
-	.long	0x5b6
-	.uleb128 0xb
-	.byte	0x8
-	.long	0x66a
-	.uleb128 0x3
 	.ascii "qSM_State_t\0"
 	.byte	0x4
-	.byte	0xba
-	.long	0x684
-	.uleb128 0x7
+	.word	0x1ed
+	.long	0x6a2
+	.uleb128 0x15
 	.byte	0xc
 	.byte	0x4
-	.byte	0xcf
-	.long	0x6ca
-	.uleb128 0x8
+	.word	0x253
+	.long	0x6ed
+	.uleb128 0x12
 	.ascii "SR\0"
 	.byte	0x4
-	.byte	0xd0
+	.word	0x254
 	.long	0x120
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "Start\0"
 	.byte	0x4
-	.byte	0xd1
+	.word	0x255
 	.long	0x1b2
 	.byte	0x4
-	.uleb128 0x8
+	.uleb128 0x12
 	.ascii "TV\0"
 	.byte	0x4
-	.byte	0xd1
+	.word	0x255
 	.long	0x1b2
 	.byte	0x8
 	.byte	0
-	.uleb128 0x3
+	.uleb128 0x10
 	.ascii "qSTimer_t\0"
 	.byte	0x4
-	.byte	0xd2
-	.long	0x69d
-	.uleb128 0x11
+	.word	0x256
+	.long	0x6bc
+	.uleb128 0x16
 	.ascii "_qSendEvent\0"
 	.byte	0x1
 	.byte	0x1a
@@ -2200,8 +2210,8 @@ _qSTimerExpired:
 	.quad	.LFE0-.LFB0
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x71d
-	.uleb128 0x12
+	.long	0x741
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x1a
@@ -2209,7 +2219,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF3
 	.byte	0x1
 	.byte	0x1a
@@ -2218,7 +2228,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qSetTime\0"
 	.byte	0x1
 	.byte	0x1f
@@ -2226,8 +2236,8 @@ _qSTimerExpired:
 	.quad	.LFE1-.LFB1
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x75d
-	.uleb128 0x12
+	.long	0x781
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x1f
@@ -2235,7 +2245,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x1f
@@ -2244,7 +2254,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qSetIterations\0"
 	.byte	0x1
 	.byte	0x23
@@ -2252,8 +2262,8 @@ _qSTimerExpired:
 	.quad	.LFE2-.LFB2
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x7a3
-	.uleb128 0x12
+	.long	0x7c7
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x23
@@ -2261,7 +2271,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x23
@@ -2270,7 +2280,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qSetPriority\0"
 	.byte	0x1
 	.byte	0x27
@@ -2278,8 +2288,8 @@ _qSTimerExpired:
 	.quad	.LFE3-.LFB3
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x7e7
-	.uleb128 0x12
+	.long	0x80b
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x27
@@ -2287,7 +2297,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x27
@@ -2296,7 +2306,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qSetCallback\0"
 	.byte	0x1
 	.byte	0x2c
@@ -2304,8 +2314,8 @@ _qSTimerExpired:
 	.quad	.LFE4-.LFB4
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x82b
-	.uleb128 0x12
+	.long	0x84f
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x2c
@@ -2313,7 +2323,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF5
 	.byte	0x1
 	.byte	0x2c
@@ -2322,7 +2332,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qEnableDisable\0"
 	.byte	0x1
 	.byte	0x30
@@ -2330,8 +2340,8 @@ _qSTimerExpired:
 	.quad	.LFE5-.LFB5
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x871
-	.uleb128 0x12
+	.long	0x895
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x30
@@ -2339,7 +2349,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x30
@@ -2348,7 +2358,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qSetUserData\0"
 	.byte	0x1
 	.byte	0x36
@@ -2356,8 +2366,8 @@ _qSTimerExpired:
 	.quad	.LFE6-.LFB6
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x8b5
-	.uleb128 0x12
+	.long	0x8d9
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x36
@@ -2365,7 +2375,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "arg\0"
 	.byte	0x1
 	.byte	0x36
@@ -2374,7 +2384,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qClearTimeElapse\0"
 	.byte	0x1
 	.byte	0x3a
@@ -2382,8 +2392,8 @@ _qSTimerExpired:
 	.quad	.LFE7-.LFB7
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x8ef
-	.uleb128 0x12
+	.long	0x913
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x3a
@@ -2392,7 +2402,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 0
 	.byte	0
-	.uleb128 0x14
+	.uleb128 0x19
 	.ascii "_qEnqueueTaskEvent\0"
 	.byte	0x1
 	.byte	0x3e
@@ -2401,8 +2411,8 @@ _qSTimerExpired:
 	.quad	.LFE8-.LFB8
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x98f
-	.uleb128 0x13
+	.long	0x9b3
+	.uleb128 0x18
 	.ascii "TasktoQueue\0"
 	.byte	0x1
 	.byte	0x3e
@@ -2410,7 +2420,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF3
 	.byte	0x1
 	.byte	0x3e
@@ -2418,7 +2428,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "qtmp\0"
 	.byte	0x1
 	.byte	0x42
@@ -2426,7 +2436,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -48
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "TaskFromQueue\0"
 	.byte	0x1
 	.byte	0x46
@@ -2434,7 +2444,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -32
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "PriorityValue\0"
 	.byte	0x1
 	.byte	0x47
@@ -2442,7 +2452,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -18
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "i\0"
 	.byte	0x1
 	.byte	0x58
@@ -2451,7 +2461,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 -17
 	.byte	0
-	.uleb128 0x16
+	.uleb128 0x1b
 	.ascii "_qDequeueTaskEvent\0"
 	.byte	0x1
 	.byte	0x68
@@ -2460,8 +2470,8 @@ _qSTimerExpired:
 	.quad	.LFE9-.LFB9
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x9da
-	.uleb128 0x15
+	.long	0x9fe
+	.uleb128 0x1a
 	.ascii "i\0"
 	.byte	0x1
 	.byte	0x69
@@ -2469,7 +2479,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
-	.uleb128 0x17
+	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x6a
@@ -2478,7 +2488,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 -32
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qInitScheduler\0"
 	.byte	0x1
 	.byte	0x88
@@ -2486,8 +2496,8 @@ _qSTimerExpired:
 	.quad	.LFE10-.LFB10
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xa62
-	.uleb128 0x13
+	.long	0xa86
+	.uleb128 0x18
 	.ascii "ISRTick\0"
 	.byte	0x1
 	.byte	0x88
@@ -2495,7 +2505,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "IdleCallback\0"
 	.byte	0x1
 	.byte	0x88
@@ -2503,7 +2513,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "Q_Stack\0"
 	.byte	0x1
 	.byte	0x88
@@ -2511,7 +2521,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "Size_Q_Stack\0"
 	.byte	0x1
 	.byte	0x88
@@ -2519,7 +2529,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 24
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "i\0"
 	.byte	0x1
 	.byte	0x89
@@ -2528,7 +2538,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 -17
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x16
 	.ascii "_qISRHandler\0"
 	.byte	0x1
 	.byte	0x9b
@@ -2536,8 +2546,8 @@ _qSTimerExpired:
 	.quad	.LFE11-.LFB11
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xa97
-	.uleb128 0x17
+	.long	0xabb
+	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0x9d
@@ -2546,7 +2556,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 -24
 	.byte	0
-	.uleb128 0x14
+	.uleb128 0x19
 	.ascii "_qCreateTask\0"
 	.byte	0x1
 	.byte	0xad
@@ -2555,8 +2565,8 @@ _qSTimerExpired:
 	.quad	.LFE12-.LFB12
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xb36
-	.uleb128 0x12
+	.long	0xb5a
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0xad
@@ -2564,7 +2574,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF5
 	.byte	0x1
 	.byte	0xad
@@ -2572,7 +2582,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
-	.uleb128 0x12
+	.uleb128 0x17
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0xad
@@ -2580,7 +2590,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "Time\0"
 	.byte	0x1
 	.byte	0xad
@@ -2588,7 +2598,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 24
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "nExecutions\0"
 	.byte	0x1
 	.byte	0xad
@@ -2596,7 +2606,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "InitialState\0"
 	.byte	0x1
 	.byte	0xad
@@ -2604,7 +2614,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "arg\0"
 	.byte	0x1
 	.byte	0xad
@@ -2613,7 +2623,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 48
 	.byte	0
-	.uleb128 0x18
+	.uleb128 0x1d
 	.ascii "_qTriggerEvent\0"
 	.byte	0x1
 	.byte	0xbd
@@ -2621,8 +2631,8 @@ _qSTimerExpired:
 	.quad	.LFE13-.LFB13
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xb7d
-	.uleb128 0x12
+	.long	0xba1
+	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0xbd
@@ -2630,7 +2640,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x13
+	.uleb128 0x18
 	.ascii "Event\0"
 	.byte	0x1
 	.byte	0xbd
@@ -2639,7 +2649,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 8
 	.byte	0
-	.uleb128 0x19
+	.uleb128 0x1e
 	.ascii "_qTaskChainbyPriority\0"
 	.byte	0x1
 	.byte	0xc7
@@ -2647,8 +2657,8 @@ _qSTimerExpired:
 	.quad	.LFE14-.LFB14
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xbfa
-	.uleb128 0x15
+	.long	0xc1e
+	.uleb128 0x1a
 	.ascii "a\0"
 	.byte	0x1
 	.byte	0xc8
@@ -2656,7 +2666,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "b\0"
 	.byte	0x1
 	.byte	0xc8
@@ -2664,7 +2674,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -32
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "c\0"
 	.byte	0x1
 	.byte	0xc8
@@ -2672,7 +2682,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -40
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "e\0"
 	.byte	0x1
 	.byte	0xc8
@@ -2680,7 +2690,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -48
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "tmp\0"
 	.byte	0x1
 	.byte	0xc8
@@ -2688,7 +2698,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -64
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "head\0"
 	.byte	0x1
 	.byte	0xc9
@@ -2697,7 +2707,7 @@ _qSTimerExpired:
 	.byte	0x91
 	.sleb128 -56
 	.byte	0
-	.uleb128 0x1a
+	.uleb128 0x1f
 	.ascii "_qStart\0"
 	.byte	0x1
 	.byte	0xe0
@@ -2705,8 +2715,8 @@ _qSTimerExpired:
 	.quad	.LFE15-.LFB15
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xc71
-	.uleb128 0x17
+	.long	0xc95
+	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
 	.byte	0xe1
@@ -2714,7 +2724,7 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
-	.uleb128 0x15
+	.uleb128 0x1a
 	.ascii "qTask\0"
 	.byte	0x1
 	.byte	0xe1
@@ -2722,18 +2732,18 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -32
-	.uleb128 0x1b
+	.uleb128 0x20
 	.ascii "qMainSchedule\0"
 	.byte	0x1
 	.byte	0xe2
 	.quad	.L60
-	.uleb128 0x1c
+	.uleb128 0x21
 	.ascii "qReleasedSchedule\0"
 	.byte	0x1
 	.word	0x100
 	.quad	.L62
 	.byte	0
-	.uleb128 0x1d
+	.uleb128 0x22
 	.ascii "_qStateMachine_Init\0"
 	.byte	0x1
 	.word	0x109
@@ -2742,49 +2752,49 @@ _qSTimerExpired:
 	.quad	.LFE16-.LFB16
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xd13
-	.uleb128 0x1e
+	.long	0xd37
+	.uleb128 0x23
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x109
-	.long	0x679
+	.long	0x610
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "InitState\0"
 	.byte	0x1
 	.word	0x109
-	.long	0x68a
+	.long	0x6a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "SuccessState\0"
 	.byte	0x1
 	.word	0x109
-	.long	0x68a
+	.long	0x6a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "FailureState\0"
 	.byte	0x1
 	.word	0x109
-	.long	0x68a
+	.long	0x6a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 24
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "UnexpectedState\0"
 	.byte	0x1
 	.word	0x109
-	.long	0x68a
+	.long	0x6a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 32
 	.byte	0
-	.uleb128 0x1f
+	.uleb128 0x24
 	.ascii "_qStateMachine_Run\0"
 	.byte	0x1
 	.word	0x113
@@ -2792,16 +2802,16 @@ _qSTimerExpired:
 	.quad	.LFE17-.LFB17
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xd70
-	.uleb128 0x1e
+	.long	0xd94
+	.uleb128 0x23
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x113
-	.long	0x679
+	.long	0x610
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "Data\0"
 	.byte	0x1
 	.word	0x113
@@ -2809,16 +2819,16 @@ _qSTimerExpired:
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
-	.uleb128 0x20
+	.uleb128 0x25
 	.ascii "prev\0"
 	.byte	0x1
 	.word	0x114
-	.long	0x68a
+	.long	0x6a8
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
 	.byte	0
-	.uleb128 0x1d
+	.uleb128 0x22
 	.ascii "_qSTimerSet\0"
 	.byte	0x1
 	.word	0x12c
@@ -2827,16 +2837,16 @@ _qSTimerExpired:
 	.quad	.LFE18-.LFB18
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xdba
-	.uleb128 0x1e
+	.long	0xdde
+	.uleb128 0x23
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x12c
-	.long	0xdba
+	.long	0xdde
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x1e
+	.uleb128 0x23
 	.ascii "Time\0"
 	.byte	0x1
 	.word	0x12c
@@ -2847,8 +2857,8 @@ _qSTimerExpired:
 	.byte	0
 	.uleb128 0xb
 	.byte	0x8
-	.long	0x6ca
-	.uleb128 0x1d
+	.long	0x6ed
+	.uleb128 0x22
 	.ascii "_qSTimerExpired\0"
 	.byte	0x1
 	.word	0x134
@@ -2857,21 +2867,21 @@ _qSTimerExpired:
 	.quad	.LFE19-.LFB19
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0xdfe
-	.uleb128 0x1e
+	.long	0xe22
+	.uleb128 0x23
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x134
-	.long	0xdba
+	.long	0xdde
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
 	.byte	0
-	.uleb128 0x21
+	.uleb128 0x26
 	.ascii "QUARKTS\0"
 	.byte	0x1
 	.byte	0x15
-	.long	0xe17
+	.long	0xe3b
 	.uleb128 0x9
 	.byte	0x3
 	.quad	QUARKTS
@@ -3052,12 +3062,55 @@ _qSTimerExpired:
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
-	.uleb128 0xb
+	.uleb128 0x5
 	.uleb128 0x1
 	.uleb128 0x13
 	.byte	0
 	.byte	0
 	.uleb128 0x10
+	.uleb128 0x16
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x49
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x11
+	.uleb128 0x13
+	.byte	0x1
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0xb
+	.uleb128 0xb
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x12
+	.uleb128 0xd
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x38
+	.uleb128 0xb
+	.byte	0
+	.byte	0
+	.uleb128 0x13
 	.uleb128 0x15
 	.byte	0x1
 	.uleb128 0x27
@@ -3066,108 +3119,35 @@ _qSTimerExpired:
 	.uleb128 0x13
 	.uleb128 0x1
 	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x11
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x7
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2117
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x12
-	.uleb128 0x5
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.uleb128 0x13
-	.uleb128 0x5
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
 	.byte	0
 	.byte	0
 	.uleb128 0x14
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
+	.uleb128 0xd
+	.byte	0
 	.uleb128 0x49
 	.uleb128 0x13
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x7
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2117
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
+	.uleb128 0x38
+	.uleb128 0xb
 	.byte	0
 	.byte	0
 	.uleb128 0x15
-	.uleb128 0x34
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
+	.uleb128 0x13
+	.byte	0x1
+	.uleb128 0xb
+	.uleb128 0xb
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
+	.uleb128 0x5
+	.uleb128 0x1
 	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
 	.byte	0
 	.byte	0
 	.uleb128 0x16
 	.uleb128 0x2e
 	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
 	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
@@ -3176,8 +3156,6 @@ _qSTimerExpired:
 	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
 	.uleb128 0x11
 	.uleb128 0x1
 	.uleb128 0x12
@@ -3191,7 +3169,7 @@ _qSTimerExpired:
 	.byte	0
 	.byte	0
 	.uleb128 0x17
-	.uleb128 0x34
+	.uleb128 0x5
 	.byte	0
 	.uleb128 0x3
 	.uleb128 0xe
@@ -3206,31 +3184,25 @@ _qSTimerExpired:
 	.byte	0
 	.byte	0
 	.uleb128 0x18
-	.uleb128 0x2e
-	.byte	0x1
+	.uleb128 0x5
+	.byte	0
 	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
 	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x7
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2116
-	.uleb128 0x19
-	.uleb128 0x1
+	.uleb128 0x49
 	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
 	.byte	0
 	.byte	0
 	.uleb128 0x19
 	.uleb128 0x2e
 	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
 	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
@@ -3239,6 +3211,8 @@ _qSTimerExpired:
 	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
+	.uleb128 0x49
+	.uleb128 0x13
 	.uleb128 0x11
 	.uleb128 0x1
 	.uleb128 0x12
@@ -3252,10 +3226,63 @@ _qSTimerExpired:
 	.byte	0
 	.byte	0
 	.uleb128 0x1a
+	.uleb128 0x34
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.uleb128 0x1b
 	.uleb128 0x2e
 	.byte	0x1
-	.uleb128 0x3f
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x27
 	.uleb128 0x19
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x7
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x1c
+	.uleb128 0x34
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.uleb128 0x1d
+	.uleb128 0x2e
+	.byte	0x1
 	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
@@ -3276,47 +3303,17 @@ _qSTimerExpired:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x1b
-	.uleb128 0xa
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x11
-	.uleb128 0x1
-	.byte	0
-	.byte	0
-	.uleb128 0x1c
-	.uleb128 0xa
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0x5
-	.uleb128 0x11
-	.uleb128 0x1
-	.byte	0
-	.byte	0
-	.uleb128 0x1d
+	.uleb128 0x1e
 	.uleb128 0x2e
 	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
 	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
-	.uleb128 0x5
+	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
 	.uleb128 0x11
 	.uleb128 0x1
 	.uleb128 0x12
@@ -3329,21 +3326,6 @@ _qSTimerExpired:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x1e
-	.uleb128 0x5
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0x5
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
-	.byte	0
-	.byte	0
 	.uleb128 0x1f
 	.uleb128 0x2e
 	.byte	0x1
@@ -3354,7 +3336,7 @@ _qSTimerExpired:
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
-	.uleb128 0x5
+	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
 	.uleb128 0x11
@@ -3370,6 +3352,99 @@ _qSTimerExpired:
 	.byte	0
 	.byte	0
 	.uleb128 0x20
+	.uleb128 0xa
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x21
+	.uleb128 0xa
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x11
+	.uleb128 0x1
+	.byte	0
+	.byte	0
+	.uleb128 0x22
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x27
+	.uleb128 0x19
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x7
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2117
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x23
+	.uleb128 0x5
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.uleb128 0x24
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x27
+	.uleb128 0x19
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x7
+	.uleb128 0x40
+	.uleb128 0x18
+	.uleb128 0x2116
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x25
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -3384,7 +3459,7 @@ _qSTimerExpired:
 	.uleb128 0x18
 	.byte	0
 	.byte	0
-	.uleb128 0x21
+	.uleb128 0x26
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
