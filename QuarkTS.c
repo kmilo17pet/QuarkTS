@@ -61,12 +61,11 @@ void _qClearTimeElapse(qTask_t *Task){
 /*============================================================================*/
 int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
-    while (QUARKTS.NotSafeQueue){} 
+    if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable();
     QUARKTS.NotSafeQueue = 1;
     qQueueStack_t qtmp;
     qtmp.Task = TasktoQueue;
     qtmp.QueueData = eventdata;
-#ifdef QPRIORITY_FIFO_QUEUE
     qTask_t *TaskFromQueue;
     qPriority_t PriorityValue = TasktoQueue->Priority;
     if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=NULL){
@@ -75,16 +74,12 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
         QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = qtmp;
         }
     }
-    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
-#else
-    QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
-#endif    
+    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;   
     QUARKTS.QueueIndex++;
     if(QUARKTS.QueueIndex==1){ 
-        QUARKTS.NotSafeQueue = 0;
+        if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();
         return 0;
     }   
-#ifdef QPRIORITY_FIFO_QUEUE
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
@@ -95,43 +90,29 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
-#endif
-    QUARKTS.NotSafeQueue = 0;
+    if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();;
     return 0;
 }
 /*============================================================================*/
-#if defined(QPRIORITY_FIFO_QUEUE)
 static qTask_t* _qDequeueTaskEvent(void){
-    int i;
     qTask_t *Task;
-    for( i=QUARKTS.QueueIndex-1; i>=0; i--){
-        if( QUARKTS.QueueStack[i].Task != NULL){
-            while (QUARKTS.NotSafeQueue){} 
-            Task = QUARKTS.QueueStack[i].Task;
-            QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
-            QUARKTS.QueueStack[i].Task = NULL;
-            if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
-            return Task;
-        }
+    uint8_t index = QUARKTS.QueueIndex-1;
+    if(QUARKTS.QueueIndex<=0) return NULL;
+    if((Task = QUARKTS.QueueStack[index].Task) != NULL){
+         if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable();
+         QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[index].QueueData;
+         QUARKTS.QueueStack[index].Task = NULL;
+         if(index>0) QUARKTS.QueueIndex--;
+         if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();
+         return Task;
     }
     return NULL;
 }
-#endif
-#if defined(QSIMPLE_FIFO_QUEUE)
-static qTask_t* _qDequeueTaskEvent(void){
-    qTask_t *Task;
-    if( QUARKTS.QueueStack[0].Task != NULL){
-        while (QUARKTS.NotSafeQueue){} 
-        Task = QUARKTS.QueueStack[0].Task;
-        QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[0].QueueData;
-        QUARKTS.QueueStack[0].Task = NULL;
-        if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
-        memmove((void*)QUARKTS.QueueStack, (const void*)(QUARKTS.QueueStack+1), QUARKTS.QueueSize*sizeof(qQueueStack_t));
-        return Task;
-    }
-    return NULL;
+/*============================================================================*/
+void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
+    QUARKTS.I_Enabler = Enabler;
+    QUARKTS.I_Disable = Disabler;
 }
-#endif
 /*============================================================================*/
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
@@ -147,6 +128,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
+    QUARKTS.I_Enabler =  QUARKTS.I_Disable = NULL;
     #ifdef QSTIMER
         QUARKTS.epochs++;
     #endif
@@ -297,8 +279,15 @@ void _qStateMachine_Run(qSM_t *obj, void *Data){
  }
 #ifdef QSTIMER
 /*============================================================================*/
-int _qSTimerSet(qSTimer_t *obj, qTime_t Time){    
-    if ( (Time/2)<QUARKTS.Tick ) return -1;    
+int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
+    if(fr && obj->SR){
+        if (_qSTimerExpired(obj)){
+            obj->SR = 0;
+            return 1;
+        }
+        else return 0;
+    }
+    if ( (Time/2.0)<QUARKTS.Tick ) return -1;    
     obj->TV = (qClock_t)(Time/QUARKTS.Tick);
     obj->Start = QUARKTS.epochs;
     obj->SR = 1;
@@ -308,6 +297,15 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time){
 unsigned char _qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return 0; 
     return ((QUARKTS.epochs - obj->Start)>=obj->TV);
+}
+/*============================================================================*/
+qClock_t _qSTimerElapsed(qSTimer_t *obj){
+    return QUARKTS.epochs-obj->Start;
+}
+/*============================================================================*/
+qClock_t _qSTimerRemaining(qSTimer_t *obj){
+    qClock_t elapsed = _qSTimerElapsed(obj);
+    return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
 /*============================================================================*/
 #endif

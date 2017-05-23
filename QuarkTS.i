@@ -202,6 +202,8 @@ typedef __uint_least64_t uint_least64_t;
         qTime_t Tick;
         qEvent_t EventInfo;
         volatile struct _qTask_t *First;
+        void (*I_Disable)(void);
+        void (*I_Enabler)(void);
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         uint8_t QueueSize, QueueIndex;
@@ -225,7 +227,8 @@ typedef __uint_least64_t uint_least64_t;
     void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
-# 482 "QuarkTS.h"
+    void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
+# 485 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
@@ -261,13 +264,15 @@ typedef __uint_least64_t uint_least64_t;
     typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 607 "QuarkTS.h"
+# 611 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
         }qSTimer_t;
-        int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
+        int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr);
         unsigned char _qSTimerExpired(qSTimer_t *obj);
+        qClock_t _qSTimerElapsed(qSTimer_t *obj);
+        qClock_t _qSTimerRemaining(qSTimer_t *obj);
 # 20 "QuarkTS.c" 2
 
 volatile QuarkTSCoreData_t QUARKTS;
@@ -313,12 +318,11 @@ void _qClearTimeElapse(volatile struct _qTask_t *Task){
 
 int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
-    while (QUARKTS.NotSafeQueue){}
+    if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
     QUARKTS.NotSafeQueue = 1;
     qQueueStack_t qtmp;
     qtmp.Task = TasktoQueue;
     qtmp.QueueData = eventdata;
-
     volatile struct _qTask_t *TaskFromQueue;
     qPriority_t PriorityValue = TasktoQueue->Priority;
     if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=((void*)0)){
@@ -328,15 +332,11 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
         }
     }
     else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
-
-
-
     QUARKTS.QueueIndex++;
     if(QUARKTS.QueueIndex==1){
-        QUARKTS.NotSafeQueue = 0;
+        if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
         return 0;
     }
-
     unsigned char i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void*)0)){
@@ -347,28 +347,30 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
             }
         }
     }
-
-    QUARKTS.NotSafeQueue = 0;
+    if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();;
     return 0;
 }
 
-
 static volatile struct _qTask_t* _qDequeueTaskEvent(void){
-    int i;
     volatile struct _qTask_t *Task;
-    for( i=QUARKTS.QueueIndex-1; i>=0; i--){
-        if( QUARKTS.QueueStack[i].Task != ((void*)0)){
-            while (QUARKTS.NotSafeQueue){}
-            Task = QUARKTS.QueueStack[i].Task;
-            QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[i].QueueData;
-            QUARKTS.QueueStack[i].Task = ((void*)0);
-            if( QUARKTS.QueueIndex>0) QUARKTS.QueueIndex--;
-            return Task;
-        }
+    uint8_t index = QUARKTS.QueueIndex-1;
+    if(QUARKTS.QueueIndex<=0) return ((void*)0);
+    if((Task = QUARKTS.QueueStack[index].Task) != ((void*)0)){
+         if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
+         QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[index].QueueData;
+         QUARKTS.QueueStack[index].Task = ((void*)0);
+         if(index>0) QUARKTS.QueueIndex--;
+         if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
+         return Task;
     }
     return ((void*)0);
 }
-# 136 "QuarkTS.c"
+
+void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
+    QUARKTS.I_Enabler = Enabler;
+    QUARKTS.I_Disable = Disabler;
+}
+
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
     unsigned char i;
     QUARKTS.First = ((void*)0);
@@ -383,6 +385,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
+    QUARKTS.I_Enabler = QUARKTS.I_Disable = ((void*)0);
 
         QUARKTS.epochs++;
 
@@ -533,8 +536,15 @@ void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data){
  }
 
 
-int _qSTimerSet(qSTimer_t *obj, qTime_t Time){
-    if ( (Time/2)<QUARKTS.Tick ) return -1;
+int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
+    if(fr && obj->SR){
+        if (_qSTimerExpired(obj)){
+            obj->SR = 0;
+            return 1;
+        }
+        else return 0;
+    }
+    if ( (Time/2.0)<QUARKTS.Tick ) return -1;
     obj->TV = (qClock_t)(Time/QUARKTS.Tick);
     obj->Start = QUARKTS.epochs;
     obj->SR = 1;
@@ -544,4 +554,13 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time){
 unsigned char _qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return 0;
     return ((QUARKTS.epochs - obj->Start)>=obj->TV);
+}
+
+qClock_t _qSTimerElapsed(qSTimer_t *obj){
+    return QUARKTS.epochs-obj->Start;
+}
+
+qClock_t _qSTimerRemaining(qSTimer_t *obj){
+    qClock_t elapsed = _qSTimerElapsed(obj);
+    return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }

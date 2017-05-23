@@ -142,6 +142,8 @@ extern "C" {
         qTime_t Tick;
         qEvent_t EventInfo;
         qTask_t *First;
+        void (*I_Disable)(void);
+        void (*I_Enabler)(void);
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
         uint8_t QueueSize, QueueIndex;
@@ -165,7 +167,8 @@ extern "C" {
     void _qEnableDisable(qTask_t *Task, unsigned char Value);
     void _qSetUserData(qTask_t *Task, void* arg);
     void _qClearTimeElapse(qTask_t *Task);
-    
+    void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
+#define qSetInterruptsED(ENABLER, DISABLER)                                            _qSetInterruptsED(ENABLER, DISABLER)  
 /*void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
 Task Scheduler Setup. This function is required and must be called once in 
@@ -603,13 +606,17 @@ Yields until the logical condition being true
 */    
         #define qCoroutineWaitUntil(_condition_)        $qCR_wu_Assert(_condition_)
     #endif
+    
     #ifdef QSTIMER
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
         }qSTimer_t;
-        int _qSTimerSet(qSTimer_t *obj, qTime_t Time);
+        int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr);
         unsigned char _qSTimerExpired(qSTimer_t *obj);
+        qClock_t _qSTimerElapsed(qSTimer_t *obj);
+        qClock_t _qSTimerRemaining(qSTimer_t *obj);
+        #define QSTIMER_INITIALIZER     {0, 0, 0}
 /*int qSTimerSet(qSTimer_t OBJ, qTime_t Time)
  
 Set the expiration time for a STimer. On success, the Stimer gets 
@@ -621,15 +628,15 @@ Parameters:
 
     - Time : The expiration time(Must be specified in seconds).
 
->Note 1: The scheduler must be running before using STimers.
->Note 2: The expiration time should be at least, two times greather than the 
-         scheduler-Tick.
+    > Note 1: The scheduler must be running before using STimers.
+    > Note 2: The expiration time should be at least, two times greather than 
+              the scheduler-Tick.
 
 Return value:
 
     Returns 0 on success, otherwise, returns -1.
 */        
-        #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time)
+        #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time, 0)
 /*unsigned char qSTimerExpired(qSTimer_t OBJ)
 
 Non-Blocking Stimer check
@@ -640,7 +647,7 @@ Parameters:
 
 Return value:
 
-    Returns true when Stimer expires, otherwise, returns false.
+    Returns true when STimer expires, otherwise, returns false.
     > Note 1: A disarmed STimer also returns false.
 
 */
@@ -654,6 +661,81 @@ Parameters:
     - OBJ : The STimer object.
 */
         #define qSTimerDisarm(OBJ)      (OBJ.SR = 0)
+/*unsigned char qSTimerFreeRun(qSTimer_t OBJ, qTime_t Time)
+
+Non-Blocking STimer check with automatic arming
+
+Parameters:
+
+    - OBJ : The STimer object.
+  
+    - Time : The expiration time(Must be specified in seconds).
+ 
+    > Note 1: The scheduler must be running before using STimers.
+    > Note 2: The expiration time should be at least, two times greather than  
+              the scheduler-Tick.
+    > Note 3: Time parameter is only taken when the STimer is re-armed
+  
+Return value:
+
+    Returns true when STimer expires, otherwise, returns false.
+    > Note 4: A disarmed STimer also returns false.
+    > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
+*/
+        #define qSTimerFreeRun(OBJ, Time)  _qSTimerSet(&OBJ, (qTime_t)Time, 1)
+/*qClock_t qSTimerRemainingEpochs(qSTimer_t OBJ)
+
+Query the remaining epochs
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+Return value:
+
+    The remaining epochs. 
+*/
+        #define qSTimerRemainingEpochs(OBJ)     _qSTimerRemaining(&OBJ)
+/*qTime_t qSTimerRemainingTime(qSTimer_t OBJ)
+
+Query the remaining time
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+Return value:
+
+    The remaining time. 
+*/
+        #define qSTimerRemainingTime(OBJ)       (QUARKTS.Tick*_qSTimerRemaining(&OBJ))
+/*qClock_t qSTimerElapsedEpochs(qSTimer_t OBJ)
+
+Query the elapsed epochs
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+Return value:
+
+    The elapsed epochs. 
+*/
+        #define qSTimerElapsedEpochs(OBJ)       _qSTimerElapsed(&OBJ)
+/*qTime_t qSTimerElapsedTime(qSTimer_t OBJ)
+
+Query the elapsed time
+
+Parameters:
+
+    - OBJ : The STimer object.
+
+Return value:
+
+    The elapsed time. 
+*/
+        #define qSTimerElapsedTime(OBJ)         (QUARKTS.Tick*_qSTimerElapsed(&OBJ))
+        
     #endif
         
 #ifdef	__cplusplus

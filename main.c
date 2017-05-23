@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "QuarkTS.h"
-
+#include <signal.h>
 
 qSM_Status_t primero(qSM_t* Machine);
 qSM_Status_t segundo(qSM_t* Machine);
@@ -67,8 +67,21 @@ void* TimerInterruptEmulation(void* varargin){
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST;
 
+void printqueue(void){
+    int i;
+    printf("\r\n (%d)",QUARKTS.QueueIndex);
+    for(i=0;i<10;i++){
+        printf("/ %d",QUARKTS.QueueStack[i].Task);
+    }
+    puts("");
+}
+
+
+/*============================================================================*/
 void Task1Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    static qSTimer_t x = QSTIMER_INITIALIZER;
+    qSTimerFreeRun(x, 3);
+    printf("%d  %f  %f\r\n", x.TV, qSTimerRemainingTime(x), qSTimerElapsedTime(x));
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t Data){
@@ -82,6 +95,8 @@ void Task2Callback(qEvent_t Data){
 /*============================================================================*/
 void Task3Callback(qEvent_t Data){
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    
+   
     //qQueueEvent(Task2, "B"); 
     //qQueueEvent(Task1, "Z"); 
 }
@@ -115,6 +130,7 @@ void Task4Callback(qEvent_t Data){
 }
 /*============================================================================*/
 void Task5Callback(qEvent_t Data){
+    //printqueue();
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
     
 }
@@ -161,21 +177,34 @@ void TaskY_Callback(qEvent_t Data){
         
     }qCoroutineEnd;    
 }
+void alarm_signal(int x){
+    qQueueEvent(Task5, "SIGALRM!");
+        printqueue();  
+    alarm(1);
+}
+void sigint_signal(int x){
+    qQueueEvent(Task5, "SIGINT");
+        printqueue();  
+    alarm(1);    
+}
 /*============================================================================*/
 int main(int argc, char** argv) {
+    //signal(SIGALRM, alarm_signal);
+    //signal(SIGINT, sigint_signal);
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qSetup(0.01, IdleTaskCallback, 10);
     //qSetReleaseSchedCallback(SchedReleaseCallback);
-    qCreateEventTask(Task1, Task1Callback, HIGH_Priority, "TASK1");
-    qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
-    qIgnoreOverruns(Task2, 1);
-    qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
-    qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, "TASK4");
-    qCreateTask(Task5, Task5Callback, MEDIUM_Priority, 2.0, SINGLESHOT, ENABLE, "TASK5");
-    qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");   
-    //qCreateTask(TaskY, TaskY_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
+    qCreateTask(Task1, Task1Callback, HIGH_Priority, 0.1, PERIODIC, ENABLE, "TASK1");
+    //qCreateTask(Task2, Task2Callback, 20, 0.5, PERIODIC, ENABLE, "TASK2");
+    //qIgnoreOverruns(Task2, 1);
+    //qCreateTask(Task3, Task3Callback, MEDIUM_Priority, 1.0, 2, ENABLE, "TASK3");
+    //qCreateTask(Task4, Task4Callback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, "TASK4");
+    //qCreateEventTask(Task5, Task5Callback, MEDIUM_Priority, "TASK5");
+    //qCreateTask(Task6, Task6Callback, MEDIUM_Priority, TIME_INMEDIATE, 5, ENABLE, "TASK6");   
+    //qCreateTask(TaskY, TaskY_Callback, MEDIUM_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);
     //qCreateTask(TaskX, TaskX_Callback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, ENABLE, NULL);    
     //qCreateTask(TaskTestST,  TaskTestSTCallback, MEDIUM_Priority, 0.1, PERIODIC, ENABLE, NULL);
+    //alarm(1);
     qSchedule();
     return (EXIT_SUCCESS);
 }
