@@ -1,13 +1,13 @@
 # 1 "QuarkTS.c"
-# 1 "/cygdrive/e/GDrive/Proyects/libs/c/QuarkTS//"
+# 1 "/cygdrive/c/Users/TECREA/Documents/QuarkTS//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "QuarkTS.c"
 # 19 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
 # 28 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 3 4
 # 1 "/usr/include/stdint.h" 1 3 4
 # 12 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/machine/_default_types.h" 1 3 4
@@ -19,80 +19,147 @@
 
 
 # 1 "/usr/include/sys/features.h" 1 3 4
+# 28 "/usr/include/sys/features.h" 3 4
+# 1 "/usr/include/_newlib_version.h" 1 3 4
+# 29 "/usr/include/sys/features.h" 2 3 4
 # 9 "/usr/include/machine/_default_types.h" 2 3 4
-# 27 "/usr/include/machine/_default_types.h" 3 4
+# 41 "/usr/include/machine/_default_types.h" 3 4
+
+# 41 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int8_t;
 
 typedef unsigned char __uint8_t;
-# 41 "/usr/include/machine/_default_types.h" 3 4
+# 55 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int16_t;
 
 typedef short unsigned int __uint16_t;
-# 63 "/usr/include/machine/_default_types.h" 3 4
+# 77 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int32_t;
 
 typedef unsigned int __uint32_t;
-# 89 "/usr/include/machine/_default_types.h" 3 4
+# 103 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int64_t;
 
 typedef long unsigned int __uint64_t;
-# 120 "/usr/include/machine/_default_types.h" 3 4
+# 134 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int_least8_t;
 
 typedef unsigned char __uint_least8_t;
-# 146 "/usr/include/machine/_default_types.h" 3 4
+# 160 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int_least16_t;
 
 typedef short unsigned int __uint_least16_t;
-# 168 "/usr/include/machine/_default_types.h" 3 4
+# 182 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int_least32_t;
 
 typedef unsigned int __uint_least32_t;
-# 186 "/usr/include/machine/_default_types.h" 3 4
+# 200 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int_least64_t;
 
 typedef long unsigned int __uint_least64_t;
-# 200 "/usr/include/machine/_default_types.h" 3 4
+# 214 "/usr/include/machine/_default_types.h" 3 4
+typedef long int __intmax_t;
+
+
+
+
+
+
+
+typedef long unsigned int __uintmax_t;
+
+
+
+
+
+
+
 typedef long int __intptr_t;
 
 typedef long unsigned int __uintptr_t;
 # 13 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/sys/_intsup.h" 1 3 4
-# 39 "/usr/include/sys/_intsup.h" 3 4
+# 35 "/usr/include/sys/_intsup.h" 3 4
        
        
        
-# 67 "/usr/include/sys/_intsup.h" 3 4
+       
+       
+       
+       
+# 187 "/usr/include/sys/_intsup.h" 3 4
+       
+       
+       
+       
        
        
        
 # 14 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/sys/_stdint.h" 1 3 4
-# 19 "/usr/include/sys/_stdint.h" 3 4
+# 20 "/usr/include/sys/_stdint.h" 3 4
 typedef __int8_t int8_t ;
+
+
+
 typedef __uint8_t uint8_t ;
 
 
 
 
+
+
+
 typedef __int16_t int16_t ;
+
+
+
 typedef __uint16_t uint16_t ;
 
 
 
 
+
+
+
 typedef __int32_t int32_t ;
+
+
+
 typedef __uint32_t uint32_t ;
 
 
 
 
+
+
+
 typedef __int64_t int64_t ;
+
+
+
 typedef __uint64_t uint64_t ;
 
 
 
+
+
+
+typedef __intmax_t intmax_t;
+
+
+
+
+typedef __uintmax_t uintmax_t;
+
+
+
+
 typedef __intptr_t intptr_t;
+
+
+
+
 typedef __uintptr_t uintptr_t;
 # 15 "/usr/include/stdint.h" 2 3 4
 
@@ -133,14 +200,12 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 130 "/usr/include/stdint.h" 3 4
-  typedef long int intmax_t;
-# 139 "/usr/include/stdint.h" 3 4
-  typedef long unsigned int uintmax_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 2 3 4
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 2 3 4
 # 29 "QuarkTS.h" 2
 # 38 "QuarkTS.h"
-        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
+        
+# 38 "QuarkTS.h"
+       typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
 # 56 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
@@ -214,7 +279,7 @@ typedef __uint_least64_t uint_least64_t;
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
-    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
+    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void _qISRHandler(void);
     int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
@@ -224,7 +289,7 @@ typedef __uint_least64_t uint_least64_t;
     void _qSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
     void _qSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
     void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value);
+    void _qEnableDisable(volatile struct _qTask_t *Task, qBool_t Value);
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
@@ -270,7 +335,7 @@ typedef __uint_least64_t uint_least64_t;
             qClock_t Start, TV;
         }qSTimer_t;
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr);
-        unsigned char _qSTimerExpired(qSTimer_t *obj);
+        qBool_t _qSTimerExpired(qSTimer_t *obj);
         qClock_t _qSTimerElapsed(qSTimer_t *obj);
         qClock_t _qSTimerRemaining(qSTimer_t *obj);
 # 20 "QuarkTS.c" 2
@@ -302,7 +367,7 @@ void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
     Task->Callback = CallbackFcn;
 }
 
-void _qEnableDisable(volatile struct _qTask_t *Task, unsigned char Value){
+void _qEnableDisable(volatile struct _qTask_t *Task, qBool_t Value){
     if(Value) Task->TimeElapsed = 0;
     Task->Flag.Enabled = Value;
     if(!Value) Task->TimeElapsed = 0;
@@ -337,7 +402,7 @@ int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
         if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
         return 0;
     }
-    unsigned char i;
+    uint8_t i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void*)0)){
             if(PriorityValue<= TaskFromQueue->Priority){
@@ -371,8 +436,8 @@ void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
     QUARKTS.I_Disable = Disabler;
 }
 
-void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
-    unsigned char i;
+void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
+    uint8_t i;
     QUARKTS.First = ((void*)0);
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
@@ -551,7 +616,7 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
     return 0;
 }
 
-unsigned char _qSTimerExpired(qSTimer_t *obj){
+qBool_t _qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return 0;
     return ((QUARKTS.epochs - obj->Start)>=obj->TV);
 }

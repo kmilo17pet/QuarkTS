@@ -45,7 +45,7 @@ void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
     Task->Callback = CallbackFcn;
 }
 /*============================================================================*/
-void _qEnableDisable(qTask_t *Task, unsigned char Value){
+void _qEnableDisable(qTask_t *Task, qBool_t Value){
     if(Value) Task->TimeElapsed = 0;
     Task->Flag.Enabled = Value;
     if(!Value) Task->TimeElapsed = 0;
@@ -80,7 +80,7 @@ int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
         if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();
         return 0;
     }   
-    unsigned char i;
+    uint8_t i;
     for(i=0; i<QUARKTS.QueueSize; i++){
         if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
             if(PriorityValue<= TaskFromQueue->Priority){
@@ -114,8 +114,8 @@ void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
     QUARKTS.I_Disable = Disabler;
 }
 /*============================================================================*/
-void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack){
-    unsigned char i;
+void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
+    uint8_t i;
     QUARKTS.First = NULL;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
@@ -294,7 +294,7 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
     return 0;
 }
 /*============================================================================*/
-unsigned char _qSTimerExpired(qSTimer_t *obj){
+qBool_t _qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return 0; 
     return ((QUARKTS.epochs - obj->Start)>=obj->TV);
 }

@@ -154,7 +154,7 @@ extern "C" {
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
-    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, unsigned char Size_Q_Stack);
+    void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void _qISRHandler(void);
     int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     void _qStart(void);
@@ -164,7 +164,7 @@ extern "C" {
     void _qSetIterations(qTask_t *Task, qIteration_t Value);
     void _qSetPriority(qTask_t *Task, qPriority_t Value);
     void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void _qEnableDisable(qTask_t *Task, unsigned char Value);
+    void _qEnableDisable(qTask_t *Task, qBool_t Value);
     void _qSetUserData(qTask_t *Task, void* arg);
     void _qClearTimeElapse(qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
@@ -613,7 +613,7 @@ Yields until the logical condition being true
             qClock_t Start, TV;
         }qSTimer_t;
         int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr);
-        unsigned char _qSTimerExpired(qSTimer_t *obj);
+        qBool_t _qSTimerExpired(qSTimer_t *obj);
         qClock_t _qSTimerElapsed(qSTimer_t *obj);
         qClock_t _qSTimerRemaining(qSTimer_t *obj);
         #define QSTIMER_INITIALIZER     {0, 0, 0}
