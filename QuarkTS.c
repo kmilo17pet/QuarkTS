@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.3
+ *  Version : 3.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -21,7 +21,7 @@
 volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
-static qTask_t* _qDequeueTaskEvent(void);
+static qTask_t* _qPrioQueueExtract(void);
 /*============================================================================*/
 void _qSendEvent(qTask_t *Task, void* eventdata){
     Task->Flag.AsyncRun = 1;
@@ -59,54 +59,34 @@ void _qClearTimeElapse(qTask_t *Task){
     Task->TimeElapsed = 0;
 }
 /*============================================================================*/
-int _qEnqueueTaskEvent(qTask_t *TasktoQueue, void* eventdata){
-    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
-    if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable();
-    QUARKTS.NotSafeQueue = 1;
-    qQueueStack_t qtmp;
-    qtmp.Task = TasktoQueue;
-    qtmp.QueueData = eventdata;
-    qTask_t *TaskFromQueue;
-    qPriority_t PriorityValue = TasktoQueue->Priority;
-    if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=NULL){
-        if(PriorityValue<=TaskFromQueue->Priority){
-        QUARKTS.QueueStack[QUARKTS.QueueIndex] = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-        QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = qtmp;
-        }
-    }
-    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;   
-    QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1){ 
-        if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();
-        return 0;
-    }   
-    uint8_t i;
-    for(i=0; i<QUARKTS.QueueSize; i++){
-        if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=NULL){          
-            if(PriorityValue<= TaskFromQueue->Priority){
-                qtmp = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-                QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = QUARKTS.QueueStack[i];
-                QUARKTS.QueueStack[i] = qtmp;
-            }
-        }
-    }
-    if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();;
+int _qPrioQueueInsert(qTask_t *TasktoQueue, void* eventdata){
+    if(QUARKTS.QueueIndex>=QUARKTS.QueueSize-1 ) return -1;
+    qQueueStack_t qtmp = {TasktoQueue, eventdata};
+    QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0;
 }
 /*============================================================================*/
-static qTask_t* _qDequeueTaskEvent(void){
-    qTask_t *Task;
-    uint8_t index = QUARKTS.QueueIndex-1;
-    if(QUARKTS.QueueIndex<=0) return NULL;
-    if((Task = QUARKTS.QueueStack[index].Task) != NULL){
-         if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable();
-         QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[index].QueueData;
-         QUARKTS.QueueStack[index].Task = NULL;
-         if(index>0) QUARKTS.QueueIndex--;
-         if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler();
-         return Task;
-    }
-    return NULL;
+static qTask_t* _qPrioQueueExtract(void){
+    qTask_t *Task = NULL;
+    uint8_t i;
+    uint8_t IndexTaskToExtract = 0;
+    if(QUARKTS.QueueIndex < 0) return NULL;
+    _Q_ENTER_CRITICAL();
+    qPriority_t MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
+    for(i=1;i<QUARKTS.QueueSize;i++){
+        if(QUARKTS.QueueStack[i].Task == NULL) break;
+        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
+            MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
+            IndexTaskToExtract = i;
+        }
+    }   
+    QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[IndexTaskToExtract].QueueData;
+    Task = QUARKTS.QueueStack[IndexTaskToExtract].Task;
+    QUARKTS.QueueStack[IndexTaskToExtract].Task = NULL;  
+    for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1];    
+    QUARKTS.QueueIndex--;    
+    _Q_EXIT_CRITICAL();
+    return Task;
 }
 /*============================================================================*/
 void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
@@ -122,10 +102,9 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.ReleaseSchedCallback = NULL;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
-    for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL; 
-    QUARKTS.QueueIndex = 0;    
+    for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;    
+    QUARKTS.QueueIndex = -1;    
     QUARKTS.Flag.Init = 0;
-    QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
     QUARKTS.I_Enabler =  QUARKTS.I_Disable = NULL;
@@ -212,8 +191,8 @@ void _qStart(void){
         QUARKTS.Flag.Init= 1;
     }
     Task = QUARKTS.First;
-    while(Task != NULL){
-        if ((qTask = _qDequeueTaskEvent())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);          
+    while(Task != NULL){       
+        if ((qTask = _qPrioQueueExtract())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);          
         
         if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.Enabled){
             Task->Flag.TimedTaskRun--;

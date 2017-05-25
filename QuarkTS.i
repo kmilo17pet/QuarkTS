@@ -1,13 +1,13 @@
 # 1 "QuarkTS.c"
-# 1 "/cygdrive/c/Users/TECREA/Documents/QuarkTS//"
+# 1 "/cygdrive/e/GDrive/Proyects/libs/c/QuarkTS//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "QuarkTS.c"
 # 19 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
-# 28 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 3 4
+# 27 "QuarkTS.h"
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 3 4
 # 1 "/usr/include/stdint.h" 1 3 4
 # 12 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/machine/_default_types.h" 1 3 4
@@ -19,147 +19,80 @@
 
 
 # 1 "/usr/include/sys/features.h" 1 3 4
-# 28 "/usr/include/sys/features.h" 3 4
-# 1 "/usr/include/_newlib_version.h" 1 3 4
-# 29 "/usr/include/sys/features.h" 2 3 4
 # 9 "/usr/include/machine/_default_types.h" 2 3 4
-# 41 "/usr/include/machine/_default_types.h" 3 4
-
-# 41 "/usr/include/machine/_default_types.h" 3 4
+# 27 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int8_t;
 
 typedef unsigned char __uint8_t;
-# 55 "/usr/include/machine/_default_types.h" 3 4
+# 41 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int16_t;
 
 typedef short unsigned int __uint16_t;
-# 77 "/usr/include/machine/_default_types.h" 3 4
+# 63 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int32_t;
 
 typedef unsigned int __uint32_t;
-# 103 "/usr/include/machine/_default_types.h" 3 4
+# 89 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int64_t;
 
 typedef long unsigned int __uint64_t;
-# 134 "/usr/include/machine/_default_types.h" 3 4
+# 120 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int_least8_t;
 
 typedef unsigned char __uint_least8_t;
-# 160 "/usr/include/machine/_default_types.h" 3 4
+# 146 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int_least16_t;
 
 typedef short unsigned int __uint_least16_t;
-# 182 "/usr/include/machine/_default_types.h" 3 4
+# 168 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int_least32_t;
 
 typedef unsigned int __uint_least32_t;
-# 200 "/usr/include/machine/_default_types.h" 3 4
+# 186 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int_least64_t;
 
 typedef long unsigned int __uint_least64_t;
-# 214 "/usr/include/machine/_default_types.h" 3 4
-typedef long int __intmax_t;
-
-
-
-
-
-
-
-typedef long unsigned int __uintmax_t;
-
-
-
-
-
-
-
+# 200 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __intptr_t;
 
 typedef long unsigned int __uintptr_t;
 # 13 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/sys/_intsup.h" 1 3 4
-# 35 "/usr/include/sys/_intsup.h" 3 4
+# 39 "/usr/include/sys/_intsup.h" 3 4
        
        
        
-       
-       
-       
-       
-# 187 "/usr/include/sys/_intsup.h" 3 4
-       
-       
-       
-       
+# 67 "/usr/include/sys/_intsup.h" 3 4
        
        
        
 # 14 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/sys/_stdint.h" 1 3 4
-# 20 "/usr/include/sys/_stdint.h" 3 4
+# 19 "/usr/include/sys/_stdint.h" 3 4
 typedef __int8_t int8_t ;
-
-
-
 typedef __uint8_t uint8_t ;
 
 
 
 
-
-
-
 typedef __int16_t int16_t ;
-
-
-
 typedef __uint16_t uint16_t ;
 
 
 
 
-
-
-
 typedef __int32_t int32_t ;
-
-
-
 typedef __uint32_t uint32_t ;
 
 
 
 
-
-
-
 typedef __int64_t int64_t ;
-
-
-
 typedef __uint64_t uint64_t ;
 
 
 
-
-
-
-typedef __intmax_t intmax_t;
-
-
-
-
-typedef __uintmax_t uintmax_t;
-
-
-
-
 typedef __intptr_t intptr_t;
-
-
-
-
 typedef __uintptr_t uintptr_t;
 # 15 "/usr/include/stdint.h" 2 3 4
 
@@ -200,13 +133,15 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 2 3 4
-# 29 "QuarkTS.h" 2
-# 38 "QuarkTS.h"
-        
-# 38 "QuarkTS.h"
-       typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
-# 56 "QuarkTS.h"
+# 130 "/usr/include/stdint.h" 3 4
+  typedef long int intmax_t;
+# 139 "/usr/include/stdint.h" 3 4
+  typedef long unsigned int uintmax_t;
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 2 3 4
+# 28 "QuarkTS.h" 2
+# 37 "QuarkTS.h"
+        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
+# 55 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
     typedef volatile uint32_t qClock_t;
@@ -214,9 +149,9 @@ typedef __uint_least64_t uint_least64_t;
     typedef uint8_t qIteration_t;
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
-# 76 "QuarkTS.h"
+# 75 "QuarkTS.h"
     typedef struct{
-# 95 "QuarkTS.h"
+# 94 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -271,8 +206,8 @@ typedef __uint_least64_t uint_least64_t;
         void (*I_Enabler)(void);
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
-        uint8_t QueueSize, QueueIndex;
-        volatile uint8_t NotSafeQueue;
+        uint8_t QueueSize;
+        int16_t QueueIndex;
 
         volatile qClock_t epochs;
 
@@ -293,7 +228,7 @@ typedef __uint_least64_t uint_least64_t;
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
-# 485 "QuarkTS.h"
+# 488 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
@@ -329,7 +264,7 @@ typedef __uint_least64_t uint_least64_t;
     typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 611 "QuarkTS.h"
+# 614 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -343,7 +278,7 @@ typedef __uint_least64_t uint_least64_t;
 volatile QuarkTSCoreData_t QUARKTS;
 static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
-static volatile struct _qTask_t* _qDequeueTaskEvent(void);
+static volatile struct _qTask_t* _qPrioQueueExtract(void);
 
 void _qSendEvent(volatile struct _qTask_t *Task, void* eventdata){
     Task->Flag.AsyncRun = 1;
@@ -381,54 +316,34 @@ void _qClearTimeElapse(volatile struct _qTask_t *Task){
     Task->TimeElapsed = 0;
 }
 
-int _qEnqueueTaskEvent(volatile struct _qTask_t *TasktoQueue, void* eventdata){
-    if(QUARKTS.QueueIndex>QUARKTS.QueueSize-1 ) return -1;
-    if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
-    QUARKTS.NotSafeQueue = 1;
-    qQueueStack_t qtmp;
-    qtmp.Task = TasktoQueue;
-    qtmp.QueueData = eventdata;
-    volatile struct _qTask_t *TaskFromQueue;
-    qPriority_t PriorityValue = TasktoQueue->Priority;
-    if( (TaskFromQueue = QUARKTS.QueueStack[QUARKTS.QueueIndex].Task)!=((void*)0)){
-        if(PriorityValue<=TaskFromQueue->Priority){
-        QUARKTS.QueueStack[QUARKTS.QueueIndex] = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-        QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = qtmp;
-        }
-    }
-    else QUARKTS.QueueStack[QUARKTS.QueueIndex] = qtmp;
-    QUARKTS.QueueIndex++;
-    if(QUARKTS.QueueIndex==1){
-        if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
-        return 0;
-    }
-    uint8_t i;
-    for(i=0; i<QUARKTS.QueueSize; i++){
-        if( (TaskFromQueue = QUARKTS.QueueStack[i].Task)!=((void*)0)){
-            if(PriorityValue<= TaskFromQueue->Priority){
-                qtmp = QUARKTS.QueueStack[QUARKTS.QueueIndex-1];
-                QUARKTS.QueueStack[QUARKTS.QueueIndex-1] = QUARKTS.QueueStack[i];
-                QUARKTS.QueueStack[i] = qtmp;
-            }
-        }
-    }
-    if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();;
+int _qPrioQueueInsert(volatile struct _qTask_t *TasktoQueue, void* eventdata){
+    if(QUARKTS.QueueIndex>=QUARKTS.QueueSize-1 ) return -1;
+    qQueueStack_t qtmp = {TasktoQueue, eventdata};
+    QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0;
 }
 
-static volatile struct _qTask_t* _qDequeueTaskEvent(void){
-    volatile struct _qTask_t *Task;
-    uint8_t index = QUARKTS.QueueIndex-1;
-    if(QUARKTS.QueueIndex<=0) return ((void*)0);
-    if((Task = QUARKTS.QueueStack[index].Task) != ((void*)0)){
-         if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
-         QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[index].QueueData;
-         QUARKTS.QueueStack[index].Task = ((void*)0);
-         if(index>0) QUARKTS.QueueIndex--;
-         if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
-         return Task;
+static volatile struct _qTask_t* _qPrioQueueExtract(void){
+    volatile struct _qTask_t *Task = ((void*)0);
+    uint8_t i;
+    uint8_t IndexTaskToExtract = 0;
+    if(QUARKTS.QueueIndex < 0) return ((void*)0);
+    if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
+    qPriority_t MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
+    for(i=1;i<QUARKTS.QueueSize;i++){
+        if(QUARKTS.QueueStack[i].Task == ((void*)0)) break;
+        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
+            MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
+            IndexTaskToExtract = i;
+        }
     }
-    return ((void*)0);
+    QUARKTS.EventInfo.EventData = QUARKTS.QueueStack[IndexTaskToExtract].QueueData;
+    Task = QUARKTS.QueueStack[IndexTaskToExtract].Task;
+    QUARKTS.QueueStack[IndexTaskToExtract].Task = ((void*)0);
+    for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1];
+    QUARKTS.QueueIndex--;
+    if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
+    return Task;
 }
 
 void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void)){
@@ -445,9 +360,8 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = ((void*)0);
-    QUARKTS.QueueIndex = 0;
+    QUARKTS.QueueIndex = -1;
     QUARKTS.Flag.Init = 0;
-    QUARKTS.NotSafeQueue = 0;
     QUARKTS.Flag.ReleaseSched = 0;
     QUARKTS.Flag.FCallReleased = 0;
     QUARKTS.I_Enabler = QUARKTS.I_Disable = ((void*)0);
@@ -535,7 +449,7 @@ void _qStart(void){
     }
     Task = QUARKTS.First;
     while(Task != ((void*)0)){
-        if ((qTask = _qDequeueTaskEvent())!=((void*)0)) _qTriggerEvent(qTask, byQueueExtraction);
+        if ((qTask = _qPrioQueueExtract())!=((void*)0)) _qTriggerEvent(qTask, byQueueExtraction);
 
         if((Task->Flag.TimedTaskRun || Task->Interval == ((qTime_t)(0))) && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.Enabled){
             Task->Flag.TimedTaskRun--;

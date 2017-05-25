@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.3
+ *  Version : 3.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -23,8 +23,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-        
-    
+            
     #include <stdint.h>
 
     #define _QUARKTS_CR_DEFS_
@@ -146,8 +145,8 @@ extern "C" {
         void (*I_Enabler)(void);
         volatile qTaskCoreFlags_t Flag;
         volatile qQueueStack_t *QueueStack;
-        uint8_t QueueSize, QueueIndex;
-        volatile uint8_t NotSafeQueue;
+        uint8_t QueueSize;
+        int16_t QueueIndex;
         #ifdef QSTIMER
         volatile qClock_t epochs;
         #endif
@@ -168,6 +167,10 @@ extern "C" {
     void _qSetUserData(qTask_t *Task, void* arg);
     void _qClearTimeElapse(qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
+    
+    #define _Q_ENTER_CRITICAL()                                                          if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable()
+    #define _Q_EXIT_CRITICAL()                                                           if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler()
+    
 #define qSetInterruptsED(ENABLER, DISABLER)                                            _qSetInterruptsED(ENABLER, DISABLER)  
 /*void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
@@ -302,7 +305,7 @@ Return value:
     Return 0 if the event has been inserted in the queue, or -1 if an error 
     occurred (The queue exceeds the size).
 */
-    #define qQueueEvent(TASK, EVENTDATA)                                                _qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)//_qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
+    #define qQueueEvent(TASK, EVENTDATA)                                                _qPrioQueueInsert(&TASK, (void*)EVENTDATA)//_qEnqueueTaskEvent(&TASK, (void*)EVENTDATA)
 /*void qSetIdleTask(qTask_t Identifier, qTaskFcn_t IDLE_Callback)
 
 Establish the IDLE Task Callback
