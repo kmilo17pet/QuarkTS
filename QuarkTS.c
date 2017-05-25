@@ -106,13 +106,11 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;    
     QUARKTS.QueueIndex = -1;    
-    QUARKTS.Flag.Init = 0;
-    QUARKTS.Flag.ReleaseSched = 0;
-    QUARKTS.Flag.FCallReleased = 0;
+    QUARKTS.Flag.Init = qFalse;
+    QUARKTS.Flag.ReleaseSched = qFalse;
+    QUARKTS.Flag.FCallReleased = qFalse;
     QUARKTS.I_Enabler =  QUARKTS.I_Disable = NULL;
-    #ifdef QSTIMER
-        QUARKTS.epochs++;
-    #endif
+    QUARKTS.epochs = 0;
 }
 /*============================================================================*/
 void _qISRHandler(void){
@@ -126,8 +124,8 @@ int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qT
     Task->UserData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;    
-    Task->Flag.AsyncRun = Task->Flag.InitFlag = 0;
-    Task->Flag.Enabled = (uint8_t)(InitialState != 0);
+    Task->Flag.AsyncRun = Task->Flag.InitFlag = qFalse;
+    Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     Task->Cycles = 0;
@@ -140,7 +138,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);   
     QUARKTS.EventInfo.UserData = Task->UserData;
     if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
-    Task->Flag.InitFlag = 1;
+    Task->Flag.InitFlag = qTrue;
     QUARKTS.EventInfo.EventData = NULL;
     Task->Cycles++;
 }
@@ -186,30 +184,30 @@ void _qStart(void){
         if( ( ((QUARKTS.epochs - Task->ClockStart)>=Task->Interval) || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.Enabled){
             Task->ClockStart = QUARKTS.epochs;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
-            if(Task->Iterations == 0) Task->Flag.Enabled = 0;
+            if(Task->Iterations == 0) Task->Flag.Enabled = qFalse;
             _qTriggerEvent(Task, byTimeElapsed);            
         }
         else if( Task->Flag.AsyncRun){
             QUARKTS.EventInfo.EventData = Task->AsyncData;
-            Task->Flag.AsyncRun = 0;
+            Task->Flag.AsyncRun = qFalse;
             _qTriggerEvent(Task, byAsyncEvent);
         }
         else if( QUARKTS.IDLECallback!= NULL){
             QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = byPriority;
             QUARKTS.IDLECallback(QUARKTS.EventInfo);
-            QUARKTS.Flag.FCallIdle = 1;        
+            QUARKTS.Flag.FCallIdle = qTrue;        
         }
         Task = Task->Next;
     }
     goto qMainSchedule;
     qReleasedSchedule:
-    QUARKTS.Flag.Init = 0;
-    QUARKTS.Flag.ReleaseSched = 0;
+    QUARKTS.Flag.Init = qFalse;
+    QUARKTS.Flag.ReleaseSched = qFalse;
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallReleased);
     QUARKTS.EventInfo.Trigger = byAsyncEvent;
     if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback(QUARKTS.EventInfo);
-    QUARKTS.Flag.FCallIdle = 1;  
+    QUARKTS.Flag.FCallIdle = qTrue;  
 }
 /*============================================================================*/
 int _qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState){
@@ -245,12 +243,11 @@ void _qStateMachine_Run(qSM_t *obj, void *Data){
             break;
     }
  }
-#ifdef QSTIMER
 /*============================================================================*/
 int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
     if(fr && obj->SR){
         if (_qSTimerExpired(obj)){
-            obj->SR = 0;
+            obj->SR = qFalse;
             return 1;
         }
         else return 0;
@@ -258,7 +255,7 @@ int _qSTimerSet(qSTimer_t *obj, qTime_t Time, qBool_t fr){
     if ( (Time/2.0)<QUARKTS.Tick ) return -1;    
     obj->TV = (qClock_t)(Time/QUARKTS.Tick);
     obj->Start = QUARKTS.epochs;
-    obj->SR = 1;
+    obj->SR = qTrue;
     return 0;
 }
 /*============================================================================*/
@@ -276,4 +273,3 @@ qClock_t _qSTimerRemaining(qSTimer_t *obj){
     return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
 /*============================================================================*/
-#endif

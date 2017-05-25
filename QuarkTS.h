@@ -31,8 +31,11 @@ extern "C" {
         #define NULL ((void*)0)
     #endif
 
-    #define QSTIMER
-
+    #define qTrue   0x01u
+    #define qFalse  0x00u
+    #define qEnabled              (qTrue)
+    #define qDisabled             (qFalse)
+    
     #ifdef _QUARKTS_CR_DEFS_
         typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;        
         #define $qCRKeep                _qCR_BEGIN_:   
@@ -61,17 +64,14 @@ extern "C" {
     typedef uint8_t qBool_t;
     
 
-    #define LOWEST_Priority     (qPriority_t)(0)
-    #define MEDIUM_Priority     (qPriority_t)(0x7F)
-    #define HIGH_Priority       (qPriority_t)(0xFE)
+    #define LOWEST_Priority     (qPriority_t)(0x00u)
+    #define MEDIUM_Priority     (qPriority_t)(0x7Fu)
+    #define HIGH_Priority       (qPriority_t)(0xFEu)
     #define PERIODIC            ((qIteration_t)-1)
     #define INDEFINITE          ((qIteration_t)-1)
     #define SINGLESHOT          ((qIteration_t)1)
     #define TIME_INMEDIATE      ((qTime_t)(0))
-    
-    #define ENABLE              (1)
-    #define DISABLE             (0)
-       
+          
     typedef struct{
         /* Trigger:
         This flag indicates the event source that triggers the task execution.
@@ -147,9 +147,7 @@ extern "C" {
         volatile qQueueStack_t *QueueStack;
         uint8_t QueueSize;
         int16_t QueueIndex;
-        #ifdef QSTIMER
         volatile qClock_t epochs;
-        #endif
     }QuarkTSCoreData_t;
     extern volatile QuarkTSCoreData_t QUARKTS;
 
@@ -170,7 +168,18 @@ extern "C" {
     
     #define _Q_ENTER_CRITICAL()                                                          if(QUARKTS.I_Disable != NULL) QUARKTS.I_Disable()
     #define _Q_EXIT_CRITICAL()                                                           if(QUARKTS.I_Enabler != NULL) QUARKTS.I_Enabler()
-    
+ 
+/*void qCreateTask(void (*Enabler)(void), void (*Disabler)(void))
+
+Set the hardware-specific code for global interrupt enable/disable. 
+Setting this allows you push Interrupt-safe data in the priority queue 
+with <qQueueEvent>
+
+Parameters:
+
+    - Enabler : The function with hardware specific code that enables interrupts.
+    - Disabler : The function with hardware specific code that disables interrupts.
+*/    
 #define qSetInterruptsED(ENABLER, DISABLER)                                            _qSetInterruptsED(ENABLER, DISABLER)  
 /*void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
@@ -385,7 +394,7 @@ Parameters:
 
     - Identifier : The task node identifier.
 */
-    #define qEnable(TASK)                                                               _qEnableDisable(&TASK, 1)  
+    #define qEnable(TASK)                                                               _qEnableDisable(&TASK, qEnabled)  
 /*void qDisable(qTask_t Identifier)
 
 qDisable the task
@@ -394,7 +403,10 @@ Parameters:
 
     - Identifier : The task node identifier.
 */
-    #define qDisable(TASK)                                                              _qEnableDisable(&TASK, 0) 
+    #define qDisable(TASK)                                                              _qEnableDisable(&TASK, qDisabled) 
+
+    #define qEnDis(TASK, BOOL_VAL)                                                      _qEnableDisable(&TASK, BOOL_VAL)
+    
 /*void qSetCallback(qTask_t Identifier, qTaskFcn_t Callback)
 
 Set/Change the task callback function
@@ -461,7 +473,7 @@ Return value:
 Disables the QuarkTS scheduling. The main thread will continue after the
 qSchedule() call.
 */
-    #define qReleaseSchedule()                                                          QUARKTS.Flag.ReleaseSched = 1
+    #define qReleaseSchedule()                                                          QUARKTS.Flag.ReleaseSched = qTrue
 /*void qSetReleaseSchedCallback(qTaskFcn_t Callback)
 
 Set/Change the scheduler release callback function
@@ -601,7 +613,7 @@ Yields until the logical condition being true
         #define qCoroutineWaitUntil(_condition_)        $qCR_wu_Assert(_condition_)
     #endif
     
-    #ifdef QSTIMER
+    
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -630,7 +642,7 @@ Return value:
 
     Returns 0 on success, otherwise, returns -1.
 */        
-        #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time, 0)
+        #define qSTimerSet(OBJ, Time)   _qSTimerSet(&OBJ, (qTime_t)Time, qFalse)
 /*unsigned char qSTimerExpired(qSTimer_t OBJ)
 
 Non-Blocking Stimer check
@@ -654,7 +666,7 @@ Parameters:
 
     - OBJ : The STimer object.
 */
-        #define qSTimerDisarm(OBJ)      (OBJ.SR = 0)
+        #define qSTimerDisarm(OBJ)      (OBJ.SR = qFalse)
 /*unsigned char qSTimerFreeRun(qSTimer_t OBJ, qTime_t Time)
 
 Non-Blocking STimer check with automatic arming
@@ -676,7 +688,7 @@ Return value:
     > Note 4: A disarmed STimer also returns false.
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
-        #define qSTimerFreeRun(OBJ, Time)  _qSTimerSet(&OBJ, (qTime_t)Time, 1)
+        #define qSTimerFreeRun(OBJ, Time)  _qSTimerSet(&OBJ, (qTime_t)Time, qTrue)
 /*qClock_t qSTimerRemainingEpochs(qSTimer_t OBJ)
 
 Query the remaining epochs
@@ -729,8 +741,7 @@ Return value:
     The elapsed time. 
 */
         #define qSTimerElapsedTime(OBJ)         (QUARKTS.Tick*_qSTimerElapsed(&OBJ))
-        
-    #endif
+
         
 #ifdef	__cplusplus
 }
