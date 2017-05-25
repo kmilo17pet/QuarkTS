@@ -295,12 +295,13 @@ _qPrioQueueInsert:
 	movl	$-1, %eax
 	jmp	.L14
 .L12:
-	.loc 1 64 0 is_stmt 1
+	.loc 1 65 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	%rax, -16(%rbp)
+	.loc 1 66 0
 	movq	24(%rbp), %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 65 0
+	.loc 1 67 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rcx
 	leaq	QUARKTS(%rip), %rax
@@ -315,10 +316,10 @@ _qPrioQueueInsert:
 	movq	-8(%rbp), %rdx
 	movq	%rax, (%rcx)
 	movq	%rdx, 8(%rcx)
-	.loc 1 66 0
+	.loc 1 68 0
 	movl	$0, %eax
 .L14:
-	.loc 1 67 0 discriminator 1
+	.loc 1 69 0 discriminator 1
 	addq	$16, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -331,7 +332,7 @@ _qPrioQueueInsert:
 	.seh_proc	_qPrioQueueExtract
 _qPrioQueueExtract:
 .LFB9:
-	.loc 1 69 0
+	.loc 1 71 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -343,40 +344,40 @@ _qPrioQueueExtract:
 	subq	$48, %rsp
 	.seh_stackalloc	48
 	.seh_endprologue
-	.loc 1 70 0
-	movq	$0, -16(%rbp)
 	.loc 1 72 0
+	movq	$0, -16(%rbp)
+	.loc 1 74 0
 	movb	$0, -2(%rbp)
-	.loc 1 73 0
+	.loc 1 75 0
 	leaq	QUARKTS(%rip), %rax
 	movzwl	98(%rax), %eax
 	testw	%ax, %ax
 	jns	.L16
-	.loc 1 73 0 is_stmt 0 discriminator 1
+	.loc 1 75 0 is_stmt 0 discriminator 1
 	movl	$0, %eax
 	jmp	.L17
 .L16:
-	.loc 1 74 0 is_stmt 1
+	.loc 1 76 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movq	64(%rax), %rax
 	testq	%rax, %rax
 	je	.L18
-	.loc 1 74 0 is_stmt 0 discriminator 1
+	.loc 1 76 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	64(%rax), %rax
 	call	*%rax
 .L18:
-	.loc 1 75 0 is_stmt 1
+	.loc 1 77 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movq	(%rax), %rax
 	movzbl	32(%rax), %eax
 	movb	%al, -3(%rbp)
-	.loc 1 76 0
+	.loc 1 78 0
 	movb	$1, -1(%rbp)
 	jmp	.L19
 .L23:
-	.loc 1 77 0
+	.loc 1 79 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-1(%rbp), %edx
@@ -387,7 +388,7 @@ _qPrioQueueExtract:
 	jne	.L20
 	jmp	.L21
 .L20:
-	.loc 1 78 0
+	.loc 1 80 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-1(%rbp), %edx
@@ -397,7 +398,7 @@ _qPrioQueueExtract:
 	movzbl	32(%rax), %eax
 	cmpb	-3(%rbp), %al
 	jbe	.L22
-	.loc 1 79 0
+	.loc 1 81 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-1(%rbp), %edx
@@ -406,22 +407,22 @@ _qPrioQueueExtract:
 	movq	(%rax), %rax
 	movzbl	32(%rax), %eax
 	movb	%al, -3(%rbp)
-	.loc 1 80 0
+	.loc 1 82 0
 	movzbl	-1(%rbp), %eax
 	movb	%al, -2(%rbp)
 .L22:
-	.loc 1 76 0 discriminator 2
+	.loc 1 78 0 discriminator 2
 	movzbl	-1(%rbp), %eax
 	addl	$1, %eax
 	movb	%al, -1(%rbp)
 .L19:
-	.loc 1 76 0 is_stmt 0 discriminator 1
+	.loc 1 78 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movzbl	96(%rax), %eax
 	cmpb	-1(%rbp), %al
 	ja	.L23
 .L21:
-	.loc 1 83 0 is_stmt 1
+	.loc 1 85 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-2(%rbp), %edx
@@ -430,7 +431,7 @@ _qPrioQueueExtract:
 	movq	8(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
 	movq	%rdx, 40(%rax)
-	.loc 1 84 0
+	.loc 1 86 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-2(%rbp), %edx
@@ -438,19 +439,19 @@ _qPrioQueueExtract:
 	addq	%rdx, %rax
 	movq	(%rax), %rax
 	movq	%rax, -16(%rbp)
-	.loc 1 85 0
+	.loc 1 87 0
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-2(%rbp), %edx
 	salq	$4, %rdx
 	addq	%rdx, %rax
 	movq	$0, (%rax)
-	.loc 1 86 0
+	.loc 1 88 0
 	movzbl	-2(%rbp), %eax
 	movb	%al, -1(%rbp)
 	jmp	.L24
 .L25:
-	.loc 1 86 0 is_stmt 0 discriminator 3
+	.loc 1 88 0 is_stmt 0 discriminator 3
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-1(%rbp), %edx
@@ -470,34 +471,34 @@ _qPrioQueueExtract:
 	addl	$1, %eax
 	movb	%al, -1(%rbp)
 .L24:
-	.loc 1 86 0 discriminator 1
+	.loc 1 88 0 discriminator 1
 	movzbl	-1(%rbp), %edx
 	leaq	QUARKTS(%rip), %rax
 	movzwl	98(%rax), %eax
 	cwtl
 	cmpl	%eax, %edx
 	jl	.L25
-	.loc 1 87 0 is_stmt 1
+	.loc 1 89 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movzwl	98(%rax), %eax
 	subl	$1, %eax
 	movl	%eax, %edx
 	leaq	QUARKTS(%rip), %rax
 	movw	%dx, 98(%rax)
-	.loc 1 88 0
+	.loc 1 90 0
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	testq	%rax, %rax
 	je	.L26
-	.loc 1 88 0 is_stmt 0 discriminator 1
+	.loc 1 90 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	call	*%rax
 .L26:
-	.loc 1 89 0 is_stmt 1
+	.loc 1 91 0 is_stmt 1
 	movq	-16(%rbp), %rax
 .L17:
-	.loc 1 90 0
+	.loc 1 92 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -511,7 +512,7 @@ _qPrioQueueExtract:
 	.seh_proc	_qSetInterruptsED
 _qSetInterruptsED:
 .LFB10:
-	.loc 1 92 0
+	.loc 1 94 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -523,15 +524,15 @@ _qSetInterruptsED:
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
 	movq	%rdx, 24(%rbp)
-	.loc 1 93 0
+	.loc 1 95 0
 	leaq	QUARKTS(%rip), %rax
 	movq	16(%rbp), %rdx
 	movq	%rdx, 72(%rax)
-	.loc 1 94 0
+	.loc 1 96 0
 	leaq	QUARKTS(%rip), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, 64(%rax)
-	.loc 1 95 0
+	.loc 1 97 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -544,7 +545,7 @@ _qSetInterruptsED:
 	.seh_proc	_qInitScheduler
 _qInitScheduler:
 .LFB11:
-	.loc 1 97 0
+	.loc 1 99 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -561,33 +562,33 @@ _qInitScheduler:
 	movq	%r8, 32(%rbp)
 	movl	%r9d, %eax
 	movb	%al, 40(%rbp)
-	.loc 1 99 0
+	.loc 1 101 0
 	leaq	QUARKTS(%rip), %rax
 	movq	$0, 56(%rax)
-	.loc 1 100 0
+	.loc 1 102 0
 	leaq	QUARKTS(%rip), %rdx
 	movl	16(%rbp), %eax
 	movl	%eax, 16(%rdx)
-	.loc 1 101 0
+	.loc 1 103 0
 	leaq	QUARKTS(%rip), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, (%rax)
-	.loc 1 102 0
+	.loc 1 104 0
 	leaq	QUARKTS(%rip), %rax
 	movq	$0, 8(%rax)
-	.loc 1 103 0
+	.loc 1 105 0
 	leaq	QUARKTS(%rip), %rax
 	movq	32(%rbp), %rdx
 	movq	%rdx, 88(%rax)
-	.loc 1 104 0
+	.loc 1 106 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	40(%rbp), %edx
 	movb	%dl, 96(%rax)
-	.loc 1 105 0
+	.loc 1 107 0
 	movb	$0, -1(%rbp)
 	jmp	.L29
 .L30:
-	.loc 1 105 0 is_stmt 0 discriminator 3
+	.loc 1 107 0 is_stmt 0 discriminator 3
 	leaq	QUARKTS(%rip), %rax
 	movq	88(%rax), %rax
 	movzbl	-1(%rbp), %edx
@@ -598,36 +599,36 @@ _qInitScheduler:
 	addl	$1, %eax
 	movb	%al, -1(%rbp)
 .L29:
-	.loc 1 105 0 discriminator 1
+	.loc 1 107 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movzbl	96(%rax), %eax
 	cmpb	-1(%rbp), %al
 	ja	.L30
-	.loc 1 106 0 is_stmt 1
+	.loc 1 108 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movw	$-1, 98(%rax)
-	.loc 1 107 0
-	leaq	QUARKTS(%rip), %rax
-	movb	$0, 80(%rax)
-	.loc 1 108 0
-	leaq	QUARKTS(%rip), %rax
-	movb	$0, 82(%rax)
 	.loc 1 109 0
 	leaq	QUARKTS(%rip), %rax
-	movb	$0, 83(%rax)
+	movb	$0, 80(%rax)
 	.loc 1 110 0
+	leaq	QUARKTS(%rip), %rax
+	movb	$0, 82(%rax)
+	.loc 1 111 0
+	leaq	QUARKTS(%rip), %rax
+	movb	$0, 83(%rax)
+	.loc 1 112 0
 	movl	$0, %eax
 	leaq	QUARKTS(%rip), %rdx
 	movq	%rax, 64(%rdx)
 	leaq	QUARKTS(%rip), %rdx
 	movq	%rax, 72(%rdx)
-	.loc 1 112 0
+	.loc 1 114 0
 	leaq	QUARKTS(%rip), %rax
 	movl	100(%rax), %eax
 	leal	1(%rax), %edx
 	leaq	QUARKTS(%rip), %rax
 	movl	%edx, 100(%rax)
-	.loc 1 114 0
+	.loc 1 116 0
 	addq	$16, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -641,7 +642,7 @@ _qInitScheduler:
 	.seh_proc	_qISRHandler
 _qISRHandler:
 .LFB12:
-	.loc 1 116 0
+	.loc 1 118 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -653,80 +654,80 @@ _qISRHandler:
 	subq	$16, %rsp
 	.seh_stackalloc	16
 	.seh_endprologue
-	.loc 1 117 0
+	.loc 1 119 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	80(%rax), %eax
 	testb	%al, %al
 	jne	.L32
 	jmp	.L31
 .L32:
-	.loc 1 118 0
+	.loc 1 120 0
 	leaq	QUARKTS(%rip), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 119 0
+	.loc 1 121 0
 	jmp	.L34
 .L38:
-	.loc 1 120 0
+	.loc 1 122 0
 	movq	-8(%rbp), %rax
 	movzbl	52(%rax), %eax
 	testb	%al, %al
 	je	.L35
-	.loc 1 120 0 is_stmt 0 discriminator 1
+	.loc 1 122 0 is_stmt 0 discriminator 1
 	movq	-8(%rbp), %rax
 	movl	16(%rax), %eax
 	testl	%eax, %eax
 	je	.L35
-	.loc 1 121 0 is_stmt 1
+	.loc 1 123 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	movl	20(%rax), %eax
 	leal	1(%rax), %edx
 	movq	-8(%rbp), %rax
 	movl	%edx, 20(%rax)
-	.loc 1 122 0
+	.loc 1 124 0
 	movq	-8(%rbp), %rax
 	movl	20(%rax), %edx
 	movq	-8(%rbp), %rax
 	movl	16(%rax), %eax
 	cmpl	%eax, %edx
 	jb	.L35
-	.loc 1 123 0
+	.loc 1 125 0
 	movq	-8(%rbp), %rax
 	movzbl	51(%rax), %eax
 	testb	%al, %al
 	jne	.L36
-	.loc 1 123 0 is_stmt 0 discriminator 1
+	.loc 1 125 0 is_stmt 0 discriminator 1
 	movq	-8(%rbp), %rax
 	movzbl	48(%rax), %eax
 	leal	1(%rax), %edx
 	jmp	.L37
 .L36:
-	.loc 1 123 0 discriminator 2
+	.loc 1 125 0 discriminator 2
 	movl	$1, %edx
 .L37:
-	.loc 1 123 0 discriminator 4
+	.loc 1 125 0 discriminator 4
 	movq	-8(%rbp), %rax
 	movb	%dl, 48(%rax)
-	.loc 1 124 0 is_stmt 1 discriminator 4
+	.loc 1 126 0 is_stmt 1 discriminator 4
 	movq	-8(%rbp), %rax
 	movl	$0, 20(%rax)
 .L35:
-	.loc 1 127 0
+	.loc 1 129 0
 	movq	-8(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -8(%rbp)
 .L34:
-	.loc 1 119 0
+	.loc 1 121 0
 	cmpq	$0, -8(%rbp)
 	jne	.L38
-	.loc 1 130 0
+	.loc 1 132 0
 	leaq	QUARKTS(%rip), %rax
 	movl	100(%rax), %eax
 	leal	1(%rax), %edx
 	leaq	QUARKTS(%rip), %rax
 	movl	%edx, 100(%rax)
 .L31:
-	.loc 1 132 0
+	.loc 1 134 0
 	addq	$16, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -740,7 +741,7 @@ _qISRHandler:
 	.seh_proc	_qCreateTask
 _qCreateTask:
 .LFB13:
-	.loc 1 134 0
+	.loc 1 136 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -761,7 +762,7 @@ _qCreateTask:
 	movb	%cl, 32(%rbp)
 	movb	%dl, -4(%rbp)
 	movb	%al, -8(%rbp)
-	.loc 1 135 0
+	.loc 1 137 0
 	movss	40(%rbp), %xmm0
 	movss	.LC0(%rip), %xmm1
 	divss	%xmm1, %xmm0
@@ -769,7 +770,7 @@ _qCreateTask:
 	movss	16(%rax), %xmm1
 	ucomiss	%xmm0, %xmm1
 	jbe	.L40
-	.loc 1 135 0 is_stmt 0 discriminator 1
+	.loc 1 137 0 is_stmt 0 discriminator 1
 	pxor	%xmm0, %xmm0
 	ucomiss	40(%rbp), %xmm0
 	jp	.L42
@@ -777,22 +778,22 @@ _qCreateTask:
 	ucomiss	40(%rbp), %xmm0
 	jne	.L42
 .L40:
-	.loc 1 135 0 discriminator 4
+	.loc 1 137 0 discriminator 4
 	cmpq	$0, 24(%rbp)
 	jne	.L43
 .L42:
-	.loc 1 135 0 discriminator 5
+	.loc 1 137 0 discriminator 5
 	movl	$-1, %eax
 	jmp	.L44
 .L43:
-	.loc 1 136 0 is_stmt 1
+	.loc 1 138 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, 40(%rax)
-	.loc 1 137 0
+	.loc 1 139 0
 	movq	16(%rbp), %rax
 	movl	$0, 20(%rax)
-	.loc 1 138 0
+	.loc 1 140 0
 	leaq	QUARKTS(%rip), %rax
 	movss	16(%rax), %xmm1
 	movss	40(%rbp), %xmm0
@@ -801,19 +802,19 @@ _qCreateTask:
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 16(%rax)
-	.loc 1 139 0
+	.loc 1 141 0
 	movq	16(%rbp), %rax
 	movq	64(%rbp), %rdx
 	movq	%rdx, (%rax)
-	.loc 1 140 0
+	.loc 1 142 0
 	movq	16(%rbp), %rax
 	movzbl	32(%rbp), %edx
 	movb	%dl, 32(%rax)
-	.loc 1 141 0
+	.loc 1 143 0
 	movq	16(%rbp), %rax
 	movzbl	-4(%rbp), %edx
 	movb	%dl, 24(%rax)
-	.loc 1 142 0
+	.loc 1 144 0
 	movl	$0, %eax
 	movq	16(%rbp), %rdx
 	movb	%al, 48(%rdx)
@@ -821,28 +822,28 @@ _qCreateTask:
 	movb	%al, 49(%rdx)
 	movq	16(%rbp), %rdx
 	movb	%al, 50(%rdx)
-	.loc 1 143 0
+	.loc 1 145 0
 	cmpb	$0, -8(%rbp)
 	setne	%al
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movb	%dl, 52(%rax)
-	.loc 1 144 0
+	.loc 1 146 0
 	leaq	QUARKTS(%rip), %rax
 	movq	56(%rax), %rdx
 	movq	16(%rbp), %rax
 	movq	%rdx, 56(%rax)
-	.loc 1 145 0
+	.loc 1 147 0
 	leaq	QUARKTS(%rip), %rax
 	movq	16(%rbp), %rdx
 	movq	%rdx, 56(%rax)
-	.loc 1 146 0
+	.loc 1 148 0
 	movq	16(%rbp), %rax
 	movl	$0, 28(%rax)
-	.loc 1 147 0
+	.loc 1 149 0
 	movl	$0, %eax
 .L44:
-	.loc 1 148 0
+	.loc 1 150 0
 	addq	$16, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -855,7 +856,7 @@ _qCreateTask:
 	.seh_proc	_qTriggerEvent
 _qTriggerEvent:
 .LFB14:
-	.loc 1 150 0
+	.loc 1 152 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -869,11 +870,11 @@ _qTriggerEvent:
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
 	movl	%edx, 24(%rbp)
-	.loc 1 151 0
+	.loc 1 153 0
 	leaq	QUARKTS(%rip), %rax
 	movl	24(%rbp), %edx
 	movl	%edx, 24(%rax)
-	.loc 1 152 0
+	.loc 1 154 0
 	movq	16(%rbp), %rax
 	movzbl	49(%rax), %eax
 	testb	%al, %al
@@ -881,17 +882,17 @@ _qTriggerEvent:
 	movl	%eax, %edx
 	leaq	QUARKTS(%rip), %rax
 	movb	%dl, 48(%rax)
-	.loc 1 153 0
+	.loc 1 155 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
 	movq	%rdx, 32(%rax)
-	.loc 1 154 0
+	.loc 1 156 0
 	movq	16(%rbp), %rax
 	movq	40(%rax), %rax
 	testq	%rax, %rax
 	je	.L47
-	.loc 1 154 0 is_stmt 0 discriminator 1
+	.loc 1 156 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movq	40(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
@@ -907,19 +908,19 @@ _qTriggerEvent:
 	movq	%rax, %rcx
 	call	*%rdx
 .L47:
-	.loc 1 155 0 is_stmt 1
+	.loc 1 157 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movb	$1, 49(%rax)
-	.loc 1 156 0
+	.loc 1 158 0
 	leaq	QUARKTS(%rip), %rax
 	movq	$0, 40(%rax)
-	.loc 1 157 0
+	.loc 1 159 0
 	movq	16(%rbp), %rax
 	movl	28(%rax), %eax
 	leal	1(%rax), %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 28(%rax)
-	.loc 1 158 0
+	.loc 1 160 0
 	addq	$64, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -932,7 +933,7 @@ _qTriggerEvent:
 	.seh_proc	_qTaskChainbyPriority
 _qTaskChainbyPriority:
 .LFB15:
-	.loc 1 160 0
+	.loc 1 162 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -944,51 +945,51 @@ _qTaskChainbyPriority:
 	subq	$48, %rsp
 	.seh_stackalloc	48
 	.seh_endprologue
-	.loc 1 161 0
+	.loc 1 163 0
 	movq	$0, -8(%rbp)
 	movq	$0, -16(%rbp)
 	movq	$0, -24(%rbp)
 	movq	$0, -32(%rbp)
 	movq	$0, -48(%rbp)
-	.loc 1 162 0
+	.loc 1 164 0
 	leaq	QUARKTS(%rip), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -40(%rbp)
-	.loc 1 163 0
+	.loc 1 165 0
 	jmp	.L49
 .L56:
-	.loc 1 164 0
+	.loc 1 166 0
 	movq	-40(%rbp), %rax
 	movq	%rax, -8(%rbp)
 	movq	-8(%rbp), %rax
 	movq	%rax, -24(%rbp)
-	.loc 1 165 0
+	.loc 1 167 0
 	movq	-8(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -16(%rbp)
-	.loc 1 166 0
+	.loc 1 168 0
 	jmp	.L50
 .L55:
-	.loc 1 167 0
+	.loc 1 169 0
 	movq	-8(%rbp), %rax
 	movzbl	32(%rax), %edx
 	movq	-16(%rbp), %rax
 	movzbl	32(%rax), %eax
 	cmpb	%al, %dl
 	jnb	.L51
-	.loc 1 168 0
+	.loc 1 170 0
 	movq	-16(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -48(%rbp)
-	.loc 1 169 0
+	.loc 1 171 0
 	movq	-16(%rbp), %rax
 	movq	-8(%rbp), %rdx
 	movq	%rdx, 56(%rax)
-	.loc 1 170 0
+	.loc 1 172 0
 	movq	-8(%rbp), %rax
 	cmpq	-40(%rbp), %rax
 	jne	.L52
-	.loc 1 170 0 is_stmt 0 discriminator 1
+	.loc 1 172 0 is_stmt 0 discriminator 1
 	movq	-16(%rbp), %rax
 	movq	%rax, -40(%rbp)
 	leaq	QUARKTS(%rip), %rax
@@ -996,51 +997,51 @@ _qTaskChainbyPriority:
 	movq	%rdx, 56(%rax)
 	jmp	.L53
 .L52:
-	.loc 1 171 0 is_stmt 1
+	.loc 1 173 0 is_stmt 1
 	movq	-24(%rbp), %rax
 	movq	-16(%rbp), %rdx
 	movq	%rdx, 56(%rax)
 .L53:
-	.loc 1 172 0
+	.loc 1 174 0
 	movq	-16(%rbp), %rax
 	movq	%rax, -24(%rbp)
-	.loc 1 173 0
+	.loc 1 175 0
 	movq	-8(%rbp), %rax
 	movq	-48(%rbp), %rdx
 	movq	%rdx, 56(%rax)
 	jmp	.L54
 .L51:
-	.loc 1 176 0
+	.loc 1 178 0
 	movq	-8(%rbp), %rax
 	movq	%rax, -24(%rbp)
-	.loc 1 177 0
+	.loc 1 179 0
 	movq	-8(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -8(%rbp)
 .L54:
-	.loc 1 179 0
+	.loc 1 181 0
 	movq	-8(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -16(%rbp)
-	.loc 1 180 0
+	.loc 1 182 0
 	movq	-16(%rbp), %rax
 	cmpq	-32(%rbp), %rax
 	jne	.L50
-	.loc 1 180 0 is_stmt 0 discriminator 1
+	.loc 1 182 0 is_stmt 0 discriminator 1
 	movq	-8(%rbp), %rax
 	movq	%rax, -32(%rbp)
 .L50:
-	.loc 1 166 0 is_stmt 1
+	.loc 1 168 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	cmpq	-32(%rbp), %rax
 	jne	.L55
 .L49:
-	.loc 1 163 0
+	.loc 1 165 0
 	movq	-40(%rbp), %rax
 	movq	56(%rax), %rax
 	cmpq	-32(%rbp), %rax
 	jne	.L56
-	.loc 1 183 0
+	.loc 1 185 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1054,7 +1055,7 @@ _qTaskChainbyPriority:
 	.seh_proc	_qStart
 _qStart:
 .LFB16:
-	.loc 1 185 0
+	.loc 1 187 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1067,20 +1068,20 @@ _qStart:
 	.seh_stackalloc	80
 	.seh_endprologue
 .L58:
-	.loc 1 188 0
+	.loc 1 190 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	82(%rax), %eax
 	testb	%al, %al
 	je	.L59
 	nop
 .L60:
-	.loc 1 218 0
+	.loc 1 220 0
 	leaq	QUARKTS(%rip), %rax
 	movb	$0, 80(%rax)
-	.loc 1 219 0
+	.loc 1 221 0
 	leaq	QUARKTS(%rip), %rax
 	movb	$0, 82(%rax)
-	.loc 1 220 0
+	.loc 1 222 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	83(%rax), %eax
 	testb	%al, %al
@@ -1088,51 +1089,51 @@ _qStart:
 	movl	%eax, %edx
 	leaq	QUARKTS(%rip), %rax
 	movb	%dl, 48(%rax)
-	.loc 1 221 0
+	.loc 1 223 0
 	leaq	QUARKTS(%rip), %rax
 	movl	$3, 24(%rax)
-	.loc 1 222 0
+	.loc 1 224 0
 	leaq	QUARKTS(%rip), %rax
 	movq	8(%rax), %rax
 	testq	%rax, %rax
 	je	.L75
 	jmp	.L76
 .L59:
-	.loc 1 189 0
+	.loc 1 191 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	80(%rax), %eax
 	testb	%al, %al
 	jne	.L61
-	.loc 1 190 0
+	.loc 1 192 0
 	call	_qTaskChainbyPriority
-	.loc 1 191 0
+	.loc 1 193 0
 	leaq	QUARKTS(%rip), %rax
 	movb	$1, 80(%rax)
 .L61:
-	.loc 1 193 0
+	.loc 1 195 0
 	leaq	QUARKTS(%rip), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 194 0
+	.loc 1 196 0
 	jmp	.L62
 .L74:
-	.loc 1 195 0
+	.loc 1 197 0
 	call	_qPrioQueueExtract
 	movq	%rax, -16(%rbp)
 	cmpq	$0, -16(%rbp)
 	je	.L63
-	.loc 1 195 0 is_stmt 0 discriminator 1
+	.loc 1 197 0 is_stmt 0 discriminator 1
 	movq	-16(%rbp), %rax
 	movl	$2, %edx
 	movq	%rax, %rcx
 	call	_qTriggerEvent
 .L63:
-	.loc 1 197 0 is_stmt 1
+	.loc 1 199 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	movzbl	48(%rax), %eax
 	testb	%al, %al
 	jne	.L64
-	.loc 1 197 0 is_stmt 0 discriminator 2
+	.loc 1 199 0 is_stmt 0 discriminator 2
 	movq	-8(%rbp), %rax
 	movl	16(%rax), %eax
 	movl	%eax, %eax
@@ -1157,82 +1158,82 @@ _qStart:
 	ucomiss	%xmm1, %xmm0
 	jne	.L67
 .L64:
-	.loc 1 197 0 discriminator 3
+	.loc 1 199 0 discriminator 3
 	movq	-8(%rbp), %rax
 	movzbl	24(%rax), %eax
 	testb	%al, %al
 	jne	.L69
-	.loc 1 197 0 discriminator 5
+	.loc 1 199 0 discriminator 5
 	movq	-8(%rbp), %rax
 	movzbl	24(%rax), %eax
 	cmpb	$-1, %al
 	jne	.L67
 .L69:
-	.loc 1 197 0 discriminator 6
+	.loc 1 199 0 discriminator 6
 	movq	-8(%rbp), %rax
 	movzbl	52(%rax), %eax
 	testb	%al, %al
 	je	.L67
-	.loc 1 198 0 is_stmt 1
+	.loc 1 200 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	movzbl	48(%rax), %eax
 	leal	-1(%rax), %edx
 	movq	-8(%rbp), %rax
 	movb	%dl, 48(%rax)
-	.loc 1 199 0
+	.loc 1 201 0
 	movq	-8(%rbp), %rax
 	movzbl	24(%rax), %eax
 	cmpb	$-1, %al
 	je	.L70
-	.loc 1 199 0 is_stmt 0 discriminator 1
+	.loc 1 201 0 is_stmt 0 discriminator 1
 	movq	-8(%rbp), %rax
 	movzbl	24(%rax), %eax
 	leal	-1(%rax), %edx
 	movq	-8(%rbp), %rax
 	movb	%dl, 24(%rax)
 .L70:
-	.loc 1 200 0 is_stmt 1
+	.loc 1 202 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	movzbl	24(%rax), %eax
 	testb	%al, %al
 	jne	.L71
-	.loc 1 200 0 is_stmt 0 discriminator 1
+	.loc 1 202 0 is_stmt 0 discriminator 1
 	movq	-8(%rbp), %rax
 	movb	$0, 52(%rax)
 .L71:
-	.loc 1 201 0 is_stmt 1
+	.loc 1 203 0 is_stmt 1
 	movq	-8(%rbp), %rax
 	movl	$0, %edx
 	movq	%rax, %rcx
 	call	_qTriggerEvent
 	jmp	.L72
 .L67:
-	.loc 1 203 0
+	.loc 1 205 0
 	movq	-8(%rbp), %rax
 	movzbl	50(%rax), %eax
 	testb	%al, %al
 	je	.L73
-	.loc 1 204 0
+	.loc 1 206 0
 	movq	-8(%rbp), %rax
 	movq	8(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
 	movq	%rdx, 40(%rax)
-	.loc 1 205 0
+	.loc 1 207 0
 	movq	-8(%rbp), %rax
 	movb	$0, 50(%rax)
-	.loc 1 206 0
+	.loc 1 208 0
 	movq	-8(%rbp), %rax
 	movl	$3, %edx
 	movq	%rax, %rcx
 	call	_qTriggerEvent
 	jmp	.L72
 .L73:
-	.loc 1 208 0
+	.loc 1 210 0
 	leaq	QUARKTS(%rip), %rax
 	movq	(%rax), %rax
 	testq	%rax, %rax
 	je	.L72
-	.loc 1 209 0
+	.loc 1 211 0
 	leaq	QUARKTS(%rip), %rax
 	movzbl	81(%rax), %eax
 	testb	%al, %al
@@ -1240,10 +1241,10 @@ _qStart:
 	movl	%eax, %edx
 	leaq	QUARKTS(%rip), %rax
 	movb	%dl, 48(%rax)
-	.loc 1 210 0
+	.loc 1 212 0
 	leaq	QUARKTS(%rip), %rax
 	movl	$1, 24(%rax)
-	.loc 1 211 0
+	.loc 1 213 0
 	leaq	QUARKTS(%rip), %rax
 	movq	(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
@@ -1258,22 +1259,22 @@ _qStart:
 	leaq	-48(%rbp), %rax
 	movq	%rax, %rcx
 	call	*%rdx
-	.loc 1 212 0
+	.loc 1 214 0
 	leaq	QUARKTS(%rip), %rax
 	movb	$1, 81(%rax)
 .L72:
-	.loc 1 214 0
+	.loc 1 216 0
 	movq	-8(%rbp), %rax
 	movq	56(%rax), %rax
 	movq	%rax, -8(%rbp)
 .L62:
-	.loc 1 194 0
+	.loc 1 196 0
 	cmpq	$0, -8(%rbp)
 	jne	.L74
-	.loc 1 216 0
+	.loc 1 218 0
 	jmp	.L58
 .L76:
-	.loc 1 222 0 discriminator 1
+	.loc 1 224 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	8(%rax), %rdx
 	leaq	QUARKTS(%rip), %rax
@@ -1289,10 +1290,10 @@ _qStart:
 	movq	%rax, %rcx
 	call	*%rdx
 .L75:
-	.loc 1 223 0
+	.loc 1 225 0
 	leaq	QUARKTS(%rip), %rax
 	movb	$1, 81(%rax)
-	.loc 1 224 0
+	.loc 1 226 0
 	addq	$80, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1306,7 +1307,7 @@ _qStart:
 	.seh_proc	_qStateMachine_Init
 _qStateMachine_Init:
 .LFB17:
-	.loc 1 226 0
+	.loc 1 228 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1320,36 +1321,36 @@ _qStateMachine_Init:
 	movq	%rdx, 24(%rbp)
 	movq	%r8, 32(%rbp)
 	movq	%r9, 40(%rbp)
-	.loc 1 227 0
+	.loc 1 229 0
 	cmpq	$0, 24(%rbp)
 	jne	.L78
-	.loc 1 227 0 is_stmt 0 discriminator 1
+	.loc 1 229 0 is_stmt 0 discriminator 1
 	movl	$-1, %eax
 	jmp	.L79
 .L78:
-	.loc 1 228 0 is_stmt 1
+	.loc 1 230 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, (%rax)
-	.loc 1 229 0
+	.loc 1 231 0
 	movq	16(%rbp), %rax
 	movq	$0, 8(%rax)
-	.loc 1 230 0
+	.loc 1 232 0
 	movq	16(%rbp), %rax
 	movq	40(%rbp), %rdx
 	movq	%rdx, 32(%rax)
-	.loc 1 231 0
+	.loc 1 233 0
 	movq	16(%rbp), %rax
 	movq	32(%rbp), %rdx
 	movq	%rdx, 40(%rax)
-	.loc 1 232 0
+	.loc 1 234 0
 	movq	16(%rbp), %rax
 	movq	48(%rbp), %rdx
 	movq	%rdx, 48(%rax)
-	.loc 1 233 0
+	.loc 1 235 0
 	movl	$0, %eax
 .L79:
-	.loc 1 234 0
+	.loc 1 236 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -1362,7 +1363,7 @@ _qStateMachine_Init:
 	.seh_proc	_qStateMachine_Run
 _qStateMachine_Run:
 .LFB18:
-	.loc 1 236 0
+	.loc 1 238 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1376,18 +1377,18 @@ _qStateMachine_Run:
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
 	movq	%rdx, 24(%rbp)
-	.loc 1 237 0
+	.loc 1 239 0
 	movq	$0, -8(%rbp)
-	.loc 1 238 0
+	.loc 1 240 0
 	movq	16(%rbp), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, 24(%rax)
-	.loc 1 239 0
+	.loc 1 241 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	testq	%rax, %rax
 	je	.L81
-	.loc 1 240 0
+	.loc 1 242 0
 	movq	16(%rbp), %rax
 	movq	8(%rax), %rdx
 	movq	16(%rbp), %rax
@@ -1397,11 +1398,11 @@ _qStateMachine_Run:
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movb	%dl, 20(%rax)
-	.loc 1 241 0
+	.loc 1 243 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 242 0
+	.loc 1 244 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rax
 	movq	16(%rbp), %rcx
@@ -1409,70 +1410,70 @@ _qStateMachine_Run:
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 16(%rax)
-	.loc 1 243 0
+	.loc 1 245 0
 	movq	16(%rbp), %rax
 	movq	-8(%rbp), %rdx
 	movq	%rdx, 8(%rax)
 	jmp	.L82
 .L81:
-	.loc 1 245 0
+	.loc 1 247 0
 	movq	16(%rbp), %rax
 	movl	$-32767, 16(%rax)
 .L82:
-	.loc 1 247 0
+	.loc 1 249 0
 	movq	16(%rbp), %rax
 	movl	16(%rax), %eax
 	cmpl	$-32768, %eax
 	je	.L84
 	cmpl	$-32767, %eax
 	jne	.L90
-	.loc 1 249 0
+	.loc 1 251 0
 	movq	16(%rbp), %rax
 	movq	32(%rax), %rax
 	testq	%rax, %rax
 	je	.L86
-	.loc 1 249 0 is_stmt 0 discriminator 1
+	.loc 1 251 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movq	32(%rax), %rax
 	movq	16(%rbp), %rcx
 	call	*%rax
-	.loc 1 250 0 is_stmt 1 discriminator 1
+	.loc 1 252 0 is_stmt 1 discriminator 1
 	jmp	.L80
 .L86:
-	.loc 1 250 0 is_stmt 0
+	.loc 1 252 0 is_stmt 0
 	jmp	.L80
 .L84:
-	.loc 1 252 0 is_stmt 1
+	.loc 1 254 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	40(%rax), %rax
 	testq	%rax, %rax
 	je	.L88
-	.loc 1 252 0 is_stmt 0 discriminator 1
+	.loc 1 254 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movq	40(%rax), %rax
 	movq	16(%rbp), %rcx
 	call	*%rax
-	.loc 1 253 0 is_stmt 1 discriminator 1
+	.loc 1 255 0 is_stmt 1 discriminator 1
 	jmp	.L80
 .L88:
-	.loc 1 253 0 is_stmt 0
+	.loc 1 255 0 is_stmt 0
 	jmp	.L80
 .L90:
-	.loc 1 255 0 is_stmt 1
+	.loc 1 257 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	48(%rax), %rax
 	testq	%rax, %rax
 	je	.L89
-	.loc 1 255 0 is_stmt 0 discriminator 1
+	.loc 1 257 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movq	48(%rax), %rax
 	movq	16(%rbp), %rcx
 	call	*%rax
 .L89:
-	.loc 1 256 0 is_stmt 1
+	.loc 1 258 0 is_stmt 1
 	nop
 .L80:
-	.loc 1 258 0
+	.loc 1 260 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1486,7 +1487,7 @@ _qStateMachine_Run:
 	.seh_proc	_qSTimerSet
 _qSTimerSet:
 .LFB19:
-	.loc 1 261 0
+	.loc 1 263 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1502,31 +1503,31 @@ _qSTimerSet:
 	movss	%xmm1, 24(%rbp)
 	movl	%r8d, %eax
 	movb	%al, 32(%rbp)
-	.loc 1 262 0
+	.loc 1 264 0
 	cmpb	$0, 32(%rbp)
 	je	.L92
-	.loc 1 262 0 is_stmt 0 discriminator 1
+	.loc 1 264 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movzbl	(%rax), %eax
 	testb	%al, %al
 	je	.L92
-	.loc 1 263 0 is_stmt 1
+	.loc 1 265 0 is_stmt 1
 	movq	16(%rbp), %rcx
 	call	_qSTimerExpired
 	testb	%al, %al
 	je	.L93
-	.loc 1 264 0
+	.loc 1 266 0
 	movq	16(%rbp), %rax
 	movb	$0, (%rax)
-	.loc 1 265 0
+	.loc 1 267 0
 	movl	$1, %eax
 	jmp	.L94
 .L93:
-	.loc 1 267 0
+	.loc 1 269 0
 	movl	$0, %eax
 	jmp	.L94
 .L92:
-	.loc 1 269 0
+	.loc 1 271 0
 	cvtss2sd	24(%rbp), %xmm0
 	movsd	.LC2(%rip), %xmm1
 	divsd	%xmm1, %xmm0
@@ -1536,11 +1537,11 @@ _qSTimerSet:
 	cvtss2sd	%xmm0, %xmm0
 	ucomisd	%xmm1, %xmm0
 	jbe	.L98
-	.loc 1 269 0 is_stmt 0 discriminator 1
+	.loc 1 271 0 is_stmt 0 discriminator 1
 	movl	$-1, %eax
 	jmp	.L94
 .L98:
-	.loc 1 270 0 is_stmt 1
+	.loc 1 272 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movss	16(%rax), %xmm1
 	movss	24(%rbp), %xmm0
@@ -1549,18 +1550,18 @@ _qSTimerSet:
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 8(%rax)
-	.loc 1 271 0
+	.loc 1 273 0
 	leaq	QUARKTS(%rip), %rax
 	movl	100(%rax), %edx
 	movq	16(%rbp), %rax
 	movl	%edx, 4(%rax)
-	.loc 1 272 0
+	.loc 1 274 0
 	movq	16(%rbp), %rax
 	movb	$1, (%rax)
-	.loc 1 273 0
+	.loc 1 275 0
 	movl	$0, %eax
 .L94:
-	.loc 1 274 0
+	.loc 1 276 0
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1574,7 +1575,7 @@ _qSTimerSet:
 	.seh_proc	_qSTimerExpired
 _qSTimerExpired:
 .LFB20:
-	.loc 1 276 0
+	.loc 1 278 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1585,16 +1586,16 @@ _qSTimerExpired:
 	.cfi_def_cfa_register 6
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 277 0
+	.loc 1 279 0
 	movq	16(%rbp), %rax
 	movzbl	(%rax), %eax
 	testb	%al, %al
 	jne	.L100
-	.loc 1 277 0 is_stmt 0 discriminator 1
+	.loc 1 279 0 is_stmt 0 discriminator 1
 	movl	$0, %eax
 	jmp	.L101
 .L100:
-	.loc 1 278 0 is_stmt 1
+	.loc 1 280 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movl	100(%rax), %edx
 	movq	16(%rbp), %rax
@@ -1605,7 +1606,7 @@ _qSTimerExpired:
 	cmpl	%eax, %edx
 	setnb	%al
 .L101:
-	.loc 1 279 0
+	.loc 1 281 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -1618,7 +1619,7 @@ _qSTimerExpired:
 	.seh_proc	_qSTimerElapsed
 _qSTimerElapsed:
 .LFB21:
-	.loc 1 281 0
+	.loc 1 283 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1629,14 +1630,14 @@ _qSTimerElapsed:
 	.cfi_def_cfa_register 6
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 282 0
+	.loc 1 284 0
 	leaq	QUARKTS(%rip), %rax
 	movl	100(%rax), %edx
 	movq	16(%rbp), %rax
 	movl	4(%rax), %eax
 	subl	%eax, %edx
 	movl	%edx, %eax
-	.loc 1 283 0
+	.loc 1 285 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -1649,7 +1650,7 @@ _qSTimerElapsed:
 	.seh_proc	_qSTimerRemaining
 _qSTimerRemaining:
 .LFB22:
-	.loc 1 285 0
+	.loc 1 287 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -1662,35 +1663,32 @@ _qSTimerRemaining:
 	.seh_stackalloc	48
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 286 0
+	.loc 1 288 0
 	movq	16(%rbp), %rcx
 	call	_qSTimerElapsed
 	movl	%eax, -4(%rbp)
-	.loc 1 287 0
+	.loc 1 289 0
 	movq	16(%rbp), %rax
 	movl	8(%rax), %eax
 	testl	%eax, %eax
 	je	.L105
-	.loc 1 287 0 is_stmt 0 discriminator 2
+	.loc 1 289 0 is_stmt 0 discriminator 2
 	movq	16(%rbp), %rax
-	movl	8(%rax), %edx
-	movl	-4(%rbp), %eax
-	cmpl	%eax, %edx
+	movl	8(%rax), %eax
+	cmpl	-4(%rbp), %eax
 	jnb	.L106
 .L105:
-	.loc 1 287 0 discriminator 3
+	.loc 1 289 0 discriminator 3
 	movq	16(%rbp), %rax
 	movl	8(%rax), %eax
 	jmp	.L107
 .L106:
-	.loc 1 287 0 discriminator 4
+	.loc 1 289 0 discriminator 4
 	movq	16(%rbp), %rax
-	movl	8(%rax), %edx
-	movl	-4(%rbp), %eax
-	subl	%eax, %edx
-	movl	%edx, %eax
+	movl	8(%rax), %eax
+	subl	-4(%rbp), %eax
 .L107:
-	.loc 1 288 0 is_stmt 1 discriminator 6
+	.loc 1 290 0 is_stmt 1 discriminator 6
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -1824,8 +1822,6 @@ _qSTimerRemaining:
 	.ascii "qClock_t\0"
 	.byte	0x4
 	.byte	0x39
-	.long	0x1e2
-	.uleb128 0x6
 	.long	0x14f
 	.uleb128 0x3
 	.ascii "qPriority_t\0"
@@ -1847,189 +1843,191 @@ _qSTimerRemaining:
 	.byte	0x4
 	.byte	0x3d
 	.long	0x131
-	.uleb128 0x7
+	.uleb128 0x6
 	.byte	0x20
 	.byte	0x4
 	.byte	0x4b
-	.long	0x276
-	.uleb128 0x8
+	.long	0x271
+	.uleb128 0x7
 	.ascii "Trigger\0"
 	.byte	0x4
 	.byte	0x5e
 	.long	0x1a8
 	.byte	0
-	.uleb128 0x9
+	.uleb128 0x8
 	.secrel32	.LASF0
 	.byte	0x4
 	.byte	0x62
-	.long	0x276
+	.long	0x271
 	.byte	0x8
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "EventData\0"
 	.byte	0x4
 	.byte	0x66
-	.long	0x276
+	.long	0x271
 	.byte	0x10
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "FirstCall\0"
 	.byte	0x4
 	.byte	0x6b
-	.long	0x21e
+	.long	0x219
 	.byte	0x18
 	.byte	0
-	.uleb128 0xa
+	.uleb128 0x9
 	.byte	0x8
 	.uleb128 0x3
 	.ascii "qEvent_t\0"
 	.byte	0x4
 	.byte	0x6c
-	.long	0x22d
+	.long	0x228
 	.uleb128 0x3
 	.ascii "qTaskFcn_t\0"
 	.byte	0x4
 	.byte	0x6e
-	.long	0x29a
-	.uleb128 0xb
+	.long	0x295
+	.uleb128 0xa
 	.byte	0x8
-	.long	0x2a0
+	.long	0x29b
+	.uleb128 0xb
+	.long	0x2a6
 	.uleb128 0xc
-	.long	0x2ab
-	.uleb128 0xd
-	.long	0x278
+	.long	0x273
 	.byte	0
-	.uleb128 0x7
+	.uleb128 0x6
 	.byte	0x5
 	.byte	0x4
 	.byte	0x6f
-	.long	0x311
-	.uleb128 0x8
+	.long	0x30c
+	.uleb128 0x7
 	.ascii "TimedTaskRun\0"
 	.byte	0x4
 	.byte	0x70
-	.long	0x311
+	.long	0x30c
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "InitFlag\0"
 	.byte	0x4
 	.byte	0x70
-	.long	0x311
+	.long	0x30c
 	.byte	0x1
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "AsyncRun\0"
 	.byte	0x4
 	.byte	0x70
-	.long	0x311
+	.long	0x30c
 	.byte	0x2
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "IgnoreOveruns\0"
 	.byte	0x4
 	.byte	0x70
-	.long	0x311
+	.long	0x30c
 	.byte	0x3
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Enabled\0"
 	.byte	0x4
 	.byte	0x70
-	.long	0x311
+	.long	0x30c
 	.byte	0x4
 	.byte	0
-	.uleb128 0x6
+	.uleb128 0xd
 	.long	0x131
 	.uleb128 0x3
 	.ascii "qTaskFlags_t\0"
 	.byte	0x4
 	.byte	0x71
-	.long	0x2ab
+	.long	0x2a6
 	.uleb128 0xe
 	.ascii "_qTask_t\0"
 	.byte	0x40
 	.byte	0x4
 	.byte	0x75
-	.long	0x3d8
-	.uleb128 0x9
+	.long	0x3d3
+	.uleb128 0x8
 	.secrel32	.LASF0
 	.byte	0x4
 	.byte	0x76
-	.long	0x276
+	.long	0x271
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "AsyncData\0"
 	.byte	0x4
 	.byte	0x76
-	.long	0x276
+	.long	0x271
 	.byte	0x8
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Interval\0"
 	.byte	0x4
 	.byte	0x77
-	.long	0x1d2
+	.long	0x3d3
 	.byte	0x10
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "TimeElapsed\0"
 	.byte	0x4
 	.byte	0x77
-	.long	0x1d2
+	.long	0x3d3
 	.byte	0x14
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Iterations\0"
 	.byte	0x4
 	.byte	0x78
-	.long	0x1fa
+	.long	0x1f5
 	.byte	0x18
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Cycles\0"
 	.byte	0x4
 	.byte	0x79
 	.long	0x14f
 	.byte	0x1c
-	.uleb128 0x9
+	.uleb128 0x8
 	.secrel32	.LASF1
 	.byte	0x4
 	.byte	0x7a
-	.long	0x1e7
+	.long	0x1e2
 	.byte	0x20
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Callback\0"
 	.byte	0x4
 	.byte	0x7b
-	.long	0x288
+	.long	0x283
 	.byte	0x28
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Flag\0"
 	.byte	0x4
 	.byte	0x7c
 	.long	0x3d8
 	.byte	0x30
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Next\0"
 	.byte	0x4
 	.byte	0x7d
 	.long	0x3dd
 	.byte	0x38
 	.byte	0
-	.uleb128 0x6
-	.long	0x316
-	.uleb128 0xb
+	.uleb128 0xd
+	.long	0x1d2
+	.uleb128 0xd
+	.long	0x311
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x3e3
+	.uleb128 0xd
+	.long	0x325
 	.uleb128 0x6
-	.long	0x32a
-	.uleb128 0x7
 	.byte	0x10
 	.byte	0x4
 	.byte	0x81
 	.long	0x40f
-	.uleb128 0x9
+	.uleb128 0x8
 	.secrel32	.LASF2
 	.byte	0x4
 	.byte	0x82
 	.long	0x3dd
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "QueueData\0"
 	.byte	0x4
 	.byte	0x83
-	.long	0x276
+	.long	0x271
 	.byte	0x8
 	.byte	0
 	.uleb128 0x3
@@ -2037,30 +2035,30 @@ _qSTimerRemaining:
 	.byte	0x4
 	.byte	0x84
 	.long	0x3e8
-	.uleb128 0x7
+	.uleb128 0x6
 	.byte	0x4
 	.byte	0x4
 	.byte	0x86
 	.long	0x477
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Init\0"
 	.byte	0x4
 	.byte	0x87
 	.long	0x131
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "FCallIdle\0"
 	.byte	0x4
 	.byte	0x87
 	.long	0x131
 	.byte	0x1
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "ReleaseSched\0"
 	.byte	0x4
 	.byte	0x87
 	.long	0x131
 	.byte	0x2
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "FCallReleased\0"
 	.byte	0x4
 	.byte	0x87
@@ -2072,94 +2070,94 @@ _qSTimerRemaining:
 	.byte	0x4
 	.byte	0x88
 	.long	0x424
-	.uleb128 0x7
+	.uleb128 0x6
 	.byte	0x68
 	.byte	0x4
 	.byte	0x8a
 	.long	0x56f
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "IDLECallback\0"
 	.byte	0x4
 	.byte	0x8b
-	.long	0x288
+	.long	0x283
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "ReleaseSchedCallback\0"
 	.byte	0x4
 	.byte	0x8c
-	.long	0x288
+	.long	0x283
 	.byte	0x8
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Tick\0"
 	.byte	0x4
 	.byte	0x8d
 	.long	0x1ba
 	.byte	0x10
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "EventInfo\0"
 	.byte	0x4
 	.byte	0x8e
-	.long	0x278
+	.long	0x273
 	.byte	0x18
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "First\0"
 	.byte	0x4
 	.byte	0x8f
 	.long	0x3dd
 	.byte	0x38
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "I_Disable\0"
 	.byte	0x4
 	.byte	0x90
 	.long	0x570
 	.byte	0x40
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "I_Enabler\0"
 	.byte	0x4
 	.byte	0x91
 	.long	0x570
 	.byte	0x48
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "Flag\0"
 	.byte	0x4
 	.byte	0x92
 	.long	0x576
 	.byte	0x50
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "QueueStack\0"
 	.byte	0x4
 	.byte	0x93
 	.long	0x57b
 	.byte	0x58
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "QueueSize\0"
 	.byte	0x4
 	.byte	0x94
 	.long	0x131
 	.byte	0x60
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "QueueIndex\0"
 	.byte	0x4
 	.byte	0x95
 	.long	0x140
 	.byte	0x62
-	.uleb128 0x8
+	.uleb128 0x7
 	.ascii "epochs\0"
 	.byte	0x4
 	.byte	0x97
-	.long	0x1d2
+	.long	0x3d3
 	.byte	0x64
 	.byte	0
 	.uleb128 0xf
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x56f
-	.uleb128 0x6
+	.uleb128 0xd
 	.long	0x477
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x581
-	.uleb128 0x6
+	.uleb128 0xd
 	.long	0x40f
 	.uleb128 0x3
 	.ascii "QuarkTSCoreData_t\0"
@@ -2208,15 +2206,15 @@ _qSTimerRemaining:
 	.long	0x6d6
 	.byte	0x10
 	.byte	0
+	.uleb128 0xb
+	.long	0x63f
 	.uleb128 0xc
 	.long	0x63f
-	.uleb128 0xd
-	.long	0x63f
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x645
-	.uleb128 0x6
+	.uleb128 0xd
 	.long	0x64a
 	.uleb128 0x14
 	.ascii "_qSM_t\0"
@@ -2246,13 +2244,13 @@ _qSTimerRemaining:
 	.ascii "StateJustChanged\0"
 	.byte	0x4
 	.word	0x1fc
-	.long	0x21e
+	.long	0x219
 	.byte	0x14
 	.uleb128 0x13
 	.ascii "Data\0"
 	.byte	0x4
 	.word	0x200
-	.long	0x276
+	.long	0x271
 	.byte	0x18
 	.uleb128 0x13
 	.ascii "_\0"
@@ -2261,16 +2259,16 @@ _qSTimerRemaining:
 	.long	0x5ee
 	.byte	0x20
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x634
 	.uleb128 0x15
 	.long	0x5d9
 	.long	0x6eb
-	.uleb128 0xd
+	.uleb128 0xc
 	.long	0x63f
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x6dc
 	.uleb128 0x11
@@ -2333,7 +2331,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF3
 	.byte	0x1
 	.byte	0x1a
-	.long	0x276
+	.long	0x271
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2385,7 +2383,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x23
-	.long	0x1fa
+	.long	0x1f5
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2411,7 +2409,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x27
-	.long	0x1e7
+	.long	0x1e2
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2437,7 +2435,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF5
 	.byte	0x1
 	.byte	0x2c
-	.long	0x288
+	.long	0x283
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2463,7 +2461,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF4
 	.byte	0x1
 	.byte	0x30
-	.long	0x21e
+	.long	0x219
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2489,7 +2487,7 @@ _qSTimerRemaining:
 	.ascii "arg\0"
 	.byte	0x1
 	.byte	0x36
-	.long	0x276
+	.long	0x271
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2534,7 +2532,7 @@ _qSTimerRemaining:
 	.secrel32	.LASF3
 	.byte	0x1
 	.byte	0x3e
-	.long	0x276
+	.long	0x271
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
@@ -2550,7 +2548,7 @@ _qSTimerRemaining:
 	.uleb128 0x1b
 	.ascii "_qPrioQueueExtract\0"
 	.byte	0x1
-	.byte	0x45
+	.byte	0x47
 	.long	0x3dd
 	.quad	.LFB9
 	.quad	.LFE9-.LFB9
@@ -2560,7 +2558,7 @@ _qSTimerRemaining:
 	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
-	.byte	0x46
+	.byte	0x48
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2568,7 +2566,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "i\0"
 	.byte	0x1
-	.byte	0x47
+	.byte	0x49
 	.long	0x131
 	.uleb128 0x2
 	.byte	0x91
@@ -2576,7 +2574,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "IndexTaskToExtract\0"
 	.byte	0x1
-	.byte	0x48
+	.byte	0x4a
 	.long	0x131
 	.uleb128 0x2
 	.byte	0x91
@@ -2584,8 +2582,8 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "MaxpValue\0"
 	.byte	0x1
-	.byte	0x4b
-	.long	0x1e7
+	.byte	0x4d
+	.long	0x1e2
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -19
@@ -2593,7 +2591,7 @@ _qSTimerRemaining:
 	.uleb128 0x16
 	.ascii "_qSetInterruptsED\0"
 	.byte	0x1
-	.byte	0x5c
+	.byte	0x5e
 	.quad	.LFB10
 	.quad	.LFE10-.LFB10
 	.uleb128 0x1
@@ -2602,7 +2600,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "Enabler\0"
 	.byte	0x1
-	.byte	0x5c
+	.byte	0x5e
 	.long	0x570
 	.uleb128 0x2
 	.byte	0x91
@@ -2610,7 +2608,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "Disabler\0"
 	.byte	0x1
-	.byte	0x5c
+	.byte	0x5e
 	.long	0x570
 	.uleb128 0x2
 	.byte	0x91
@@ -2619,7 +2617,7 @@ _qSTimerRemaining:
 	.uleb128 0x16
 	.ascii "_qInitScheduler\0"
 	.byte	0x1
-	.byte	0x61
+	.byte	0x63
 	.quad	.LFB11
 	.quad	.LFE11-.LFB11
 	.uleb128 0x1
@@ -2628,7 +2626,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "ISRTick\0"
 	.byte	0x1
-	.byte	0x61
+	.byte	0x63
 	.long	0x1ba
 	.uleb128 0x2
 	.byte	0x91
@@ -2636,15 +2634,15 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "IdleCallback\0"
 	.byte	0x1
-	.byte	0x61
-	.long	0x288
+	.byte	0x63
+	.long	0x283
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
 	.uleb128 0x18
 	.ascii "Q_Stack\0"
 	.byte	0x1
-	.byte	0x61
+	.byte	0x63
 	.long	0x57b
 	.uleb128 0x2
 	.byte	0x91
@@ -2652,7 +2650,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "Size_Q_Stack\0"
 	.byte	0x1
-	.byte	0x61
+	.byte	0x63
 	.long	0x131
 	.uleb128 0x2
 	.byte	0x91
@@ -2660,7 +2658,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "i\0"
 	.byte	0x1
-	.byte	0x62
+	.byte	0x64
 	.long	0x131
 	.uleb128 0x2
 	.byte	0x91
@@ -2669,7 +2667,7 @@ _qSTimerRemaining:
 	.uleb128 0x16
 	.ascii "_qISRHandler\0"
 	.byte	0x1
-	.byte	0x74
+	.byte	0x76
 	.quad	.LFB12
 	.quad	.LFE12-.LFB12
 	.uleb128 0x1
@@ -2678,7 +2676,7 @@ _qSTimerRemaining:
 	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
-	.byte	0x76
+	.byte	0x78
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2687,7 +2685,7 @@ _qSTimerRemaining:
 	.uleb128 0x19
 	.ascii "_qCreateTask\0"
 	.byte	0x1
-	.byte	0x86
+	.byte	0x88
 	.long	0xe7
 	.quad	.LFB13
 	.quad	.LFE13-.LFB13
@@ -2697,7 +2695,7 @@ _qSTimerRemaining:
 	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
-	.byte	0x86
+	.byte	0x88
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2705,23 +2703,23 @@ _qSTimerRemaining:
 	.uleb128 0x17
 	.secrel32	.LASF5
 	.byte	0x1
-	.byte	0x86
-	.long	0x288
+	.byte	0x88
+	.long	0x283
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
 	.uleb128 0x17
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x86
-	.long	0x1e7
+	.byte	0x88
+	.long	0x1e2
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
 	.uleb128 0x18
 	.ascii "Time\0"
 	.byte	0x1
-	.byte	0x86
+	.byte	0x88
 	.long	0x1ba
 	.uleb128 0x2
 	.byte	0x91
@@ -2729,24 +2727,24 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "nExecutions\0"
 	.byte	0x1
-	.byte	0x86
-	.long	0x1fa
+	.byte	0x88
+	.long	0x1f5
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
 	.uleb128 0x18
 	.ascii "InitialState\0"
 	.byte	0x1
-	.byte	0x86
-	.long	0x20e
+	.byte	0x88
+	.long	0x209
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
 	.uleb128 0x18
 	.ascii "arg\0"
 	.byte	0x1
-	.byte	0x86
-	.long	0x276
+	.byte	0x88
+	.long	0x271
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 48
@@ -2754,7 +2752,7 @@ _qSTimerRemaining:
 	.uleb128 0x1d
 	.ascii "_qTriggerEvent\0"
 	.byte	0x1
-	.byte	0x96
+	.byte	0x98
 	.quad	.LFB14
 	.quad	.LFE14-.LFB14
 	.uleb128 0x1
@@ -2763,7 +2761,7 @@ _qSTimerRemaining:
 	.uleb128 0x17
 	.secrel32	.LASF2
 	.byte	0x1
-	.byte	0x96
+	.byte	0x98
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2771,7 +2769,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "Event\0"
 	.byte	0x1
-	.byte	0x96
+	.byte	0x98
 	.long	0x1a8
 	.uleb128 0x2
 	.byte	0x91
@@ -2780,7 +2778,7 @@ _qSTimerRemaining:
 	.uleb128 0x1e
 	.ascii "_qTaskChainbyPriority\0"
 	.byte	0x1
-	.byte	0xa0
+	.byte	0xa2
 	.quad	.LFB15
 	.quad	.LFE15-.LFB15
 	.uleb128 0x1
@@ -2789,7 +2787,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "a\0"
 	.byte	0x1
-	.byte	0xa1
+	.byte	0xa3
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2797,7 +2795,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "b\0"
 	.byte	0x1
-	.byte	0xa1
+	.byte	0xa3
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2805,7 +2803,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "c\0"
 	.byte	0x1
-	.byte	0xa1
+	.byte	0xa3
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2813,7 +2811,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "e\0"
 	.byte	0x1
-	.byte	0xa1
+	.byte	0xa3
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2821,7 +2819,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "tmp\0"
 	.byte	0x1
-	.byte	0xa1
+	.byte	0xa3
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2829,7 +2827,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "head\0"
 	.byte	0x1
-	.byte	0xa2
+	.byte	0xa4
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2838,7 +2836,7 @@ _qSTimerRemaining:
 	.uleb128 0x1f
 	.ascii "_qStart\0"
 	.byte	0x1
-	.byte	0xb9
+	.byte	0xbb
 	.quad	.LFB16
 	.quad	.LFE16-.LFB16
 	.uleb128 0x1
@@ -2847,7 +2845,7 @@ _qSTimerRemaining:
 	.uleb128 0x1c
 	.secrel32	.LASF2
 	.byte	0x1
-	.byte	0xba
+	.byte	0xbc
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2855,7 +2853,7 @@ _qSTimerRemaining:
 	.uleb128 0x1a
 	.ascii "qTask\0"
 	.byte	0x1
-	.byte	0xba
+	.byte	0xbc
 	.long	0x3dd
 	.uleb128 0x2
 	.byte	0x91
@@ -2863,18 +2861,18 @@ _qSTimerRemaining:
 	.uleb128 0x20
 	.ascii "qMainSchedule\0"
 	.byte	0x1
-	.byte	0xbb
+	.byte	0xbd
 	.quad	.L58
 	.uleb128 0x20
 	.ascii "qReleasedSchedule\0"
 	.byte	0x1
-	.byte	0xd9
+	.byte	0xdb
 	.quad	.L60
 	.byte	0
 	.uleb128 0x19
 	.ascii "_qStateMachine_Init\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0xe7
 	.quad	.LFB17
 	.quad	.LFE17-.LFB17
@@ -2884,7 +2882,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "obj\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0x63f
 	.uleb128 0x2
 	.byte	0x91
@@ -2892,7 +2890,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "InitState\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0x6f1
 	.uleb128 0x2
 	.byte	0x91
@@ -2900,7 +2898,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "SuccessState\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0x705
 	.uleb128 0x2
 	.byte	0x91
@@ -2908,7 +2906,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "FailureState\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0x705
 	.uleb128 0x2
 	.byte	0x91
@@ -2916,7 +2914,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "UnexpectedState\0"
 	.byte	0x1
-	.byte	0xe2
+	.byte	0xe4
 	.long	0x705
 	.uleb128 0x2
 	.byte	0x91
@@ -2925,7 +2923,7 @@ _qSTimerRemaining:
 	.uleb128 0x1f
 	.ascii "_qStateMachine_Run\0"
 	.byte	0x1
-	.byte	0xec
+	.byte	0xee
 	.quad	.LFB18
 	.quad	.LFE18-.LFB18
 	.uleb128 0x1
@@ -2934,7 +2932,7 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "obj\0"
 	.byte	0x1
-	.byte	0xec
+	.byte	0xee
 	.long	0x63f
 	.uleb128 0x2
 	.byte	0x91
@@ -2942,15 +2940,15 @@ _qSTimerRemaining:
 	.uleb128 0x18
 	.ascii "Data\0"
 	.byte	0x1
-	.byte	0xec
-	.long	0x276
+	.byte	0xee
+	.long	0x271
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
 	.uleb128 0x1a
 	.ascii "prev\0"
 	.byte	0x1
-	.byte	0xed
+	.byte	0xef
 	.long	0x6f1
 	.uleb128 0x2
 	.byte	0x91
@@ -2959,7 +2957,7 @@ _qSTimerRemaining:
 	.uleb128 0x21
 	.ascii "_qSTimerSet\0"
 	.byte	0x1
-	.word	0x105
+	.word	0x107
 	.long	0xe7
 	.quad	.LFB19
 	.quad	.LFE19-.LFB19
@@ -2969,7 +2967,7 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x105
+	.word	0x107
 	.long	0xe85
 	.uleb128 0x2
 	.byte	0x91
@@ -2977,7 +2975,7 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "Time\0"
 	.byte	0x1
-	.word	0x105
+	.word	0x107
 	.long	0x1ba
 	.uleb128 0x2
 	.byte	0x91
@@ -2985,20 +2983,20 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "fr\0"
 	.byte	0x1
-	.word	0x105
-	.long	0x21e
+	.word	0x107
+	.long	0x219
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 16
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x8
 	.long	0x74c
 	.uleb128 0x23
 	.ascii "_qSTimerExpired\0"
 	.byte	0x1
-	.word	0x114
-	.long	0x21e
+	.word	0x116
+	.long	0x219
 	.quad	.LFB20
 	.quad	.LFE20-.LFB20
 	.uleb128 0x1
@@ -3007,7 +3005,7 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x114
+	.word	0x116
 	.long	0xe85
 	.uleb128 0x2
 	.byte	0x91
@@ -3016,7 +3014,7 @@ _qSTimerRemaining:
 	.uleb128 0x23
 	.ascii "_qSTimerElapsed\0"
 	.byte	0x1
-	.word	0x119
+	.word	0x11b
 	.long	0x1d2
 	.quad	.LFB21
 	.quad	.LFE21-.LFB21
@@ -3026,7 +3024,7 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x119
+	.word	0x11b
 	.long	0xe85
 	.uleb128 0x2
 	.byte	0x91
@@ -3035,7 +3033,7 @@ _qSTimerRemaining:
 	.uleb128 0x21
 	.ascii "_qSTimerRemaining\0"
 	.byte	0x1
-	.word	0x11d
+	.word	0x11f
 	.long	0x1d2
 	.quad	.LFB22
 	.quad	.LFE22-.LFB22
@@ -3045,7 +3043,7 @@ _qSTimerRemaining:
 	.uleb128 0x22
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x11d
+	.word	0x11f
 	.long	0xe85
 	.uleb128 0x2
 	.byte	0x91
@@ -3053,7 +3051,7 @@ _qSTimerRemaining:
 	.uleb128 0x24
 	.ascii "elapsed\0"
 	.byte	0x1
-	.word	0x11e
+	.word	0x120
 	.long	0x1d2
 	.uleb128 0x2
 	.byte	0x91
@@ -3067,7 +3065,7 @@ _qSTimerRemaining:
 	.uleb128 0x9
 	.byte	0x3
 	.quad	QUARKTS
-	.uleb128 0x6
+	.uleb128 0xd
 	.long	0x586
 	.byte	0
 	.section	.debug_abbrev,"dr"
@@ -3138,13 +3136,6 @@ _qSTimerRemaining:
 	.byte	0
 	.byte	0
 	.uleb128 0x6
-	.uleb128 0x35
-	.byte	0
-	.uleb128 0x49
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x7
 	.uleb128 0x13
 	.byte	0x1
 	.uleb128 0xb
@@ -3157,7 +3148,7 @@ _qSTimerRemaining:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x8
+	.uleb128 0x7
 	.uleb128 0xd
 	.byte	0
 	.uleb128 0x3
@@ -3172,7 +3163,7 @@ _qSTimerRemaining:
 	.uleb128 0xb
 	.byte	0
 	.byte	0
-	.uleb128 0x9
+	.uleb128 0x8
 	.uleb128 0xd
 	.byte	0
 	.uleb128 0x3
@@ -3187,14 +3178,14 @@ _qSTimerRemaining:
 	.uleb128 0xb
 	.byte	0
 	.byte	0
-	.uleb128 0xa
+	.uleb128 0x9
 	.uleb128 0xf
 	.byte	0
 	.uleb128 0xb
 	.uleb128 0xb
 	.byte	0
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.uleb128 0xf
 	.byte	0
 	.uleb128 0xb
@@ -3203,7 +3194,7 @@ _qSTimerRemaining:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0xc
+	.uleb128 0xb
 	.uleb128 0x15
 	.byte	0x1
 	.uleb128 0x27
@@ -3212,8 +3203,15 @@ _qSTimerRemaining:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0xd
+	.uleb128 0xc
 	.uleb128 0x5
+	.byte	0
+	.uleb128 0x49
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0xd
+	.uleb128 0x35
 	.byte	0
 	.uleb128 0x49
 	.uleb128 0x13

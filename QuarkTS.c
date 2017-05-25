@@ -61,7 +61,9 @@ void _qClearTimeElapse(qTask_t *Task){
 /*============================================================================*/
 int _qPrioQueueInsert(qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>=QUARKTS.QueueSize-1 ) return -1;
-    qQueueStack_t qtmp = {TasktoQueue, eventdata};
+    qQueueStack_t qtmp;
+    qtmp.Task = TasktoQueue,
+    qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0;
 }

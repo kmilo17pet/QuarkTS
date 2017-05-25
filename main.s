@@ -766,8 +766,6 @@ main:
 	.ascii "qClock_t\0"
 	.byte	0x7
 	.byte	0x39
-	.long	0x281
-	.uleb128 0xa
 	.long	0x173
 	.uleb128 0x3
 	.ascii "qPriority_t\0"
@@ -784,18 +782,18 @@ main:
 	.byte	0x7
 	.byte	0x3d
 	.long	0x164
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x20
 	.byte	0x7
 	.byte	0x4b
-	.long	0x305
+	.long	0x300
 	.uleb128 0x7
 	.ascii "Trigger\0"
 	.byte	0x7
 	.byte	0x5e
 	.long	0x247
 	.byte	0
-	.uleb128 0xc
+	.uleb128 0xb
 	.secrel32	.LASF0
 	.byte	0x7
 	.byte	0x62
@@ -811,77 +809,77 @@ main:
 	.ascii "FirstCall\0"
 	.byte	0x7
 	.byte	0x6b
-	.long	0x2ad
+	.long	0x2a8
 	.byte	0x18
 	.byte	0
 	.uleb128 0x3
 	.ascii "qEvent_t\0"
 	.byte	0x7
 	.byte	0x6c
-	.long	0x2bc
+	.long	0x2b7
 	.uleb128 0x3
 	.ascii "qTaskFcn_t\0"
 	.byte	0x7
 	.byte	0x6e
-	.long	0x327
+	.long	0x322
 	.uleb128 0x5
 	.byte	0x8
-	.long	0x32d
+	.long	0x328
+	.uleb128 0xc
+	.long	0x333
 	.uleb128 0xd
-	.long	0x338
-	.uleb128 0xe
-	.long	0x305
+	.long	0x300
 	.byte	0
-	.uleb128 0xb
+	.uleb128 0xa
 	.byte	0x5
 	.byte	0x7
 	.byte	0x6f
-	.long	0x39e
+	.long	0x399
 	.uleb128 0x7
 	.ascii "TimedTaskRun\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x39e
+	.long	0x399
 	.byte	0
 	.uleb128 0x7
 	.ascii "InitFlag\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x39e
+	.long	0x399
 	.byte	0x1
 	.uleb128 0x7
 	.ascii "AsyncRun\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x39e
+	.long	0x399
 	.byte	0x2
 	.uleb128 0x7
 	.ascii "IgnoreOveruns\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x39e
+	.long	0x399
 	.byte	0x3
 	.uleb128 0x7
 	.ascii "Enabled\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x39e
+	.long	0x399
 	.byte	0x4
 	.byte	0
-	.uleb128 0xa
+	.uleb128 0xe
 	.long	0x164
 	.uleb128 0x3
 	.ascii "qTaskFlags_t\0"
 	.byte	0x7
 	.byte	0x71
-	.long	0x338
+	.long	0x333
 	.uleb128 0x6
 	.ascii "_qTask_t\0"
 	.byte	0x40
 	.byte	0x7
 	.byte	0x75
-	.long	0x46a
-	.uleb128 0xc
+	.long	0x465
+	.uleb128 0xb
 	.secrel32	.LASF0
 	.byte	0x7
 	.byte	0x76
@@ -897,19 +895,19 @@ main:
 	.ascii "Interval\0"
 	.byte	0x7
 	.byte	0x77
-	.long	0x271
+	.long	0x465
 	.byte	0x10
 	.uleb128 0x7
 	.ascii "TimeElapsed\0"
 	.byte	0x7
 	.byte	0x77
-	.long	0x271
+	.long	0x465
 	.byte	0x14
 	.uleb128 0x7
 	.ascii "Iterations\0"
 	.byte	0x7
 	.byte	0x78
-	.long	0x299
+	.long	0x294
 	.byte	0x18
 	.uleb128 0x7
 	.ascii "Cycles\0"
@@ -921,13 +919,13 @@ main:
 	.ascii "Priority\0"
 	.byte	0x7
 	.byte	0x7a
-	.long	0x286
+	.long	0x281
 	.byte	0x20
 	.uleb128 0x7
 	.ascii "Callback\0"
 	.byte	0x7
 	.byte	0x7b
-	.long	0x315
+	.long	0x310
 	.byte	0x28
 	.uleb128 0x7
 	.ascii "Flag\0"
@@ -942,14 +940,16 @@ main:
 	.long	0x46f
 	.byte	0x38
 	.byte	0
-	.uleb128 0xa
-	.long	0x3a3
+	.uleb128 0xe
+	.long	0x271
+	.uleb128 0xe
+	.long	0x39e
 	.uleb128 0x5
 	.byte	0x8
 	.long	0x475
+	.uleb128 0xe
+	.long	0x3b2
 	.uleb128 0xa
-	.long	0x3b7
-	.uleb128 0xb
 	.byte	0x10
 	.byte	0x7
 	.byte	0x81
@@ -1012,7 +1012,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x16
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1037,7 +1037,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x26
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1055,7 +1055,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x2a
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1073,7 +1073,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x2e
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1091,7 +1091,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x32
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1116,7 +1116,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x37
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
@@ -1134,7 +1134,7 @@ main:
 	.secrel32	.LASF1
 	.byte	0x1
 	.byte	0x3b
-	.long	0x305
+	.long	0x300
 	.uleb128 0x2
 	.byte	0x72
 	.sleb128 0
@@ -1209,7 +1209,7 @@ main:
 	.long	0x138
 	.byte	0x9
 	.byte	0
-	.uleb128 0xa
+	.uleb128 0xe
 	.long	0x746
 	.uleb128 0x19
 	.ascii "TimerEmulation\0"
@@ -1390,13 +1390,6 @@ main:
 	.byte	0
 	.byte	0
 	.uleb128 0xa
-	.uleb128 0x35
-	.byte	0
-	.uleb128 0x49
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0xb
 	.uleb128 0x13
 	.byte	0x1
 	.uleb128 0xb
@@ -1409,7 +1402,7 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0xc
+	.uleb128 0xb
 	.uleb128 0xd
 	.byte	0
 	.uleb128 0x3
@@ -1424,7 +1417,7 @@ main:
 	.uleb128 0xb
 	.byte	0
 	.byte	0
-	.uleb128 0xd
+	.uleb128 0xc
 	.uleb128 0x15
 	.byte	0x1
 	.uleb128 0x27
@@ -1433,8 +1426,15 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0xe
+	.uleb128 0xd
 	.uleb128 0x5
+	.byte	0
+	.uleb128 0x49
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0xe
+	.uleb128 0x35
 	.byte	0
 	.uleb128 0x49
 	.uleb128 0x13

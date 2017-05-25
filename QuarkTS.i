@@ -144,7 +144,7 @@ typedef __uint_least64_t uint_least64_t;
 # 55 "QuarkTS.h"
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent} qTrigger_t;
     typedef float qTime_t;
-    typedef volatile uint32_t qClock_t;
+    typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
     typedef uint8_t qIteration_t;
     typedef uint8_t qState_t;
@@ -177,7 +177,7 @@ typedef __uint_least64_t uint_least64_t;
 
     struct _qTask_t{
         void *UserData,*AsyncData;
-        qClock_t Interval, TimeElapsed;
+        volatile qClock_t Interval, TimeElapsed;
         qIteration_t Iterations;
         uint32_t Cycles;
         qPriority_t Priority;
@@ -318,7 +318,9 @@ void _qClearTimeElapse(volatile struct _qTask_t *Task){
 
 int _qPrioQueueInsert(volatile struct _qTask_t *TasktoQueue, void* eventdata){
     if(QUARKTS.QueueIndex>=QUARKTS.QueueSize-1 ) return -1;
-    qQueueStack_t qtmp = {TasktoQueue, eventdata};
+    qQueueStack_t qtmp;
+    qtmp.Task = TasktoQueue,
+    qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0;
 }
