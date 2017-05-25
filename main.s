@@ -9,7 +9,7 @@
 TimerInterruptEmulation:
 .LFB7:
 	.file 1 "main.c"
-	.loc 1 11 0
+	.loc 1 12 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -22,18 +22,18 @@ TimerInterruptEmulation:
 	.seh_stackalloc	48
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 12 0
+	.loc 1 13 0
 	movq	$0, -16(%rbp)
 	movq	$10000000, -8(%rbp)
 .L2:
-	.loc 1 14 0 discriminator 1
+	.loc 1 15 0 discriminator 1
 	leaq	-16(%rbp), %rax
 	movl	$0, %edx
 	movq	%rax, %rcx
 	call	nanosleep
-	.loc 1 15 0 discriminator 1
-	call	_qISRHandler
 	.loc 1 16 0 discriminator 1
+	call	_qISRHandler
+	.loc 1 17 0 discriminator 1
 	jmp	.L2
 	.cfi_endproc
 .LFE7:
@@ -46,37 +46,16 @@ TimerInterruptEmulation:
 	.comm	Task6, 64, 6
 	.comm	TaskTestST, 64, 6
 	.section .rdata,"dr"
+	.align 8
 .LC0:
-	.ascii "Userdata : %s  Eventdata:%s\15\12\0"
-.LC1:
-	.ascii "A\0"
-.LC2:
-	.ascii "B\0"
-.LC3:
-	.ascii "C\0"
-.LC4:
-	.ascii "D\0"
-.LC5:
-	.ascii "E\0"
-.LC6:
-	.ascii "F\0"
-.LC7:
-	.ascii "G\0"
-.LC8:
-	.ascii "H\0"
-.LC9:
-	.ascii "I\0"
-.LC10:
-	.ascii "J\0"
-.LC11:
-	.ascii "K\0"
+	.ascii "Userdata : %s  Eventdata:%s   %d\15\12\0"
 	.text
 	.globl	Task1Callback
 	.def	Task1Callback;	.scl	2;	.type	32;	.endef
 	.seh_proc	Task1Callback
 Task1Callback:
 .LFB8:
-	.loc 1 22 0
+	.loc 1 23 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -94,70 +73,18 @@ Task1Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 23 0
+	.loc 1 24 0
+	leaq	Task1(%rip), %rax
+	movl	28(%rax), %ecx
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
+	movl	%ecx, %r9d
 	movq	%rdx, %r8
 	movq	%rax, %rdx
 	leaq	.LC0(%rip), %rcx
 	call	printf
-	.loc 1 25 0
-	leaq	.LC1(%rip), %rdx
-	leaq	Task2(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 26 0
-	leaq	.LC2(%rip), %rdx
-	leaq	Task3(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 27 0
-	leaq	.LC3(%rip), %rdx
-	leaq	Task4(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 28 0
-	leaq	.LC4(%rip), %rdx
-	leaq	Task5(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 29 0
-	leaq	.LC5(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 30 0
-	leaq	.LC6(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 31 0
-	leaq	.LC7(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 32 0
-	leaq	.LC8(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 33 0
-	leaq	.LC9(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 34 0
-	leaq	.LC10(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 35 0
-	leaq	.LC11(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
 	nop
-	.loc 1 36 0
+	.loc 1 42 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -168,12 +95,16 @@ Task1Callback:
 	.cfi_endproc
 .LFE8:
 	.seh_endproc
+	.section .rdata,"dr"
+.LC1:
+	.ascii "Userdata : %s  Eventdata:%s\15\12\0"
+	.text
 	.globl	Task2Callback
 	.def	Task2Callback;	.scl	2;	.type	32;	.endef
 	.seh_proc	Task2Callback
 Task2Callback:
 .LFB9:
-	.loc 1 38 0
+	.loc 1 44 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -191,15 +122,15 @@ Task2Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 39 0
+	.loc 1 45 0
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
 	movq	%rdx, %r8
 	movq	%rax, %rdx
-	leaq	.LC0(%rip), %rcx
+	leaq	.LC1(%rip), %rcx
 	call	printf
 	nop
-	.loc 1 40 0
+	.loc 1 46 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -215,7 +146,7 @@ Task2Callback:
 	.seh_proc	Task3Callback
 Task3Callback:
 .LFB10:
-	.loc 1 42 0
+	.loc 1 48 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -233,15 +164,15 @@ Task3Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 43 0
+	.loc 1 49 0
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
 	movq	%rdx, %r8
 	movq	%rax, %rdx
-	leaq	.LC0(%rip), %rcx
+	leaq	.LC1(%rip), %rcx
 	call	printf
 	nop
-	.loc 1 44 0
+	.loc 1 50 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -257,7 +188,7 @@ Task3Callback:
 	.seh_proc	Task4Callback
 Task4Callback:
 .LFB11:
-	.loc 1 46 0
+	.loc 1 52 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -275,15 +206,15 @@ Task4Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 47 0
+	.loc 1 53 0
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
 	movq	%rdx, %r8
 	movq	%rax, %rdx
-	leaq	.LC0(%rip), %rcx
+	leaq	.LC1(%rip), %rcx
 	call	printf
 	nop
-	.loc 1 48 0
+	.loc 1 54 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -299,7 +230,7 @@ Task4Callback:
 	.seh_proc	Task5Callback
 Task5Callback:
 .LFB12:
-	.loc 1 50 0
+	.loc 1 56 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -317,20 +248,15 @@ Task5Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 51 0
-	leaq	.LC11(%rip), %rdx
-	leaq	Task6(%rip), %rax
-	movq	%rax, %rcx
-	call	_qPrioQueueInsert
-	.loc 1 52 0
+	.loc 1 57 0
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
 	movq	%rdx, %r8
 	movq	%rax, %rdx
-	leaq	.LC0(%rip), %rcx
+	leaq	.LC1(%rip), %rcx
 	call	printf
 	nop
-	.loc 1 53 0
+	.loc 1 58 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -346,7 +272,7 @@ Task5Callback:
 	.seh_proc	Task6Callback
 Task6Callback:
 .LFB13:
-	.loc 1 55 0
+	.loc 1 60 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -364,15 +290,15 @@ Task6Callback:
 	.cfi_def_cfa 6, -64
 	.seh_endprologue
 	movq	%rcx, %rbx
-	.loc 1 56 0
+	.loc 1 61 0
 	movq	16(%rbx), %rdx
 	movq	8(%rbx), %rax
 	movq	%rdx, %r8
 	movq	%rax, %rdx
-	leaq	.LC0(%rip), %rcx
+	leaq	.LC1(%rip), %rcx
 	call	printf
 	nop
-	.loc 1 57 0
+	.loc 1 62 0
 	addq	$40, %rsp
 	popq	%rbx
 	.cfi_restore 3
@@ -388,7 +314,7 @@ Task6Callback:
 	.seh_proc	IdleTaskCallback
 IdleTaskCallback:
 .LFB14:
-	.loc 1 59 0
+	.loc 1 64 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -398,7 +324,7 @@ IdleTaskCallback:
 	.seh_setframe	%rbp, 0
 	.cfi_def_cfa_register 6
 	.seh_endprologue
-	.loc 1 61 0
+	.loc 1 65 0
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -407,9 +333,9 @@ IdleTaskCallback:
 .LFE14:
 	.seh_endproc
 	.section .rdata,"dr"
-.LC12:
+.LC2:
 	.ascii "X\0"
-.LC13:
+.LC3:
 	.ascii "Y\0"
 	.text
 	.globl	sigint_signal
@@ -417,7 +343,7 @@ IdleTaskCallback:
 	.seh_proc	sigint_signal
 sigint_signal:
 .LFB15:
-	.loc 1 63 0
+	.loc 1 67 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -430,18 +356,18 @@ sigint_signal:
 	.seh_stackalloc	32
 	.seh_endprologue
 	movl	%ecx, 16(%rbp)
-	.loc 1 64 0
-	leaq	.LC12(%rip), %rdx
+	.loc 1 68 0
+	leaq	.LC2(%rip), %rdx
 	leaq	Task3(%rip), %rax
 	movq	%rax, %rcx
 	call	_qPrioQueueInsert
-	.loc 1 65 0
-	leaq	.LC13(%rip), %rdx
+	.loc 1 69 0
+	leaq	.LC3(%rip), %rdx
 	leaq	Task4(%rip), %rax
 	movq	%rax, %rcx
 	call	_qPrioQueueInsert
 	nop
-	.loc 1 66 0
+	.loc 1 70 0
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -452,17 +378,17 @@ sigint_signal:
 	.seh_endproc
 	.def	__main;	.scl	2;	.type	32;	.endef
 	.section .rdata,"dr"
-.LC15:
+.LC5:
 	.ascii "TASK1\0"
-.LC17:
+.LC7:
 	.ascii "TASK2\0"
-.LC19:
+.LC9:
 	.ascii "TASK3\0"
-.LC20:
+.LC10:
 	.ascii "TASK4\0"
-.LC21:
+.LC11:
 	.ascii "TASK5\0"
-.LC22:
+.LC12:
 	.ascii "TASK6\0"
 	.text
 	.globl	main
@@ -470,7 +396,7 @@ sigint_signal:
 	.seh_proc	main
 main:
 .LFB16:
-	.loc 1 67 0
+	.loc 1 71 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -484,39 +410,39 @@ main:
 	.seh_endprologue
 	movl	%ecx, 16(%rbp)
 	movq	%rdx, 24(%rbp)
-	.loc 1 67 0
+	.loc 1 71 0
 	call	__main
-	.loc 1 69 0
+	.loc 1 73 0
 	leaq	sigint_signal(%rip), %rdx
 	movl	$2, %ecx
 	call	signal
-	.loc 1 70 0
+	.loc 1 74 0
 	movl	$0, %r9d
 	leaq	TimerInterruptEmulation(%rip), %r8
 	movl	$0, %edx
 	leaq	TimerEmulation(%rip), %rax
 	movq	%rax, %rcx
 	call	pthread_create
-	.loc 1 71 0
+	.loc 1 75 0
 	leaq	-160(%rbp), %rax
 	movl	$10, %r9d
 	movq	%rax, %r8
 	leaq	IdleTaskCallback(%rip), %rdx
-	movss	.LC14(%rip), %xmm0
+	movss	.LC4(%rip), %xmm0
 	call	_qInitScheduler
-	.loc 1 72 0
-	leaq	.LC15(%rip), %rax
+	.loc 1 76 0
+	leaq	.LC5(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
-	movl	$255, 32(%rsp)
-	movss	.LC16(%rip), %xmm3
+	movl	$10, 32(%rsp)
+	movss	.LC6(%rip), %xmm3
 	movl	$254, %r8d
 	leaq	Task1Callback(%rip), %rdx
 	leaq	Task1(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 73 0
-	leaq	.LC17(%rip), %rax
+	.loc 1 77 0
+	leaq	.LC7(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$0, 40(%rsp)
 	movl	$1, 32(%rsp)
@@ -526,8 +452,8 @@ main:
 	leaq	Task2(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 74 0
-	leaq	.LC19(%rip), %rax
+	.loc 1 78 0
+	leaq	.LC9(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$0, 40(%rsp)
 	movl	$1, 32(%rsp)
@@ -537,8 +463,8 @@ main:
 	leaq	Task3(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 75 0
-	leaq	.LC20(%rip), %rax
+	.loc 1 79 0
+	leaq	.LC10(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$0, 40(%rsp)
 	movl	$1, 32(%rsp)
@@ -548,8 +474,8 @@ main:
 	leaq	Task4(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 76 0
-	leaq	.LC21(%rip), %rax
+	.loc 1 80 0
+	leaq	.LC11(%rip), %rax
 	movq	%rax, 48(%rsp)
 	movl	$0, 40(%rsp)
 	movl	$1, 32(%rsp)
@@ -559,22 +485,22 @@ main:
 	leaq	Task5(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 77 0
-	leaq	.LC22(%rip), %rax
+	.loc 1 82 0
+	leaq	.LC12(%rip), %rax
 	movq	%rax, 48(%rsp)
-	movl	$0, 40(%rsp)
-	movl	$1, 32(%rsp)
-	pxor	%xmm3, %xmm3
-	movl	$10, %r8d
+	movl	$1, 40(%rsp)
+	movl	$10, 32(%rsp)
+	movss	.LC13(%rip), %xmm3
+	movl	$254, %r8d
 	leaq	Task6Callback(%rip), %rdx
 	leaq	Task6(%rip), %rax
 	movq	%rax, %rcx
 	call	_qCreateTask
-	.loc 1 78 0
+	.loc 1 85 0
 	call	_qStart
-	.loc 1 79 0
+	.loc 1 86 0
 	movl	$0, %eax
-	.loc 1 80 0
+	.loc 1 87 0
 	addq	$224, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -585,10 +511,13 @@ main:
 	.seh_endproc
 	.section .rdata,"dr"
 	.align 4
-.LC14:
+.LC4:
 	.long	1008981770
 	.align 4
-.LC16:
+.LC6:
+	.long	1056964608
+	.align 4
+.LC13:
 	.long	1065353216
 	.text
 .Letext0:
@@ -600,7 +529,7 @@ main:
 	.file 7 "QuarkTS.h"
 	.section	.debug_info,"dr"
 .Ldebug_info0:
-	.long	0x81e
+	.long	0x7e6
 	.word	0x4
 	.secrel32	.Ldebug_abbrev0
 	.byte	0x8
@@ -831,40 +760,28 @@ main:
 	.long	0x300
 	.byte	0
 	.uleb128 0xa
-	.byte	0x5
+	.byte	0x3
 	.byte	0x7
 	.byte	0x6f
-	.long	0x399
-	.uleb128 0x7
-	.ascii "TimedTaskRun\0"
-	.byte	0x7
-	.byte	0x70
-	.long	0x399
-	.byte	0
+	.long	0x36e
 	.uleb128 0x7
 	.ascii "InitFlag\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x399
-	.byte	0x1
+	.long	0x36e
+	.byte	0
 	.uleb128 0x7
 	.ascii "AsyncRun\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x399
-	.byte	0x2
-	.uleb128 0x7
-	.ascii "IgnoreOveruns\0"
-	.byte	0x7
-	.byte	0x70
-	.long	0x399
-	.byte	0x3
+	.long	0x36e
+	.byte	0x1
 	.uleb128 0x7
 	.ascii "Enabled\0"
 	.byte	0x7
 	.byte	0x70
-	.long	0x399
-	.byte	0x4
+	.long	0x36e
+	.byte	0x2
 	.byte	0
 	.uleb128 0xe
 	.long	0x164
@@ -878,7 +795,7 @@ main:
 	.byte	0x40
 	.byte	0x7
 	.byte	0x75
-	.long	0x465
+	.long	0x439
 	.uleb128 0xb
 	.secrel32	.LASF0
 	.byte	0x7
@@ -895,13 +812,13 @@ main:
 	.ascii "Interval\0"
 	.byte	0x7
 	.byte	0x77
-	.long	0x465
+	.long	0x439
 	.byte	0x10
 	.uleb128 0x7
-	.ascii "TimeElapsed\0"
+	.ascii "ClockStart\0"
 	.byte	0x7
 	.byte	0x77
-	.long	0x465
+	.long	0x439
 	.byte	0x14
 	.uleb128 0x7
 	.ascii "Iterations\0"
@@ -931,34 +848,34 @@ main:
 	.ascii "Flag\0"
 	.byte	0x7
 	.byte	0x7c
-	.long	0x46a
+	.long	0x43e
 	.byte	0x30
 	.uleb128 0x7
 	.ascii "Next\0"
 	.byte	0x7
 	.byte	0x7d
-	.long	0x46f
+	.long	0x443
 	.byte	0x38
 	.byte	0
 	.uleb128 0xe
 	.long	0x271
 	.uleb128 0xe
-	.long	0x39e
+	.long	0x373
 	.uleb128 0x5
 	.byte	0x8
-	.long	0x475
+	.long	0x449
 	.uleb128 0xe
-	.long	0x3b2
+	.long	0x387
 	.uleb128 0xa
 	.byte	0x10
 	.byte	0x7
 	.byte	0x81
-	.long	0x4a2
+	.long	0x476
 	.uleb128 0x7
 	.ascii "Task\0"
 	.byte	0x7
 	.byte	0x82
-	.long	0x46f
+	.long	0x443
 	.byte	0
 	.uleb128 0x7
 	.ascii "QueueData\0"
@@ -971,21 +888,21 @@ main:
 	.ascii "qQueueStack_t\0"
 	.byte	0x7
 	.byte	0x84
-	.long	0x47a
+	.long	0x44e
 	.uleb128 0xf
 	.ascii "TimerInterruptEmulation\0"
 	.byte	0x1
-	.byte	0xb
+	.byte	0xc
 	.long	0x125
 	.quad	.LFB7
 	.quad	.LFE7-.LFB7
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x50f
+	.long	0x4e3
 	.uleb128 0x10
 	.ascii "varargin\0"
 	.byte	0x1
-	.byte	0xb
+	.byte	0xc
 	.long	0x125
 	.uleb128 0x2
 	.byte	0x91
@@ -993,7 +910,7 @@ main:
 	.uleb128 0x11
 	.ascii "tick\0"
 	.byte	0x1
-	.byte	0xc
+	.byte	0xd
 	.long	0x191
 	.uleb128 0x2
 	.byte	0x91
@@ -1002,41 +919,34 @@ main:
 	.uleb128 0x12
 	.ascii "Task1Callback\0"
 	.byte	0x1
-	.byte	0x16
+	.byte	0x17
 	.quad	.LFB8
 	.quad	.LFE8-.LFB8
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x552
+	.long	0x519
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x16
+	.byte	0x17
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
-	.uleb128 0x14
-	.secrel32	.LASF2
-	.byte	0x1
-	.byte	0x19
-	.long	0xd3
-	.uleb128 0x15
-	.byte	0
 	.byte	0
 	.uleb128 0x12
 	.ascii "Task2Callback\0"
 	.byte	0x1
-	.byte	0x26
+	.byte	0x2c
 	.quad	.LFB9
 	.quad	.LFE9-.LFB9
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x588
+	.long	0x54f
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x26
+	.byte	0x2c
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
@@ -1045,16 +955,16 @@ main:
 	.uleb128 0x12
 	.ascii "Task3Callback\0"
 	.byte	0x1
-	.byte	0x2a
+	.byte	0x30
 	.quad	.LFB10
 	.quad	.LFE10-.LFB10
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x5be
+	.long	0x585
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x2a
+	.byte	0x30
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
@@ -1063,16 +973,16 @@ main:
 	.uleb128 0x12
 	.ascii "Task4Callback\0"
 	.byte	0x1
-	.byte	0x2e
+	.byte	0x34
 	.quad	.LFB11
 	.quad	.LFE11-.LFB11
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x5f4
+	.long	0x5bb
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x2e
+	.byte	0x34
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
@@ -1081,59 +991,52 @@ main:
 	.uleb128 0x12
 	.ascii "Task5Callback\0"
 	.byte	0x1
-	.byte	0x32
+	.byte	0x38
 	.quad	.LFB12
 	.quad	.LFE12-.LFB12
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x637
+	.long	0x5f1
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x32
+	.byte	0x38
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
-	.uleb128 0x14
-	.secrel32	.LASF2
-	.byte	0x1
-	.byte	0x19
-	.long	0xd3
-	.uleb128 0x15
-	.byte	0
 	.byte	0
 	.uleb128 0x12
 	.ascii "Task6Callback\0"
 	.byte	0x1
-	.byte	0x37
+	.byte	0x3c
 	.quad	.LFB13
 	.quad	.LFE13-.LFB13
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x66d
+	.long	0x627
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x37
+	.byte	0x3c
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x73
 	.sleb128 0
 	.byte	0
-	.uleb128 0x16
+	.uleb128 0x14
 	.ascii "IdleTaskCallback\0"
 	.byte	0x1
-	.byte	0x3b
+	.byte	0x40
 	.quad	.LFB14
 	.quad	.LFE14-.LFB14
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6a6
+	.long	0x660
 	.uleb128 0x13
 	.secrel32	.LASF1
 	.byte	0x1
-	.byte	0x3b
+	.byte	0x40
 	.long	0x300
 	.uleb128 0x2
 	.byte	0x72
@@ -1142,42 +1045,42 @@ main:
 	.uleb128 0x12
 	.ascii "sigint_signal\0"
 	.byte	0x1
-	.byte	0x3f
+	.byte	0x43
 	.quad	.LFB15
 	.quad	.LFE15-.LFB15
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x6e7
+	.long	0x6af
 	.uleb128 0x10
 	.ascii "x\0"
 	.byte	0x1
-	.byte	0x3f
+	.byte	0x43
 	.long	0xd3
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x14
-	.secrel32	.LASF2
-	.byte	0x1
-	.byte	0x19
-	.long	0xd3
 	.uleb128 0x15
+	.ascii "_qPrioQueueInsert\0"
+	.byte	0x1
+	.byte	0x44
+	.long	0xd3
+	.uleb128 0x16
 	.byte	0
 	.byte	0
 	.uleb128 0xf
 	.ascii "main\0"
 	.byte	0x1
-	.byte	0x43
+	.byte	0x47
 	.long	0xd3
 	.quad	.LFB16
 	.quad	.LFE16-.LFB16
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x740
+	.long	0x708
 	.uleb128 0x10
 	.ascii "argc\0"
 	.byte	0x1
-	.byte	0x43
+	.byte	0x47
 	.long	0xd3
 	.uleb128 0x2
 	.byte	0x91
@@ -1185,16 +1088,16 @@ main:
 	.uleb128 0x10
 	.ascii "argv\0"
 	.byte	0x1
-	.byte	0x43
-	.long	0x740
+	.byte	0x47
+	.long	0x708
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 8
 	.uleb128 0x11
 	.ascii "_qQueueStack\0"
 	.byte	0x1
-	.byte	0x47
-	.long	0x756
+	.byte	0x4b
+	.long	0x71e
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -176
@@ -1203,18 +1106,18 @@ main:
 	.byte	0x8
 	.long	0x144
 	.uleb128 0x17
-	.long	0x4a2
-	.long	0x756
+	.long	0x476
+	.long	0x71e
 	.uleb128 0x18
 	.long	0x138
 	.byte	0x9
 	.byte	0
 	.uleb128 0xe
-	.long	0x746
+	.long	0x70e
 	.uleb128 0x19
 	.ascii "TimerEmulation\0"
 	.byte	0x1
-	.byte	0xa
+	.byte	0xb
 	.long	0x1e7
 	.uleb128 0x9
 	.byte	0x3
@@ -1222,56 +1125,56 @@ main:
 	.uleb128 0x19
 	.ascii "Task1\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task1
 	.uleb128 0x19
 	.ascii "Task2\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task2
 	.uleb128 0x19
 	.ascii "Task3\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task3
 	.uleb128 0x19
 	.ascii "Task4\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task4
 	.uleb128 0x19
 	.ascii "Task5\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task5
 	.uleb128 0x19
 	.ascii "Task6\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	Task6
 	.uleb128 0x19
 	.ascii "TaskTestST\0"
 	.byte	0x1
-	.byte	0x13
-	.long	0x475
+	.byte	0x14
+	.long	0x449
 	.uleb128 0x9
 	.byte	0x3
 	.quad	TaskTestST
@@ -1543,28 +1446,6 @@ main:
 	.uleb128 0x3f
 	.uleb128 0x19
 	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x3c
-	.uleb128 0x19
-	.byte	0
-	.byte	0
-	.uleb128 0x15
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.byte	0
-	.uleb128 0x16
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
 	.uleb128 0xb
@@ -1582,6 +1463,28 @@ main:
 	.uleb128 0x19
 	.uleb128 0x1
 	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x15
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3c
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x16
+	.uleb128 0x18
+	.byte	0
 	.byte	0
 	.byte	0
 	.uleb128 0x17
@@ -1637,8 +1540,6 @@ main:
 	.section	.debug_str,"dr"
 .LASF1:
 	.ascii "Data\0"
-.LASF2:
-	.ascii "_qPrioQueueInsert\0"
 .LASF0:
 	.ascii "UserData\0"
 	.ident	"GCC: (GNU) 4.9.3"

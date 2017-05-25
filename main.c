@@ -6,6 +6,7 @@
 #include "QuarkTS.h"
 #include <signal.h>
 
+
 /*============================================================================*/
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* varargin){
@@ -20,8 +21,9 @@ qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST;
 
 /*============================================================================*/
 void Task1Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, qGetCycles(Task1));
    // qQueueEvent(Task1, "A");
+    /*
     qQueueEvent(Task2, "A"); //20
     qQueueEvent(Task3, "B"); //50
     qQueueEvent(Task4, "C"); //10
@@ -33,6 +35,10 @@ void Task1Callback(qEvent_t Data){
     qQueueEvent(Task6, "I"); //10
     qQueueEvent(Task6, "J"); //10
     qQueueEvent(Task6, "K"); //10
+    qSendEvent(Task5,"fuck");
+    qSendEvent(Task6,"shit");
+    qSendEvent(Task3,"dam");
+     */ 
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t Data){
@@ -48,7 +54,6 @@ void Task4Callback(qEvent_t Data){
 }
 /*============================================================================*/
 void Task5Callback(qEvent_t Data){
-    qQueueEvent(Task6, "K"); //10
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
 }
 /*============================================================================*/
@@ -57,7 +62,6 @@ void Task6Callback(qEvent_t Data){
 }
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t Data){
-
 }
 /*============================================================================*/
 void sigint_signal(int x){
@@ -69,12 +73,15 @@ int main(int argc, char** argv) {
     signal(SIGINT, sigint_signal);
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qSetup(0.01, IdleTaskCallback, 10);
-    qCreateTask(Task1, Task1Callback, HIGH_Priority, 1, PERIODIC, ENABLE, "TASK1");
+    qCreateTask(Task1, Task1Callback, HIGH_Priority, 0.5, 10, ENABLE, "TASK1");
     qCreateEventTask(Task2, Task2Callback, 20, "TASK2");
     qCreateEventTask(Task3, Task3Callback, 50, "TASK3");
     qCreateEventTask(Task4, Task4Callback, 10, "TASK4");
     qCreateEventTask(Task5, Task5Callback, 80, "TASK5");
-    qCreateEventTask(Task6, Task6Callback, 10, "TASK6");
+    
+    qCreateTask(Task6, Task6Callback, HIGH_Priority, 1, 10, ENABLE, "TASK6");
+    //qCreateEventTask(Task6, Task6Callback, 10, "TASK6");
+   
     qSchedule();
     return (EXIT_SUCCESS);
 }

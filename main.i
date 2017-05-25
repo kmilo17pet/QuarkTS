@@ -2564,14 +2564,14 @@ typedef __uint_least64_t uint_least64_t;
 
     typedef void (*qTaskFcn_t)(qEvent_t);
     typedef struct{
-     volatile uint8_t TimedTaskRun, InitFlag, AsyncRun, IgnoreOveruns, Enabled;
+     volatile uint8_t InitFlag, AsyncRun, Enabled;
     }qTaskFlags_t;
 
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
 
     struct _qTask_t{
         void *UserData,*AsyncData;
-        volatile qClock_t Interval, TimeElapsed;
+        volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
         uint32_t Cycles;
         qPriority_t Priority;
@@ -2622,7 +2622,7 @@ typedef __uint_least64_t uint_least64_t;
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
-# 488 "QuarkTS.h"
+# 479 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
@@ -2658,7 +2658,7 @@ typedef __uint_least64_t uint_least64_t;
     typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 614 "QuarkTS.h"
+# 605 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -2668,6 +2668,7 @@ typedef __uint_least64_t uint_least64_t;
         qClock_t _qSTimerElapsed(qSTimer_t *obj);
         qClock_t _qSTimerRemaining(qSTimer_t *obj);
 # 7 "main.c" 2
+
 
 
 
@@ -2684,19 +2685,8 @@ volatile struct _qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST;
 
 
 void Task1Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
-
-    _qPrioQueueInsert(&Task2, (void*)"A");
-    _qPrioQueueInsert(&Task3, (void*)"B");
-    _qPrioQueueInsert(&Task4, (void*)"C");
-    _qPrioQueueInsert(&Task5, (void*)"D");
-    _qPrioQueueInsert(&Task6, (void*)"E");
-    _qPrioQueueInsert(&Task6, (void*)"F");
-    _qPrioQueueInsert(&Task6, (void*)"G");
-    _qPrioQueueInsert(&Task6, (void*)"H");
-    _qPrioQueueInsert(&Task6, (void*)"I");
-    _qPrioQueueInsert(&Task6, (void*)"J");
-    _qPrioQueueInsert(&Task6, (void*)"K");
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, (Task1.Cycles));
+# 42 "main.c"
 }
 
 void Task2Callback(qEvent_t Data){
@@ -2712,7 +2702,6 @@ void Task4Callback(qEvent_t Data){
 }
 
 void Task5Callback(qEvent_t Data){
-    _qPrioQueueInsert(&Task6, (void*)"K");
     printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
 }
 
@@ -2721,7 +2710,6 @@ void Task6Callback(qEvent_t Data){
 }
 
 void IdleTaskCallback(qEvent_t Data){
-
 }
 
 void sigint_signal(int x){
@@ -2733,12 +2721,15 @@ int main(int argc, char** argv) {
     signal(2, sigint_signal);
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
-    _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(0xFE), (qTime_t)1, (qIteration_t)((qIteration_t)-1), (1), (void*)"TASK1");
+    _qCreateTask(&Task1, Task1Callback, (qPriority_t)(qPriority_t)(0xFE), (qTime_t)0.5, (qIteration_t)10, (1), (void*)"TASK1");
     _qCreateTask(&Task2, Task2Callback, (qPriority_t)20, ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK2");
     _qCreateTask(&Task3, Task3Callback, (qPriority_t)50, ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK3");
     _qCreateTask(&Task4, Task4Callback, (qPriority_t)10, ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK4");
     _qCreateTask(&Task5, Task5Callback, (qPriority_t)80, ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK5");
-    _qCreateTask(&Task6, Task6Callback, (qPriority_t)10, ((qTime_t)(0)), ((qIteration_t)1), 0, (void*)"TASK6");
+
+    _qCreateTask(&Task6, Task6Callback, (qPriority_t)(qPriority_t)(0xFE), (qTime_t)1, (qIteration_t)10, (1), (void*)"TASK6");
+
+
     _qStart();
     return (0);
 }

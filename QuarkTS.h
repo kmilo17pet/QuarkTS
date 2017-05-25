@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.4
+ *  Version : 3.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -109,14 +109,14 @@ extern "C" {
     
     typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{
-    	volatile uint8_t TimedTaskRun, InitFlag, AsyncRun, IgnoreOveruns, Enabled;
+    	volatile uint8_t InitFlag, AsyncRun, Enabled;
     }qTaskFlags_t;
        
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
    
     struct _qTask_t{
         void *UserData,*AsyncData;
-        volatile qClock_t Interval, TimeElapsed;
+        volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
         uint32_t Cycles;
         qPriority_t Priority;
@@ -175,7 +175,7 @@ extern "C" {
 /*void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
 Task Scheduler Setup. This function is required and must be called once in 
-the application main thread befone any tasks creation.
+the application main thread before any tasks creation.
 
 Parameters:
 
@@ -441,7 +441,7 @@ Parameters:
 Return value:
 
     True if the task in on Enabled state, otherwise returns false.
-*/
+*/    
     #define qIsEnabled(TASK)                                                            (TASK.Flag.State)
 /*unsigned long qGetCycles(qTask_t Identifier)
 
@@ -456,15 +456,6 @@ Return value:
     A unsigned long value containing the number of task activations.
 */
     #define qGetCycles(TASK)                                                            (TASK.Cycles)
-/*void qIgnoreOverruns(qTask_t Identifier)
- 
-Disable delayed activations when the task is behind the schedule.
-
-Parameters:
-
-    - Identifier : The task node identifier.
-*/
-    #define qIgnoreOverruns(TASK, _TF_)                                                 (TASK.Flag.IgnoreOveruns = _TF_!=0)            
 /*void qReleaseSchedule(void)
 
 Disables the QuarkTS scheduling. The main thread will continue after the

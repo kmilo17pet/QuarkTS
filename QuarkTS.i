@@ -170,14 +170,14 @@ typedef __uint_least64_t uint_least64_t;
 
     typedef void (*qTaskFcn_t)(qEvent_t);
     typedef struct{
-     volatile uint8_t TimedTaskRun, InitFlag, AsyncRun, IgnoreOveruns, Enabled;
+     volatile uint8_t InitFlag, AsyncRun, Enabled;
     }qTaskFlags_t;
 
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
 
     struct _qTask_t{
         void *UserData,*AsyncData;
-        volatile qClock_t Interval, TimeElapsed;
+        volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
         uint32_t Cycles;
         qPriority_t Priority;
@@ -228,7 +228,7 @@ typedef __uint_least64_t uint_least64_t;
     void _qSetUserData(volatile struct _qTask_t *Task, void* arg);
     void _qClearTimeElapse(volatile struct _qTask_t *Task);
     void _qSetInterruptsED(void(*Enabler)(void), void(*Disabler)(void));
-# 488 "QuarkTS.h"
+# 479 "QuarkTS.h"
     typedef enum state {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
@@ -264,7 +264,7 @@ typedef __uint_least64_t uint_least64_t;
     typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
     int _qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void _qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 614 "QuarkTS.h"
+# 605 "QuarkTS.h"
         typedef struct{
             uint8_t SR;
             qClock_t Start, TV;
@@ -303,17 +303,17 @@ void _qSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
 }
 
 void _qEnableDisable(volatile struct _qTask_t *Task, qBool_t Value){
-    if(Value) Task->TimeElapsed = 0;
+    if(Value && Task->Flag.Enabled) return;
     Task->Flag.Enabled = Value;
-    if(!Value) Task->TimeElapsed = 0;
+    Task->ClockStart = QUARKTS.epochs;
 }
 
 void _qSetUserData(volatile struct _qTask_t *Task, void* arg){
     Task->UserData = arg;
 }
 
-void _qClearTimeElapse(volatile struct _qTask_t *Task){
-    Task->TimeElapsed = 0;
+void _qClearTimeElapsed(volatile struct _qTask_t *Task){
+    Task->ClockStart = QUARKTS.epochs;
 }
 
 int _qPrioQueueInsert(volatile struct _qTask_t *TasktoQueue, void* eventdata){
@@ -373,36 +373,22 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
 }
 
 void _qISRHandler(void){
-    if(!QUARKTS.Flag.Init) return;
-    volatile struct _qTask_t *Task = QUARKTS.First;
-    while(Task != ((void*)0)){
-        if( Task->Flag.Enabled && Task->Interval>0){
-            Task->TimeElapsed++;
-            if(Task->TimeElapsed >= Task->Interval){
-                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;
-                Task->TimeElapsed = 0;
-            }
-        }
-        Task = Task->Next;
-    }
-
-        QUARKTS.epochs++;
-
+    QUARKTS.epochs++;
 }
 
 int _qCreateTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == ((void*)0)) return -1;
     Task->Callback = CallbackFcn;
-    Task->TimeElapsed = 0;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->UserData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;
-    Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
+    Task->Flag.AsyncRun = Task->Flag.InitFlag = 0;
     Task->Flag.Enabled = (uint8_t)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     Task->Cycles = 0;
+    Task->ClockStart = QUARKTS.epochs;
     return 0;
 }
 
@@ -419,6 +405,7 @@ static void _qTriggerEvent(volatile struct _qTask_t *Task, qTrigger_t Event){
 static void _qTaskChainbyPriority(void){
     volatile struct _qTask_t *a = ((void*)0), *b = ((void*)0), *c = ((void*)0), *e = ((void*)0), *tmp = ((void*)0);
     volatile struct _qTask_t *head = QUARKTS.First;
+    if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.I_Disable();
     while(e != head->Next) {
         c = a = head;
         b = a->Next;
@@ -439,6 +426,7 @@ static void _qTaskChainbyPriority(void){
             if(b == e) e = a;
         }
     }
+    if(QUARKTS.I_Enabler != ((void*)0)) QUARKTS.I_Enabler();
 }
 
 void _qStart(void){
@@ -452,9 +440,8 @@ void _qStart(void){
     Task = QUARKTS.First;
     while(Task != ((void*)0)){
         if ((qTask = _qPrioQueueExtract())!=((void*)0)) _qTriggerEvent(qTask, byQueueExtraction);
-
-        if((Task->Flag.TimedTaskRun || Task->Interval == ((qTime_t)(0))) && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.Enabled){
-            Task->Flag.TimedTaskRun--;
+        if( ( ((QUARKTS.epochs - Task->ClockStart)>=Task->Interval) || Task->Interval == ((qTime_t)(0))) && (Task->Iterations>0 || Task->Iterations==((qIteration_t)-1)) && Task->Flag.Enabled){
+            Task->ClockStart = QUARKTS.epochs;
             if(Task->Iterations!= ((qIteration_t)-1)) Task->Iterations--;
             if(Task->Iterations == 0) Task->Flag.Enabled = 0;
             _qTriggerEvent(Task, byTimeElapsed);

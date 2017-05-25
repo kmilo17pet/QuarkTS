@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 3.4
+ *  Version : 3.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -46,17 +46,17 @@ void _qSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
 }
 /*============================================================================*/
 void _qEnableDisable(qTask_t *Task, qBool_t Value){
-    if(Value) Task->TimeElapsed = 0;
+    if(Value && Task->Flag.Enabled) return;
     Task->Flag.Enabled = Value;
-    if(!Value) Task->TimeElapsed = 0;
+    Task->ClockStart = QUARKTS.epochs;
 }
 /*============================================================================*/
 void _qSetUserData(qTask_t *Task, void* arg){
     Task->UserData = arg;
 }
 /*============================================================================*/
-void _qClearTimeElapse(qTask_t *Task){
-    Task->TimeElapsed = 0;
+void _qClearTimeElapsed(qTask_t *Task){
+    Task->ClockStart = QUARKTS.epochs;
 }
 /*============================================================================*/
 int _qPrioQueueInsert(qTask_t *TasktoQueue, void* eventdata){
@@ -116,36 +116,22 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
 }
 /*============================================================================*/
 void _qISRHandler(void){
-    if(!QUARKTS.Flag.Init) return;  
-    qTask_t *Task =  QUARKTS.First;
-    while(Task != NULL){
-        if( Task->Flag.Enabled  && Task->Interval>0){
-            Task->TimeElapsed++;
-            if(Task->TimeElapsed >= Task->Interval){ 
-                Task->Flag.TimedTaskRun = (Task->Flag.IgnoreOveruns)? 1 : Task->Flag.TimedTaskRun+1;              
-                Task->TimeElapsed = 0; 
-            }
-        }
-        Task = Task->Next;
-    }
-    #ifdef QSTIMER
-        QUARKTS.epochs++;
-    #endif
+    QUARKTS.epochs++;
 }
 /*============================================================================*/
 int _qCreateTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return -1;    
     Task->Callback = CallbackFcn;
-    Task->TimeElapsed = 0;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->UserData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;    
-    Task->Flag.AsyncRun = Task->Flag.InitFlag = Task->Flag.TimedTaskRun = 0;
+    Task->Flag.AsyncRun = Task->Flag.InitFlag = 0;
     Task->Flag.Enabled = (uint8_t)(InitialState != 0);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
     Task->Cycles = 0;
+    Task->ClockStart = QUARKTS.epochs;
     return 0;
 }
 /*============================================================================*/
@@ -162,6 +148,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
 static void _qTaskChainbyPriority(void){
     qTask_t *a = NULL, *b = NULL, *c = NULL, *e = NULL, *tmp = NULL; 
     qTask_t *head = QUARKTS.First;
+    _Q_ENTER_CRITICAL();
     while(e != head->Next) {
         c = a = head;
         b = a->Next;
@@ -182,6 +169,7 @@ static void _qTaskChainbyPriority(void){
             if(b == e) e = a;
         }
     }
+    _Q_EXIT_CRITICAL();
 }
 /*============================================================================*/
 void _qStart(void){
@@ -195,12 +183,11 @@ void _qStart(void){
     Task = QUARKTS.First;
     while(Task != NULL){       
         if ((qTask = _qPrioQueueExtract())!=NULL) _qTriggerEvent(qTask, byQueueExtraction);          
-        
-        if((Task->Flag.TimedTaskRun || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.Enabled){
-            Task->Flag.TimedTaskRun--;
+        if( ( ((QUARKTS.epochs - Task->ClockStart)>=Task->Interval) || Task->Interval == TIME_INMEDIATE) && (Task->Iterations>0 || Task->Iterations==PERIODIC) && Task->Flag.Enabled){
+            Task->ClockStart = QUARKTS.epochs;
             if(Task->Iterations!= PERIODIC) Task->Iterations--;
             if(Task->Iterations == 0) Task->Flag.Enabled = 0;
-            _qTriggerEvent(Task, byTimeElapsed);
+            _qTriggerEvent(Task, byTimeElapsed);            
         }
         else if( Task->Flag.AsyncRun){
             QUARKTS.EventInfo.EventData = Task->AsyncData;
