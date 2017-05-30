@@ -419,7 +419,7 @@ static void _qTriggerIdleTask(void){
 /*============================================================================*/
 /*void qSchedule(void)
     
-Executes the task-scheduler algorithm. It must be called once after the task
+Executes the task-scheduler scheme. It must be called once after the task
 pool has been defined.
 
   Note : qSchedule keeps the application in an infifine loop
@@ -746,7 +746,7 @@ static qBool_t _qRBufferFull(qRBuffer_t *obj);
 
 /*============================================================================*/
 static uint16_t _qRBufferValidPowerOfTwo(uint16_t k){
-    int i;
+    uint16_t i;
     if ( ((k-1) & k) != 0) {
         k--;
         for (i = 1; i < sizeof(uint16_t) * 8; i = i * 2)  k = k | k >> i;

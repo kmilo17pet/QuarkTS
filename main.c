@@ -126,8 +126,7 @@ int main(int argc, char** argv) {
     qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
-    qSchedulerSetup(0.01, NULL, 10);
-    qSchedulerSetIdleTask(IdleTaskCallback);
+    qSchedulerSetup(0.01, IdleTaskCallback, 10);
     qSchedulerAddxTask(&Task1, Task1Callback, HIGH_Priority, 0.1, PERIODIC, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, 50, "TASK3");
     qTaskLinkRingBuffer(&Task3, &ringBuffer);

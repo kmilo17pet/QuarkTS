@@ -400,6 +400,10 @@ void* qRBufferGetFront(qRBuffer_t *obj);
 void* qRBufferPopFront(qRBuffer_t *obj);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 
+    #ifdef __XC8
+        #pragma warning disable 1471   //disable warning: (1471) indirect function call via a NULL pointer ignored
+    #endif
+
 
 #ifdef	__cplusplus
 }
