@@ -38,7 +38,9 @@
       </toolsSet>
       <compileType>
         <cTool>
+          <standard>3</standard>
           <commandLine>--save-temps</commandLine>
+          <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
           <linkerLibItems>

@@ -36,9 +36,12 @@ extern "C" {
     #define qError  0xFFu
     #define qEnabled              (qTrue)
     #define qDisabled             (qFalse)
+    #define qLINK                 (qTrue)
+    #define qUNLINK               (qFalse)  
     
     #ifdef _QUARKTS_CR_DEFS_
-        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;        
+        typedef int32_t _qTaskPC_t;
+        #define qCR_PCInitVal   (-0x7FFE)           
         #define __qCRKeep                _qCR_BEGIN_:   
         #define __qPersistent            static _qTaskPC_t
         #define __qTaskProgress          __LINE__
@@ -56,7 +59,7 @@ extern "C" {
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
     #endif
 
-    typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop} qTrigger_t;
+    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount} qTrigger_t;
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -110,7 +113,7 @@ extern "C" {
     
     typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{
-    	volatile uint8_t InitFlag, AsyncRun, Enabled;
+    	volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount;
     }qTaskFlags_t;
        
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
@@ -168,7 +171,10 @@ extern "C" {
     void qSchedulerRun(void);
     int qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
-    int qTaskLinkRingBuffer(qTask_t *Task, qRBuffer_t *RingBuffer);
+    
+    typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT}qRBLinkMode_t;
+    
+    int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
     
     void qTaskSetTime(qTask_t *Task, qTime_t Value);
     void qTaskSetIterations(qTask_t *Task, qIteration_t Value);
@@ -278,7 +284,7 @@ Parameters:
         State-machine associated data
          */
         void *Data;
-        struct { //hide this members
+        struct { /*hide this members*/
             void (*__Failure)(qSM_t*);
             void (*__Success)(qSM_t*);
             void (*__Unexpected)(qSM_t*);  
@@ -362,7 +368,7 @@ typedef struct {
     uint8_t *Blocks;
 }qMemoryPool_t;        
         
-typedef enum {		//ported from uSmartX
+typedef enum {		/*ported from uSmartX*/
     MEMBLOCK_4_BYTE	= (1 << 2),	/*!< Memory block contains 4 bytes */
     MEMBLOCK_8_BYTE	= (1 << 3),	/*!< Memory block contains 8 bytes */
     MEMBLOCK_16_BYTE	= (1 << 4),	/*!< Memory block contains 16 bytes */
@@ -377,6 +383,21 @@ typedef enum {		//ported from uSmartX
     MEMBLOCK_8192_BYTE	= (1 << 13)     /*!< Memory block contains 8192 bytes */
 }qMEM_size_t;
 
+
+
+/*qMemoryHeapCreate(NAME, N, ALLOC_SIZE)
+
+This macro creates and initilises a memory heap pool. The parameter alloc size
+should be of type qMEM_size_t.
+
+Parameters:
+
+    - NAME : Name of the memory heap pool 
+ 
+    - N : Number of memory blocks
+ 
+    - ALLOC_SIZE: Size of each memory block
+*/ 
 #define qMemoryHeapCreate(NAME, N, ALLOC_SIZE)	uint32_t qMEM_AREA_##NAME[(N*ALLOC_SIZE)>>2]={0}; \
 						uint8_t qMEM_DES##NAME[N]={0}; \
 						qMemoryPool_t NAME; \

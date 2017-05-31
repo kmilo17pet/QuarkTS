@@ -26,6 +26,12 @@ static qTask_t* _qPrioQueueExtract(void);
 static void _qTriggerIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
 
+static uint16_t _qRBufferValidPowerOfTwo(uint16_t k);
+static uint16_t _qRBufferCount(qRBuffer_t *obj);
+static qBool_t _qRBufferFull(qRBuffer_t *obj);
+
+static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+
 /*============================================================================*/
 /*uint32_t qTaskGetCycles(qTask_t Identifier)
 
@@ -300,7 +306,7 @@ int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priori
     Task->UserData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;    
-    Task->Flag.AsyncRun = Task->Flag.InitFlag = qFalse;
+    Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = qFalse;
     Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
@@ -378,26 +384,80 @@ static void _qTaskChainbyPriority(void){
     _Q_EXIT_CRITICAL();
 }
 /*============================================================================*/
-/*int qTaskLinkRingBuffer(qTask_t *Task, qRBuffer_t *RingBuffer)
+/*int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
 
-Links a Ring Buffer to Task. The task will be triggered if there is elements 
-available in the ring buffer
+Links a Ring Buffer to Task. 
 
 Parameters:
 
     - Task : A pointer to the task node.
 
     - RingBuffer : A pointer to a Ring Buffer object
+ 
+    - Mode: Linking mode. This implies the event that will trigger the task    
+            The one of the following available modes:
+                        > RB_AUTOPOP: The task will be triggered if there is elements 
+                          in the Ring Buffer. Data data will be popped
+                          automatically in every trigger and will be available 
+                          in the <EventData> field of qEvent_t structure.
      
+                        > RB_FULL: the task will be triggered if the Ring Buffer
+                          is full. The pointer to the RingBuffer will be 
+                          available in the <EventData> field of qEvent_t structure.
+
+                        > RB_COUNT: the task will be triggered if the count of 
+                          elements in the Ring Buffer reach the specified value. 
+                          The pointer to the RingBuffer will be available in the
+                          <EventData> field of qEvent_t structure.
+ 
+    - arg: This argument defines if the Ring buffer will be linked (qLINK) or 
+           unlinked (qUNLINK) from the task.
+           If the RB_COUNT mode is specified, this will be the value used to check
+           the element count of the Ring Buffer. A zero value will act as 
+           an unlink action. 
+
 Return value:
 
     Returns 0 on successs, otherwise returns -1;     
      */
-int qTaskLinkRingBuffer(qTask_t *Task, qRBuffer_t *RingBuffer){
+int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == NULL) return -1;
-    if(RingBuffer->data == NULL) return -1;
-    Task->RingBuff = RingBuffer;
+    if(RingBuffer->data == NULL) return -1;    
+    switch(Mode){
+        case RB_AUTOPOP:
+            Task->Flag.RBAutoPop = (qBool_t)arg;
+            break;
+        case RB_FULL:
+            Task->Flag.RBFull = (qBool_t)arg;
+            break;
+        case RB_COUNT:
+            Task->Flag.RBCount = arg;
+            break;
+        default: return -1;
+    }
+    Task->RingBuff = (arg>0)? RingBuffer : NULL;
     return 0;
+}
+/*============================================================================*/
+static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
+    qRBuffer_t *rb = Task->RingBuff;
+    void* popdata = NULL;
+    if(rb == NULL) return _Q_NO_VALID_TRIGGER_;
+    if(Task->Flag.RBFull && _qRBufferFull(rb)){
+        QUARKTS.EventInfo.EventData = (void*)rb; 
+        return byRBufferFull;
+    }
+    if( (Task->Flag.RBCount>0) && (Task->Flag.RBCount >= _qRBufferCount(rb)) ){
+        QUARKTS.EventInfo.EventData = (void*)rb;         
+        return byRBufferCount;
+    }
+    if(Task->Flag.RBAutoPop){
+        if((popdata = qRBufferPopFront(rb))!=NULL){
+            QUARKTS.EventInfo.EventData = popdata; 
+            return byRBufferPop;
+        }
+    }
+    return _Q_NO_VALID_TRIGGER_;
 }
 /*============================================================================*/
 static void _qTriggerReleaseSchedEvent(void){
@@ -425,7 +485,7 @@ pool has been defined.
 */
 void qSchedulerRun(void){
     qTask_t *Task, *qTask;
-    void *RBuffData = NULL;
+    qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     qMainSchedule:
     if(QUARKTS.Flag.ReleaseSched) goto qReleasedSchedule;
     if(!QUARKTS.Flag.Init){    
@@ -441,10 +501,7 @@ void qSchedulerRun(void){
             if(Task->Iterations == 0) Task->Flag.Enabled = qFalse;
             _qTriggerEvent(Task, byTimeElapsed);            
         }
-        else if((RBuffData=qRBufferPopFront(Task->RingBuff)) != NULL){
-            QUARKTS.EventInfo.EventData = RBuffData;
-            _qTriggerEvent(Task, byRBufferPop); 
-        }
+        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_) _qTriggerEvent(Task, trg);         
         else if( Task->Flag.AsyncRun){
             QUARKTS.EventInfo.EventData = Task->AsyncData;
             Task->Flag.AsyncRun = qFalse;
@@ -708,7 +765,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
 	if( i == obj->NumberofBlocks ) break;
     }
     _Q_EXIT_CRITICAL();
-    return NULL; //memory not available
+    return NULL; /*memory not available*/
 }
 /*============================================================================*/
 /*void* qMemoryFree(qMemoryPool_t *obj, void* pmem)
@@ -738,10 +795,6 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 }
 /*============================================================================*/
 #endif
-
-static uint16_t _qRBufferValidPowerOfTwo(uint16_t k);
-static uint16_t _qRBufferCount(qRBuffer_t *obj);
-static qBool_t _qRBufferFull(qRBuffer_t *obj);
 
 /*============================================================================*/
 static uint16_t _qRBufferValidPowerOfTwo(uint16_t k){

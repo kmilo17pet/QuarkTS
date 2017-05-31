@@ -3,6 +3,7 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "main.c"
+
 # 1 "/usr/include/stdio.h" 1 3 4
 # 29 "/usr/include/stdio.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
@@ -497,31 +498,7 @@ __extension__ typedef long long int __loff_t;
 
 typedef long __suseconds_t;
 # 73 "/usr/include/sys/types.h" 2 3 4
-# 95 "/usr/include/sys/types.h" 3 4
-typedef unsigned char u_char;
-
-
-
-typedef unsigned short u_short;
-
-
-
-typedef unsigned int u_int;
-
-
-
-typedef unsigned long u_long;
-
-
-
-
-
-typedef unsigned short ushort;
-typedef unsigned int uint;
-typedef unsigned long ulong;
-
-
-
+# 119 "/usr/include/sys/types.h" 3 4
 typedef unsigned long clock_t;
 
 
@@ -779,23 +756,23 @@ typedef struct __pthread_rwlockattr_t {char __dummy;} *pthread_rwlockattr_t;
 # 1 "/usr/include/sys/types.h" 1 3 4
 # 15 "/usr/include/sys/sysmacros.h" 2 3 4
 
-extern __inline__ __attribute__ ((__always_inline__)) int gnu_dev_major(dev_t);
-extern __inline__ __attribute__ ((__always_inline__)) int gnu_dev_minor(dev_t);
-extern __inline__ __attribute__ ((__always_inline__)) dev_t gnu_dev_makedev(int, int);
+static __inline__ int gnu_dev_major(dev_t);
+static __inline__ int gnu_dev_minor(dev_t);
+static __inline__ dev_t gnu_dev_makedev(int, int);
 
-extern __inline__ __attribute__ ((__always_inline__)) int
+static __inline__ int
 gnu_dev_major(dev_t dev)
 {
  return (int)(((dev) >> 16) & 0xffff);
 }
 
-extern __inline__ __attribute__ ((__always_inline__)) int
+static __inline__ int
 gnu_dev_minor(dev_t dev)
 {
  return (int)((dev) & 0xffff);
 }
 
-extern __inline__ __attribute__ ((__always_inline__)) dev_t
+static __inline__ dev_t
 gnu_dev_makedev(int maj, int min)
 {
  return (((maj) << 16) | ((min) & 0xffff));
@@ -833,33 +810,33 @@ ssize_t __attribute__((__cdecl__)) getdelim (char **, size_t *, int, FILE *);
 FILE * __attribute__((__cdecl__)) tmpfile (void);
 char * __attribute__((__cdecl__)) tmpnam (char *);
 
-char * __attribute__((__cdecl__)) tempnam (const char *, const char *);
+
 
 int __attribute__((__cdecl__)) fclose (FILE *);
 int __attribute__((__cdecl__)) fflush (FILE *);
-FILE * __attribute__((__cdecl__)) freopen (const char *, const char *, FILE *);
-void __attribute__((__cdecl__)) setbuf (FILE *, char *);
-int __attribute__((__cdecl__)) setvbuf (FILE *, char *, int, size_t);
-int __attribute__((__cdecl__)) fprintf (FILE *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
+FILE * __attribute__((__cdecl__)) freopen (const char *restrict, const char *restrict, FILE *restrict);
+void __attribute__((__cdecl__)) setbuf (FILE *restrict, char *restrict);
+int __attribute__((__cdecl__)) setvbuf (FILE *restrict, char *restrict, int, size_t);
+int __attribute__((__cdecl__)) fprintf (FILE *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
                                                             ;
-int __attribute__((__cdecl__)) fscanf (FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
+int __attribute__((__cdecl__)) fscanf (FILE *restrict, const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
                                                            ;
-int __attribute__((__cdecl__)) printf (const char *, ...) __attribute__ ((__format__ (__printf__, 1, 2)))
+int __attribute__((__cdecl__)) printf (const char *restrict, ...) __attribute__ ((__format__ (__printf__, 1, 2)))
                                                             ;
-int __attribute__((__cdecl__)) scanf (const char *, ...) __attribute__ ((__format__ (__scanf__, 1, 2)))
+int __attribute__((__cdecl__)) scanf (const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 1, 2)))
                                                            ;
-int __attribute__((__cdecl__)) sscanf (const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
+int __attribute__((__cdecl__)) sscanf (const char *restrict, const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
                                                            ;
-int __attribute__((__cdecl__)) vfprintf (FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
+int __attribute__((__cdecl__)) vfprintf (FILE *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
                                                             ;
 int __attribute__((__cdecl__)) vprintf (const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 1, 0)))
                                                             ;
-int __attribute__((__cdecl__)) vsprintf (char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
+int __attribute__((__cdecl__)) vsprintf (char *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
                                                             ;
 int __attribute__((__cdecl__)) fgetc (FILE *);
-char * __attribute__((__cdecl__)) fgets (char *, int, FILE *);
+char * __attribute__((__cdecl__)) fgets (char *restrict, int, FILE *restrict);
 int __attribute__((__cdecl__)) fputc (int, FILE *);
-int __attribute__((__cdecl__)) fputs (const char *, FILE *);
+int __attribute__((__cdecl__)) fputs (const char *restrict, FILE *restrict);
 int __attribute__((__cdecl__)) getc (FILE *);
 int __attribute__((__cdecl__)) getchar (void);
 char * __attribute__((__cdecl__)) gets (char *);
@@ -867,12 +844,12 @@ int __attribute__((__cdecl__)) putc (int, FILE *);
 int __attribute__((__cdecl__)) putchar (int);
 int __attribute__((__cdecl__)) puts (const char *);
 int __attribute__((__cdecl__)) ungetc (int, FILE *);
-size_t __attribute__((__cdecl__)) fread (void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) fwrite (const void * , size_t _size, size_t _n, FILE *);
+size_t __attribute__((__cdecl__)) fread (void * restrict, size_t _size, size_t _n, FILE *restrict);
+size_t __attribute__((__cdecl__)) fwrite (const void * restrict , size_t _size, size_t _n, FILE *);
 
 
 
-int __attribute__((__cdecl__)) fgetpos (FILE *, fpos_t *);
+int __attribute__((__cdecl__)) fgetpos (FILE *restrict, fpos_t *restrict);
 
 int __attribute__((__cdecl__)) fseek (FILE *, long, int);
 
@@ -887,8 +864,8 @@ int __attribute__((__cdecl__)) feof (FILE *);
 int __attribute__((__cdecl__)) ferror (FILE *);
 void __attribute__((__cdecl__)) perror (const char *);
 
-FILE * __attribute__((__cdecl__)) fopen (const char * _name, const char * _type);
-int __attribute__((__cdecl__)) sprintf (char *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
+FILE * __attribute__((__cdecl__)) fopen (const char *restrict _name, const char *restrict _type);
+int __attribute__((__cdecl__)) sprintf (char *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
                                                             ;
 int __attribute__((__cdecl__)) remove (const char *);
 int __attribute__((__cdecl__)) rename (const char *, const char *);
@@ -906,9 +883,9 @@ int __attribute__((__cdecl__)) asiprintf (char **, const char *, ...) __attribut
                                                             ;
 char * __attribute__((__cdecl__)) asniprintf (char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
-char * __attribute__((__cdecl__)) asnprintf (char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+char * __attribute__((__cdecl__)) asnprintf (char *restrict, size_t *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
-int __attribute__((__cdecl__)) asprintf (char **, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
+int __attribute__((__cdecl__)) asprintf (char **restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
                                                             ;
 
 int __attribute__((__cdecl__)) diprintf (int, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
@@ -926,7 +903,7 @@ int __attribute__((__cdecl__)) siprintf (char *, const char *, ...) __attribute_
                                                             ;
 int __attribute__((__cdecl__)) siscanf (const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
                                                            ;
-int __attribute__((__cdecl__)) snprintf (char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+int __attribute__((__cdecl__)) snprintf (char *restrict, size_t, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 int __attribute__((__cdecl__)) sniprintf (char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
@@ -944,7 +921,7 @@ int __attribute__((__cdecl__)) vfiprintf (FILE *, const char *, __gnuc_va_list) 
                                                             ;
 int __attribute__((__cdecl__)) vfiscanf (FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
                                                            ;
-int __attribute__((__cdecl__)) vfscanf (FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
+int __attribute__((__cdecl__)) vfscanf (FILE *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
                                                            ;
 int __attribute__((__cdecl__)) viprintf (const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 1, 0)))
                                                             ;
@@ -958,58 +935,22 @@ int __attribute__((__cdecl__)) vsiscanf (const char *, const char *, __gnuc_va_l
                                                            ;
 int __attribute__((__cdecl__)) vsniprintf (char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
-int __attribute__((__cdecl__)) vsnprintf (char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
+int __attribute__((__cdecl__)) vsnprintf (char *restrict, size_t, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
-int __attribute__((__cdecl__)) vsscanf (const char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
+int __attribute__((__cdecl__)) vsscanf (const char *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
                                                            ;
-# 316 "/usr/include/stdio.h" 3 4
-FILE * __attribute__((__cdecl__)) fdopen (int, const char *);
-
-int __attribute__((__cdecl__)) fileno (FILE *);
-int __attribute__((__cdecl__)) getw (FILE *);
-int __attribute__((__cdecl__)) pclose (FILE *);
-FILE * __attribute__((__cdecl__)) popen (const char *, const char *);
-int __attribute__((__cdecl__)) putw (int, FILE *);
-void __attribute__((__cdecl__)) setbuffer (FILE *, char *, int);
-int __attribute__((__cdecl__)) setlinebuf (FILE *);
-int __attribute__((__cdecl__)) getc_unlocked (FILE *);
-int __attribute__((__cdecl__)) getchar_unlocked (void);
-void __attribute__((__cdecl__)) flockfile (FILE *);
-int __attribute__((__cdecl__)) ftrylockfile (FILE *);
-void __attribute__((__cdecl__)) funlockfile (FILE *);
-int __attribute__((__cdecl__)) putc_unlocked (int, FILE *);
-int __attribute__((__cdecl__)) putchar_unlocked (int);
-# 341 "/usr/include/stdio.h" 3 4
-int __attribute__((__cdecl__)) dprintf (int, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
-                                                            ;
-
-FILE * __attribute__((__cdecl__)) fmemopen (void *, size_t, const char *);
-
-
-FILE * __attribute__((__cdecl__)) open_memstream (char **, size_t *);
-
-int __attribute__((__cdecl__)) renameat (int, const char *, int, const char *);
-
-int __attribute__((__cdecl__)) vdprintf (int, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
-                                                            ;
-
-
-
-
-
-
-
+# 360 "/usr/include/stdio.h" 3 4
 int __attribute__((__cdecl__)) _asiprintf_r (struct _reent *, char **, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 char * __attribute__((__cdecl__)) _asniprintf_r (struct _reent *, char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
                                                             ;
-char * __attribute__((__cdecl__)) _asnprintf_r (struct _reent *, char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
+char * __attribute__((__cdecl__)) _asnprintf_r (struct _reent *, char *restrict, size_t *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
                                                             ;
-int __attribute__((__cdecl__)) _asprintf_r (struct _reent *, char **, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+int __attribute__((__cdecl__)) _asprintf_r (struct _reent *, char **restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 int __attribute__((__cdecl__)) _diprintf_r (struct _reent *, int, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
-int __attribute__((__cdecl__)) _dprintf_r (struct _reent *, int, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+int __attribute__((__cdecl__)) _dprintf_r (struct _reent *, int, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 int __attribute__((__cdecl__)) _fclose_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _fcloseall_r (struct _reent *);
@@ -1017,8 +958,8 @@ FILE * __attribute__((__cdecl__)) _fdopen_r (struct _reent *, int, const char *)
 int __attribute__((__cdecl__)) _fflush_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _fgetc_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _fgetc_unlocked_r (struct _reent *, FILE *);
-char * __attribute__((__cdecl__)) _fgets_r (struct _reent *, char *, int, FILE *);
-char * __attribute__((__cdecl__)) _fgets_unlocked_r (struct _reent *, char *, int, FILE *);
+char * __attribute__((__cdecl__)) _fgets_r (struct _reent *, char *restrict, int, FILE *restrict);
+char * __attribute__((__cdecl__)) _fgets_unlocked_r (struct _reent *, char *restrict, int, FILE *restrict);
 
 
 
@@ -1030,27 +971,27 @@ int __attribute__((__cdecl__)) _fiprintf_r (struct _reent *, FILE *, const char 
                                                             ;
 int __attribute__((__cdecl__)) _fiscanf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
                                                            ;
-FILE * __attribute__((__cdecl__)) _fmemopen_r (struct _reent *, void *, size_t, const char *);
-FILE * __attribute__((__cdecl__)) _fopen_r (struct _reent *, const char *, const char *);
-FILE * __attribute__((__cdecl__)) _freopen_r (struct _reent *, const char *, const char *, FILE *);
-int __attribute__((__cdecl__)) _fprintf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+FILE * __attribute__((__cdecl__)) _fmemopen_r (struct _reent *, void *restrict, size_t, const char *restrict);
+FILE * __attribute__((__cdecl__)) _fopen_r (struct _reent *, const char *restrict, const char *restrict);
+FILE * __attribute__((__cdecl__)) _freopen_r (struct _reent *, const char *restrict, const char *restrict, FILE *restrict);
+int __attribute__((__cdecl__)) _fprintf_r (struct _reent *, FILE *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 int __attribute__((__cdecl__)) _fpurge_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _fputc_r (struct _reent *, int, FILE *);
 int __attribute__((__cdecl__)) _fputc_unlocked_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _fputs_r (struct _reent *, const char *, FILE *);
-int __attribute__((__cdecl__)) _fputs_unlocked_r (struct _reent *, const char *, FILE *);
-size_t __attribute__((__cdecl__)) _fread_r (struct _reent *, void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) _fread_unlocked_r (struct _reent *, void * , size_t _size, size_t _n, FILE *);
-int __attribute__((__cdecl__)) _fscanf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
+int __attribute__((__cdecl__)) _fputs_r (struct _reent *, const char *restrict, FILE *restrict);
+int __attribute__((__cdecl__)) _fputs_unlocked_r (struct _reent *, const char *restrict, FILE *restrict);
+size_t __attribute__((__cdecl__)) _fread_r (struct _reent *, void * restrict, size_t _size, size_t _n, FILE *restrict);
+size_t __attribute__((__cdecl__)) _fread_unlocked_r (struct _reent *, void * restrict, size_t _size, size_t _n, FILE *restrict);
+int __attribute__((__cdecl__)) _fscanf_r (struct _reent *, FILE *restrict, const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
                                                            ;
 int __attribute__((__cdecl__)) _fseek_r (struct _reent *, FILE *, long, int);
 int __attribute__((__cdecl__)) _fseeko_r (struct _reent *, FILE *, _off_t, int);
 long __attribute__((__cdecl__)) _ftell_r (struct _reent *, FILE *);
 _off_t __attribute__((__cdecl__)) _ftello_r (struct _reent *, FILE *);
 void __attribute__((__cdecl__)) _rewind_r (struct _reent *, FILE *);
-size_t __attribute__((__cdecl__)) _fwrite_r (struct _reent *, const void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) _fwrite_unlocked_r (struct _reent *, const void * , size_t _size, size_t _n, FILE *);
+size_t __attribute__((__cdecl__)) _fwrite_r (struct _reent *, const void * restrict, size_t _size, size_t _n, FILE *restrict);
+size_t __attribute__((__cdecl__)) _fwrite_unlocked_r (struct _reent *, const void * restrict, size_t _size, size_t _n, FILE *restrict);
 int __attribute__((__cdecl__)) _getc_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _getc_unlocked_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) _getchar_r (struct _reent *);
@@ -1062,7 +1003,7 @@ int __attribute__((__cdecl__)) _iscanf_r (struct _reent *, const char *, ...) __
                                                            ;
 FILE * __attribute__((__cdecl__)) _open_memstream_r (struct _reent *, char **, size_t *);
 void __attribute__((__cdecl__)) _perror_r (struct _reent *, const char *);
-int __attribute__((__cdecl__)) _printf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
+int __attribute__((__cdecl__)) _printf_r (struct _reent *, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
                                                             ;
 int __attribute__((__cdecl__)) _putc_r (struct _reent *, int, FILE *);
 int __attribute__((__cdecl__)) _putc_unlocked_r (struct _reent *, int, FILE *);
@@ -1072,7 +1013,7 @@ int __attribute__((__cdecl__)) _puts_r (struct _reent *, const char *);
 int __attribute__((__cdecl__)) _remove_r (struct _reent *, const char *);
 int __attribute__((__cdecl__)) _rename_r (struct _reent *, const char *_old, const char *_new)
                                           ;
-int __attribute__((__cdecl__)) _scanf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
+int __attribute__((__cdecl__)) _scanf_r (struct _reent *, const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
                                                            ;
 int __attribute__((__cdecl__)) _siprintf_r (struct _reent *, char *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
@@ -1080,11 +1021,11 @@ int __attribute__((__cdecl__)) _siscanf_r (struct _reent *, const char *, const 
                                                            ;
 int __attribute__((__cdecl__)) _sniprintf_r (struct _reent *, char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
                                                             ;
-int __attribute__((__cdecl__)) _snprintf_r (struct _reent *, char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
+int __attribute__((__cdecl__)) _snprintf_r (struct _reent *, char *restrict, size_t, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
                                                             ;
-int __attribute__((__cdecl__)) _sprintf_r (struct _reent *, char *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
+int __attribute__((__cdecl__)) _sprintf_r (struct _reent *, char *restrict, const char *restrict, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
-int __attribute__((__cdecl__)) _sscanf_r (struct _reent *, const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
+int __attribute__((__cdecl__)) _sscanf_r (struct _reent *, const char *restrict, const char *restrict, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
                                                            ;
 char * __attribute__((__cdecl__)) _tempnam_r (struct _reent *, const char *, const char *);
 FILE * __attribute__((__cdecl__)) _tmpfile_r (struct _reent *);
@@ -1100,23 +1041,23 @@ int __attribute__((__cdecl__)) _vasprintf_r (struct _reent *, char **, const cha
                                                             ;
 int __attribute__((__cdecl__)) _vdiprintf_r (struct _reent *, int, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vdprintf_r (struct _reent *, int, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
+int __attribute__((__cdecl__)) _vdprintf_r (struct _reent *, int, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
 int __attribute__((__cdecl__)) _vfiprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
 int __attribute__((__cdecl__)) _vfiscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
                                                            ;
-int __attribute__((__cdecl__)) _vfprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
+int __attribute__((__cdecl__)) _vfprintf_r (struct _reent *, FILE *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vfscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
+int __attribute__((__cdecl__)) _vfscanf_r (struct _reent *, FILE *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
                                                            ;
 int __attribute__((__cdecl__)) _viprintf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
                                                             ;
 int __attribute__((__cdecl__)) _viscanf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
                                                            ;
-int __attribute__((__cdecl__)) _vprintf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
+int __attribute__((__cdecl__)) _vprintf_r (struct _reent *, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vscanf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
+int __attribute__((__cdecl__)) _vscanf_r (struct _reent *, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
                                                            ;
 int __attribute__((__cdecl__)) _vsiprintf_r (struct _reent *, char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
@@ -1124,11 +1065,11 @@ int __attribute__((__cdecl__)) _vsiscanf_r (struct _reent *, const char *, const
                                                            ;
 int __attribute__((__cdecl__)) _vsniprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vsnprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
+int __attribute__((__cdecl__)) _vsnprintf_r (struct _reent *, char *restrict, size_t, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vsprintf_r (struct _reent *, char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
+int __attribute__((__cdecl__)) _vsprintf_r (struct _reent *, char *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
                                                             ;
-int __attribute__((__cdecl__)) _vsscanf_r (struct _reent *, const char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
+int __attribute__((__cdecl__)) _vsscanf_r (struct _reent *, const char *restrict, const char *restrict, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
                                                            ;
 
 
@@ -1136,69 +1077,13 @@ int __attribute__((__cdecl__)) _vsscanf_r (struct _reent *, const char *, const 
 int __attribute__((__cdecl__)) fpurge (FILE *);
 ssize_t __attribute__((__cdecl__)) __getdelim (char **, size_t *, int, FILE *);
 ssize_t __attribute__((__cdecl__)) __getline (char **, size_t *, FILE *);
-
-
-void __attribute__((__cdecl__)) clearerr_unlocked (FILE *);
-int __attribute__((__cdecl__)) feof_unlocked (FILE *);
-int __attribute__((__cdecl__)) ferror_unlocked (FILE *);
-int __attribute__((__cdecl__)) fileno_unlocked (FILE *);
-int __attribute__((__cdecl__)) fflush_unlocked (FILE *);
-int __attribute__((__cdecl__)) fgetc_unlocked (FILE *);
-int __attribute__((__cdecl__)) fputc_unlocked (int, FILE *);
-size_t __attribute__((__cdecl__)) fread_unlocked (void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) fwrite_unlocked (const void * , size_t _size, size_t _n, FILE *);
 # 541 "/usr/include/stdio.h" 3 4
 int __attribute__((__cdecl__)) __srget_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) __swbuf_r (struct _reent *, int, FILE *);
-
-
-
-
-
-
-
-FILE *__attribute__((__cdecl__)) funopen (const void * __cookie, int (*__readfn)(void * __c, char *__buf, size_t __n), int (*__writefn)(void * __c, const char *__buf, size_t __n), _fpos64_t (*__seekfn)(void * __c, _fpos64_t __off, int __whence), int (*__closefn)(void * __c))
-
-
-
-
-
-                              ;
-FILE *__attribute__((__cdecl__)) _funopen_r (struct _reent *, const void * __cookie, int (*__readfn)(void * __c, char *__buf, size_t __n), int (*__writefn)(void * __c, const char *__buf, size_t __n), _fpos64_t (*__seekfn)(void * __c, _fpos64_t __off, int __whence), int (*__closefn)(void * __c))
-
-
-
-
-
-                              ;
-# 586 "/usr/include/stdio.h" 3 4
-typedef ssize_t cookie_read_function_t(void *__cookie, char *__buf, size_t __n);
-typedef ssize_t cookie_write_function_t(void *__cookie, const char *__buf,
-     size_t __n);
-
-typedef int cookie_seek_function_t(void *__cookie, _off64_t *__off,
-       int __whence);
-
-
-
-typedef int cookie_close_function_t(void *__cookie);
-typedef struct
-{
-
-
-  cookie_read_function_t *read;
-  cookie_write_function_t *write;
-  cookie_seek_function_t *seek;
-  cookie_close_function_t *close;
-} cookie_io_functions_t;
-FILE *__attribute__((__cdecl__)) fopencookie (void *__cookie, const char *__mode, cookie_io_functions_t __functions)
-                                                         ;
-FILE *__attribute__((__cdecl__)) _fopencookie_r (struct _reent *, void *__cookie, const char *__mode, cookie_io_functions_t __functions)
-                                                         ;
 # 629 "/usr/include/stdio.h" 3 4
-extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p);
+static __inline__ int __sgetc_r(struct _reent *__ptr, FILE *__p);
 
-extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p)
+static __inline__ int __sgetc_r(struct _reent *__ptr, FILE *__p)
   {
     int __c = (--(__p)->_r < 0 ? __srget_r(__ptr, __p) : (int)(*(__p)->_p++));
     if ((__p->_flags & 0x4000) && (__c == '\r'))
@@ -1213,7 +1098,7 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reen
   }
 # 728 "/usr/include/stdio.h" 3 4
 
-# 2 "main.c" 2
+# 3 "main.c" 2
 # 1 "/usr/include/stdlib.h" 1 3 4
 # 10 "/usr/include/stdlib.h" 3 4
 # 1 "/usr/include/machine/ieeefp.h" 1 3 4
@@ -1233,8 +1118,7 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reen
 char *mkdtemp (char *);
 # 21 "/usr/include/stdlib.h" 2 3 4
 
-# 1 "/usr/include/alloca.h" 1 3 4
-# 23 "/usr/include/stdlib.h" 2 3 4
+
 
 
 
@@ -1256,25 +1140,7 @@ __uint32_t arc4random_uniform(__uint32_t);
 
 const char *getprogname (void);
 void setprogname (const char *);
-
-
-char *canonicalize_file_name (const char *);
-int unsetenv (const char *);
-
-
-char *initstate (unsigned seed, char *state, size_t size);
-long random (void);
-char *setstate (const char *state);
-void srandom (unsigned);
-
-
-char *ptsname (int);
-int ptsname_r(int, char *, size_t);
-int getpt (void);
-int grantpt (int);
-int unlockpt (int);
-
-
+# 49 "/usr/include/cygwin/stdlib.h" 3 4
 int posix_openpt (int);
 int posix_memalign (void **, size_t, size_t);
 
@@ -1331,7 +1197,7 @@ int __attribute__((__cdecl__)) abs (int);
 int __attribute__((__cdecl__)) atexit (void (*__func)(void));
 double __attribute__((__cdecl__)) atof (const char *__nptr);
 
-float __attribute__((__cdecl__)) atoff (const char *__nptr);
+
 
 int __attribute__((__cdecl__)) atoi (const char *__nptr);
 int __attribute__((__cdecl__)) _atoi_r (struct _reent *, const char *__nptr);
@@ -1351,52 +1217,37 @@ char * __attribute__((__cdecl__)) _getenv_r (struct _reent *, const char *__stri
 char * __attribute__((__cdecl__)) _findenv (const char *, int *);
 char * __attribute__((__cdecl__)) _findenv_r (struct _reent *, const char *, int *);
 
-extern char *suboptarg;
-int __attribute__((__cdecl__)) getsubopt (char **, char * const *, char **);
+
+
 
 long __attribute__((__cdecl__)) labs (long);
 ldiv_t __attribute__((__cdecl__)) ldiv (long __numer, long __denom);
 void * __attribute__((__cdecl__)) malloc (size_t __size) ;
 int __attribute__((__cdecl__)) mblen (const char *, size_t);
 int __attribute__((__cdecl__)) _mblen_r (struct _reent *, const char *, size_t, _mbstate_t *);
-int __attribute__((__cdecl__)) mbtowc (wchar_t *, const char *, size_t);
-int __attribute__((__cdecl__)) _mbtowc_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
+int __attribute__((__cdecl__)) mbtowc (wchar_t *restrict, const char *restrict, size_t);
+int __attribute__((__cdecl__)) _mbtowc_r (struct _reent *, wchar_t *restrict, const char *restrict, size_t, _mbstate_t *);
 int __attribute__((__cdecl__)) wctomb (char *, wchar_t);
 int __attribute__((__cdecl__)) _wctomb_r (struct _reent *, char *, wchar_t, _mbstate_t *);
-size_t __attribute__((__cdecl__)) mbstowcs (wchar_t *, const char *, size_t);
-size_t __attribute__((__cdecl__)) _mbstowcs_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
-size_t __attribute__((__cdecl__)) wcstombs (char *, const wchar_t *, size_t);
-size_t __attribute__((__cdecl__)) _wcstombs_r (struct _reent *, char *, const wchar_t *, size_t, _mbstate_t *);
-
-
-char * __attribute__((__cdecl__)) mkdtemp (char *);
-int __attribute__((__cdecl__)) mkostemp (char *, int);
-int __attribute__((__cdecl__)) mkostemps (char *, int, int);
-int __attribute__((__cdecl__)) mkstemp (char *);
-int __attribute__((__cdecl__)) mkstemps (char *, int);
-char * __attribute__((__cdecl__)) mktemp (char *) __attribute__ ((__warning__ ("the use of `mktemp' is dangerous; use `mkstemp' instead")));
-
-char * __attribute__((__cdecl__)) _mkdtemp_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _mkostemp_r (struct _reent *, char *, int);
-int __attribute__((__cdecl__)) _mkostemps_r (struct _reent *, char *, int, int);
-int __attribute__((__cdecl__)) _mkstemp_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _mkstemps_r (struct _reent *, char *, int);
-char * __attribute__((__cdecl__)) _mktemp_r (struct _reent *, char *) __attribute__ ((__warning__ ("the use of `mktemp' is dangerous; use `mkstemp' instead")));
-
+size_t __attribute__((__cdecl__)) mbstowcs (wchar_t *restrict, const char *restrict, size_t);
+size_t __attribute__((__cdecl__)) _mbstowcs_r (struct _reent *, wchar_t *restrict, const char *restrict, size_t, _mbstate_t *);
+size_t __attribute__((__cdecl__)) wcstombs (char *restrict, const wchar_t *restrict, size_t);
+size_t __attribute__((__cdecl__)) _wcstombs_r (struct _reent *, char *restrict, const wchar_t *restrict, size_t, _mbstate_t *);
+# 124 "/usr/include/stdlib.h" 3 4
 void __attribute__((__cdecl__)) qsort (void * __base, size_t __nmemb, size_t __size, __compar_fn_t _compar);
 int __attribute__((__cdecl__)) rand (void);
 void * __attribute__((__cdecl__)) realloc (void * __r, size_t __size) ;
 
-void * __attribute__((__cdecl__)) reallocf (void * __r, size_t __size);
-char * __attribute__((__cdecl__)) realpath (const char * path, char * resolved_path);
+
+
 
 void __attribute__((__cdecl__)) srand (unsigned __seed);
-double __attribute__((__cdecl__)) strtod (const char * __n, char ** __end_PTR);
-double __attribute__((__cdecl__)) _strtod_r (struct _reent *,const char * __n, char ** __end_PTR);
+double __attribute__((__cdecl__)) strtod (const char *restrict __n, char **restrict __end_PTR);
+double __attribute__((__cdecl__)) _strtod_r (struct _reent *,const char *restrict __n, char **restrict __end_PTR);
 
 
 
-float __attribute__((__cdecl__)) strtof (const char * __n, char ** __end_PTR);
+float __attribute__((__cdecl__)) strtof (const char *restrict __n, char **restrict __end_PTR);
 
 
 
@@ -1404,94 +1255,37 @@ float __attribute__((__cdecl__)) strtof (const char * __n, char ** __end_PTR);
 
 
 
-long __attribute__((__cdecl__)) strtol (const char * __n, char ** __end_PTR, int __base);
-long __attribute__((__cdecl__)) _strtol_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
-unsigned long __attribute__((__cdecl__)) strtoul (const char * __n, char ** __end_PTR, int __base);
-unsigned long __attribute__((__cdecl__)) _strtoul_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
+long __attribute__((__cdecl__)) strtol (const char *restrict __n, char **restrict __end_PTR, int __base);
+long __attribute__((__cdecl__)) _strtol_r (struct _reent *,const char *restrict __n, char **restrict __end_PTR, int __base);
+unsigned long __attribute__((__cdecl__)) strtoul (const char *restrict __n, char **restrict __end_PTR, int __base);
+unsigned long __attribute__((__cdecl__)) _strtoul_r (struct _reent *,const char *restrict __n, char **restrict __end_PTR, int __base);
 
 int __attribute__((__cdecl__)) system (const char *__string);
-
-
-long __attribute__((__cdecl__)) a64l (const char *__input);
-char * __attribute__((__cdecl__)) l64a (long __input);
-char * __attribute__((__cdecl__)) _l64a_r (struct _reent *,long __input);
-int __attribute__((__cdecl__)) on_exit (void (*__func)(int, void *),void * __arg);
-
-
-
-
+# 161 "/usr/include/stdlib.h" 3 4
 void __attribute__((__cdecl__)) _Exit (int __status) __attribute__ ((__noreturn__));
-
-
-int __attribute__((__cdecl__)) putenv (char *__string);
-int __attribute__((__cdecl__)) _putenv_r (struct _reent *, char *__string);
-void * __attribute__((__cdecl__)) _reallocf_r (struct _reent *, void *, size_t);
-int __attribute__((__cdecl__)) setenv (const char *__string, const char *__value, int __overwrite);
-int __attribute__((__cdecl__)) _setenv_r (struct _reent *, const char *__string, const char *__value, int __overwrite);
-
-char * __attribute__((__cdecl__)) gcvt (double,int,char *);
-char * __attribute__((__cdecl__)) gcvtf (float,int,char *);
-char * __attribute__((__cdecl__)) fcvt (double,int,int *,int *);
-char * __attribute__((__cdecl__)) fcvtf (float,int,int *,int *);
-char * __attribute__((__cdecl__)) ecvt (double,int,int *,int *);
-char * __attribute__((__cdecl__)) ecvtbuf (double, int, int*, int*, char *);
-char * __attribute__((__cdecl__)) fcvtbuf (double, int, int*, int*, char *);
-char * __attribute__((__cdecl__)) ecvtf (float,int,int *,int *);
-char * __attribute__((__cdecl__)) dtoa (double, int, int, int *, int*, char**);
-
+# 180 "/usr/include/stdlib.h" 3 4
 char * __attribute__((__cdecl__)) __itoa (int, char *, int);
 char * __attribute__((__cdecl__)) __utoa (unsigned, char *, int);
-
-char * __attribute__((__cdecl__)) itoa (int, char *, int);
-char * __attribute__((__cdecl__)) utoa (unsigned, char *, int);
-int __attribute__((__cdecl__)) rand_r (unsigned *__seed);
-
-double __attribute__((__cdecl__)) drand48 (void);
-double __attribute__((__cdecl__)) _drand48_r (struct _reent *);
-double __attribute__((__cdecl__)) erand48 (unsigned short [3]);
-double __attribute__((__cdecl__)) _erand48_r (struct _reent *, unsigned short [3]);
-long __attribute__((__cdecl__)) jrand48 (unsigned short [3]);
-long __attribute__((__cdecl__)) _jrand48_r (struct _reent *, unsigned short [3]);
-void __attribute__((__cdecl__)) lcong48 (unsigned short [7]);
-void __attribute__((__cdecl__)) _lcong48_r (struct _reent *, unsigned short [7]);
-long __attribute__((__cdecl__)) lrand48 (void);
-long __attribute__((__cdecl__)) _lrand48_r (struct _reent *);
-long __attribute__((__cdecl__)) mrand48 (void);
-long __attribute__((__cdecl__)) _mrand48_r (struct _reent *);
-long __attribute__((__cdecl__)) nrand48 (unsigned short [3]);
-long __attribute__((__cdecl__)) _nrand48_r (struct _reent *, unsigned short [3]);
-unsigned short *
-       __attribute__((__cdecl__)) seed48 (unsigned short [3]);
-unsigned short *
-       __attribute__((__cdecl__)) _seed48_r (struct _reent *, unsigned short [3]);
-void __attribute__((__cdecl__)) srand48 (long);
-void __attribute__((__cdecl__)) _srand48_r (struct _reent *, long);
-
-
-
-
+# 211 "/usr/include/stdlib.h" 3 4
 long long __attribute__((__cdecl__)) atoll (const char *__nptr);
 
 
-long long __attribute__((__cdecl__)) _atoll_r (struct _reent *, const char *__nptr);
+
 
 
 
 
 long long __attribute__((__cdecl__)) llabs (long long);
 lldiv_t __attribute__((__cdecl__)) lldiv (long long __numer, long long __denom);
-long long __attribute__((__cdecl__)) strtoll (const char * __n, char ** __end_PTR, int __base);
-
-
-long long __attribute__((__cdecl__)) _strtoll_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
+long long __attribute__((__cdecl__)) strtoll (const char *restrict __n, char **restrict __end_PTR, int __base);
 
 
 
 
-unsigned long long __attribute__((__cdecl__)) strtoull (const char * __n, char ** __end_PTR, int __base);
 
 
-unsigned long long __attribute__((__cdecl__)) _strtoull_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
+
+unsigned long long __attribute__((__cdecl__)) strtoull (const char *restrict __n, char **restrict __end_PTR, int __base);
 # 246 "/usr/include/stdlib.h" 3 4
 char * __attribute__((__cdecl__)) _dtoa_r (struct _reent *, double, int, int, int *, int*, char**);
 
@@ -1505,12 +1299,12 @@ int __attribute__((__cdecl__)) _system_r (struct _reent *, const char *);
 
 void __attribute__((__cdecl__)) __eprintf (const char *, const char *, unsigned int, const char *);
 # 279 "/usr/include/stdlib.h" 3 4
-extern long double strtold (const char *, char **);
+extern long double strtold (const char *restrict, char **restrict);
 
 
 
 
-# 3 "main.c" 2
+# 4 "main.c" 2
 # 1 "/usr/include/pthread.h" 1 3 4
 # 15 "/usr/include/pthread.h" 3 4
 # 1 "/usr/include/signal.h" 1 3 4
@@ -1792,10 +1586,6 @@ int __attribute__((__cdecl__)) sigemptyset (sigset_t *);
 int __attribute__((__cdecl__)) sigpending (sigset_t *);
 int __attribute__((__cdecl__)) sigsuspend (const sigset_t *);
 int __attribute__((__cdecl__)) sigpause (int);
-
-
-
-int __attribute__((__cdecl__)) sigaltstack (const stack_t *, stack_t *);
 # 213 "/usr/include/sys/signal.h" 3 4
 int __attribute__((__cdecl__)) pthread_kill (pthread_t thread, int sig);
 
@@ -1813,22 +1603,6 @@ int __attribute__((__cdecl__)) sigwait (const sigset_t *set, int *sig);
 
 
 int __attribute__((__cdecl__)) sigqueue (pid_t pid, int signo, const union sigval value);
-# 357 "/usr/include/sys/signal.h" 3 4
-# 1 "/usr/include/sys/ucontext.h" 1 3 4
-# 14 "/usr/include/sys/ucontext.h" 3 4
-# 1 "/usr/include/signal.h" 1 3 4
-# 15 "/usr/include/sys/ucontext.h" 2 3 4
-
-typedef struct __mcontext mcontext_t;
-
-typedef __attribute__ ((aligned (16))) struct __ucontext {
- mcontext_t uc_mcontext;
- struct __ucontext *uc_link;
- sigset_t uc_sigmask;
- stack_t uc_stack;
- unsigned long int uc_flags;
-} ucontext_t;
-# 358 "/usr/include/sys/signal.h" 2 3 4
 # 6 "/usr/include/signal.h" 2 3 4
 
 
@@ -1971,54 +1745,19 @@ char *__attribute__((__cdecl__)) ctime (const time_t *_time);
 struct tm *__attribute__((__cdecl__)) gmtime (const time_t *_timer);
 struct tm *__attribute__((__cdecl__)) localtime (const time_t *_timer);
 
-size_t __attribute__((__cdecl__)) strftime (char * _s, size_t _maxsize, const char * _fmt, const struct tm * _t)
+size_t __attribute__((__cdecl__)) strftime (char *restrict _s, size_t _maxsize, const char *restrict _fmt, const struct tm *restrict _t)
 
                                         ;
 
-char *__attribute__((__cdecl__)) asctime_r (const struct tm *, char *)
+char *__attribute__((__cdecl__)) asctime_r (const struct tm *restrict, char *restrict)
                        ;
 char *__attribute__((__cdecl__)) ctime_r (const time_t *, char *);
-struct tm *__attribute__((__cdecl__)) gmtime_r (const time_t *, struct tm *)
+struct tm *__attribute__((__cdecl__)) gmtime_r (const time_t *restrict, struct tm *restrict)
                             ;
-struct tm *__attribute__((__cdecl__)) localtime_r (const time_t *, struct tm *)
+struct tm *__attribute__((__cdecl__)) localtime_r (const time_t *restrict, struct tm *restrict)
                             ;
 
 
-
-
-
-
-
-
-char *__attribute__((__cdecl__)) strptime (const char *, const char *, struct tm *)
-
-                            ;
-void __attribute__((__cdecl__)) tzset (void);
-void __attribute__((__cdecl__)) _tzset_r (struct _reent *);
-
-typedef struct __tzrule_struct
-{
-  char ch;
-  int m;
-  int n;
-  int d;
-  int s;
-  time_t change;
-  long offset;
-} __tzrule_type;
-
-typedef struct __tzinfo_struct
-{
-  int __tznorth;
-  int __tzyear;
-  __tzrule_type __tzrule[2];
-} __tzinfo_type;
-
-__tzinfo_type *__attribute__((__cdecl__)) __gettzinfo (void);
-# 130 "/usr/include/time.h" 3 4
-extern __attribute__((dllimport)) long _timezone;
-extern __attribute__((dllimport)) int _daylight;
-extern __attribute__((dllimport)) char *_tzname[2];
 # 147 "/usr/include/time.h" 3 4
 # 1 "/usr/include/cygwin/time.h" 1 3 4
 # 19 "/usr/include/cygwin/time.h" 3 4
@@ -2027,17 +1766,6 @@ int __attribute__((__cdecl__)) clock_setres (clockid_t, struct timespec *);
 
 time_t __attribute__((__cdecl__)) timelocal (struct tm *);
 time_t __attribute__((__cdecl__)) timegm (struct tm *);
-
-
-
-
-
-extern int stime (const time_t *);
-
-extern int daylight __asm__ ( "_daylight");
-
-
-extern long timezone __asm__ ( "_timezone");
 # 148 "/usr/include/time.h" 2 3 4
 # 160 "/usr/include/time.h" 3 4
 int __attribute__((__cdecl__)) clock_settime (clockid_t clock_id, const struct timespec *tp);
@@ -2046,7 +1774,7 @@ int __attribute__((__cdecl__)) clock_getres (clockid_t clock_id, struct timespec
 
 
 
-int __attribute__((__cdecl__)) timer_create (clockid_t clock_id, struct sigevent * evp, timer_t * timerid)
+int __attribute__((__cdecl__)) timer_create (clockid_t clock_id, struct sigevent *restrict evp, timer_t *restrict timerid)
 
 
                               ;
@@ -2057,7 +1785,7 @@ int __attribute__((__cdecl__)) timer_delete (timer_t timerid);
 
 
 
-int __attribute__((__cdecl__)) timer_settime (timer_t timerid, int flags, const struct itimerspec * value, struct itimerspec * ovalue)
+int __attribute__((__cdecl__)) timer_settime (timer_t timerid, int flags, const struct itimerspec *restrict value, struct itimerspec *restrict ovalue)
 
 
                                        ;
@@ -2227,7 +1955,7 @@ int pthread_sigqueue (pthread_t *, int, const union sigval);
 int pthread_suspend (pthread_t);
 int pthread_continue (pthread_t);
 int pthread_yield (void);
-# 4 "main.c" 2
+# 5 "main.c" 2
 # 1 "/usr/include/unistd.h" 1 3 4
 
 
@@ -2342,7 +2070,7 @@ int __attribute__((__cdecl__)) iruserok (unsigned long raddr, int superuser, con
 
 int __attribute__((__cdecl__)) isatty (int __fildes );
 
-int __attribute__((__cdecl__)) issetugid (void);
+
 
 
 int __attribute__((__cdecl__)) lchown (const char *__path, uid_t __owner, gid_t __group );
@@ -2394,7 +2122,7 @@ int __attribute__((__cdecl__)) setgid (gid_t __gid );
 int __attribute__((__cdecl__)) setgroups (int ngroups, const gid_t *grouplist );
 
 
-int __attribute__((__cdecl__)) sethostname (const char *, size_t);
+
 
 int __attribute__((__cdecl__)) setpgid (pid_t __pid, pid_t __pgid );
 int __attribute__((__cdecl__)) setpgrp (void );
@@ -2410,7 +2138,7 @@ int __attribute__((__cdecl__)) setuid (uid_t __uid );
 void __attribute__((__cdecl__)) setusershell (void);
 
 unsigned __attribute__((__cdecl__)) sleep (unsigned int __seconds );
-void __attribute__((__cdecl__)) swab (const void *, void *, ssize_t);
+void __attribute__((__cdecl__)) swab (const void *restrict, void *restrict, ssize_t);
 long __attribute__((__cdecl__)) sysconf (int __name );
 pid_t __attribute__((__cdecl__)) tcgetpgrp (int __fildes );
 int __attribute__((__cdecl__)) tcsetpgrp (int __fildes, pid_t __pgrp_id );
@@ -2459,10 +2187,10 @@ char * __attribute__((__cdecl__)) mktemp (char *);
 void __attribute__((__cdecl__)) sync (void);
 
 
-ssize_t __attribute__((__cdecl__)) readlink (const char * __path, char * __buf, size_t __buflen)
+ssize_t __attribute__((__cdecl__)) readlink (const char *restrict __path, char *restrict __buf, size_t __buflen)
                                                                    ;
 
-ssize_t __attribute__((__cdecl__)) readlinkat (int __dirfd1, const char * __path, char * __buf, size_t __buflen)
+ssize_t __attribute__((__cdecl__)) readlinkat (int __dirfd1, const char *restrict __path, char *restrict __buf, size_t __buflen)
                                                                      ;
 
 int __attribute__((__cdecl__)) symlink (const char *__name1, const char *__name2);
@@ -2470,8 +2198,61 @@ int __attribute__((__cdecl__)) symlink (const char *__name1, const char *__name2
 int __attribute__((__cdecl__)) symlinkat (const char *, int, const char *);
 int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 5 "/usr/include/unistd.h" 2 3 4
-# 5 "main.c" 2
+# 6 "main.c" 2
 
+# 1 "/usr/include/sys/time.h" 1 3 4
+# 42 "/usr/include/sys/time.h" 3 4
+# 1 "/usr/include/sys/_timeval.h" 1 3 4
+# 51 "/usr/include/sys/_timeval.h" 3 4
+struct timeval {
+ time_t tv_sec;
+ suseconds_t tv_usec;
+};
+# 43 "/usr/include/sys/time.h" 2 3 4
+
+
+
+
+
+
+# 1 "/usr/include/sys/select.h" 1 3 4
+# 23 "/usr/include/sys/select.h" 3 4
+# 1 "/usr/include/sys/time.h" 1 3 4
+# 24 "/usr/include/sys/select.h" 2 3 4
+
+
+
+
+
+
+
+int select (int __n, _types_fd_set *__readfds, _types_fd_set *__writefds, _types_fd_set *__exceptfds, struct timeval *__timeout)
+                                                   ;
+int pselect (int __n, _types_fd_set *__readfds, _types_fd_set *__writefds, _types_fd_set *__exceptfds, const struct timespec *__timeout, const sigset_t *__set)
+
+                           ;
+
+
+# 50 "/usr/include/sys/time.h" 2 3 4
+
+
+struct timezone {
+ int tz_minuteswest;
+ int tz_dsttime;
+};
+# 305 "/usr/include/sys/time.h" 3 4
+struct itimerval {
+ struct timeval it_interval;
+ struct timeval it_value;
+};
+# 420 "/usr/include/sys/time.h" 3 4
+
+int __attribute__((__cdecl__)) setitimer (int __which, const struct itimerval *restrict __value, struct itimerval *restrict __ovalue)
+                                            ;
+int __attribute__((__cdecl__)) utimes (const char *__path, const struct timeval *__tvp);
+# 443 "/usr/include/sys/time.h" 3 4
+
+# 8 "main.c" 2
 # 1 "QuarkTS.h" 1
 # 27 "QuarkTS.h"
 # 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
@@ -2533,19 +2314,19 @@ typedef __uint_least64_t uint_least64_t;
   typedef long unsigned int uintmax_t;
 # 10 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 2 3 4
 # 28 "QuarkTS.h" 2
-# 41 "QuarkTS.h"
-        typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;
-# 59 "QuarkTS.h"
-    typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop} qTrigger_t;
+# 43 "QuarkTS.h"
+        typedef int32_t _qTaskPC_t;
+# 62 "QuarkTS.h"
+    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount} qTrigger_t;
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
     typedef uint8_t qIteration_t;
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
-# 76 "QuarkTS.h"
+# 79 "QuarkTS.h"
     typedef struct{
-# 95 "QuarkTS.h"
+# 98 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -2564,7 +2345,7 @@ typedef __uint_least64_t uint_least64_t;
 
     typedef void (*qTaskFcn_t)(qEvent_t);
     typedef struct{
-     volatile uint8_t InitFlag, AsyncRun, Enabled;
+     volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount;
     }qTaskFlags_t;
 
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
@@ -2622,7 +2403,10 @@ typedef __uint_least64_t uint_least64_t;
     void qSchedulerRun(void);
     int qTaskQueueEvent(volatile struct _qTask_t *Task, void* eventdata);
     void qTaskSendEvent(volatile struct _qTask_t *Task, void* eventdata);
-    int qTaskLinkRingBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer);
+
+    typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT}qRBLinkMode_t;
+
+    int qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
 
     void qTaskSetTime(volatile struct _qTask_t *Task, qTime_t Value);
     void qTaskSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
@@ -2633,7 +2417,7 @@ typedef __uint_least64_t uint_least64_t;
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
 
     uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
-# 256 "QuarkTS.h"
+# 262 "QuarkTS.h"
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
@@ -2669,7 +2453,7 @@ typedef __uint_least64_t uint_least64_t;
     typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
     int qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-# 339 "QuarkTS.h"
+# 345 "QuarkTS.h"
         typedef struct{
             qBool_t SR;
             qClock_t Start, TV;
@@ -2680,7 +2464,7 @@ typedef __uint_least64_t uint_least64_t;
         qClock_t qSTimerElapsed(qSTimer_t *obj);
         qClock_t qSTimerRemaining(qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
-# 358 "QuarkTS.h"
+# 364 "QuarkTS.h"
 typedef struct {
     uint16_t BlockSize;
     uint8_t NumberofBlocks;
@@ -2702,7 +2486,7 @@ typedef enum {
     MEMBLOCK_4096_BYTE = (1 << 12),
     MEMBLOCK_8192_BYTE = (1 << 13)
 }qMEM_size_t;
-# 390 "QuarkTS.h"
+# 411 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -2715,7 +2499,7 @@ qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 void* qRBufferPopFront(qRBuffer_t *obj);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
-# 7 "main.c" 2
+# 9 "main.c" 2
 
 
 
@@ -2760,7 +2544,7 @@ qSM_Status_t secondstate(volatile struct _qSM_t *fsm){
 
 void Task1Callback(qEvent_t Data){
     static qSTimer_t tmr = {0, 0, 0};
-    printf("Userdata : %s  Eventdata:%s   %d\r\n", Data.UserData, Data.EventData, qTaskGetCycles(&Task1));
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)Data.UserData, (char*)Data.EventData, qTaskGetCycles(&Task1));
     qTaskQueueEvent(&Task2, "A");
     qTaskQueueEvent(&Task3, "B");
     qTaskQueueEvent(&Task4, "C");
@@ -2781,11 +2565,11 @@ void Task1Callback(qEvent_t Data){
 }
 
 void Task2Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
 }
 
 void Task3Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
     if(Data.Trigger == byRBufferPop){
         int *ptr = (int*)Data.EventData;
         printf("ring extracted data %d\r\n",*ptr);
@@ -2793,15 +2577,15 @@ void Task3Callback(qEvent_t Data){
 }
 
 void Task4Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
 }
 
 void Task5Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
 }
 
 void Task6Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", Data.UserData, Data.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
 }
 
 void IdleTaskCallback(qEvent_t Data){
@@ -2814,33 +2598,33 @@ void IdleTaskCallback(qEvent_t Data){
 
 void blinktaskCallback(qEvent_t Data){
     static qSTimer_t tmr;
-    static _qTaskPC_t _qCRTaskState_ = qCR_PCInitVal ; switch(_qCRTaskState_){ case (_qTaskPC_t)qCR_PCInitVal: ; _qCR_BEGIN_:{
+    static _qTaskPC_t _qCRTaskState_ = (-0x7FFE) ; switch(_qCRTaskState_){ case (_qTaskPC_t)(-0x7FFE): ; _qCR_BEGIN_:{
         puts("led on");
-        { _qCRTaskState_ = 107 ; case (_qTaskPC_t)107: ; if(!(qSTimerFreeRun(&tmr, 0.2))) return; };
+        { _qCRTaskState_ = 109 ; case (_qTaskPC_t)109: ; if(!(qSTimerFreeRun(&tmr, 0.2))) return; };
         puts("led off");
-        { _qCRTaskState_ = 109 ; case (_qTaskPC_t)109: ; if(!(qSTimerFreeRun(&tmr, 1.0))) return; };
+        { _qCRTaskState_ = 111 ; case (_qTaskPC_t)111: ; if(!(qSTimerFreeRun(&tmr, 1.0))) return; };
     }goto _qCR_BEGIN_;}return;
 }
 
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
-    printf("sizeof qTask_t %d\r\n",sizeof(volatile struct _qTask_t));
+
+
 
 
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
-    uint32_t qMEM_AREA_mtxheap[(1*MEMBLOCK_1024_BYTE)>>2]={0}; uint8_t qMEM_DESmtxheap[1]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = MEMBLOCK_1024_BYTE; mtxheap.NumberofBlocks = 1; mtxheap.BlockDescriptors = &qMEM_DESmtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
+    uint32_t qMEM_AREA_mtxheap[(3*MEMBLOCK_4_BYTE)>>2]={0}; uint8_t qMEM_DESmtxheap[3]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = MEMBLOCK_4_BYTE; mtxheap.NumberofBlocks = 3; mtxheap.BlockDescriptors = &qMEM_DESmtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
 
     void *memtest;
     int x=5 , y=6;
-    memtest = qMemoryAlloc(&mtxheap, sizeof(volatile struct _qTask_t));
-    qMemoryFree(&mtxheap, memtest);
+    memtest = qMemoryAlloc(&mtxheap, 10);
     qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
     qSchedulerAddxTask(&Task1, Task1Callback, (qPriority_t)(0xFEu), 0.1, ((qIteration_t)-1), (0x01u), "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, 50, "TASK3");
-    qTaskLinkRingBuffer(&Task3, &ringBuffer);
+    qTaskLinkRBuffer(&Task3, &ringBuffer, RB_AUTOPOP, (0x01u));
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
