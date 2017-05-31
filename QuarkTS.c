@@ -393,7 +393,6 @@ Return value:
 
     Returns 0 on successs, otherwise returns -1;     
      */
-/*============================================================================*/
 int qTaskLinkRingBuffer(qTask_t *Task, qRBuffer_t *RingBuffer){
     if(RingBuffer == NULL) return -1;
     if(RingBuffer->data == NULL) return -1;
@@ -514,7 +513,7 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL;
     obj->Data = Data;
     if(obj->NextState!=NULL){
-        obj->StateJustChanged = obj->PreviousState != obj->NextState;
+        obj->StateJustChanged = (qBool_t)(obj->PreviousState != obj->NextState);
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
         obj->PreviousState = prev;
@@ -609,7 +608,7 @@ Return value:
 */
 qBool_t qSTimerExpired(qSTimer_t *obj){
     if(!obj->SR) return qFalse; 
-    return ((_qSysTick_Epochs_ - obj->Start)>=obj->TV);
+    return (qBool_t)((_qSysTick_Epochs_ - obj->Start)>=obj->TV);
 }
 /*============================================================================*/
 /*qTime_t qSTimerElapsed(qSTimer_t *obj)
@@ -741,7 +740,7 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 #endif
 
 static uint16_t _qRBufferValidPowerOfTwo(uint16_t k);
-static unsigned _qRBufferCount(qRBuffer_t *obj);
+static uint16_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 
 /*============================================================================*/
@@ -755,12 +754,12 @@ static uint16_t _qRBufferValidPowerOfTwo(uint16_t k){
     return k;
 }
 /*============================================================================*/
-static unsigned _qRBufferCount(qRBuffer_t *obj){
+static uint16_t _qRBufferCount(qRBuffer_t *obj){
     return (obj ? (obj->head - obj->tail) : 0);
 }
 /*============================================================================*/
 static qBool_t _qRBufferFull(qRBuffer_t *obj){
-    return (obj ? (_qRBufferCount(obj) == obj->Elementcount) : qTrue);
+    return (qBool_t)(obj ? (_qRBufferCount(obj) == obj->Elementcount) : qTrue);
 }
 /*============================================================================*/
 /*void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount)
@@ -785,8 +784,8 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16
         obj->head = 0;
         obj->tail = 0;
         obj->data = DataBlock;
-        obj->ElementSize = _qRBufferValidPowerOfTwo(ElementCount);
-        obj->Elementcount = ElementCount;
+        obj->ElementSize = ElementSize;
+        obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);
     } 
 }
 /*============================================================================*/
@@ -803,7 +802,7 @@ Return value:
     qTrue if the ring buffer is empty, qFalse if it is not.
  */
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
-    return (obj ? (_qRBufferCount(obj) == 0) : qTrue);    
+    return (qBool_t)(obj ? (_qRBufferCount(obj) == 0) : qTrue);    
 }
 /*============================================================================*/
 /*void* qRBufferGetFront(qRBuffer_t *obj)

@@ -39,21 +39,21 @@ extern "C" {
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef enum qTaskPC_t_ {qCR_PCInitVal = -0x7FFE} _qTaskPC_t;        
-        #define $qCRKeep                _qCR_BEGIN_:   
-        #define $qPersistent            static _qTaskPC_t
-        #define $qTaskProgress          __LINE__
-        #define $qAssert(_COND_)        if(!(_COND_))
-        #define $qTaskPCVar             _qCRTaskState_
-        #define $qSetPC(_VAL_)          $qTaskPCVar = _VAL_
-        #define $qTaskSaveState         $qSetPC($qTaskProgress) 
-        #define $qTaskInitState         $qSetPC(qCR_PCInitVal) 
-        #define $qTaskCheckPCJump(_PC_) switch(_PC_){      
-        #define $qExit                  return
-        #define $qTaskYield             $qExit;
-        #define $qCRDispose             goto _qCR_BEGIN_;}$qExit
-        #define $qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
-        #define $RestoreAfterYield      $qRestorator($qTaskProgress)
-        #define $RestoreFromBegin       $qRestorator(qCR_PCInitVal)
+        #define __qCRKeep                _qCR_BEGIN_:   
+        #define __qPersistent            static _qTaskPC_t
+        #define __qTaskProgress          __LINE__
+        #define __qAssert(_COND_)        if(!(_COND_))
+        #define __qTaskPCVar             _qCRTaskState_
+        #define __qSetPC(_VAL_)          __qTaskPCVar = _VAL_
+        #define __qTaskSaveState         __qSetPC(__qTaskProgress) 
+        #define __qTaskInitState         __qSetPC(qCR_PCInitVal) 
+        #define __qTaskCheckPCJump(_PC_) switch(_PC_){      
+        #define __qExit                  return
+        #define __qTaskYield             __qExit;
+        #define __qCRDispose             goto _qCR_BEGIN_;}__qExit
+        #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
+        #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
+        #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
     #endif
 
     typedef enum {byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop} qTrigger_t;
@@ -291,10 +291,10 @@ Parameters:
 
     
     #ifdef _QUARKTS_CR_DEFS_    
-        #define $qCRStart                               $qPersistent  $qTaskInitState ;  $qTaskCheckPCJump($qTaskPCVar) $RestoreFromBegin ; $qCRKeep
-        #define $qCRYield                               { $qTaskSaveState ; $qTaskYield  $RestoreAfterYield; }
-        #define $qCRRestart                             { $qTaskInitState ; $qTaskYield }
-        #define $qCR_wu_Assert(_cond_)                  { $qTaskSaveState ; $RestoreAfterYield ; $qAssert(_cond_) $qTaskYield }
+        #define __qCRStart                               __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
+        #define __qCRYield                               { __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; }
+        #define __qCRRestart                             { __qTaskInitState ; __qTaskYield }
+        #define __qCR_wu_Assert(_cond_)                  { __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -305,14 +305,14 @@ a Coroutine. It should be placed at the start of the function in which the
 Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
 It must always be used together with a matching qCoroutineBegin statement.
 */
-        #define qCoroutineBegin                         $qCRStart
+        #define qCoroutineBegin                         __qCRStart
 /*
 This statement is only allowed inside a Coroutine segment. qCoroutineYield 
 return the CPU control back to the scheduler but saving the execution progress. 
 With the next task activation, the Coroutine will resume the execution after 
 the last 'qCoroutineYield' statement.
 */
-        #define qCoroutineYield                         $qCRYield          
+        #define qCoroutineYield                         __qCRYield          
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -323,16 +323,16 @@ a Coroutine. It should be placed at the start of the function in which the
 Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
 It must always be used together with a matching qCoroutineBegin statement.
 */    
-        #define qCoroutineEnd                           $qCRDispose
+        #define qCoroutineEnd                           __qCRDispose
 /*This statement cause the running Coroutine to restart its execution at the 
 place of the qCoroutineBegin statement.
 */
-        #define qCoroutineRestart                       $qCRRestart  
+        #define qCoroutineRestart                       __qCRRestart  
 /*qCoroutineWaitUntil(_CONDITION_)
 
 Yields until the logical condition being true
 */    
-        #define qCoroutineWaitUntil(_condition_)        $qCR_wu_Assert(_condition_)
+        #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
     #endif
     
     

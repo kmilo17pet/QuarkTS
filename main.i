@@ -2832,7 +2832,6 @@ int main(int argc, char** argv) {
 
     void *memtest;
     int x=5 , y=6;
-    int *ptr;
     memtest = qMemoryAlloc(&mtxheap, sizeof(volatile struct _qTask_t));
     qMemoryFree(&mtxheap, memtest);
     qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
