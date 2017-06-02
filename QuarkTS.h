@@ -96,10 +96,10 @@ extern "C" {
                         requirement of asynchronous event prompted by qSendEvent
         */
         qTrigger_t Trigger;
-        /* UserData:
+        /* TaskData:
         Task arguments defined at the time of its creation.
         */
-        void *UserData;
+        void *TaskData;
         /* EventData:
         Associated data of the event. Only available when the trigger is 
         <byQueueExtraction> or <byAsyncEvent>, Otherwise, this field is NULL.*/
@@ -125,9 +125,45 @@ extern "C" {
         volatile uint16_t head; /* where the writes go */
         volatile uint16_t tail; /* where the reads come from */
     }qRBuffer_t;
+ 
+    typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
+     
+    #define qSM_t volatile struct _qSM_t
+    
+    struct _qSM_t{ 
+        /* NextState:
+        Next state to be performed after this state finish
+        */
+        qSM_Status_t (*NextState)(qSM_t*);
+        /* PreviousState:
+        State executed before this state
+        */
+        qSM_Status_t (*PreviousState)(qSM_t*);
+        /* PreviousReturnStatus:
+        The return status of <PreviusStateState>
+        */
+        qSM_Status_t PreviousReturnStatus;
+        /* StateJustChanged:
+        True when  <Previous State> !=  <Current State>
+        */
+        qBool_t StateJustChanged;
+        /* Data:
+        State-machine associated data
+         */
+        void *Data;
+        struct { /*hide this members*/
+            void (*__Failure)(qSM_t*);
+            void (*__Success)(qSM_t*);
+            void (*__Unexpected)(qSM_t*);  
+            void (*__BeforeAnyState)(qSM_t*);//only used when a task has a SM attached
+           // void *AttachedTask;
+        }_;
+    };    
+    typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
+    typedef void (*qSM_ExState_t)(qSM_t*);    
     
     struct _qTask_t{
-        void *UserData,*AsyncData;
+        void *TaskData,*AsyncData;
         volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
         uint32_t Cycles;
@@ -136,6 +172,7 @@ extern "C" {
         volatile qTaskFlags_t Flag;
         volatile struct _qTask_t *Next;
         qRBuffer_t *RingBuff;
+        qSM_t *StateMachine;
     };
     #define qTask_t volatile struct _qTask_t
              
@@ -168,6 +205,9 @@ extern "C" {
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
     int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
+    int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+                                  qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                                  qState_t InitialTaskState, void *arg);
     void qSchedulerRun(void);
     int qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
@@ -181,7 +221,7 @@ extern "C" {
     void qTaskSetPriority(qTask_t *Task, qPriority_t Value);
     void qTaskSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn);
     void qTaskSetState(qTask_t *Task, qState_t State);
-    void qTaskSetUserData(qTask_t *Task, void* arg);
+    void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
 
     uint32_t qTaskGetCycles(qTask_t *Task);
@@ -259,39 +299,6 @@ Parameters:
 */
     #define qSchedulerSetReleaseCallback(RELEASE_Callback)                                  QUARKTS.ReleaseSchedCallback = RELEASE_Callback
       
-    typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
-     
-    #define qSM_t volatile struct _qSM_t
-
-    struct _qSM_t{ 
-        /* NextState:
-        Next state to be performed after this state finish
-        */
-        qSM_Status_t (*NextState)(qSM_t*);
-        /* PreviousState:
-        State executed before this state
-        */
-        qSM_Status_t (*PreviousState)(qSM_t*);
-        /* PreviousReturnStatus:
-        The return status of <PreviusStateState>
-        */
-        qSM_Status_t PreviousReturnStatus;
-        /* StateJustChanged:
-        True when  <Previous State> !=  <Current State>
-        */
-        qBool_t StateJustChanged;
-        /* Data:
-        State-machine associated data
-         */
-        void *Data;
-        struct { /*hide this members*/
-            void (*__Failure)(qSM_t*);
-            void (*__Success)(qSM_t*);
-            void (*__Unexpected)(qSM_t*);  
-        }_;
-    };    
-    typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
-    typedef void (*qSM_ExState_t)(qSM_t*);
     int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
 

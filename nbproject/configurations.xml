@@ -46,6 +46,7 @@
           <linkerLibItems>
             <linkerOptionItem>-lpthread</linkerOptionItem>
           </linkerLibItems>
+          <commandLine>-Os</commandLine>
         </linkerTool>
       </compileType>
       <item path="QuarkTS.c" ex="false" tool="0" flavor2="0">

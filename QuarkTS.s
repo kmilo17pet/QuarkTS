@@ -2089,7 +2089,7 @@ qMemoryAlloc:
 .L132:
 	.loc 1 739 0 is_stmt 1
 	jmp	.L133
-.L146:
+.L148:
 	.loc 1 740 0
 	movw	$0, -6(%rbp)
 	.loc 1 741 0
@@ -2146,7 +2146,7 @@ qMemoryAlloc:
 	movzbl	-2(%rbp), %eax
 	movb	%al, -1(%rbp)
 	jmp	.L138
-.L144:
+.L146:
 	.loc 1 752 0
 	movq	16(%rbp), %rax
 	movq	8(%rax), %rdx
@@ -2195,21 +2195,38 @@ qMemoryAlloc:
 	movzbl	-3(%rbp), %eax
 	movb	%al, (%rdx)
 	.loc 1 761 0
+	movb	$0, -4(%rbp)
+	jmp	.L142
+.L143:
+	.loc 1 761 0 is_stmt 0 discriminator 3
+	movzbl	-1(%rbp), %edx
+	movq	-16(%rbp), %rax
+	addq	%rdx, %rax
+	movb	$0, (%rax)
+	movzbl	-4(%rbp), %eax
+	addl	$1, %eax
+	movb	%al, -4(%rbp)
+.L142:
+	.loc 1 761 0 discriminator 1
+	movzbl	-4(%rbp), %eax
+	cmpw	24(%rbp), %ax
+	jb	.L143
+	.loc 1 762 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	testq	%rax, %rax
-	je	.L142
-	.loc 1 761 0 is_stmt 0 discriminator 1
+	je	.L144
+	.loc 1 762 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	leaq	QUARKTS(%rip), %rdx
 	movl	84(%rdx), %edx
 	movl	%edx, %ecx
 	call	*%rax
-.L142:
-	.loc 1 762 0 is_stmt 1
+.L144:
+	.loc 1 763 0 is_stmt 1
 	movq	-16(%rbp), %rax
-	jmp	.L143
+	jmp	.L145
 .L141:
 	.loc 1 751 0 discriminator 2
 	movzbl	-3(%rbp), %eax
@@ -2223,38 +2240,38 @@ qMemoryAlloc:
 	movq	16(%rbp), %rax
 	movzbl	2(%rax), %eax
 	cmpb	-1(%rbp), %al
-	ja	.L144
+	ja	.L146
 .L140:
-	.loc 1 765 0 is_stmt 1
+	.loc 1 766 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movzbl	2(%rax), %eax
 	cmpb	-1(%rbp), %al
 	jne	.L133
-	jmp	.L145
+	jmp	.L147
 .L133:
 	.loc 1 739 0
 	movq	16(%rbp), %rax
 	movzbl	2(%rax), %eax
 	cmpb	-2(%rbp), %al
-	ja	.L146
-.L145:
-	.loc 1 767 0
+	ja	.L148
+.L147:
+	.loc 1 768 0
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	testq	%rax, %rax
-	je	.L147
-	.loc 1 767 0 is_stmt 0 discriminator 1
+	je	.L149
+	.loc 1 768 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	leaq	QUARKTS(%rip), %rdx
 	movl	84(%rdx), %edx
 	movl	%edx, %ecx
 	call	*%rax
-.L147:
-	.loc 1 768 0 is_stmt 1
+.L149:
+	.loc 1 769 0 is_stmt 1
 	movl	$0, %eax
-.L143:
-	.loc 1 769 0
+.L145:
+	.loc 1 770 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2268,7 +2285,7 @@ qMemoryAlloc:
 	.seh_proc	qMemoryFree
 qMemoryFree:
 .LFB31:
-	.loc 1 783 0
+	.loc 1 784 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2282,62 +2299,62 @@ qMemoryFree:
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
 	movq	%rdx, 24(%rbp)
-	.loc 1 785 0
+	.loc 1 786 0
 	leaq	QUARKTS(%rip), %rax
 	movq	64(%rax), %rax
 	testq	%rax, %rax
-	je	.L149
-	.loc 1 785 0 is_stmt 0 discriminator 1
+	je	.L151
+	.loc 1 786 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	64(%rax), %rax
 	call	*%rax
 	movl	%eax, %edx
 	leaq	QUARKTS(%rip), %rax
 	movl	%edx, 84(%rax)
-.L149:
-	.loc 1 786 0 is_stmt 1
+.L151:
+	.loc 1 787 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movq	16(%rax), %rax
 	movq	%rax, -16(%rbp)
-	.loc 1 787 0
-	movb	$0, -1(%rbp)
-	jmp	.L150
-.L153:
 	.loc 1 788 0
+	movb	$0, -1(%rbp)
+	jmp	.L152
+.L155:
+	.loc 1 789 0
 	movq	-16(%rbp), %rax
 	cmpq	24(%rbp), %rax
-	jne	.L151
-	.loc 1 789 0
+	jne	.L153
+	.loc 1 790 0
 	movq	16(%rbp), %rax
 	movq	8(%rax), %rdx
 	movzbl	-1(%rbp), %eax
 	addq	%rdx, %rax
 	movb	$0, (%rax)
-	.loc 1 790 0
-	jmp	.L152
-.L151:
-	.loc 1 792 0 discriminator 2
+	.loc 1 791 0
+	jmp	.L154
+.L153:
+	.loc 1 793 0 discriminator 2
 	movq	16(%rbp), %rax
 	movzwl	(%rax), %eax
 	movzwl	%ax, %eax
 	addq	%rax, -16(%rbp)
-	.loc 1 787 0 discriminator 2
+	.loc 1 788 0 discriminator 2
 	movzbl	-1(%rbp), %eax
 	addl	$1, %eax
 	movb	%al, -1(%rbp)
-.L150:
-	.loc 1 787 0 is_stmt 0 discriminator 1
+.L152:
+	.loc 1 788 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movzbl	2(%rax), %eax
 	cmpb	-1(%rbp), %al
-	ja	.L153
-.L152:
-	.loc 1 794 0 is_stmt 1
+	ja	.L155
+.L154:
+	.loc 1 795 0 is_stmt 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	testq	%rax, %rax
-	je	.L148
-	.loc 1 794 0 is_stmt 0 discriminator 1
+	je	.L150
+	.loc 1 795 0 is_stmt 0 discriminator 1
 	leaq	QUARKTS(%rip), %rax
 	movq	72(%rax), %rax
 	leaq	QUARKTS(%rip), %rdx
@@ -2345,8 +2362,8 @@ qMemoryFree:
 	movl	%edx, %ecx
 	call	*%rax
 	nop
-.L148:
-	.loc 1 795 0 is_stmt 1
+.L150:
+	.loc 1 796 0 is_stmt 1
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2359,7 +2376,7 @@ qMemoryFree:
 	.seh_proc	_qRBufferValidPowerOfTwo
 _qRBufferValidPowerOfTwo:
 .LFB32:
-	.loc 1 800 0
+	.loc 1 801 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2373,22 +2390,22 @@ _qRBufferValidPowerOfTwo:
 	.seh_endprologue
 	movl	%ecx, %eax
 	movw	%ax, 16(%rbp)
-	.loc 1 802 0
+	.loc 1 803 0
 	movzwl	16(%rbp), %eax
 	leal	-1(%rax), %edx
 	movzwl	16(%rbp), %eax
 	andl	%edx, %eax
 	testl	%eax, %eax
-	je	.L156
-	.loc 1 803 0
+	je	.L158
+	.loc 1 804 0
 	movzwl	16(%rbp), %eax
 	subl	$1, %eax
 	movw	%ax, 16(%rbp)
-	.loc 1 804 0
+	.loc 1 805 0
 	movw	$1, -2(%rbp)
-	jmp	.L157
-.L158:
-	.loc 1 804 0 is_stmt 0 discriminator 3
+	jmp	.L159
+.L160:
+	.loc 1 805 0 is_stmt 0 discriminator 3
 	movzwl	16(%rbp), %edx
 	movzwl	-2(%rbp), %eax
 	movl	%eax, %ecx
@@ -2399,19 +2416,19 @@ _qRBufferValidPowerOfTwo:
 	orl	%edx, %eax
 	movw	%ax, 16(%rbp)
 	salw	-2(%rbp)
-.L157:
-	.loc 1 804 0 discriminator 1
+.L159:
+	.loc 1 805 0 discriminator 1
 	cmpw	$15, -2(%rbp)
-	jbe	.L158
-	.loc 1 805 0 is_stmt 1
+	jbe	.L160
+	.loc 1 806 0 is_stmt 1
 	movzwl	16(%rbp), %eax
 	addl	$1, %eax
 	sarl	%eax
 	movw	%ax, 16(%rbp)
-.L156:
-	.loc 1 807 0
-	movzwl	16(%rbp), %eax
+.L158:
 	.loc 1 808 0
+	movzwl	16(%rbp), %eax
+	.loc 1 809 0
 	addq	$16, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2424,7 +2441,7 @@ _qRBufferValidPowerOfTwo:
 	.seh_proc	_qRBufferCount
 _qRBufferCount:
 .LFB33:
-	.loc 1 810 0
+	.loc 1 811 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2435,22 +2452,22 @@ _qRBufferCount:
 	.cfi_def_cfa_register 6
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 811 0
+	.loc 1 812 0
 	cmpq	$0, 16(%rbp)
-	je	.L161
-	.loc 1 811 0 is_stmt 0 discriminator 1
+	je	.L163
+	.loc 1 812 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movzwl	12(%rax), %edx
 	movq	16(%rbp), %rax
 	movzwl	14(%rax), %eax
 	subl	%eax, %edx
 	movl	%edx, %eax
-	jmp	.L162
-.L161:
-	.loc 1 811 0 discriminator 2
+	jmp	.L164
+.L163:
+	.loc 1 812 0 discriminator 2
 	movl	$0, %eax
-.L162:
-	.loc 1 812 0 is_stmt 1 discriminator 4
+.L164:
+	.loc 1 813 0 is_stmt 1 discriminator 4
 	popq	%rbp
 	.cfi_restore 6
 	.cfi_def_cfa 7, 8
@@ -2462,7 +2479,7 @@ _qRBufferCount:
 	.seh_proc	_qRBufferFull
 _qRBufferFull:
 .LFB34:
-	.loc 1 814 0
+	.loc 1 815 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2475,10 +2492,10 @@ _qRBufferFull:
 	.seh_stackalloc	32
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 815 0
+	.loc 1 816 0
 	cmpq	$0, 16(%rbp)
-	je	.L165
-	.loc 1 815 0 is_stmt 0 discriminator 1
+	je	.L167
+	.loc 1 816 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rcx
 	call	_qRBufferCount
 	movl	%eax, %edx
@@ -2487,12 +2504,12 @@ _qRBufferFull:
 	cmpw	%ax, %dx
 	sete	%al
 	movzbl	%al, %eax
-	jmp	.L166
-.L165:
-	.loc 1 815 0 discriminator 2
+	jmp	.L168
+.L167:
+	.loc 1 816 0 discriminator 2
 	movl	$1, %eax
-.L166:
-	.loc 1 816 0 is_stmt 1 discriminator 4
+.L168:
+	.loc 1 817 0 is_stmt 1 discriminator 4
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2506,7 +2523,7 @@ _qRBufferFull:
 	.seh_proc	qRBufferInit
 qRBufferInit:
 .LFB35:
-	.loc 1 835 0
+	.loc 1 836 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2524,32 +2541,32 @@ qRBufferInit:
 	movl	%r9d, %eax
 	movw	%dx, 32(%rbp)
 	movw	%ax, 40(%rbp)
-	.loc 1 836 0
-	cmpq	$0, 16(%rbp)
-	je	.L168
 	.loc 1 837 0
-	movq	16(%rbp), %rax
-	movw	$0, 12(%rax)
+	cmpq	$0, 16(%rbp)
+	je	.L170
 	.loc 1 838 0
 	movq	16(%rbp), %rax
-	movw	$0, 14(%rax)
+	movw	$0, 12(%rax)
 	.loc 1 839 0
+	movq	16(%rbp), %rax
+	movw	$0, 14(%rax)
+	.loc 1 840 0
 	movq	16(%rbp), %rax
 	movq	24(%rbp), %rdx
 	movq	%rdx, (%rax)
-	.loc 1 840 0
+	.loc 1 841 0
 	movq	16(%rbp), %rax
 	movzwl	32(%rbp), %edx
 	movw	%dx, 8(%rax)
-	.loc 1 841 0
+	.loc 1 842 0
 	movzwl	40(%rbp), %eax
 	movl	%eax, %ecx
 	call	_qRBufferValidPowerOfTwo
 	movl	%eax, %edx
 	movq	16(%rbp), %rax
 	movw	%dx, 10(%rax)
-.L168:
-	.loc 1 843 0
+.L170:
+	.loc 1 844 0
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2563,7 +2580,7 @@ qRBufferInit:
 	.seh_proc	qRBufferEmpty
 qRBufferEmpty:
 .LFB36:
-	.loc 1 857 0
+	.loc 1 858 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2576,21 +2593,21 @@ qRBufferEmpty:
 	.seh_stackalloc	32
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 858 0
+	.loc 1 859 0
 	cmpq	$0, 16(%rbp)
-	je	.L171
-	.loc 1 858 0 is_stmt 0 discriminator 1
+	je	.L173
+	.loc 1 859 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rcx
 	call	_qRBufferCount
 	testw	%ax, %ax
 	sete	%al
 	movzbl	%al, %eax
-	jmp	.L172
-.L171:
-	.loc 1 858 0 discriminator 2
+	jmp	.L174
+.L173:
+	.loc 1 859 0 discriminator 2
 	movl	$1, %eax
-.L172:
-	.loc 1 859 0 is_stmt 1 discriminator 4
+.L174:
+	.loc 1 860 0 is_stmt 1 discriminator 4
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2604,7 +2621,7 @@ qRBufferEmpty:
 	.seh_proc	qRBufferGetFront
 qRBufferGetFront:
 .LFB37:
-	.loc 1 873 0
+	.loc 1 874 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2617,15 +2634,15 @@ qRBufferGetFront:
 	.seh_stackalloc	32
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 874 0
-	cmpq	$0, 16(%rbp)
-	je	.L175
 	.loc 1 875 0
+	cmpq	$0, 16(%rbp)
+	je	.L177
+	.loc 1 876 0
 	movq	16(%rbp), %rcx
 	call	qRBufferEmpty
 	testb	%al, %al
-	jne	.L176
-	.loc 1 875 0 is_stmt 0 discriminator 1
+	jne	.L178
+	.loc 1 876 0 is_stmt 0 discriminator 1
 	movq	16(%rbp), %rax
 	movq	(%rax), %rcx
 	movq	16(%rbp), %rax
@@ -2642,16 +2659,16 @@ qRBufferGetFront:
 	imull	%edx, %eax
 	cltq
 	addq	%rcx, %rax
-	jmp	.L178
-.L176:
-	.loc 1 875 0 discriminator 2
-	movl	$0, %eax
-	jmp	.L178
-.L175:
-	.loc 1 877 0 is_stmt 1
-	movl	$0, %eax
+	jmp	.L180
 .L178:
-	.loc 1 878 0
+	.loc 1 876 0 discriminator 2
+	movl	$0, %eax
+	jmp	.L180
+.L177:
+	.loc 1 878 0 is_stmt 1
+	movl	$0, %eax
+.L180:
+	.loc 1 879 0
 	addq	$32, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2665,7 +2682,7 @@ qRBufferGetFront:
 	.seh_proc	qRBufferPopFront
 qRBufferPopFront:
 .LFB38:
-	.loc 1 892 0
+	.loc 1 893 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2678,21 +2695,21 @@ qRBufferPopFront:
 	.seh_stackalloc	48
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
-	.loc 1 893 0
+	.loc 1 894 0
 	cmpq	$0, 16(%rbp)
-	jne	.L180
-	.loc 1 893 0 is_stmt 0 discriminator 1
+	jne	.L182
+	.loc 1 894 0 is_stmt 0 discriminator 1
 	movl	$0, %eax
-	jmp	.L181
-.L180:
-	.loc 1 894 0 is_stmt 1
+	jmp	.L183
+.L182:
+	.loc 1 895 0 is_stmt 1
 	movq	$0, -8(%rbp)
-	.loc 1 895 0
+	.loc 1 896 0
 	movq	16(%rbp), %rcx
 	call	qRBufferEmpty
 	testb	%al, %al
-	jne	.L182
-	.loc 1 896 0
+	jne	.L184
+	.loc 1 897 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rcx
 	movq	16(%rbp), %rax
@@ -2710,17 +2727,17 @@ qRBufferPopFront:
 	cltq
 	addq	%rcx, %rax
 	movq	%rax, -8(%rbp)
-	.loc 1 897 0
+	.loc 1 898 0
 	movq	16(%rbp), %rax
 	movzwl	14(%rax), %eax
 	leal	1(%rax), %edx
 	movq	16(%rbp), %rax
 	movw	%dx, 14(%rax)
-.L182:
-	.loc 1 899 0
-	movq	-8(%rbp), %rax
-.L181:
+.L184:
 	.loc 1 900 0
+	movq	-8(%rbp), %rax
+.L183:
+	.loc 1 901 0
 	addq	$48, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2734,7 +2751,7 @@ qRBufferPopFront:
 	.seh_proc	qRBufferPush
 qRBufferPush:
 .LFB39:
-	.loc 1 915 0
+	.loc 1 916 0
 	.cfi_startproc
 	pushq	%rbp
 	.seh_pushreg	%rbp
@@ -2748,25 +2765,25 @@ qRBufferPush:
 	.seh_endprologue
 	movq	%rcx, 16(%rbp)
 	movq	%rdx, 24(%rbp)
-	.loc 1 916 0
-	movb	$0, -1(%rbp)
 	.loc 1 917 0
+	movb	$0, -1(%rbp)
+	.loc 1 918 0
 	movq	24(%rbp), %rax
 	movq	%rax, -16(%rbp)
-	.loc 1 918 0
+	.loc 1 919 0
 	movq	$0, -24(%rbp)
-	.loc 1 921 0
+	.loc 1 922 0
 	cmpq	$0, 16(%rbp)
-	je	.L184
-	.loc 1 921 0 is_stmt 0 discriminator 1
+	je	.L186
+	.loc 1 922 0 is_stmt 0 discriminator 1
 	cmpq	$0, -16(%rbp)
-	je	.L184
-	.loc 1 922 0 is_stmt 1
+	je	.L186
+	.loc 1 923 0 is_stmt 1
 	movq	16(%rbp), %rcx
 	call	_qRBufferFull
 	testb	%al, %al
-	jne	.L184
-	.loc 1 923 0
+	jne	.L186
+	.loc 1 924 0
 	movq	16(%rbp), %rax
 	movq	(%rax), %rcx
 	movq	16(%rbp), %rax
@@ -2784,11 +2801,11 @@ qRBufferPush:
 	cltq
 	addq	%rcx, %rax
 	movq	%rax, -24(%rbp)
-	.loc 1 924 0
+	.loc 1 925 0
 	movw	$0, -4(%rbp)
-	jmp	.L185
-.L186:
-	.loc 1 924 0 is_stmt 0 discriminator 3
+	jmp	.L187
+.L188:
+	.loc 1 925 0 is_stmt 0 discriminator 3
 	movzwl	-4(%rbp), %edx
 	movq	-24(%rbp), %rax
 	addq	%rax, %rdx
@@ -2800,24 +2817,24 @@ qRBufferPush:
 	movzwl	-4(%rbp), %eax
 	addl	$1, %eax
 	movw	%ax, -4(%rbp)
-.L185:
-	.loc 1 924 0 discriminator 1
+.L187:
+	.loc 1 925 0 discriminator 1
 	movq	16(%rbp), %rax
 	movzwl	8(%rax), %eax
 	cmpw	-4(%rbp), %ax
-	ja	.L186
-	.loc 1 925 0 is_stmt 1
+	ja	.L188
+	.loc 1 926 0 is_stmt 1
 	movq	16(%rbp), %rax
 	movzwl	12(%rax), %eax
 	leal	1(%rax), %edx
 	movq	16(%rbp), %rax
 	movw	%dx, 12(%rax)
-	.loc 1 926 0
+	.loc 1 927 0
 	movb	$1, -1(%rbp)
-.L184:
-	.loc 1 929 0
-	movzbl	-1(%rbp), %eax
+.L186:
 	.loc 1 930 0
+	movzbl	-1(%rbp), %eax
+	.loc 1 931 0
 	addq	$64, %rsp
 	popq	%rbp
 	.cfi_restore 6
@@ -2841,7 +2858,7 @@ qRBufferPush:
 	.file 4 "QuarkTS.h"
 	.section	.debug_info,"dr"
 .Ldebug_info0:
-	.long	0x1761
+	.long	0x176e
 	.word	0x4
 	.secrel32	.Ldebug_abbrev0
 	.byte	0x8
@@ -4527,12 +4544,12 @@ qRBufferPush:
 	.quad	.LFE30-.LFB30
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x141e
+	.long	0x142b
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
 	.word	0x2dd
-	.long	0x141e
+	.long	0x142b
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
@@ -4569,6 +4586,14 @@ qRBufferPush:
 	.byte	0x91
 	.sleb128 -19
 	.uleb128 0x22
+	.ascii "c\0"
+	.byte	0x1
+	.word	0x2de
+	.long	0x14c
+	.uleb128 0x2
+	.byte	0x91
+	.sleb128 -20
+	.uleb128 0x22
 	.ascii "sum\0"
 	.byte	0x1
 	.word	0x2df
@@ -4591,24 +4616,24 @@ qRBufferPush:
 	.uleb128 0x25
 	.ascii "qMemoryFree\0"
 	.byte	0x1
-	.word	0x30f
+	.word	0x310
 	.quad	.LFB31
 	.quad	.LFE31-.LFB31
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x1484
+	.long	0x1491
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x30f
-	.long	0x141e
+	.word	0x310
+	.long	0x142b
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
 	.uleb128 0x1f
 	.ascii "pmem\0"
 	.byte	0x1
-	.word	0x30f
+	.word	0x310
 	.long	0x2e3
 	.uleb128 0x2
 	.byte	0x91
@@ -4616,7 +4641,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "i\0"
 	.byte	0x1
-	.word	0x310
+	.word	0x311
 	.long	0x14c
 	.uleb128 0x2
 	.byte	0x91
@@ -4624,7 +4649,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "p\0"
 	.byte	0x1
-	.word	0x310
+	.word	0x311
 	.long	0x906
 	.uleb128 0x2
 	.byte	0x91
@@ -4633,17 +4658,17 @@ qRBufferPush:
 	.uleb128 0x29
 	.ascii "_qRBufferValidPowerOfTwo\0"
 	.byte	0x1
-	.word	0x320
+	.word	0x321
 	.long	0x16a
 	.quad	.LFB32
 	.quad	.LFE32-.LFB32
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x14d6
+	.long	0x14e3
 	.uleb128 0x1f
 	.ascii "k\0"
 	.byte	0x1
-	.word	0x320
+	.word	0x321
 	.long	0x16a
 	.uleb128 0x2
 	.byte	0x91
@@ -4651,7 +4676,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "i\0"
 	.byte	0x1
-	.word	0x321
+	.word	0x322
 	.long	0x16a
 	.uleb128 0x2
 	.byte	0x91
@@ -4660,17 +4685,17 @@ qRBufferPush:
 	.uleb128 0x29
 	.ascii "_qRBufferCount\0"
 	.byte	0x1
-	.word	0x32a
+	.word	0x32b
 	.long	0x16a
 	.quad	.LFB33
 	.quad	.LFE33-.LFB33
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x1513
+	.long	0x1520
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x32a
+	.word	0x32b
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4679,17 +4704,17 @@ qRBufferPush:
 	.uleb128 0x23
 	.ascii "_qRBufferFull\0"
 	.byte	0x1
-	.word	0x32e
+	.word	0x32f
 	.long	0x28b
 	.quad	.LFB34
 	.quad	.LFE34-.LFB34
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x154f
+	.long	0x155c
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x32e
+	.word	0x32f
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4698,16 +4723,16 @@ qRBufferPush:
 	.uleb128 0x25
 	.ascii "qRBufferInit\0"
 	.byte	0x1
-	.word	0x343
+	.word	0x344
 	.quad	.LFB35
 	.quad	.LFE35-.LFB35
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x15c2
+	.long	0x15cf
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x343
+	.word	0x344
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4715,7 +4740,7 @@ qRBufferPush:
 	.uleb128 0x1f
 	.ascii "DataBlock\0"
 	.byte	0x1
-	.word	0x343
+	.word	0x344
 	.long	0x2e3
 	.uleb128 0x2
 	.byte	0x91
@@ -4723,7 +4748,7 @@ qRBufferPush:
 	.uleb128 0x1e
 	.secrel32	.LASF1
 	.byte	0x1
-	.word	0x343
+	.word	0x344
 	.long	0x16a
 	.uleb128 0x2
 	.byte	0x91
@@ -4731,7 +4756,7 @@ qRBufferPush:
 	.uleb128 0x1f
 	.ascii "ElementCount\0"
 	.byte	0x1
-	.word	0x343
+	.word	0x344
 	.long	0x16a
 	.uleb128 0x2
 	.byte	0x91
@@ -4740,17 +4765,17 @@ qRBufferPush:
 	.uleb128 0x20
 	.ascii "qRBufferEmpty\0"
 	.byte	0x1
-	.word	0x359
+	.word	0x35a
 	.long	0x28b
 	.quad	.LFB36
 	.quad	.LFE36-.LFB36
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x15fe
+	.long	0x160b
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x359
+	.word	0x35a
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4759,17 +4784,17 @@ qRBufferPush:
 	.uleb128 0x20
 	.ascii "qRBufferGetFront\0"
 	.byte	0x1
-	.word	0x369
+	.word	0x36a
 	.long	0x2e3
 	.quad	.LFB37
 	.quad	.LFE37-.LFB37
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x163d
+	.long	0x164a
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x369
+	.word	0x36a
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4778,17 +4803,17 @@ qRBufferPush:
 	.uleb128 0x20
 	.ascii "qRBufferPopFront\0"
 	.byte	0x1
-	.word	0x37c
+	.word	0x37d
 	.long	0x2e3
 	.quad	.LFB38
 	.quad	.LFE38-.LFB38
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x168c
+	.long	0x1699
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x37c
+	.word	0x37d
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4796,7 +4821,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "data\0"
 	.byte	0x1
-	.word	0x37e
+	.word	0x37f
 	.long	0x2e3
 	.uleb128 0x2
 	.byte	0x91
@@ -4805,17 +4830,17 @@ qRBufferPush:
 	.uleb128 0x20
 	.ascii "qRBufferPush\0"
 	.byte	0x1
-	.word	0x393
+	.word	0x394
 	.long	0x28b
 	.quad	.LFB39
 	.quad	.LFE39-.LFB39
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x1723
+	.long	0x1730
 	.uleb128 0x1f
 	.ascii "obj\0"
 	.byte	0x1
-	.word	0x393
+	.word	0x394
 	.long	0x4d9
 	.uleb128 0x2
 	.byte	0x91
@@ -4823,7 +4848,7 @@ qRBufferPush:
 	.uleb128 0x1f
 	.ascii "data\0"
 	.byte	0x1
-	.word	0x393
+	.word	0x394
 	.long	0x2e3
 	.uleb128 0x2
 	.byte	0x91
@@ -4831,7 +4856,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "status\0"
 	.byte	0x1
-	.word	0x394
+	.word	0x395
 	.long	0x28b
 	.uleb128 0x2
 	.byte	0x91
@@ -4839,7 +4864,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "data_element\0"
 	.byte	0x1
-	.word	0x395
+	.word	0x396
 	.long	0x906
 	.uleb128 0x2
 	.byte	0x91
@@ -4847,7 +4872,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "ring_data\0"
 	.byte	0x1
-	.word	0x396
+	.word	0x397
 	.long	0x3ee
 	.uleb128 0x2
 	.byte	0x91
@@ -4855,7 +4880,7 @@ qRBufferPush:
 	.uleb128 0x22
 	.ascii "i\0"
 	.byte	0x1
-	.word	0x397
+	.word	0x398
 	.long	0x16a
 	.uleb128 0x2
 	.byte	0x91
@@ -4865,7 +4890,7 @@ qRBufferPush:
 	.ascii "QUARKTS\0"
 	.byte	0x1
 	.byte	0x15
-	.long	0x173c
+	.long	0x1749
 	.uleb128 0x9
 	.byte	0x3
 	.quad	QUARKTS

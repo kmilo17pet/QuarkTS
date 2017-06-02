@@ -147,9 +147,9 @@ void qTaskSetState(qTask_t *Task, qState_t State){
     Task->ClockStart = _qSysTick_Epochs_;
 }
 /*============================================================================*/
-/*void qTaskSetUserData(qTask_t *Task, void* UserData)
+/*void qTaskSetData(qTask_t *Task, void* UserData)
 
-Retrieve the task user data
+Set the task data
 
 Parameters:
 
@@ -157,10 +157,10 @@ Parameters:
 
 Return value:
 
-    A void pointer to the task user data.
+    A void pointer to the task data.
 */
-void qTaskSetUserData(qTask_t *Task, void* arg){
-    Task->UserData = arg;
+void qTaskSetData(qTask_t *Task, void* arg){
+    Task->TaskData = arg;
 }
 /*============================================================================*/
 /*void qTaskClearTimeElapsed(qTask_t *Task)
@@ -261,25 +261,24 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     _qSysTick_Epochs_ = 0;
 }
 /*============================================================================*/
-/*int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t pValue, qTime_t tValue, qIteration_t iValue, qState_t  InitValue, void* USERDATA)
+/*int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)
 
-Add a task to the scheduling scheme. The task is scheduled to run every tValue 
-seconds, iValue times and executing Callback method on every pass with 
-pValue Priority.
+Add a task to the scheduling scheme. The task is scheduled to run every <Time> 
+seconds, <nExecutions> times and executing <CallbackFcb> method on every pass.
 
 Parameters:
     - Task : A pointer to the task node.
 
-    - Callback : A pointer to a void callback method with a qEvent_t parameter 
+    - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 
-    - pValue : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - 255(max)]
 
-    - tValue : Execution interval defined in seconds (floating-point format). 
+    - Time : Execution interval defined in seconds (floating-point format). 
                For inmediate execution (tValue = TIME_INMEDIATE).
 
-    - iValue : Number of task executions (Integer value). For indefinite 
-               execution (iValue = PERIODIC or INDEFINITE). Tasks do not 
+    - nExecutions : Number of task executions (Integer value). For indefinite 
+               execution (nExecutions = PERIODIC or INDEFINITE). Tasks do not 
                remember the number of iteration set initially. After the 
                iterations are done, internal iteration counter is 0. If you 
                need to perform another set of iterations, you need to set the 
@@ -288,12 +287,12 @@ Parameters:
              state to DISABLED.
     >Note 2: Asynchronous triggers do not affect the iteration counter.
 
-    - InitValue : Specifies the initial state of the task (ENABLED or DISABLED).
+    - InitialState : Specifies the initial state of the task (qEnabled or qDisabled).
 
-    - USERDATA : Represents the task arguments. All arguments must be passed by
-                     reference and cast to (void *). Only one argument is allowed, 
-                     so, for multiple arguments, create a structure that contains 
-                     all of the arguments and pass a pointer to that structure.
+    - arg : Represents the task arguments. All arguments must be passed by
+            reference and cast to (void *). Only one argument is allowed, 
+            so, for multiple arguments, create a structure that contains 
+            all of the arguments and pass a pointer to that structure.
 
 Return value:
 
@@ -303,7 +302,7 @@ int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priori
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return -1;    
     Task->Callback = CallbackFcn;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
-    Task->UserData = arg;
+    Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = qFalse;
@@ -314,13 +313,13 @@ int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priori
     Task->ClockStart = _qSysTick_Epochs_;
     QUARKTS.Flag.Init = 0;
     Task->RingBuff = NULL;
+    Task->StateMachine = NULL;
     return 0;
 }
 /*============================================================================*/
-/*int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t pValue, void* USERDATA)
+/*int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg)
 
-Add a task to the scheduling scheme. The task is scheduled with pValue Priority, 
-executing Callback method on every pass. This API creates a task with DISABLED 
+Add a task to the scheduling scheme.  This API creates a task with qDisabled 
 state by default , so this task will be oriented to be executed only, when 
 asynchronous events occurs. However, this behavior can be changed in execution
 time using qTaskSetTime or qTaskSetIterations.
@@ -329,12 +328,12 @@ Parameters:
 
     - Task : A pointer to the task node.
 
-    - Callback : A pointer to a void callback method with a qEvent_t parameter
+    - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter
                  as input argument.
 
-    - pValue : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - 255(max)]
 
-    - USERDATA : Represents the task arguments. All arguments must be passed by
+    - arg :      Represents the task arguments. All arguments must be passed by
                  reference and cast to (void *). Only one argument is allowed, 
                  so, for multiple arguments, create a structure that contains 
                  all of the arguments and pass a pointer to that structure.
@@ -343,15 +342,87 @@ Return value:
 
     Returns 0 on successs, otherwise returns -1;     
      */
-int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg){
-    return qSchedulerAddxTask(Task, Callback, Priority, TIME_INMEDIATE, SINGLESHOT, 0, arg);
+int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
+    return qSchedulerAddxTask(Task, CallbackFcn, Priority, TIME_INMEDIATE, SINGLESHOT, 0, arg);
+}
+/*============================================================================*/
+/*int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+                         qSM_t *StateMachine, qSM_State_t InitState, 
+                         qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState,
+                         qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                         qState_t InitialTaskState, void *arg)
+
+Add a task to the scheduling scheme running a dedicated state-machine. 
+The task is scheduled to run every <Time> seconds in PERIODIC mode. The event info
+will be available as a generic pointer inside the <Data> field of the qSM_t pointer
+passed as input argument inside every state.
+
+Parameters:
+    - Task : A pointer to the task node.
+
+    - Priority : Task priority Value. [0(min) - 255(max)]
+
+    - Time : Execution interval defined in seconds (floating-point format). 
+               For inmediate execution (tValue = TIME_INMEDIATE).
+
+    - StateMachine: A pointer to Finite State-Machine (FSM) object
+  
+    - InitState : The first state to be performed. This argument is a pointer 
+                  to a callback function, returning qSM_Status_t and with a 
+                  qSM_t pointer as input argument.
+
+    - BeforeAnyState : A state called before the normal state machine execution.
+                  This argument is a pointer to a callback function,  with a 
+                  qSM_t pointer as input argument.
+ 
+    - SuccessState : State performed after a state finish with return status 
+                     qSM_EXIT_SUCCESS. This argument is a pointer to a callback
+                     function with a qSM_t pointer as input argument.
+
+    - FailureState : State performed after a state finish with return status 
+                     qSM_EXIT_FAILURE. This argument is a pointer to a callback
+                     function with a qSM_t pointer as input argument.
+
+    - UnexpectedState : State performed after a state finish with return status
+                        value between -32766 and 32767. This argument is a 
+                        pointer to a callback function with a qSM_t pointer
+                        as input argument.
+ 
+    - InitialTaskState : Specifies the initial state of the task (qEnabled or qDisabled).
+
+    - arg : Represents the task arguments. All arguments must be passed by
+                     reference and cast to (void *). Only one argument is allowed, 
+                     so, for multiple arguments, create a structure that contains 
+                     all of the arguments and pass a pointer to that structure.
+    Note:
+ 
+Return value:
+
+    Returns 0 on successs, otherwise returns -1;
+    */
+int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+                                  qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                                  qState_t InitialTaskState, void *arg){
+    if(InitState == NULL) return -1;
+    if (qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg) ==-1) return -1;
+    Task->StateMachine = StateMachine;
+    StateMachine->NextState = InitState;
+    StateMachine->PreviousState = NULL;
+    StateMachine->_.__Failure = FailureState;
+    StateMachine->_.__Success = SuccessState;
+    StateMachine->_.__Unexpected = UnexpectedState;
+    StateMachine->_.__BeforeAnyState = BeforeAnyState; 
+    return 0;
 }
 /*============================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger =  Event;
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);   
-    QUARKTS.EventInfo.UserData = Task->UserData;
-    if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
+    QUARKTS.EventInfo.TaskData = Task->TaskData;
+    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
+    else{
+        if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
+    }
     Task->Flag.InitFlag = qTrue;
     QUARKTS.EventInfo.EventData = NULL;
     Task->Cycles++;
@@ -386,7 +457,7 @@ static void _qTaskChainbyPriority(void){
 /*============================================================================*/
 /*int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
 
-Links a Ring Buffer to Task. 
+Links the Task with a Ring Buffer. 
 
 Parameters:
 
@@ -394,8 +465,8 @@ Parameters:
 
     - RingBuffer : A pointer to a Ring Buffer object
  
-    - Mode: Linking mode. This implies the event that will trigger the task    
-            The one of the following available modes:
+    - Mode: Linking mode. This implies the event that will trigger the task according
+            to one of the following modes:
                         > RB_AUTOPOP: The task will be triggered if there is elements 
                           in the Ring Buffer. Data data will be popped
                           automatically in every trigger and will be available 
@@ -481,7 +552,7 @@ static void _qTriggerIdleTask(void){
 Executes the task-scheduler scheme. It must be called once after the task
 pool has been defined.
 
-  Note : qSchedule keeps the application in an infifine loop
+  Note : qSchedule keeps the application in an endless loop
 */
 void qSchedulerRun(void){
     qTask_t *Task, *qTask;
@@ -569,6 +640,7 @@ Parameters:
 void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL;
     obj->Data = Data;
+    if(obj->_.__BeforeAnyState != NULL) obj->_.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
         obj->StateJustChanged = (qBool_t)(obj->PreviousState != obj->NextState);
         prev = obj->NextState;
@@ -678,7 +750,7 @@ Parameters:
 
 Return value:
 
-    The elapsed time. 
+    The Elapsed time specified in epochs
 */
 qClock_t qSTimerElapsed(qSTimer_t *obj){
     return (_qSysTick_Epochs_-obj->Start);
@@ -694,7 +766,7 @@ Parameters:
 
 Return value:
 
-    The remaining epochs. 
+    The remaining time specified in epochs
 */
 qClock_t qSTimerRemaining(qSTimer_t *obj){
     qClock_t elapsed = qSTimerElapsed(obj);
@@ -731,7 +803,7 @@ Return value:
     A pointer to allocated memory or null in there is no avaible memory
  */
 void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
-    uint8_t i, j, k;
+    uint8_t i, j, k, c;
     uint16_t sum;		
     uint8_t *offset = obj->Blocks;			
     j = 0;	
@@ -758,7 +830,8 @@ void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
             sum += obj->BlockSize;
             if( sum >= size ) {
                 *(obj->BlockDescriptors+j) = k;
-		_Q_EXIT_CRITICAL();
+		for(c=0;c<size;c++) offset[i] = 0x00u;//zero-initialized memory block 
+                _Q_EXIT_CRITICAL();
 		return (void*)offset;
             }						
 	}
@@ -827,7 +900,7 @@ Parameters:
 
     - ElementSize : size of one element in the data block
  
-    - ElementCount :
+    - ElementCount : Max number of elements in the bufffer
  
 Note: Element_count should be a power of two, or it will only use the next 
       lower power of two
@@ -879,7 +952,7 @@ void* qRBufferGetFront(qRBuffer_t *obj){
 /*============================================================================*/
 /*void* qRBufferPopFront(qRBuffer_t *obj)
  
-Gets the data from the front of the list, and removes it
+Extract the data from the front of the list, and removes it
  
 Parameters:
 
@@ -906,7 +979,7 @@ Adds an element of data to the ring buffer
 Parameters:
 
     - obj : a pointer to the Ring Buffer object
-    - data : the element to add to the ring
+    - data : a pointer to the element who needs to be added to the ring-buffer
   
 Return value:
 

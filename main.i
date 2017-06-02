@@ -2612,12 +2612,14 @@ int main(int argc, char** argv) {
 
 
 
+    printf("\r\n %lu\r\n",sizeof(QUARKTS));
+    printf("\r\n %lu\r\n",sizeof(volatile struct _qTask_t)+ sizeof(qEvent_t)+ sizeof(QuarkTSCoreData_t)+sizeof(qQueueStack_t)+sizeof(volatile struct _qSM_t));
     pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
-    uint32_t qMEM_AREA_mtxheap[(3*MEMBLOCK_4_BYTE)>>2]={0}; uint8_t qMEM_DESmtxheap[3]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = MEMBLOCK_4_BYTE; mtxheap.NumberofBlocks = 3; mtxheap.BlockDescriptors = &qMEM_DESmtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
+    uint32_t qMEM_AREA_mtxheap[(10*MEMBLOCK_4_BYTE)>>2]={0}; uint8_t qMEM_DESmtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = MEMBLOCK_4_BYTE; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_DESmtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
 
     void *memtest;
     int x=5 , y=6;
-    memtest = qMemoryAlloc(&mtxheap, 10);
+    memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);

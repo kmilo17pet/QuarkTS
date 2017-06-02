@@ -18,17 +18,18 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 /*============================================================================*/
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask;
-qTask_t *taskx;
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask;
+//qTask_t *taskx;
 
 qSM_Status_t firststate(qSM_t *fsm);
 qSM_Status_t secondstate(qSM_t *fsm);
 
 qSM_Status_t firststate(qSM_t *fsm){
+    qEvent_t *e = (qEvent_t*)fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.1);
-        puts("first");
+        printf("[%s] first\r\n", e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
@@ -36,10 +37,11 @@ qSM_Status_t firststate(qSM_t *fsm){
     return qSM_EXIT_SUCCESS;
 }
 qSM_Status_t secondstate(qSM_t *fsm){
+    qEvent_t *e = (qEvent_t*)fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.5);
-        puts("second");
+        printf("[%s] second\r\n", e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
         fsm->NextState = firststate;
@@ -48,61 +50,60 @@ qSM_Status_t secondstate(qSM_t *fsm){
 }
 
 /*============================================================================*/
-void Task1Callback(qEvent_t Data){
+void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
-    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)Data.UserData, (char*)Data.EventData, qTaskGetCycles(&Task1));
-    qTaskQueueEvent(&Task2, "A"); /*20*/
-    qTaskQueueEvent(&Task3, "B"); /*50*/
-    qTaskQueueEvent(&Task4, "C"); /*10*/
-    qTaskQueueEvent(&Task5, "D"); /*80*/
-    qTaskQueueEvent(&Task6, "E"); /*10*/
-    qTaskQueueEvent(&Task6, "F"); /*10*/
-    qTaskQueueEvent(&Task6, "G"); /*10*/
-    qTaskQueueEvent(&Task6, "H"); /*10*/
-    qTaskQueueEvent(&Task6, "I"); /*10*/
-    qTaskQueueEvent(&Task6, "J"); /*10*/
-    qTaskQueueEvent(&Task6, "K"); /*10*/
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e.TaskData, (char*)e.EventData, qTaskGetCycles(&Task1));
+    /*
+    qTaskQueueEvent(&Task2, "A");
+    qTaskQueueEvent(&Task3, "B");
+    qTaskQueueEvent(&Task4, "C");
+    qTaskQueueEvent(&Task5, "D");
+    qTaskQueueEvent(&Task6, "E");
+    qTaskQueueEvent(&Task6, "F");
+    qTaskQueueEvent(&Task6, "G");
+    qTaskQueueEvent(&Task6, "H");
+    qTaskQueueEvent(&Task6, "I");
+    qTaskQueueEvent(&Task6, "J");
+    qTaskQueueEvent(&Task6, "K");
+    
     qTaskSendEvent(&Task5,"fuck");
     qTaskSendEvent(&Task6,"shit");
     qTaskSendEvent(&Task3,"dam"); 
+    */
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }
 }
 /*============================================================================*/
-void Task2Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
+void Task2Callback(qEvent_t e){
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
 }
 /*============================================================================*/
-void Task3Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
-    if(Data.Trigger == byRBufferPop){
-        int *ptr = (int*)Data.EventData;
+void Task3Callback(qEvent_t e){
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
+    if(e.Trigger == byRBufferPop){
+        int *ptr = (int*)e.EventData;
         printf("ring extracted data %d\r\n",*ptr);
     }
 }
 /*============================================================================*/
-void Task4Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
+void Task4Callback(qEvent_t e){
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
 }
 /*============================================================================*/
-void Task5Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);
+void Task5Callback(qEvent_t e){
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
 }
 /*============================================================================*/
-void Task6Callback(qEvent_t Data){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)Data.UserData, (char*)Data.EventData);   
+void Task6Callback(qEvent_t e){
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);   
 }
 /*============================================================================*/
-void IdleTaskCallback(qEvent_t Data){
-    static qSM_t statemachine;
-    if(Data.FirstCall){
-        qStateMachine_Init(&statemachine, firststate, NULL, NULL, NULL);
-    }
-    qStateMachine_Run(&statemachine, NULL);
+void IdleTaskCallback(qEvent_t e){
+
 }
 /*============================================================================*/
-void blinktaskCallback(qEvent_t Data){
+void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
     qCoroutineBegin{
         puts("led on");
@@ -111,6 +112,7 @@ void blinktaskCallback(qEvent_t Data){
         qCoroutineWaitUntil(qSTimerFreeRun(&tmr, 1.0));
     }qCoroutineEnd;
 }
+
 /*============================================================================*/
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
@@ -119,11 +121,11 @@ int main(int argc, char** argv) {
     signal(SIGINT, sigint_signal);
     */
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
-    qMemoryHeapCreate(mtxheap, 3, MEMBLOCK_4_BYTE);
-
+    qMemoryHeapCreate(mtxheap, 10, MEMBLOCK_4_BYTE);
+    qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
-    memtest = qMemoryAlloc(&mtxheap, 10);
+    memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
@@ -135,6 +137,7 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddxTask(&blinktask, blinktaskCallback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, qEnabled, "blink");
+    qSchedulerAddSMTask(&SMTask, HIGH_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }

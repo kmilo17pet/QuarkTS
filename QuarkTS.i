@@ -654,7 +654,7 @@ void qSTimerDisarm(qSTimer_t *obj){
 }
 # 733 "QuarkTS.c"
 void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
-    uint8_t i, j, k;
+    uint8_t i, j, k, c;
     uint16_t sum;
     uint8_t *offset = obj->Blocks;
     j = 0;
@@ -681,7 +681,8 @@ void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
             sum += obj->BlockSize;
             if( sum >= size ) {
                 *(obj->BlockDescriptors+j) = k;
-  if(QUARKTS.I_Restorer != ((void*)0)) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
+  for(c=0;c<size;c++) offset[i] = 0x00u;
+                if(QUARKTS.I_Restorer != ((void*)0)) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
   return (void*)offset;
             }
  }
@@ -690,7 +691,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
     if(QUARKTS.I_Restorer != ((void*)0)) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
     return ((void*)0);
 }
-# 783 "QuarkTS.c"
+# 784 "QuarkTS.c"
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     uint8_t i, *p;
     if(QUARKTS.I_Disable != ((void*)0)) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
@@ -725,7 +726,7 @@ static uint16_t _qRBufferCount(qRBuffer_t *obj){
 static qBool_t _qRBufferFull(qRBuffer_t *obj){
     return (qBool_t)(obj ? (_qRBufferCount(obj) == obj->Elementcount) : 0x01u);
 }
-# 835 "QuarkTS.c"
+# 836 "QuarkTS.c"
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount){
     if (obj) {
         obj->head = 0;
@@ -735,18 +736,18 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16
         obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);
     }
 }
-# 857 "QuarkTS.c"
+# 858 "QuarkTS.c"
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
     return (qBool_t)(obj ? (_qRBufferCount(obj) == 0) : 0x01u);
 }
-# 873 "QuarkTS.c"
+# 874 "QuarkTS.c"
 void* qRBufferGetFront(qRBuffer_t *obj){
     if (obj) {
         return (void*)(!qRBufferEmpty(obj) ? &(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]) : ((void*)0));
     }
     return ((void*)0);
 }
-# 892 "QuarkTS.c"
+# 893 "QuarkTS.c"
 void* qRBufferPopFront(qRBuffer_t *obj){
     if(obj == ((void*)0)) return ((void*)0);
     void *data = ((void*)0);
@@ -756,7 +757,7 @@ void* qRBufferPopFront(qRBuffer_t *obj){
     }
     return data;
 }
-# 915 "QuarkTS.c"
+# 916 "QuarkTS.c"
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     qBool_t status = 0x00u;
     uint8_t *data_element = (uint8_t*)data;
