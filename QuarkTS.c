@@ -26,8 +26,8 @@ static qTask_t* _qPrioQueueExtract(void);
 static void _qTriggerIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
 
-static uint16_t _qRBufferValidPowerOfTwo(uint16_t k);
-static uint16_t _qRBufferCount(qRBuffer_t *obj);
+static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
+static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
@@ -420,9 +420,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);   
     QUARKTS.EventInfo.TaskData = Task->TaskData;
     if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
-    else{
-        if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);
-    }
+    else if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);    
     Task->Flag.InitFlag = qTrue;
     QUARKTS.EventInfo.EventData = NULL;
     Task->Cycles++;
@@ -523,7 +521,7 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
         return byRBufferCount;
     }
     if(Task->Flag.RBAutoPop){
-        if((popdata = qRBufferPopFront(rb))!=NULL){
+        if((popdata = qRBufferGetFront(rb))!=NULL){
             QUARKTS.EventInfo.EventData = popdata; 
             return byRBufferPop;
         }
@@ -572,7 +570,10 @@ void qSchedulerRun(void){
             if(Task->Iterations == 0) Task->Flag.Enabled = qFalse;
             _qTriggerEvent(Task, byTimeElapsed);            
         }
-        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_) _qTriggerEvent(Task, trg);         
+        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_){
+            _qTriggerEvent(Task, trg);         
+            Task->RingBuff->tail++;
+        }
         else if( Task->Flag.AsyncRun){
             QUARKTS.EventInfo.EventData = Task->AsyncData;
             Task->Flag.AsyncRun = qFalse;
@@ -870,7 +871,7 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 #endif
 
 /*============================================================================*/
-static uint16_t _qRBufferValidPowerOfTwo(uint16_t k){
+static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     uint16_t i;
     if ( ((k-1) & k) != 0) {
         k--;
@@ -880,7 +881,7 @@ static uint16_t _qRBufferValidPowerOfTwo(uint16_t k){
     return k;
 }
 /*============================================================================*/
-static uint16_t _qRBufferCount(qRBuffer_t *obj){
+static qSize_t _qRBufferCount(qRBuffer_t *obj){
     return (obj ? (obj->head - obj->tail) : 0);
 }
 /*============================================================================*/
@@ -905,7 +906,7 @@ Parameters:
 Note: Element_count should be a power of two, or it will only use the next 
       lower power of two
  */
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount){
+void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount){
     if (obj) {
         obj->head = 0;
         obj->tail = 0;

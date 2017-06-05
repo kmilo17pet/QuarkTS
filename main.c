@@ -24,12 +24,17 @@ qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask;
 qSM_Status_t firststate(qSM_t *fsm);
 qSM_Status_t secondstate(qSM_t *fsm);
 
+void datacapture(qSM_t *fsm){
+    
+}
+
+
 qSM_Status_t firststate(qSM_t *fsm){
     qEvent_t *e = (qEvent_t*)fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.1);
-        printf("[%s] first\r\n", e->TaskData);
+        printf("[%s] first\r\n", (char*)e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
@@ -41,7 +46,7 @@ qSM_Status_t secondstate(qSM_t *fsm){
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.5);
-        printf("[%s] second\r\n", e->TaskData);
+        printf("[%s] second\r\n", (char*)e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
         fsm->NextState = firststate;

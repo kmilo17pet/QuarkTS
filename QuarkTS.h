@@ -66,7 +66,7 @@ extern "C" {
     typedef uint8_t qIteration_t;
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
-    
+    typedef uint16_t qSize_t;
 
     #define LOWEST_Priority     (qPriority_t)(0x00u)
     #define MEDIUM_Priority     (qPriority_t)(0x7Fu)
@@ -120,10 +120,10 @@ extern "C" {
 
     typedef struct{
         volatile uint8_t *data; /* block of memory or array of data */
-        volatile uint16_t ElementSize;      /* how many bytes for each chunk */
-        volatile uint16_t Elementcount;     /* number of chunks of data */
-        volatile uint16_t head; /* where the writes go */
-        volatile uint16_t tail; /* where the reads come from */
+        volatile qSize_t ElementSize;      /* how many bytes for each chunk */
+        volatile qSize_t Elementcount;     /* number of chunks of data */
+        volatile qSize_t head; /* where the writes go */
+        volatile qSize_t tail; /* where the reads come from */
     }qRBuffer_t;
  
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
@@ -422,7 +422,7 @@ Parameters:
     
 
 
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount);
+void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 void* qRBufferPopFront(qRBuffer_t *obj);
