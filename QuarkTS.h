@@ -59,7 +59,7 @@ extern "C" {
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
     #endif
 
-    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount} qTrigger_t;
+    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty} qTrigger_t;
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -81,7 +81,7 @@ extern "C" {
         This flag indicates the event source that triggers the task execution.
         
          
-        This flag can only have 4 possible values:        
+        This flag can only have the following values:        
         
         - byTimeElapsed : When the time specified for the task elapsed.
         
@@ -94,6 +94,23 @@ extern "C" {
         
         - byAsyncEvent: When the execution chain does, according to a 
                         requirement of asynchronous event prompted by qSendEvent
+        
+        - byRBufferPop: When there is elements available in the linked ring-buffer,
+                        the scheduler makes a data extraction (auto-pop) from the
+                        head. A pointer to the extracted (popped) data will be 
+                        available in the <EventData> field of qEvent_t structure.
+        
+        - byRBufferFull: When the linked ring-buffer is full. A pointer to the 
+                         RingBuffer will be available in the <EventData> field of 
+                         qEvent_t structure.
+         
+        - byRBufferCount: When the element-count of the linked ring-buffer reaches
+                         the specified value. A pointer to the RingBuffer will 
+                         be available in the <EventData> field of qEvent_t structure.
+        
+        - byRBufferEmpty: When the linked ring-buffer is empty.  A pointer to the 
+                         RingBuffer will be available in the <EventData> field of 
+                         qEvent_t structure.
         */
         qTrigger_t Trigger;
         /* TaskData:
@@ -113,7 +130,7 @@ extern "C" {
     
     typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{
-    	volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount;
+    	volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
     }qTaskFlags_t;
        
     typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
@@ -212,7 +229,7 @@ extern "C" {
     int qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
     
-    typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT}qRBLinkMode_t;
+    typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT, RB_EMPTY}qRBLinkMode_t;
     
     int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
     

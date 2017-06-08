@@ -305,7 +305,7 @@ int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priori
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = nExecutions;    
-    Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = qFalse;
+    Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
     Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
     Task->Next = QUARKTS.First;
     QUARKTS.First = Task;
@@ -478,10 +478,14 @@ Parameters:
                           elements in the Ring Buffer reach the specified value. 
                           The pointer to the RingBuffer will be available in the
                           <EventData> field of qEvent_t structure.
+
+                        > RB_EMPTY: the task will be triggered if the Ring Buffer
+                          is empty. The pointer to the RingBuffer will be 
+                          available in the <EventData> field of qEvent_t structure.
  
     - arg: This argument defines if the Ring buffer will be linked (qLINK) or 
            unlinked (qUNLINK) from the task.
-           If the RB_COUNT mode is specified, this will be the value used to check
+           If the RB_COUNT mode is specified, this value will be used to check
            the element count of the Ring Buffer. A zero value will act as 
            an unlink action. 
 
@@ -494,13 +498,16 @@ int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, 
     if(RingBuffer->data == NULL) return -1;    
     switch(Mode){
         case RB_AUTOPOP:
-            Task->Flag.RBAutoPop = (qBool_t)arg;
+            Task->Flag.RBAutoPop = (qBool_t)arg!=qFalse;
             break;
         case RB_FULL:
-            Task->Flag.RBFull = (qBool_t)arg;
+            Task->Flag.RBFull = (qBool_t)arg!=qFalse;
             break;
         case RB_COUNT:
             Task->Flag.RBCount = arg;
+            break;
+        case RB_EMPTY:
+            Task->Flag.RBEmpty = (qBool_t)arg!=qFalse;
             break;
         default: return -1;
     }
@@ -512,18 +519,28 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
     qRBuffer_t *rb = Task->RingBuff;
     void* popdata = NULL;
     if(rb == NULL) return _Q_NO_VALID_TRIGGER_;
-    if(Task->Flag.RBFull && _qRBufferFull(rb)){
-        QUARKTS.EventInfo.EventData = (void*)rb; 
-        return byRBufferFull;
+    if(Task->Flag.RBFull){
+        if(_qRBufferFull(rb)){
+            QUARKTS.EventInfo.EventData = (void*)rb; 
+            return byRBufferFull;
+        }
     }
-    if( (Task->Flag.RBCount>0) && (Task->Flag.RBCount >= _qRBufferCount(rb)) ){
-        QUARKTS.EventInfo.EventData = (void*)rb;         
-        return byRBufferCount;
+    if(Task->Flag.RBCount>0){
+        if( Task->Flag.RBCount >= _qRBufferCount(rb) ){
+            QUARKTS.EventInfo.EventData = (void*)rb;         
+            return byRBufferCount;    
+        } 
     }
     if(Task->Flag.RBAutoPop){
         if((popdata = qRBufferGetFront(rb))!=NULL){
             QUARKTS.EventInfo.EventData = popdata; 
             return byRBufferPop;
+        }
+    }
+    if(Task->Flag.RBEmpty){
+        if (qRBufferEmpty(rb)){
+            QUARKTS.EventInfo.EventData = popdata; 
+            return byRBufferEmpty;
         }
     }
     return _Q_NO_VALID_TRIGGER_;
