@@ -19,7 +19,6 @@ void* TimerInterruptEmulation(void* varargin){
 }
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask;
-//qTask_t *taskx;
 
 qSM_Status_t firststate(qSM_t *fsm);
 qSM_Status_t secondstate(qSM_t *fsm);

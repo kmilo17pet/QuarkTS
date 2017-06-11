@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.2
+ *  Version : 4.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -145,8 +145,7 @@ extern "C" {
  
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
      
-    #define qSM_t volatile struct _qSM_t
-    
+    #define qSM_t volatile struct _qSM_t   
     struct _qSM_t{ 
         /* NextState:
         Next state to be performed after this state finish
@@ -168,12 +167,12 @@ extern "C" {
         State-machine associated data
          */
         void *Data;
-        struct { /*hide this members*/
+        /*Private members (DO NOT USE THEM)*/
+        struct /**/{
             void (*__Failure)(qSM_t*);
             void (*__Success)(qSM_t*);
             void (*__Unexpected)(qSM_t*);  
-            void (*__BeforeAnyState)(qSM_t*);//only used when a task has a SM attached
-           // void *AttachedTask;
+            void (*__BeforeAnyState)(qSM_t*);/*only used when a task has a SM attached*/
         }_;
     };    
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
@@ -216,8 +215,6 @@ extern "C" {
         uint8_t QueueSize;
         int16_t QueueIndex;
     }QuarkTSCoreData_t;
-    extern volatile QuarkTSCoreData_t QUARKTS;
-    extern volatile qClock_t _qSysTick_Epochs_;
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
     int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
@@ -240,15 +237,9 @@ extern "C" {
     void qTaskSetState(qTask_t *Task, qState_t State);
     void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
-
     uint32_t qTaskGetCycles(qTask_t *Task);
     
-    #define _Q_ENTER_CRITICAL()                                                          if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
-    #define _Q_EXIT_CRITICAL()                                                           if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
-    #define _Q_TASK_DEADLINE_REACHED(_TASK_)                                             ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == TIME_INMEDIATE)
-    #define _Q_TASK_HAS_PENDING_ITERS(_TASK_)                                           (_TASK_->Iterations>0 || _TASK_->Iterations==PERIODIC)
-    
-/*void qSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
+/*void qSchedulerSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
 Task Scheduler Setup. This function is required and must be called once in 
 the application main thread before any tasks creation.
@@ -265,60 +256,9 @@ Parameters:
                   number greater than zero
      */
     #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
-    /*
-void qSchedulerSysTick(void)
-
-Feed the scheduler system tick. This call is mandatory and must be called once
-inside the dedicated timer interrupt service routine (ISR). 
-*/    
-    #define qSchedulerSysTick()                                                               (_qSysTick_Epochs_++)
-
-
-/*void qSchedulerSetIdleTask(qTask_t Identifier, qTaskFcn_t IDLE_Callback)
-
-Establish the IDLE Task Callback
-
-Parameters:
-
-    - IDLE_Callback : A pointer to a void callback method with a qEvent_t 
-                      parameter as input argument.
-*/
-    #define qSchedulerSetIdleTask(IDLE_Callback)                                                 (QUARKTS.IDLECallback = IDLE_Callback)
-
-/*
-unsigned char qTaskIsEnabled(qTask_t Identifier)
-
-Retrieve the enabled/disabled state
-
-Parameters:
-
-    - Identifier : The task node identifier.
-
-Return value:
-
-    True if the task in on Enabled state, otherwise returns false.
-*/    
-    #define qTaskIsEnabled(TASK)                                                            ((qBool_t)((TASK)->Flag.Enabled))
-
-/*void qReleaseSchedule(void)
-
-Disables the QuarkTS scheduling. The main thread will continue after the
-qSchedule() call.
-*/
-    #define qSchedulerRelease()                                                          QUARKTS.Flag.ReleaseSched = qTrue
-/*void qSetReleaseSchedCallback(qTaskFcn_t Callback)
-
-Set/Change the scheduler release callback function
-
-Parameters:
-    - Callback : A pointer to a void callback method with a qEvent_t parameter 
-                 as input argument.
-*/
-    #define qSchedulerSetReleaseCallback(RELEASE_Callback)                                  QUARKTS.ReleaseSchedCallback = RELEASE_Callback
-      
+    
     int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
-
     
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                               __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
@@ -363,8 +303,7 @@ place of the qCoroutineBegin statement.
 Yields until the logical condition being true
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
-    #endif
-    
+    #endif  
     
         typedef struct{
             qBool_t SR;
@@ -377,9 +316,6 @@ Yields until the logical condition being true
         qClock_t qSTimerRemaining(qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
         #define QSTIMER_INITIALIZER     {0, 0, 0}
-
-
-
 
 #define QMEMORY_MANAGER       
         

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.2
+ *  Version : 4.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -17,21 +17,78 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 #include "QuarkTS.h"
-
-volatile QuarkTSCoreData_t QUARKTS;
-volatile qClock_t _qSysTick_Epochs_ = 0;
+/*=========================== QuarkTS Private Data ===========================*/
+static volatile QuarkTSCoreData_t QUARKTS;
+static volatile qClock_t _qSysTick_Epochs_ = 0;
+/*========================= QuarkTS Private Methods===========================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
 static qTask_t* _qPrioQueueExtract(void);
 static void _qTriggerIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
-
 static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
-
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+/*========================== QuarkTS Private Macros ==========================*/
+#define _Q_ENTER_CRITICAL()                     if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
+#define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
+#define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == TIME_INMEDIATE)
+#define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_TASK_->Iterations>0 || _TASK_->Iterations==PERIODIC)
+#define _Q_LOOP_TASK_SCHEME(_core_, _CURRENT_)  _CURRENT_ = _core_.First; while(_CURRENT_ != NULL)
+#define _Q_MAIN_SCHEDULE(_core_)                qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
+#define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
+/*============================================================================*/
+/*
+qBool_t qTaskIsEnabled(qTask_t Identifier)
 
+Retrieve the enabled/disabled state
+
+Parameters:
+
+    - Identifier : The task node identifier.
+
+Return value:
+
+    True if the task in on Enabled state, otherwise returns false.
+*/    
+qBool_t qTaskIsEnabled(qTask_t *Task){
+    return (qBool_t)Task->Flag.Enabled;
+}
+/*============================================================================*/
+/*void qSchedulerSetIdleTask(qTaskFcn_t Callback)
+
+Establish the IDLE Task Callback
+
+Parameters:
+
+    - IDLE_Callback : A pointer to a void callback method with a qEvent_t 
+                      parameter as input argument.
+*/
+void qSchedulerSetIdleTask(qTaskFcn_t Callback){
+    QUARKTS.IDLECallback = Callback;
+}
+/*============================================================================*/
+/*void qReleaseSchedule(void)
+
+Disables the QuarkTS scheduling. The main thread will continue after the
+qSchedule() call.
+*/
+void qReleaseSchedule(void){
+    QUARKTS.Flag.ReleaseSched = qTrue;
+}
+/*============================================================================*/
+/*void qSetReleaseSchedCallback(qTaskFcn_t Callback)
+
+Set/Change the scheduler release callback function
+
+Parameters:
+    - Callback : A pointer to a void callback method with a qEvent_t parameter 
+                 as input argument.
+*/
+void qSetReleaseSchedCallback(qTaskFcn_t Callback){
+    QUARKTS.ReleaseSchedCallback = Callback;
+}
 /*============================================================================*/
 /*uint32_t qTaskGetCycles(qTask_t Identifier)
 
@@ -498,16 +555,16 @@ int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, 
     if(RingBuffer->data == NULL) return -1;    
     switch(Mode){
         case RB_AUTOPOP:
-            Task->Flag.RBAutoPop = (qBool_t)arg!=qFalse;
+            Task->Flag.RBAutoPop = (qBool_t)(arg!=qFalse);
             break;
         case RB_FULL:
-            Task->Flag.RBFull = (qBool_t)arg!=qFalse;
+            Task->Flag.RBFull = (qBool_t)(arg!=qFalse);
             break;
         case RB_COUNT:
             Task->Flag.RBCount = arg;
             break;
         case RB_EMPTY:
-            Task->Flag.RBEmpty = (qBool_t)arg!=qFalse;
+            Task->Flag.RBEmpty = (qBool_t)(arg!=qFalse);
             break;
         default: return -1;
     }
@@ -562,24 +619,30 @@ static void _qTriggerIdleTask(void){
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
+/*
+void qSchedulerSysTick(void)
+
+Feed the scheduler system tick. This call is mandatory and must be called once
+inside the dedicated timer interrupt service routine (ISR). 
+*/    
+void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
+/*============================================================================*/
 /*void qSchedule(void)
     
 Executes the task-scheduler scheme. It must be called once after the task
 pool has been defined.
 
-  Note : qSchedule keeps the application in an endless loop
+  Note : qScheduleRun keeps the application in an endless loop
 */
 void qSchedulerRun(void){
     qTask_t *Task, *qTask;
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
-    qMainSchedule:
-    if(QUARKTS.Flag.ReleaseSched) goto qReleasedSchedule;
-    if(!QUARKTS.Flag.Init){    
-        _qTaskChainbyPriority();
+    _Q_MAIN_SCHEDULE(QUARKTS);
+    if(!QUARKTS.Flag.Init){   /*Check initial conditions*/ 
+        _qTaskChainbyPriority(); /*Sort the chain by priority*/
         QUARKTS.Flag.Init= 1;
-    }
-    Task = QUARKTS.First;
-    while(Task != NULL){       
+    }     
+    for(Task = QUARKTS.First; Task != NULL; Task = Task->Next){ 
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction);          
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){
             Task->ClockStart = _qSysTick_Epochs_;
@@ -597,10 +660,8 @@ void qSchedulerRun(void){
             _qTriggerEvent(Task, byAsyncEvent);
         }
         else if( QUARKTS.IDLECallback!= NULL) _qTriggerIdleTask();
-        Task = Task->Next;
     }
-    goto qMainSchedule;
-    qReleasedSchedule: _qTriggerReleaseSchedEvent();
+    _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent);
 }
 /*============================================================================*/
 /*int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
@@ -848,7 +909,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size){
             sum += obj->BlockSize;
             if( sum >= size ) {
                 *(obj->BlockDescriptors+j) = k;
-		for(c=0;c<size;c++) offset[i] = 0x00u;//zero-initialized memory block 
+		for(c=0;c<size;c++) offset[i] = 0x00u;/*zero-initialized memory block*/ 
                 _Q_EXIT_CRITICAL();
 		return (void*)offset;
             }						
@@ -892,8 +953,8 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     uint16_t i;
     if ( ((k-1) & k) != 0) {
         k--;
-        for (i = 1; i < sizeof(uint16_t) * 8; i = i * 2)  k = k | k >> i;
-        k = (k+1) >> 1;
+        for (i = 1; i<sizeof(uint16_t)*8; i=i*2)  k = k|k>>i;
+        k = (k+1)>>1;
     }
     return k;
 }
@@ -1009,8 +1070,8 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     volatile uint8_t *ring_data = NULL;
     uint16_t i;
 
-    if (obj && data_element) {
-        if (!_qRBufferFull(obj)) {
+    if(obj && data_element){
+        if(!_qRBufferFull(obj)){
             ring_data = obj->data + ((obj->head % obj->Elementcount) * obj->ElementSize);
             for (i = 0; i < obj->ElementSize; i++) ring_data[i] = data_element[i];            
             obj->head++;

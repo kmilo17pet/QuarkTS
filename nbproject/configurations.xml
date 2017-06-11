@@ -65,6 +65,7 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
+          <standard>2</standard>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
