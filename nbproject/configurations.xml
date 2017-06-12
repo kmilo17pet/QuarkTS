@@ -66,6 +66,7 @@
         <cTool>
           <developmentMode>5</developmentMode>
           <standard>2</standard>
+          <warningLevel>2</warningLevel>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>

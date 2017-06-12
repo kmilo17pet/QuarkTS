@@ -215,6 +215,12 @@ extern "C" {
         uint8_t QueueSize;
         int16_t QueueIndex;
     }QuarkTSCoreData_t;
+    void qSchedulerSysTick(void);
+    qBool_t qTaskIsEnabled(qTask_t *Task);
+    void qSchedulerSetIdleTask(qTaskFcn_t Callback);
+    void qReleaseSchedule(void);
+    void qSetReleaseSchedCallback(qTaskFcn_t Callback);
+    
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
     int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
@@ -322,7 +328,7 @@ Yields until the logical condition being true
 #ifdef QMEMORY_MANAGER
 /* This structure is the head of a memory pool. */
 typedef struct {
-    uint16_t BlockSize;	
+    qSize_t BlockSize;	
     uint8_t NumberofBlocks;
     uint8_t *BlockDescriptors;
     uint8_t *Blocks;
@@ -368,7 +374,7 @@ Parameters:
                                                 
 
 
-    void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size);
+    void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 #endif
     
