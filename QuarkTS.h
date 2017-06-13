@@ -218,8 +218,8 @@ extern "C" {
     void qSchedulerSysTick(void);
     qBool_t qTaskIsEnabled(qTask_t *Task);
     void qSchedulerSetIdleTask(qTaskFcn_t Callback);
-    void qReleaseSchedule(void);
-    void qSetReleaseSchedCallback(qTaskFcn_t Callback);
+    void qSchedulerRelease(void);
+    void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
     
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));

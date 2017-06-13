@@ -70,16 +70,16 @@ void qSchedulerSetIdleTask(qTaskFcn_t Callback){
     QUARKTS.IDLECallback = Callback;
 }
 /*============================================================================*/
-/*void qReleaseSchedule(void)
+/*void qSchedulerRelease(void)
 
 Disables the QuarkTS scheduling. The main thread will continue after the
 qSchedule() call.
 */
-void qReleaseSchedule(void){
+void qSchedulerRelease(void){
     QUARKTS.Flag.ReleaseSched = qTrue;
 }
 /*============================================================================*/
-/*void qSetReleaseSchedCallback(qTaskFcn_t Callback)
+/*void qSchedulerSetReleaseCallback(qTaskFcn_t Callback)
 
 Set/Change the scheduler release callback function
 
@@ -87,7 +87,7 @@ Parameters:
     - Callback : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
-void qSetReleaseSchedCallback(qTaskFcn_t Callback){
+void qSchedulerSetReleaseCallback(qTaskFcn_t Callback){
     QUARKTS.ReleaseSchedCallback = Callback;
 }
 /*============================================================================*/
