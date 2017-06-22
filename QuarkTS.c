@@ -484,16 +484,14 @@ int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
 }
 /*============================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
-    _qEvent_t_ eventinfo;
     if(Task==NULL) return; /*Not a valid task, do nothing*/
     /*Fill the event info structure*/
     QUARKTS.EventInfo.Trigger =  Event; 
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);    
     QUARKTS.EventInfo.TaskData = Task->TaskData;
-    eventinfo = QUARKTS.EventInfo;
     /*If the task has a FSM attached, just run it*/
-    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&eventinfo);   
-    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&eventinfo); /*else, just lauch the callback function*/        
+    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
+    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just lauch the callback function*/        
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*extract the data from the RBuffer, if the event wask byRBufferPop*/
     Task->Flag.InitFlag = qTrue; /*clear the init flag*/
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
@@ -631,11 +629,9 @@ static void _qTriggerReleaseSchedEvent(void){
 }
 /*============================================================================*/
 static void _qTriggerIdleTask(void){
-    _qEvent_t_ eventinfo;
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
     QUARKTS.EventInfo.Trigger = byPriority;
-    eventinfo = QUARKTS.EventInfo;
-    QUARKTS.IDLECallback((qEvent_t)&eventinfo);
+    QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
