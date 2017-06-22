@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3
+ *  Version : 4.3.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -30,12 +30,12 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+
 /*========================== QuarkTS Private Macros ==========================*/
 #define _Q_ENTER_CRITICAL()                     if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
 #define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
 #define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == TIME_INMEDIATE)
 #define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_TASK_->Iterations>0 || _TASK_->Iterations==PERIODIC)
-#define _Q_LOOP_TASK_SCHEME(_core_, _CURRENT_)  _CURRENT_ = _core_.First; while(_CURRENT_ != NULL)
 #define _Q_MAIN_SCHEDULE(_core_)                qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
 #define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
 /*============================================================================*/
@@ -484,15 +484,20 @@ int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
 }
 /*============================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
-    if(Task==NULL) return;
-    QUARKTS.EventInfo.Trigger =  Event;
-    QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);   
+    _qEvent_t_ eventinfo;
+    if(Task==NULL) return; /*Not a valid task, do nothing*/
+    /*Fill the event info structure*/
+    QUARKTS.EventInfo.Trigger =  Event; 
+    QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);    
     QUARKTS.EventInfo.TaskData = Task->TaskData;
-    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
-    else if (Task->Callback != NULL) Task->Callback(QUARKTS.EventInfo);    
-    Task->Flag.InitFlag = qTrue;
-    QUARKTS.EventInfo.EventData = NULL;
-    Task->Cycles++;
+    eventinfo = QUARKTS.EventInfo;
+    /*If the task has a FSM attached, just run it*/
+    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&eventinfo);   
+    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&eventinfo); /*else, just lauch the callback function*/        
+    if(Event==byRBufferPop) Task->RingBuff->tail++;  /*extract the data from the RBuffer, if the event wask byRBufferPop*/
+    Task->Flag.InitFlag = qTrue; /*clear the init flag*/
+    QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
+    Task->Cycles++; /*increase the task cycles*/
 }
 /*============================================================================*/
 static void _qTaskChainbyPriority(void){
@@ -621,14 +626,16 @@ static void _qTriggerReleaseSchedEvent(void){
     QUARKTS.Flag.ReleaseSched = qFalse;
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallReleased);
     QUARKTS.EventInfo.Trigger = byAsyncEvent;
-    if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback(QUARKTS.EventInfo);
+    if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
 static void _qTriggerIdleTask(void){
+    _qEvent_t_ eventinfo;
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
     QUARKTS.EventInfo.Trigger = byPriority;
-    QUARKTS.IDLECallback(QUARKTS.EventInfo);
+    eventinfo = QUARKTS.EventInfo;
+    QUARKTS.IDLECallback((qEvent_t)&eventinfo);
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
@@ -648,33 +655,31 @@ pool has been defined.
   Note : qScheduleRun keeps the application in an endless loop
 */
 void qSchedulerRun(void){
-    qTask_t *Task, *qTask;
+    qTask_t *Task, *qTask; /*Current task in the chain, extracted task from queue if available*/
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
-    _Q_MAIN_SCHEDULE(QUARKTS);
+    _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/
     if(!QUARKTS.Flag.Init){   /*Check initial conditions*/ 
         _qTaskChainbyPriority(); /*Sort the chain by priority*/
-        QUARKTS.Flag.Init= 1;
+        QUARKTS.Flag.Init= 1; /*set the initializtion flag*/
     }     
-    for(Task = QUARKTS.First; Task != NULL; Task = Task->Next){ 
-        if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction);          
-        if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){
-            Task->ClockStart = _qSysTick_Epochs_;
-            if(Task->Iterations!= PERIODIC) Task->Iterations--;
-            if(Task->Iterations == 0) Task->Flag.Enabled = qFalse;
-            _qTriggerEvent(Task, byTimeElapsed);            
+    for(Task = QUARKTS.First; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
+        if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
+        if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/
+            Task->ClockStart = _qSysTick_Epochs_; /*Restart the time*/
+            if(Task->Iterations!= PERIODIC) Task->Iterations--; /*Decrease the iteration value*/
+            if(Task->Iterations == 0) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/
+            _qTriggerEvent(Task, byTimeElapsed); /*Lauch the task with the corresponding event*/       
         }
-        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_){
-            _qTriggerEvent(Task, trg);         
-            Task->RingBuff->tail++;
+        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_) /*If the deadline has not met, check if there are RBuffer events available*/
+            _qTriggerEvent(Task, trg); /*If RBuffer events exist, the flag will be available in the <trg> variable, so lauch the task with the corresponding event*/                  
+        else if( Task->Flag.AsyncRun){ /*The last check will be if the task has a async event*/
+            QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
+            Task->Flag.AsyncRun = qFalse; /*Clear the async flag*/
+            _qTriggerEvent(Task, byAsyncEvent); /*Lauch the task with the corresponding event*/
         }
-        else if( Task->Flag.AsyncRun){
-            QUARKTS.EventInfo.EventData = Task->AsyncData;
-            Task->Flag.AsyncRun = qFalse;
-            _qTriggerEvent(Task, byAsyncEvent);
-        }
-        else if( QUARKTS.IDLECallback!= NULL) _qTriggerIdleTask();
+        else if( QUARKTS.IDLECallback!= NULL) _qTriggerIdleTask(); /*if the current task has no pending events, launch the IDLETask*/
     }
-    _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent);
+    _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent); /*scheduling end-point*/
 }
 /*============================================================================*/
 /*int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);

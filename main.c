@@ -27,9 +27,12 @@ void datacapture(qSM_t *fsm){
     
 }
 
-
+/*============================================================================*/
 qSM_Status_t firststate(qSM_t *fsm){
-    qEvent_t *e = (qEvent_t*)fsm->Data;
+    qEvent_t e = fsm->Data;
+    if(e->FirstCall){
+        puts("state machine init");
+    }
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.1);
@@ -40,8 +43,9 @@ qSM_Status_t firststate(qSM_t *fsm){
     }
     return qSM_EXIT_SUCCESS;
 }
+/*============================================================================*/
 qSM_Status_t secondstate(qSM_t *fsm){
-    qEvent_t *e = (qEvent_t*)fsm->Data;
+    qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateJustChanged){
         qSTimerSet(&tmr, 0.5);
@@ -56,7 +60,7 @@ qSM_Status_t secondstate(qSM_t *fsm){
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
-    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e.TaskData, (char*)e.EventData, qTaskGetCycles(&Task1));
+    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
     /*
     qTaskQueueEvent(&Task2, "A");
     qTaskQueueEvent(&Task3, "B");
@@ -80,27 +84,27 @@ void Task1Callback(qEvent_t e){
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
 }
 /*============================================================================*/
 void Task3Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
-    if(e.Trigger == byRBufferPop){
-        int *ptr = (int*)e.EventData;
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
+    if(e->Trigger == byRBufferPop){
+        int *ptr = (int*)e->EventData;
         printf("ring extracted data %d\r\n",*ptr);
     }
 }
 /*============================================================================*/
 void Task4Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
 }
 /*============================================================================*/
 void Task5Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
 }
 /*============================================================================*/
 void Task6Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e.TaskData, (char*)e.EventData);   
+    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);   
 }
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
@@ -116,9 +120,9 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineWaitUntil(qSTimerFreeRun(&tmr, 1.0));
     }qCoroutineEnd;
 }
-
 /*============================================================================*/
 int main(int argc, char** argv) {
+    
     qRBuffer_t ringBuffer;
     /*
     signal(SIGALRM, alarm_signal);

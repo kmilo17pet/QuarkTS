@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3
+ *  Version : 4.3.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -27,6 +27,7 @@ extern "C" {
     #include <stdint.h>
 
     #define _QUARKTS_CR_DEFS_
+    #define QUARTKTS_VERSION "4.3.2"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -126,8 +127,7 @@ extern "C" {
         This flag can be used for data initialization purposes.
         */
         qBool_t FirstCall;
-    }qEvent_t;
-    
+    }_qEvent_t_, *qEvent_t;  
     typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{
     	volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
@@ -178,7 +178,7 @@ extern "C" {
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
     typedef void (*qSM_ExState_t)(qSM_t*);    
     
-    struct _qTask_t{
+    struct _qTask_t{ /*Task node definition*/
         void *TaskData,*AsyncData;
         volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
@@ -206,7 +206,7 @@ extern "C" {
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
         qTime_t Tick;
-        qEvent_t EventInfo;
+        _qEvent_t_ EventInfo;
         qTask_t *First;
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
