@@ -133,6 +133,7 @@ int main(int argc, char** argv) {
     qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
+    
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);

@@ -102,19 +102,17 @@ extern "C" {
         - byRBufferPop: When there is elements available in the linked ring-buffer,
                         the scheduler makes a data extraction (auto-pop) from the
                         head. A pointer to the extracted (popped) data will be 
-                        available in the <EventData> field of qEvent_t structure.
+                        available in the <EventData> field.
         
         - byRBufferFull: When the linked ring-buffer is full. A pointer to the 
-                         RingBuffer will be available in the <EventData> field of 
-                         qEvent_t structure.
+                         RingBuffer will be available in the <EventData> field.
          
         - byRBufferCount: When the element-count of the linked ring-buffer reaches
                          the specified value. A pointer to the RingBuffer will 
-                         be available in the <EventData> field of qEvent_t structure.
+                         be available in the <EventData> field.
         
         - byRBufferEmpty: When the linked ring-buffer is empty.  A pointer to the 
-                         RingBuffer will be available in the <EventData> field of 
-                         qEvent_t structure.
+                         RingBuffer will be available in the <EventData> field.
         */
         qTrigger_t Trigger;
         /* TaskData:
@@ -122,8 +120,10 @@ extern "C" {
         */
         void *TaskData;
         /* EventData:
-        Associated data of the event. Only available when the trigger is 
-        <byQueueExtraction> or <byAsyncEvent>, Otherwise, this field is NULL.*/
+        Associated data of the event. Specific data will reside here according
+         to the event source. This field will only have a NULL value when the 
+        trigger is <byTimeElapsed> or <byPriority>.
+         */
         void *EventData;
         /* FirstCall:
         This flag indicates that a task is running for the first time. 
