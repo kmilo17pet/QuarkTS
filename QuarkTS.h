@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.2
+ *  Version : 4.3.6
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -25,9 +25,12 @@ extern "C" {
 #endif
             
     #include <stdint.h>
+    #include <string.h>
+    #include <stdio.h>
+    #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.3.2"
+    #define QUARTKTS_VERSION "4.3.6"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -384,7 +387,8 @@ Parameters:
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
-void* qRBufferPopFront(qRBuffer_t *obj);
+/*void* qRBufferPopFront(qRBuffer_t *obj);*/
+void* qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 
     #ifdef __XC8

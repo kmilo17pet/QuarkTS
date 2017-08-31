@@ -20,6 +20,7 @@
 /*=========================== QuarkTS Private Data ===========================*/
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0;
+static qTask_t *__qCurrExTask = NULL;
 /*========================= QuarkTS Private Methods===========================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(void);
@@ -30,7 +31,6 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
-
 /*========================== QuarkTS Private Macros ==========================*/
 #define _Q_ENTER_CRITICAL()                     if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
 #define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
@@ -38,6 +38,20 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
 #define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_TASK_->Iterations>0 || _TASK_->Iterations==PERIODIC)
 #define _Q_MAIN_SCHEDULE(_core_)                qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
 #define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
+/*============================================================================*/
+/*
+qTask_t* qTaskSelf(void)
+
+Get current running task handle.
+
+Return value:
+
+    A pointer to the current running task.
+    NULL when the scheduler it's in a busy state or when IDLE Task is running.
+*/
+qTask_t* qTaskSelf(void){
+    return __qCurrExTask;
+}
 /*============================================================================*/
 /*
 qBool_t qTaskIsEnabled(qTask_t Identifier)
@@ -490,8 +504,10 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);    
     QUARKTS.EventInfo.TaskData = Task->TaskData;
     /*If the task has a FSM attached, just run it*/
+    __qCurrExTask = Task;
     if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
     else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just lauch the callback function*/        
+    __qCurrExTask = NULL;
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*extract the data from the RBuffer, if the event wask byRBufferPop*/
     Task->Flag.InitFlag = qTrue; /*clear the init flag*/
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
@@ -1055,16 +1071,18 @@ Extract the data from the front of the list, and removes it
 Parameters:
 
     - obj : a pointer to the Ring Buffer object
+    - dest: pointer to where the data will be written
   
 Return value:
 
-    Pointer to the data, or NULL if nothing in the list
+    qTrue if data was retrived from Rbuffer, otherwise returns qFalse
 */
-void* qRBufferPopFront(qRBuffer_t *obj){
+void* qRBufferPopFront(qRBuffer_t *obj, void *dest){
     if(obj == NULL) return NULL;
     void *data = NULL;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
+        memcpy(dest, data, obj->ElementSize);
         obj->tail++;
     }
     return data;    

@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     void *memtest;
     int x=5 , y=6;
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    qRBufferInit(&ringBuffer, memtest, 10, sizeof(int));
+    qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     qSchedulerSetup(0.01, IdleTaskCallback, 10);
