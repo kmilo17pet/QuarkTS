@@ -16,6 +16,12 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
+/*
+For documentation, read the wiki
+https://github.com/kmilo17pet/QuarkTS/wiki
+and the available API
+https://github.com/kmilo17pet/QuarkTS/wiki/APIs
+*/
 
 #ifndef H_QuarkTS
 #define	H_QuarkTS
@@ -219,6 +225,7 @@ extern "C" {
         int16_t QueueIndex;
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
+    qTask_t* qTaskSelf(void);
     qBool_t qTaskIsEnabled(qTask_t *Task);
     void qSchedulerSetIdleTask(qTaskFcn_t Callback);
     void qSchedulerRelease(void);
@@ -247,6 +254,28 @@ extern "C" {
     void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
     uint32_t qTaskGetCycles(qTask_t *Task);
+    
+    
+/*void qTaskSuspend(qTask_t *Task)
+
+Put the task into a disabled state.    
+
+Parameters:
+
+    - Task : A pointer to the task node.
+*/
+    #define qTaskSuspend(pTask_)    qTaskSetState(pTask_, qDisabled)
+/*void qTaskResume(qTask_t *Task)
+
+Put the task into a enabled state.    
+
+Parameters:
+
+    - Task : A pointer to the task node.
+*/
+    #define qTaskResume(pTask_)    qTaskSetState(pTask_, qEnabled)
+
+    
     
 /*void qSchedulerSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     

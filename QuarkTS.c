@@ -16,6 +16,14 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
+
+/*
+For documentation, read the wiki
+https://github.com/kmilo17pet/QuarkTS/wiki
+and the available API
+https://github.com/kmilo17pet/QuarkTS/wiki/APIs
+*/
+
 #include "QuarkTS.h"
 /*=========================== QuarkTS Private Data ===========================*/
 static volatile QuarkTSCoreData_t QUARKTS;
