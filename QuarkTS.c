@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.6
+ *  Version : 4.3.7
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -624,7 +624,7 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
         }
     }
     if(Task->Flag.RBCount>0){
-        if( Task->Flag.RBCount >= _qRBufferCount(rb) ){
+        if( _qRBufferCount(rb) >= Task->Flag.RBCount ){
             QUARKTS.EventInfo.EventData = (void*)rb;        
             return byRBufferCount;    
         } 
@@ -1035,7 +1035,7 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t
     obj->tail = 0;
     obj->data = DataBlock;
     obj->ElementSize = ElementSize;
-    obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);     
+    obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);
 }
 /*============================================================================*/
 /*qBool_t qRBufferEmpty(qRBuffer_t *obj)
