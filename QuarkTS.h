@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.7
+ *  Version : 4.3.8
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.3.7"
+    #define QUARTKTS_VERSION "4.3.8"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -233,18 +233,18 @@ extern "C" {
     
     void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
-    int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
-    int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
-    int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+    qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
+    qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
+    qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg);
     void qSchedulerRun(void);
-    int qTaskQueueEvent(qTask_t *Task, void* eventdata);  
+    qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
     
     typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT, RB_EMPTY}qRBLinkMode_t;
     
-    int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
+    qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
     
     void qTaskSetTime(qTask_t *Task, qTime_t Value);
     void qTaskSetIterations(qTask_t *Task, qIteration_t Value);
@@ -295,7 +295,7 @@ Parameters:
      */
     #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     
-    int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
+    qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     
     #ifdef _QUARKTS_CR_DEFS_    
@@ -416,8 +416,7 @@ Parameters:
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
-/*void* qRBufferPopFront(qRBuffer_t *obj);*/
-void* qRBufferPopFront(qRBuffer_t *obj, void *dest);
+qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 
     #ifdef __XC8

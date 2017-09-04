@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.7
+ *  Version : 4.3.8
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -264,7 +264,7 @@ void qTaskClearTimeElapsed(qTask_t *Task){
     Task->ClockStart = _qSysTick_Epochs_;
 }
 /*============================================================================*/
-/*int qTaskQueueEvent(qTask_t *Task, void* eventdata)
+/*qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata)
 
 Insert an asyncrohous event in the FIFO priority queue. The task will be ready 
 for execution according to the queue extraction (determined by priority), even 
@@ -280,16 +280,16 @@ Parameters:
 
 Return value:
 
-    Return 0 if the event has been inserted in the queue, or -1 if an error 
+    Returns qTrue if the event has been inserted in the queue, or qFalse if an error 
     occurred (The queue exceeds the size).
 */
-int qTaskQueueEvent(qTask_t *Task, void* eventdata){
-    if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return -1;
+qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
+    if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;
     qQueueStack_t qtmp;
     qtmp.Task = Task,
     qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
-    return 0;
+    return qTrue;
 }
 /*============================================================================*/
 /*void qSchedulerSetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
@@ -350,7 +350,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     _qSysTick_Epochs_ = 0;
 }
 /*============================================================================*/
-/*int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)
+/*qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)
 
 Add a task to the scheduling scheme. The task is scheduled to run every <Time> 
 seconds, <nExecutions> times and executing <CallbackFcb> method on every pass.
@@ -385,11 +385,11 @@ Parameters:
 
 Return value:
 
-    Returns 0 on successs, otherwise returns -1;
+    Returns qTrue on successs, otherwise returns qFalse;
     */
-int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if(Task==NULL) return -1;
-    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return -1;    
+qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
+    if(Task==NULL) return qFalse;
+    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;    
     Task->Callback = CallbackFcn;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->TaskData = arg;
@@ -401,13 +401,13 @@ int qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priori
     QUARKTS.First = Task;
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
-    QUARKTS.Flag.Init = 0;
+    QUARKTS.Flag.Init = qFalse;
     Task->RingBuff = NULL;
     Task->StateMachine = NULL;
-    return 0;
+    return qTrue;
 }
 /*============================================================================*/
-/*int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg)
+/*qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg)
 
 Add a task to the scheduling scheme.  This API creates a task with qDisabled 
 state by default , so this task will be oriented to be executed only, when 
@@ -430,13 +430,13 @@ Parameters:
      
 Return value:
 
-    Returns 0 on successs, otherwise returns -1;     
+    Returns qTrue on successs, otherwise returns qFalse;     
      */
-int qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
-    return qSchedulerAddxTask(Task, CallbackFcn, Priority, TIME_INMEDIATE, SINGLESHOT, 0, arg);
+qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
+    return qSchedulerAddxTask(Task, CallbackFcn, Priority, TIME_INMEDIATE, SINGLESHOT, qDisabled, arg);
 }
 /*============================================================================*/
-/*int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+/*qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                          qSM_t *StateMachine, qSM_State_t InitState, 
                          qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState,
                          qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
@@ -488,13 +488,13 @@ Parameters:
  
 Return value:
 
-    Returns 0 on successs, otherwise returns -1;
+    Returns qTrue on successs, otherwise returns qFalse;
     */
-int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg){
-    if(StateMachine==NULL || InitState == NULL) return -1;
-    if (qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg) ==-1) return -1;
+    if(StateMachine==NULL || InitState == NULL) return qFalse;
+    if (qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg) ==-1) return qFalse;
     Task->StateMachine = StateMachine;
     StateMachine->NextState = InitState;
     StateMachine->PreviousState = NULL;
@@ -502,7 +502,7 @@ int qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
     StateMachine->_.__Success = SuccessState;
     StateMachine->_.__Unexpected = UnexpectedState;
     StateMachine->_.__BeforeAnyState = BeforeAnyState; 
-    return 0;
+    return qTrue;
 }
 /*============================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
@@ -550,7 +550,7 @@ static void _qTaskChainbyPriority(void){
     _Q_EXIT_CRITICAL();
 }
 /*============================================================================*/
-/*int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
+/*qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
 
 Links the Task with a Ring Buffer. 
 
@@ -588,11 +588,11 @@ Parameters:
 
 Return value:
 
-    Returns 0 on successs, otherwise returns -1;     
+    Returns qTrue on successs, otherwise returns qFalse;     
      */
-int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
-    if(RingBuffer == NULL || Task==NULL) return -1;
-    if(RingBuffer->data == NULL) return -1;    
+qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
+    if(RingBuffer == NULL || Task==NULL) return qFalse;
+    if(RingBuffer->data == NULL) return qFalse;    
     switch(Mode){
         case RB_AUTOPOP:
             Task->Flag.RBAutoPop = (qBool_t)(arg!=qFalse);
@@ -606,10 +606,10 @@ int qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, 
         case RB_EMPTY:
             Task->Flag.RBEmpty = (qBool_t)(arg!=qFalse);
             break;
-        default: return -1;
+        default: return qFalse;
     }
     Task->RingBuff = (arg>0)? RingBuffer : NULL;
-    return 0;
+    return qTrue;
 }
 /*============================================================================*/
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
@@ -700,7 +700,7 @@ void qSchedulerRun(void){
     _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent); /*scheduling end-point (also check for scheduling-release request)*/
 }
 /*============================================================================*/
-/*int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
+/*qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
 
 Initializes a finite state machine (FSM).
 
@@ -729,14 +729,14 @@ Return value:
 
     Returns 0 on successs, otherwise returns -1;
 */
-int qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState){
-    if(obj==NULL || InitState == NULL) return -1;
+qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState){
+    if(obj==NULL || InitState == NULL) return qFalse;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
     obj->_.__Failure = FailureState;
     obj->_.__Success = SuccessState;
     obj->_.__Unexpected = UnexpectedState;
-    return 0;
+    return qTrue;
 }
 /*============================================================================*/
 /*void qStateMachine_Run(qSM_t *obj, void* Data)
@@ -778,7 +778,7 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     }
  }
 /*============================================================================*/
-/*int qSTimerSet(qSTimer_t OBJ, qTime_t Time)
+/*qBool_t qSTimerSet(qSTimer_t OBJ, qTime_t Time)
  
 Set the expiration time for a STimer. On success, the Stimer gets 
 armed immediately
@@ -795,18 +795,18 @@ Parameters:
 
 Return value:
 
-    Returns qFalse on success, otherwise, returns qError.
+    Returns qTrue on success, otherwise, returns qFalse.
 */ 
 qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
-    if(obj==NULL) return qError;
-    if ( (Time/2.0)<QUARKTS.Tick ) return qError;
+    if(obj==NULL) return qFalse;
+    if ( (Time/2.0)<QUARKTS.Tick ) return qFalse;
     obj->TV = (qClock_t)(Time/QUARKTS.Tick);
     obj->Start = _qSysTick_Epochs_;
     obj->SR = qTrue;
-    return qFalse;
+    return qTrue;
 }
 /*============================================================================*/
-/*unsigned char qSTimerFreeRun(qSTimer_t *obj, qTime_t Time)
+/*qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time)
 
 Non-Blocking STimer check with automatic arming
 
@@ -839,7 +839,7 @@ qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
     return qSTimerSet(obj, Time);    
 }
 /*============================================================================*/
-/*unsigned char qSTimerExpired(qSTimer_t *obj)
+/*qBool_t qSTimerExpired(qSTimer_t *obj)
 
 Non-Blocking Stimer check
 
@@ -1085,15 +1085,16 @@ Return value:
 
     qTrue if data was retrived from Rbuffer, otherwise returns qFalse
 */
-void* qRBufferPopFront(qRBuffer_t *obj, void *dest){
-    if(obj == NULL) return NULL;
+qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
+    if(obj == NULL) return qFalse;
     void *data = NULL;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
         memcpy(dest, data, obj->ElementSize);
         obj->tail++;
+        return qTrue;
     }
-    return data;    
+    return qFalse;    
 }
 /*============================================================================*/
 /*qBool_t qRBufferPush(qRBuffer_t *obj, void *data)
