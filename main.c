@@ -34,7 +34,7 @@ qSM_Status_t firststate(qSM_t *fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
-    if(fsm->StateJustChanged){
+    if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 0.1);
         printf("[%s] first\r\n", (char*)e->TaskData);
     }
@@ -47,7 +47,7 @@ qSM_Status_t firststate(qSM_t *fsm){
 qSM_Status_t secondstate(qSM_t *fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
-    if(fsm->StateJustChanged){
+    if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 0.5);
         printf("[%s] second\r\n", (char*)e->TaskData);
     }
@@ -120,14 +120,10 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineWaitUntil(qSTimerFreeRun(&tmr, 1.0));
     }qCoroutineEnd;
 }
+
 /*============================================================================*/
 int main(int argc, char** argv) {
-    
     qRBuffer_t ringBuffer;
-    /*
-    signal(SIGALRM, alarm_signal);
-    signal(SIGINT, sigint_signal);
-    */
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, MEMBLOCK_4_BYTE);
     qSM_t statemachine;
@@ -147,7 +143,8 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddxTask(&blinktask, blinktaskCallback, HIGH_Priority, TIME_INMEDIATE, PERIODIC, qEnabled, "blink");
     qSchedulerAddSMTask(&SMTask, HIGH_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-    qSchedulerRun();
+    qSchedulerRun(); 
+    
     return (EXIT_SUCCESS);
 }
 

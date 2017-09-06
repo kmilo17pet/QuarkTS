@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.8
+ *  Version : 4.3.9
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -25,6 +25,19 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 */
 
 #include "QuarkTS.h"
+
+#ifdef __XC8
+    #pragma warning push
+    #pragma warning disable 1471   /*disable warning: (1471) indirect function call via a NULL pointer ignored*/
+    #pragma warning disable 1498   /*disable warning: (1498) pointer (x@y) in expression may have no targets*/
+    #pragma warning disable 520    /*disable warning: (520) function "x" is never called*/
+    #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
+#endif
+
+#ifdef __XC16
+#endif
+#ifdef __XC32
+#endif
 /*=========================== QuarkTS Private Data ===========================*/
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0;
@@ -494,7 +507,7 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
-    if (qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg) ==-1) return qFalse;
+    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg)) return qFalse;
     Task->StateMachine = StateMachine;
     StateMachine->NextState = InitState;
     StateMachine->PreviousState = NULL;
@@ -514,9 +527,9 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     /*If the task has a FSM attached, just run it*/
     __qCurrExTask = Task;
     if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);   
-    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just lauch the callback function*/        
+    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     __qCurrExTask = NULL;
-    if(Event==byRBufferPop) Task->RingBuff->tail++;  /*extract the data from the RBuffer, if the event wask byRBufferPop*/
+    if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event wask byRBufferPop*/
     Task->Flag.InitFlag = qTrue; /*clear the init flag*/
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
     Task->Cycles++; /*increase the task cycles*/
@@ -733,6 +746,8 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t Succ
     if(obj==NULL || InitState == NULL) return qFalse;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
+    obj->StateFirstEntry = 0;
+    obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
     obj->_.__Failure = FailureState;
     obj->_.__Success = SuccessState;
     obj->_.__Unexpected = UnexpectedState;
@@ -758,7 +773,7 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     obj->Data = Data;
     if(obj->_.__BeforeAnyState != NULL) obj->_.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
-        obj->StateJustChanged = (qBool_t)(obj->PreviousState != obj->NextState);
+        obj->StateFirstEntry = (qBool_t)(obj->PreviousState != obj->NextState);
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
         obj->PreviousState = prev;
@@ -777,6 +792,53 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
             break;
     }
  }
+/*============================================================================*/
+/*void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val)
+
+Change attributes or set actions to the Finite State Machine (FSM).
+
+Parameters:
+
+    - obj : a pointer to the FSM object.
+ 
+    - Flag: The attribute/action to be taken
+         > qSM_RESTART : Restart the FSM
+         > qSM_CLEAR_STATE_FIRST_ENTRY_FLAG: clear the entry flag for the 
+                current state if the NextState field doesnt change.
+         > qSM_FAILURE_STATE: Set the Failure State
+         > qSM_SUCCESS_STATE: Set the Success State
+         > qSM_UNEXPECTED_STATE: Set the Unexpected State
+         > qSM_BEFORE_ANY_STATE: Set the state executed before any state.
+ 
+    - Data : Specific attribute Data or Value.
+*/    
+void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
+    switch(Flag){
+        case qSM_RESTART:
+            obj->NextState = (qSM_State_t)val;
+            obj->PreviousState = NULL;
+            obj->StateFirstEntry = 0;
+            obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
+            return;
+        case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
+            obj->PreviousState  = NULL;
+            return;
+        case qSM_FAILURE_STATE:
+            obj->_.__Failure = (qSM_ExState_t)val;
+            return;
+        case qSM_SUCCESS_STATE:
+            obj->_.__Success = (qSM_ExState_t)val;
+            return;    
+        case qSM_UNEXPECTED_STATE:
+            obj->_.__Unexpected = (qSM_ExState_t)val;
+            return;   
+        case qSM_BEFORE_ANY_STATE:
+            obj->_.__BeforeAnyState = (qSM_ExState_t)val;
+            return;              
+        default:
+            return;
+    }
+}
 /*============================================================================*/
 /*qBool_t qSTimerSet(qSTimer_t OBJ, qTime_t Time)
  
@@ -945,7 +1007,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
 	j = i;	
 	for(k = 1, i = j; i < obj->NumberofBlocks; k++, i++) {
             if( *(obj->BlockDescriptors+i) ) {				
-                j = i + *(obj->BlockDescriptors+i);
+                j = (uint8_t)(i + *(obj->BlockDescriptors+i));
 		offset = (uint8_t*) obj->Blocks;
 		offset += j * (obj->BlockSize);
 		break;
@@ -1009,7 +1071,7 @@ static qSize_t _qRBufferCount(qRBuffer_t *obj){
 }
 /*============================================================================*/
 static qBool_t _qRBufferFull(qRBuffer_t *obj){
-    return (qBool_t)(obj ? (_qRBufferCount(obj) == obj->Elementcount) : qTrue);
+    return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == obj->Elementcount) : qTrue);
 }
 /*============================================================================*/
 /*void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount)
@@ -1052,7 +1114,7 @@ Return value:
  */
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
     if(obj==NULL) return qError;
-    return (qBool_t)(obj ? (_qRBufferCount(obj) == 0) : qTrue);    
+    return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == 0) : qTrue);    
 }
 /*============================================================================*/
 /*void* qRBufferGetFront(qRBuffer_t *obj)
@@ -1128,3 +1190,6 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     return status;    
 }
 /*============================================================================*/
+#ifdef __XC8
+    #pragma warning pop
+#endif

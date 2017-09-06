@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.8
+ *  Version : 4.3.9
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.3.8"
+    #define QUARTKTS_VERSION "4.3.9"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -153,8 +153,8 @@ extern "C" {
     }qRBuffer_t;
  
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
-     
-    #define qSM_t volatile struct _qSM_t   
+    
+    #define qSM_t volatile struct _qSM_t
     struct _qSM_t{ 
         /* NextState:
         Next state to be performed after this state finish
@@ -168,12 +168,14 @@ extern "C" {
         The return status of <PreviusStateState>
         */
         qSM_Status_t PreviousReturnStatus;
-        /* StateJustChanged:
+        /* StateFirstEntry: (== StateJustChanged)
         True when  <Previous State> !=  <Current State>
         */
-        qBool_t StateJustChanged;
+        qBool_t StateFirstEntry;
         /* Data:
-        State-machine associated data
+        State-machine associated data.
+        Note: If the FSM is running as a task, the asociated event data can be 
+        queried throught the "Data" field. (cast to qEvent_t is mandatory)
          */
         void *Data;
         /*Private members (DO NOT USE THEM)*/
@@ -184,6 +186,17 @@ extern "C" {
             void (*__BeforeAnyState)(qSM_t*);/*only used when a task has a SM attached*/
         }_;
     };    
+    #define StateJustChanged    StateFirstEntry /*backward compatibility*/
+    
+    typedef enum{
+        qSM_RESTART, 
+        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, 
+        qSM_FAILURE_STATE,
+        qSM_SUCCESS_STATE,
+        qSM_UNEXPECTED_STATE,
+        qSM_BEFORE_ANY_STATE,               
+    }qFSM_Attribute_t;
+    
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
     typedef void (*qSM_ExState_t)(qSM_t*);    
     
@@ -297,7 +310,7 @@ Parameters:
     
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
-    
+    void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                               __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
         #define __qCRYield                               { __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; }
@@ -418,10 +431,6 @@ qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
-
-    #ifdef __XC8
-        #pragma warning disable 1471   //disable warning: (1471) indirect function call via a NULL pointer ignored
-    #endif
 
 
 #ifdef	__cplusplus
