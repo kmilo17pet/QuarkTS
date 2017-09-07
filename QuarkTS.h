@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.3.9"
+    #define QUARTKTS_VERSION "4.4.0"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
