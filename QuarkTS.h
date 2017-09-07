@@ -43,11 +43,12 @@ extern "C" {
 
     #define qTrue   0x01u
     #define qFalse  0x00u
-    #define qError  0xFFu
     #define qEnabled              (qTrue)
     #define qDisabled             (qFalse)
     #define qLINK                 (qTrue)
     #define qUNLINK               (qFalse)  
+    #define qON                   (qTrue)
+    #define qOFF                  (qFalse)
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;

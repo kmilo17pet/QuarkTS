@@ -890,7 +890,7 @@ Return value:
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
 qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
-    if(obj==NULL) return qError;
+    if(obj==NULL) return qFalse;
     if(obj->SR){
         if (qSTimerExpired(obj)){
             qSTimerDisarm(obj);
@@ -898,7 +898,8 @@ qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
         }
         else return qFalse;
     }
-    return qSTimerSet(obj, Time);    
+    qSTimerSet(obj, Time);
+    return qFalse;    
 }
 /*============================================================================*/
 /*qBool_t qSTimerExpired(qSTimer_t *obj)
@@ -916,7 +917,7 @@ Return value:
 
 */
 qBool_t qSTimerExpired(qSTimer_t *obj){
-    if(obj==NULL) return qError;
+    if(obj==NULL) return qFalse;
     if(!obj->SR) return qFalse; 
     return (qBool_t)((_qSysTick_Epochs_ - obj->Start)>=obj->TV);
 }
@@ -1113,7 +1114,7 @@ Return value:
     qTrue if the ring buffer is empty, qFalse if it is not.
  */
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
-    if(obj==NULL) return qError;
+    if(obj==NULL) return qFalse;
     return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == 0) : qTrue);    
 }
 /*============================================================================*/
