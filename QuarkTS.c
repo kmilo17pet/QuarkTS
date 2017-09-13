@@ -52,11 +52,13 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+
+#define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
 #define _Q_ENTER_CRITICAL()                     if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
 #define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
-#define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == TIME_INMEDIATE)
-#define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_TASK_->Iterations>0 || _TASK_->Iterations==PERIODIC)
+#define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == qTimeInmediate)
+#define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
 #define _Q_MAIN_SCHEDULE(_core_)                qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
 #define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
 /*============================================================================*/
@@ -192,11 +194,11 @@ Parameters:
               the number of iteration set initially. After the iterations are 
               done, internal iteration counter is 0. If you need to perform
               another set of iterations, you need to set the number of 
-              iterations again.
+              iterations again and resume.
 */
 void qTaskSetIterations(qTask_t *Task, qIteration_t Value){
     if(Task==NULL) return;
-    Task->Iterations = Value;
+    Task->Iterations = (Value==qPeriodic)? qPeriodic : -Value;  
 }
 /*============================================================================*/
 /*void qTaskSetPriority(qTask_t *Task, qPriority_t Value)
@@ -407,7 +409,7 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->TaskData = arg;
     Task->Priority = Priority;
-    Task->Iterations = nExecutions;    
+    Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
     Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
     Task->Next = QUARKTS.First;
@@ -446,7 +448,7 @@ Return value:
     Returns qTrue on successs, otherwise returns qFalse;     
      */
 qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
-    return qSchedulerAddxTask(Task, CallbackFcn, Priority, TIME_INMEDIATE, SINGLESHOT, qDisabled, arg);
+    return qSchedulerAddxTask(Task, CallbackFcn, Priority, qTimeInmediate, qSingleShot, qDisabled, arg);
 }
 /*============================================================================*/
 /*qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
@@ -507,7 +509,7 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
-    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, PERIODIC, InitialTaskState, arg)) return qFalse;
+    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;
     Task->StateMachine = StateMachine;
     StateMachine->NextState = InitState;
     StateMachine->PreviousState = NULL;
@@ -531,6 +533,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     __qCurrExTask = NULL;
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event wask byRBufferPop*/
     Task->Flag.InitFlag = qTrue; /*clear the init flag*/
+    QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration =  qFalse;;
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
     Task->Cycles++; /*increase the task cycles*/
 }
@@ -697,8 +700,9 @@ void qSchedulerRun(void){
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/
             Task->ClockStart = _qSysTick_Epochs_; /*Restart the time*/
-            if(Task->Iterations!= PERIODIC) Task->Iterations--; /*Decrease the iteration value*/
-            if(Task->Iterations == 0) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/
+            Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (Task->Iterations!=qPeriodic & Task->Iterations<0))? -Task->Iterations : Task->Iterations;
+            if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
+            if((QUARKTS.EventInfo.LastIteration = (Task->Iterations == 0))) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/
             _qTriggerEvent(Task, byTimeElapsed); /*Launch the task with the corresponding event*/       
         }
         else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_) /*If the deadline has not met, check if there is a RBuffer event available*/

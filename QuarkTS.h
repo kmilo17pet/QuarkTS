@@ -74,19 +74,42 @@ extern "C" {
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
-    typedef uint8_t qIteration_t;
+    typedef int16_t qIteration_t;
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
 
+    
+    #define qLowest_Priority     ((qPriority_t)(0x00u))
+    #define qMedium_Priority     ((qPriority_t)(0x7Fu))
+    #define qHigh_Priority       ((qPriority_t)(0xFEu))
+    #define qPeriodic            ((qIteration_t)(-32768))
+    #define qIndefinite          qPeriodic
+    #define qSingleShot          ((qIteration_t)(1))
+    #define qTimeInmediate       ((qTime_t)(0))
+    
     #define LOWEST_Priority     (qPriority_t)(0x00u)
     #define MEDIUM_Priority     (qPriority_t)(0x7Fu)
     #define HIGH_Priority       (qPriority_t)(0xFEu)
-    #define PERIODIC            ((qIteration_t)-1)
-    #define INDEFINITE          ((qIteration_t)-1)
-    #define SINGLESHOT          ((qIteration_t)1)
-    #define TIME_INMEDIATE      ((qTime_t)(0))
+    
+    
+    #ifndef PERIODIC
+        #define PERIODIC            qPeriodic
+    #endif
+    
+    #ifndef INDEFINITE
+        #define INDEFINITE          qIndefinite
+    #endif
+    
+    #ifndef SINGLESHOT
+        #define SINGLESHOT          qSingleShot
+    #endif
+    
+    #ifndef TIME_INMEDIATE
+        #define TIME_INMEDIATE      qTimeInmediate
+    #endif      
           
+    
     typedef struct{
         /* Trigger:
         This flag indicates the event source that triggers the task execution.
@@ -137,6 +160,20 @@ extern "C" {
         This flag can be used for data initialization purposes.
         */
         qBool_t FirstCall;
+        /* FirstIteration:
+        Indicates whether current pass is the first iteration of the task. 
+        This flag will be only set when time-elapsed events occours and the
+        Iteration counter has been parametrized. Asyncronous events never change
+        the task iteration counter, consequently doesn't have effect in this flag 
+        */
+        qBool_t FirstIteration;
+        /* Last Iteration:
+        Indicates whether current pass is the last iteration of the task. 
+        This flag will be only set when time-elapsed events occours and the
+        Iteration counter has been parametrized. Asyncronous events never change
+        the task iteration counter, consequently doesn't have effect in this flag 
+        */
+        qBool_t LastIteration;
     }_qEvent_t_, *qEvent_t;  
     typedef void (*qTaskFcn_t)(qEvent_t);  
     typedef struct{

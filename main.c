@@ -61,6 +61,16 @@ qSM_Status_t secondstate(qSM_t *fsm){
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
     printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
+    if(e->FirstCall){
+        puts("FirstCall");
+    }
+    if(e->FirstIteration){
+        puts("FirtsIteration");
+    }
+    if(e->LastIteration){
+        puts("LastIteration");
+    }
+    
     /*
     qTaskQueueEvent(&Task2, "A");
     qTaskQueueEvent(&Task3, "B");
@@ -77,10 +87,11 @@ void Task1Callback(qEvent_t e){
     qTaskSendEvent(&Task5,"fuck");
     qTaskSendEvent(&Task6,"shit");
     qTaskSendEvent(&Task3,"dam"); 
-    */
+    
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }
+     */ 
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
@@ -109,8 +120,9 @@ void Task6Callback(qEvent_t e){
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = QSTIMER_INITIALIZER;
-    if(qSTimerFreeRun(&t, 2.0)){
-        puts("hola");
+    if(qSTimerFreeRun(&t, 5.0)){
+        qTaskSetIterations(&Task1, 6);
+        qTaskResume(&Task1);
     }
 }
 /*============================================================================*/
@@ -140,9 +152,11 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     qSchedulerSetup(0.01, IdleTaskCallback, 10);
-    qSchedulerAddxTask(&blinktask, blinktaskCallback, LOWEST_Priority, TIME_INMEDIATE, PERIODIC, qDisabled, "blink");
-    qSchedulerRun();
-    qSchedulerAddxTask(&Task1, Task1Callback, HIGH_Priority, 0.1, PERIODIC, qEnabled, "TASK1");
+    qSchedulerAddxTask(&Task1, Task1Callback, HIGH_Priority, 0.5, 5, qEnabled, "TASK1");
+    qSchedulerAddxTask(&blinktask, blinktaskCallback, LOWEST_Priority, qTimeInmediate, qPeriodic, qEnabled, "blink");
+    /*
+    qSchedulerAddxTask(&blinktask, blinktaskCallback, LOWEST_Priority, TIME_INMEDIATE, PERIODIC, qEnabled, "blink");
+    
     qSchedulerAddeTask(&Task3, Task3Callback, 50, "TASK3");
     qTaskLinkRBuffer(&Task3, &ringBuffer, RB_AUTOPOP, qLINK);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
@@ -150,6 +164,7 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     
     qSchedulerAddSMTask(&SMTask, HIGH_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+     */
     qSchedulerRun(); 
     
     return (EXIT_SUCCESS);
