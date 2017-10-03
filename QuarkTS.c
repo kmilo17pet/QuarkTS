@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.0
+ *  Version : 4.4.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -349,7 +349,7 @@ static qTask_t* _qPrioQueueExtract(void){
 /*============================================================================*/
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
     uint8_t i;
-    QUARKTS.First = NULL;
+    QUARKTS.Head = NULL;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = NULL;
@@ -412,8 +412,29 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
     Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
-    Task->Next = QUARKTS.First;
-    QUARKTS.First = Task;
+    Task->Next = NULL;
+    
+    /*Sorted insert*/
+    if(QUARKTS.Head == NULL) QUARKTS.Head = Task;
+    else if(Task->Priority > QUARKTS.Head->Priority){
+        Task->Next = QUARKTS.Head;
+        QUARKTS.Head = Task;
+    }
+    else{
+        qTask_t *previous = QUARKTS.Head;
+        qTask_t *temp = QUARKTS.Head->Next;       
+        while(temp !=NULL && Task->Priority< temp->Priority){  /*Go to the position where task is to be inserted*/
+            previous = temp;
+            temp = temp->Next;
+        }
+        /*Insert node at particular position*/
+        if(temp==NULL) previous->Next = Task;
+        else{
+            Task->Next = temp;
+            previous->Next = Task;
+        }
+    }
+    
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
     QUARKTS.Flag.Init = qFalse;
@@ -520,6 +541,22 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
     return qTrue;
 }
 /*============================================================================*/
+qBool_t qSchedulerRemoveTask(qTask_t *Task){
+    qTask_t *tmp = QUARKTS.Head;
+    qTask_t *prev = NULL;
+    if(tmp == NULL) return qFalse;
+    while(tmp != Task && tmp->Next != NULL){
+        prev = tmp;
+        tmp = tmp->Next;
+    }
+    if(tmp == Task){
+        if(prev) prev->Next = tmp->Next;
+        else QUARKTS.Head = tmp->Next;
+        return qTrue;
+    }
+    return qFalse;
+}
+/*============================================================================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     if(Task==NULL) return; /*Not a valid task, do nothing*/
     /*Fill the event info structure*/
@@ -540,7 +577,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
 /*============================================================================*/
 static void _qTaskChainbyPriority(void){
     qTask_t *a = NULL, *b = NULL, *c = NULL, *e = NULL, *tmp = NULL; 
-    qTask_t *head = QUARKTS.First;
+    qTask_t *head = QUARKTS.Head;
     _Q_ENTER_CRITICAL();
     while(e != head->Next) {
         c = a = head;
@@ -549,7 +586,7 @@ static void _qTaskChainbyPriority(void){
             if(a->Priority < b->Priority) {
                 tmp = b->Next;
                 b->Next = a;
-                if(a == head)  QUARKTS.First = head = b;
+                if(a == head)  QUARKTS.Head = head = b;
                 else  c->Next = b;
                 c = b;
                 a->Next = tmp;
@@ -696,11 +733,11 @@ void qSchedulerRun(void){
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/
     if(!QUARKTS.Flag.Init)  _qTaskChainbyPriority(); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/  
-    for(Task = QUARKTS.First; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
+    for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/
             Task->ClockStart = _qSysTick_Epochs_; /*Restart the time*/
-            Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (Task->Iterations!=qPeriodic & Task->Iterations<0))? -Task->Iterations : Task->Iterations;
+            Task->Iterations = (QUARKTS.EventInfo.FirstIteration = ((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
             if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
             if((QUARKTS.EventInfo.LastIteration = (Task->Iterations == 0))) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/
             _qTriggerEvent(Task, byTimeElapsed); /*Launch the task with the corresponding event*/       
@@ -1194,6 +1231,19 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     }
     return status;    
 }
+/*============================================================================*/
+#ifdef Q_TASK_DEV_TEST
+void qSchedulePrintChain(void){
+    qTask_t *Task;
+    puts("--------------------------------------------------------------------");
+    puts("TaskData\tPriority\tInterval\tIterations");
+    puts("--------------------------------------------------------------------");
+    for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){
+        printf("%s\t\t%d\t\t%d\t\t%d\r\n", (char*)Task->TaskData,Task->Priority, Task->Interval, Task->Iterations);
+    }
+    puts("--------------------------------------------------------------------");
+}
+#endif
 /*============================================================================*/
 #ifdef __XC8
     #pragma warning pop

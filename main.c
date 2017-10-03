@@ -18,7 +18,7 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 /*============================================================================*/
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask;
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
 
 qSM_Status_t firststate(qSM_t *fsm);
 qSM_Status_t secondstate(qSM_t *fsm);
@@ -71,27 +71,12 @@ void Task1Callback(qEvent_t e){
         puts("LastIteration");
     }
     
-    /*
-    qTaskQueueEvent(&Task2, "A");
-    qTaskQueueEvent(&Task3, "B");
-    qTaskQueueEvent(&Task4, "C");
-    qTaskQueueEvent(&Task5, "D");
-    qTaskQueueEvent(&Task6, "E");
-    qTaskQueueEvent(&Task6, "F");
-    qTaskQueueEvent(&Task6, "G");
-    qTaskQueueEvent(&Task6, "H");
-    qTaskQueueEvent(&Task6, "I");
-    qTaskQueueEvent(&Task6, "J");
-    qTaskQueueEvent(&Task6, "K");
-    
-    qTaskSendEvent(&Task5,"fuck");
-    qTaskSendEvent(&Task6,"shit");
-    qTaskSendEvent(&Task3,"dam"); 
+   
     
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }
-     */ 
+     
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
@@ -154,9 +139,6 @@ int main(int argc, char** argv) {
     qSchedulerSetup(0.01, IdleTaskCallback, 10);
     qSchedulerAddxTask(&Task1, Task1Callback, HIGH_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddxTask(&blinktask, blinktaskCallback, LOWEST_Priority, qTimeInmediate, qPeriodic, qEnabled, "blink");
-    /*
-    qSchedulerAddxTask(&blinktask, blinktaskCallback, LOWEST_Priority, TIME_INMEDIATE, PERIODIC, qEnabled, "blink");
-    
     qSchedulerAddeTask(&Task3, Task3Callback, 50, "TASK3");
     qTaskLinkRBuffer(&Task3, &ringBuffer, RB_AUTOPOP, qLINK);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
@@ -164,8 +146,11 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     
     qSchedulerAddSMTask(&SMTask, HIGH_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-     */
-    qSchedulerRun(); 
+    #ifdef Q_TASK_DEV_TEST
+        qSchedulePrintChain();
+    #endif
+    
+    qSchedulerRun();
     
     return (EXIT_SUCCESS);
 }

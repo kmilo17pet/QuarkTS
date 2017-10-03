@@ -66,6 +66,9 @@
         <cTool>
           <developmentMode>5</developmentMode>
           <standard>2</standard>
+          <preprocessorList>
+            <Elem>Q_TASK_DEV_TEST</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </cTool>
         <ccTool>

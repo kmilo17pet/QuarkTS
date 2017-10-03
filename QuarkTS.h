@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.3.9
+ *  Version : 4.4.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,11 +36,13 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.0"
+    #define QUARTKTS_VERSION "4.4.1"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
 
+    
+    /*#define Q_TASK_INSERT_BEGINNING*/
     #define qTrue   0x01u
     #define qFalse  0x00u
     #define qEnabled              (qTrue)
@@ -247,6 +249,7 @@ extern "C" {
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
         volatile struct _qTask_t *Next;
+        /*volatile struct _qTask_t *Previous;*/
         qRBuffer_t *RingBuff;
         qSM_t *StateMachine;
     };
@@ -267,7 +270,7 @@ extern "C" {
         qTaskFcn_t ReleaseSchedCallback;
         qTime_t Tick;
         _qEvent_t_ EventInfo;
-        qTask_t *First;
+        qTask_t *Head;
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
@@ -289,6 +292,7 @@ extern "C" {
     qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg);
+    qBool_t qSchedulerRemoveTask(qTask_t *TasktoRemove);
     void qSchedulerRun(void);
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
@@ -470,6 +474,9 @@ void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 
+#ifdef Q_TASK_DEV_TEST
+void qSchedulePrintChain(void);
+#endif
 
 #ifdef	__cplusplus
 }
