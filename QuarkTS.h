@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.2
+ *  Version : 4.4.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -89,7 +89,7 @@ extern "C" {
     #define qIndefinite          qPeriodic
     #define qSingleShot          ((qIteration_t)(1))
     #define qTimeInmediate       ((qTime_t)(0))
-    
+
     #define LOWEST_Priority     qLowest_Priority
     #define MEDIUM_Priority     qMedium_Priority
     #define HIGH_Priority       qHigh_Priority

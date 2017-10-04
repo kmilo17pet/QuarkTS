@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.2
+ *  Version : 4.4.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -45,7 +45,7 @@ static qTask_t *__qCurrExTask = NULL;
 /*========================= QuarkTS Private Methods===========================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
 static void _qTaskChainbyPriority(qTask_t **head);
-static void qInsertSortedbyPriority(qTask_t **head, qTask_t *Task);
+static void _qInsertSortedbyPriority(qTask_t **head, qTask_t *Task);
 static qTask_t* _qPrioQueueExtract(void);
 static void _qTriggerIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
@@ -60,7 +60,7 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
 #define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
 #define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == qTimeInmediate)
 #define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
-#define _Q_MAIN_SCHEDULE(_core_)                qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
+#define _Q_MAIN_SCHEDULE(_core_)                QUARKTS.Flag.Init=1;qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
 #define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
 /*============================================================================*/
 /*
@@ -416,10 +416,9 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
-    QUARKTS.Flag.Init = qFalse;
     Task->RingBuff = NULL;
     Task->StateMachine = NULL;
-    qInsertSortedbyPriority((qTask_t**)&QUARKTS.Head, Task);
+    _qInsertSortedbyPriority((qTask_t**)&QUARKTS.Head, Task);
     return qTrue;
 }
 /*============================================================================*/
@@ -555,7 +554,7 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     Task->Cycles++; /*increase the task cycles*/
 }
 /*============================================================================*/
-static void qInsertSortedbyPriority(qTask_t **head, qTask_t *Task){
+static void _qInsertSortedbyPriority(qTask_t **head, qTask_t *Task){
     qTask_t *tmp_node = NULL;
     if( (*head == NULL) || (Task->Priority>(*head)->Priority) ){
         Task->Next = *head;
@@ -576,7 +575,7 @@ static void _qTaskChainbyPriority(qTask_t **head){
     while(tmp){
         tmp1 = tmp;
         tmp = tmp->Next;
-        qInsertSortedbyPriority(&new_head, tmp1);  
+        _qInsertSortedbyPriority(&new_head, tmp1);  
     }
     *head = new_head;
     QUARKTS.Flag.Init= 1; /*set the initializtion flag*/
@@ -712,7 +711,7 @@ void qSchedulerRun(void){
     qTask_t *Task, *qTask; /*Current task in the chain, extracted task from queue if available*/
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/
-    if(!QUARKTS.Flag.Init)  _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/  
+    if(!QUARKTS.Flag.Init) _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/ 
     for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/
