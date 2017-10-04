@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.3
+ *  Version : 4.4.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -32,6 +32,7 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
     #pragma warning disable 1498   /*disable warning: (1498) pointer (x@y) in expression may have no targets*/
     #pragma warning disable 520    /*disable warning: (520) function "x" is never called*/
     #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
+    #pragma warning disable 751    /*disable warning: (751) arithmetic overflow in constant expression*/
 #endif
 
 #ifdef __XC16
@@ -520,6 +521,18 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
     return qTrue;
 }
 /*============================================================================*/
+/*qBool_t qSchedulerRemoveTask(qTask_t *Task)
+
+Remove the task from the scheduling scheme.
+
+Parameters:
+
+    - Task : A pointer to the task node.
+     
+Return value:
+
+    Returns qTrue if success, otherwise returns qFalse.;     
+    */
 qBool_t qSchedulerRemoveTask(qTask_t *Task){
     qTask_t *tmp = QUARKTS.Head;
     qTask_t *prev = NULL;
@@ -711,7 +724,7 @@ void qSchedulerRun(void){
     qTask_t *Task, *qTask; /*Current task in the chain, extracted task from queue if available*/
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/
-    if(!QUARKTS.Flag.Init) _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/ 
+    if(!QUARKTS.Flag.Init) _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/
     for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/

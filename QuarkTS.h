@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.3
+ *  Version : 4.4.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.1"
+    #define QUARTKTS_VERSION "4.4.4"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -169,7 +169,7 @@ extern "C" {
         the task iteration counter, consequently doesn't have effect in this flag 
         */
         qBool_t FirstIteration;
-        /* Last Iteration:
+        /* LastIteration:
         Indicates whether current pass is the last iteration of the task. 
         This flag will be only set when time-elapsed events occours and the
         Iteration counter has been parametrized. Asyncronous events never change
@@ -249,7 +249,6 @@ extern "C" {
         qTaskFcn_t Callback;
         volatile qTaskFlags_t Flag;
         volatile struct _qTask_t *Next;
-        /*volatile struct _qTask_t *Previous;*/
         qRBuffer_t *RingBuff;
         qSM_t *StateMachine;
     };
