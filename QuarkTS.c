@@ -44,7 +44,8 @@ static volatile qClock_t _qSysTick_Epochs_ = 0;
 static qTask_t *__qCurrExTask = NULL;
 /*========================= QuarkTS Private Methods===========================*/
 static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event);
-static void _qTaskChainbyPriority(void);
+static void _qTaskChainbyPriority(qTask_t **head);
+static void qInsertSortedbyPriority(qTask_t **head, qTask_t *Task);
 static qTask_t* _qPrioQueueExtract(void);
 static void _qTriggerIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
@@ -412,34 +413,13 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
     Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
-    Task->Next = NULL;
-    
-    /*Sorted insert*/
-    if(QUARKTS.Head == NULL) QUARKTS.Head = Task;
-    else if(Task->Priority > QUARKTS.Head->Priority){
-        Task->Next = QUARKTS.Head;
-        QUARKTS.Head = Task;
-    }
-    else{
-        qTask_t *previous = QUARKTS.Head;
-        qTask_t *temp = QUARKTS.Head->Next;       
-        while(temp !=NULL && Task->Priority< temp->Priority){  /*Go to the position where task is to be inserted*/
-            previous = temp;
-            temp = temp->Next;
-        }
-        /*Insert node at particular position*/
-        if(temp==NULL) previous->Next = Task;
-        else{
-            Task->Next = temp;
-            previous->Next = Task;
-        }
-    }
-    
+    Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
     QUARKTS.Flag.Init = qFalse;
     Task->RingBuff = NULL;
     Task->StateMachine = NULL;
+    qInsertSortedbyPriority((qTask_t**)&QUARKTS.Head, Task);
     return qTrue;
 }
 /*============================================================================*/
@@ -575,30 +555,30 @@ static void _qTriggerEvent(qTask_t *Task, qTrigger_t Event){
     Task->Cycles++; /*increase the task cycles*/
 }
 /*============================================================================*/
-static void _qTaskChainbyPriority(void){
-    qTask_t *a = NULL, *b = NULL, *c = NULL, *e = NULL, *tmp = NULL; 
-    qTask_t *head = QUARKTS.Head;
-    _Q_ENTER_CRITICAL();
-    while(e != head->Next) {
-        c = a = head;
-        b = a->Next;
-        while(a != e) {
-            if(a->Priority < b->Priority) {
-                tmp = b->Next;
-                b->Next = a;
-                if(a == head)  QUARKTS.Head = head = b;
-                else  c->Next = b;
-                c = b;
-                a->Next = tmp;
-            } 
-            else {
-                c = a;
-                a = a->Next;
-            }
-            b = a->Next;
-            if(b == e) e = a;
-        }
+static void qInsertSortedbyPriority(qTask_t **head, qTask_t *Task){
+    qTask_t *tmp_node = NULL;
+    if( (*head == NULL) || (Task->Priority>(*head)->Priority) ){
+        Task->Next = *head;
+        *head = Task;
+        return;
     }
+    tmp_node = *head;
+    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next;
+    Task->Next = tmp_node->Next;
+    tmp_node->Next = Task;
+}
+/*============================================================================*/
+static void _qTaskChainbyPriority(qTask_t **head){
+    qTask_t *new_head = NULL;
+    qTask_t *tmp = *head;
+    qTask_t *tmp1 = NULL;
+    _Q_ENTER_CRITICAL();
+    while(tmp){
+        tmp1 = tmp;
+        tmp = tmp->Next;
+        qInsertSortedbyPriority(&new_head, tmp1);  
+    }
+    *head = new_head;
     QUARKTS.Flag.Init= 1; /*set the initializtion flag*/
     _Q_EXIT_CRITICAL();
 }
@@ -732,7 +712,7 @@ void qSchedulerRun(void){
     qTask_t *Task, *qTask; /*Current task in the chain, extracted task from queue if available*/
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/
-    if(!QUARKTS.Flag.Init)  _qTaskChainbyPriority(); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/  
+    if(!QUARKTS.Flag.Init)  _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/  
     for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){  /*Loop every task in the linked-chain*/
         if ((qTask = _qPrioQueueExtract())!=NULL)  _qTriggerEvent(qTask, byQueueExtraction); /*Available queueded task always will be executed in every chain sweep*/ 
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){ /*Check if task is enabled and reach the time-deadline*/
@@ -1239,7 +1219,10 @@ void qSchedulePrintChain(void){
     puts("TaskData\tPriority\tInterval\tIterations");
     puts("--------------------------------------------------------------------");
     for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){
-        printf("%s\t\t%d\t\t%d\t\t%d\r\n", (char*)Task->TaskData,Task->Priority, Task->Interval, Task->Iterations);
+        printf("%s\t\t%d\t\t%d\t\t", (char*)Task->TaskData,Task->Priority, Task->Interval);
+        if(Task->Iterations == qPeriodic) puts("qPeriodic");
+        else printf("%d\r\n",-Task->Iterations);    
+        
     }
     puts("--------------------------------------------------------------------");
 }

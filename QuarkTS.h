@@ -90,9 +90,9 @@ extern "C" {
     #define qSingleShot          ((qIteration_t)(1))
     #define qTimeInmediate       ((qTime_t)(0))
     
-    #define LOWEST_Priority     (qPriority_t)(0x00u)
-    #define MEDIUM_Priority     (qPriority_t)(0x7Fu)
-    #define HIGH_Priority       (qPriority_t)(0xFEu)
+    #define LOWEST_Priority     qLowest_Priority
+    #define MEDIUM_Priority     qMedium_Priority
+    #define HIGH_Priority       qHigh_Priority
     
     
     #ifndef PERIODIC
