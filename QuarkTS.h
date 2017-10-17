@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.4
+ *  Version : 4.4.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.4"
+    #define QUARTKTS_VERSION "4.4.5"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -49,6 +49,8 @@ extern "C" {
     #define qDisabled             (qFalse)
     #define qLINK                 (qTrue)
     #define qUNLINK               (qFalse)  
+    #define qLink                 (qTrue)
+    #define qUnLink                 (qFalse)
     #define qON                   (qTrue)
     #define qOFF                  (qFalse)
     
@@ -193,7 +195,7 @@ extern "C" {
     }qRBuffer_t;
  
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
-    
+    #define qPrivate    _
     #define qSM_t volatile struct _qSM_t
     struct _qSM_t{ 
         /* NextState:
@@ -224,7 +226,8 @@ extern "C" {
             void (*__Success)(qSM_t*);
             void (*__Unexpected)(qSM_t*);  
             void (*__BeforeAnyState)(qSM_t*);/*only used when a task has a SM attached*/
-        }_;
+            qSM_Status_t (*Prev)(qSM_t*);
+        }qPrivate;
     };    
     #define StateJustChanged    StateFirstEntry /*backward compatibility*/
     
@@ -296,7 +299,13 @@ extern "C" {
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
     
-    typedef enum{RB_AUTOPOP, RB_FULL, RB_COUNT, RB_EMPTY}qRBLinkMode_t;
+    
+    
+    typedef enum{qRB_AUTOPOP, qRB_FULL, qRB_COUNT, qRB_EMPTY}qRBLinkMode_t;
+    #define    RB_AUTOPOP   qRB_AUTOPOP
+    #define    RB_FULL      qRB_FULL
+    #define    RB_COUNT     qRB_COUNT
+    #define    RB_EMPTY     qRB_EMPTY
     
     qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
     

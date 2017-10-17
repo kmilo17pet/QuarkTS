@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.4
+ *  Version : 4.4.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -639,16 +639,16 @@ qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mo
     if(RingBuffer == NULL || Task==NULL) return qFalse;
     if(RingBuffer->data == NULL) return qFalse;    
     switch(Mode){
-        case RB_AUTOPOP:
+        case qRB_AUTOPOP:
             Task->Flag.RBAutoPop = (qBool_t)(arg!=qFalse);
             break;
-        case RB_FULL:
+        case qRB_FULL:
             Task->Flag.RBFull = (qBool_t)(arg!=qFalse);
             break;
-        case RB_COUNT:
+        case qRB_COUNT:
             Task->Flag.RBCount = arg;
             break;
-        case RB_EMPTY:
+        case qRB_EMPTY:
             Task->Flag.RBEmpty = (qBool_t)(arg!=qFalse);
             break;
         default: return qFalse;
@@ -781,9 +781,9 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t Succ
     obj->PreviousState = NULL;
     obj->StateFirstEntry = 0;
     obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
-    obj->_.__Failure = FailureState;
-    obj->_.__Success = SuccessState;
-    obj->_.__Unexpected = UnexpectedState;
+    obj->qPrivate.__Failure = FailureState;
+    obj->qPrivate.__Success = SuccessState;
+    obj->qPrivate.__Unexpected = UnexpectedState;
     return qTrue;
 }
 /*============================================================================*/
@@ -804,24 +804,25 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     if(obj == NULL) return;
     qSM_State_t prev  = NULL;
     obj->Data = Data;
-    if(obj->_.__BeforeAnyState != NULL) obj->_.__BeforeAnyState(obj);
+    if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
-        obj->StateFirstEntry = (qBool_t)(obj->PreviousState != obj->NextState);
+        obj->StateFirstEntry = (qBool_t)(obj->qPrivate.Prev != obj->NextState);
         prev = obj->NextState;
+        if(obj->StateFirstEntry) obj->PreviousState = prev;
         obj->PreviousReturnStatus = obj->NextState(obj);
-        obj->PreviousState = prev;
+        obj->qPrivate.Prev = prev;
     }
     else    obj->PreviousReturnStatus = qSM_EXIT_FAILURE;
     
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE:           
-            if(obj->_.__Failure != NULL) obj->_.__Failure(obj);
+            if(obj->qPrivate.__Failure != NULL) obj->qPrivate.__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:
-            if(obj->_.__Success != NULL) obj->_.__Success(obj);
+            if(obj->qPrivate.__Success != NULL) obj->qPrivate.__Success(obj);
             break;
         default:
-            if(obj->_.__Unexpected != NULL) obj->_.__Unexpected(obj);
+            if(obj->qPrivate.__Unexpected != NULL) obj->qPrivate.__Unexpected(obj);
             break;
     }
  }
@@ -850,6 +851,7 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)val;
             obj->PreviousState = NULL;
+            obj->qPrivate.Prev = NULL;
             obj->StateFirstEntry = 0;
             obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
             return;
@@ -857,16 +859,16 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
             obj->PreviousState  = NULL;
             return;
         case qSM_FAILURE_STATE:
-            obj->_.__Failure = (qSM_ExState_t)val;
+            obj->qPrivate.__Failure = (qSM_ExState_t)val;
             return;
         case qSM_SUCCESS_STATE:
-            obj->_.__Success = (qSM_ExState_t)val;
+            obj->qPrivate.__Success = (qSM_ExState_t)val;
             return;    
         case qSM_UNEXPECTED_STATE:
-            obj->_.__Unexpected = (qSM_ExState_t)val;
+            obj->qPrivate.__Unexpected = (qSM_ExState_t)val;
             return;   
         case qSM_BEFORE_ANY_STATE:
-            obj->_.__BeforeAnyState = (qSM_ExState_t)val;
+            obj->qPrivate.__BeforeAnyState = (qSM_ExState_t)val;
             return;              
         default:
             return;
