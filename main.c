@@ -34,8 +34,9 @@ qSM_Status_t firststate(qSM_t *fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
+    printf("last state %p\r\n",fsm->PreviousState);
     if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 0.1);
+        qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
@@ -47,8 +48,9 @@ qSM_Status_t firststate(qSM_t *fsm){
 qSM_Status_t secondstate(qSM_t *fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
+    printf("last state %p\r\n",fsm->PreviousState);
     if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 0.5);
+        qSTimerSet(&tmr, 2.5);
         printf("[%s] second\r\n", (char*)e->TaskData);
     }
     if (qSTimerExpired(&tmr)){
@@ -136,18 +138,20 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
+    /*
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, qTimeInmediate, qPeriodic, qEnabled, "blink");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
-    qTaskLinkRBuffer(&Task3, &ringBuffer, RB_AUTOPOP, qLINK);
+    qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
+    */
     qSchedulerAddSMTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
     #ifdef Q_TASK_DEV_TEST
         qSchedulePrintChain();
     #endif
-    
+        printf("%p %p\r\n\r\n",firststate, secondstate);
     qSchedulerRun();
     
     return (EXIT_SUCCESS);

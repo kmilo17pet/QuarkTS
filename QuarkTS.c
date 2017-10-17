@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.5
+ *  Version : 4.4.6
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -57,8 +57,9 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
 
 #define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
-#define _Q_ENTER_CRITICAL()                     if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
-#define _Q_EXIT_CRITICAL()                      if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
+#define qEnterCritical()    if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
+#define qExitCritical()     if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
+
 #define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == qTimeInmediate)
 #define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
 #define _Q_MAIN_SCHEDULE(_core_)                QUARKTS.Flag.Init=1;qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
@@ -331,7 +332,7 @@ static qTask_t* _qPrioQueueExtract(void){
     uint8_t i;
     uint8_t IndexTaskToExtract = 0;
     if(QUARKTS.QueueIndex < 0) return NULL;
-    _Q_ENTER_CRITICAL();
+    qEnterCritical();
     qPriority_t MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){
         if(QUARKTS.QueueStack[i].Task == NULL) break;
@@ -345,7 +346,7 @@ static qTask_t* _qPrioQueueExtract(void){
     QUARKTS.QueueStack[IndexTaskToExtract].Task = NULL;  
     for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1];    
     QUARKTS.QueueIndex--;    
-    _Q_EXIT_CRITICAL();
+    qExitCritical();
     return Task;
 }
 /*============================================================================*/
@@ -510,14 +511,9 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
-    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;
+    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
+    qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
     Task->StateMachine = StateMachine;
-    StateMachine->NextState = InitState;
-    StateMachine->PreviousState = NULL;
-    StateMachine->_.__Failure = FailureState;
-    StateMachine->_.__Success = SuccessState;
-    StateMachine->_.__Unexpected = UnexpectedState;
-    StateMachine->_.__BeforeAnyState = BeforeAnyState; 
     return qTrue;
 }
 /*============================================================================*/
@@ -584,7 +580,7 @@ static void _qTaskChainbyPriority(qTask_t **head){
     qTask_t *new_head = NULL;
     qTask_t *tmp = *head;
     qTask_t *tmp1 = NULL;
-    _Q_ENTER_CRITICAL();
+    qEnterCritical();
     while(tmp){
         tmp1 = tmp;
         tmp = tmp->Next;
@@ -592,7 +588,7 @@ static void _qTaskChainbyPriority(qTask_t **head){
     }
     *head = new_head;
     QUARKTS.Flag.Init= 1; /*set the initializtion flag*/
-    _Q_EXIT_CRITICAL();
+    qExitCritical();
 }
 /*============================================================================*/
 /*qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
@@ -775,7 +771,7 @@ Return value:
 
     Returns 0 on successs, otherwise returns -1;
 */
-qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState){
+qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState){
     if(obj==NULL || InitState == NULL) return qFalse;
     obj->NextState = InitState;
     obj->PreviousState = NULL;
@@ -784,6 +780,8 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t Succ
     obj->qPrivate.__Failure = FailureState;
     obj->qPrivate.__Success = SuccessState;
     obj->qPrivate.__Unexpected = UnexpectedState;
+    obj->qPrivate.__BeforeAnyState = BeforeAnyState;
+    obj->qPrivate.Prev = NULL;
     return qTrue;
 }
 /*============================================================================*/
@@ -807,8 +805,8 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
         obj->StateFirstEntry = (qBool_t)(obj->qPrivate.Prev != obj->NextState);
+        if(obj->StateFirstEntry) obj->PreviousState = obj->qPrivate.Prev ;
         prev = obj->NextState;
-        if(obj->StateFirstEntry) obj->PreviousState = prev;
         obj->PreviousReturnStatus = obj->NextState(obj);
         obj->qPrivate.Prev = prev;
     }
@@ -1028,7 +1026,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
     uint16_t sum;		
     uint8_t *offset = obj->Blocks;			
     j = 0;	
-    _Q_ENTER_CRITICAL();
+    qEnterCritical();
     while( j < obj->NumberofBlocks ) {			
         sum  = 0;
 	i = j;
@@ -1052,13 +1050,13 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
             if( sum >= size ) {
                 *(obj->BlockDescriptors+j) = k;
 		for(c=0;c<size;c++) offset[i] = 0x00u;/*zero-initialized memory block*/ 
-                _Q_EXIT_CRITICAL();
+                qExitCritical();
 		return (void*)offset;
             }						
 	}
 	if( i == obj->NumberofBlocks ) break;
     }
-    _Q_EXIT_CRITICAL();
+    qExitCritical();
     return NULL; /*memory not available*/
 }
 /*============================================================================*/
@@ -1077,7 +1075,7 @@ Note: The memory must be returned to the pool from where was allocated
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     if(obj==NULL || pmem==NULL) return;
     uint8_t i, *p;
-    _Q_ENTER_CRITICAL();	
+    qEnterCritical();	
     p = (uint8_t*) obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
         if( p == pmem ) {
@@ -1086,7 +1084,7 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 	}
 	p += obj->BlockSize;
     }
-    _Q_EXIT_CRITICAL();
+    qExitCritical();
 }
 /*============================================================================*/
 #endif
