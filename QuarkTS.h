@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.6
+ *  Version : 4.4.8
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,23 +36,23 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.6"
+    #define QUARTKTS_VERSION "4.4.8"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
 
     
     /*#define Q_TASK_INSERT_BEGINNING*/
-    #define qTrue   0x01u
-    #define qFalse  0x00u
-    #define qEnabled              (qTrue)
-    #define qDisabled             (qFalse)
-    #define qLINK                 (qTrue)
-    #define qUNLINK               (qFalse)  
-    #define qLink                 (qTrue)
+    #define qTrue                   0x01u
+    #define qFalse                  0x00u
+    #define qEnabled                (qTrue)
+    #define qDisabled               (qFalse)
+    #define qLINK                   (qTrue)
+    #define qUNLINK                 (qFalse)  
+    #define qLink                   (qTrue)
     #define qUnLink                 (qFalse)
-    #define qON                   (qTrue)
-    #define qOFF                  (qFalse)
+    #define qON                     (qTrue)
+    #define qOFF                    (qFalse)
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
@@ -180,11 +180,26 @@ extern "C" {
         qBool_t LastIteration;
     }_qEvent_t_, *qEvent_t;  
     typedef void (*qTaskFcn_t)(qEvent_t);  
-    typedef struct{
-    	volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
+
+    typedef union{
+        struct{
+            volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
+        };
+        volatile uint8_t FlagatIndex[7];
     }qTaskFlags_t;
-       
-    typedef enum {qWaiting = 0, qReady = 1, qRunning = 2} qTaskState_t;
+    #define _qIndex_InitFlag        0
+    #define _qIndex_AsyncRun        1
+    #define _qIndex_Enabled         2
+    #define _qIndex_RBAutoPop       3
+    #define _qIndex_RBFull          4
+    #define _qIndex_RBCount         5
+    #define _qIndex_RBEmpty         6
+    
+    typedef uint8_t qTaskState_t;
+    #define qWaiting    0u
+    #define qReady      1u
+    #define qRunning    2u
+    #define qSuspended  3u
 
     typedef struct{
         volatile uint8_t *data; /* block of memory or array of data */
@@ -242,18 +257,20 @@ extern "C" {
     
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
     typedef void (*qSM_ExState_t)(qSM_t*);    
-    
+    #define Q_TASK_EXTENDED_DATA
     struct _qTask_t{ /*Task node definition*/
+        volatile struct _qTask_t *Next;
         void *TaskData,*AsyncData;
         volatile qClock_t Interval, ClockStart;
         qIteration_t Iterations;
         uint32_t Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
-        volatile qTaskFlags_t Flag;
-        volatile struct _qTask_t *Next;
+        volatile qTaskFlags_t Flag;        
         qRBuffer_t *RingBuff;
         qSM_t *StateMachine;
+        qTaskState_t State;
+        qTrigger_t Trigger;
     };
     #define qTask_t volatile struct _qTask_t
              
@@ -279,6 +296,7 @@ extern "C" {
         volatile qQueueStack_t *QueueStack;
         uint8_t QueueSize;
         int16_t QueueIndex;
+        qTask_t *CurrentRunningTask;
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
     qTask_t* qTaskSelf(void);
@@ -292,8 +310,8 @@ extern "C" {
     qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
     qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                                  qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
-                                  qState_t InitialTaskState, void *arg);
+                                qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                                qState_t InitialTaskState, void *arg);
     qBool_t qSchedulerRemoveTask(qTask_t *TasktoRemove);
     void qSchedulerRun(void);
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
@@ -301,7 +319,7 @@ extern "C" {
     
     
     
-    typedef enum{qRB_AUTOPOP, qRB_FULL, qRB_COUNT, qRB_EMPTY}qRBLinkMode_t;
+    typedef enum{qRB_AUTOPOP=_qIndex_RBAutoPop, qRB_FULL=_qIndex_RBFull, qRB_COUNT=_qIndex_RBCount, qRB_EMPTY=_qIndex_RBEmpty}qRBLinkMode_t;
     #define    RB_AUTOPOP   qRB_AUTOPOP
     #define    RB_FULL      qRB_FULL
     #define    RB_COUNT     qRB_COUNT
@@ -429,19 +447,9 @@ typedef struct {
     uint8_t *Blocks;
 }qMemoryPool_t;        
         
-typedef enum {		/*ported from uSmartX*/
-    MEMBLOCK_4_BYTE	= (1 << 2),	/*!< Memory block contains 4 bytes */
-    MEMBLOCK_8_BYTE	= (1 << 3),	/*!< Memory block contains 8 bytes */
-    MEMBLOCK_16_BYTE	= (1 << 4),	/*!< Memory block contains 16 bytes */
-    MEMBLOCK_32_BYTE	= (1 << 5),	/*!< Memory block contains 32 bytes */
-    MEMBLOCK_64_BYTE	= (1 << 6),	/*!< Memory block contains 64 bytes */
-    MEMBLOCK_128_BYTE	= (1 << 7),	/*!< Memory block contains 128 bytes */
-    MEMBLOCK_256_BYTE	= (1 << 8),	/*!< Memory block contains 256 bytes */
-    MEMBLOCK_512_BYTE	= (1 << 9),	/*!< Memory block contains 512 bytes */
-    MEMBLOCK_1024_BYTE	= (1 << 10),	/*!< Memory block contains 1024 bytes */
-    MEMBLOCK_2048_BYTE	= (1 << 11),    /*!< Memory block contains 2048 bytes */
-    MEMBLOCK_4096_BYTE	= (1 << 12),    /*!< Memory block contains 4096 bytes */
-    MEMBLOCK_8192_BYTE	= (1 << 13)     /*!< Memory block contains 8192 bytes */
+typedef enum {
+    qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
+    qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192 
 }qMEM_size_t;
 
 

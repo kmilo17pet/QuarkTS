@@ -8,6 +8,8 @@
 #include "QuarkTS.h"
 #include <signal.h>
 
+qTask_t TSK_PRODUCER, TSK_CONSUMER; /*task nodes*/
+qRBuffer_t handler_RBuffer; /*Ring-Buffer Handler*/
 /*============================================================================*/
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* varargin){
@@ -18,142 +20,50 @@ void* TimerInterruptEmulation(void* varargin){
     }
 }
 /*============================================================================*/
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
-
-qSM_Status_t firststate(qSM_t *fsm);
-qSM_Status_t secondstate(qSM_t *fsm);
-
-void datacapture(qSM_t *fsm){
-    
-}
-
-/*============================================================================*/
-qSM_Status_t firststate(qSM_t *fsm){
-    qEvent_t e = fsm->Data;
-    if(e->FirstCall){
-        puts("state machine init");
+void TSK_Producer_Callback(qEvent_t e) {
+    static uint16_t unData = 0;
+    unData++;	
+    /*Buffer is empty, enable the producer if it was disabled*/
+    if(e->Trigger == byRBufferEmpty){
+        qTaskResume(qTaskSelf());
+        puts("producer resumed");
     }
-    static qSTimer_t tmr;
-    printf("last state %p\r\n",fsm->PreviousState);
-    if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 2.5);
-        printf("[%s] first\r\n", (char*)e->TaskData);
-    }
-    if (qSTimerExpired(&tmr)){
-        fsm->NextState = secondstate;
-    }
-    return qSM_EXIT_SUCCESS;
-}
-/*============================================================================*/
-qSM_Status_t secondstate(qSM_t *fsm){
-    qEvent_t e = fsm->Data;
-    static qSTimer_t tmr;
-    printf("last state %p\r\n",fsm->PreviousState);
-    if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 2.5);
-        printf("[%s] second\r\n", (char*)e->TaskData);
-    }
-    if (qSTimerExpired(&tmr)){
-        fsm->NextState = firststate;
-    }
-    return qSM_EXIT_SUCCESS;
-}
-
-/*============================================================================*/
-void Task1Callback(qEvent_t e){
-    static qSTimer_t tmr = QSTIMER_INITIALIZER;
-    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
-    if(e->FirstCall){
-        puts("FirstCall");
-    }
-    if(e->FirstIteration){
-        puts("FirtsIteration");
-    }
-    if(e->LastIteration){
-        puts("LastIteration");
-    }
-    
-   
-    
-    if(qSTimerFreeRun(&tmr, 0.5)){
-        puts("Timer expired");
-    }
-     
-}
-/*============================================================================*/
-void Task2Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
-}
-/*============================================================================*/
-void Task3Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
-    if(e->Trigger == byRBufferPop){
-        int *ptr = (int*)e->EventData;
-        printf("ring extracted data %d\r\n",*ptr);
+    printf("producer inserting %d\r\n",unData);
+    if (!qRBufferPush(&handler_RBuffer, &unData)){ /*insert data into the buffer*/
+        /*if the data insertion fails, the buffer is full and the task disables itself*/
+	qTaskSuspend(qTaskSelf()); 
+        puts("producer suspended");
     }
 }
-/*============================================================================*/
-void Task4Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
-}
-/*============================================================================*/
-void Task5Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
-}
-/*============================================================================*/
-void Task6Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);   
-}
-/*============================================================================*/
-void IdleTaskCallback(qEvent_t e){
-    static qSTimer_t t = QSTIMER_INITIALIZER;
-    if(qSTimerFreeRun(&t, 5.0)){
-        qTaskSetIterations(&Task1, 6);
-        qTaskResume(&Task1);
+/*-------------------------------------------------------------------------------*/
+/* The consumer task gets one element from the buffer. 
+ */
+void TSK_Consumer_Callback(qEvent_t e) {
+    uint16_t unData;
+    qRBuffer_t *rbuffer;
+    if(e->Trigger == byRBufferCount){
+	rbuffer = (qRBuffer_t *)e->EventData;
+	qRBufferPopFront(rbuffer, &unData);
+        printf("consumer extracting %d \r\n",unData);
+	return;
     }
 }
-/*============================================================================*/
-void blinktaskCallback(qEvent_t e){
-    static qSTimer_t tmr;
-    qCoroutineBegin{
-        puts("led on");
-        qSTimerSet(&tmr, 1);
-        qCoroutineWaitUntil(qSTimerExpired(&tmr));
-        qSTimerSet(&tmr, 1);
-        puts("led off");
-        qCoroutineWaitUntil(qSTimerExpired(&tmr));
-    }qCoroutineEnd;
+/*-------------------------------------------------------------------------------*/
+void IdleTask_Callback(qEvent_t e){
+    /*nothing to do...*/
 }
 /*============================================================================*/
 int main(int argc, char** argv) {
-    qRBuffer_t ringBuffer;
+    uint8_t BufferMem[16*sizeof(uint16_t)] = {0};  
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
-    qMemoryHeapCreate(mtxheap, 10, MEMBLOCK_4_BYTE);
-    qSM_t statemachine;
-    void *memtest;
-    int x=5 , y=6;
-    
-    memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
-    qRBufferPush(&ringBuffer, &x);
-    qRBufferPush(&ringBuffer, &y);
-    qSchedulerSetup(0.01, IdleTaskCallback, 10);  
-    /*
-    qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
-    qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, qTimeInmediate, qPeriodic, qEnabled, "blink");
-    qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
-    qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
-    qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
-    qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
-    qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
-    */
-    qSchedulerAddSMTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-    #ifdef Q_TASK_DEV_TEST
-        qSchedulePrintChain();
-    #endif
-        printf("%p %p\r\n\r\n",firststate, secondstate);
+
+    qRBufferInit(&handler_RBuffer, BufferMem /*Memory block used*/, sizeof(uint16_t) /*element size*/, 16 /* element count*/);  
+    qSchedulerSetup(0.01, IdleTask_Callback, 10);    
+    qSchedulerAddxTask(&TSK_PRODUCER, TSK_Producer_Callback, 50, 0.1, qPeriodic, qDisabled, "producer");
+    qSchedulerAddeTask(&TSK_CONSUMER, TSK_Consumer_Callback, 50, "cosumer");
+    qTaskLinkRBuffer(&TSK_CONSUMER, &handler_RBuffer, RB_COUNT, 4);
+    qTaskLinkRBuffer(&TSK_PRODUCER, &handler_RBuffer, RB_EMPTY, qLINK);
     qSchedulerRun();
-    
     return (EXIT_SUCCESS);
 }
 
