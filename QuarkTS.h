@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.8
+ *  Version : 4.4.9
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.8"
+    #define QUARTKTS_VERSION "4.4.9"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -53,6 +53,8 @@ extern "C" {
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
+    #define __qChainInitializer     ((qTask_t*)-1)
+    #define __qFSMCallbackMode      ((qTaskFcn_t)1)
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;

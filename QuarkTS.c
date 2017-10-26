@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.8
+ *  Version : 4.4.9
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -43,12 +43,13 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
-static qTaskState_t _qDispatch(qTask_t *Task, qTrigger_t Event);
-static void _qTaskChainbyPriority(qTask_t **head);
-static void _qInsertSortedbyPriority(qTask_t **head, qTask_t *Task);
+static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event);
+static qTask_t* _qScheduler_GetNodeFromChain(void);
+static void _qScheduler_RearrangeChain(qTask_t **head);
+static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task);
 static qBool_t _qScheduler_ReadyTasksAvailable(void);
-static qTask_t* _qPrioQueueExtract(void);
-static void _qTriggerIdleTask(void);
+static qTask_t* _qScheduler_PriorityQueueGet(void);
+static void _qScheduler_DispatchIdleTask(void);
 static void _qTriggerReleaseSchedEvent(void);
 static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
@@ -327,7 +328,7 @@ void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(
     QUARKTS.I_Disable = Disabler;
 }
 /*============================================================================*/
-static qTask_t* _qPrioQueueExtract(void){
+static qTask_t* _qScheduler_PriorityQueueGet(void){
     qTask_t *Task = NULL;
     uint8_t i;
     uint8_t IndexTaskToExtract = 0;
@@ -422,7 +423,8 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->ClockStart = _qSysTick_Epochs_;
     Task->RingBuff = NULL;
     Task->StateMachine = NULL;
-    _qInsertSortedbyPriority((qTask_t**)&QUARKTS.Head, Task);
+    Task->State = qSuspended;
+    _qScheduler_PriorizedInsert((qTask_t**)&QUARKTS.Head, Task);
     return qTrue;
 }
 /*============================================================================*/
@@ -513,7 +515,7 @@ qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                   qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                                   qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
-    if (!qSchedulerAddxTask(Task, (qTaskFcn_t)1, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
+    if (!qSchedulerAddxTask(Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
     qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
     Task->StateMachine = StateMachine;
     return qTrue;
@@ -535,32 +537,33 @@ qBool_t qSchedulerRemoveTask(qTask_t *Task){
     qTask_t *tmp = QUARKTS.Head;
     qTask_t *prev = NULL;
     if(tmp == NULL) return qFalse;
-    while(tmp != Task && tmp->Next != NULL){
-        prev = tmp;
+    while(tmp != Task && tmp->Next != NULL){ /*find the task to remove*/
+        prev = tmp; /*keep on track the previous node*/
         tmp = tmp->Next;
     }
-    if(tmp == Task){
-        if(prev) prev->Next = tmp->Next;
-        else QUARKTS.Head = tmp->Next;
+    if(tmp == Task){ 
+        if(prev) prev->Next = tmp->Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
+        else QUARKTS.Head = tmp->Next; /*if the task is the head of the chain, move the head to the next node*/
+        Task->Next = NULL; /*Just in case the deleted task needs to be added later to the scheduling scheme, otherwise, this would fuck the whole chain*/
         return qTrue;
     }
     return qFalse;
 }
 /*============================================================================*/
-static void _qInsertSortedbyPriority(qTask_t **head, qTask_t *Task){
+static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
     qTask_t *tmp_node = NULL;
-    if( (*head == NULL) || (Task->Priority>(*head)->Priority) ){
-        Task->Next = *head;
-        *head = Task;
+    if( (*head == NULL) || (Task->Priority>(*head)->Priority) ){ /*is the first task in the scheme or the task has the highest priority over all */
+        Task->Next = *head; /*move the head and just add the task node on top*/
+        *head = Task; /*this task will be the new head*/
         return;
     }
-    tmp_node = *head;
-    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next;
-    Task->Next = tmp_node->Next;
+    tmp_node = *head; /*tmp will hold the*/
+    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the righ place for this task acoording its priority*/
+    Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
     tmp_node->Next = Task;
 }
 /*============================================================================*/
-static void _qTaskChainbyPriority(qTask_t **head){
+static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange the chain according the priority of all its nodes*/
     qTask_t *new_head = NULL;
     qTask_t *tmp = *head;
     qTask_t *tmp1 = NULL;
@@ -568,7 +571,7 @@ static void _qTaskChainbyPriority(qTask_t **head){
     while(tmp){
         tmp1 = tmp;
         tmp = tmp->Next;
-        _qInsertSortedbyPriority(&new_head, tmp1);  
+        _qScheduler_PriorizedInsert(&new_head, tmp1);  
     }
     *head = new_head;
     QUARKTS.Flag.Init= qTrue; /*set the initializtion flag*/
@@ -642,7 +645,7 @@ static void _qTriggerReleaseSchedEvent(void){
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
-static void _qTriggerIdleTask(void){
+static void _qScheduler_DispatchIdleTask(void){
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
     QUARKTS.EventInfo.Trigger = byPriority;
     QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo);
@@ -665,19 +668,30 @@ pool has been defined.
   Note : qScheduleRun keeps the application in an endless loop
 */
 void qSchedulerRun(void){
-    qTask_t *Task = NULL; /*Task node iterator*/
+    qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and the top enqueue node if available*/
     _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/   
-    if(!QUARKTS.Flag.Init) _qTaskChainbyPriority((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
-    if ((Task = _qPrioQueueExtract())!=NULL)  Task->State = _qDispatch(Task, byQueueExtraction);  /*Available queueded task always will be dispatched in every scheduling cycle*/                        
-    if(_qScheduler_ReadyTasksAvailable())
-        for(Task = QUARKTS.Head; Task; Task->State = qWaiting, Task = Task->Next)  Task->State = (Task->State == qReady)? _qDispatch(Task, Task->Trigger) : qSuspended;
-    else if(Task==NULL && QUARKTS.IDLECallback!= NULL) _qTriggerIdleTask(); /*if the current task has no pending events, launch the IDLETask*/
+    if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
+    if((Task = _qScheduler_PriorityQueueGet()))  Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle*/                        
+    if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
+        while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
+            Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the task if is qReady, otherwise put it in a qWaiting State*/
+    }
+    else if(Task==NULL && QUARKTS.IDLECallback) _qScheduler_DispatchIdleTask(); /*no tasks are available for execution, then run the idle task*/
     _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent); /*scheduling end-point (also check for scheduling-release request)*/
 }
 /*============================================================================*/
-static qTaskState_t _qDispatch(qTask_t *Task, qTrigger_t Event){
-    Task->State = qRunning;
-    switch(Event){
+static qTask_t* _qScheduler_GetNodeFromChain(void){ 
+    static qTask_t *ChainIterator = __qChainInitializer; /*used to keep on track the current chain position*/
+    qTask_t *Node;  /*used the hold the node*/
+    if(ChainIterator == __qChainInitializer) ChainIterator = QUARKTS.Head; /*First call, start from the head*/
+    Node = ChainIterator; /*obtain the current node from the chain*/
+    ChainIterator = (ChainIterator)? ChainIterator->Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
+    return Node;
+}
+/*============================================================================*/
+static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event){
+    Task->State = qRunning; 
+    switch(Event){ /*take the necessary actions before dispatching depending on the event that triggered the task*/
         case byTimeElapsed:
             Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
             if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
@@ -688,10 +702,10 @@ static qTaskState_t _qDispatch(qTask_t *Task, qTrigger_t Event){
             Task->Flag.AsyncRun = qFalse; /*Clear the async flag*/            
             break;
         case  byRBufferPop:
-            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff);
+            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
             break;
         case byRBufferFull: case byRBufferCount: case byRBufferEmpty:
-            QUARKTS.EventInfo.EventData = (void*)Task->RingBuff; 
+            QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
             break;
         default: break;
     }
@@ -699,8 +713,8 @@ static qTaskState_t _qDispatch(qTask_t *Task, qTrigger_t Event){
     QUARKTS.EventInfo.Trigger =  Event; 
     QUARKTS.EventInfo.FirstCall = (uint8_t)(!Task->Flag.InitFlag);    
     QUARKTS.EventInfo.TaskData = Task->TaskData;    
-    QUARKTS.CurrentRunningTask = Task;
-    if (Task->StateMachine != NULL && Task->Callback==(qTaskFcn_t)1) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+    QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
+    if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
     else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event wask byRBufferPop*/
@@ -711,28 +725,31 @@ static qTaskState_t _qDispatch(qTask_t *Task, qTrigger_t Event){
     return qSuspended;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_ReadyTasksAvailable(void){
+static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks fullfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     qBool_t nTaskReady = qFalse; 
-    for(Task = QUARKTS.Head; Task; Task = Task->Next){
-        Task->State = qWaiting;
+    for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain*/
         if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){  /*Check if task is enabled and reach the time-deadline*/      
-            Task->ClockStart = _qSysTick_Epochs_; /*Restart the time*/
-            Task->State = qReady;
+            Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
+            Task->State = qReady; 
             Task->Trigger = byTimeElapsed;
             nTaskReady = qTrue;
+            continue;
         }
         else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady;
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
             nTaskReady = qTrue;
+            continue;
         }
         else if( Task->Flag.AsyncRun){   /*The last check will be if the task has an async event*/
             Task->State = qReady;
             Task->Trigger = byAsyncEvent;
             nTaskReady = qTrue;
+            continue;
         }
+        Task->State = qSuspended;
     }
     return nTaskReady;
 }
