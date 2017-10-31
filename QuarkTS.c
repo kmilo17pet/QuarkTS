@@ -624,7 +624,7 @@ Return value:
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == NULL || Task==NULL || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;
     if(RingBuffer->data == NULL) return qFalse;    
-    Task->Flag.FlagatIndex[Mode] = (Mode==qRB_COUNT)? arg : (qBool_t)(arg!=qFalse);
+    Task->Flag.FlagatIndex[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse));
     Task->RingBuff = (arg>0)? RingBuffer : NULL;
     return qTrue;
 }
@@ -640,12 +640,12 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
 }
 /*============================================================================*/
 static void _qTriggerReleaseSchedEvent(void){
-    _qEvent_t_ EventInfo  = _QEVENTINFO_INITIALIZER;
     QUARKTS.Flag.Init = qFalse;
-    QUARKTS.Flag.ReleaseSched = qFalse;
-    EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallReleased);
-    EventInfo.Trigger = byAsyncEvent;
-    if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback((qEvent_t)&EventInfo);
+    QUARKTS.Flag.ReleaseSched = qFalse;   
+    QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallReleased);    
+    QUARKTS.EventInfo.Trigger = bySchedulingRelease;
+    QUARKTS.EventInfo.TaskData = NULL;
+    if(QUARKTS.ReleaseSchedCallback!=NULL) QUARKTS.ReleaseSchedCallback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
 /*============================================================================*/
@@ -687,43 +687,47 @@ static qTask_t* _qScheduler_GetNodeFromChain(void){
 }
 /*============================================================================*/
 static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event){
-    _qEvent_t_ EventInfo  = _QEVENTINFO_INITIALIZER;    
     switch(Event){ /*take the necessary actions before dispatching depending on the event that triggered the task*/
         case byTimeElapsed:
-            Task->Iterations = (EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
+            Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
             if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
-            if((EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/            
+            if((QUARKTS.EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/            
             break;
         case byAsyncEvent:
-            EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
+            QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
             Task->Flag.AsyncRun = qFalse; /*Clear the async flag*/            
             break;
         case  byRBufferPop:
-            EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
+            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
             break;
         case byRBufferFull: case byRBufferCount: case byRBufferEmpty:
-            EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
+            QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
             break;
         case byQueueExtraction:
-            EventInfo.EventData = QUARKTS.QueueData;
+            QUARKTS.EventInfo.EventData = QUARKTS.QueueData;
             QUARKTS.QueueData = NULL;
         case byNoReadyTasks:
-            EventInfo.FirstCall = (uint8_t)(!QUARKTS.Flag.FCallIdle);
-            EventInfo.Trigger = Event;
-            QUARKTS.IDLECallback((qEvent_t)&EventInfo); /*run the idle callback*/
+            QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallIdle);
+            QUARKTS.EventInfo.Trigger = Event;
+            QUARKTS.EventInfo.TaskData = NULL;
+            QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo); /*run the idle callback*/
             QUARKTS.Flag.FCallIdle = qTrue;      
             return qSuspended; /*No more thing to do*/
         default: break;
     }
     Task->State = qRunning; 
     /*Fill the event info structure*/
-    _qEvent_FillCommonFields(EventInfo, Event, (qBool_t)(!Task->Flag.InitFlag), Task->TaskData); /*Fill commond field of EventInfo: Trigger, FirstCall and TaskData*/ 
+    _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag.InitFlag), Task->TaskData); /*Fill commond field of EventInfo: Trigger, FirstCall and TaskData*/ 
     QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
-    if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&EventInfo);  /*If the task has a FSM attached, just run it*/  
-    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&EventInfo); /*else, just launch the callback function*/        
+    if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event wask byRBufferPop*/
     Task->Flag.InitFlag = qTrue; /*clear the init flag*/
+    
+    QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration =  qFalse;;
+    QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
+    
     Task->Cycles++; /*increase the task cycles*/
     return qSuspended;
 }

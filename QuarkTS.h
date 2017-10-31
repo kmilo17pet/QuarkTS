@@ -288,6 +288,7 @@ extern "C" {
     typedef struct{
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
+        _qEvent_t_ EventInfo;
         qTime_t Tick;
         qTask_t *Head;
         uint32_t (*I_Disable)(void);
