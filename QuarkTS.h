@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.4.9
+ *  Version : 4.5.0
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
 
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.4.9"
+    #define QUARTKTS_VERSION "4.5.0"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -76,7 +76,7 @@ extern "C" {
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
     #endif
 
-    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byPriority, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty} qTrigger_t;
+    typedef enum {_Q_NO_VALID_TRIGGER_, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -98,8 +98,8 @@ extern "C" {
     #define MEDIUM_Priority     qMedium_Priority
     #define HIGH_Priority       qHigh_Priority
     
-    
-    #ifndef PERIODIC
+    /*backward compatibility*/
+    #ifndef PERIODIC 
         #define PERIODIC            qPeriodic
     #endif
     
@@ -115,7 +115,7 @@ extern "C" {
         #define TIME_INMEDIATE      qTimeInmediate
     #endif      
           
-    
+    #define _QEVENTINFO_INITIALIZER     {_Q_NO_VALID_TRIGGER_, NULL, NULL, qFalse, qFalse, qFalse}  
     typedef struct{
         /* Trigger:
         This flag indicates the event source that triggers the task execution.
@@ -124,10 +124,7 @@ extern "C" {
         This flag can only have the following values:        
         
         - byTimeElapsed : When the time specified for the task elapsed.
-        
-        - byPriority: When the execution chain does, according to the 
-                      priority value
-        
+                
         - byQueueExtraction: When the scheduler performs extraction of 
                       task-associated data at the beginning of the 
                       priority-queue.
@@ -149,6 +146,8 @@ extern "C" {
         
         - byRBufferEmpty: When the linked ring-buffer is empty.  A pointer to the 
                          RingBuffer will be available in the <EventData> field.
+        
+        - byNoReadyTasks: Only when the Idle Task is triggered.
         */
         qTrigger_t Trigger;
         /* TaskData:
@@ -290,7 +289,6 @@ extern "C" {
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
         qTime_t Tick;
-        _qEvent_t_ EventInfo;
         qTask_t *Head;
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
@@ -299,6 +297,7 @@ extern "C" {
         uint8_t QueueSize;
         int16_t QueueIndex;
         qTask_t *CurrentRunningTask;
+        void *QueueData;
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
     qTask_t* qTaskSelf(void);
@@ -397,6 +396,7 @@ Coroutine runs. qCoroutineEnd declare the end of the Coroutine.
 It must always be used together with a matching qCoroutineBegin statement.
 */
         #define qCoroutineBegin                         __qCRStart
+        #define qCRBegin                                __qCRStart
 /*
 This statement is only allowed inside a Coroutine segment. qCoroutineYield 
 return the CPU control back to the scheduler but saving the execution progress. 
@@ -404,6 +404,7 @@ With the next task activation, the Coroutine will resume the execution after
 the last 'qCoroutineYield' statement.
 */
         #define qCoroutineYield                         __qCRYield          
+        #define qCRYield                                __qCRYield
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -415,15 +416,18 @@ Coroutine runs. qCoroutineEnd declare the end of the Coroutine.
 It must always be used together with a matching qCoroutineBegin statement.
 */    
         #define qCoroutineEnd                           __qCRDispose
+        #define qCREnd                                  __qCRDispose
 /*This statement cause the running Coroutine to restart its execution at the 
 place of the qCoroutineBegin statement.
 */
         #define qCoroutineRestart                       __qCRRestart  
+        #define qCRRestart                              __qCRRestart 
 /*qCoroutineWaitUntil(_CONDITION_)
 
 Yields until the logical condition being true
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
+        #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
     #endif  
     
         typedef struct{
