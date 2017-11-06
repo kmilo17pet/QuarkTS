@@ -57,16 +57,17 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
 
 #define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
-#define qEnterCritical()    if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
-#define qExitCritical()     if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
+#define qEnterCritical()                        if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
+#define qExitCritical()                         if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
 
-#define _Q_TASK_DEADLINE_REACHED(_TASK_)        ( ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval) || _TASK_->Interval == qTimeInmediate)
-#define _Q_TASK_HAS_PENDING_ITERS(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
-#define _Q_MAIN_SCHEDULE(_core_)                QUARKTS.Flag.Init=qTrue;qMainSchedule: if(_core_.Flag.ReleaseSched) goto qReleasedSchedule
-#define _Q_RESUME_SCHEDULE(_after_release_)     goto qMainSchedule; qReleasedSchedule: _after_release_()
+#define __qChainInitializer     ((qTask_t*)-1)
+#define __qFSMCallbackMode      ((qTaskFcn_t)1)
+#define _qTaskDeadlineReached(_TASK_)            ( _TASK_->Interval == qTimeInmediate || ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval)  )
+#define _qTaskHasPendingIterations(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
 #define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    _eVar_.Trigger = _Trigger_; _eVar_.FirstCall = _FirstCall_; _eVar_.TaskData = _TaskData_ 
 
-
+#define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
+#define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
 /*============================================================================*/
 /*
 qTask_t* qTaskSelf(void)
@@ -413,14 +414,15 @@ Return value:
     */
 qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if(Task==NULL) return qFalse;
-    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;    
+    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;
+    qSchedulerRemoveTask(Task); /*Remove the task if was previously added to the chain*/
     Task->Callback = CallbackFcn;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
     Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
-    Task->Flag.Enabled = (uint8_t)(InitialState != qFalse);
+    Task->Flag.Enabled = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
@@ -515,8 +517,8 @@ Return value:
     Returns qTrue on successs, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                                  qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
-                                  qState_t InitialTaskState, void *arg){
+                            qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                            qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
     if (!qSchedulerAddxTask(Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
     qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
@@ -544,7 +546,7 @@ qBool_t qSchedulerRemoveTask(qTask_t *Task){
         prev = tmp; /*keep on track the previous node*/
         tmp = tmp->Next;
     }
-    if(tmp == Task){ 
+    if(tmp == Task){ /*remove the task if was found on the chain*/
         if(prev) prev->Next = tmp->Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
         else QUARKTS.Head = tmp->Next; /*if the task is the head of the chain, move the head to the next node*/
         Task->Next = NULL; /*Just in case the deleted task needs to be added later to the scheduling scheme, otherwise, this would fuck the whole chain*/
@@ -560,7 +562,7 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
         *head = Task; /*this task will be the new head*/
         return;
     }
-    tmp_node = *head; /*tmp will hold the*/
+    tmp_node = *head; 
     while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the righ place for this task acoording its priority*/
     Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
     tmp_node->Next = Task;
@@ -571,7 +573,7 @@ static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange 
     qTask_t *tmp = *head;
     qTask_t *tmp1 = NULL;
     qEnterCritical();
-    while(tmp){
+    while(tmp){ /*start with a new head and re-insert the entire chain*/
         tmp1 = tmp;
         tmp = tmp->Next;
         _qScheduler_PriorizedInsert(&new_head, tmp1);  
@@ -665,16 +667,16 @@ pool has been defined.
   Note : qScheduleRun keeps the application in an endless loop
 */
 void qSchedulerRun(void){
-    qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and the top enqueue node if available*/
-    _Q_MAIN_SCHEDULE(QUARKTS); /*Scheduling start-point*/   
-    if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
-    if((Task = _qScheduler_PriorityQueueGet()))  Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle*/                        
-    if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
-        while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
-            Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the task if is qReady, otherwise put it in a qWaiting State*/
-    }
-    else if(Task==NULL && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
-    _Q_RESUME_SCHEDULE(_qTriggerReleaseSchedEvent); /*scheduling end-point (also check for scheduling-release request)*/
+    qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
+    qSchedulerStartPoint{
+        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
+        if((Task = _qScheduler_PriorityQueueGet()))  Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle*/                        
+        if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
+            while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
+                Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the task if is qReady, otherwise put it in a qWaiting State*/
+        }
+        else if(Task==NULL && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
+    }qSchedulerEndPoint; /*scheduling end-point (also check for scheduling-release request)*/
 }
 /*============================================================================*/
 static qTask_t* _qScheduler_GetNodeFromChain(void){ 
@@ -737,12 +739,16 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks
     qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
     qBool_t nTaskReady = qFalse; 
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain*/
-        if( _Q_TASK_DEADLINE_REACHED(Task) && _Q_TASK_HAS_PENDING_ITERS(Task) && qTaskIsEnabled(Task)){  /*Check if task is enabled and reach the time-deadline*/      
-            Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
-            Task->State = qReady; 
-            Task->Trigger = byTimeElapsed;
-            nTaskReady = qTrue;
-            continue;
+        if(Task->Flag.Enabled){ /*nested check for timed task, check the first requirement*/
+            if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
+                if(_qTaskDeadlineReached(Task)){ /*finally, check if */
+                    Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
+                    Task->State = qReady; 
+                    Task->Trigger = byTimeElapsed;
+                    nTaskReady = qTrue;
+                    continue;                    
+                }
+            }
         }
         else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady;
@@ -1095,9 +1101,9 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     if(obj==NULL || pmem==NULL) return;
     uint8_t i, *p;
     qEnterCritical();	
-    p = (uint8_t*) obj->Blocks;
+    p = (uint8_t*)obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
-        if( p == pmem ) {
+        if( p == pmem ){
             *(obj->BlockDescriptors + i) = 0;
             break;
 	}

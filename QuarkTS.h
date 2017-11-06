@@ -53,8 +53,6 @@ extern "C" {
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
-    #define __qChainInitializer     ((qTask_t*)-1)
-    #define __qFSMCallbackMode      ((qTaskFcn_t)1)
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
