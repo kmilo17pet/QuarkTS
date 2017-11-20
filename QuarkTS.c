@@ -632,13 +632,13 @@ qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mo
 }
 /*============================================================================*/
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
-    if(Task==NULL) return _Q_NO_VALID_TRIGGER_;
-    if(Task->RingBuff == NULL) return _Q_NO_VALID_TRIGGER_;
+    if(Task==NULL) return qTriggerNULL;
+    if(Task->RingBuff == NULL) return qTriggerNULL;
     if(Task->Flag.RBFull)       if(_qRBufferFull(Task->RingBuff))                           return byRBufferFull;           
     if(Task->Flag.RBCount>0)    if(_qRBufferCount(Task->RingBuff) >= Task->Flag.RBCount )   return byRBufferCount;            
     if(Task->Flag.RBAutoPop)    if(qRBufferGetFront(Task->RingBuff)!=NULL)                  return byRBufferPop;   
     if(Task->Flag.RBEmpty)      if(qRBufferEmpty(Task->RingBuff))                           return byRBufferEmpty;       
-    return _Q_NO_VALID_TRIGGER_;
+    return qTriggerNULL;
 }
 /*============================================================================*/
 static void _qTriggerReleaseSchedEvent(void){
@@ -736,21 +736,21 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event){
 /*============================================================================*/
 static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks fullfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
-    qTrigger_t trg = _Q_NO_VALID_TRIGGER_;
+    qTrigger_t trg = qTriggerNULL;
     qBool_t nTaskReady = qFalse; 
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain*/
         if(Task->Flag.Enabled){ /*nested check for timed task, check the first requirement*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
-                if(_qTaskDeadlineReached(Task)){ /*finally, check if */
+                if(_qTaskDeadlineReached(Task)){ /*finally, check the deadline*/
                     Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
                     Task->State = qReady; 
                     Task->Trigger = byTimeElapsed;
                     nTaskReady = qTrue;
                     continue;                    
                 }
-            }
+            } 
         }
-        else if((trg=_qCheckRBufferEvents(Task)) != _Q_NO_VALID_TRIGGER_){ /*If the deadline has not met, check if there is a RBuffer event available*/
+        else if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady;
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
             nTaskReady = qTrue;
@@ -1172,7 +1172,6 @@ Return value:
     qTrue if the ring buffer is empty, qFalse if it is not.
  */
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
-    if(obj==NULL) return qFalse;
     return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == 0) : qTrue);    
 }
 /*============================================================================*/

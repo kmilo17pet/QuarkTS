@@ -70,9 +70,7 @@ void Task1Callback(qEvent_t e){
     if(e->LastIteration){
         puts("LastIteration");
     }
-    
-   
-    
+
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }
@@ -106,8 +104,10 @@ void Task6Callback(qEvent_t e){
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = QSTIMER_INITIALIZER;
     if(qSTimerFreeRun(&t, 5.0)){
+        puts("hi");
         qTaskSetIterations(&Task1, 6);
         qTaskResume(&Task1);
+       
     }
 }
 /*============================================================================*/
@@ -122,6 +122,7 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
     }qCoroutineEnd;
 }
+
 /*============================================================================*/
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
