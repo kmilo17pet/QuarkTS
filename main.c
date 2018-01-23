@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include "QuarkTS.h"
 #include <signal.h>
+#include <ctype.h>
+#include <math.h>
 
 /*============================================================================*/
 pthread_t TimerEmulation;
@@ -73,8 +75,7 @@ void Task1Callback(qEvent_t e){
 
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
-    }
-     
+    }     
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
@@ -106,8 +107,7 @@ void IdleTaskCallback(qEvent_t e){
     if(qSTimerFreeRun(&t, 5.0)){
         puts("hi");
         qTaskSetIterations(&Task1, 6);
-        qTaskResume(&Task1);
-       
+        qTaskResume(&Task1);      
     }
 }
 /*============================================================================*/
@@ -122,7 +122,6 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
     }qCoroutineEnd;
 }
-
 /*============================================================================*/
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
@@ -145,6 +144,10 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+    /*qISR_Byte_t DataAlloc[100] = {0};
+    qISR_ByteBuffer_t Buffer;
+    qISR_ByteBufferInit(&Buffer, DataAlloc, sizeof(DataAlloc), '\r', isalpha, tolower);*/
+    
     #ifdef Q_TASK_DEV_TEST
         qSchedulePrintChain();
     #endif

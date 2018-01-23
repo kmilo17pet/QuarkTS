@@ -24,6 +24,8 @@ and the available API
 https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 */
 
+#include <ctype.h>
+
 #include "QuarkTS.h"
 
 #ifdef __XC8
@@ -54,6 +56,7 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+
 
 #define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
@@ -880,6 +883,7 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
             return;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
             obj->PreviousState  = NULL;
+            obj->qPrivate.Prev = NULL;
             return;
         case qSM_FAILURE_STATE:
             obj->qPrivate.__Failure = (qSM_ExState_t)val;
@@ -1248,6 +1252,266 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     return status;    
 }
 /*============================================================================*/
+/*void qSwapBytes(void *data, size_t n)
+ 
+Invert the endianess for n bytes of the specified memory location
+ 
+Parameters:
+
+    - data : a pointer to block of data
+    - n : the number of bytes to swap
+*/
+/*============================================================================*/
+void qSwapBytes(void *data, qSize_t n){
+    uint8_t *p = data;
+    size_t lo, hi;
+    for(lo=0, hi=n-1; hi>lo; lo++, hi--){
+        char tmp=p[lo];
+        p[lo] = p[hi];
+        p[hi] = tmp;
+    }
+}
+/*============================================================================*/
+/*qBool_t qCheckEndianness(void)
+ 
+Check the system endianess
+  
+Return value:
+
+    qTrue if Little-Endian, otherwise returns qFalse
+*/
+qBool_t qCheckEndianness(void){
+    uint16_t i = 1;
+    return (qBool_t)( *( (uint8_t*)&i ) );
+}
+/*============================================================================*/
+/*void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, size_t n)
+ 
+Wrapper method to write n RAW data througth fcn
+  
+Parameters:
+
+    - fcn : The basic output byte function
+    - storagep : The storage pointer passed to fcn
+    - data: The data to be written
+    - n: The size of "data"
+  
+*/
+/*============================================================================*/
+void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
+    size_t i = 0;
+    char *cdata = data;
+    for(i=0;i<n;i++) fcn(storagep, cdata[i]);
+}
+/*============================================================================*/
+/*void qPrintString(qPutChar_t fcn, const char *s)
+ 
+Wrapper method to write a string througth fcn
+  
+Parameters:
+
+    - fcn : The basic output byte function
+    - storagep : The storage pointer passed to fcn
+    - s: The string to be written
+*/
+void qPrintString(qPutChar_t fcn, void* storagep, const char *s){
+    while(*s) fcn(storagep, *s++);
+}
+/*============================================================================*/
+qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
+    if(pData == NULL || size<2) return qFalse;
+    obj->AcceptCheck = AcceptCheck;
+    obj->PreChar = PreChar;
+    obj->EndByte = EndChar;
+    obj->MaxIndex = (uint16_t)(size - 1);
+    obj->pdata = pData;
+    obj->index = 0;
+    return qTrue;
+}
+/*============================================================================*/
+qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
+    if (!obj->ReadyFlag ){
+        if(obj->AcceptCheck){
+            if(!obj->AcceptCheck(newChar)) return qFalse;
+        }
+        obj->pdata[obj->index++] = (obj->PreChar)? obj->PreChar(newChar) : newChar;
+        obj->pdata[obj->index] = 0x0u;
+        if (obj->index>=(obj->MaxIndex)) obj->index = 0;
+        if(newChar == obj->EndByte){
+            obj->ReadyFlag = qTrue;
+            obj->index=0;
+            return qTrue;
+        }
+    }
+    return qFalse;
+}
+/*============================================================================*/
+qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
+    if(obj->ReadyFlag){
+        memcpy(dest, (void*)obj->pdata, obj->index);
+        obj->ReadyFlag = qFalse;
+        return qTrue;
+    }
+    return qFalse;
+}
+/*============================================================================*/
+/*size_t qBSBuffer_Count(qBSBuffer_t const* obj)
+ 
+Query the number of elements in the BSBuffer
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+  
+Return value:
+
+    Number of elements in the BSBuffer
+*/
+size_t qBSBuffer_Count(qBSBuffer_t const* obj){
+    return (obj ? (obj->head - obj->tail) : 0);
+}
+/*============================================================================*/
+/*size_t qBSBuffer_IsFull(qBSBuffer_t const* obj)
+ 
+Query the the full status of the BSBuffer
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+  
+Return value:
+
+    qTrue if the BSBuffer is full, qFalse if it is not.
+*/
+qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
+    return (obj ? (qBSBuffer_Count(obj) == obj->length) : qTrue);
+}
+/*============================================================================*/
+/*size_t qBSBuffer_Empty(qBSBuffer_t const* obj)
+ 
+Query the the empty status of the BSBuffer
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+  
+Return value:
+
+    qTrue if the BSBuffer is empty, qFalse if it is not.
+*/
+qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
+    return (obj ? (qBSBuffer_Count(obj) == 0) : qTrue);
+}
+/*============================================================================*/
+/*size_t qBSBuffer_Peek(qBSBuffer_t const* obj)
+ 
+Looks for one byte from the head of the BSBuffer without removing it
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+  
+Return value:
+
+    byte of data, or zero if nothing in the list
+*/
+uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
+    return (obj ? (obj->buffer[obj->tail % obj->length]) : 0);
+}
+/*============================================================================*/
+/*size_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest)
+ 
+Gets one data-byte from the front of the BSBuffer, and removes it
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+    - dest: the location where the data-byte will be written
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
+    if (!qBSBuffer_Empty(obj)) {
+        *dest = obj->buffer[obj->tail % obj->length];
+        obj->tail++;
+        return qTrue;
+    }
+    return qFalse;
+}
+/*============================================================================*/
+/*qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, size_t n)
+ 
+Gets n data from the BSBuffer and removes them
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+    - dest: the location where the data will be written
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n){
+    qSize_t i;
+    uint8_t *data = (uint8_t*)dest;
+    if(n<=0) return qFalse;
+    for(i=0;i<n;i++){
+        if (!qBSBuffer_Get(obj, data+i)) return qFalse;
+    }
+    return qTrue;
+}
+/*============================================================================*/
+/*qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
+ 
+Adds an element of data to the BSBuffer
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+    - data: the data to be added
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
+    qBool_t status = qFalse;
+    if(obj){ 
+        if(!qBSBuffer_IsFull(obj)) {/* limit the ring to prevent overwriting */
+            obj->buffer[obj->head % obj->length] = data;
+            obj->head++;
+            status = qTrue;
+        }
+    }
+    return status;
+}
+/*============================================================================*/
+/*void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, size_t length){
+ 
+Initialize the BSBuffer
+ 
+Parameters:
+
+    - obj : a pointer to the qBSBuffer object
+    - buffer: block of memory or array of data
+    - length: The size of the buffer(Must be a power of two)
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length){
+    if(obj){
+        obj->head = 0;
+        obj->tail = 0;
+        obj->buffer = buffer;
+        obj->length = _qRBufferValidPowerOfTwo(length);
+    }
+}
+/*============================================================================*/
 #ifdef Q_TASK_DEV_TEST
 void qSchedulePrintChain(void){
     qTask_t *Task;
@@ -1263,7 +1527,7 @@ void qSchedulePrintChain(void){
     puts("--------------------------------------------------------------------");
 }
 #endif
-/*============================================================================*/
+
 #ifdef __XC8
     #pragma warning pop
 #endif

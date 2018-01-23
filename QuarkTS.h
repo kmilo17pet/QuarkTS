@@ -34,14 +34,14 @@ extern "C" {
     #include <string.h>
     #include <stdio.h>
     #include <stdlib.h>
-
+    
     #define _QUARKTS_CR_DEFS_
     #define QUARTKTS_VERSION "4.5.0"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
 
-    
+   
     /*#define Q_TASK_INSERT_BEGINNING*/
     #define qTrue                   0x01u
     #define qFalse                  0x00u
@@ -513,9 +513,48 @@ void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 
+
+typedef volatile char qISR_Byte_t;
+typedef volatile struct{
+    qISR_Byte_t *pdata;
+    volatile uint16_t index;
+    volatile qBool_t ReadyFlag;
+    qBool_t (*AcceptCheck)(const char);
+    char (*PreChar)(const char);
+    char EndByte;
+    uint16_t MaxIndex;
+}qISR_ByteBuffer_t;
+
 #ifdef Q_TASK_DEV_TEST
 void qSchedulePrintChain(void);
 #endif
+
+typedef struct{
+    volatile uint16_t head;
+    volatile uint16_t tail;
+    volatile uint8_t *buffer;
+    qSize_t length;
+}qBSBuffer_t;
+
+typedef void (*qPutChar_t)(void*, const char);
+void qSwapBytes(void *data, qSize_t n);
+void qPrintString(qPutChar_t fcn, void* storagep, const char *s);
+void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
+
+
+size_t qBSBuffer_Count(qBSBuffer_t const* obj);
+qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
+qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
+uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
+qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
+qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data);
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
+void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length);
+
+qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
+qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
+qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
 
 #ifdef	__cplusplus
 }
