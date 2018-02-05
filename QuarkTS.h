@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.0
+ *  Version : 4.5.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,11 +36,10 @@ extern "C" {
     #include <stdlib.h>
     
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.5.0"
+    #define QUARTKTS_VERSION "4.5.1"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
-
    
     /*#define Q_TASK_INSERT_BEGINNING*/
     #define qTrue                   0x01u
@@ -74,8 +73,12 @@ extern "C" {
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
+        typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t; 
+        typedef struct qCoroutineSemaphore_t qCRSem_t;
         #define qCR_PCInitVal   (-0x7FFE)           
-        #define __qCRKeep                _qCR_BEGIN_:   
+        #define __qCRKeep                _qCR_BEGIN_:
+        #define __qCRCodeStartBlock      do
+        #define __qCRCodeEndBlock        while(qFalse)
         #define __qPersistent            static _qTaskPC_t
         #define __qTaskProgress          __LINE__
         #define __qAssert(_COND_)        if(!(_COND_))
@@ -90,6 +93,10 @@ extern "C" {
         #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
         #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
+        #define __qCRSemInit(s, c)      __qCRCodeStartBlock{ (s)->tail = 0; (s)->head = (c); }__qCRCodeEndBlock
+        #define __qCRSemCount(s)        ((s)->head - (s)->tail)
+        #define __qCRSemLock(s)         (++(s)->tail)
+        #define __qCRSemRelease(s)      (++(s)->head)
     #endif
 
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
@@ -166,13 +173,13 @@ extern "C" {
         - byNoReadyTasks: Only when the Idle Task is triggered.
         */
         qTrigger_t Trigger;
-        /* TaskData:
+        /* TaskData (Storage-Pointer):
         Task arguments defined at the time of its creation.
         */
         void *TaskData;
         /* EventData:
         Associated data of the event. Specific data will reside here according
-         to the event source. This field will only have a NULL value when the 
+        to the event source. This field will only have a NULL value when the 
         trigger is <byTimeElapsed> or <byPriority>.
          */
         void *EventData;
@@ -235,9 +242,13 @@ extern "C" {
         */
         qSM_Status_t (*NextState)(qSM_t*);
         /* PreviousState:
-        State executed before this state
+        Last state seen in the flow chart
         */
         qSM_Status_t (*PreviousState)(qSM_t*);
+        /* PreviousState:
+        The last state executed
+        */        
+        qSM_Status_t (*LastState)(qSM_t*);
         /* PreviousReturnStatus:
         The return status of <PreviusStateState>
         */
@@ -258,7 +269,6 @@ extern "C" {
             void (*__Success)(qSM_t*);
             void (*__Unexpected)(qSM_t*);  
             void (*__BeforeAnyState)(qSM_t*);/*only used when a task has a SM attached*/
-            qSM_Status_t (*Prev)(qSM_t*);
         }qPrivate;
     };    
     #define StateJustChanged    StateFirstEntry /*backward compatibility*/
@@ -399,9 +409,9 @@ Parameters:
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                               __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
-        #define __qCRYield                               { __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; }
-        #define __qCRRestart                             { __qTaskInitState ; __qTaskYield }
-        #define __qCR_wu_Assert(_cond_)                  { __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }
+        #define __qCRYield                               __qCRCodeStartBlock{ __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; } __qCRCodeEndBlock
+        #define __qCRRestart                             __qCRCodeStartBlock{ __qTaskInitState ; __qTaskYield } __qCRCodeEndBlock
+        #define __qCR_wu_Assert(_cond_)                  __qCRCodeStartBlock{ __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }__qCRCodeEndBlock
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -439,12 +449,51 @@ place of the qCoroutineBegin statement.
 */
         #define qCoroutineRestart                       __qCRRestart  
         #define qCRRestart                              __qCRRestart 
-/*qCoroutineWaitUntil(_CONDITION_)
+/*qCoroutineWaitUntil(_CONDITION_) 
 
 Yields until the logical condition being true
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
         #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
+/*qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_) 
+
+Initializes a semaphore with a value for the counter. Internally, the semaphores
+use an "unsigned int" to represent the counter, and therefore the "count" 
+argument should be within range of an unsigned int.
+
+Parameters:
+
+    - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
+
+    - _Value_ : The initial count of the semaphore.
+*/          
+        #define qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_)      __qCRSemInit(_qCRSemaphore_t_, _Value_)
+        #define qCRSemInit(_qCRSemaphore_t_, _Value_)                   __qCRSemInit(_qCRSemaphore_t_, _Value_)  
+/*qCoroutineSemaphoreWait(_qCRSemaphore_t_) 
+
+Carries out the "wait" operation on the semaphore. The wait operation causes 
+the Co-routine to block while the counter is zero. When the counter reaches a 
+value larger than zero, the protothread will continue.
+
+Parameters:
+
+    - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
+*/        
+        #define qCoroutineSemaphoreWait(_qCRSemaphore_t_)               __qCRCodeStartBlock{ qCoroutineWaitUntil(__qCRSemCount(_qCRSemaphore_t_) > 0);  __qCRSemLock(_qCRSemaphore_t_); } __qCRCodeEndBlock    
+        #define qCRSemWait(_qCRSemaphore_t_)                            qCoroutineSemaphoreWait(_qCRSemaphore_t_)
+/*qCoroutineSemaphoreSignal(_qCRSemaphore_t_) 
+
+Carries out the "signal" operation on the semaphore. The signal operation increments
+the counter inside the semaphore, which eventually will cause waiting Co-routines
+to continue executing.
+
+Parameters:
+
+    - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
+*/     
+        #define qCoroutineSemaphoreSignal(_qCRSemaphore_t_)             __qCRSemRelease(_qCRSemaphore_t_)
+        #define qCRSemSignal(_qCRSemaphore_t_)                          __qCRSemRelease(_qCRSemaphore_t_)
+        
     #endif  
     
         typedef struct{

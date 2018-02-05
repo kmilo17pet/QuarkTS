@@ -2003,6 +2003,101 @@ int __attribute__((__cdecl__)) utimes (const char *__path, const struct timeval 
 # 443 "/usr/include/sys/time.h" 3 4
 
 # 8 "main.c" 2
+
+# 1 "/usr/include/ctype.h" 1 3 4
+
+
+
+
+
+
+
+int __attribute__((__cdecl__)) isalnum (int __c);
+int __attribute__((__cdecl__)) isalpha (int __c);
+int __attribute__((__cdecl__)) iscntrl (int __c);
+int __attribute__((__cdecl__)) isdigit (int __c);
+int __attribute__((__cdecl__)) isgraph (int __c);
+int __attribute__((__cdecl__)) islower (int __c);
+int __attribute__((__cdecl__)) isprint (int __c);
+int __attribute__((__cdecl__)) ispunct (int __c);
+int __attribute__((__cdecl__)) isspace (int __c);
+int __attribute__((__cdecl__)) isupper (int __c);
+int __attribute__((__cdecl__)) isxdigit (int __c);
+int __attribute__((__cdecl__)) tolower (int __c);
+int __attribute__((__cdecl__)) toupper (int __c);
+# 45 "/usr/include/ctype.h" 3 4
+extern __attribute__((dllimport)) char *__ctype_ptr__;
+# 109 "/usr/include/ctype.h" 3 4
+extern __attribute__((dllimport)) const char _ctype_[];
+
+
+# 10 "main.c" 2
+# 1 "/usr/include/math.h" 1 3 4
+
+
+
+
+
+# 1 "/usr/include/machine/ieeefp.h" 1 3 4
+# 7 "/usr/include/math.h" 2 3 4
+
+
+
+
+
+
+
+union __dmath
+{
+  double d;
+  __ULong i[2];
+};
+
+union __fmath
+{
+  float f;
+  __ULong i[1];
+};
+
+
+union __ldmath
+{
+  long double ld;
+  __ULong i[4];
+};
+# 108 "/usr/include/math.h" 3 4
+extern double atan (double);
+extern double cos (double);
+extern double sin (double);
+extern double tan (double);
+extern double tanh (double);
+extern double frexp (double, int *);
+extern double modf (double, double *);
+extern double ceil (double);
+extern double fabs (double);
+extern double floor (double);
+
+
+
+
+
+
+extern double acos (double);
+extern double asin (double);
+extern double atan2 (double, double);
+extern double cosh (double);
+extern double sinh (double);
+extern double exp (double);
+extern double ldexp (double, int);
+extern double log (double);
+extern double log10 (double);
+extern double pow (double, double);
+extern double sqrt (double);
+extern double fmod (double, double);
+# 615 "/usr/include/math.h" 3 4
+
+# 11 "main.c" 2
+
 # 1 "QuarkTS.h" 1
 # 33 "QuarkTS.h"
 # 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
@@ -2143,9 +2238,11 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
 
 
 # 35 "QuarkTS.h" 2
-# 76 "QuarkTS.h"
+# 75 "QuarkTS.h"
         typedef int32_t _qTaskPC_t;
-# 95 "QuarkTS.h"
+        typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t;
+        typedef struct qCoroutineSemaphore_t qCRSem_t;
+# 102 "QuarkTS.h"
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
     typedef float qTime_t;
     typedef uint32_t qClock_t;
@@ -2154,9 +2251,9 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
-# 135 "QuarkTS.h"
+# 142 "QuarkTS.h"
     typedef struct{
-# 168 "QuarkTS.h"
+# 175 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -2196,7 +2293,7 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
         };
         volatile uint8_t FlagatIndex[7];
     }qTaskFlags_t;
-# 215 "QuarkTS.h"
+# 222 "QuarkTS.h"
     typedef uint8_t qTaskState_t;
 
 
@@ -2226,6 +2323,10 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
 
 
 
+        qSM_Status_t (*LastState)(volatile struct _qSM_t*);
+
+
+
         qSM_Status_t PreviousReturnStatus;
 
 
@@ -2243,7 +2344,6 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
             void (*__Success)(volatile struct _qSM_t*);
             void (*__Unexpected)(volatile struct _qSM_t*);
             void (*__BeforeAnyState)(volatile struct _qSM_t*);
-            qSM_Status_t (*Prev)(volatile struct _qSM_t*);
         }_;
     };
 
@@ -2338,11 +2438,11 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
-# 397 "QuarkTS.h"
+# 407 "QuarkTS.h"
     qBool_t qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState);
     void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
     void qStateMachine_Attribute(volatile struct _qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 450 "QuarkTS.h"
+# 499 "QuarkTS.h"
         typedef struct{
             qBool_t SR;
             qClock_t Start, TV;
@@ -2370,7 +2470,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 503 "QuarkTS.h"
+# 552 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -2426,105 +2526,10 @@ void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length);
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
 qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
 qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
-# 9 "main.c" 2
-
-# 1 "/usr/include/ctype.h" 1 3 4
-
-
-
-
-
-
-
-int __attribute__((__cdecl__)) isalnum (int __c);
-int __attribute__((__cdecl__)) isalpha (int __c);
-int __attribute__((__cdecl__)) iscntrl (int __c);
-int __attribute__((__cdecl__)) isdigit (int __c);
-int __attribute__((__cdecl__)) isgraph (int __c);
-int __attribute__((__cdecl__)) islower (int __c);
-int __attribute__((__cdecl__)) isprint (int __c);
-int __attribute__((__cdecl__)) ispunct (int __c);
-int __attribute__((__cdecl__)) isspace (int __c);
-int __attribute__((__cdecl__)) isupper (int __c);
-int __attribute__((__cdecl__)) isxdigit (int __c);
-int __attribute__((__cdecl__)) tolower (int __c);
-int __attribute__((__cdecl__)) toupper (int __c);
-# 45 "/usr/include/ctype.h" 3 4
-extern __attribute__((dllimport)) char *__ctype_ptr__;
-# 109 "/usr/include/ctype.h" 3 4
-extern __attribute__((dllimport)) const char _ctype_[];
-
-
-# 11 "main.c" 2
-# 1 "/usr/include/math.h" 1 3 4
-
-
-
-
-
-# 1 "/usr/include/machine/ieeefp.h" 1 3 4
-# 7 "/usr/include/math.h" 2 3 4
-
-
-
-
-
-
-
-union __dmath
-{
-  double d;
-  __ULong i[2];
-};
-
-union __fmath
-{
-  float f;
-  __ULong i[1];
-};
-
-
-union __ldmath
-{
-  long double ld;
-  __ULong i[4];
-};
-# 108 "/usr/include/math.h" 3 4
-extern double atan (double);
-extern double cos (double);
-extern double sin (double);
-extern double tan (double);
-extern double tanh (double);
-extern double frexp (double, int *);
-extern double modf (double, double *);
-extern double ceil (double);
-extern double fabs (double);
-extern double floor (double);
-
-
-
-
-
-
-extern double acos (double);
-extern double asin (double);
-extern double atan2 (double, double);
-extern double cosh (double);
-extern double sinh (double);
-extern double exp (double);
-extern double ldexp (double, int);
-extern double log (double);
-extern double log10 (double);
-extern double pow (double, double);
-extern double sqrt (double);
-extern double fmod (double, double);
-# 615 "/usr/include/math.h" 3 4
-
-# 12 "main.c" 2
-
+# 13 "main.c" 2
 
 pthread_t TimerEmulation;
-void* TimerInterruptEmulation(void* varargin){
+void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
     for(;;){
         nanosleep(&tick, ((void *)0));
@@ -2625,13 +2630,17 @@ void IdleTaskCallback(qEvent_t e){
 
 void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
+    qCoroutineSemaphore_t mutex;
+    do{ (&mutex)->tail = 0; (&mutex)->head = (1); }while(0x00u);
     static _qTaskPC_t _qCRTaskState_ = (-0x7FFE) ; switch(_qCRTaskState_){ case (_qTaskPC_t)(-0x7FFE): ; _qCR_BEGIN_:{
         puts("led on");
         qSTimerSet(&tmr, 1);
-        { _qCRTaskState_ = 119 ; case (_qTaskPC_t)119: ; if(!(qSTimerExpired(&tmr))) return; };
+        do{ _qCRTaskState_ = 121 ; case (_qTaskPC_t)121: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
+        do{ do{ _qCRTaskState_ = 122 ; case (_qTaskPC_t)122: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) return; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
         qSTimerSet(&tmr, 1);
+        (++(&mutex)->head);
         puts("led off");
-        { _qCRTaskState_ = 122 ; case (_qTaskPC_t)122: ; if(!(qSTimerExpired(&tmr))) return; };
+        do{ _qCRTaskState_ = 126 ; case (_qTaskPC_t)126: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
     }goto _qCR_BEGIN_;}return;
 }
 
@@ -2648,8 +2657,9 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
-    qSchedulerAddxTask(&Task1, Task1Callback, ((qPriority_t)(0xFEu)), 0.5, 5, (0x01u), "TASK1");
+
     qSchedulerAddxTask(&blinktask, blinktaskCallback, ((qPriority_t)(0x00u)), 0.05, ((qIteration_t)(-32768)), (0x01u), "blink");
+    qSchedulerAddxTask(&Task1, Task1Callback, ((qPriority_t)(0xFEu)), 0.5, 5, (0x01u), "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, ((qPriority_t)(0x7Fu)), "TASK3");
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, (0x01u));
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");

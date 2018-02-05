@@ -712,14 +712,14 @@ qStateMachine_Init:
 	movq	40(%rsp), %rax
 	movq	%rdx, (%rcx)
 	movq	$0, 8(%rcx)
-	movb	$0, 20(%rcx)
-	movl	$-32768, 16(%rcx)
-	movq	%r9, 32(%rcx)
-	movq	%r8, 40(%rcx)
-	movq	%rax, 48(%rcx)
-	movq	48(%rsp), %rax
+	movb	$0, 28(%rcx)
+	movl	$-32768, 24(%rcx)
+	movq	%r9, 40(%rcx)
+	movq	%r8, 48(%rcx)
 	movq	%rax, 56(%rcx)
-	movq	$0, 64(%rcx)
+	movq	48(%rsp), %rax
+	movq	%rax, 64(%rcx)
+	movq	$0, 16(%rcx)
 	movl	$1, %eax
 	ret
 	.p2align 4,,10
@@ -812,23 +812,23 @@ qStateMachine_Run:
 	.seh_endprologue
 	testq	%rcx, %rcx
 	je	.L135
-	movq	%rdx, 24(%rcx)
-	movq	56(%rcx), %rax
+	movq	%rdx, 32(%rcx)
+	movq	64(%rcx), %rax
 	movq	%rcx, %rbx
 	testq	%rax, %rax
 	je	.L138
-	movq	56(%rcx), %rax
+	movq	64(%rcx), %rax
 	call	*%rax
 .L138:
 	movq	(%rbx), %rax
 	testq	%rax, %rax
 	je	.L139
-	movq	64(%rbx), %rdx
+	movq	16(%rbx), %rdx
 	movq	(%rbx), %rax
 	cmpq	%rax, %rdx
 	setne	%al
-	movb	%al, 20(%rbx)
-	movzbl	20(%rbx), %eax
+	movb	%al, 28(%rbx)
+	movzbl	28(%rbx), %eax
 	testb	%al, %al
 	jne	.L163
 .L140:
@@ -836,18 +836,18 @@ qStateMachine_Run:
 	movq	%rbx, %rcx
 	movq	(%rbx), %rax
 	call	*%rax
-	movl	%eax, 16(%rbx)
-	movq	%rsi, 64(%rbx)
+	movl	%eax, 24(%rbx)
+	movq	%rsi, 16(%rbx)
 .L141:
-	movl	16(%rbx), %eax
+	movl	24(%rbx), %eax
 	cmpl	$-32768, %eax
 	je	.L143
 	cmpl	$-32767, %eax
 	je	.L164
-	movq	48(%rbx), %rax
+	movq	56(%rbx), %rax
 	testq	%rax, %rax
 	je	.L135
-	movq	48(%rbx), %rax
+	movq	56(%rbx), %rax
 	movq	%rbx, %rcx
 	addq	$40, %rsp
 	popq	%rbx
@@ -855,15 +855,15 @@ qStateMachine_Run:
 	rex.W jmp *%rax
 	.p2align 4,,10
 .L163:
-	movq	64(%rbx), %rax
+	movq	16(%rbx), %rax
 	movq	%rax, 8(%rbx)
 	jmp	.L140
 	.p2align 4,,10
 .L164:
-	movq	32(%rbx), %rax
+	movq	40(%rbx), %rax
 	testq	%rax, %rax
 	je	.L135
-	movq	32(%rbx), %rax
+	movq	40(%rbx), %rax
 	movq	%rbx, %rcx
 	addq	$40, %rsp
 	popq	%rbx
@@ -877,10 +877,10 @@ qStateMachine_Run:
 	ret
 	.p2align 4,,10
 .L143:
-	movq	40(%rbx), %rax
+	movq	48(%rbx), %rax
 	testq	%rax, %rax
 	je	.L135
-	movq	40(%rbx), %rax
+	movq	48(%rbx), %rax
 	movq	%rbx, %rcx
 	addq	$40, %rsp
 	popq	%rbx
@@ -888,7 +888,7 @@ qStateMachine_Run:
 	rex.W jmp *%rax
 	.p2align 4,,10
 .L139:
-	movl	$-32767, 16(%rbx)
+	movl	$-32767, 24(%rbx)
 	jmp	.L141
 	.seh_endproc
 	.section	.text.unlikely,"x"
@@ -924,33 +924,33 @@ qStateMachine_Attribute:
 	.text
 	.p2align 4,,10
 .L173:
-	movq	%r8, 56(%rcx)
+	movq	%r8, 64(%rcx)
 .L165:
 	rep ret
 	.p2align 4,,10
 .L172:
-	movq	%r8, 48(%rcx)
+	movq	%r8, 56(%rcx)
 	ret
 	.p2align 4,,10
 .L167:
 	movq	%r8, (%rcx)
 	movq	$0, 8(%rcx)
-	movq	$0, 64(%rcx)
-	movb	$0, 20(%rcx)
-	movl	$-32768, 16(%rcx)
+	movq	$0, 16(%rcx)
+	movb	$0, 28(%rcx)
+	movl	$-32768, 24(%rcx)
 	ret
 	.p2align 4,,10
 .L169:
 	movq	$0, 8(%rcx)
-	movq	$0, 64(%rcx)
+	movq	$0, 16(%rcx)
 	ret
 	.p2align 4,,10
 .L170:
-	movq	%r8, 32(%rcx)
+	movq	%r8, 40(%rcx)
 	ret
 	.p2align 4,,10
 .L171:
-	movq	%r8, 40(%rcx)
+	movq	%r8, 48(%rcx)
 	ret
 	.seh_endproc
 	.section	.text.unlikely,"x"
@@ -1895,7 +1895,7 @@ qSchedulerRun:
 .L429:
 	testb	%bpl, %bpl
 	je	.L363
-	movq	ChainIterator.3243(%rip), %rbx
+	movq	ChainIterator.3249(%rip), %rbx
 	jmp	.L364
 	.p2align 4,,10
 .L365:
@@ -1904,7 +1904,7 @@ qSchedulerRun:
 .L431:
 	movq	(%rbx), %rax
 	movzbl	80(%rbx), %edx
-	movq	%rax, ChainIterator.3243(%rip)
+	movq	%rax, ChainIterator.3249(%rip)
 	cmpb	$1, %dl
 	je	.L367
 	xorl	%edx, %edx
@@ -1916,12 +1916,12 @@ qSchedulerRun:
 	jne	.L365
 	movq	56+QUARKTS(%rip), %rbx
 	testq	%rbx, %rbx
-	movq	%rbx, ChainIterator.3243(%rip)
+	movq	%rbx, ChainIterator.3249(%rip)
 	jne	.L431
 	.p2align 4,,10
 .L366:
 	movq	56+QUARKTS(%rip), %rax
-	movq	%rax, ChainIterator.3243(%rip)
+	movq	%rax, ChainIterator.3249(%rip)
 .L369:
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
@@ -2007,7 +2007,7 @@ qSchedulerRun:
 	movq	%rbx, %rcx
 	call	_qScheduler_Dispatch
 	movl	%eax, %edx
-	movq	ChainIterator.3243(%rip), %rax
+	movq	ChainIterator.3249(%rip), %rax
 	jmp	.L368
 	.p2align 4,,10
 .L378:
@@ -2870,7 +2870,7 @@ qSchedulePrintChain:
 .LHOTE65:
 	.data
 	.align 8
-ChainIterator.3243:
+ChainIterator.3249:
 	.quad	-1
 .lcomm _qSysTick_Epochs_,4,4
 .lcomm QUARKTS,120,64

@@ -109,15 +109,15 @@ firststate:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movq	24(%rcx), %rsi
+	movq	32(%rcx), %rsi
 	movq	%rcx, %rbx
 	cmpb	$0, 24(%rsi)
 	jne	.L17
-	movzbl	20(%rbx), %eax
+	movzbl	28(%rbx), %eax
 	testb	%al, %al
 	jne	.L18
 .L9:
-	leaq	tmr.3977(%rip), %rcx
+	leaq	tmr.3983(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L10
@@ -133,11 +133,11 @@ firststate:
 .L17:
 	leaq	.LC5(%rip), %rcx
 	call	puts
-	movzbl	20(%rbx), %eax
+	movzbl	28(%rbx), %eax
 	testb	%al, %al
 	je	.L9
 .L18:
-	leaq	tmr.3977(%rip), %rcx
+	leaq	tmr.3983(%rip), %rcx
 	movss	.LC6(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -168,13 +168,13 @@ secondstate:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movq	24(%rcx), %rsi
-	movzbl	20(%rcx), %eax
+	movq	32(%rcx), %rsi
+	movzbl	28(%rcx), %eax
 	movq	%rcx, %rbx
 	testb	%al, %al
 	jne	.L28
 .L20:
-	leaq	tmr.3982(%rip), %rcx
+	leaq	tmr.3988(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L21
@@ -188,7 +188,7 @@ secondstate:
 	ret
 	.p2align 4,,10
 .L28:
-	leaq	tmr.3982(%rip), %rcx
+	leaq	tmr.3988(%rip), %rcx
 	movss	.LC6(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -214,46 +214,83 @@ secondstate:
 	.def	blinktaskCallback;	.scl	2;	.type	32;	.endef
 	.seh_proc	blinktaskCallback
 blinktaskCallback:
+	pushq	%rsi
+	.seh_pushreg	%rsi
+	pushq	%rbx
+	.seh_pushreg	%rbx
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movl	_qCRTaskState_.4011(%rip), %eax
-	cmpl	$119, %eax
+	movl	_qCRTaskState_.4018(%rip), %eax
+	cmpl	$121, %eax
 	je	.L31
+	jle	.L52
 	cmpl	$122, %eax
-	je	.L32
-	cmpl	$-32766, %eax
-	je	.L33
-.L29:
-	addq	$40, %rsp
-	ret
-	.p2align 4,,10
-.L49:
-	leaq	tmr.4010(%rip), %rcx
-	movss	.LC12(%rip), %xmm1
-	call	qSTimerSet
-	leaq	.LC13(%rip), %rcx
-	call	puts
-	movl	$122, _qCRTaskState_.4011(%rip)
-.L32:
-	leaq	tmr.4010(%rip), %rcx
+	je	.L41
+	xorl	%esi, %esi
+	cmpl	$126, %eax
+	movl	$1, %ebx
+	jne	.L29
+.L35:
+	leaq	tmr.4016(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L29
 .L33:
 	leaq	.LC11(%rip), %rcx
 	call	puts
-	leaq	tmr.4010(%rip), %rcx
+	leaq	tmr.4016(%rip), %rcx
 	movss	.LC12(%rip), %xmm1
 	call	qSTimerSet
-	movl	$119, _qCRTaskState_.4011(%rip)
-.L31:
-	leaq	tmr.4010(%rip), %rcx
+	leaq	tmr.4016(%rip), %rcx
+	movl	$121, _qCRTaskState_.4018(%rip)
 	call	qSTimerExpired
 	testb	%al, %al
-	jne	.L49
+	je	.L29
+	cmpl	%esi, %ebx
+	movl	$122, _qCRTaskState_.4018(%rip)
+	jne	.L38
+.L29:
 	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
 	ret
+	.p2align 4,,10
+.L41:
+	movl	$2, %ebx
+	movl	$1, %esi
+.L34:
+	leaq	tmr.4016(%rip), %rcx
+	movss	.LC12(%rip), %xmm1
+	call	qSTimerSet
+	leaq	.LC13(%rip), %rcx
+	call	puts
+	movl	$126, _qCRTaskState_.4018(%rip)
+	jmp	.L35
+	.p2align 4,,10
+.L52:
+	xorl	%esi, %esi
+	cmpl	$-32766, %eax
+	movl	$1, %ebx
+	je	.L33
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.p2align 4,,10
+.L31:
+	leaq	tmr.4016(%rip), %rcx
+	xorl	%esi, %esi
+	movl	$1, %ebx
+	call	qSTimerExpired
+	testb	%al, %al
+	je	.L29
+	movl	$122, _qCRTaskState_.4018(%rip)
+	.p2align 4,,10
+.L38:
+	addl	$1, %ebx
+	addl	$1, %esi
+	jmp	.L34
 	.seh_endproc
 	.section	.text.unlikely,"x"
 .LCOLDE14:
@@ -294,43 +331,43 @@ Task1Callback:
 	movl	%eax, %r9d
 	call	printf
 	cmpb	$0, 24(%rbx)
-	jne	.L55
-.L51:
+	jne	.L58
+.L54:
 	cmpb	$0, 25(%rbx)
-	jne	.L56
-.L52:
+	jne	.L59
+.L55:
 	cmpb	$0, 26(%rbx)
-	jne	.L57
-.L53:
-	leaq	tmr.3986(%rip), %rcx
+	jne	.L60
+.L56:
+	leaq	tmr.3992(%rip), %rcx
 	movss	.LC19(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
-	jne	.L58
+	jne	.L61
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L58:
+.L61:
 	leaq	.LC20(%rip), %rcx
 	addq	$32, %rsp
 	popq	%rbx
 	jmp	puts
 	.p2align 4,,10
-.L57:
+.L60:
 	leaq	.LC18(%rip), %rcx
 	call	puts
-	jmp	.L53
+	jmp	.L56
 	.p2align 4,,10
-.L56:
+.L59:
 	leaq	.LC17(%rip), %rcx
 	call	puts
-	jmp	.L52
+	jmp	.L55
 	.p2align 4,,10
-.L55:
+.L58:
 	leaq	.LC16(%rip), %rcx
 	call	puts
-	jmp	.L51
+	jmp	.L54
 	.seh_endproc
 	.section	.text.unlikely,"x"
 .LCOLDE21:
@@ -359,12 +396,12 @@ Task3Callback:
 	leaq	.LC1(%rip), %rcx
 	call	printf
 	cmpl	$4, (%rbx)
-	je	.L61
+	je	.L64
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L61:
+.L64:
 	movq	16(%rbx), %rax
 	leaq	.LC22(%rip), %rcx
 	movl	(%rax), %edx
@@ -393,16 +430,16 @@ IdleTaskCallback:
 	subq	$32, %rsp
 	.seh_stackalloc	32
 	.seh_endprologue
-	leaq	t.4006(%rip), %rcx
+	leaq	t.4012(%rip), %rcx
 	movss	.LC24(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
-	jne	.L64
+	jne	.L67
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L64:
+.L67:
 	leaq	Task1(%rip), %rbx
 	leaq	.LC25(%rip), %rcx
 	call	puts
@@ -457,9 +494,9 @@ Task2Callback:
 	.def	__main;	.scl	2;	.type	32;	.endef
 	.section .rdata,"dr"
 .LC30:
-	.ascii "TASK1\0"
-.LC31:
 	.ascii "blink\0"
+.LC32:
+	.ascii "TASK1\0"
 .LC33:
 	.ascii "TASK3\0"
 .LC34:
@@ -533,22 +570,22 @@ main:
 	movss	.LC29(%rip), %xmm0
 	call	_qInitScheduler
 	leaq	.LC30(%rip), %rax
-	leaq	Task1Callback(%rip), %rdx
-	leaq	Task1(%rip), %rcx
-	movl	$1, 40(%rsp)
-	movl	$5, 32(%rsp)
-	movl	$254, %r8d
-	movq	%rax, 48(%rsp)
-	movss	.LC19(%rip), %xmm3
-	call	qSchedulerAddxTask
-	leaq	.LC31(%rip), %rax
 	leaq	blinktaskCallback(%rip), %rdx
 	leaq	blinktask(%rip), %rcx
-	movss	.LC32(%rip), %xmm3
 	xorl	%r8d, %r8d
-	movq	%rax, 48(%rsp)
 	movl	$1, 40(%rsp)
 	movl	$-32768, 32(%rsp)
+	movq	%rax, 48(%rsp)
+	movss	.LC31(%rip), %xmm3
+	call	qSchedulerAddxTask
+	leaq	.LC32(%rip), %rax
+	leaq	Task1Callback(%rip), %rdx
+	leaq	Task1(%rip), %rcx
+	movss	.LC19(%rip), %xmm3
+	movl	$1, 40(%rsp)
+	movq	%rax, 48(%rsp)
+	movl	$5, 32(%rsp)
+	movl	$254, %r8d
 	call	qSchedulerAddxTask
 	leaq	.LC33(%rip), %r9
 	leaq	Task3Callback(%rip), %rdx
@@ -605,15 +642,15 @@ main:
 .LCOLDE40:
 	.section	.text.startup,"x"
 .LHOTE40:
-.lcomm tmr.4010,12,4
+.lcomm tmr.4016,12,4
 	.data
 	.align 4
-_qCRTaskState_.4011:
+_qCRTaskState_.4018:
 	.long	-32766
-.lcomm t.4006,12,4
-.lcomm tmr.3986,12,4
-.lcomm tmr.3982,12,4
-.lcomm tmr.3977,12,4
+.lcomm t.4012,12,4
+.lcomm tmr.3992,12,4
+.lcomm tmr.3988,12,4
+.lcomm tmr.3983,12,4
 	.comm	SMTask2, 88, 6
 	.comm	SMTask, 88, 6
 	.comm	blinktask, 88, 6
@@ -642,7 +679,7 @@ _qCRTaskState_.4011:
 .LC29:
 	.long	1008981770
 	.align 4
-.LC32:
+.LC31:
 	.long	1028443341
 	.align 4
 .LC38:

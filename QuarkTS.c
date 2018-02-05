@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.0
+ *  Version : 4.5.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -809,7 +809,7 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t Succ
     obj->qPrivate.__Success = SuccessState;
     obj->qPrivate.__Unexpected = UnexpectedState;
     obj->qPrivate.__BeforeAnyState = BeforeAnyState;
-    obj->qPrivate.Prev = NULL;
+    obj->LastState = NULL;
     return qTrue;
 }
 /*============================================================================*/
@@ -832,11 +832,11 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     obj->Data = Data;
     if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
-        obj->StateFirstEntry = (qBool_t)(obj->qPrivate.Prev != obj->NextState);
-        if(obj->StateFirstEntry) obj->PreviousState = obj->qPrivate.Prev ;
+        obj->StateFirstEntry = (qBool_t)(obj->LastState != obj->NextState);
+        if(obj->StateFirstEntry) obj->PreviousState = obj->LastState ;
         prev = obj->NextState;
         obj->PreviousReturnStatus = obj->NextState(obj);
-        obj->qPrivate.Prev = prev;
+        obj->LastState = prev;
     }
     else    obj->PreviousReturnStatus = qSM_EXIT_FAILURE;
     
@@ -877,13 +877,13 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)val;
             obj->PreviousState = NULL;
-            obj->qPrivate.Prev = NULL;
+            obj->LastState = NULL;
             obj->StateFirstEntry = 0;
             obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
             return;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
             obj->PreviousState  = NULL;
-            obj->qPrivate.Prev = NULL;
+            obj->LastState = NULL;
             return;
         case qSM_FAILURE_STATE:
             obj->qPrivate.__Failure = (qSM_ExState_t)val;
@@ -1357,15 +1357,15 @@ qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
 /*============================================================================*/
 /*size_t qBSBuffer_Count(qBSBuffer_t const* obj)
  
-Query the number of elements in the BSBuffer
+Query the number of elements in the BSBuffer(Byte-sized Buffer)
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
   
 Return value:
 
-    Number of elements in the BSBuffer
+    Number of elements in the BSBuffer(Byte-sized Buffer)
 */
 size_t qBSBuffer_Count(qBSBuffer_t const* obj){
     return (obj ? (obj->head - obj->tail) : 0);
@@ -1373,15 +1373,15 @@ size_t qBSBuffer_Count(qBSBuffer_t const* obj){
 /*============================================================================*/
 /*size_t qBSBuffer_IsFull(qBSBuffer_t const* obj)
  
-Query the the full status of the BSBuffer
+Query the the full status of the BSBuffer(Byte-sized Buffer)
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
   
 Return value:
 
-    qTrue if the BSBuffer is full, qFalse if it is not.
+    qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
 */
 qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
     return (obj ? (qBSBuffer_Count(obj) == obj->length) : qTrue);
@@ -1389,15 +1389,15 @@ qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
 /*============================================================================*/
 /*size_t qBSBuffer_Empty(qBSBuffer_t const* obj)
  
-Query the the empty status of the BSBuffer
+Query the the empty status of the BSBuffer(Byte-sized Buffer)
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
   
 Return value:
 
-    qTrue if the BSBuffer is empty, qFalse if it is not.
+    qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
     return (obj ? (qBSBuffer_Count(obj) == 0) : qTrue);
@@ -1405,11 +1405,11 @@ qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
 /*============================================================================*/
 /*size_t qBSBuffer_Peek(qBSBuffer_t const* obj)
  
-Looks for one byte from the head of the BSBuffer without removing it
+Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
   
 Return value:
 
@@ -1421,11 +1421,11 @@ uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
 /*============================================================================*/
 /*size_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest)
  
-Gets one data-byte from the front of the BSBuffer, and removes it
+Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
     - dest: the location where the data-byte will be written
   
 Return value:
@@ -1443,11 +1443,11 @@ qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
 /*============================================================================*/
 /*qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, size_t n)
  
-Gets n data from the BSBuffer and removes them
+Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
     - dest: the location where the data will be written
   
 Return value:
@@ -1466,11 +1466,11 @@ qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n){
 /*============================================================================*/
 /*qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
  
-Adds an element of data to the BSBuffer
- 
+Adds an element of data to the BSBuffer(Byte-sized Buffer)
+
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
     - data: the data to be added
   
 Return value:
@@ -1491,11 +1491,11 @@ qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
 /*============================================================================*/
 /*void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, size_t length){
  
-Initialize the BSBuffer
+Initialize the BSBuffer(Byte-sized Buffer)
  
 Parameters:
 
-    - obj : a pointer to the qBSBuffer object
+    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
     - buffer: block of memory or array of data
     - length: The size of the buffer(Must be a power of two)
   

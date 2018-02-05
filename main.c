@@ -5,14 +5,14 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include "QuarkTS.h"
 #include <signal.h>
 #include <ctype.h>
 #include <math.h>
 
+#include "QuarkTS.h"
 /*============================================================================*/
 pthread_t TimerEmulation;
-void* TimerInterruptEmulation(void* varargin){
+void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
     for(;;){
         nanosleep(&tick, NULL);
@@ -113,11 +113,15 @@ void IdleTaskCallback(qEvent_t e){
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
+    qCoroutineSemaphore_t mutex;
+    qCoroutineSemaphoreInit(&mutex, 1);
     qCoroutineBegin{
         puts("led on");
         qSTimerSet(&tmr, 1);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
+        qCoroutineSemaphoreWait(&mutex);
         qSTimerSet(&tmr, 1);
+        qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
     }qCoroutineEnd;
@@ -136,8 +140,9 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
-    qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
+    
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
+    qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
