@@ -36,6 +36,7 @@ qSM_Status_t firststate(qSM_t *fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
+
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
@@ -53,6 +54,7 @@ qSM_Status_t secondstate(qSM_t *fsm){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] second\r\n", (char*)e->TaskData);
     }
+    
     if (qSTimerExpired(&tmr)){
         fsm->NextState = firststate;
     }
@@ -72,7 +74,6 @@ void Task1Callback(qEvent_t e){
     if(e->LastIteration){
         puts("LastIteration");
     }
-
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }     

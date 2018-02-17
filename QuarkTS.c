@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.1
+ *  Version : 4.5.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -101,7 +101,7 @@ Return value:
 */    
 qBool_t qTaskIsEnabled(qTask_t *Task){
     if(Task==NULL) return qFalse;
-    return (qBool_t)Task->Flag.Enabled;
+    return (qBool_t)Task->Flag[_qIndex_Enabled];
 }
 /*============================================================================*/
 /*void qSchedulerSetIdleTask(qTaskFcn_t Callback)
@@ -171,7 +171,7 @@ Parameters:
 */ 
 void qTaskSendEvent(qTask_t *Task, void* eventdata){
     if(Task==NULL) return;
-    Task->Flag.AsyncRun = qTrue;
+    Task->Flag[_qIndex_AsyncRun] = qTrue;
     Task->AsyncData = eventdata;
 }
 /*============================================================================*/
@@ -254,8 +254,8 @@ Parameters:
 */
 void qTaskSetState(qTask_t *Task, qState_t State){
     if(Task==NULL) return;
-    if(State && Task->Flag.Enabled) return;
-    Task->Flag.Enabled = State;
+    if(State && Task->Flag[_qIndex_Enabled]) return;
+    Task->Flag[_qIndex_Enabled] = State;
     Task->ClockStart = _qSysTick_Epochs_;
 }
 /*============================================================================*/
@@ -424,8 +424,8 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
-    Task->Flag.AsyncRun = Task->Flag.InitFlag =  Task->Flag.RBAutoPop = Task->Flag.RBCount = Task->Flag.RBCount = Task->Flag.RBEmpty = qFalse ;
-    Task->Flag.Enabled = (qBool_t)(InitialState != qFalse);
+    Task->Flag[_qIndex_AsyncRun] = Task->Flag[_qIndex_InitFlag] =  Task->Flag[_qIndex_RBAutoPop] = Task->Flag[_qIndex_RBCount] = Task->Flag[_qIndex_RBCount] = Task->Flag[_qIndex_RBEmpty] = qFalse ;
+    Task->Flag[_qIndex_Enabled] = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
@@ -629,7 +629,7 @@ Return value:
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == NULL || Task==NULL || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;
     if(RingBuffer->data == NULL) return qFalse;    
-    Task->Flag.FlagatIndex[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse));
+    Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse));
     Task->RingBuff = (arg>0)? RingBuffer : NULL;
     return qTrue;
 }
@@ -637,10 +637,10 @@ qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mo
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
     if(Task==NULL) return qTriggerNULL;
     if(Task->RingBuff == NULL) return qTriggerNULL;
-    if(Task->Flag.RBFull)       if(_qRBufferFull(Task->RingBuff))                           return byRBufferFull;           
-    if(Task->Flag.RBCount>0)    if(_qRBufferCount(Task->RingBuff) >= Task->Flag.RBCount )   return byRBufferCount;            
-    if(Task->Flag.RBAutoPop)    if(qRBufferGetFront(Task->RingBuff)!=NULL)                  return byRBufferPop;   
-    if(Task->Flag.RBEmpty)      if(qRBufferEmpty(Task->RingBuff))                           return byRBufferEmpty;       
+    if(Task->Flag[_qIndex_RBFull])       if(_qRBufferFull(Task->RingBuff))                           return byRBufferFull;           
+    if(Task->Flag[_qIndex_RBCount]>0)    if(_qRBufferCount(Task->RingBuff) >= Task->Flag[_qIndex_RBCount] )   return byRBufferCount;            
+    if(Task->Flag[_qIndex_RBAutoPop])    if(qRBufferGetFront(Task->RingBuff)!=NULL)                  return byRBufferPop;   
+    if(Task->Flag[_qIndex_RBEmpty])      if(qRBufferEmpty(Task->RingBuff))                           return byRBufferEmpty;       
     return qTriggerNULL;
 }
 /*============================================================================*/
@@ -696,11 +696,11 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event){
         case byTimeElapsed:
             Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
             if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
-            if((QUARKTS.EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag.Enabled = qFalse; /*When the iteration value is reached, the task will be disabled*/            
+            if((QUARKTS.EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/            
             break;
         case byAsyncEvent:
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
-            Task->Flag.AsyncRun = qFalse; /*Clear the async flag*/            
+            Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
             break;
         case  byRBufferPop:
             QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
@@ -722,13 +722,13 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event){
     }
     Task->State = qRunning; 
     /*Fill the event info structure*/
-    _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag.InitFlag), Task->TaskData); /*Fill commond field of EventInfo: Trigger, FirstCall and TaskData*/ 
+    _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag[_qIndex_InitFlag]), Task->TaskData); /*Fill commond field of EventInfo: Trigger, FirstCall and TaskData*/ 
     QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
     if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
     else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event wask byRBufferPop*/
-    Task->Flag.InitFlag = qTrue; /*clear the init flag*/
+    Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
     
     QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration =  qFalse;;
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
@@ -742,7 +742,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks
     qTrigger_t trg = qTriggerNULL;
     qBool_t nTaskReady = qFalse; 
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain*/
-        if(Task->Flag.Enabled){ /*nested check for timed task, check the first requirement*/
+        if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
                 if(_qTaskDeadlineReached(Task)){ /*finally, check the deadline*/
                     Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
@@ -750,16 +750,17 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks
                     Task->Trigger = byTimeElapsed;
                     nTaskReady = qTrue;
                     continue;                    
-                }
-            } 
+                } goto _qCheckNoTimed;
+            }else goto _qCheckNoTimed;
         }
-        else if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
+        _qCheckNoTimed:
+        if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady;
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
             nTaskReady = qTrue;
             continue;
         }
-        else if( Task->Flag.AsyncRun){   /*The last check will be if the task has an async event*/
+        if( Task->Flag[_qIndex_AsyncRun]){   /*The last check will be if the task has an async event*/
             Task->State = qReady;
             Task->Trigger = byAsyncEvent;
             nTaskReady = qTrue;

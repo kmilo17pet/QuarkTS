@@ -8,6 +8,9 @@
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 15 "/usr/include/_ansi.h" 3 4
 # 1 "/usr/include/newlib.h" 1 3 4
+# 14 "/usr/include/newlib.h" 3 4
+# 1 "/usr/include/_newlib_version.h" 1 3 4
+# 15 "/usr/include/newlib.h" 2 3 4
 # 16 "/usr/include/_ansi.h" 2 3 4
 # 1 "/usr/include/sys/config.h" 1 3 4
 
@@ -17,9 +20,9 @@
 # 5 "/usr/include/sys/config.h" 2 3 4
 # 1 "/usr/include/sys/features.h" 1 3 4
 # 6 "/usr/include/sys/config.h" 2 3 4
-# 234 "/usr/include/sys/config.h" 3 4
+# 233 "/usr/include/sys/config.h" 3 4
 # 1 "/usr/include/cygwin/config.h" 1 3 4
-# 235 "/usr/include/sys/config.h" 2 3 4
+# 234 "/usr/include/sys/config.h" 2 3 4
 # 17 "/usr/include/_ansi.h" 2 3 4
 # 30 "/usr/include/stdio.h" 2 3 4
 
@@ -30,103 +33,151 @@
 # 1 "/usr/include/sys/cdefs.h" 1 3 4
 # 43 "/usr/include/sys/cdefs.h" 3 4
 # 1 "/usr/include/machine/_default_types.h" 1 3 4
-# 27 "/usr/include/machine/_default_types.h" 3 4
+# 41 "/usr/include/machine/_default_types.h" 3 4
+
+# 41 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int8_t;
 
 typedef unsigned char __uint8_t;
-# 41 "/usr/include/machine/_default_types.h" 3 4
+# 55 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int16_t;
 
 typedef short unsigned int __uint16_t;
-# 63 "/usr/include/machine/_default_types.h" 3 4
+# 77 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int32_t;
 
 typedef unsigned int __uint32_t;
-# 89 "/usr/include/machine/_default_types.h" 3 4
+# 103 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int64_t;
 
 typedef long unsigned int __uint64_t;
-# 120 "/usr/include/machine/_default_types.h" 3 4
+# 134 "/usr/include/machine/_default_types.h" 3 4
 typedef signed char __int_least8_t;
 
 typedef unsigned char __uint_least8_t;
-# 146 "/usr/include/machine/_default_types.h" 3 4
+# 160 "/usr/include/machine/_default_types.h" 3 4
 typedef short int __int_least16_t;
 
 typedef short unsigned int __uint_least16_t;
-# 168 "/usr/include/machine/_default_types.h" 3 4
+# 182 "/usr/include/machine/_default_types.h" 3 4
 typedef int __int_least32_t;
 
 typedef unsigned int __uint_least32_t;
-# 186 "/usr/include/machine/_default_types.h" 3 4
+# 200 "/usr/include/machine/_default_types.h" 3 4
 typedef long int __int_least64_t;
 
 typedef long unsigned int __uint_least64_t;
-# 200 "/usr/include/machine/_default_types.h" 3 4
+# 214 "/usr/include/machine/_default_types.h" 3 4
+typedef long int __intmax_t;
+
+
+
+
+
+
+
+typedef long unsigned int __uintmax_t;
+
+
+
+
+
+
+
 typedef long int __intptr_t;
 
 typedef long unsigned int __uintptr_t;
 # 44 "/usr/include/sys/cdefs.h" 2 3 4
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 212 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 216 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
 typedef long unsigned int size_t;
 # 46 "/usr/include/sys/cdefs.h" 2 3 4
 # 36 "/usr/include/stdio.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 147 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 149 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
 typedef long int ptrdiff_t;
-# 324 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+# 328 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
 typedef short unsigned int wchar_t;
 # 37 "/usr/include/stdio.h" 2 3 4
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdarg.h" 1 3 4
-# 40 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdarg.h" 3 4
+
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
-# 40 "/usr/include/stdio.h" 2 3 4
-
-
-
-
-
-
-
+# 41 "/usr/include/stdio.h" 2 3 4
+# 60 "/usr/include/stdio.h" 3 4
 # 1 "/usr/include/sys/reent.h" 1 3 4
 # 13 "/usr/include/sys/reent.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 14 "/usr/include/sys/reent.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
 # 15 "/usr/include/sys/reent.h" 2 3 4
 # 1 "/usr/include/sys/_types.h" 1 3 4
-# 12 "/usr/include/sys/_types.h" 3 4
+# 24 "/usr/include/sys/_types.h" 3 4
 # 1 "/usr/include/machine/_types.h" 1 3 4
-# 13 "/usr/include/sys/_types.h" 2 3 4
+# 17 "/usr/include/machine/_types.h" 3 4
+typedef __int64_t __blkcnt_t;
+
+
+typedef __int32_t __blksize_t;
+
+
+typedef __uint32_t __dev_t;
+
+
+
+typedef unsigned long __fsblkcnt_t;
+
+
+
+typedef unsigned long __fsfilcnt_t;
+
+
+typedef __uint32_t __uid_t;
+
+
+typedef __uint32_t __gid_t;
+
+
+typedef __uint64_t __ino_t;
+
+
+typedef long long __key_t;
+
+
+typedef __uint16_t __sa_family_t;
+
+
+
+typedef int __socklen_t;
+# 25 "/usr/include/sys/_types.h" 2 3 4
 # 1 "/usr/include/sys/lock.h" 1 3 4
-# 14 "/usr/include/sys/lock.h" 3 4
+# 12 "/usr/include/sys/lock.h" 3 4
 typedef void *_LOCK_T;
-# 44 "/usr/include/sys/lock.h" 3 4
+# 42 "/usr/include/sys/lock.h" 3 4
 void __cygwin_lock_init(_LOCK_T *);
 void __cygwin_lock_init_recursive(_LOCK_T *);
 void __cygwin_lock_fini(_LOCK_T *);
 void __cygwin_lock_lock(_LOCK_T *);
 int __cygwin_lock_trylock(_LOCK_T *);
 void __cygwin_lock_unlock(_LOCK_T *);
-# 14 "/usr/include/sys/_types.h" 2 3 4
-
-
+# 26 "/usr/include/sys/_types.h" 2 3 4
+# 44 "/usr/include/sys/_types.h" 3 4
 typedef long _off_t;
 
 
 
-typedef short __dev_t;
 
 
+typedef int __pid_t;
+# 65 "/usr/include/sys/_types.h" 3 4
+typedef __uint32_t __id_t;
+# 88 "/usr/include/sys/_types.h" 3 4
+typedef __uint32_t __mode_t;
 
-typedef unsigned short __uid_t;
 
-
-typedef unsigned short __gid_t;
 
 
 
@@ -136,8 +187,11 @@ __extension__ typedef long long _off64_t;
 
 
 
+typedef _off_t __off_t;
 
 
+typedef _off64_t __loff_t;
+# 114 "/usr/include/sys/_types.h" 3 4
 typedef long _fpos_t;
 
 
@@ -145,13 +199,18 @@ typedef long _fpos_t;
 
 
 typedef _off64_t _fpos64_t;
-# 55 "/usr/include/sys/_types.h" 3 4
+# 129 "/usr/include/sys/_types.h" 3 4
+typedef long unsigned int __size_t;
+# 145 "/usr/include/sys/_types.h" 3 4
 typedef long signed int _ssize_t;
-# 67 "/usr/include/sys/_types.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 353 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 3 4
+# 156 "/usr/include/sys/_types.h" 3 4
+typedef _ssize_t __ssize_t;
+
+
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 357 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
 typedef unsigned int wint_t;
-# 68 "/usr/include/sys/_types.h" 2 3 4
+# 160 "/usr/include/sys/_types.h" 2 3 4
 
 
 
@@ -173,11 +232,33 @@ typedef _LOCK_T _flock_t;
 
 
 typedef void *_iconv_t;
+
+
+
+typedef unsigned long __clock_t;
+
+
+typedef long __time_t;
+
+
+typedef unsigned long __clockid_t;
+
+
+typedef unsigned long __timer_t;
+# 203 "/usr/include/sys/_types.h" 3 4
+typedef unsigned short __nlink_t;
+typedef long __suseconds_t;
+typedef unsigned long __useconds_t;
+
+
+typedef __builtin_va_list __va_list;
 # 16 "/usr/include/sys/reent.h" 2 3 4
 # 25 "/usr/include/sys/reent.h" 3 4
 typedef unsigned int __ULong;
 # 38 "/usr/include/sys/reent.h" 3 4
 struct _reent;
+
+struct __locale_t;
 
 
 
@@ -220,7 +301,7 @@ struct _on_exit_args {
 
  __ULong _is_cxa;
 };
-# 91 "/usr/include/sys/reent.h" 3 4
+# 93 "/usr/include/sys/reent.h" 3 4
 struct _atexit {
  struct _atexit *_next;
  int _ind;
@@ -228,12 +309,12 @@ struct _atexit {
  void (*_fns[32])(void);
         struct _on_exit_args _on_exit_args;
 };
-# 115 "/usr/include/sys/reent.h" 3 4
+# 117 "/usr/include/sys/reent.h" 3 4
 struct __sbuf {
  unsigned char *_base;
  int _size;
 };
-# 179 "/usr/include/sys/reent.h" 3 4
+# 181 "/usr/include/sys/reent.h" 3 4
 struct __sFILE {
   unsigned char *_p;
   int _r;
@@ -284,7 +365,7 @@ struct __sFILE {
   _mbstate_t _mbstate;
   int _flags2;
 };
-# 237 "/usr/include/sys/reent.h" 3 4
+# 239 "/usr/include/sys/reent.h" 3 4
 struct __sFILE64 {
   unsigned char *_p;
   int _r;
@@ -343,7 +424,7 @@ struct _glue
   int _niobs;
   __FILE *_iobs;
 };
-# 317 "/usr/include/sys/reent.h" 3 4
+# 319 "/usr/include/sys/reent.h" 3 4
 struct _rand48 {
   unsigned short _seed[3];
   unsigned short _mult[3];
@@ -366,8 +447,9 @@ struct _reent
   int _inc;
   char _emergency[25];
 
-  int _current_category;
-  const char *_current_locale;
+
+  int _unspecified_locale_info;
+  struct __locale_t *_locale;
 
   int __sdidinit;
 
@@ -433,7 +515,7 @@ struct _reent
   struct _glue __sglue;
   __FILE __sf[3];
 };
-# 762 "/usr/include/sys/reent.h" 3 4
+# 766 "/usr/include/sys/reent.h" 3 4
 extern struct _reent *_impure_ptr ;
 extern struct _reent *const _global_impure_ptr ;
 
@@ -444,61 +526,104 @@ void _reclaim_reent (struct _reent *);
 
 
   struct _reent * __attribute__((__cdecl__)) __getreent (void);
-# 48 "/usr/include/stdio.h" 2 3 4
+# 61 "/usr/include/stdio.h" 2 3 4
 # 1 "/usr/include/sys/types.h" 1 3 4
-# 63 "/usr/include/sys/types.h" 3 4
+# 28 "/usr/include/sys/types.h" 3 4
+typedef __uint8_t u_int8_t;
+
+
+typedef __uint16_t u_int16_t;
+
+
+typedef __uint32_t u_int32_t;
+
+
+typedef __uint64_t u_int64_t;
+
+typedef int register_t;
+# 62 "/usr/include/sys/types.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 63 "/usr/include/sys/types.h" 2 3 4
+
 # 1 "/usr/include/sys/_stdint.h" 1 3 4
-# 19 "/usr/include/sys/_stdint.h" 3 4
+# 20 "/usr/include/sys/_stdint.h" 3 4
 typedef __int8_t int8_t ;
+
+
+
 typedef __uint8_t uint8_t ;
 
 
 
 
+
+
+
 typedef __int16_t int16_t ;
+
+
+
 typedef __uint16_t uint16_t ;
 
 
 
 
+
+
+
 typedef __int32_t int32_t ;
+
+
+
 typedef __uint32_t uint32_t ;
 
 
 
 
+
+
+
 typedef __int64_t int64_t ;
+
+
+
 typedef __uint64_t uint64_t ;
 
 
 
+
+
+
+typedef __intmax_t intmax_t;
+
+
+
+
+typedef __uintmax_t uintmax_t;
+
+
+
+
 typedef __intptr_t intptr_t;
+
+
+
+
 typedef __uintptr_t uintptr_t;
-# 64 "/usr/include/sys/types.h" 2 3 4
+# 65 "/usr/include/sys/types.h" 2 3 4
+# 113 "/usr/include/sys/types.h" 3 4
+typedef __blkcnt_t blkcnt_t;
 
 
 
 
-
-
-
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 72 "/usr/include/sys/types.h" 2 3 4
-# 1 "/usr/include/machine/types.h" 1 3 4
-# 19 "/usr/include/machine/types.h" 3 4
-typedef long int __off_t;
-typedef int __pid_t;
-
-__extension__ typedef long long int __loff_t;
+typedef __blksize_t blksize_t;
 
 
 
 
-
-typedef long __suseconds_t;
-# 73 "/usr/include/sys/types.h" 2 3 4
-# 119 "/usr/include/sys/types.h" 3 4
 typedef unsigned long clock_t;
+
 
 
 
@@ -508,40 +633,86 @@ typedef long time_t;
 
 
 
+
 typedef long daddr_t;
 
 
 
 typedef char * caddr_t;
-# 180 "/usr/include/sys/types.h" 3 4
-typedef int pid_t;
-# 190 "/usr/include/sys/types.h" 3 4
+
+
+
+
+typedef __fsblkcnt_t fsblkcnt_t;
+typedef __fsfilcnt_t fsfilcnt_t;
+
+
+
+
+typedef __id_t id_t;
+
+
+
+
+typedef __ino_t ino_t;
+# 173 "/usr/include/sys/types.h" 3 4
+typedef __off_t off_t;
+
+
+
+typedef __dev_t dev_t;
+
+
+
+typedef __uid_t uid_t;
+
+
+
+typedef __gid_t gid_t;
+
+
+
+
+typedef __pid_t pid_t;
+
+
+
+
+typedef __key_t key_t;
+
+
+
+
 typedef _ssize_t ssize_t;
-# 209 "/usr/include/sys/types.h" 3 4
-typedef unsigned short nlink_t;
-# 231 "/usr/include/sys/types.h" 3 4
-typedef long fd_mask;
+
+
+
+
+typedef __mode_t mode_t;
+
+
+
+
+typedef __nlink_t nlink_t;
+
+
+
+
+typedef __clockid_t clockid_t;
 
 
 
 
 
-
-
-typedef struct _types_fd_set {
- fd_mask fds_bits[(((64)+(((sizeof (fd_mask) * 8))-1))/((sizeof (fd_mask) * 8)))];
-} _types_fd_set;
-# 262 "/usr/include/sys/types.h" 3 4
-typedef unsigned long clockid_t;
+typedef __timer_t timer_t;
 
 
 
 
-typedef unsigned long timer_t;
+
+typedef __useconds_t useconds_t;
 
 
-
-typedef unsigned long useconds_t;
 
 
 typedef __suseconds_t suseconds_t;
@@ -549,44 +720,77 @@ typedef __suseconds_t suseconds_t;
 
 
 typedef __int64_t sbintime_t;
-# 474 "/usr/include/sys/types.h" 3 4
-# 1 "/usr/include/cygwin/types.h" 1 3 4
-# 21 "/usr/include/cygwin/types.h" 3 4
+
+
+# 1 "/usr/include/sys/_pthreadtypes.h" 1 3 4
+# 15 "/usr/include/sys/_pthreadtypes.h" 3 4
+typedef struct __pthread_t {char __dummy;} *pthread_t;
+typedef struct __pthread_mutex_t {char __dummy;} *pthread_mutex_t;
+
+typedef struct __pthread_key_t {char __dummy;} *pthread_key_t;
+typedef struct __pthread_attr_t {char __dummy;} *pthread_attr_t;
+typedef struct __pthread_mutexattr_t {char __dummy;} *pthread_mutexattr_t;
+typedef struct __pthread_condattr_t {char __dummy;} *pthread_condattr_t;
+typedef struct __pthread_cond_t {char __dummy;} *pthread_cond_t;
+typedef struct __pthread_barrierattr_t {char __dummy;} *pthread_barrierattr_t;
+typedef struct __pthread_barrier_t {char __dummy;} *pthread_barrier_t;
+
+
+typedef struct
+{
+  pthread_mutex_t mutex;
+  int state;
+}
+pthread_once_t;
+typedef struct __pthread_spinlock_t {char __dummy;} *pthread_spinlock_t;
+typedef struct __pthread_rwlock_t {char __dummy;} *pthread_rwlock_t;
+typedef struct __pthread_rwlockattr_t {char __dummy;} *pthread_rwlockattr_t;
+# 240 "/usr/include/sys/types.h" 2 3 4
+# 1 "/usr/include/machine/types.h" 1 3 4
+# 19 "/usr/include/machine/types.h" 3 4
 # 1 "/usr/include/endian.h" 1 3 4
-# 15 "/usr/include/endian.h" 3 4
+# 13 "/usr/include/endian.h" 3 4
+# 1 "/usr/include/machine/endian.h" 1 3 4
+
+
+
+
+
+# 1 "/usr/include/machine/_endian.h" 1 3 4
+# 14 "/usr/include/machine/_endian.h" 3 4
 # 1 "/usr/include/bits/endian.h" 1 3 4
-# 16 "/usr/include/endian.h" 2 3 4
-# 32 "/usr/include/endian.h" 3 4
-# 1 "/usr/include/byteswap.h" 1 3 4
-# 18 "/usr/include/byteswap.h" 3 4
-static __inline unsigned short
-bswap_16 (unsigned short __x)
+# 15 "/usr/include/machine/_endian.h" 2 3 4
+# 23 "/usr/include/machine/_endian.h" 3 4
+extern __inline__ __attribute__ ((__always_inline__)) __uint32_t __ntohl(__uint32_t);
+extern __inline__ __attribute__ ((__always_inline__)) __uint16_t __ntohs(__uint16_t);
+
+extern __inline__ __attribute__ ((__always_inline__)) __uint32_t
+__ntohl(__uint32_t _x)
 {
-  return (__x >> 8) | (__x << 8);
+ __asm__("bswap %0" : "=r" (_x) : "0" (_x));
+ return _x;
 }
 
-static __inline unsigned int
-bswap_32 (unsigned int __x)
+extern __inline__ __attribute__ ((__always_inline__)) __uint16_t
+__ntohs(__uint16_t _x)
 {
-  return (bswap_16 (__x & 0xffff) << 16) | (bswap_16 (__x >> 16));
+ __asm__("xchgb %b0,%h0"
+  : "=Q" (_x)
+  : "0" (_x));
+ return _x;
 }
-
-static __inline unsigned long long
-bswap_64 (unsigned long long __x)
-{
-  return (((unsigned long long) bswap_32 (__x & 0xffffffffull)) << 32) | (bswap_32 (__x >> 32));
-}
-# 33 "/usr/include/endian.h" 2 3 4
-# 22 "/usr/include/cygwin/types.h" 2 3 4
+# 7 "/usr/include/machine/endian.h" 2 3 4
+# 14 "/usr/include/endian.h" 2 3 4
+# 20 "/usr/include/machine/types.h" 2 3 4
 # 1 "/usr/include/bits/wordsize.h" 1 3 4
-# 23 "/usr/include/cygwin/types.h" 2 3 4
+# 21 "/usr/include/machine/types.h" 2 3 4
 # 1 "/usr/include/sys/_timespec.h" 1 3 4
-# 44 "/usr/include/sys/_timespec.h" 3 4
+# 45 "/usr/include/sys/_timespec.h" 3 4
 struct timespec {
  time_t tv_sec;
  long tv_nsec;
 };
-# 24 "/usr/include/cygwin/types.h" 2 3 4
+# 22 "/usr/include/machine/types.h" 2 3 4
 
 
 
@@ -598,72 +802,8 @@ typedef struct timespec timespec_t;
 typedef struct timespec timestruc_t;
 
 
-
-
-
-
-typedef _off_t off_t;
-
-
-
-
-
 typedef __loff_t loff_t;
-
-
-
-typedef __int16_t __dev16_t;
-typedef __uint32_t dev_t;
-
-
-
-
-typedef __int32_t blksize_t;
-
-
-
-
-typedef __int32_t __blkcnt32_t;
-typedef __int64_t blkcnt_t;
-
-
-
-
-
-typedef unsigned long fsblkcnt_t;
-
-
-
-
-
-typedef unsigned long fsfilcnt_t;
-
-
-
-
-typedef unsigned short __uid16_t;
-typedef __uint32_t uid_t;
-
-
-
-
-typedef unsigned short __gid16_t;
-typedef __uint32_t gid_t;
-
-
-
-
-
-
-
-typedef __uint64_t ino_t;
-
-
-
-
-
-typedef __uint32_t id_t;
-# 113 "/usr/include/cygwin/types.h" 3 4
+# 46 "/usr/include/machine/types.h" 3 4
 struct flock {
  short l_type;
  short l_whence;
@@ -671,11 +811,6 @@ struct flock {
  off_t l_len;
  pid_t l_pid;
 };
-
-
-
-typedef long long key_t;
-
 
 
 
@@ -697,63 +832,16 @@ typedef void *vm_object_t;
 
 
 
-typedef unsigned char u_int8_t;
-
-
-
-typedef __uint16_t u_int16_t;
-
-
-
-typedef __uint32_t u_int32_t;
-
-
-
-typedef __uint64_t u_int64_t;
-
-
-
-
-typedef __int32_t register_t;
-
-
-
-
 typedef char *addr_t;
 
 
 
 
-typedef unsigned mode_t;
 
-
-
-
-
-typedef struct __pthread_t {char __dummy;} *pthread_t;
-typedef struct __pthread_mutex_t {char __dummy;} *pthread_mutex_t;
-
-typedef struct __pthread_key_t {char __dummy;} *pthread_key_t;
-typedef struct __pthread_attr_t {char __dummy;} *pthread_attr_t;
-typedef struct __pthread_mutexattr_t {char __dummy;} *pthread_mutexattr_t;
-typedef struct __pthread_condattr_t {char __dummy;} *pthread_condattr_t;
-typedef struct __pthread_cond_t {char __dummy;} *pthread_cond_t;
-
-
-typedef struct
-{
-  pthread_mutex_t mutex;
-  int state;
-}
-pthread_once_t;
-typedef struct __pthread_spinlock_t {char __dummy;} *pthread_spinlock_t;
-typedef struct __pthread_rwlock_t {char __dummy;} *pthread_rwlock_t;
-typedef struct __pthread_rwlockattr_t {char __dummy;} *pthread_rwlockattr_t;
-# 220 "/usr/include/cygwin/types.h" 3 4
 # 1 "/usr/include/sys/sysmacros.h" 1 3 4
-# 14 "/usr/include/sys/sysmacros.h" 3 4
+# 12 "/usr/include/sys/sysmacros.h" 3 4
 # 1 "/usr/include/sys/types.h" 1 3 4
-# 15 "/usr/include/sys/sysmacros.h" 2 3 4
+# 13 "/usr/include/sys/sysmacros.h" 2 3 4
 
 extern __inline__ __attribute__ ((__always_inline__)) int gnu_dev_major(dev_t);
 extern __inline__ __attribute__ ((__always_inline__)) int gnu_dev_minor(dev_t);
@@ -776,9 +864,9 @@ gnu_dev_makedev(int maj, int min)
 {
  return (((maj) << 16) | ((min) & 0xffff));
 }
-# 221 "/usr/include/cygwin/types.h" 2 3 4
-# 475 "/usr/include/sys/types.h" 2 3 4
-# 49 "/usr/include/stdio.h" 2 3 4
+# 81 "/usr/include/machine/types.h" 2 3 4
+# 241 "/usr/include/sys/types.h" 2 3 4
+# 62 "/usr/include/stdio.h" 2 3 4
 
 
 
@@ -797,15 +885,20 @@ typedef _fpos64_t fpos_t;
 
 
 # 1 "/usr/include/sys/stdio.h" 1 3 4
-# 35 "/usr/include/sys/stdio.h" 3 4
+# 33 "/usr/include/sys/stdio.h" 3 4
 
 
 ssize_t __attribute__((__cdecl__)) getline (char **, size_t *, FILE *);
 ssize_t __attribute__((__cdecl__)) getdelim (char **, size_t *, int, FILE *);
 
 
-# 67 "/usr/include/stdio.h" 2 3 4
-# 167 "/usr/include/stdio.h" 3 4
+# 80 "/usr/include/stdio.h" 2 3 4
+# 181 "/usr/include/stdio.h" 3 4
+char * __attribute__((__cdecl__)) ctermid (char *);
+
+
+
+
 FILE * __attribute__((__cdecl__)) tmpfile (void);
 char * __attribute__((__cdecl__)) tmpnam (char *);
 
@@ -868,7 +961,23 @@ int __attribute__((__cdecl__)) sprintf (char *, const char *, ...) __attribute__
                                                             ;
 int __attribute__((__cdecl__)) remove (const char *);
 int __attribute__((__cdecl__)) rename (const char *, const char *);
-# 360 "/usr/include/stdio.h" 3 4
+# 339 "/usr/include/stdio.h" 3 4
+FILE * __attribute__((__cdecl__)) fdopen (int, const char *);
+
+int __attribute__((__cdecl__)) fileno (FILE *);
+
+
+int __attribute__((__cdecl__)) pclose (FILE *);
+FILE * __attribute__((__cdecl__)) popen (const char *, const char *);
+# 358 "/usr/include/stdio.h" 3 4
+int __attribute__((__cdecl__)) getc_unlocked (FILE *);
+int __attribute__((__cdecl__)) getchar_unlocked (void);
+void __attribute__((__cdecl__)) flockfile (FILE *);
+int __attribute__((__cdecl__)) ftrylockfile (FILE *);
+void __attribute__((__cdecl__)) funlockfile (FILE *);
+int __attribute__((__cdecl__)) putc_unlocked (int, FILE *);
+int __attribute__((__cdecl__)) putchar_unlocked (int);
+# 393 "/usr/include/stdio.h" 3 4
 int __attribute__((__cdecl__)) _asiprintf_r (struct _reent *, char **, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
                                                             ;
 char * __attribute__((__cdecl__)) _asniprintf_r (struct _reent *, char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
@@ -1006,10 +1115,10 @@ int __attribute__((__cdecl__)) _vsscanf_r (struct _reent *, const char *, const 
 int __attribute__((__cdecl__)) fpurge (FILE *);
 ssize_t __attribute__((__cdecl__)) __getdelim (char **, size_t *, int, FILE *);
 ssize_t __attribute__((__cdecl__)) __getline (char **, size_t *, FILE *);
-# 541 "/usr/include/stdio.h" 3 4
+# 574 "/usr/include/stdio.h" 3 4
 int __attribute__((__cdecl__)) __srget_r (struct _reent *, FILE *);
 int __attribute__((__cdecl__)) __swbuf_r (struct _reent *, int, FILE *);
-# 629 "/usr/include/stdio.h" 3 4
+# 664 "/usr/include/stdio.h" 3 4
 extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p);
 
 extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p)
@@ -1025,7 +1134,22 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reen
       }
     return __c;
   }
-# 728 "/usr/include/stdio.h" 3 4
+
+
+
+
+
+extern __inline__ __attribute__ ((__always_inline__)) int __sputc_r(struct _reent *_ptr, int _c, FILE *_p) {
+
+ if ((_p->_flags & 0x4000) && _c == '\n')
+   __sputc_r (_ptr, '\r', _p);
+
+ if (--_p->_w >= 0 || (_p->_w >= _p->_lbfsize && (char)_c != '\n'))
+  return (*_p->_p++ = _c);
+ else
+  return (__swbuf_r(_ptr, _c, _p));
+}
+# 767 "/usr/include/stdio.h" 3 4
 
 # 3 "main.c" 2
 # 1 "/usr/include/stdlib.h" 1 3 4
@@ -1037,13 +1161,13 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reen
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
 # 17 "/usr/include/stdlib.h" 2 3 4
 
 
 
 # 1 "/usr/include/machine/stdlib.h" 1 3 4
-# 17 "/usr/include/machine/stdlib.h" 3 4
+# 15 "/usr/include/machine/stdlib.h" 3 4
 char *mkdtemp (char *);
 # 21 "/usr/include/stdlib.h" 2 3 4
 
@@ -1052,35 +1176,24 @@ char *mkdtemp (char *);
 
 
 # 1 "/usr/include/cygwin/stdlib.h" 1 3 4
-# 15 "/usr/include/cygwin/stdlib.h" 3 4
+# 13 "/usr/include/cygwin/stdlib.h" 3 4
 # 1 "/usr/include/cygwin/wait.h" 1 3 4
-# 16 "/usr/include/cygwin/stdlib.h" 2 3 4
+# 14 "/usr/include/cygwin/stdlib.h" 2 3 4
 
 
 
 
 
-
-__uint32_t arc4random(void);
-void arc4random_addrandom(unsigned char *, int);
-void arc4random_buf(void *, size_t);
-void arc4random_stir(void);
-__uint32_t arc4random_uniform(__uint32_t);
 
 const char *getprogname (void);
 void setprogname (const char *);
-# 49 "/usr/include/cygwin/stdlib.h" 3 4
-int posix_openpt (int);
-int posix_memalign (void **, size_t, size_t);
-
-
-
-
-
-
+# 48 "/usr/include/cygwin/stdlib.h" 3 4
 extern void * memalign (size_t, size_t);
-extern void * valloc (size_t);
 # 27 "/usr/include/stdlib.h" 2 3 4
+
+
+
+
 
 
 
@@ -1096,7 +1209,7 @@ typedef struct
   long quot;
   long rem;
 } ldiv_t;
-# 55 "/usr/include/stdlib.h" 3 4
+# 57 "/usr/include/stdlib.h" 3 4
 typedef int (*__compar_fn_t) (const void *, const void *);
 
 
@@ -1111,6 +1224,11 @@ int __attribute__((__cdecl__)) __locale_mb_cur_max (void);
 
 void __attribute__((__cdecl__)) abort (void) __attribute__ ((__noreturn__));
 int __attribute__((__cdecl__)) abs (int);
+
+
+
+
+
 int __attribute__((__cdecl__)) atexit (void (*__func)(void));
 double __attribute__((__cdecl__)) atof (const char *__nptr);
 
@@ -1150,28 +1268,56 @@ size_t __attribute__((__cdecl__)) mbstowcs (wchar_t *, const char *, size_t);
 size_t __attribute__((__cdecl__)) _mbstowcs_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
 size_t __attribute__((__cdecl__)) wcstombs (char *, const wchar_t *, size_t);
 size_t __attribute__((__cdecl__)) _wcstombs_r (struct _reent *, char *, const wchar_t *, size_t, _mbstate_t *);
-# 124 "/usr/include/stdlib.h" 3 4
+# 133 "/usr/include/stdlib.h" 3 4
+char * __attribute__((__cdecl__)) _mkdtemp_r (struct _reent *, char *);
+int __attribute__((__cdecl__)) _mkostemp_r (struct _reent *, char *, int);
+int __attribute__((__cdecl__)) _mkostemps_r (struct _reent *, char *, int, int);
+int __attribute__((__cdecl__)) _mkstemp_r (struct _reent *, char *);
+int __attribute__((__cdecl__)) _mkstemps_r (struct _reent *, char *, int);
+char * __attribute__((__cdecl__)) _mktemp_r (struct _reent *, char *) __attribute__ ((__deprecated__("the use of `mktemp' is dangerous; use `mkstemp' instead")));
 void __attribute__((__cdecl__)) qsort (void * __base, size_t __nmemb, size_t __size, __compar_fn_t _compar);
 int __attribute__((__cdecl__)) rand (void);
 void * __attribute__((__cdecl__)) realloc (void * __r, size_t __size) ;
-
-
-
-
+# 154 "/usr/include/stdlib.h" 3 4
 void __attribute__((__cdecl__)) srand (unsigned __seed);
 double __attribute__((__cdecl__)) strtod (const char * __n, char ** __end_PTR);
 double __attribute__((__cdecl__)) _strtod_r (struct _reent *,const char * __n, char ** __end_PTR);
-# 145 "/usr/include/stdlib.h" 3 4
+# 166 "/usr/include/stdlib.h" 3 4
 long __attribute__((__cdecl__)) strtol (const char * __n, char ** __end_PTR, int __base);
 long __attribute__((__cdecl__)) _strtol_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
 unsigned long __attribute__((__cdecl__)) strtoul (const char * __n, char ** __end_PTR, int __base);
 unsigned long __attribute__((__cdecl__)) _strtoul_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
-
+# 186 "/usr/include/stdlib.h" 3 4
 int __attribute__((__cdecl__)) system (const char *__string);
-# 180 "/usr/include/stdlib.h" 3 4
+# 202 "/usr/include/stdlib.h" 3 4
+int __attribute__((__cdecl__)) _putenv_r (struct _reent *, char *__string);
+void * __attribute__((__cdecl__)) _reallocf_r (struct _reent *, void *, size_t);
+
+
+
+int __attribute__((__cdecl__)) _setenv_r (struct _reent *, const char *__string, const char *__value, int __overwrite);
+# 219 "/usr/include/stdlib.h" 3 4
 char * __attribute__((__cdecl__)) __itoa (int, char *, int);
 char * __attribute__((__cdecl__)) __utoa (unsigned, char *, int);
-# 246 "/usr/include/stdlib.h" 3 4
+
+
+
+
+
+int __attribute__((__cdecl__)) rand_r (unsigned *__seed);
+# 260 "/usr/include/stdlib.h" 3 4
+long long __attribute__((__cdecl__)) _atoll_r (struct _reent *, const char *__nptr);
+
+
+
+
+
+long long __attribute__((__cdecl__)) _strtoll_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
+
+
+
+unsigned long long __attribute__((__cdecl__)) _strtoull_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
+# 286 "/usr/include/stdlib.h" 3 4
 char * __attribute__((__cdecl__)) _dtoa_r (struct _reent *, double, int, int, int *, int*, char**);
 
 
@@ -1183,20 +1329,33 @@ char * __attribute__((__cdecl__)) _dtoa_r (struct _reent *, double, int, int, in
 int __attribute__((__cdecl__)) _system_r (struct _reent *, const char *);
 
 void __attribute__((__cdecl__)) __eprintf (const char *, const char *, unsigned int, const char *);
-# 283 "/usr/include/stdlib.h" 3 4
+# 316 "/usr/include/stdlib.h" 3 4
+extern long double _strtold_r (struct _reent *, const char *, char **);
+# 333 "/usr/include/stdlib.h" 3 4
 
 # 4 "main.c" 2
 # 1 "/usr/include/pthread.h" 1 3 4
-# 15 "/usr/include/pthread.h" 3 4
+# 12 "/usr/include/pthread.h" 3 4
 # 1 "/usr/include/signal.h" 1 3 4
 
 
 
 
+
 # 1 "/usr/include/sys/signal.h" 1 3 4
-# 113 "/usr/include/sys/signal.h" 3 4
+# 13 "/usr/include/sys/signal.h" 3 4
+# 1 "/usr/include/sys/_sigset.h" 1 3 4
+# 41 "/usr/include/sys/_sigset.h" 3 4
+typedef unsigned long __sigset_t;
+# 14 "/usr/include/sys/signal.h" 2 3 4
+
+
+
+
+typedef __sigset_t sigset_t;
+# 112 "/usr/include/sys/signal.h" 3 4
 # 1 "/usr/include/cygwin/signal.h" 1 3 4
-# 27 "/usr/include/cygwin/signal.h" 3 4
+# 24 "/usr/include/cygwin/signal.h" 3 4
 struct _uc_fpxreg {
   __uint16_t significand[4];
   __uint16_t exponent;
@@ -1273,7 +1432,7 @@ struct __attribute__ ((aligned (16))) __mcontext
   __uint64_t oldmask;
   __uint64_t cr2;
 };
-# 166 "/usr/include/cygwin/signal.h" 3 4
+# 163 "/usr/include/cygwin/signal.h" 3 4
 typedef union sigval
 {
   int sival_int;
@@ -1299,11 +1458,11 @@ struct _sigcommune
   __extension__ union
   {
     int _si_fd;
-    void *_si_pipe_fhandler;
+    int64_t _si_pipe_unique_id;
     char *_si_str;
   };
 };
-# 209 "/usr/include/cygwin/signal.h" 3 4
+# 206 "/usr/include/cygwin/signal.h" 3 4
 typedef struct
 {
   int si_signo;
@@ -1338,7 +1497,7 @@ typedef struct
     };
 
     void *si_addr;
-# 253 "/usr/include/cygwin/signal.h" 3 4
+# 250 "/usr/include/cygwin/signal.h" 3 4
   };
 } siginfo_t;
 #pragma pack(pop)
@@ -1404,14 +1563,6 @@ enum
 
 
 
-
-typedef __uint64_t sigset_t;
-
-
-
-
-
-
 typedef void (*_sig_func_ptr)(int);
 
 struct sigaction
@@ -1424,7 +1575,7 @@ struct sigaction
   sigset_t sa_mask;
   int sa_flags;
 };
-# 410 "/usr/include/cygwin/signal.h" 3 4
+# 400 "/usr/include/cygwin/signal.h" 3 4
 void psiginfo (const siginfo_t *, const char *);
 int sigwait (const sigset_t *, int *);
 int sigwaitinfo (const sigset_t *, siginfo_t *);
@@ -1441,43 +1592,47 @@ int siginterrupt (int, int);
 
 extern const char __attribute__((dllimport)) *sys_sigabbrev[];
 extern const char __attribute__((dllimport)) *sys_siglist[];
-# 114 "/usr/include/sys/signal.h" 2 3 4
-# 150 "/usr/include/sys/signal.h" 3 4
+# 113 "/usr/include/sys/signal.h" 2 3 4
+# 149 "/usr/include/sys/signal.h" 3 4
 typedef struct sigaltstack {
   void *ss_sp;
   int ss_flags;
   size_t ss_size;
 } stack_t;
-# 169 "/usr/include/sys/signal.h" 3 4
+
+
+
+
+
 int __attribute__((__cdecl__)) sigprocmask (int how, const sigset_t *set, sigset_t *oset);
-# 187 "/usr/include/sys/signal.h" 3 4
+
+
+int __attribute__((__cdecl__)) pthread_sigmask (int how, const sigset_t *set, sigset_t *oset);
+# 171 "/usr/include/sys/signal.h" 3 4
 int __attribute__((__cdecl__)) kill (pid_t, int);
+# 202 "/usr/include/sys/signal.h" 3 4
+int __attribute__((__cdecl__)) pthread_kill (pthread_t thread, int sig);
 
 
-int __attribute__((__cdecl__)) killpg (pid_t, int);
-int __attribute__((__cdecl__)) sigaction (int, const struct sigaction *, struct sigaction *);
-int __attribute__((__cdecl__)) sigaddset (sigset_t *, const int);
-int __attribute__((__cdecl__)) sigdelset (sigset_t *, const int);
-int __attribute__((__cdecl__)) sigismember (const sigset_t *, int);
-int __attribute__((__cdecl__)) sigfillset (sigset_t *);
-int __attribute__((__cdecl__)) sigemptyset (sigset_t *);
-int __attribute__((__cdecl__)) sigpending (sigset_t *);
-int __attribute__((__cdecl__)) sigsuspend (const sigset_t *);
-int __attribute__((__cdecl__)) sigpause (int);
-# 6 "/usr/include/signal.h" 2 3 4
+
+
+
+
+
+int __attribute__((__cdecl__)) sigwaitinfo (const sigset_t *set, siginfo_t *info);
+int __attribute__((__cdecl__)) sigtimedwait (const sigset_t *set, siginfo_t *info, const struct timespec *timeout)
+
+ ;
+int __attribute__((__cdecl__)) sigwait (const sigset_t *set, int *sig);
+
+
+int __attribute__((__cdecl__)) sigqueue (pid_t pid, int signo, const union sigval value);
+# 7 "/usr/include/signal.h" 2 3 4
 
 
 
 typedef int sig_atomic_t;
-
-typedef _sig_func_ptr sig_t;
-typedef _sig_func_ptr sighandler_t;
-
-
-
-
-
-
+# 22 "/usr/include/signal.h" 3 4
 struct _reent;
 
 _sig_func_ptr __attribute__((__cdecl__)) _signal_r (struct _reent *, int, _sig_func_ptr);
@@ -1490,7 +1645,7 @@ void __attribute__((__cdecl__)) psignal (int, const char *);
 
 
 
-# 16 "/usr/include/pthread.h" 2 3 4
+# 13 "/usr/include/pthread.h" 2 3 4
 # 1 "/usr/include/sched.h" 1 3 4
 # 24 "/usr/include/sched.h" 3 4
 # 1 "/usr/include/sys/sched.h" 1 3 4
@@ -1500,23 +1655,84 @@ struct sched_param {
 # 61 "/usr/include/sys/sched.h" 3 4
 };
 # 25 "/usr/include/sched.h" 2 3 4
-# 17 "/usr/include/pthread.h" 2 3 4
+# 34 "/usr/include/sched.h" 3 4
+int sched_setparam(
+  pid_t __pid,
+  const struct sched_param *__param
+);
+
+
+
+
+int sched_getparam(
+  pid_t __pid,
+  struct sched_param *__param
+);
+
+
+
+
+
+int sched_setscheduler(
+  pid_t __pid,
+  int __policy,
+  const struct sched_param *__param
+);
+
+
+
+
+int sched_getscheduler(
+  pid_t __pid
+);
+
+
+
+
+int sched_get_priority_max(
+  int __policy
+);
+
+int sched_get_priority_min(
+  int __policy
+);
+
+
+
+
+int sched_rr_get_interval(
+  pid_t __pid,
+  struct timespec *__interval
+);
+
+
+
+
+
+
+
+int sched_yield( void );
+# 14 "/usr/include/pthread.h" 2 3 4
 # 1 "/usr/include/time.h" 1 3 4
-# 15 "/usr/include/time.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
-# 16 "/usr/include/time.h" 2 3 4
+# 16 "/usr/include/time.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 17 "/usr/include/time.h" 2 3 4
 
 
 # 1 "/usr/include/machine/time.h" 1 3 4
-# 19 "/usr/include/time.h" 2 3 4
-# 28 "/usr/include/time.h" 3 4
+# 20 "/usr/include/time.h" 2 3 4
+# 29 "/usr/include/time.h" 3 4
 # 1 "/usr/include/sys/timespec.h" 1 3 4
 # 58 "/usr/include/sys/timespec.h" 3 4
 struct itimerspec {
  struct timespec it_interval;
  struct timespec it_value;
 };
-# 29 "/usr/include/time.h" 2 3 4
+# 30 "/usr/include/time.h" 2 3 4
+
+
+
+
 
 
 
@@ -1553,6 +1769,12 @@ size_t __attribute__((__cdecl__)) strftime (char * _s, size_t _maxsize, const ch
 
                                         ;
 
+
+
+
+
+
+
 char *__attribute__((__cdecl__)) asctime_r (const struct tm *, char *)
                        ;
 char *__attribute__((__cdecl__)) ctime_r (const time_t *, char *);
@@ -1562,17 +1784,86 @@ struct tm *__attribute__((__cdecl__)) localtime_r (const time_t *, struct tm *)
                             ;
 
 
-# 147 "/usr/include/time.h" 3 4
+# 101 "/usr/include/time.h" 3 4
+void __attribute__((__cdecl__)) tzset (void);
+
+void __attribute__((__cdecl__)) _tzset_r (struct _reent *);
+
+typedef struct __tzrule_struct
+{
+  char ch;
+  int m;
+  int n;
+  int d;
+  int s;
+  time_t change;
+  long offset;
+} __tzrule_type;
+
+typedef struct __tzinfo_struct
+{
+  int __tznorth;
+  int __tzyear;
+  __tzrule_type __tzrule[2];
+} __tzinfo_type;
+
+__tzinfo_type *__attribute__((__cdecl__)) __gettzinfo (void);
+# 158 "/usr/include/time.h" 3 4
+extern __attribute__((dllimport)) char *_tzname[2];
+# 173 "/usr/include/time.h" 3 4
 # 1 "/usr/include/cygwin/time.h" 1 3 4
-# 19 "/usr/include/cygwin/time.h" 3 4
+# 17 "/usr/include/cygwin/time.h" 3 4
 int __attribute__((__cdecl__)) clock_setres (clockid_t, struct timespec *);
 
 
 time_t __attribute__((__cdecl__)) timelocal (struct tm *);
 time_t __attribute__((__cdecl__)) timegm (struct tm *);
-# 148 "/usr/include/time.h" 2 3 4
-# 18 "/usr/include/pthread.h" 2 3 4
-# 67 "/usr/include/pthread.h" 3 4
+# 174 "/usr/include/time.h" 2 3 4
+# 186 "/usr/include/time.h" 3 4
+int __attribute__((__cdecl__)) clock_settime (clockid_t clock_id, const struct timespec *tp);
+int __attribute__((__cdecl__)) clock_gettime (clockid_t clock_id, struct timespec *tp);
+int __attribute__((__cdecl__)) clock_getres (clockid_t clock_id, struct timespec *res);
+
+
+
+int __attribute__((__cdecl__)) timer_create (clockid_t clock_id, struct sigevent * evp, timer_t * timerid)
+
+
+                              ;
+
+
+
+int __attribute__((__cdecl__)) timer_delete (timer_t timerid);
+
+
+
+int __attribute__((__cdecl__)) timer_settime (timer_t timerid, int flags, const struct itimerspec * value, struct itimerspec * ovalue)
+
+
+                                       ;
+int __attribute__((__cdecl__)) timer_gettime (timer_t timerid, struct itimerspec *value);
+int __attribute__((__cdecl__)) timer_getoverrun (timer_t timerid);
+
+
+
+int __attribute__((__cdecl__)) nanosleep (const struct timespec *rqtp, struct timespec *rmtp);
+# 225 "/usr/include/time.h" 3 4
+int __attribute__((__cdecl__)) clock_nanosleep (clockid_t clock_id, int flags, const struct timespec *rqtp, struct timespec *rmtp)
+
+                          ;
+# 300 "/usr/include/time.h" 3 4
+int __attribute__((__cdecl__)) clock_getcpuclockid (pid_t pid, clockid_t *clock_id);
+
+
+
+
+
+
+
+int __attribute__((__cdecl__)) clock_setenable_attr (clockid_t clock_id, int attr);
+int __attribute__((__cdecl__)) clock_getenable_attr (clockid_t clock_id, int *attr);
+# 15 "/usr/include/pthread.h" 2 3 4
+# 65 "/usr/include/pthread.h" 3 4
 int pthread_atfork (void (*)(void), void (*)(void), void (*)(void));
 
 
@@ -1583,9 +1874,6 @@ int pthread_attr_getinheritsched (const pthread_attr_t *, int *);
 int pthread_attr_getschedparam (const pthread_attr_t *, struct sched_param *);
 int pthread_attr_getschedpolicy (const pthread_attr_t *, int *);
 int pthread_attr_getscope (const pthread_attr_t *, int *);
-int pthread_attr_getstack (const pthread_attr_t *, void **, size_t *);
-int pthread_attr_getstackaddr (const pthread_attr_t *, void **)
-    __attribute__ ((__deprecated__));
 int pthread_attr_init (pthread_attr_t *);
 int pthread_attr_setdetachstate (pthread_attr_t *, int);
 int pthread_attr_setguardsize (pthread_attr_t *, size_t);
@@ -1593,7 +1881,20 @@ int pthread_attr_setinheritsched (pthread_attr_t *, int);
 int pthread_attr_setschedparam (pthread_attr_t *, const struct sched_param *);
 int pthread_attr_setschedpolicy (pthread_attr_t *, int);
 int pthread_attr_setscope (pthread_attr_t *, int);
-# 99 "/usr/include/pthread.h" 3 4
+
+
+
+
+
+
+int pthread_attr_getstackaddr (const pthread_attr_t *, void **)
+    __attribute__ ((__deprecated__));
+int pthread_attr_setstackaddr (pthread_attr_t *, void *)
+    __attribute__ ((__deprecated__));
+
+int pthread_attr_getstacksize (const pthread_attr_t *, size_t *);
+int pthread_attr_setstacksize (pthread_attr_t *, size_t);
+
 int pthread_cancel (pthread_t);
 
 
@@ -1630,13 +1931,15 @@ int pthread_condattr_getpshared (const pthread_condattr_t *, int *);
 int pthread_condattr_init (pthread_condattr_t *);
 int pthread_condattr_setclock (pthread_condattr_t *, clockid_t);
 int pthread_condattr_setpshared (pthread_condattr_t *, int);
-
+# 146 "/usr/include/pthread.h" 3 4
 int pthread_create (pthread_t *, const pthread_attr_t *,
       void *(*)(void *), void *);
 int pthread_detach (pthread_t);
 int pthread_equal (pthread_t, pthread_t);
 void pthread_exit (void *) __attribute__ ((__noreturn__));
-int pthread_getcpuclockid (pthread_t, clockid_t *);
+
+
+
 int pthread_getschedparam (pthread_t, int *, struct sched_param *);
 void *pthread_getspecific (pthread_key_t);
 int pthread_join (pthread_t, void **);
@@ -1661,35 +1964,9 @@ int pthread_mutexattr_setprioceiling (pthread_mutexattr_t *, int);
 int pthread_mutexattr_setprotocol (pthread_mutexattr_t *, int);
 int pthread_mutexattr_setpshared (pthread_mutexattr_t *, int);
 int pthread_mutexattr_settype (pthread_mutexattr_t *, int);
-
-
-int pthread_spin_destroy (pthread_spinlock_t *);
-int pthread_spin_init (pthread_spinlock_t *, int);
-int pthread_spin_lock (pthread_spinlock_t *);
-int pthread_spin_trylock (pthread_spinlock_t *);
-int pthread_spin_unlock (pthread_spinlock_t *);
-
-
-int pthread_rwlock_destroy (pthread_rwlock_t *rwlock);
-int pthread_rwlock_init (pthread_rwlock_t *rwlock, const pthread_rwlockattr_t *attr);
-int pthread_rwlock_rdlock (pthread_rwlock_t *rwlock);
-int pthread_rwlock_tryrdlock (pthread_rwlock_t *rwlock);
-int pthread_rwlock_wrlock (pthread_rwlock_t *rwlock);
-int pthread_rwlock_trywrlock (pthread_rwlock_t *rwlock);
-int pthread_rwlock_unlock (pthread_rwlock_t *rwlock);
-int pthread_rwlockattr_init (pthread_rwlockattr_t *rwlockattr);
-int pthread_rwlockattr_getpshared (const pthread_rwlockattr_t *attr,
-       int *pshared);
-int pthread_rwlockattr_setpshared (pthread_rwlockattr_t *attr, int pshared);
-int pthread_rwlockattr_destroy (pthread_rwlockattr_t *rwlockattr);
-
+# 204 "/usr/include/pthread.h" 3 4
 int pthread_once (pthread_once_t *, void (*)(void));
-
-
-int pthread_getconcurrency (void);
-int pthread_setconcurrency (int);
-
-
+# 213 "/usr/include/pthread.h" 3 4
 pthread_t pthread_self (void);
 int pthread_setcancelstate (int, int *);
 int pthread_setcanceltype (int, int *);
@@ -1697,14 +1974,6 @@ int pthread_setschedparam (pthread_t, int, const struct sched_param *);
 int pthread_setschedprio (pthread_t, int);
 int pthread_setspecific (pthread_key_t, const void *);
 void pthread_testcancel (void);
-
-
-
-int pthread_getattr_np (pthread_t, pthread_attr_t *);
-int pthread_sigqueue (pthread_t *, int, const union sigval);
-int pthread_suspend (pthread_t);
-int pthread_continue (pthread_t);
-int pthread_yield (void);
 # 5 "main.c" 2
 # 1 "/usr/include/unistd.h" 1 3 4
 
@@ -1712,7 +1981,7 @@ int pthread_yield (void);
 
 # 1 "/usr/include/sys/unistd.h" 1 3 4
 # 14 "/usr/include/sys/unistd.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
 # 15 "/usr/include/sys/unistd.h" 2 3 4
 
 extern char **environ;
@@ -1727,63 +1996,48 @@ int __attribute__((__cdecl__)) chmod (const char *__path, mode_t __mode );
 int __attribute__((__cdecl__)) chown (const char *__path, uid_t __owner, gid_t __group );
 
 
-int __attribute__((__cdecl__)) chroot (const char *__path );
+
 
 int __attribute__((__cdecl__)) close (int __fildes );
 
 size_t __attribute__((__cdecl__)) confstr (int __name, char *__buf, size_t __len);
-
-char * __attribute__((__cdecl__)) ctermid (char *__s );
-char * __attribute__((__cdecl__)) cuserid (char *__s );
-
-int __attribute__((__cdecl__)) daemon (int nochdir, int noclose);
-
+# 46 "/usr/include/sys/unistd.h" 3 4
 int __attribute__((__cdecl__)) dup (int __fildes );
 int __attribute__((__cdecl__)) dup2 (int __fildes, int __fildes2 );
-
-int __attribute__((__cdecl__)) dup3 (int __fildes, int __fildes2, int flags);
-int __attribute__((__cdecl__)) eaccess (const char *__path, int __mode);
-void __attribute__((__cdecl__)) endusershell (void);
-int __attribute__((__cdecl__)) euidaccess (const char *__path, int __mode);
-
+# 61 "/usr/include/sys/unistd.h" 3 4
 int __attribute__((__cdecl__)) execl (const char *__path, const char *, ... );
 int __attribute__((__cdecl__)) execle (const char *__path, const char *, ... );
 int __attribute__((__cdecl__)) execlp (const char *__file, const char *, ... );
 
-int __attribute__((__cdecl__)) execlpe (const char *__file, const char *, ... );
+
 
 int __attribute__((__cdecl__)) execv (const char *__path, char * const __argv[] );
 int __attribute__((__cdecl__)) execve (const char *__path, char * const __argv[], char * const __envp[] );
 int __attribute__((__cdecl__)) execvp (const char *__file, char * const __argv[] );
-
-int __attribute__((__cdecl__)) execvpe (const char *__file, char * const __argv[], char * const __envp[] );
-
-
-int __attribute__((__cdecl__)) faccessat (int __dirfd, const char *__path, int __mode, int __flags);
-
-
-int __attribute__((__cdecl__)) fchdir (int __fildes);
-
+# 79 "/usr/include/sys/unistd.h" 3 4
 int __attribute__((__cdecl__)) fchmod (int __fildes, mode_t __mode );
 
 int __attribute__((__cdecl__)) fchown (int __fildes, uid_t __owner, gid_t __group );
 
 
-int __attribute__((__cdecl__)) fchownat (int __dirfd, const char *__path, uid_t __owner, gid_t __group, int __flags);
 
 
-int __attribute__((__cdecl__)) fexecve (int __fd, char * const __argv[], char * const __envp[] );
+
+
 
 pid_t __attribute__((__cdecl__)) fork (void );
 long __attribute__((__cdecl__)) fpathconf (int __fd, int __name );
 int __attribute__((__cdecl__)) fsync (int __fd);
 int __attribute__((__cdecl__)) fdatasync (int __fd);
 
-char * __attribute__((__cdecl__)) get_current_dir_name (void);
+
 
 char * __attribute__((__cdecl__)) getcwd (char *__buf, size_t __size );
 
-int __attribute__((__cdecl__)) getdomainname (char *__name, size_t __len);
+
+
+
+
 
 
 gid_t __attribute__((__cdecl__)) getegid (void );
@@ -1792,32 +2046,27 @@ gid_t __attribute__((__cdecl__)) getgid (void );
 
 int __attribute__((__cdecl__)) getgroups (int __gidsetsize, gid_t __grouplist[] );
 
-long __attribute__((__cdecl__)) gethostid (void);
+
 
 char * __attribute__((__cdecl__)) getlogin (void );
 
-
+int __attribute__((__cdecl__)) getlogin_r (char *name, size_t namesize);
 
 char * __attribute__((__cdecl__)) getpass (const char *__prompt);
 int __attribute__((__cdecl__)) getpagesize (void);
 
-int __attribute__((__cdecl__)) getpeereid (int, uid_t *, gid_t *);
+
 
 pid_t __attribute__((__cdecl__)) getpgid (pid_t);
 pid_t __attribute__((__cdecl__)) getpgrp (void );
 pid_t __attribute__((__cdecl__)) getpid (void );
 pid_t __attribute__((__cdecl__)) getppid (void );
 
-pid_t __attribute__((__cdecl__)) getsid (pid_t);
+
 
 
 uid_t __attribute__((__cdecl__)) getuid (void );
-
-
-char * __attribute__((__cdecl__)) getusershell (void);
-char * __attribute__((__cdecl__)) getwd (char *__buf );
-int __attribute__((__cdecl__)) iruserok (unsigned long raddr, int superuser, const char *ruser, const char *luser);
-
+# 140 "/usr/include/sys/unistd.h" 3 4
 int __attribute__((__cdecl__)) isatty (int __fildes );
 
 
@@ -1827,49 +2076,42 @@ int __attribute__((__cdecl__)) lchown (const char *__path, uid_t __owner, gid_t 
 
 int __attribute__((__cdecl__)) link (const char *__path1, const char *__path2 );
 
-int __attribute__((__cdecl__)) linkat (int __dirfd1, const char *__path1, int __dirfd2, const char *__path2, int __flags );
+
 
 int __attribute__((__cdecl__)) nice (int __nice_value );
 
 off_t __attribute__((__cdecl__)) lseek (int __fildes, off_t __offset, int __whence );
-
-
-
-
-
-
-int __attribute__((__cdecl__)) lockf (int __fd, int __cmd, off_t __len);
-
+# 162 "/usr/include/sys/unistd.h" 3 4
 long __attribute__((__cdecl__)) pathconf (const char *__path, int __name );
 int __attribute__((__cdecl__)) pause (void );
 
-int __attribute__((__cdecl__)) pthread_atfork (void (*)(void), void (*)(void), void (*)(void));
+
 
 int __attribute__((__cdecl__)) pipe (int __fildes[2] );
 
-int __attribute__((__cdecl__)) pipe2 (int __fildes[2], int flags);
+
 
 ssize_t __attribute__((__cdecl__)) pread (int __fd, void *__buf, size_t __nbytes, off_t __offset);
 ssize_t __attribute__((__cdecl__)) pwrite (int __fd, const void *__buf, size_t __nbytes, off_t __offset);
 _ssize_t __attribute__((__cdecl__)) read (int __fd, void *__buf, size_t __nbyte );
 
-int __attribute__((__cdecl__)) rresvport (int *__alport);
-int __attribute__((__cdecl__)) revoke (char *__path);
+
+
 
 int __attribute__((__cdecl__)) rmdir (const char *__path );
 
-int __attribute__((__cdecl__)) ruserok (const char *rhost, int superuser, const char *ruser, const char *luser);
+
 
 void * __attribute__((__cdecl__)) sbrk (ptrdiff_t __incr);
 
 
-int __attribute__((__cdecl__)) setegid (gid_t __gid );
-int __attribute__((__cdecl__)) seteuid (uid_t __uid );
+
+
 
 int __attribute__((__cdecl__)) setgid (gid_t __gid );
 
 
-int __attribute__((__cdecl__)) setgroups (int ngroups, const gid_t *grouplist );
+
 
 
 
@@ -1877,15 +2119,15 @@ int __attribute__((__cdecl__)) setgroups (int ngroups, const gid_t *grouplist );
 int __attribute__((__cdecl__)) setpgid (pid_t __pid, pid_t __pgid );
 int __attribute__((__cdecl__)) setpgrp (void );
 
-int __attribute__((__cdecl__)) setregid (gid_t __rgid, gid_t __egid);
-int __attribute__((__cdecl__)) setreuid (uid_t __ruid, uid_t __euid);
+
+
 
 pid_t __attribute__((__cdecl__)) setsid (void );
 
 int __attribute__((__cdecl__)) setuid (uid_t __uid );
 
 
-void __attribute__((__cdecl__)) setusershell (void);
+
 
 unsigned __attribute__((__cdecl__)) sleep (unsigned int __seconds );
 void __attribute__((__cdecl__)) swab (const void *, void *, ssize_t);
@@ -1893,9 +2135,7 @@ long __attribute__((__cdecl__)) sysconf (int __name );
 pid_t __attribute__((__cdecl__)) tcgetpgrp (int __fildes );
 int __attribute__((__cdecl__)) tcsetpgrp (int __fildes, pid_t __pgrp_id );
 char * __attribute__((__cdecl__)) ttyname (int __fildes );
-
 int __attribute__((__cdecl__)) ttyname_r (int, char *, size_t);
-
 int __attribute__((__cdecl__)) unlink (const char *__path );
 int __attribute__((__cdecl__)) usleep (useconds_t __useconds);
 int __attribute__((__cdecl__)) vhangup (void );
@@ -1913,10 +2153,8 @@ extern char __attribute__((dllimport)) *optarg;
 
 
 int getopt (int, char * const *, const char *);
-# 205 "/usr/include/sys/unistd.h" 2 3 4
-# 214 "/usr/include/sys/unistd.h" 3 4
-pid_t __attribute__((__cdecl__)) vfork (void );
-# 238 "/usr/include/sys/unistd.h" 3 4
+# 224 "/usr/include/sys/unistd.h" 2 3 4
+# 257 "/usr/include/sys/unistd.h" 3 4
 int __attribute__((__cdecl__)) ftruncate (int __fd, off_t __length);
 int __attribute__((__cdecl__)) truncate (const char *, off_t __length);
 
@@ -1935,25 +2173,13 @@ char * __attribute__((__cdecl__)) mktemp (char *);
 
 
 void __attribute__((__cdecl__)) sync (void);
-
-
-ssize_t __attribute__((__cdecl__)) readlink (const char * __path, char * __buf, size_t __buflen)
-                                                                   ;
-
-ssize_t __attribute__((__cdecl__)) readlinkat (int __dirfd1, const char * __path, char * __buf, size_t __buflen)
-                                                                     ;
-
-int __attribute__((__cdecl__)) symlink (const char *__name1, const char *__name2);
-
-int __attribute__((__cdecl__)) symlinkat (const char *, int, const char *);
-int __attribute__((__cdecl__)) unlinkat (int, const char *, int);
 # 5 "/usr/include/unistd.h" 2 3 4
 # 6 "main.c" 2
 
 # 1 "/usr/include/sys/time.h" 1 3 4
 # 42 "/usr/include/sys/time.h" 3 4
 # 1 "/usr/include/sys/_timeval.h" 1 3 4
-# 51 "/usr/include/sys/_timeval.h" 3 4
+# 52 "/usr/include/sys/_timeval.h" 3 4
 struct timeval {
  time_t tv_sec;
  suseconds_t tv_usec;
@@ -1965,51 +2191,35 @@ struct timeval {
 
 
 
-# 1 "/usr/include/sys/select.h" 1 3 4
-# 23 "/usr/include/sys/select.h" 3 4
-# 1 "/usr/include/sys/time.h" 1 3 4
-# 24 "/usr/include/sys/select.h" 2 3 4
-
-
-
-
-
-
-
-int select (int __n, _types_fd_set *__readfds, _types_fd_set *__writefds, _types_fd_set *__exceptfds, struct timeval *__timeout)
-                                                   ;
-int pselect (int __n, _types_fd_set *__readfds, _types_fd_set *__writefds, _types_fd_set *__exceptfds, const struct timespec *__timeout, const sigset_t *__set)
-
-                           ;
-
-
-# 50 "/usr/include/sys/time.h" 2 3 4
-
 
 struct timezone {
  int tz_minuteswest;
  int tz_dsttime;
 };
-# 305 "/usr/include/sys/time.h" 3 4
+# 262 "/usr/include/sys/time.h" 3 4
 struct itimerval {
  struct timeval it_interval;
  struct timeval it_value;
 };
-# 420 "/usr/include/sys/time.h" 3 4
 
-int __attribute__((__cdecl__)) setitimer (int __which, const struct itimerval * __value, struct itimerval * __ovalue)
-                                            ;
+
+
+
+
 int __attribute__((__cdecl__)) utimes (const char *__path, const struct timeval *__tvp);
-# 443 "/usr/include/sys/time.h" 3 4
+# 286 "/usr/include/sys/time.h" 3 4
+int __attribute__((__cdecl__)) gettimeofday (struct timeval * __p, void * __tz)
+                            ;
+# 297 "/usr/include/sys/time.h" 3 4
 
+
+
+# 1 "/usr/include/machine/_time.h" 1 3 4
+# 301 "/usr/include/sys/time.h" 2 3 4
 # 8 "main.c" 2
 
 # 1 "/usr/include/ctype.h" 1 3 4
-
-
-
-
-
+# 11 "/usr/include/ctype.h" 3 4
 
 
 int __attribute__((__cdecl__)) isalnum (int __c);
@@ -2025,9 +2235,9 @@ int __attribute__((__cdecl__)) isupper (int __c);
 int __attribute__((__cdecl__)) isxdigit (int __c);
 int __attribute__((__cdecl__)) tolower (int __c);
 int __attribute__((__cdecl__)) toupper (int __c);
-# 45 "/usr/include/ctype.h" 3 4
-extern __attribute__((dllimport)) char *__ctype_ptr__;
-# 109 "/usr/include/ctype.h" 3 4
+# 69 "/usr/include/ctype.h" 3 4
+const char *__locale_ctype_ptr (void);
+# 165 "/usr/include/ctype.h" 3 4
 extern __attribute__((dllimport)) const char _ctype_[];
 
 
@@ -2038,8 +2248,9 @@ extern __attribute__((dllimport)) const char _ctype_[];
 
 
 
+
 # 1 "/usr/include/machine/ieeefp.h" 1 3 4
-# 7 "/usr/include/math.h" 2 3 4
+# 8 "/usr/include/math.h" 2 3 4
 
 
 
@@ -2065,7 +2276,7 @@ union __ldmath
   long double ld;
   __ULong i[4];
 };
-# 108 "/usr/include/math.h" 3 4
+# 109 "/usr/include/math.h" 3 4
 extern double atan (double);
 extern double cos (double);
 extern double sin (double);
@@ -2094,22 +2305,30 @@ extern double log10 (double);
 extern double pow (double, double);
 extern double sqrt (double);
 extern double fmod (double, double);
-# 615 "/usr/include/math.h" 3 4
+# 685 "/usr/include/math.h" 3 4
 
 # 11 "main.c" 2
 
 # 1 "QuarkTS.h" 1
 # 33 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 3 4
 # 1 "/usr/include/stdint.h" 1 3 4
 # 13 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/sys/_intsup.h" 1 3 4
-# 39 "/usr/include/sys/_intsup.h" 3 4
+# 35 "/usr/include/sys/_intsup.h" 3 4
        
        
        
-# 67 "/usr/include/sys/_intsup.h" 3 4
+       
+       
+       
+       
+# 187 "/usr/include/sys/_intsup.h" 3 4
+       
+       
+       
+       
        
        
        
@@ -2153,16 +2372,16 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 130 "/usr/include/stdint.h" 3 4
-  typedef long int intmax_t;
-# 139 "/usr/include/stdint.h" 3 4
-  typedef long unsigned int uintmax_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stdint.h" 2 3 4
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 2 3 4
 # 34 "QuarkTS.h" 2
 # 1 "/usr/include/string.h" 1 3 4
 # 17 "/usr/include/string.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
 # 18 "/usr/include/string.h" 2 3 4
+
+
+
+
 
 
 
@@ -2190,56 +2409,34 @@ char *__attribute__((__cdecl__)) strstr (const char *, const char *);
 char *__attribute__((__cdecl__)) strtok (char *, const char *);
 
 size_t __attribute__((__cdecl__)) strxfrm (char *, const char *, size_t);
-
-
+# 60 "/usr/include/string.h" 3 4
 char *__attribute__((__cdecl__)) strtok_r (char *, const char *, char **);
-# 63 "/usr/include/string.h" 3 4
-void * __attribute__((__cdecl__)) memrchr (const void *, int, size_t);
+# 77 "/usr/include/string.h" 3 4
+void * __attribute__((__cdecl__)) memccpy (void * , const void * , int, size_t);
+# 102 "/usr/include/string.h" 3 4
+char *__attribute__((__cdecl__)) _strdup_r (struct _reent *, const char *);
 
 
 
-
-
-
-char *__attribute__((__cdecl__)) stpcpy (char *, const char *);
-char *__attribute__((__cdecl__)) stpncpy (char *, const char *, size_t);
-
-int __attribute__((__cdecl__)) strcasecmp (const char *, const char *);
-# 106 "/usr/include/string.h" 3 4
-int __attribute__((__cdecl__)) strerror_r (int, char *, size_t)
-
-             __asm__ ("" "__xpg_strerror_r")
-
-  ;
-
-
-
-
-
-
-
+char *__attribute__((__cdecl__)) _strndup_r (struct _reent *, const char *, size_t);
+# 133 "/usr/include/string.h" 3 4
 char * __attribute__((__cdecl__)) _strerror_r (struct _reent *, int, int, int *);
-
-
-
-
-
-
-int __attribute__((__cdecl__)) strncasecmp (const char *, const char *, size_t);
-# 145 "/usr/include/string.h" 3 4
+# 155 "/usr/include/string.h" 3 4
 char *__attribute__((__cdecl__)) strsignal (int __signo);
 
 
 
 int __attribute__((__cdecl__)) strtosigno (const char *__name);
-# 182 "/usr/include/string.h" 3 4
+# 192 "/usr/include/string.h" 3 4
 # 1 "/usr/include/sys/string.h" 1 3 4
-# 183 "/usr/include/string.h" 2 3 4
+# 193 "/usr/include/string.h" 2 3 4
 
 
 # 35 "QuarkTS.h" 2
 # 75 "QuarkTS.h"
-        typedef int32_t _qTaskPC_t;
+        
+# 75 "QuarkTS.h"
+       typedef int32_t _qTaskPC_t;
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t;
         typedef struct qCoroutineSemaphore_t qCRSem_t;
 # 102 "QuarkTS.h"
@@ -2286,14 +2483,7 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
         qBool_t LastIteration;
     }_qEvent_t_, *qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);
-
-    typedef union{
-        struct{
-            volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
-        };
-        volatile uint8_t FlagatIndex[7];
-    }qTaskFlags_t;
-# 222 "QuarkTS.h"
+# 216 "QuarkTS.h"
     typedef uint8_t qTaskState_t;
 
 
@@ -2368,7 +2558,8 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
         uint32_t Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
-        volatile qTaskFlags_t Flag;
+        volatile qBool_t Flag[7];
+
         qRBuffer_t *RingBuff;
         volatile struct _qSM_t *StateMachine;
         qTaskState_t State;
@@ -2438,11 +2629,11 @@ int __attribute__((__cdecl__)) strtosigno (const char *__name);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
-# 407 "QuarkTS.h"
+# 402 "QuarkTS.h"
     qBool_t qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState);
     void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
     void qStateMachine_Attribute(volatile struct _qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 499 "QuarkTS.h"
+# 494 "QuarkTS.h"
         typedef struct{
             qBool_t SR;
             qClock_t Start, TV;
@@ -2470,7 +2661,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 552 "QuarkTS.h"
+# 547 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -2532,7 +2723,11 @@ pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
     for(;;){
-        nanosleep(&tick, ((void *)0));
+        nanosleep(&tick, 
+# 18 "main.c" 3 4
+                        ((void *)0)
+# 18 "main.c"
+                            );
         qSchedulerSysTick();
     }
 }
@@ -2553,6 +2748,7 @@ qSM_Status_t firststate(volatile struct _qSM_t *fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
+
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
@@ -2570,6 +2766,7 @@ qSM_Status_t secondstate(volatile struct _qSM_t *fsm){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] second\r\n", (char*)e->TaskData);
     }
+
     if (qSTimerExpired(&tmr)){
         fsm->NextState = firststate;
     }
@@ -2589,7 +2786,6 @@ void Task1Callback(qEvent_t e){
     if(e->LastIteration){
         puts("LastIteration");
     }
-
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
     }
@@ -2635,18 +2831,26 @@ void blinktaskCallback(qEvent_t e){
     static _qTaskPC_t _qCRTaskState_ = (-0x7FFE) ; switch(_qCRTaskState_){ case (_qTaskPC_t)(-0x7FFE): ; _qCR_BEGIN_:{
         puts("led on");
         qSTimerSet(&tmr, 1);
-        do{ _qCRTaskState_ = 121 ; case (_qTaskPC_t)121: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
-        do{ do{ _qCRTaskState_ = 122 ; case (_qTaskPC_t)122: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) return; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
+        do{ _qCRTaskState_ = 122 ; case (_qTaskPC_t)122: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
+        do{ do{ _qCRTaskState_ = 123 ; case (_qTaskPC_t)123: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) return; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
         qSTimerSet(&tmr, 1);
         (++(&mutex)->head);
         puts("led off");
-        do{ _qCRTaskState_ = 126 ; case (_qTaskPC_t)126: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
+        do{ _qCRTaskState_ = 127 ; case (_qTaskPC_t)127: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
     }goto _qCR_BEGIN_;}return;
 }
 
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
-    pthread_create(&TimerEmulation, ((void *)0), TimerInterruptEmulation, ((void *)0) );
+    pthread_create(&TimerEmulation, 
+# 133 "main.c" 3 4
+                                   ((void *)0)
+# 133 "main.c"
+                                       , TimerInterruptEmulation, 
+# 133 "main.c" 3 4
+                                                                  ((void *)0) 
+# 133 "main.c"
+                                                                       );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_DESmtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_DESmtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     volatile struct _qSM_t statemachine;
     void *memtest;
@@ -2665,7 +2869,23 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
-    qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, ((void *)0), ((void *)0), ((void *)0), ((void *)0), (0x01u), "smtask");
+    qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
+# 152 "main.c" 3 4
+                                                                                ((void *)0)
+# 152 "main.c"
+                                                                                    , 
+# 152 "main.c" 3 4
+                                                                                      ((void *)0)
+# 152 "main.c"
+                                                                                          , 
+# 152 "main.c" 3 4
+                                                                                            ((void *)0)
+# 152 "main.c"
+                                                                                                , 
+# 152 "main.c" 3 4
+                                                                                                  ((void *)0)
+# 152 "main.c"
+                                                                                                      , (0x01u), "smtask");
 
 
 
@@ -2676,5 +2896,9 @@ int main(int argc, char** argv) {
         printf("%p %p\r\n\r\n",firststate, secondstate);
     qSchedulerRun();
 
-    return (0);
+    return (
+# 163 "main.c" 3 4
+           0
+# 163 "main.c"
+                       );
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.1
+ *  Version : 4.5.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -205,12 +205,6 @@ extern "C" {
     }_qEvent_t_, *qEvent_t;  
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
-    typedef union{
-        struct{
-            volatile uint8_t InitFlag, AsyncRun, Enabled, RBAutoPop, RBFull, RBCount, RBEmpty;
-        };
-        volatile uint8_t FlagatIndex[7];
-    }qTaskFlags_t;
     #define _qIndex_InitFlag        0
     #define _qIndex_AsyncRun        1
     #define _qIndex_Enabled         2
@@ -293,7 +287,8 @@ extern "C" {
         uint32_t Cycles;
         qPriority_t Priority;
         qTaskFcn_t Callback;
-        volatile qTaskFlags_t Flag;        
+        volatile qBool_t Flag[7];
+        /*volatile qTaskFlags_t Flag;*/        
         qRBuffer_t *RingBuff;
         qSM_t *StateMachine;
         qTaskState_t State;
