@@ -424,7 +424,12 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
-    Task->Flag[_qIndex_AsyncRun] = Task->Flag[_qIndex_InitFlag] =  Task->Flag[_qIndex_RBAutoPop] = Task->Flag[_qIndex_RBCount] = Task->Flag[_qIndex_RBCount] = Task->Flag[_qIndex_RBEmpty] = qFalse ;
+    Task->Flag[_qIndex_AsyncRun] = qFalse;
+    Task->Flag[_qIndex_InitFlag] = qFalse;
+    Task->Flag[_qIndex_RBAutoPop] = qFalse; 
+    Task->Flag[_qIndex_RBCount] = qFalse;
+    Task->Flag[_qIndex_RBCount] = qFalse;
+    Task->Flag[_qIndex_RBEmpty] = qFalse;
     Task->Flag[_qIndex_Enabled] = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
     Task->Cycles = 0;
@@ -566,7 +571,7 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
         return;
     }
     tmp_node = *head; 
-    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the righ place for this task acoording its priority*/
+    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the right place for this task according its priority*/
     Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
     tmp_node->Next = Task;
 }
@@ -673,10 +678,10 @@ void qSchedulerRun(void){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     qSchedulerStartPoint{
         if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
-        if((Task = _qScheduler_PriorityQueueGet()))  Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle*/                        
+        if((Task = _qScheduler_PriorityQueueGet()))  Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/                        
         if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
-                Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the task if is qReady, otherwise put it in a qWaiting State*/
+                Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the qReady task, otherwise put it in qWaiting State*/
         }
         else if(Task==NULL && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
     }qSchedulerEndPoint; /*scheduling end-point (also check for scheduling-release request)*/
@@ -741,32 +746,31 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method if the tasks
     qTask_t *Task = NULL;
     qTrigger_t trg = qTriggerNULL;
     qBool_t nTaskReady = qFalse; 
-    for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain*/
+    for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
         if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
                 if(_qTaskDeadlineReached(Task)){ /*finally, check the deadline*/
                     Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
-                    Task->State = qReady; 
-                    Task->Trigger = byTimeElapsed;
-                    nTaskReady = qTrue;
+                    Task->State = qReady; /*Put the task in ready state*/
+                    Task->Trigger = byTimeElapsed; /*Set the corresponding trigger*/
+                    nTaskReady = qTrue; /*at least one task in the chain is ready to run*/
                     continue;                    
-                } goto _qCheckNoTimed;
-            }else goto _qCheckNoTimed;
+                }
+            }
         }
-        _qCheckNoTimed:
         if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
-            Task->State = qReady;
+            Task->State = qReady; /*Put the task in ready state*/
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
-            nTaskReady = qTrue;
+            nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
             continue;
         }
         if( Task->Flag[_qIndex_AsyncRun]){   /*The last check will be if the task has an async event*/
-            Task->State = qReady;
-            Task->Trigger = byAsyncEvent;
-            nTaskReady = qTrue;
+            Task->State = qReady; /*Put the task in ready state*/
+            Task->Trigger = byAsyncEvent; /*Set the corresponding trigger*/
+            nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
             continue;
         }
-        Task->State = qSuspended;
+        Task->State = qSuspended; /*If the task has no pending events, put it in a suspended state*/
     }
     return nTaskReady;
 }

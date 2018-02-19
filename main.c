@@ -36,7 +36,7 @@ qSM_Status_t firststate(qSM_t *fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
-
+    
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
@@ -74,9 +74,14 @@ void Task1Callback(qEvent_t e){
     if(e->LastIteration){
         puts("LastIteration");
     }
+    
+    if(e->Trigger == byAsyncEvent){
+        puts("TASK1 BY ASYNC EVENT");
+    }
+    
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
-    }     
+    }         
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
@@ -124,6 +129,7 @@ void blinktaskCallback(qEvent_t e){
         qSTimerSet(&tmr, 1);
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
+        qTaskSendEvent(&Task1, NULL);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
     }qCoroutineEnd;
 }

@@ -302,8 +302,8 @@ extern "C" {
     }qQueueStack_t;
 
     typedef struct{
-    	uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
-        uint32_t IntFlags;
+    	volatile uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
+        volatile uint32_t IntFlags;
     }qTaskCoreFlags_t;
    
     typedef struct{
@@ -315,9 +315,9 @@ extern "C" {
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
-        volatile qQueueStack_t *QueueStack;
+        volatile qQueueStack_t *volatile QueueStack;
         uint8_t QueueSize;
-        int16_t QueueIndex;
+        volatile int16_t QueueIndex;
         qTask_t *CurrentRunningTask;
         void *QueueData;
     }QuarkTSCoreData_t;
