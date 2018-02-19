@@ -273,7 +273,7 @@ extern "C" {
         qSM_FAILURE_STATE,
         qSM_SUCCESS_STATE,
         qSM_UNEXPECTED_STATE,
-        qSM_BEFORE_ANY_STATE,               
+        qSM_BEFORE_ANY_STATE               
     }qFSM_Attribute_t;
     
     typedef qSM_Status_t (*qSM_State_t)(qSM_t*);

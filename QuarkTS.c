@@ -24,8 +24,6 @@ and the available API
 https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 */
 
-#include <ctype.h>
-
 #include "QuarkTS.h"
 
 #ifdef __XC8
@@ -309,8 +307,8 @@ Return value:
     occurred (The queue exceeds the size).
 */
 qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
-    if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;
     qQueueStack_t qtmp;
+    if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    
     qtmp.Task = Task,
     qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
@@ -338,9 +336,10 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     qTask_t *Task = NULL;
     uint8_t i;
     uint8_t IndexTaskToExtract = 0;
+    qPriority_t MaxpValue;
     if(QUARKTS.QueueIndex < 0) return NULL;
     qEnterCritical();
-    qPriority_t MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
+    MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){
         if(QUARKTS.QueueStack[i].Task == NULL) break;
         if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
@@ -832,8 +831,8 @@ Parameters:
              the arguments and pass a pointer to that structure.
 */    
 void qStateMachine_Run(qSM_t *obj, void *Data){
-    if(obj == NULL) return;
     qSM_State_t prev  = NULL;
+    if(obj == NULL) return;
     obj->Data = Data;
     if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj);
     if(obj->NextState!=NULL){
@@ -1019,8 +1018,9 @@ Return value:
     The remaining time specified in epochs
 */
 qClock_t qSTimerRemaining(qSTimer_t *obj){
+    qClock_t elapsed;
     if(obj==NULL) return 0;
-    qClock_t elapsed = qSTimerElapsed(obj);
+    elapsed = qSTimerElapsed(obj);
     return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
 /*============================================================================*/
@@ -1055,10 +1055,10 @@ Return value:
     A pointer to allocated memory or null in there is no avaible memory
  */
 void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
-    if(obj==NULL) return NULL;
     uint8_t i, j, k, c;
     uint16_t sum;		
-    uint8_t *offset = obj->Blocks;			
+    uint8_t *offset = obj->Blocks;
+    if(obj==NULL) return NULL;			
     j = 0;	
     qEnterCritical();
     while( j < obj->NumberofBlocks ) {			
@@ -1107,8 +1107,8 @@ Parameters:
 Note: The memory must be returned to the pool from where was allocated
  */
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
-    if(obj==NULL || pmem==NULL) return;
     uint8_t i, *p;
+    if(obj==NULL || pmem==NULL) return;
     qEnterCritical();	
     p = (uint8_t*)obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
@@ -1215,8 +1215,8 @@ Return value:
     qTrue if data was retrived from Rbuffer, otherwise returns qFalse
 */
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
-    if(obj == NULL) return qFalse;
     void *data = NULL;
+    if(obj == NULL) return qFalse;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
         memcpy(dest, data, obj->ElementSize);
@@ -1240,12 +1240,12 @@ Return value:
     qTrue on succesful add, qFalse if not added
 */
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
-    if(obj==NULL) return qFalse;
     qBool_t status = qFalse;
     uint8_t *data_element = (uint8_t*)data;
     volatile uint8_t *ring_data = NULL;
     uint16_t i;
 
+    if(obj==NULL) return qFalse;
     if(obj && data_element){
         if(!_qRBufferFull(obj)){
             ring_data = obj->data + ((obj->head % obj->Elementcount) * obj->ElementSize);
@@ -1339,7 +1339,7 @@ qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
         if(obj->AcceptCheck){
             if(!obj->AcceptCheck(newChar)) return qFalse;
         }
-        obj->pdata[obj->index++] = (obj->PreChar)? obj->PreChar(newChar) : newChar;
+        obj->pdata[obj->index++] = (qISR_Byte_t)((obj->PreChar)? obj->PreChar(newChar) : newChar);
         obj->pdata[obj->index] = 0x0u;
         if (obj->index>=(obj->MaxIndex)) obj->index = 0;
         if(newChar == obj->EndByte){
@@ -1389,7 +1389,7 @@ Return value:
     qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
 */
 qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
-    return (obj ? (qBSBuffer_Count(obj) == obj->length) : qTrue);
+    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == obj->length) : qTrue);
 }
 /*============================================================================*/
 /*size_t qBSBuffer_Empty(qBSBuffer_t const* obj)
@@ -1405,7 +1405,7 @@ Return value:
     qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
-    return (obj ? (qBSBuffer_Count(obj) == 0) : qTrue);
+    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == 0) : qTrue);
 }
 /*============================================================================*/
 /*size_t qBSBuffer_Peek(qBSBuffer_t const* obj)
@@ -1421,7 +1421,7 @@ Return value:
     byte of data, or zero if nothing in the list
 */
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
-    return (obj ? (obj->buffer[obj->tail % obj->length]) : 0);
+    return (obj ? (qBool_t)(obj->buffer[obj->tail % obj->length]) : 0x0u);
 }
 /*============================================================================*/
 /*size_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest)

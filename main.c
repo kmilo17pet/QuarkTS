@@ -25,10 +25,10 @@ qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask,
 qSM_Status_t firststate(qSM_t *fsm);
 qSM_Status_t secondstate(qSM_t *fsm);
 
+/*============================================================================*/
 void datacapture(qSM_t *fsm){
     
 }
-
 /*============================================================================*/
 qSM_Status_t firststate(qSM_t *fsm){
     qEvent_t e = fsm->Data;
@@ -163,9 +163,7 @@ int main(int argc, char** argv) {
     #ifdef Q_TASK_DEV_TEST
         qSchedulePrintChain();
     #endif
-        printf("%p %p\r\n\r\n",firststate, secondstate);
     qSchedulerRun();
     
     return (EXIT_SUCCESS);
 }
-

@@ -3,33 +3,25 @@
 # 1 "<command-line>"
 # 1 "QuarkTS.c"
 # 27 "QuarkTS.c"
-# 1 "/usr/include/ctype.h" 1 3 4
-
-
-
-# 1 "/usr/include/_ansi.h" 1 3 4
-# 15 "/usr/include/_ansi.h" 3 4
-# 1 "/usr/include/newlib.h" 1 3 4
-# 14 "/usr/include/newlib.h" 3 4
-# 1 "/usr/include/_newlib_version.h" 1 3 4
-# 15 "/usr/include/newlib.h" 2 3 4
-# 16 "/usr/include/_ansi.h" 2 3 4
-# 1 "/usr/include/sys/config.h" 1 3 4
-
-
-
-# 1 "/usr/include/machine/ieeefp.h" 1 3 4
-# 5 "/usr/include/sys/config.h" 2 3 4
-# 1 "/usr/include/sys/features.h" 1 3 4
-# 6 "/usr/include/sys/config.h" 2 3 4
-# 233 "/usr/include/sys/config.h" 3 4
-# 1 "/usr/include/cygwin/config.h" 1 3 4
-# 234 "/usr/include/sys/config.h" 2 3 4
-# 17 "/usr/include/_ansi.h" 2 3 4
-# 5 "/usr/include/ctype.h" 2 3 4
-# 1 "/usr/include/sys/cdefs.h" 1 3 4
-# 43 "/usr/include/sys/cdefs.h" 3 4
+# 1 "QuarkTS.h" 1
+# 33 "QuarkTS.h"
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 3 4
+# 1 "/usr/include/stdint.h" 1 3 4
+# 12 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/machine/_default_types.h" 1 3 4
+
+
+
+
+
+
+
+# 1 "/usr/include/sys/features.h" 1 3 4
+# 28 "/usr/include/sys/features.h" 3 4
+# 1 "/usr/include/_newlib_version.h" 1 3 4
+# 29 "/usr/include/sys/features.h" 2 3 4
+# 9 "/usr/include/machine/_default_types.h" 2 3 4
 # 41 "/usr/include/machine/_default_types.h" 3 4
 
 # 41 "/usr/include/machine/_default_types.h" 3 4
@@ -84,51 +76,7 @@ typedef long unsigned int __uintmax_t;
 typedef long int __intptr_t;
 
 typedef long unsigned int __uintptr_t;
-# 44 "/usr/include/sys/cdefs.h" 2 3 4
-
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
-# 149 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
-typedef long int ptrdiff_t;
-# 216 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
-typedef long unsigned int size_t;
-# 328 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
-typedef short unsigned int wchar_t;
-# 46 "/usr/include/sys/cdefs.h" 2 3 4
-# 6 "/usr/include/ctype.h" 2 3 4
-
-
-
-
-
-
-
-int __attribute__((__cdecl__)) isalnum (int __c);
-int __attribute__((__cdecl__)) isalpha (int __c);
-int __attribute__((__cdecl__)) iscntrl (int __c);
-int __attribute__((__cdecl__)) isdigit (int __c);
-int __attribute__((__cdecl__)) isgraph (int __c);
-int __attribute__((__cdecl__)) islower (int __c);
-int __attribute__((__cdecl__)) isprint (int __c);
-int __attribute__((__cdecl__)) ispunct (int __c);
-int __attribute__((__cdecl__)) isspace (int __c);
-int __attribute__((__cdecl__)) isupper (int __c);
-int __attribute__((__cdecl__)) isxdigit (int __c);
-int __attribute__((__cdecl__)) tolower (int __c);
-int __attribute__((__cdecl__)) toupper (int __c);
-# 69 "/usr/include/ctype.h" 3 4
-const char *__locale_ctype_ptr (void);
-# 165 "/usr/include/ctype.h" 3 4
-extern __attribute__((dllimport)) const char _ctype_[];
-
-
-# 28 "QuarkTS.c" 2
-
-# 1 "QuarkTS.h" 1
-# 33 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 3 4
-# 1 "/usr/include/stdint.h" 1 3 4
-# 13 "/usr/include/stdint.h" 3 4
+# 13 "/usr/include/stdint.h" 2 3 4
 # 1 "/usr/include/sys/_intsup.h" 1 3 4
 # 35 "/usr/include/sys/_intsup.h" 3 4
        
@@ -251,15 +199,36 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdint.h" 2 3 4
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 2 3 4
 # 34 "QuarkTS.h" 2
 # 1 "/usr/include/string.h" 1 3 4
-# 11 "/usr/include/string.h" 3 4
+# 10 "/usr/include/string.h" 3 4
+# 1 "/usr/include/_ansi.h" 1 3 4
+# 10 "/usr/include/_ansi.h" 3 4
+# 1 "/usr/include/newlib.h" 1 3 4
+# 11 "/usr/include/_ansi.h" 2 3 4
+# 1 "/usr/include/sys/config.h" 1 3 4
+
+
+
+# 1 "/usr/include/machine/ieeefp.h" 1 3 4
+# 5 "/usr/include/sys/config.h" 2 3 4
+# 234 "/usr/include/sys/config.h" 3 4
+# 1 "/usr/include/cygwin/config.h" 1 3 4
+# 235 "/usr/include/sys/config.h" 2 3 4
+# 12 "/usr/include/_ansi.h" 2 3 4
+# 11 "/usr/include/string.h" 2 3 4
 # 1 "/usr/include/sys/reent.h" 1 3 4
 # 13 "/usr/include/sys/reent.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 14 "/usr/include/sys/reent.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 149 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+typedef long int ptrdiff_t;
+# 216 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+typedef long unsigned int size_t;
+# 328 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+typedef short unsigned int wchar_t;
 # 15 "/usr/include/sys/reent.h" 2 3 4
 # 1 "/usr/include/sys/_types.h" 1 3 4
 # 24 "/usr/include/sys/_types.h" 3 4
@@ -354,8 +323,8 @@ typedef long signed int _ssize_t;
 typedef _ssize_t __ssize_t;
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
-# 357 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 357 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
 typedef unsigned int wint_t;
 # 160 "/usr/include/sys/_types.h" 2 3 4
 
@@ -382,7 +351,14 @@ typedef void *_iconv_t;
 
 
 
+
+
+
 typedef unsigned long __clock_t;
+
+
+
+
 
 
 typedef long __time_t;
@@ -392,13 +368,15 @@ typedef unsigned long __clockid_t;
 
 
 typedef unsigned long __timer_t;
-# 203 "/usr/include/sys/_types.h" 3 4
+# 210 "/usr/include/sys/_types.h" 3 4
 typedef unsigned short __nlink_t;
 typedef long __suseconds_t;
 typedef unsigned long __useconds_t;
 
 
-typedef __builtin_va_list __va_list;
+
+
+typedef char * __va_list;
 # 16 "/usr/include/sys/reent.h" 2 3 4
 # 25 "/usr/include/sys/reent.h" 3 4
 typedef unsigned int __ULong;
@@ -478,13 +456,13 @@ struct __sFILE {
 
   void * _cookie;
 
-  _ssize_t (__attribute__((__cdecl__)) * _read) (struct _reent *, void *, char *, size_t)
-                                          ;
-  _ssize_t (__attribute__((__cdecl__)) * _write) (struct _reent *, void *, const char *, size_t)
-
-                                   ;
-  _fpos_t (__attribute__((__cdecl__)) * _seek) (struct _reent *, void *, _fpos_t, int);
-  int (__attribute__((__cdecl__)) * _close) (struct _reent *, void *);
+  _ssize_t (*_read) (struct _reent *, void *,
+        char *, size_t);
+  _ssize_t (*_write) (struct _reent *, void *,
+         const char *,
+         size_t);
+  _fpos_t (*_seek) (struct _reent *, void *, _fpos_t, int);
+  int (*_close) (struct _reent *, void *);
 
 
   struct __sbuf _ub;
@@ -527,13 +505,13 @@ struct __sFILE64 {
 
   void * _cookie;
 
-  _ssize_t (__attribute__((__cdecl__)) * _read) (struct _reent *, void *, char *, size_t)
-                                          ;
-  _ssize_t (__attribute__((__cdecl__)) * _write) (struct _reent *, void *, const char *, size_t)
-
-                                   ;
-  _fpos_t (__attribute__((__cdecl__)) * _seek) (struct _reent *, void *, _fpos_t, int);
-  int (__attribute__((__cdecl__)) * _close) (struct _reent *, void *);
+  _ssize_t (*_read) (struct _reent *, void *,
+        char *, size_t);
+  _ssize_t (*_write) (struct _reent *, void *,
+         const char *,
+         size_t);
+  _fpos_t (*_seek) (struct _reent *, void *, _fpos_t, int);
+  int (*_close) (struct _reent *, void *);
 
 
   struct __sbuf _ub;
@@ -552,7 +530,7 @@ struct __sFILE64 {
   int _flags2;
 
   _off64_t _offset;
-  _fpos64_t (__attribute__((__cdecl__)) * _seek64) (struct _reent *, void *, _fpos64_t, int);
+  _fpos64_t (*_seek64) (struct _reent *, void *, _fpos64_t, int);
 
 
   _flock_t _lock;
@@ -600,7 +578,7 @@ struct _reent
 
   int __sdidinit;
 
-  void (__attribute__((__cdecl__)) * __cleanup) (struct _reent *);
+  void (*__cleanup) (struct _reent *);
 
 
   struct _Bigint *_result;
@@ -660,9 +638,11 @@ struct _reent
 
 
   struct _glue __sglue;
+
   __FILE __sf[3];
+
 };
-# 766 "/usr/include/sys/reent.h" 3 4
+# 775 "/usr/include/sys/reent.h" 3 4
 extern struct _reent *_impure_ptr ;
 extern struct _reent *const _global_impure_ptr ;
 
@@ -672,75 +652,75 @@ void _reclaim_reent (struct _reent *);
 
 
 
-  struct _reent * __attribute__((__cdecl__)) __getreent (void);
+  struct _reent * __getreent (void);
 # 12 "/usr/include/string.h" 2 3 4
+# 1 "/usr/include/sys/cdefs.h" 1 3 4
+# 45 "/usr/include/sys/cdefs.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 46 "/usr/include/sys/cdefs.h" 2 3 4
+# 13 "/usr/include/string.h" 2 3 4
 
 
 
 
-
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
 # 18 "/usr/include/string.h" 2 3 4
+# 27 "/usr/include/string.h" 3 4
+
+
+void * memchr (const void *, int, size_t);
+int memcmp (const void *, const void *, size_t);
+void * memcpy (void *, const void *, size_t);
+void * memmove (void *, const void *, size_t);
+void * memset (void *, int, size_t);
+char *strcat (char *, const char *);
+char *strchr (const char *, int);
+int strcmp (const char *, const char *);
+int strcoll (const char *, const char *);
+char *strcpy (char *, const char *);
+size_t strcspn (const char *, const char *);
+char *strerror (int);
+size_t strlen (const char *);
+char *strncat (char *, const char *, size_t);
+int strncmp (const char *, const char *, size_t);
+char *strncpy (char *, const char *, size_t);
+char *strpbrk (const char *, const char *);
+char *strrchr (const char *, int);
+size_t strspn (const char *, const char *);
+char *strstr (const char *, const char *);
+
+char *strtok (char *, const char *);
+
+size_t strxfrm (char *, const char *, size_t);
+# 86 "/usr/include/string.h" 3 4
+char *_strdup_r (struct _reent *, const char *);
 
 
 
+char *_strndup_r (struct _reent *, const char *, size_t);
+# 112 "/usr/include/string.h" 3 4
+char * _strerror_r (struct _reent *, int, int, int *);
+# 134 "/usr/include/string.h" 3 4
+char *strsignal (int __signo);
 
 
 
-
-void * __attribute__((__cdecl__)) memchr (const void *, int, size_t);
-int __attribute__((__cdecl__)) memcmp (const void *, const void *, size_t);
-void * __attribute__((__cdecl__)) memcpy (void * , const void * , size_t);
-void * __attribute__((__cdecl__)) memmove (void *, const void *, size_t);
-void * __attribute__((__cdecl__)) memset (void *, int, size_t);
-char *__attribute__((__cdecl__)) strcat (char *, const char *);
-char *__attribute__((__cdecl__)) strchr (const char *, int);
-int __attribute__((__cdecl__)) strcmp (const char *, const char *);
-int __attribute__((__cdecl__)) strcoll (const char *, const char *);
-char *__attribute__((__cdecl__)) strcpy (char *, const char *);
-size_t __attribute__((__cdecl__)) strcspn (const char *, const char *);
-char *__attribute__((__cdecl__)) strerror (int);
-size_t __attribute__((__cdecl__)) strlen (const char *);
-char *__attribute__((__cdecl__)) strncat (char *, const char *, size_t);
-int __attribute__((__cdecl__)) strncmp (const char *, const char *, size_t);
-char *__attribute__((__cdecl__)) strncpy (char *, const char *, size_t);
-char *__attribute__((__cdecl__)) strpbrk (const char *, const char *);
-char *__attribute__((__cdecl__)) strrchr (const char *, int);
-size_t __attribute__((__cdecl__)) strspn (const char *, const char *);
-char *__attribute__((__cdecl__)) strstr (const char *, const char *);
-
-char *__attribute__((__cdecl__)) strtok (char *, const char *);
-
-size_t __attribute__((__cdecl__)) strxfrm (char *, const char *, size_t);
-# 102 "/usr/include/string.h" 3 4
-char *__attribute__((__cdecl__)) _strdup_r (struct _reent *, const char *);
-
-
-
-char *__attribute__((__cdecl__)) _strndup_r (struct _reent *, const char *, size_t);
-# 133 "/usr/include/string.h" 3 4
-char * __attribute__((__cdecl__)) _strerror_r (struct _reent *, int, int, int *);
-# 155 "/usr/include/string.h" 3 4
-char *__attribute__((__cdecl__)) strsignal (int __signo);
-
-
-
-int __attribute__((__cdecl__)) strtosigno (const char *__name);
-# 192 "/usr/include/string.h" 3 4
+int strtosigno (const char *__name);
+# 175 "/usr/include/string.h" 3 4
 # 1 "/usr/include/sys/string.h" 1 3 4
-# 193 "/usr/include/string.h" 2 3 4
+# 176 "/usr/include/string.h" 2 3 4
 
 
 # 35 "QuarkTS.h" 2
 # 1 "/usr/include/stdio.h" 1 3 4
 # 36 "/usr/include/stdio.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
 # 37 "/usr/include/stdio.h" 2 3 4
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdarg.h" 1 3 4
-# 40 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stdarg.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
 # 41 "/usr/include/stdio.h" 2 3 4
 # 61 "/usr/include/stdio.h" 3 4
@@ -759,7 +739,7 @@ typedef __uint64_t u_int64_t;
 
 typedef int register_t;
 # 62 "/usr/include/sys/types.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
 # 63 "/usr/include/sys/types.h" 2 3 4
 # 113 "/usr/include/sys/types.h" 3 4
 typedef __blkcnt_t blkcnt_t;
@@ -1038,216 +1018,216 @@ typedef _fpos64_t fpos_t;
 # 33 "/usr/include/sys/stdio.h" 3 4
 
 
-ssize_t __attribute__((__cdecl__)) getline (char **, size_t *, FILE *);
-ssize_t __attribute__((__cdecl__)) getdelim (char **, size_t *, int, FILE *);
+ssize_t getline (char **, size_t *, FILE *);
+ssize_t getdelim (char **, size_t *, int, FILE *);
 
 
 # 80 "/usr/include/stdio.h" 2 3 4
 # 186 "/usr/include/stdio.h" 3 4
-FILE * __attribute__((__cdecl__)) tmpfile (void);
-char * __attribute__((__cdecl__)) tmpnam (char *);
+FILE * tmpfile (void);
+char * tmpnam (char *);
 
 
 
-int __attribute__((__cdecl__)) fclose (FILE *);
-int __attribute__((__cdecl__)) fflush (FILE *);
-FILE * __attribute__((__cdecl__)) freopen (const char *, const char *, FILE *);
-void __attribute__((__cdecl__)) setbuf (FILE *, char *);
-int __attribute__((__cdecl__)) setvbuf (FILE *, char *, int, size_t);
-int __attribute__((__cdecl__)) fprintf (FILE *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
-                                                            ;
-int __attribute__((__cdecl__)) fscanf (FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
-                                                           ;
-int __attribute__((__cdecl__)) printf (const char *, ...) __attribute__ ((__format__ (__printf__, 1, 2)))
-                                                            ;
-int __attribute__((__cdecl__)) scanf (const char *, ...) __attribute__ ((__format__ (__scanf__, 1, 2)))
-                                                           ;
-int __attribute__((__cdecl__)) sscanf (const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
-                                                           ;
-int __attribute__((__cdecl__)) vfprintf (FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) vprintf (const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 1, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) vsprintf (char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) fgetc (FILE *);
-char * __attribute__((__cdecl__)) fgets (char *, int, FILE *);
-int __attribute__((__cdecl__)) fputc (int, FILE *);
-int __attribute__((__cdecl__)) fputs (const char *, FILE *);
-int __attribute__((__cdecl__)) getc (FILE *);
-int __attribute__((__cdecl__)) getchar (void);
-char * __attribute__((__cdecl__)) gets (char *);
-int __attribute__((__cdecl__)) putc (int, FILE *);
-int __attribute__((__cdecl__)) putchar (int);
-int __attribute__((__cdecl__)) puts (const char *);
-int __attribute__((__cdecl__)) ungetc (int, FILE *);
-size_t __attribute__((__cdecl__)) fread (void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) fwrite (const void * , size_t _size, size_t _n, FILE *);
+int fclose (FILE *);
+int fflush (FILE *);
+FILE * freopen (const char *, const char *, FILE *);
+void setbuf (FILE *, char *);
+int setvbuf (FILE *, char *, int, size_t);
+int fprintf (FILE *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 2, 3)));
+int fscanf (FILE *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 2, 3)));
+int printf (const char *, ...)
+               __attribute__ ((__format__ (__printf__, 1, 2)));
+int scanf (const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 1, 2)));
+int sscanf (const char *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 2, 3)));
+int vfprintf (FILE *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 2, 0)));
+int vprintf (const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 1, 0)));
+int vsprintf (char *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 2, 0)));
+int fgetc (FILE *);
+char * fgets (char *, int, FILE *);
+int fputc (int, FILE *);
+int fputs (const char *, FILE *);
+int getc (FILE *);
+int getchar (void);
+char * gets (char *);
+int putc (int, FILE *);
+int putchar (int);
+int puts (const char *);
+int ungetc (int, FILE *);
+size_t fread (void *, size_t _size, size_t _n, FILE *);
+size_t fwrite (const void * , size_t _size, size_t _n, FILE *);
 
 
 
-int __attribute__((__cdecl__)) fgetpos (FILE *, fpos_t *);
+int fgetpos (FILE *, fpos_t *);
 
-int __attribute__((__cdecl__)) fseek (FILE *, long, int);
-
-
-
-int __attribute__((__cdecl__)) fsetpos (FILE *, const fpos_t *);
-
-long __attribute__((__cdecl__)) ftell ( FILE *);
-void __attribute__((__cdecl__)) rewind (FILE *);
-void __attribute__((__cdecl__)) clearerr (FILE *);
-int __attribute__((__cdecl__)) feof (FILE *);
-int __attribute__((__cdecl__)) ferror (FILE *);
-void __attribute__((__cdecl__)) perror (const char *);
-
-FILE * __attribute__((__cdecl__)) fopen (const char * _name, const char * _type);
-int __attribute__((__cdecl__)) sprintf (char *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
-                                                            ;
-int __attribute__((__cdecl__)) remove (const char *);
-int __attribute__((__cdecl__)) rename (const char *, const char *);
-# 393 "/usr/include/stdio.h" 3 4
-int __attribute__((__cdecl__)) _asiprintf_r (struct _reent *, char **, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-char * __attribute__((__cdecl__)) _asniprintf_r (struct _reent *, char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
-                                                            ;
-char * __attribute__((__cdecl__)) _asnprintf_r (struct _reent *, char *, size_t *, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
-                                                            ;
-int __attribute__((__cdecl__)) _asprintf_r (struct _reent *, char **, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _diprintf_r (struct _reent *, int, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _dprintf_r (struct _reent *, int, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _fclose_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _fcloseall_r (struct _reent *);
-FILE * __attribute__((__cdecl__)) _fdopen_r (struct _reent *, int, const char *);
-int __attribute__((__cdecl__)) _fflush_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _fgetc_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _fgetc_unlocked_r (struct _reent *, FILE *);
-char * __attribute__((__cdecl__)) _fgets_r (struct _reent *, char *, int, FILE *);
-char * __attribute__((__cdecl__)) _fgets_unlocked_r (struct _reent *, char *, int, FILE *);
+int fseek (FILE *, long, int);
 
 
 
+int fsetpos (FILE *, const fpos_t *);
 
-int __attribute__((__cdecl__)) _fgetpos_r (struct _reent *, FILE *, fpos_t *);
-int __attribute__((__cdecl__)) _fsetpos_r (struct _reent *, FILE *, const fpos_t *);
+long ftell ( FILE *);
+void rewind (FILE *);
+void clearerr (FILE *);
+int feof (FILE *);
+int ferror (FILE *);
+void perror (const char *);
 
-int __attribute__((__cdecl__)) _fiprintf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _fiscanf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
-                                                           ;
-FILE * __attribute__((__cdecl__)) _fmemopen_r (struct _reent *, void *, size_t, const char *);
-FILE * __attribute__((__cdecl__)) _fopen_r (struct _reent *, const char *, const char *);
-FILE * __attribute__((__cdecl__)) _freopen_r (struct _reent *, const char *, const char *, FILE *);
-int __attribute__((__cdecl__)) _fprintf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _fpurge_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _fputc_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _fputc_unlocked_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _fputs_r (struct _reent *, const char *, FILE *);
-int __attribute__((__cdecl__)) _fputs_unlocked_r (struct _reent *, const char *, FILE *);
-size_t __attribute__((__cdecl__)) _fread_r (struct _reent *, void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) _fread_unlocked_r (struct _reent *, void * , size_t _size, size_t _n, FILE *);
-int __attribute__((__cdecl__)) _fscanf_r (struct _reent *, FILE *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
-                                                           ;
-int __attribute__((__cdecl__)) _fseek_r (struct _reent *, FILE *, long, int);
-int __attribute__((__cdecl__)) _fseeko_r (struct _reent *, FILE *, _off_t, int);
-long __attribute__((__cdecl__)) _ftell_r (struct _reent *, FILE *);
-_off_t __attribute__((__cdecl__)) _ftello_r (struct _reent *, FILE *);
-void __attribute__((__cdecl__)) _rewind_r (struct _reent *, FILE *);
-size_t __attribute__((__cdecl__)) _fwrite_r (struct _reent *, const void * , size_t _size, size_t _n, FILE *);
-size_t __attribute__((__cdecl__)) _fwrite_unlocked_r (struct _reent *, const void * , size_t _size, size_t _n, FILE *);
-int __attribute__((__cdecl__)) _getc_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _getc_unlocked_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) _getchar_r (struct _reent *);
-int __attribute__((__cdecl__)) _getchar_unlocked_r (struct _reent *);
-char * __attribute__((__cdecl__)) _gets_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _iprintf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
-                                                            ;
-int __attribute__((__cdecl__)) _iscanf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
-                                                           ;
-FILE * __attribute__((__cdecl__)) _open_memstream_r (struct _reent *, char **, size_t *);
-void __attribute__((__cdecl__)) _perror_r (struct _reent *, const char *);
-int __attribute__((__cdecl__)) _printf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__printf__, 2, 3)))
-                                                            ;
-int __attribute__((__cdecl__)) _putc_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _putc_unlocked_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _putchar_unlocked_r (struct _reent *, int);
-int __attribute__((__cdecl__)) _putchar_r (struct _reent *, int);
-int __attribute__((__cdecl__)) _puts_r (struct _reent *, const char *);
-int __attribute__((__cdecl__)) _remove_r (struct _reent *, const char *);
-int __attribute__((__cdecl__)) _rename_r (struct _reent *, const char *_old, const char *_new)
-                                          ;
-int __attribute__((__cdecl__)) _scanf_r (struct _reent *, const char *, ...) __attribute__ ((__format__ (__scanf__, 2, 3)))
-                                                           ;
-int __attribute__((__cdecl__)) _siprintf_r (struct _reent *, char *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _siscanf_r (struct _reent *, const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
-                                                           ;
-int __attribute__((__cdecl__)) _sniprintf_r (struct _reent *, char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
-                                                            ;
-int __attribute__((__cdecl__)) _snprintf_r (struct _reent *, char *, size_t, const char *, ...) __attribute__ ((__format__ (__printf__, 4, 5)))
-                                                            ;
-int __attribute__((__cdecl__)) _sprintf_r (struct _reent *, char *, const char *, ...) __attribute__ ((__format__ (__printf__, 3, 4)))
-                                                            ;
-int __attribute__((__cdecl__)) _sscanf_r (struct _reent *, const char *, const char *, ...) __attribute__ ((__format__ (__scanf__, 3, 4)))
-                                                           ;
-char * __attribute__((__cdecl__)) _tempnam_r (struct _reent *, const char *, const char *);
-FILE * __attribute__((__cdecl__)) _tmpfile_r (struct _reent *);
-char * __attribute__((__cdecl__)) _tmpnam_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _ungetc_r (struct _reent *, int, FILE *);
-int __attribute__((__cdecl__)) _vasiprintf_r (struct _reent *, char **, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-char * __attribute__((__cdecl__)) _vasniprintf_r (struct _reent*, char *, size_t *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
-                                                            ;
-char * __attribute__((__cdecl__)) _vasnprintf_r (struct _reent*, char *, size_t *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vasprintf_r (struct _reent *, char **, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vdiprintf_r (struct _reent *, int, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vdprintf_r (struct _reent *, int, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vfiprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vfiscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
-                                                           ;
-int __attribute__((__cdecl__)) _vfprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vfscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
-                                                           ;
-int __attribute__((__cdecl__)) _viprintf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _viscanf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
-                                                           ;
-int __attribute__((__cdecl__)) _vprintf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 2, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vscanf_r (struct _reent *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 2, 0)))
-                                                           ;
-int __attribute__((__cdecl__)) _vsiprintf_r (struct _reent *, char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vsiscanf_r (struct _reent *, const char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
-                                                           ;
-int __attribute__((__cdecl__)) _vsniprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vsnprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 4, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vsprintf_r (struct _reent *, char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__printf__, 3, 0)))
-                                                            ;
-int __attribute__((__cdecl__)) _vsscanf_r (struct _reent *, const char *, const char *, __gnuc_va_list) __attribute__ ((__format__ (__scanf__, 3, 0)))
-                                                           ;
+FILE * fopen (const char * _name, const char * _type);
+int sprintf (char *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 2, 3)));
+int remove (const char *);
+int rename (const char *, const char *);
+# 396 "/usr/include/stdio.h" 3 4
+int _asiprintf_r (struct _reent *, char **, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+char * _asniprintf_r (struct _reent *, char *, size_t *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 4, 5)));
+char * _asnprintf_r (struct _reent *, char *, size_t *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 4, 5)));
+int _asprintf_r (struct _reent *, char **, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _diprintf_r (struct _reent *, int, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _dprintf_r (struct _reent *, int, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _fclose_r (struct _reent *, FILE *);
+int _fcloseall_r (struct _reent *);
+FILE * _fdopen_r (struct _reent *, int, const char *);
+int _fflush_r (struct _reent *, FILE *);
+int _fgetc_r (struct _reent *, FILE *);
+int _fgetc_unlocked_r (struct _reent *, FILE *);
+char * _fgets_r (struct _reent *, char *, int, FILE *);
+char * _fgets_unlocked_r (struct _reent *, char *, int, FILE *);
 
 
 
-int __attribute__((__cdecl__)) fpurge (FILE *);
-ssize_t __attribute__((__cdecl__)) __getdelim (char **, size_t *, int, FILE *);
-ssize_t __attribute__((__cdecl__)) __getline (char **, size_t *, FILE *);
-# 574 "/usr/include/stdio.h" 3 4
-int __attribute__((__cdecl__)) __srget_r (struct _reent *, FILE *);
-int __attribute__((__cdecl__)) __swbuf_r (struct _reent *, int, FILE *);
-# 664 "/usr/include/stdio.h" 3 4
+
+int _fgetpos_r (struct _reent *, FILE *, fpos_t *);
+int _fsetpos_r (struct _reent *, FILE *, const fpos_t *);
+
+int _fiprintf_r (struct _reent *, FILE *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _fiscanf_r (struct _reent *, FILE *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 3, 4)));
+FILE * _fmemopen_r (struct _reent *, void *, size_t, const char *);
+FILE * _fopen_r (struct _reent *, const char *, const char *);
+FILE * _freopen_r (struct _reent *, const char *, const char *, FILE *);
+int _fprintf_r (struct _reent *, FILE *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _fpurge_r (struct _reent *, FILE *);
+int _fputc_r (struct _reent *, int, FILE *);
+int _fputc_unlocked_r (struct _reent *, int, FILE *);
+int _fputs_r (struct _reent *, const char *, FILE *);
+int _fputs_unlocked_r (struct _reent *, const char *, FILE *);
+size_t _fread_r (struct _reent *, void *, size_t _size, size_t _n, FILE *);
+size_t _fread_unlocked_r (struct _reent *, void *, size_t _size, size_t _n, FILE *);
+int _fscanf_r (struct _reent *, FILE *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 3, 4)));
+int _fseek_r (struct _reent *, FILE *, long, int);
+int _fseeko_r (struct _reent *, FILE *, _off_t, int);
+long _ftell_r (struct _reent *, FILE *);
+_off_t _ftello_r (struct _reent *, FILE *);
+void _rewind_r (struct _reent *, FILE *);
+size_t _fwrite_r (struct _reent *, const void *, size_t _size, size_t _n, FILE *);
+size_t _fwrite_unlocked_r (struct _reent *, const void *, size_t _size, size_t _n, FILE *);
+int _getc_r (struct _reent *, FILE *);
+int _getc_unlocked_r (struct _reent *, FILE *);
+int _getchar_r (struct _reent *);
+int _getchar_unlocked_r (struct _reent *);
+char * _gets_r (struct _reent *, char *);
+int _iprintf_r (struct _reent *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 2, 3)));
+int _iscanf_r (struct _reent *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 2, 3)));
+FILE * _open_memstream_r (struct _reent *, char **, size_t *);
+void _perror_r (struct _reent *, const char *);
+int _printf_r (struct _reent *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 2, 3)));
+int _putc_r (struct _reent *, int, FILE *);
+int _putc_unlocked_r (struct _reent *, int, FILE *);
+int _putchar_unlocked_r (struct _reent *, int);
+int _putchar_r (struct _reent *, int);
+int _puts_r (struct _reent *, const char *);
+int _remove_r (struct _reent *, const char *);
+int _rename_r (struct _reent *,
+      const char *_old, const char *_new);
+int _scanf_r (struct _reent *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 2, 3)));
+int _siprintf_r (struct _reent *, char *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _siscanf_r (struct _reent *, const char *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 3, 4)));
+int _sniprintf_r (struct _reent *, char *, size_t, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 4, 5)));
+int _snprintf_r (struct _reent *, char *, size_t, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 4, 5)));
+int _sprintf_r (struct _reent *, char *, const char *, ...)
+               __attribute__ ((__format__ (__printf__, 3, 4)));
+int _sscanf_r (struct _reent *, const char *, const char *, ...)
+               __attribute__ ((__format__ (__scanf__, 3, 4)));
+char * _tempnam_r (struct _reent *, const char *, const char *);
+FILE * _tmpfile_r (struct _reent *);
+char * _tmpnam_r (struct _reent *, char *);
+int _ungetc_r (struct _reent *, int, FILE *);
+int _vasiprintf_r (struct _reent *, char **, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+char * _vasniprintf_r (struct _reent*, char *, size_t *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 4, 0)));
+char * _vasnprintf_r (struct _reent*, char *, size_t *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 4, 0)));
+int _vasprintf_r (struct _reent *, char **, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vdiprintf_r (struct _reent *, int, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vdprintf_r (struct _reent *, int, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vfiprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vfiscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 3, 0)));
+int _vfprintf_r (struct _reent *, FILE *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vfscanf_r (struct _reent *, FILE *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 3, 0)));
+int _viprintf_r (struct _reent *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 2, 0)));
+int _viscanf_r (struct _reent *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 2, 0)));
+int _vprintf_r (struct _reent *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 2, 0)));
+int _vscanf_r (struct _reent *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 2, 0)));
+int _vsiprintf_r (struct _reent *, char *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vsiscanf_r (struct _reent *, const char *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 3, 0)));
+int _vsniprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 4, 0)));
+int _vsnprintf_r (struct _reent *, char *, size_t, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 4, 0)));
+int _vsprintf_r (struct _reent *, char *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__printf__, 3, 0)));
+int _vsscanf_r (struct _reent *, const char *, const char *, __gnuc_va_list)
+               __attribute__ ((__format__ (__scanf__, 3, 0)));
+
+
+
+int fpurge (FILE *);
+ssize_t __getdelim (char **, size_t *, int, FILE *);
+ssize_t __getline (char **, size_t *, FILE *);
+# 577 "/usr/include/stdio.h" 3 4
+int __srget_r (struct _reent *, FILE *);
+int __swbuf_r (struct _reent *, int, FILE *);
+# 667 "/usr/include/stdio.h" 3 4
 extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p);
 
 extern __inline__ __attribute__ ((__always_inline__)) int __sgetc_r(struct _reent *__ptr, FILE *__p)
@@ -1278,7 +1258,25 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sputc_r(struct _reen
  else
   return (__swbuf_r(_ptr, _c, _p));
 }
-# 767 "/usr/include/stdio.h" 3 4
+# 741 "/usr/include/stdio.h" 3 4
+static __inline int
+_getchar_unlocked(void)
+{
+ struct _reent *_ptr;
+
+ _ptr = (__getreent());
+ return (__sgetc_r(_ptr, ((_ptr)->_stdin)));
+}
+
+static __inline int
+_putchar_unlocked(int _c)
+{
+ struct _reent *_ptr;
+
+ _ptr = (__getreent());
+ return (__sputc_r(_ptr, _c, ((_ptr)->_stdout)));
+}
+# 797 "/usr/include/stdio.h" 3 4
 
 # 36 "QuarkTS.h" 2
 # 1 "/usr/include/stdlib.h" 1 3 4
@@ -1290,7 +1288,7 @@ extern __inline__ __attribute__ ((__always_inline__)) int __sputc_r(struct _reen
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/5.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
 # 17 "/usr/include/stdlib.h" 2 3 4
 
 
@@ -1317,7 +1315,7 @@ char *mkdtemp (char *);
 const char *getprogname (void);
 void setprogname (const char *);
 # 48 "/usr/include/cygwin/stdlib.h" 3 4
-extern void * memalign (size_t, size_t);
+extern void *memalign (size_t, size_t);
 # 27 "/usr/include/stdlib.h" 2 3 4
 
 
@@ -1347,114 +1345,114 @@ typedef int (*__compar_fn_t) (const void *, const void *);
 
 
 
-int __attribute__((__cdecl__)) __locale_mb_cur_max (void);
+int __locale_mb_cur_max (void);
 
 
 
-void __attribute__((__cdecl__)) abort (void) __attribute__ ((__noreturn__));
-int __attribute__((__cdecl__)) abs (int);
-
-
-
-
-
-int __attribute__((__cdecl__)) atexit (void (*__func)(void));
-double __attribute__((__cdecl__)) atof (const char *__nptr);
-
-
-
-int __attribute__((__cdecl__)) atoi (const char *__nptr);
-int __attribute__((__cdecl__)) _atoi_r (struct _reent *, const char *__nptr);
-long __attribute__((__cdecl__)) atol (const char *__nptr);
-long __attribute__((__cdecl__)) _atol_r (struct _reent *, const char *__nptr);
-void * __attribute__((__cdecl__)) bsearch (const void * __key, const void * __base, size_t __nmemb, size_t __size, __compar_fn_t _compar)
-
-
-
-                                ;
-void * __attribute__((__cdecl__)) calloc (size_t __nmemb, size_t __size) ;
-div_t __attribute__((__cdecl__)) div (int __numer, int __denom);
-void __attribute__((__cdecl__)) exit (int __status) __attribute__ ((__noreturn__));
-void __attribute__((__cdecl__)) free (void *) ;
-char * __attribute__((__cdecl__)) getenv (const char *__string);
-char * __attribute__((__cdecl__)) _getenv_r (struct _reent *, const char *__string);
-char * __attribute__((__cdecl__)) _findenv (const char *, int *);
-char * __attribute__((__cdecl__)) _findenv_r (struct _reent *, const char *, int *);
+void abort (void) __attribute__ ((__noreturn__));
+int abs (int);
 
 
 
 
-long __attribute__((__cdecl__)) labs (long);
-ldiv_t __attribute__((__cdecl__)) ldiv (long __numer, long __denom);
-void * __attribute__((__cdecl__)) malloc (size_t __size) ;
-int __attribute__((__cdecl__)) mblen (const char *, size_t);
-int __attribute__((__cdecl__)) _mblen_r (struct _reent *, const char *, size_t, _mbstate_t *);
-int __attribute__((__cdecl__)) mbtowc (wchar_t *, const char *, size_t);
-int __attribute__((__cdecl__)) _mbtowc_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
-int __attribute__((__cdecl__)) wctomb (char *, wchar_t);
-int __attribute__((__cdecl__)) _wctomb_r (struct _reent *, char *, wchar_t, _mbstate_t *);
-size_t __attribute__((__cdecl__)) mbstowcs (wchar_t *, const char *, size_t);
-size_t __attribute__((__cdecl__)) _mbstowcs_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
-size_t __attribute__((__cdecl__)) wcstombs (char *, const wchar_t *, size_t);
-size_t __attribute__((__cdecl__)) _wcstombs_r (struct _reent *, char *, const wchar_t *, size_t, _mbstate_t *);
+
+int atexit (void (*__func)(void));
+double atof (const char *__nptr);
+
+
+
+int atoi (const char *__nptr);
+int _atoi_r (struct _reent *, const char *__nptr);
+long atol (const char *__nptr);
+long _atol_r (struct _reent *, const char *__nptr);
+void * bsearch (const void *__key,
+         const void *__base,
+         size_t __nmemb,
+         size_t __size,
+         __compar_fn_t _compar);
+void * calloc (size_t __nmemb, size_t __size) ;
+div_t div (int __numer, int __denom);
+void exit (int __status) __attribute__ ((__noreturn__));
+void free (void *) ;
+char * getenv (const char *__string);
+char * _getenv_r (struct _reent *, const char *__string);
+char * _findenv (const char *, int *);
+char * _findenv_r (struct _reent *, const char *, int *);
+
+
+
+
+long labs (long);
+ldiv_t ldiv (long __numer, long __denom);
+void * malloc (size_t __size) ;
+int mblen (const char *, size_t);
+int _mblen_r (struct _reent *, const char *, size_t, _mbstate_t *);
+int mbtowc (wchar_t *, const char *, size_t);
+int _mbtowc_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
+int wctomb (char *, wchar_t);
+int _wctomb_r (struct _reent *, char *, wchar_t, _mbstate_t *);
+size_t mbstowcs (wchar_t *, const char *, size_t);
+size_t _mbstowcs_r (struct _reent *, wchar_t *, const char *, size_t, _mbstate_t *);
+size_t wcstombs (char *, const wchar_t *, size_t);
+size_t _wcstombs_r (struct _reent *, char *, const wchar_t *, size_t, _mbstate_t *);
 # 133 "/usr/include/stdlib.h" 3 4
-char * __attribute__((__cdecl__)) _mkdtemp_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _mkostemp_r (struct _reent *, char *, int);
-int __attribute__((__cdecl__)) _mkostemps_r (struct _reent *, char *, int, int);
-int __attribute__((__cdecl__)) _mkstemp_r (struct _reent *, char *);
-int __attribute__((__cdecl__)) _mkstemps_r (struct _reent *, char *, int);
-char * __attribute__((__cdecl__)) _mktemp_r (struct _reent *, char *) __attribute__ ((__deprecated__("the use of `mktemp' is dangerous; use `mkstemp' instead")));
-void __attribute__((__cdecl__)) qsort (void * __base, size_t __nmemb, size_t __size, __compar_fn_t _compar);
-int __attribute__((__cdecl__)) rand (void);
-void * __attribute__((__cdecl__)) realloc (void * __r, size_t __size) ;
-# 154 "/usr/include/stdlib.h" 3 4
-void __attribute__((__cdecl__)) srand (unsigned __seed);
-double __attribute__((__cdecl__)) strtod (const char * __n, char ** __end_PTR);
-double __attribute__((__cdecl__)) _strtod_r (struct _reent *,const char * __n, char ** __end_PTR);
-# 166 "/usr/include/stdlib.h" 3 4
-long __attribute__((__cdecl__)) strtol (const char * __n, char ** __end_PTR, int __base);
-long __attribute__((__cdecl__)) _strtol_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
-unsigned long __attribute__((__cdecl__)) strtoul (const char * __n, char ** __end_PTR, int __base);
-unsigned long __attribute__((__cdecl__)) _strtoul_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
-# 186 "/usr/include/stdlib.h" 3 4
-int __attribute__((__cdecl__)) system (const char *__string);
-# 202 "/usr/include/stdlib.h" 3 4
-int __attribute__((__cdecl__)) _putenv_r (struct _reent *, char *__string);
-void * __attribute__((__cdecl__)) _reallocf_r (struct _reent *, void *, size_t);
+char * _mkdtemp_r (struct _reent *, char *);
+int _mkostemp_r (struct _reent *, char *, int);
+int _mkostemps_r (struct _reent *, char *, int, int);
+int _mkstemp_r (struct _reent *, char *);
+int _mkstemps_r (struct _reent *, char *, int);
+char * _mktemp_r (struct _reent *, char *) __attribute__ ((__deprecated__("the use of `mktemp' is dangerous; use `mkstemp' instead")));
+void qsort (void *__base, size_t __nmemb, size_t __size, __compar_fn_t _compar);
+int rand (void);
+void * realloc (void *__r, size_t __size) ;
+# 156 "/usr/include/stdlib.h" 3 4
+void srand (unsigned __seed);
+double strtod (const char * __n, char ** __end_PTR);
+double _strtod_r (struct _reent *,const char * __n, char ** __end_PTR);
+# 168 "/usr/include/stdlib.h" 3 4
+long strtol (const char * __n, char ** __end_PTR, int __base);
+long _strtol_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
+unsigned long strtoul (const char * __n, char ** __end_PTR, int __base);
+unsigned long _strtoul_r (struct _reent *,const char * __n, char ** __end_PTR, int __base);
+# 188 "/usr/include/stdlib.h" 3 4
+int system (const char *__string);
+# 204 "/usr/include/stdlib.h" 3 4
+int _putenv_r (struct _reent *, char *__string);
+void * _reallocf_r (struct _reent *, void *, size_t);
 
 
 
-int __attribute__((__cdecl__)) _setenv_r (struct _reent *, const char *__string, const char *__value, int __overwrite);
-# 219 "/usr/include/stdlib.h" 3 4
-char * __attribute__((__cdecl__)) __itoa (int, char *, int);
-char * __attribute__((__cdecl__)) __utoa (unsigned, char *, int);
-# 260 "/usr/include/stdlib.h" 3 4
-long long __attribute__((__cdecl__)) _atoll_r (struct _reent *, const char *__nptr);
-
-
-
-
-
-long long __attribute__((__cdecl__)) _strtoll_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
-
-
-
-unsigned long long __attribute__((__cdecl__)) _strtoull_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
-# 286 "/usr/include/stdlib.h" 3 4
-char * __attribute__((__cdecl__)) _dtoa_r (struct _reent *, double, int, int, int *, int*, char**);
+int _setenv_r (struct _reent *, const char *__string, const char *__value, int __overwrite);
+# 221 "/usr/include/stdlib.h" 3 4
+char * __itoa (int, char *, int);
+char * __utoa (unsigned, char *, int);
+# 262 "/usr/include/stdlib.h" 3 4
+long long _atoll_r (struct _reent *, const char *__nptr);
 
 
 
 
 
+long long _strtoll_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
 
 
-int __attribute__((__cdecl__)) _system_r (struct _reent *, const char *);
 
-void __attribute__((__cdecl__)) __eprintf (const char *, const char *, unsigned int, const char *);
-# 316 "/usr/include/stdlib.h" 3 4
+unsigned long long _strtoull_r (struct _reent *, const char * __n, char ** __end_PTR, int __base);
+# 288 "/usr/include/stdlib.h" 3 4
+char * _dtoa_r (struct _reent *, double, int, int, int *, int*, char**);
+
+
+
+
+
+
+
+int _system_r (struct _reent *, const char *);
+
+void __eprintf (const char *, const char *, unsigned int, const char *);
+# 318 "/usr/include/stdlib.h" 3 4
 extern long double _strtold_r (struct _reent *, const char *, char **);
-# 333 "/usr/include/stdlib.h" 3 4
+# 335 "/usr/include/stdlib.h" 3 4
 
 # 37 "QuarkTS.h" 2
 # 75 "QuarkTS.h"
@@ -1568,7 +1566,7 @@ extern long double _strtold_r (struct _reent *, const char *, char **);
         qSM_FAILURE_STATE,
         qSM_SUCCESS_STATE,
         qSM_UNEXPECTED_STATE,
-        qSM_BEFORE_ANY_STATE,
+        qSM_BEFORE_ANY_STATE
     }qFSM_Attribute_t;
 
     typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
@@ -1741,8 +1739,8 @@ void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length);
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
 qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
 qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
-# 30 "QuarkTS.c" 2
-# 45 "QuarkTS.c"
+# 28 "QuarkTS.c" 2
+# 43 "QuarkTS.c"
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 
@@ -1757,20 +1755,20 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(volatile struct _qTask_t *Task);
-# 85 "QuarkTS.c"
+# 83 "QuarkTS.c"
 volatile struct _qTask_t* qTaskSelf(void){
     return QUARKTS.CurrentRunningTask;
 }
-# 102 "QuarkTS.c"
+# 100 "QuarkTS.c"
 qBool_t qTaskIsEnabled(volatile struct _qTask_t *Task){
     if(Task==
-# 103 "QuarkTS.c" 3 4
+# 101 "QuarkTS.c" 3 4
             ((void *)0)
-# 103 "QuarkTS.c"
+# 101 "QuarkTS.c"
                 ) return 0x00u;
     return (qBool_t)Task->Flag[2];
 }
-# 116 "QuarkTS.c"
+# 114 "QuarkTS.c"
 void qSchedulerSetIdleTask(qTaskFcn_t Callback){
     QUARKTS.IDLECallback = Callback;
 }
@@ -1783,109 +1781,109 @@ void qSchedulerSetIdleTask(qTaskFcn_t Callback){
 void qSchedulerRelease(void){
     QUARKTS.Flag.ReleaseSched = 0x01u;
 }
-# 137 "QuarkTS.c"
+# 135 "QuarkTS.c"
 void qSchedulerSetReleaseCallback(qTaskFcn_t Callback){
     QUARKTS.ReleaseSchedCallback = Callback;
 }
-# 153 "QuarkTS.c"
+# 151 "QuarkTS.c"
 uint32_t qTaskGetCycles(volatile struct _qTask_t *Task){
     if (Task==
-# 154 "QuarkTS.c" 3 4
+# 152 "QuarkTS.c" 3 4
              ((void *)0)
-# 154 "QuarkTS.c"
+# 152 "QuarkTS.c"
                  ) return 0ul;
     return Task->Cycles;
 }
-# 172 "QuarkTS.c"
+# 170 "QuarkTS.c"
 void qTaskSendEvent(volatile struct _qTask_t *Task, void* eventdata){
     if(Task==
-# 173 "QuarkTS.c" 3 4
+# 171 "QuarkTS.c" 3 4
             ((void *)0)
-# 173 "QuarkTS.c"
+# 171 "QuarkTS.c"
                 ) return;
     Task->Flag[1] = 0x01u;
     Task->AsyncData = eventdata;
 }
-# 189 "QuarkTS.c"
+# 187 "QuarkTS.c"
 void qTaskSetTime(volatile struct _qTask_t *Task, qTime_t Value){
     if(Task==
-# 190 "QuarkTS.c" 3 4
+# 188 "QuarkTS.c" 3 4
             ((void *)0)
-# 190 "QuarkTS.c"
+# 188 "QuarkTS.c"
                 ) return;
     Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
 }
-# 209 "QuarkTS.c"
+# 207 "QuarkTS.c"
 void qTaskSetIterations(volatile struct _qTask_t *Task, qIteration_t Value){
     if(Task==
-# 210 "QuarkTS.c" 3 4
+# 208 "QuarkTS.c" 3 4
             ((void *)0)
-# 210 "QuarkTS.c"
+# 208 "QuarkTS.c"
                 ) return;
     Task->Iterations = (Value==((qIteration_t)(-32768)))? ((qIteration_t)(-32768)) : -Value;
 }
-# 224 "QuarkTS.c"
+# 222 "QuarkTS.c"
 void qTaskSetPriority(volatile struct _qTask_t *Task, qPriority_t Value){
     if(Task==
-# 225 "QuarkTS.c" 3 4
+# 223 "QuarkTS.c" 3 4
             ((void *)0)
-# 225 "QuarkTS.c"
+# 223 "QuarkTS.c"
                 ) return;
     QUARKTS.Flag.Init = 0x00u;
     Task->Priority = Value;
 }
-# 241 "QuarkTS.c"
+# 239 "QuarkTS.c"
 void qTaskSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
     if(Task==
-# 242 "QuarkTS.c" 3 4
+# 240 "QuarkTS.c" 3 4
             ((void *)0)
-# 242 "QuarkTS.c"
+# 240 "QuarkTS.c"
                 ) return;
     Task->Callback = CallbackFcn;
 }
-# 255 "QuarkTS.c"
+# 253 "QuarkTS.c"
 void qTaskSetState(volatile struct _qTask_t *Task, qState_t State){
     if(Task==
-# 256 "QuarkTS.c" 3 4
+# 254 "QuarkTS.c" 3 4
             ((void *)0)
-# 256 "QuarkTS.c"
+# 254 "QuarkTS.c"
                 ) return;
     if(State && Task->Flag[2]) return;
     Task->Flag[2] = State;
     Task->ClockStart = _qSysTick_Epochs_;
 }
-# 274 "QuarkTS.c"
+# 272 "QuarkTS.c"
 void qTaskSetData(volatile struct _qTask_t *Task, void* arg){
     if(Task==
-# 275 "QuarkTS.c" 3 4
+# 273 "QuarkTS.c" 3 4
             ((void *)0)
-# 275 "QuarkTS.c"
+# 273 "QuarkTS.c"
                 ) return;
     Task->TaskData = arg;
 }
-# 287 "QuarkTS.c"
+# 285 "QuarkTS.c"
 void qTaskClearTimeElapsed(volatile struct _qTask_t *Task){
     if(Task==
-# 288 "QuarkTS.c" 3 4
+# 286 "QuarkTS.c" 3 4
             ((void *)0)
-# 288 "QuarkTS.c"
+# 286 "QuarkTS.c"
                 ) return;
     Task->ClockStart = _qSysTick_Epochs_;
 }
-# 311 "QuarkTS.c"
+# 309 "QuarkTS.c"
 qBool_t qTaskQueueEvent(volatile struct _qTask_t *Task, void* eventdata){
-    if((Task==
-# 312 "QuarkTS.c" 3 4
-             ((void *)0)
-# 312 "QuarkTS.c"
-                 ) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return 0x00u;
     qQueueStack_t qtmp;
+    if((Task==
+# 311 "QuarkTS.c" 3 4
+             ((void *)0)
+# 311 "QuarkTS.c"
+                 ) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return 0x00u;
     qtmp.Task = Task,
     qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0x01u;
 }
-# 332 "QuarkTS.c"
+# 330 "QuarkTS.c"
 void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void)){
     QUARKTS.I_Restorer = Restorer;
     QUARKTS.I_Disable = Disabler;
@@ -1893,28 +1891,29 @@ void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(
 
 static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
     volatile struct _qTask_t *Task = 
-# 338 "QuarkTS.c" 3 4
+# 336 "QuarkTS.c" 3 4
                    ((void *)0)
-# 338 "QuarkTS.c"
+# 336 "QuarkTS.c"
                        ;
     uint8_t i;
     uint8_t IndexTaskToExtract = 0;
+    qPriority_t MaxpValue;
     if(QUARKTS.QueueIndex < 0) return 
-# 341 "QuarkTS.c" 3 4
+# 340 "QuarkTS.c" 3 4
                                      ((void *)0)
-# 341 "QuarkTS.c"
+# 340 "QuarkTS.c"
                                          ;
     if(QUARKTS.I_Disable != 
-# 342 "QuarkTS.c" 3 4
+# 341 "QuarkTS.c" 3 4
    ((void *)0)
-# 342 "QuarkTS.c"
+# 341 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
-    qPriority_t MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
+    MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){
         if(QUARKTS.QueueStack[i].Task == 
-# 345 "QuarkTS.c" 3 4
+# 344 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 345 "QuarkTS.c"
+# 344 "QuarkTS.c"
                                             ) break;
         if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
             MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
@@ -1925,16 +1924,16 @@ static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
     Task = QUARKTS.QueueStack[IndexTaskToExtract].Task;
     Task->State = 1u;
     QUARKTS.QueueStack[IndexTaskToExtract].Task = 
-# 354 "QuarkTS.c" 3 4
+# 353 "QuarkTS.c" 3 4
                                                  ((void *)0)
-# 354 "QuarkTS.c"
+# 353 "QuarkTS.c"
                                                      ;
     for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1];
     QUARKTS.QueueIndex--;
     if(QUARKTS.I_Restorer != 
-# 357 "QuarkTS.c" 3 4
+# 356 "QuarkTS.c" 3 4
    ((void *)0)
-# 357 "QuarkTS.c"
+# 356 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
     return Task;
 }
@@ -1942,61 +1941,61 @@ static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
     uint8_t i;
     QUARKTS.Head = 
-# 363 "QuarkTS.c" 3 4
+# 362 "QuarkTS.c" 3 4
                   ((void *)0)
-# 363 "QuarkTS.c"
+# 362 "QuarkTS.c"
                       ;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = 
-# 366 "QuarkTS.c" 3 4
+# 365 "QuarkTS.c" 3 4
                                   ((void *)0)
-# 366 "QuarkTS.c"
+# 365 "QuarkTS.c"
                                       ;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = 
-# 369 "QuarkTS.c" 3 4
+# 368 "QuarkTS.c" 3 4
                                                                  ((void *)0)
-# 369 "QuarkTS.c"
+# 368 "QuarkTS.c"
                                                                      ;
     QUARKTS.QueueIndex = -1;
     QUARKTS.Flag.Init = 0x00u;
     QUARKTS.Flag.ReleaseSched = 0x00u;
     QUARKTS.Flag.FCallReleased = 0x00u;
     QUARKTS.I_Restorer = 
-# 374 "QuarkTS.c" 3 4
+# 373 "QuarkTS.c" 3 4
                          ((void *)0)
-# 374 "QuarkTS.c"
+# 373 "QuarkTS.c"
                              ;
     QUARKTS.I_Disable = 
-# 375 "QuarkTS.c" 3 4
+# 374 "QuarkTS.c" 3 4
                        ((void *)0)
-# 375 "QuarkTS.c"
+# 374 "QuarkTS.c"
                            ;
     QUARKTS.CurrentRunningTask = 
-# 376 "QuarkTS.c" 3 4
+# 375 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 376 "QuarkTS.c"
+# 375 "QuarkTS.c"
                                     ;
     QUARKTS.QueueData = 
-# 377 "QuarkTS.c" 3 4
+# 376 "QuarkTS.c" 3 4
                        ((void *)0)
-# 377 "QuarkTS.c"
+# 376 "QuarkTS.c"
                            ;
     _qSysTick_Epochs_ = 0ul;
 }
-# 418 "QuarkTS.c"
+# 417 "QuarkTS.c"
 qBool_t qSchedulerAddxTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if(Task==
-# 419 "QuarkTS.c" 3 4
+# 418 "QuarkTS.c" 3 4
             ((void *)0)
-# 419 "QuarkTS.c"
+# 418 "QuarkTS.c"
                 ) return 0x00u;
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == 
-# 420 "QuarkTS.c" 3 4
+# 419 "QuarkTS.c" 3 4
                                                          ((void *)0)
-# 420 "QuarkTS.c"
+# 419 "QuarkTS.c"
                                                              ) return 0x00u;
     qSchedulerRemoveTask(Task);
     Task->Callback = CallbackFcn;
@@ -2012,65 +2011,65 @@ qBool_t qSchedulerAddxTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFc
     Task->Flag[6] = 0x00u;
     Task->Flag[2] = (qBool_t)(InitialState != 0x00u);
     Task->Next = 
-# 434 "QuarkTS.c" 3 4
+# 433 "QuarkTS.c" 3 4
                 ((void *)0)
-# 434 "QuarkTS.c"
+# 433 "QuarkTS.c"
                     ;
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
     Task->RingBuff = 
-# 437 "QuarkTS.c" 3 4
+# 436 "QuarkTS.c" 3 4
                     ((void *)0)
-# 437 "QuarkTS.c"
+# 436 "QuarkTS.c"
                         ;
     Task->StateMachine = 
-# 438 "QuarkTS.c" 3 4
+# 437 "QuarkTS.c" 3 4
                         ((void *)0)
-# 438 "QuarkTS.c"
+# 437 "QuarkTS.c"
                             ;
     Task->State = 3u;
     _qScheduler_PriorizedInsert((volatile struct _qTask_t**)&QUARKTS.Head, Task);
     return 0x01u;
 }
-# 469 "QuarkTS.c"
+# 468 "QuarkTS.c"
 qBool_t qSchedulerAddeTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
     return qSchedulerAddxTask(Task, CallbackFcn, Priority, ((qTime_t)(0)), ((qIteration_t)(1)), (0x00u), arg);
 }
-# 527 "QuarkTS.c"
+# 526 "QuarkTS.c"
 qBool_t qSchedulerAddSMTask(volatile struct _qTask_t *Task, qPriority_t Priority, qTime_t Time,
                             volatile struct _qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg){
     if(StateMachine==
-# 530 "QuarkTS.c" 3 4
+# 529 "QuarkTS.c" 3 4
                     ((void *)0) 
-# 530 "QuarkTS.c"
+# 529 "QuarkTS.c"
                          || InitState == 
-# 530 "QuarkTS.c" 3 4
+# 529 "QuarkTS.c" 3 4
                                          ((void *)0)
-# 530 "QuarkTS.c"
+# 529 "QuarkTS.c"
                                              ) return 0x00u;
     if (!qSchedulerAddxTask(Task, ((qTaskFcn_t)1), Priority, Time, ((qIteration_t)(-32768)), InitialTaskState, arg)) return 0x00u;
     qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
     Task->StateMachine = StateMachine;
     return 0x01u;
 }
-# 549 "QuarkTS.c"
+# 548 "QuarkTS.c"
 qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
     volatile struct _qTask_t *tmp = QUARKTS.Head;
     volatile struct _qTask_t *prev = 
-# 551 "QuarkTS.c" 3 4
+# 550 "QuarkTS.c" 3 4
                    ((void *)0)
-# 551 "QuarkTS.c"
+# 550 "QuarkTS.c"
                        ;
     if(tmp == 
-# 552 "QuarkTS.c" 3 4
+# 551 "QuarkTS.c" 3 4
              ((void *)0)
-# 552 "QuarkTS.c"
+# 551 "QuarkTS.c"
                  ) return 0x00u;
     while(tmp != Task && tmp->Next != 
-# 553 "QuarkTS.c" 3 4
+# 552 "QuarkTS.c" 3 4
                                      ((void *)0)
-# 553 "QuarkTS.c"
+# 552 "QuarkTS.c"
                                          ){
         prev = tmp;
         tmp = tmp->Next;
@@ -2079,9 +2078,9 @@ qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
         if(prev) prev->Next = tmp->Next;
         else QUARKTS.Head = tmp->Next;
         Task->Next = 
-# 560 "QuarkTS.c" 3 4
+# 559 "QuarkTS.c" 3 4
                     ((void *)0)
-# 560 "QuarkTS.c"
+# 559 "QuarkTS.c"
                         ;
         return 0x01u;
     }
@@ -2090,14 +2089,14 @@ qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
 
 static void _qScheduler_PriorizedInsert(volatile struct _qTask_t **head, volatile struct _qTask_t *Task){
     volatile struct _qTask_t *tmp_node = 
-# 567 "QuarkTS.c" 3 4
+# 566 "QuarkTS.c" 3 4
                        ((void *)0)
-# 567 "QuarkTS.c"
+# 566 "QuarkTS.c"
                            ;
     if( (*head == 
-# 568 "QuarkTS.c" 3 4
+# 567 "QuarkTS.c" 3 4
                  ((void *)0)
-# 568 "QuarkTS.c"
+# 567 "QuarkTS.c"
                      ) || (Task->Priority>(*head)->Priority) ){
         Task->Next = *head;
         *head = Task;
@@ -2111,20 +2110,20 @@ static void _qScheduler_PriorizedInsert(volatile struct _qTask_t **head, volatil
 
 static void _qScheduler_RearrangeChain(volatile struct _qTask_t **head){
     volatile struct _qTask_t *new_head = 
-# 580 "QuarkTS.c" 3 4
+# 579 "QuarkTS.c" 3 4
                        ((void *)0)
-# 580 "QuarkTS.c"
+# 579 "QuarkTS.c"
                            ;
     volatile struct _qTask_t *tmp = *head;
     volatile struct _qTask_t *tmp1 = 
-# 582 "QuarkTS.c" 3 4
+# 581 "QuarkTS.c" 3 4
                    ((void *)0)
-# 582 "QuarkTS.c"
+# 581 "QuarkTS.c"
                        ;
     if(QUARKTS.I_Disable != 
-# 583 "QuarkTS.c" 3 4
+# 582 "QuarkTS.c" 3 4
    ((void *)0)
-# 583 "QuarkTS.c"
+# 582 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
     while(tmp){
         tmp1 = tmp;
@@ -2134,53 +2133,53 @@ static void _qScheduler_RearrangeChain(volatile struct _qTask_t **head){
     *head = new_head;
     QUARKTS.Flag.Init= 0x01u;
     if(QUARKTS.I_Restorer != 
-# 591 "QuarkTS.c" 3 4
+# 590 "QuarkTS.c" 3 4
    ((void *)0)
-# 591 "QuarkTS.c"
+# 590 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
 }
-# 634 "QuarkTS.c"
+# 633 "QuarkTS.c"
 qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == 
-# 635 "QuarkTS.c" 3 4
+# 634 "QuarkTS.c" 3 4
                     ((void *)0) 
-# 635 "QuarkTS.c"
+# 634 "QuarkTS.c"
                          || Task==
-# 635 "QuarkTS.c" 3 4
+# 634 "QuarkTS.c" 3 4
                                   ((void *)0) 
-# 635 "QuarkTS.c"
+# 634 "QuarkTS.c"
                                        || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return 0x00u;
     if(RingBuffer->data == 
-# 636 "QuarkTS.c" 3 4
+# 635 "QuarkTS.c" 3 4
                           ((void *)0)
-# 636 "QuarkTS.c"
+# 635 "QuarkTS.c"
                               ) return 0x00u;
     Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=0x00u));
     Task->RingBuff = (arg>0)? RingBuffer : 
-# 638 "QuarkTS.c" 3 4
+# 637 "QuarkTS.c" 3 4
                                           ((void *)0)
-# 638 "QuarkTS.c"
+# 637 "QuarkTS.c"
                                               ;
     return 0x01u;
 }
 
 static qTrigger_t _qCheckRBufferEvents(volatile struct _qTask_t *Task){
     if(Task==
-# 643 "QuarkTS.c" 3 4
+# 642 "QuarkTS.c" 3 4
             ((void *)0)
-# 643 "QuarkTS.c"
+# 642 "QuarkTS.c"
                 ) return qTriggerNULL;
     if(Task->RingBuff == 
-# 644 "QuarkTS.c" 3 4
+# 643 "QuarkTS.c" 3 4
                         ((void *)0)
-# 644 "QuarkTS.c"
+# 643 "QuarkTS.c"
                             ) return qTriggerNULL;
     if(Task->Flag[4]) if(_qRBufferFull(Task->RingBuff)) return byRBufferFull;
     if(Task->Flag[5]>0) if(_qRBufferCount(Task->RingBuff) >= Task->Flag[5] ) return byRBufferCount;
     if(Task->Flag[3]) if(qRBufferGetFront(Task->RingBuff)!=
-# 647 "QuarkTS.c" 3 4
+# 646 "QuarkTS.c" 3 4
                                                                              ((void *)0)
-# 647 "QuarkTS.c"
+# 646 "QuarkTS.c"
                                                                                  ) return byRBufferPop;
     if(Task->Flag[6]) if(qRBufferEmpty(Task->RingBuff)) return byRBufferEmpty;
     return qTriggerNULL;
@@ -2192,14 +2191,14 @@ static void _qTriggerReleaseSchedEvent(void){
     QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallReleased);
     QUARKTS.EventInfo.Trigger = bySchedulingRelease;
     QUARKTS.EventInfo.TaskData = 
-# 657 "QuarkTS.c" 3 4
+# 656 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 657 "QuarkTS.c"
+# 656 "QuarkTS.c"
                                     ;
     if(QUARKTS.ReleaseSchedCallback!=
-# 658 "QuarkTS.c" 3 4
+# 657 "QuarkTS.c" 3 4
                                     ((void *)0)
-# 658 "QuarkTS.c"
+# 657 "QuarkTS.c"
                                         ) QUARKTS.ReleaseSchedCallback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = 0x01u;
 }
@@ -2211,12 +2210,12 @@ static void _qTriggerReleaseSchedEvent(void){
 
 
 void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
-# 677 "QuarkTS.c"
+# 676 "QuarkTS.c"
 void qSchedulerRun(void){
     volatile struct _qTask_t *Task = 
-# 678 "QuarkTS.c" 3 4
+# 677 "QuarkTS.c" 3 4
                    ((void *)0)
-# 678 "QuarkTS.c"
+# 677 "QuarkTS.c"
                        ;
     QUARKTS.Flag.Init=0x01u; do{
         if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((volatile struct _qTask_t**)&QUARKTS.Head);
@@ -2226,13 +2225,13 @@ void qSchedulerRun(void){
                 Task->State = (Task->State == 1u)? _qScheduler_Dispatch(Task, Task->Trigger) : 0u;
         }
         else if(Task==
-# 686 "QuarkTS.c" 3 4
+# 685 "QuarkTS.c" 3 4
                      ((void *)0) 
-# 686 "QuarkTS.c"
+# 685 "QuarkTS.c"
                           && QUARKTS.IDLECallback) _qScheduler_Dispatch(
-# 686 "QuarkTS.c" 3 4
+# 685 "QuarkTS.c" 3 4
                                                                         ((void *)0)
-# 686 "QuarkTS.c"
+# 685 "QuarkTS.c"
                                                                             , byNoReadyTasks);
     }while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent();
 }
@@ -2266,17 +2265,17 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
         case byQueueExtraction:
             QUARKTS.EventInfo.EventData = QUARKTS.QueueData;
             QUARKTS.QueueData = 
-# 718 "QuarkTS.c" 3 4
+# 717 "QuarkTS.c" 3 4
                                ((void *)0)
-# 718 "QuarkTS.c"
+# 717 "QuarkTS.c"
                                    ;
         case byNoReadyTasks:
             QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = Event;
             QUARKTS.EventInfo.TaskData = 
-# 722 "QuarkTS.c" 3 4
+# 721 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 722 "QuarkTS.c"
+# 721 "QuarkTS.c"
                                             ;
             QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo);
             QUARKTS.Flag.FCallIdle = 0x01u;
@@ -2288,28 +2287,28 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
     QUARKTS.EventInfo.Trigger = Event; QUARKTS.EventInfo.FirstCall = (qBool_t)(!Task->Flag[0]); QUARKTS.EventInfo.TaskData = Task->TaskData;
     QUARKTS.CurrentRunningTask = Task;
     if (Task->StateMachine != 
-# 732 "QuarkTS.c" 3 4
+# 731 "QuarkTS.c" 3 4
                              ((void *)0) 
-# 732 "QuarkTS.c"
+# 731 "QuarkTS.c"
                                   && Task->Callback==((qTaskFcn_t)1)) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);
     else if (Task->Callback != 
-# 733 "QuarkTS.c" 3 4
+# 732 "QuarkTS.c" 3 4
                               ((void *)0)
-# 733 "QuarkTS.c"
+# 732 "QuarkTS.c"
                                   ) Task->Callback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.CurrentRunningTask = 
-# 734 "QuarkTS.c" 3 4
+# 733 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 734 "QuarkTS.c"
+# 733 "QuarkTS.c"
                                     ;
     if(Event==byRBufferPop) Task->RingBuff->tail++;
     Task->Flag[0] = 0x01u;
 
     QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration = 0x00u;;
     QUARKTS.EventInfo.EventData = 
-# 739 "QuarkTS.c" 3 4
+# 738 "QuarkTS.c" 3 4
                                  ((void *)0)
-# 739 "QuarkTS.c"
+# 738 "QuarkTS.c"
                                      ;
 
     Task->Cycles++;
@@ -2318,9 +2317,9 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
 
 static qBool_t _qScheduler_ReadyTasksAvailable(void){
     volatile struct _qTask_t *Task = 
-# 746 "QuarkTS.c" 3 4
+# 745 "QuarkTS.c" 3 4
                    ((void *)0)
-# 746 "QuarkTS.c"
+# 745 "QuarkTS.c"
                        ;
     qTrigger_t trg = qTriggerNULL;
     qBool_t nTaskReady = 0x00u;
@@ -2352,22 +2351,22 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){
     }
     return nTaskReady;
 }
-# 807 "QuarkTS.c"
+# 806 "QuarkTS.c"
 qBool_t qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState){
     if(obj==
-# 808 "QuarkTS.c" 3 4
+# 807 "QuarkTS.c" 3 4
            ((void *)0) 
-# 808 "QuarkTS.c"
+# 807 "QuarkTS.c"
                 || InitState == 
-# 808 "QuarkTS.c" 3 4
+# 807 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 808 "QuarkTS.c"
+# 807 "QuarkTS.c"
                                     ) return 0x00u;
     obj->NextState = InitState;
     obj->PreviousState = 
-# 810 "QuarkTS.c" 3 4
+# 809 "QuarkTS.c" 3 4
                         ((void *)0)
-# 810 "QuarkTS.c"
+# 809 "QuarkTS.c"
                             ;
     obj->StateFirstEntry = 0;
     obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
@@ -2376,34 +2375,34 @@ qBool_t qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, q
     obj->_.__Unexpected = UnexpectedState;
     obj->_.__BeforeAnyState = BeforeAnyState;
     obj->LastState = 
-# 817 "QuarkTS.c" 3 4
+# 816 "QuarkTS.c" 3 4
                     ((void *)0)
-# 817 "QuarkTS.c"
+# 816 "QuarkTS.c"
                         ;
     return 0x01u;
 }
-# 834 "QuarkTS.c"
+# 833 "QuarkTS.c"
 void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data){
+    qSM_State_t prev = 
+# 834 "QuarkTS.c" 3 4
+                       ((void *)0)
+# 834 "QuarkTS.c"
+                           ;
     if(obj == 
 # 835 "QuarkTS.c" 3 4
              ((void *)0)
 # 835 "QuarkTS.c"
                  ) return;
-    qSM_State_t prev = 
-# 836 "QuarkTS.c" 3 4
-                       ((void *)0)
-# 836 "QuarkTS.c"
-                           ;
     obj->Data = Data;
     if(obj->_.__BeforeAnyState != 
-# 838 "QuarkTS.c" 3 4
+# 837 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 838 "QuarkTS.c"
+# 837 "QuarkTS.c"
                                             ) obj->_.__BeforeAnyState(obj);
     if(obj->NextState!=
-# 839 "QuarkTS.c" 3 4
+# 838 "QuarkTS.c" 3 4
                       ((void *)0)
-# 839 "QuarkTS.c"
+# 838 "QuarkTS.c"
                           ){
         obj->StateFirstEntry = (qBool_t)(obj->LastState != obj->NextState);
         if(obj->StateFirstEntry) obj->PreviousState = obj->LastState ;
@@ -2416,55 +2415,55 @@ void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data){
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE:
             if(obj->_.__Failure != 
-# 850 "QuarkTS.c" 3 4
+# 849 "QuarkTS.c" 3 4
                                          ((void *)0)
-# 850 "QuarkTS.c"
+# 849 "QuarkTS.c"
                                              ) obj->_.__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS:
             if(obj->_.__Success != 
-# 853 "QuarkTS.c" 3 4
+# 852 "QuarkTS.c" 3 4
                                          ((void *)0)
-# 853 "QuarkTS.c"
+# 852 "QuarkTS.c"
                                              ) obj->_.__Success(obj);
             break;
         default:
             if(obj->_.__Unexpected != 
-# 856 "QuarkTS.c" 3 4
+# 855 "QuarkTS.c" 3 4
                                             ((void *)0)
-# 856 "QuarkTS.c"
+# 855 "QuarkTS.c"
                                                 ) obj->_.__Unexpected(obj);
             break;
     }
  }
-# 880 "QuarkTS.c"
+# 879 "QuarkTS.c"
 void qStateMachine_Attribute(volatile struct _qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
     switch(Flag){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)val;
             obj->PreviousState = 
-# 884 "QuarkTS.c" 3 4
+# 883 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 884 "QuarkTS.c"
+# 883 "QuarkTS.c"
                                     ;
             obj->LastState = 
-# 885 "QuarkTS.c" 3 4
+# 884 "QuarkTS.c" 3 4
                             ((void *)0)
-# 885 "QuarkTS.c"
+# 884 "QuarkTS.c"
                                 ;
             obj->StateFirstEntry = 0;
             obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
             return;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
             obj->PreviousState = 
-# 890 "QuarkTS.c" 3 4
+# 889 "QuarkTS.c" 3 4
                                  ((void *)0)
-# 890 "QuarkTS.c"
+# 889 "QuarkTS.c"
                                      ;
             obj->LastState = 
-# 891 "QuarkTS.c" 3 4
+# 890 "QuarkTS.c" 3 4
                             ((void *)0)
-# 891 "QuarkTS.c"
+# 890 "QuarkTS.c"
                                 ;
             return;
         case qSM_FAILURE_STATE:
@@ -2483,12 +2482,12 @@ void qStateMachine_Attribute(volatile struct _qSM_t *obj, qFSM_Attribute_t Flag 
             return;
     }
 }
-# 929 "QuarkTS.c"
+# 928 "QuarkTS.c"
 qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
     if(obj==
-# 930 "QuarkTS.c" 3 4
+# 929 "QuarkTS.c" 3 4
            ((void *)0)
-# 930 "QuarkTS.c"
+# 929 "QuarkTS.c"
                ) return 0x00u;
     if ( (Time/2.0)<QUARKTS.Tick ) return 0x00u;
     obj->TV = (qClock_t)(Time/QUARKTS.Tick);
@@ -2496,12 +2495,12 @@ qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
     obj->SR = 0x01u;
     return 0x01u;
 }
-# 959 "QuarkTS.c"
+# 958 "QuarkTS.c"
 qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
     if(obj==
-# 960 "QuarkTS.c" 3 4
+# 959 "QuarkTS.c" 3 4
            ((void *)0)
-# 960 "QuarkTS.c"
+# 959 "QuarkTS.c"
                ) return 0x00u;
     if(obj->SR){
         if (qSTimerExpired(obj)){
@@ -2513,33 +2512,34 @@ qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
     qSTimerSet(obj, Time);
     return 0x00u;
 }
-# 986 "QuarkTS.c"
+# 985 "QuarkTS.c"
 qBool_t qSTimerExpired(qSTimer_t *obj){
     if(obj==
-# 987 "QuarkTS.c" 3 4
+# 986 "QuarkTS.c" 3 4
            ((void *)0)
-# 987 "QuarkTS.c"
+# 986 "QuarkTS.c"
                ) return 0x00u;
     if(!obj->SR) return 0x00u;
     return (qBool_t)((_qSysTick_Epochs_ - obj->Start)>=obj->TV);
 }
-# 1004 "QuarkTS.c"
+# 1003 "QuarkTS.c"
 qClock_t qSTimerElapsed(qSTimer_t *obj){
     if(obj==
-# 1005 "QuarkTS.c" 3 4
+# 1004 "QuarkTS.c" 3 4
            ((void *)0)
-# 1005 "QuarkTS.c"
+# 1004 "QuarkTS.c"
                ) return 0ul;
     return (_qSysTick_Epochs_-obj->Start);
 }
-# 1021 "QuarkTS.c"
+# 1020 "QuarkTS.c"
 qClock_t qSTimerRemaining(qSTimer_t *obj){
+    qClock_t elapsed;
     if(obj==
 # 1022 "QuarkTS.c" 3 4
            ((void *)0)
 # 1022 "QuarkTS.c"
                ) return 0;
-    qClock_t elapsed = qSTimerElapsed(obj);
+    elapsed = qSTimerElapsed(obj);
     return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
 # 1035 "QuarkTS.c"
@@ -2554,18 +2554,18 @@ void qSTimerDisarm(qSTimer_t *obj){
 }
 # 1057 "QuarkTS.c"
 void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
-    if(obj==
-# 1058 "QuarkTS.c" 3 4
-           ((void *)0)
-# 1058 "QuarkTS.c"
-               ) return 
-# 1058 "QuarkTS.c" 3 4
-                        ((void *)0)
-# 1058 "QuarkTS.c"
-                            ;
     uint8_t i, j, k, c;
     uint16_t sum;
     uint8_t *offset = obj->Blocks;
+    if(obj==
+# 1061 "QuarkTS.c" 3 4
+           ((void *)0)
+# 1061 "QuarkTS.c"
+               ) return 
+# 1061 "QuarkTS.c" 3 4
+                        ((void *)0)
+# 1061 "QuarkTS.c"
+                            ;
     j = 0;
     if(QUARKTS.I_Disable != 
 # 1063 "QuarkTS.c" 3 4
@@ -2618,16 +2618,16 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
 }
 # 1109 "QuarkTS.c"
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
-    if(obj==
-# 1110 "QuarkTS.c" 3 4
-           ((void *)0) 
-# 1110 "QuarkTS.c"
-                || pmem==
-# 1110 "QuarkTS.c" 3 4
-                         ((void *)0)
-# 1110 "QuarkTS.c"
-                             ) return;
     uint8_t i, *p;
+    if(obj==
+# 1111 "QuarkTS.c" 3 4
+           ((void *)0) 
+# 1111 "QuarkTS.c"
+                || pmem==
+# 1111 "QuarkTS.c" 3 4
+                         ((void *)0)
+# 1111 "QuarkTS.c"
+                             ) return;
     if(QUARKTS.I_Disable != 
 # 1112 "QuarkTS.c" 3 4
    ((void *)0)
@@ -2708,16 +2708,16 @@ void* qRBufferGetFront(qRBuffer_t *obj){
 }
 # 1217 "QuarkTS.c"
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
-    if(obj == 
-# 1218 "QuarkTS.c" 3 4
-             ((void *)0)
-# 1218 "QuarkTS.c"
-                 ) return 0x00u;
     void *data = 
-# 1219 "QuarkTS.c" 3 4
+# 1218 "QuarkTS.c" 3 4
                 ((void *)0)
-# 1219 "QuarkTS.c"
+# 1218 "QuarkTS.c"
                     ;
+    if(obj == 
+# 1219 "QuarkTS.c" 3 4
+             ((void *)0)
+# 1219 "QuarkTS.c"
+                 ) return 0x00u;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
         memcpy(dest, data, obj->ElementSize);
@@ -2728,20 +2728,20 @@ qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
 }
 # 1242 "QuarkTS.c"
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
-    if(obj==
-# 1243 "QuarkTS.c" 3 4
-           ((void *)0)
-# 1243 "QuarkTS.c"
-               ) return 0x00u;
     qBool_t status = 0x00u;
     uint8_t *data_element = (uint8_t*)data;
     volatile uint8_t *ring_data = 
-# 1246 "QuarkTS.c" 3 4
+# 1245 "QuarkTS.c" 3 4
                                  ((void *)0)
-# 1246 "QuarkTS.c"
+# 1245 "QuarkTS.c"
                                      ;
     uint16_t i;
 
+    if(obj==
+# 1248 "QuarkTS.c" 3 4
+           ((void *)0)
+# 1248 "QuarkTS.c"
+               ) return 0x00u;
     if(obj && data_element){
         if(!_qRBufferFull(obj)){
             ring_data = obj->data + ((obj->head % obj->Elementcount) * obj->ElementSize);
@@ -2798,7 +2798,7 @@ qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
         if(obj->AcceptCheck){
             if(!obj->AcceptCheck(newChar)) return 0x00u;
         }
-        obj->pdata[obj->index++] = (obj->PreChar)? obj->PreChar(newChar) : newChar;
+        obj->pdata[obj->index++] = (qISR_Byte_t)((obj->PreChar)? obj->PreChar(newChar) : newChar);
         obj->pdata[obj->index] = 0x0u;
         if (obj->index>=(obj->MaxIndex)) obj->index = 0;
         if(newChar == obj->EndByte){
@@ -2824,15 +2824,15 @@ size_t qBSBuffer_Count(qBSBuffer_t const* obj){
 }
 # 1391 "QuarkTS.c"
 qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
-    return (obj ? (qBSBuffer_Count(obj) == obj->length) : 0x01u);
+    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == obj->length) : 0x01u);
 }
 # 1407 "QuarkTS.c"
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
-    return (obj ? (qBSBuffer_Count(obj) == 0) : 0x01u);
+    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == 0) : 0x01u);
 }
 # 1423 "QuarkTS.c"
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
-    return (obj ? (obj->buffer[obj->tail % obj->length]) : 0);
+    return (obj ? (qBool_t)(obj->buffer[obj->tail % obj->length]) : 0x0u);
 }
 # 1440 "QuarkTS.c"
 qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
