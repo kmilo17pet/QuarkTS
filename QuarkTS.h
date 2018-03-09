@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
     
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.5.1"
+    #define QUARTKTS_VERSION "4.5.2"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -53,28 +53,34 @@ extern "C" {
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
 
-    #define qBitsSet(Register, Bits)                (Register) |= (Bits)
-    #define qBitsClear(Register, Bits)              (Register) &= ~(Bits)
-    #define qBitSet(Register, Bit)                  (Register) |= (1 << (Bit))
-    #define qBitClear(Register, Bit)                (Register) &= (~(1<< (Bit)))
-    #define qBitRead(Register,Bit)                  ((qFalse == ((Register)& (1<<(Bit))))? qFalse : qTrue)
-    #define qBitToggle(Register,Bit)                ((Register)^= (1<<(Bit)))
-    #define qBitWrite(Register, Bit, Value)         ((Value) ? qBitSet(Register,Bit) : qBitClear(Register,Bit))
-    #define qBitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)   (uint8_t)( ((b7)<<7) + ((b6)<<6) + ((b5)<<5) + ((b4)<<4) + ((b3)<<3) + ((b2)<<2) + ((b1)<<1) + ((b0)<<0) )
-    #define qByteHighNibble(Register)               ((uint8_t)((Register)>>4))
-    #define qByteLowNibble(Register)                ((uint8_t)((Register)&0x0F))
-    #define qByteMergeNibbles(H,L)                  ((uint8_t)(((H)<<4)|(0x0F&(L))))    
-    #define qWordHighByte(Register)                 ((uint8_t)((Register)>>8))
-    #define qWordLowByte(Register)                  ((uint8_t)((Register)&0x00FF))
-    #define qWordMergeBytes(H,L)                    ((uint16_t)(((H)<<8)|(L)))
-    #define qDWordHighWord(Register)                ((uint16_t)((Register) >> 16))
-    #define qDWordLowWord(Register)                 ((uint16_t)((Register) & 0xFFFF))
-    #define qDWordMergeWords(H,L)                   ((uint32_t)(((uint32_t)(H) << 16 ) | (L) ) )
+    #define qBitsSet(Register, Bits)                    (Register) |= (Bits)
+    #define qBitsClear(Register, Bits)                  (Register) &= ~(Bits)
+    #define qBitSet(Register, Bit)                      (Register) |= (1 << (Bit))
+    #define qBitClear(Register, Bit)                    (Register) &= (~(1<< (Bit)))
+    #define qBitRead(Register,Bit)                      ((qFalse == ((Register)& (1<<(Bit))))? qFalse : qTrue)
+    #define qBitToggle(Register,Bit)                    ((Register)^= (1<<(Bit)))
+    #define qBitWrite(Register, Bit, Value)             ((Value) ? qBitSet(Register,Bit) : qBitClear(Register,Bit))
+    #define qBitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)       (uint8_t)( ((b7)<<7) + ((b6)<<6) + ((b5)<<5) + ((b4)<<4) + ((b3)<<3) + ((b2)<<2) + ((b1)<<1) + ((b0)<<0) )
+    #define qByteMakeFromBits(b7,b6,b5,b4,b3,b2,b1,b0)  qBitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0) 
+    #define qByteHighNibble(Register)                   ((uint8_t)((Register)>>4))
+    #define qByteLowNibble(Register)                    ((uint8_t)((Register)&0x0F))
+    #define qByteMergeNibbles(H,L)                      ((uint8_t)(((H)<<4)|(0x0F&(L))))    
+    #define qWordHighByte(Register)                     ((uint8_t)((Register)>>8))
+    #define qWordLowByte(Register)                      ((uint8_t)((Register)&0x00FF))
+    #define qWordMergeBytes(H,L)                        ((uint16_t)(((H)<<8)|(L)))
+    #define qDWordHighWord(Register)                    ((uint16_t)((Register) >> 16))
+    #define qDWordLowWord(Register)                     ((uint16_t)((Register) & 0xFFFF))
+    #define qDWordMergeWords(H,L)                       ((uint32_t)(((uint32_t)(H) << 16 ) | (L) ) )
+
+    #define qClip(X, Max, Min)                          (((X) < (Min)) ? (Min) : (((X) > (Max)) ? (Max) : (X)))
+    #define qClipUpper(X, Max)                          (((X) > (Max)) ? (Max) : (X))
+    #define qClipLower(X, Min)                          (((X) < (Min)) ? (Min) : (X))
+    #define qIsBetween(X, Low, High)                    ((qBool_t)((X) >= (Low) && (X) <= (High)))
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t; 
-        typedef struct qCoroutineSemaphore_t qCRSem_t;
+        typedef qCoroutineSemaphore_t qCRSem_t;
         #define qCR_PCInitVal   (-0x7FFE)           
         #define __qCRKeep                _qCR_BEGIN_:
         #define __qCRCodeStartBlock      do
@@ -100,6 +106,16 @@ extern "C" {
     #endif
 
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
+    #define qTrigger_TimeElapsed        byTimeElapsed
+    #define qTrigger_QueueExtraction    byQueueExtraction
+    #define qTrigger_AsyncEvent         byAsyncEvent
+    #define qTrigger_RBufferPop         byRBufferPop
+    #define qTrigger_RBufferFull        byRBufferFull
+    #define qTrigger_RBufferCount       byRBufferCount
+    #define qTrigger_RBufferEmpty       byRBufferEmpty
+    #define qTrigger_SchedulingRelease  bySchedulingRelease
+    #define qTrigger_NoReadyTasks       byNoReadyTasks
+
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -339,14 +355,13 @@ extern "C" {
     void qSchedulerRun(void);
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
-    
-    
-    
+          
     typedef enum{qRB_AUTOPOP=_qIndex_RBAutoPop, qRB_FULL=_qIndex_RBFull, qRB_COUNT=_qIndex_RBCount, qRB_EMPTY=_qIndex_RBEmpty}qRBLinkMode_t;
     #define    RB_AUTOPOP   qRB_AUTOPOP
     #define    RB_FULL      qRB_FULL
     #define    RB_COUNT     qRB_COUNT
     #define    RB_EMPTY     qRB_EMPTY
+    
     
     qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
     
@@ -523,7 +538,7 @@ typedef enum {
 
 /*qMemoryHeapCreate(NAME, N, ALLOC_SIZE)
 
-This macro creates and initilises a memory heap pool. The parameter alloc size
+This macro creates and initialises a memory heap pool. The parameter alloc size
 should be of type qMEM_size_t.
 
 Parameters:
@@ -535,11 +550,11 @@ Parameters:
     - ALLOC_SIZE: Size of each memory block
 */ 
 #define qMemoryHeapCreate(NAME, N, ALLOC_SIZE)	uint32_t qMEM_AREA_##NAME[(N*ALLOC_SIZE)>>2]={0}; \
-						uint8_t qMEM_DES##NAME[N]={0}; \
+						uint8_t qMEM_BDES_##NAME[N]={0}; \
 						qMemoryPool_t NAME; \
                                                 NAME.BlockSize = ALLOC_SIZE; \
                                                 NAME.NumberofBlocks =  N; \
-                                                NAME.BlockDescriptors = &qMEM_DES##NAME[0]; \
+                                                NAME.BlockDescriptors = &qMEM_BDES_##NAME[0]; \
                                                 NAME.Blocks = (uint8_t*)&qMEM_AREA_##NAME[0] \
                                                 
 

@@ -1108,7 +1108,7 @@ qSchedulerRun:
 .L315:
 	testb	%r8b, %r8b
 	je	.L244
-	movq	ChainIterator.3179(%rip), %rdi
+	movq	ChainIterator.3178(%rip), %rdi
 	jmp	.L245
 	.p2align 4,,10
 .L246:
@@ -1117,7 +1117,7 @@ qSchedulerRun:
 .L317:
 	movq	(%rdi), %rdx
 	movzbl	80(%rdi), %eax
-	movq	%rdx, ChainIterator.3179(%rip)
+	movq	%rdx, ChainIterator.3178(%rip)
 	cmpb	$1, %al
 	je	.L248
 	xorl	%eax, %eax
@@ -1129,12 +1129,12 @@ qSchedulerRun:
 	jne	.L246
 	movq	56+QUARKTS(%rip), %rdi
 	testq	%rdi, %rdi
-	movq	%rdi, ChainIterator.3179(%rip)
+	movq	%rdi, ChainIterator.3178(%rip)
 	jne	.L317
 	.p2align 4,,10
 .L247:
 	movq	56+QUARKTS(%rip), %rax
-	movq	%rax, ChainIterator.3179(%rip)
+	movq	%rax, ChainIterator.3178(%rip)
 .L250:
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
@@ -1236,7 +1236,7 @@ qSchedulerRun:
 	movl	84(%rdi), %edx
 	movq	%rdi, %rcx
 	call	_qScheduler_Dispatch
-	movq	ChainIterator.3179(%rip), %rdx
+	movq	ChainIterator.3178(%rip), %rdx
 	jmp	.L249
 	.p2align 4,,10
 .L244:
@@ -1912,12 +1912,12 @@ qRBufferPush:
 	movl	$1, %eax
 	ret
 	.p2align 4,,10
+.L460:
+	rep ret
+	.p2align 4,,10
 .L449:
 	xorl	%eax, %eax
 	ret
-	.p2align 4,,10
-.L460:
-	rep ret
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qSwapBytes
@@ -2464,7 +2464,7 @@ qSchedulePrintChain:
 	.seh_endproc
 	.data
 	.align 8
-ChainIterator.3179:
+ChainIterator.3178:
 	.quad	-1
 .lcomm _qSysTick_Epochs_,4,4
 .lcomm QUARKTS,120,32

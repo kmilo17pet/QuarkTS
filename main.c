@@ -60,11 +60,11 @@ qSM_Status_t secondstate(qSM_t *fsm){
     }
     return qSM_EXIT_SUCCESS;
 }
-
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
     printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
+    
     if(e->FirstCall){
         puts("FirstCall");
     }
@@ -134,18 +134,44 @@ void blinktaskCallback(qEvent_t e){
     }qCoroutineEnd;
 }
 /*============================================================================*/
+uint32_t qStringHash(const char* s, uint8_t mode){
+    uint32_t hash;
+    switch(mode){
+        case 0: /*D. J. Bernstein */
+            for(hash = 5381; *s;) hash = 33*hash^((uint8_t)*s++);
+            return hash;
+        case 1: /*Fowler/Noll/Vo (FNV) */
+            for(hash = 0x811c9dc5; *s; hash *= 0x01000193) hash ^= ((uint8_t)*s++);
+            return hash;
+        case 2: /*Jenkins' One-at-a-Time*/
+            for(hash=0; *s; hash ^= (hash >> 6)) hash += (*s++) + (hash << 10);
+            hash += (hash << 3);
+            hash ^= (hash >> 11);
+            hash += (hash << 15);
+            return hash;         
+        default : return 0;
+    }    
+    return 0;
+}
+/*============================================================================*/
 int main(int argc, char** argv) {
+
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
     qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
+
+    
     
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y);
+    qRBufferPush(&ringBuffer, &y);
+    qRBufferPush(&ringBuffer, &y);
+    y=20;
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
     
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");

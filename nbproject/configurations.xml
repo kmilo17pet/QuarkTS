@@ -66,7 +66,7 @@
         <cTool>
           <developmentMode>5</developmentMode>
           <standard>2</standard>
-          <commandLine>-save-temps -pedantic</commandLine>
+          <commandLine>-save-temps</commandLine>
           <preprocessorList>
             <Elem>QPRINTF</Elem>
             <Elem>Q_TASK_DEV_TEST</Elem>
