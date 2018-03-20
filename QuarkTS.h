@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.2
+ *  Version : 4.5.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -52,7 +52,13 @@ extern "C" {
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
-
+    #ifdef __XC8
+        #define qConst
+        #define qConstField_Set(TYPE, STRUCT_FIELD)    STRUCT_FIELD
+    #else
+        #define qConst const  
+        #define qConstField_Set(TYPE, STRUCT_FIELD)    *((TYPE*)&(STRUCT_FIELD))
+    #endif
     #define qBitsSet(Register, Bits)                    (Register) |= (Bits)
     #define qBitsClear(Register, Bits)                  (Register) &= ~(Bits)
     #define qBitSet(Register, Bit)                      (Register) |= (1 << (Bit))
@@ -218,7 +224,8 @@ extern "C" {
         the task iteration counter, consequently doesn't have effect in this flag 
         */
         qBool_t LastIteration;
-    }_qEvent_t_, *qEvent_t;  
+    }_qEvent_t_/*, *const qEvent_t*/;  
+    typedef const _qEvent_t_ *qConst qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
     #define _qIndex_InitFlag        0
@@ -245,42 +252,45 @@ extern "C" {
  
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define qPrivate    _
-    #define qSM_t volatile struct _qSM_t
-    struct _qSM_t{ 
-        /* NextState:
+    #define _qSMData_t struct _qSM_t * const 
+    typedef struct _qSM_t{ 
+        /* NextState: (Read/Write) 
         Next state to be performed after this state finish
         */
-        qSM_Status_t (*NextState)(qSM_t*);
-        /* PreviousState:
+        qSM_Status_t (*NextState)(_qSMData_t);
+        /* PreviousState: (Read Only)
         Last state seen in the flow chart
         */
-        qSM_Status_t (*PreviousState)(qSM_t*);
-        /* PreviousState:
+        qSM_Status_t (* qConst PreviousState)(_qSMData_t);
+        /* LastState: (Read Only) 
         The last state executed
         */        
-        qSM_Status_t (*LastState)(qSM_t*);
-        /* PreviousReturnStatus:
+        qSM_Status_t (* qConst LastState)(_qSMData_t);
+        /* PreviousReturnStatus: (Read Only)
         The return status of <PreviusStateState>
         */
-        qSM_Status_t PreviousReturnStatus;
-        /* StateFirstEntry: (== StateJustChanged)
+        qConst qSM_Status_t PreviousReturnStatus;
+        /* StateFirstEntry: [== StateJustChanged] (Read Only)
         True when  <Previous State> !=  <Current State>
         */
-        qBool_t StateFirstEntry;
-        /* Data:
+        qConst qBool_t StateFirstEntry;
+        /* Data: (Read Only)
         State-machine associated data.
         Note: If the FSM is running as a task, the asociated event data can be 
         queried throught the "Data" field. (cast to qEvent_t is mandatory)
          */
-        void *Data;
+        void * qConst Data;
         /*Private members (DO NOT USE THEM)*/
         struct /**/{
-            void (*__Failure)(qSM_t*);
-            void (*__Success)(qSM_t*);
-            void (*__Unexpected)(qSM_t*);  
-            void (*__BeforeAnyState)(qSM_t*);/*only used when a task has a SM attached*/
+            void (*qConst __Failure)(_qSMData_t);
+            void (*qConst __Success)(_qSMData_t);
+            void (*qConst __Unexpected)(_qSMData_t);  
+            void (*qConst __BeforeAnyState)(_qSMData_t);/*only used when a task has a SM attached*/
         }qPrivate;
-    };    
+    }qSM_t;
+    typedef qSM_t* const qSMData_t;    
+    typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
+    typedef void (*qSM_SubState_t)(qSMData_t); 
     #define StateJustChanged    StateFirstEntry /*backward compatibility*/
     
     typedef enum{
@@ -291,9 +301,7 @@ extern "C" {
         qSM_UNEXPECTED_STATE,
         qSM_BEFORE_ANY_STATE               
     }qFSM_Attribute_t;
-    
-    typedef qSM_Status_t (*qSM_State_t)(qSM_t*);
-    typedef void (*qSM_ExState_t)(qSM_t*);    
+          
     #define Q_TASK_EXTENDED_DATA
     struct _qTask_t{ /*Task node definition*/
         volatile struct _qTask_t *Next;
@@ -349,7 +357,7 @@ extern "C" {
     qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
     qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                                qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                                qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                                 qState_t InitialTaskState, void *arg);
     qBool_t qSchedulerRemoveTask(qTask_t *TasktoRemove);
     void qSchedulerRun(void);
@@ -414,7 +422,7 @@ Parameters:
      */
     #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     
-    qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState);
+    qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
     #ifdef _QUARKTS_CR_DEFS_    
@@ -507,8 +515,8 @@ Parameters:
     #endif  
     
         typedef struct{
-            qBool_t SR;
-            qClock_t Start, TV;
+            qConst qBool_t SR;
+            qConst qClock_t Start, TV;
         }qSTimer_t;
         qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time);
         qBool_t qSTimerExpired(qSTimer_t *obj);
@@ -564,8 +572,6 @@ Parameters:
 #endif
     
     
-
-
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);

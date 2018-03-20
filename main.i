@@ -2416,15 +2416,15 @@ int strtosigno (const char *__name);
 
 
 # 35 "QuarkTS.h" 2
-# 81 "QuarkTS.h"
+# 87 "QuarkTS.h"
         
-# 81 "QuarkTS.h"
+# 87 "QuarkTS.h"
        typedef int32_t _qTaskPC_t;
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t;
         typedef qCoroutineSemaphore_t qCRSem_t;
-# 108 "QuarkTS.h"
+# 114 "QuarkTS.h"
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-# 119 "QuarkTS.h"
+# 125 "QuarkTS.h"
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -2432,9 +2432,9 @@ int strtosigno (const char *__name);
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
-# 158 "QuarkTS.h"
+# 164 "QuarkTS.h"
     typedef struct{
-# 191 "QuarkTS.h"
+# 197 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -2465,9 +2465,10 @@ int strtosigno (const char *__name);
 
 
         qBool_t LastIteration;
-    }_qEvent_t_, *qEvent_t;
+    }_qEvent_t_ ;
+    typedef const _qEvent_t_ *const qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);
-# 232 "QuarkTS.h"
+# 239 "QuarkTS.h"
     typedef uint8_t qTaskState_t;
 
 
@@ -2485,41 +2486,44 @@ int strtosigno (const char *__name);
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
-    struct _qSM_t{
+    typedef struct _qSM_t{
 
 
 
-        qSM_Status_t (*NextState)(volatile struct _qSM_t*);
+        qSM_Status_t (*NextState)(struct _qSM_t * const);
 
 
 
-        qSM_Status_t (*PreviousState)(volatile struct _qSM_t*);
+        qSM_Status_t (* const PreviousState)(struct _qSM_t * const);
 
 
 
-        qSM_Status_t (*LastState)(volatile struct _qSM_t*);
+        qSM_Status_t (* const LastState)(struct _qSM_t * const);
 
 
 
-        qSM_Status_t PreviousReturnStatus;
+        const qSM_Status_t PreviousReturnStatus;
 
 
 
-        qBool_t StateFirstEntry;
+        const qBool_t StateFirstEntry;
 
 
 
 
 
-        void *Data;
+        void * const Data;
 
         struct {
-            void (*__Failure)(volatile struct _qSM_t*);
-            void (*__Success)(volatile struct _qSM_t*);
-            void (*__Unexpected)(volatile struct _qSM_t*);
-            void (*__BeforeAnyState)(volatile struct _qSM_t*);
+            void (*const __Failure)(struct _qSM_t * const);
+            void (*const __Success)(struct _qSM_t * const);
+            void (*const __Unexpected)(struct _qSM_t * const);
+            void (*const __BeforeAnyState)(struct _qSM_t * const);
         }_;
-    };
+    }qSM_t;
+    typedef qSM_t* const qSMData_t;
+    typedef qSM_Status_t (*qSM_State_t)(qSMData_t);
+    typedef void (*qSM_SubState_t)(qSMData_t);
 
 
     typedef enum{
@@ -2531,8 +2535,6 @@ int strtosigno (const char *__name);
         qSM_BEFORE_ANY_STATE
     }qFSM_Attribute_t;
 
-    typedef qSM_Status_t (*qSM_State_t)(volatile struct _qSM_t*);
-    typedef void (*qSM_ExState_t)(volatile struct _qSM_t*);
 
     struct _qTask_t{
         volatile struct _qTask_t *Next;
@@ -2545,7 +2547,7 @@ int strtosigno (const char *__name);
         volatile qBool_t Flag[7];
 
         qRBuffer_t *RingBuff;
-        volatile struct _qSM_t *StateMachine;
+        qSM_t *StateMachine;
         qTaskState_t State;
         qTrigger_t Trigger;
     };
@@ -2588,7 +2590,7 @@ int strtosigno (const char *__name);
     qBool_t qSchedulerAddxTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAddeTask(volatile struct _qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
     qBool_t qSchedulerAddSMTask(volatile struct _qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                                volatile struct _qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                                qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                                 qState_t InitialTaskState, void *arg);
     qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *TasktoRemove);
     void qSchedulerRun(void);
@@ -2612,14 +2614,14 @@ int strtosigno (const char *__name);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
-# 417 "QuarkTS.h"
-    qBool_t qStateMachine_Init(volatile struct _qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState);
-    void qStateMachine_Run(volatile struct _qSM_t *obj, void *Data);
-    void qStateMachine_Attribute(volatile struct _qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 509 "QuarkTS.h"
+# 425 "QuarkTS.h"
+    qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
+    void qStateMachine_Run(qSM_t *obj, void *Data);
+    void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
+# 517 "QuarkTS.h"
         typedef struct{
-            qBool_t SR;
-            qClock_t Start, TV;
+            const qBool_t SR;
+            const qClock_t Start, TV;
         }qSTimer_t;
         qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time);
         qBool_t qSTimerExpired(qSTimer_t *obj);
@@ -2644,11 +2646,9 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 562 "QuarkTS.h"
+# 570 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
-
-
 
 
 
@@ -2717,15 +2717,15 @@ void* TimerInterruptEmulation(void* arg){
 
 volatile struct _qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
 
-qSM_Status_t firststate(volatile struct _qSM_t *fsm);
-qSM_Status_t secondstate(volatile struct _qSM_t *fsm);
+qSM_Status_t firststate(qSMData_t fsm);
+qSM_Status_t secondstate(qSMData_t fsm);
 
 
-void datacapture(volatile struct _qSM_t *fsm){
+void datacapture(qSMData_t fsm){
 
 }
 
-qSM_Status_t firststate(volatile struct _qSM_t *fsm){
+qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     if(e->FirstCall){
         puts("state machine init");
@@ -2742,7 +2742,7 @@ qSM_Status_t firststate(volatile struct _qSM_t *fsm){
     return qSM_EXIT_SUCCESS;
 }
 
-qSM_Status_t secondstate(volatile struct _qSM_t *fsm){
+qSM_Status_t secondstate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateFirstEntry){
@@ -2866,7 +2866,7 @@ int main(int argc, char** argv) {
 # 160 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
-    volatile struct _qSM_t statemachine;
+    qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
 
@@ -2875,10 +2875,9 @@ int main(int argc, char** argv) {
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
+    qRBufferPush(&ringBuffer, &y); y=1;
+    qRBufferPush(&ringBuffer, &y); y=-7;
     qRBufferPush(&ringBuffer, &y);
-    qRBufferPush(&ringBuffer, &y);
-    qRBufferPush(&ringBuffer, &y);
-    y=20;
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
 
     qSchedulerAddxTask(&blinktask, blinktaskCallback, ((qPriority_t)(0x00u)), 0.05, ((qIteration_t)(-32768)), (0x01u), "blink");
@@ -2889,21 +2888,21 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 184 "main.c" 3 4
+# 183 "main.c" 3 4
                                                                                 ((void *)0)
-# 184 "main.c"
+# 183 "main.c"
                                                                                     , 
-# 184 "main.c" 3 4
+# 183 "main.c" 3 4
                                                                                       ((void *)0)
-# 184 "main.c"
+# 183 "main.c"
                                                                                           , 
-# 184 "main.c" 3 4
+# 183 "main.c" 3 4
                                                                                             ((void *)0)
-# 184 "main.c"
+# 183 "main.c"
                                                                                                 , 
-# 184 "main.c" 3 4
+# 183 "main.c" 3 4
                                                                                                   ((void *)0)
-# 184 "main.c"
+# 183 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
@@ -2915,8 +2914,8 @@ int main(int argc, char** argv) {
     qSchedulerRun();
 
     return (
-# 194 "main.c" 3 4
+# 193 "main.c" 3 4
            0
-# 194 "main.c"
+# 193 "main.c"
                        );
 }

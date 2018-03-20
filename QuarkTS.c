@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.2
+ *  Version : 4.5.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -524,7 +524,7 @@ Return value:
     Returns qTrue on successs, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                            qSM_t *StateMachine, qSM_State_t InitState, qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
+                            qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg){
     if(StateMachine==NULL || InitState == NULL) return qFalse;
     if (!qSchedulerAddxTask(Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
@@ -803,17 +803,17 @@ Return value:
 
     Returns 0 on successs, otherwise returns -1;
 */
-qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_ExState_t BeforeAnyState){
+qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
     if(obj==NULL || InitState == NULL) return qFalse;
     obj->NextState = InitState;
-    obj->PreviousState = NULL;
-    obj->StateFirstEntry = 0;
-    obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
-    obj->qPrivate.__Failure = FailureState;
-    obj->qPrivate.__Success = SuccessState;
-    obj->qPrivate.__Unexpected = UnexpectedState;
-    obj->qPrivate.__BeforeAnyState = BeforeAnyState;
-    obj->LastState = NULL;
+    qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
+    qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0;
+    qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_SUCCESS;
+    qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = FailureState;
+    qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = SuccessState;
+    qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = UnexpectedState;
+    qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = BeforeAnyState;
+    qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
     return qTrue;
 }
 /*============================================================================*/
@@ -831,18 +831,18 @@ Parameters:
              the arguments and pass a pointer to that structure.
 */    
 void qStateMachine_Run(qSM_t *obj, void *Data){
-    qSM_State_t prev  = NULL; /*usted to hold the previous state*/
+    qSM_State_t prev  = NULL; /*used to hold the previous state*/
     if(obj == NULL) return;
-    obj->Data = Data;   /*pass the data through the fsm*/
+    qConstField_Set(void* ,obj->Data)/*obj->Data*/ = Data;   /*pass the data through the fsm*/
     if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj); /*eval the BeforeAnyState if available*/
     if(obj->NextState!=NULL){ /*eval nextState if available*/
-        obj->StateFirstEntry = (qBool_t)(obj->LastState != obj->NextState);  /*Get the StateFirstEntry flag*/
-        if(obj->StateFirstEntry) obj->PreviousState = obj->LastState ; /*if StateFistEntry is set, update the PreviousState*/
+        qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = (qBool_t)(obj->LastState != obj->NextState);  /*Get the StateFirstEntry flag*/
+        if(obj->StateFirstEntry) qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = obj->LastState ; /*if StateFistEntry is set, update the PreviousState*/
         prev = obj->NextState; /*keep the next state in prev for LastState update*/
-        obj->PreviousReturnStatus = obj->NextState(obj); /*Eval the current state, and get their return status*/
-        obj->LastState = prev; /*update the LastState*/
+        qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = obj->NextState(obj); /*Eval the current state, and get their return status*/
+        qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = prev; /*update the LastState*/
     }
-    else    obj->PreviousReturnStatus = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
+    else    qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
     
     switch(obj->PreviousReturnStatus){ /*Check return status to eval extra states*/
         case qSM_EXIT_FAILURE:  if(obj->qPrivate.__Failure != NULL) obj->qPrivate.__Failure(obj);  /*Run failure state if available*/
@@ -877,26 +877,26 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
     switch(Flag){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)val;
-            obj->PreviousState = NULL;
-            obj->LastState = NULL;
-            obj->StateFirstEntry = 0;
-            obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
+            qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
+            qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
+            qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0;
+            qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_SUCCESS;            
             return;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
-            obj->PreviousState  = NULL;
-            obj->LastState = NULL;
+            qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/  = NULL;
+            qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
             return;
         case qSM_FAILURE_STATE:
-            obj->qPrivate.__Failure = (qSM_ExState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = (qSM_SubState_t)val;
             return;
         case qSM_SUCCESS_STATE:
-            obj->qPrivate.__Success = (qSM_ExState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = (qSM_SubState_t)val;
             return;    
         case qSM_UNEXPECTED_STATE:
-            obj->qPrivate.__Unexpected = (qSM_ExState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = (qSM_SubState_t)val;
             return;   
         case qSM_BEFORE_ANY_STATE:
-            obj->qPrivate.__BeforeAnyState = (qSM_ExState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = (qSM_SubState_t)val;
             return;              
         default:
             return;
@@ -921,13 +921,13 @@ Parameters:
 Return value:
 
     Returns qTrue on success, otherwise, returns qFalse.
-*/ 
+*/
 qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
     if(obj==NULL) return qFalse;
     if ( (Time/2.0)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
-    obj->TV = (qClock_t)(Time/QUARKTS.Tick); /*set the stimer time in epochs*/
-    obj->Start = _qSysTick_Epochs_; /*set the init time of the stimer with the current system epoch value*/
-    obj->SR = qTrue; /*enable the stimer*/
+    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick); /*set the stimer time in epochs*/
+    qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = _qSysTick_Epochs_; /*set the init time of the stimer with the current system epoch value*/
+    qConstField_Set(qBool_t, obj->SR)/*obj->SR*/ = qTrue; /*enable the stimer*/
     return qTrue;
 }
 /*============================================================================*/
@@ -1035,8 +1035,8 @@ Parameters:
 */
 void qSTimerDisarm(qSTimer_t *obj){
     if(obj==NULL) return;
-    obj->SR = qFalse;
-    obj->Start = 0ul;
+    qConstField_Set(qBool_t, obj->SR) /*obj->SR*/ = qFalse;
+    qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = 0ul;
 }
 #ifdef QMEMORY_MANAGER
 /*============================================================================*/

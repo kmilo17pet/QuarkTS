@@ -22,15 +22,15 @@ void* TimerInterruptEmulation(void* arg){
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
 
-qSM_Status_t firststate(qSM_t *fsm);
-qSM_Status_t secondstate(qSM_t *fsm);
+qSM_Status_t firststate(qSMData_t fsm);
+qSM_Status_t secondstate(qSMData_t fsm);
 
 /*============================================================================*/
-void datacapture(qSM_t *fsm){
+void datacapture(qSMData_t fsm){
     
 }
 /*============================================================================*/
-qSM_Status_t firststate(qSM_t *fsm){
+qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     if(e->FirstCall){
         puts("state machine init");
@@ -47,7 +47,7 @@ qSM_Status_t firststate(qSM_t *fsm){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-qSM_Status_t secondstate(qSM_t *fsm){
+qSM_Status_t secondstate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateFirstEntry){
@@ -168,10 +168,9 @@ int main(int argc, char** argv) {
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
-    qRBufferPush(&ringBuffer, &y);
-    qRBufferPush(&ringBuffer, &y);
-    qRBufferPush(&ringBuffer, &y);
-    y=20;
+    qRBufferPush(&ringBuffer, &y); y=1;
+    qRBufferPush(&ringBuffer, &y); y=-7;
+    qRBufferPush(&ringBuffer, &y); 
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
     
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");

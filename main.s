@@ -73,12 +73,11 @@ firststate:
 	movq	32(%rcx), %rsi
 	movq	%rcx, %rbx
 	cmpb	$0, 24(%rsi)
-	jne	.L17
-	movzbl	28(%rbx), %eax
-	testb	%al, %al
-	jne	.L18
+	jne	.L14
+	cmpb	$0, 28(%rbx)
+	jne	.L15
 .L9:
-	leaq	tmr.3883(%rip), %rcx
+	leaq	tmr.3885(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L10
@@ -91,14 +90,13 @@ firststate:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L17:
+.L14:
 	leaq	.LC1(%rip), %rcx
 	call	puts
-	movzbl	28(%rbx), %eax
-	testb	%al, %al
+	cmpb	$0, 28(%rbx)
 	je	.L9
-.L18:
-	leaq	tmr.3883(%rip), %rcx
+.L15:
+	leaq	tmr.3885(%rip), %rcx
 	movss	.LC2(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -122,33 +120,32 @@ secondstate:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movq	32(%rcx), %rsi
-	movzbl	28(%rcx), %eax
+	cmpb	$0, 28(%rcx)
 	movq	%rcx, %rbx
-	testb	%al, %al
-	jne	.L28
-.L20:
-	leaq	tmr.3888(%rip), %rcx
+	jne	.L22
+.L17:
+	leaq	tmr.3890(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L21
+	je	.L18
 	leaq	firststate(%rip), %rax
 	movq	%rax, (%rbx)
-.L21:
+.L18:
 	movl	$-32768, %eax
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L28:
-	leaq	tmr.3888(%rip), %rcx
+.L22:
+	movq	32(%rcx), %rsi
+	leaq	tmr.3890(%rip), %rcx
 	movss	.LC2(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
 	leaq	.LC4(%rip), %rcx
 	call	printf
-	jmp	.L20
+	jmp	.L17
 	.seh_endproc
 	.section .rdata,"dr"
 	.align 8
@@ -184,50 +181,50 @@ Task1Callback:
 	movl	%eax, %r9d
 	call	printf
 	cmpb	$0, 24(%rbx)
-	jne	.L35
-.L30:
+	jne	.L29
+.L24:
 	cmpb	$0, 25(%rbx)
-	jne	.L36
-.L31:
+	jne	.L30
+.L25:
 	cmpb	$0, 26(%rbx)
-	jne	.L37
+	jne	.L31
 	cmpl	$3, (%rbx)
-	je	.L38
-.L33:
-	leaq	tmr.3892(%rip), %rcx
+	je	.L32
+.L27:
+	leaq	tmr.3894(%rip), %rcx
 	movss	.LC10(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
-	jne	.L39
+	jne	.L33
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L39:
+.L33:
 	leaq	.LC11(%rip), %rcx
 	addq	$32, %rsp
 	popq	%rbx
 	jmp	puts
 	.p2align 4,,10
-.L37:
+.L31:
 	leaq	.LC8(%rip), %rcx
 	call	puts
 	cmpl	$3, (%rbx)
-	jne	.L33
-.L38:
+	jne	.L27
+.L32:
 	leaq	.LC9(%rip), %rcx
 	call	puts
-	jmp	.L33
+	jmp	.L27
 	.p2align 4,,10
-.L36:
+.L30:
 	leaq	.LC7(%rip), %rcx
 	call	puts
-	jmp	.L31
+	jmp	.L25
 	.p2align 4,,10
-.L35:
+.L29:
 	leaq	.LC6(%rip), %rcx
 	call	puts
-	jmp	.L30
+	jmp	.L24
 	.seh_endproc
 	.section .rdata,"dr"
 .LC12:
@@ -247,46 +244,46 @@ blinktaskCallback:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movl	_qCRTaskState_.3918(%rip), %eax
+	movl	_qCRTaskState_.3920(%rip), %eax
 	cmpl	$127, %eax
-	je	.L42
-	jle	.L63
+	je	.L36
+	jle	.L57
 	cmpl	$128, %eax
-	je	.L52
+	je	.L46
 	xorl	%esi, %esi
 	cmpl	$133, %eax
 	movl	$1, %ebx
-	jne	.L40
-.L46:
-	leaq	tmr.3916(%rip), %rcx
+	jne	.L34
+.L40:
+	leaq	tmr.3918(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L40
-.L44:
+	je	.L34
+.L38:
 	leaq	.LC12(%rip), %rcx
 	call	puts
-	leaq	tmr.3916(%rip), %rcx
+	leaq	tmr.3918(%rip), %rcx
 	movss	.LC13(%rip), %xmm1
 	call	qSTimerSet
-	leaq	tmr.3916(%rip), %rcx
-	movl	$127, _qCRTaskState_.3918(%rip)
+	leaq	tmr.3918(%rip), %rcx
+	movl	$127, _qCRTaskState_.3920(%rip)
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L40
+	je	.L34
 	cmpl	%esi, %ebx
-	movl	$128, _qCRTaskState_.3918(%rip)
-	jne	.L49
-.L40:
+	movl	$128, _qCRTaskState_.3920(%rip)
+	jne	.L43
+.L34:
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L52:
+.L46:
 	movl	$2, %ebx
 	movl	$1, %esi
-.L45:
-	leaq	tmr.3916(%rip), %rcx
+.L39:
+	leaq	tmr.3918(%rip), %rcx
 	movss	.LC13(%rip), %xmm1
 	call	qSTimerSet
 	leaq	.LC14(%rip), %rcx
@@ -294,31 +291,31 @@ blinktaskCallback:
 	leaq	Task1(%rip), %rcx
 	xorl	%edx, %edx
 	call	qTaskSendEvent
-	movl	$133, _qCRTaskState_.3918(%rip)
-	jmp	.L46
+	movl	$133, _qCRTaskState_.3920(%rip)
+	jmp	.L40
 	.p2align 4,,10
-.L63:
+.L57:
 	xorl	%esi, %esi
 	cmpl	$-32766, %eax
 	movl	$1, %ebx
-	je	.L44
+	je	.L38
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L42:
-	leaq	tmr.3916(%rip), %rcx
+.L36:
+	leaq	tmr.3918(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L40
-	movl	$128, _qCRTaskState_.3918(%rip)
+	je	.L34
+	movl	$128, _qCRTaskState_.3920(%rip)
 	xorl	%esi, %esi
 	movl	$1, %ebx
-.L49:
+.L43:
 	addl	$1, %esi
 	addl	$1, %ebx
-	jmp	.L45
+	jmp	.L39
 	.seh_endproc
 	.section .rdata,"dr"
 .LC15:
@@ -340,12 +337,12 @@ Task3Callback:
 	leaq	.LC0(%rip), %rcx
 	call	printf
 	cmpl	$4, (%rbx)
-	je	.L66
+	je	.L60
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L66:
+.L60:
 	movq	16(%rbx), %rax
 	leaq	.LC15(%rip), %rcx
 	movl	(%rax), %edx
@@ -367,16 +364,16 @@ IdleTaskCallback:
 	subq	$32, %rsp
 	.seh_stackalloc	32
 	.seh_endprologue
-	leaq	t.3912(%rip), %rcx
+	leaq	t.3914(%rip), %rcx
 	movss	.LC16(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
-	jne	.L69
+	jne	.L63
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L69:
+.L63:
 	leaq	Task1(%rip), %rbx
 	leaq	.LC17(%rip), %rcx
 	call	puts
@@ -412,16 +409,16 @@ Task2Callback:
 qStringHash:
 	.seh_endprologue
 	cmpb	$1, %dl
-	je	.L74
-	jb	.L75
+	je	.L68
+	jb	.L69
 	cmpb	$2, %dl
-	jne	.L90
+	jne	.L84
 	movzbl	(%rcx), %eax
 	xorl	%r8d, %r8d
 	testb	%al, %al
-	je	.L90
+	je	.L84
 	.p2align 4,,10
-.L86:
+.L80:
 	movsbl	%al, %edx
 	movl	%r8d, %r9d
 	addq	$1, %rcx
@@ -433,7 +430,7 @@ qStringHash:
 	xorl	%eax, %r8d
 	movzbl	(%rcx), %eax
 	testb	%al, %al
-	jne	.L86
+	jne	.L80
 	leal	(%r8,%r8,8), %edx
 	movl	%edx, %eax
 	shrl	$11, %eax
@@ -443,17 +440,17 @@ qStringHash:
 	addl	%edx, %eax
 	ret
 	.p2align 4,,10
-.L90:
+.L84:
 	xorl	%eax, %eax
 	ret
 	.p2align 4,,10
-.L75:
+.L69:
 	movzbl	(%rcx), %edx
 	movl	$5381, %eax
 	testb	%dl, %dl
-	je	.L84
+	je	.L78
 	.p2align 4,,10
-.L80:
+.L74:
 	movl	%eax, %r8d
 	addq	$1, %rcx
 	sall	$5, %r8d
@@ -461,26 +458,26 @@ qStringHash:
 	xorl	%edx, %eax
 	movzbl	(%rcx), %edx
 	testb	%dl, %dl
-	jne	.L80
+	jne	.L74
 	rep ret
 	.p2align 4,,10
-.L74:
+.L68:
 	movzbl	(%rcx), %edx
 	movl	$-2128831035, %eax
 	testb	%dl, %dl
-	je	.L91
+	je	.L85
 	.p2align 4,,10
-.L85:
+.L79:
 	addq	$1, %rcx
 	xorl	%edx, %eax
 	movzbl	(%rcx), %edx
 	imull	$16777619, %eax, %eax
 	testb	%dl, %dl
-	jne	.L85
+	jne	.L79
 	rep ret
-.L84:
+.L78:
 	rep ret
-.L91:
+.L85:
 	rep ret
 	.seh_endproc
 	.def	__main;	.scl	2;	.type	32;	.endef
@@ -553,16 +550,17 @@ main:
 	call	qRBufferPush
 	movq	%rsi, %rdx
 	movq	%rbx, %rcx
+	movl	$1, 112(%rsp)
 	call	qRBufferPush
 	movq	%rbx, %rcx
 	movq	%rsi, %rdx
-	leaq	Task3(%rip), %rsi
+	movl	$-7, 112(%rsp)
 	call	qRBufferPush
 	leaq	304(%rsp), %r8
 	leaq	IdleTaskCallback(%rip), %rdx
 	movl	$10, %r9d
 	movss	.LC18(%rip), %xmm0
-	movl	$20, 112(%rsp)
+	leaq	Task3(%rip), %rsi
 	call	_qInitScheduler
 	leaq	.LC19(%rip), %rax
 	leaq	blinktaskCallback(%rip), %rdx
@@ -629,15 +627,15 @@ main:
 	popq	%rsi
 	ret
 	.seh_endproc
-.lcomm tmr.3916,12,8
+.lcomm tmr.3918,12,8
 	.data
 	.align 4
-_qCRTaskState_.3918:
+_qCRTaskState_.3920:
 	.long	-32766
-.lcomm t.3912,12,8
-.lcomm tmr.3892,12,8
-.lcomm tmr.3888,12,8
-.lcomm tmr.3883,12,8
+.lcomm t.3914,12,8
+.lcomm tmr.3894,12,8
+.lcomm tmr.3890,12,8
+.lcomm tmr.3885,12,8
 	.comm	SMTask2, 88, 5
 	.comm	SMTask, 88, 5
 	.comm	blinktask, 88, 5
