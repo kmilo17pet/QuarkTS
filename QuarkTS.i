@@ -1619,7 +1619,7 @@ extern long double _strtold_r (struct _reent *, const char *, char **);
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
     volatile struct _qTask_t* qTaskSelf(void);
-    qBool_t qTaskIsEnabled(volatile struct _qTask_t *Task);
+    qBool_t qTaskIsEnabled(const volatile struct _qTask_t *Task);
     void qSchedulerSetIdleTask(qTaskFcn_t Callback);
     void qSchedulerRelease(void);
     void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
@@ -1643,16 +1643,16 @@ extern long double _strtold_r (struct _reent *, const char *, char **);
 
 
 
-    qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
+    qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg);
 
-    void qTaskSetTime(volatile struct _qTask_t *Task, qTime_t Value);
-    void qTaskSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
-    void qTaskSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
+    void qTaskSetTime(volatile struct _qTask_t *Task, const qTime_t Value);
+    void qTaskSetIterations(volatile struct _qTask_t *Task, const qIteration_t Value);
+    void qTaskSetPriority(volatile struct _qTask_t *Task, const qPriority_t Value);
     void qTaskSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void qTaskSetState(volatile struct _qTask_t *Task, qState_t State);
+    void qTaskSetState(volatile struct _qTask_t *Task, const qState_t State);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
-    uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
+    uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task);
 # 425 "QuarkTS.h"
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
@@ -1662,11 +1662,11 @@ extern long double _strtold_r (struct _reent *, const char *, char **);
             const qBool_t SR;
             const qClock_t Start, TV;
         }qSTimer_t;
-        qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time);
-        qBool_t qSTimerExpired(qSTimer_t *obj);
-        qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time);
-        qClock_t qSTimerElapsed(qSTimer_t *obj);
-        qClock_t qSTimerRemaining(qSTimer_t *obj);
+        qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
+        qBool_t qSTimerExpired(const qSTimer_t *obj);
+        qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time);
+        qClock_t qSTimerElapsed(const qSTimer_t *obj);
+        qClock_t qSTimerRemaining(const qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
 
 
@@ -1686,12 +1686,12 @@ typedef enum {
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
 # 570 "QuarkTS.h"
-    void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
+    void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
 
 
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
+void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
@@ -1721,7 +1721,7 @@ typedef struct{
 }qBSBuffer_t;
 
 typedef void (*qPutChar_t)(void*, const char);
-void qSwapBytes(void *data, qSize_t n);
+void qSwapBytes(void *data, const qSize_t n);
 void qPrintString(qPutChar_t fcn, void* storagep, const char *s);
 void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
 
@@ -1731,20 +1731,19 @@ qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
 qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
-qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data);
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
-void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length);
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n);
+qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data);
+void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length);
 
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
 qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
 qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
 # 28 "QuarkTS.c" 2
-# 43 "QuarkTS.c"
+# 47 "QuarkTS.c"
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 
-static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigger_t Event);
+static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, const qTrigger_t Event);
 static volatile struct _qTask_t* _qScheduler_GetNodeFromChain(void);
 static void _qScheduler_RearrangeChain(volatile struct _qTask_t **head);
 static void _qScheduler_PriorizedInsert(volatile struct _qTask_t **head, volatile struct _qTask_t *Task);
@@ -1755,20 +1754,20 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
 static qSize_t _qRBufferCount(qRBuffer_t *obj);
 static qBool_t _qRBufferFull(qRBuffer_t *obj);
 static qTrigger_t _qCheckRBufferEvents(volatile struct _qTask_t *Task);
-# 83 "QuarkTS.c"
+# 87 "QuarkTS.c"
 volatile struct _qTask_t* qTaskSelf(void){
     return QUARKTS.CurrentRunningTask;
 }
-# 100 "QuarkTS.c"
-qBool_t qTaskIsEnabled(volatile struct _qTask_t *Task){
+# 104 "QuarkTS.c"
+qBool_t qTaskIsEnabled(const volatile struct _qTask_t *Task){
     if(Task==
-# 101 "QuarkTS.c" 3 4
+# 105 "QuarkTS.c" 3 4
             ((void *)0)
-# 101 "QuarkTS.c"
+# 105 "QuarkTS.c"
                 ) return 0x00u;
     return (qBool_t)Task->Flag[2];
 }
-# 114 "QuarkTS.c"
+# 118 "QuarkTS.c"
 void qSchedulerSetIdleTask(qTaskFcn_t Callback){
     QUARKTS.IDLECallback = Callback;
 }
@@ -1781,109 +1780,109 @@ void qSchedulerSetIdleTask(qTaskFcn_t Callback){
 void qSchedulerRelease(void){
     QUARKTS.Flag.ReleaseSched = 0x01u;
 }
-# 135 "QuarkTS.c"
+# 139 "QuarkTS.c"
 void qSchedulerSetReleaseCallback(qTaskFcn_t Callback){
     QUARKTS.ReleaseSchedCallback = Callback;
 }
-# 151 "QuarkTS.c"
-uint32_t qTaskGetCycles(volatile struct _qTask_t *Task){
+# 155 "QuarkTS.c"
+uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task){
     if (Task==
-# 152 "QuarkTS.c" 3 4
+# 156 "QuarkTS.c" 3 4
              ((void *)0)
-# 152 "QuarkTS.c"
+# 156 "QuarkTS.c"
                  ) return 0ul;
     return Task->Cycles;
 }
-# 170 "QuarkTS.c"
+# 174 "QuarkTS.c"
 void qTaskSendEvent(volatile struct _qTask_t *Task, void* eventdata){
     if(Task==
-# 171 "QuarkTS.c" 3 4
+# 175 "QuarkTS.c" 3 4
             ((void *)0)
-# 171 "QuarkTS.c"
+# 175 "QuarkTS.c"
                 ) return;
     Task->Flag[1] = 0x01u;
     Task->AsyncData = eventdata;
 }
-# 187 "QuarkTS.c"
-void qTaskSetTime(volatile struct _qTask_t *Task, qTime_t Value){
+# 191 "QuarkTS.c"
+void qTaskSetTime(volatile struct _qTask_t *Task, const qTime_t Value){
     if(Task==
-# 188 "QuarkTS.c" 3 4
+# 192 "QuarkTS.c" 3 4
             ((void *)0)
-# 188 "QuarkTS.c"
+# 192 "QuarkTS.c"
                 ) return;
     Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
 }
-# 207 "QuarkTS.c"
-void qTaskSetIterations(volatile struct _qTask_t *Task, qIteration_t Value){
+# 211 "QuarkTS.c"
+void qTaskSetIterations(volatile struct _qTask_t *Task, const qIteration_t Value){
     if(Task==
-# 208 "QuarkTS.c" 3 4
+# 212 "QuarkTS.c" 3 4
             ((void *)0)
-# 208 "QuarkTS.c"
+# 212 "QuarkTS.c"
                 ) return;
     Task->Iterations = (Value==((qIteration_t)(-32768)))? ((qIteration_t)(-32768)) : -Value;
 }
-# 222 "QuarkTS.c"
-void qTaskSetPriority(volatile struct _qTask_t *Task, qPriority_t Value){
+# 226 "QuarkTS.c"
+void qTaskSetPriority(volatile struct _qTask_t *Task, const qPriority_t Value){
     if(Task==
-# 223 "QuarkTS.c" 3 4
+# 227 "QuarkTS.c" 3 4
             ((void *)0)
-# 223 "QuarkTS.c"
+# 227 "QuarkTS.c"
                 ) return;
     QUARKTS.Flag.Init = 0x00u;
     Task->Priority = Value;
 }
-# 239 "QuarkTS.c"
+# 243 "QuarkTS.c"
 void qTaskSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn){
     if(Task==
-# 240 "QuarkTS.c" 3 4
+# 244 "QuarkTS.c" 3 4
             ((void *)0)
-# 240 "QuarkTS.c"
+# 244 "QuarkTS.c"
                 ) return;
     Task->Callback = CallbackFcn;
 }
-# 253 "QuarkTS.c"
-void qTaskSetState(volatile struct _qTask_t *Task, qState_t State){
+# 257 "QuarkTS.c"
+void qTaskSetState(volatile struct _qTask_t *Task, const qState_t State){
     if(Task==
-# 254 "QuarkTS.c" 3 4
+# 258 "QuarkTS.c" 3 4
             ((void *)0)
-# 254 "QuarkTS.c"
+# 258 "QuarkTS.c"
                 ) return;
     if(State && Task->Flag[2]) return;
     Task->Flag[2] = State;
     Task->ClockStart = _qSysTick_Epochs_;
 }
-# 272 "QuarkTS.c"
+# 276 "QuarkTS.c"
 void qTaskSetData(volatile struct _qTask_t *Task, void* arg){
     if(Task==
-# 273 "QuarkTS.c" 3 4
+# 277 "QuarkTS.c" 3 4
             ((void *)0)
-# 273 "QuarkTS.c"
+# 277 "QuarkTS.c"
                 ) return;
     Task->TaskData = arg;
 }
-# 285 "QuarkTS.c"
+# 289 "QuarkTS.c"
 void qTaskClearTimeElapsed(volatile struct _qTask_t *Task){
     if(Task==
-# 286 "QuarkTS.c" 3 4
+# 290 "QuarkTS.c" 3 4
             ((void *)0)
-# 286 "QuarkTS.c"
+# 290 "QuarkTS.c"
                 ) return;
     Task->ClockStart = _qSysTick_Epochs_;
 }
-# 309 "QuarkTS.c"
+# 313 "QuarkTS.c"
 qBool_t qTaskQueueEvent(volatile struct _qTask_t *Task, void* eventdata){
     qQueueStack_t qtmp;
     if((Task==
-# 311 "QuarkTS.c" 3 4
+# 315 "QuarkTS.c" 3 4
              ((void *)0)
-# 311 "QuarkTS.c"
+# 315 "QuarkTS.c"
                  ) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return 0x00u;
     qtmp.Task = Task;
     qtmp.QueueData = eventdata;
     QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp;
     return 0x01u;
 }
-# 330 "QuarkTS.c"
+# 334 "QuarkTS.c"
 void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void)){
     QUARKTS.I_Restorer = Restorer;
     QUARKTS.I_Disable = Disabler;
@@ -1891,29 +1890,29 @@ void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(
 
 static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
     volatile struct _qTask_t *Task = 
-# 336 "QuarkTS.c" 3 4
+# 340 "QuarkTS.c" 3 4
                    ((void *)0)
-# 336 "QuarkTS.c"
+# 340 "QuarkTS.c"
                        ;
     uint8_t i;
     uint8_t IndexTaskToExtract = 0;
     qPriority_t MaxpValue;
     if(QUARKTS.QueueIndex < 0) return 
-# 340 "QuarkTS.c" 3 4
+# 344 "QuarkTS.c" 3 4
                                      ((void *)0)
-# 340 "QuarkTS.c"
+# 344 "QuarkTS.c"
                                          ;
     if(QUARKTS.I_Disable != 
-# 341 "QuarkTS.c" 3 4
+# 345 "QuarkTS.c" 3 4
    ((void *)0)
-# 341 "QuarkTS.c"
+# 345 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
     MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){
         if(QUARKTS.QueueStack[i].Task == 
-# 344 "QuarkTS.c" 3 4
+# 348 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 344 "QuarkTS.c"
+# 348 "QuarkTS.c"
                                             ) break;
         if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
             MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
@@ -1924,16 +1923,16 @@ static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
     Task = QUARKTS.QueueStack[IndexTaskToExtract].Task;
     Task->State = 1u;
     QUARKTS.QueueStack[IndexTaskToExtract].Task = 
-# 353 "QuarkTS.c" 3 4
+# 357 "QuarkTS.c" 3 4
                                                  ((void *)0)
-# 353 "QuarkTS.c"
+# 357 "QuarkTS.c"
                                                      ;
     for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1];
     QUARKTS.QueueIndex--;
     if(QUARKTS.I_Restorer != 
-# 356 "QuarkTS.c" 3 4
+# 360 "QuarkTS.c" 3 4
    ((void *)0)
-# 356 "QuarkTS.c"
+# 360 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
     return Task;
 }
@@ -1941,61 +1940,61 @@ static volatile struct _qTask_t* _qScheduler_PriorityQueueGet(void){
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
     uint8_t i;
     QUARKTS.Head = 
-# 362 "QuarkTS.c" 3 4
+# 366 "QuarkTS.c" 3 4
                   ((void *)0)
-# 362 "QuarkTS.c"
+# 366 "QuarkTS.c"
                       ;
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = 
-# 365 "QuarkTS.c" 3 4
+# 369 "QuarkTS.c" 3 4
                                   ((void *)0)
-# 365 "QuarkTS.c"
+# 369 "QuarkTS.c"
                                       ;
     QUARKTS.QueueStack = Q_Stack;
     QUARKTS.QueueSize = Size_Q_Stack;
     for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = 
-# 368 "QuarkTS.c" 3 4
+# 372 "QuarkTS.c" 3 4
                                                                  ((void *)0)
-# 368 "QuarkTS.c"
+# 372 "QuarkTS.c"
                                                                      ;
     QUARKTS.QueueIndex = -1;
     QUARKTS.Flag.Init = 0x00u;
     QUARKTS.Flag.ReleaseSched = 0x00u;
     QUARKTS.Flag.FCallReleased = 0x00u;
     QUARKTS.I_Restorer = 
-# 373 "QuarkTS.c" 3 4
+# 377 "QuarkTS.c" 3 4
                          ((void *)0)
-# 373 "QuarkTS.c"
+# 377 "QuarkTS.c"
                              ;
     QUARKTS.I_Disable = 
-# 374 "QuarkTS.c" 3 4
+# 378 "QuarkTS.c" 3 4
                        ((void *)0)
-# 374 "QuarkTS.c"
+# 378 "QuarkTS.c"
                            ;
     QUARKTS.CurrentRunningTask = 
-# 375 "QuarkTS.c" 3 4
+# 379 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 375 "QuarkTS.c"
+# 379 "QuarkTS.c"
                                     ;
     QUARKTS.QueueData = 
-# 376 "QuarkTS.c" 3 4
+# 380 "QuarkTS.c" 3 4
                        ((void *)0)
-# 376 "QuarkTS.c"
+# 380 "QuarkTS.c"
                            ;
     _qSysTick_Epochs_ = 0ul;
 }
-# 417 "QuarkTS.c"
+# 421 "QuarkTS.c"
 qBool_t qSchedulerAddxTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if(Task==
-# 418 "QuarkTS.c" 3 4
+# 422 "QuarkTS.c" 3 4
             ((void *)0)
-# 418 "QuarkTS.c"
+# 422 "QuarkTS.c"
                 ) return 0x00u;
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == 
-# 419 "QuarkTS.c" 3 4
+# 423 "QuarkTS.c" 3 4
                                                          ((void *)0)
-# 419 "QuarkTS.c"
+# 423 "QuarkTS.c"
                                                              ) return 0x00u;
     qSchedulerRemoveTask(Task);
     Task->Callback = CallbackFcn;
@@ -2011,65 +2010,65 @@ qBool_t qSchedulerAddxTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFc
     Task->Flag[6] = 0x00u;
     Task->Flag[2] = (qBool_t)(InitialState != 0x00u);
     Task->Next = 
-# 433 "QuarkTS.c" 3 4
+# 437 "QuarkTS.c" 3 4
                 ((void *)0)
-# 433 "QuarkTS.c"
+# 437 "QuarkTS.c"
                     ;
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
     Task->RingBuff = 
-# 436 "QuarkTS.c" 3 4
+# 440 "QuarkTS.c" 3 4
                     ((void *)0)
-# 436 "QuarkTS.c"
+# 440 "QuarkTS.c"
                         ;
     Task->StateMachine = 
-# 437 "QuarkTS.c" 3 4
+# 441 "QuarkTS.c" 3 4
                         ((void *)0)
-# 437 "QuarkTS.c"
+# 441 "QuarkTS.c"
                             ;
     Task->State = 3u;
     _qScheduler_PriorizedInsert((volatile struct _qTask_t**)&QUARKTS.Head, Task);
     return 0x01u;
 }
-# 468 "QuarkTS.c"
+# 472 "QuarkTS.c"
 qBool_t qSchedulerAddeTask(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
     return qSchedulerAddxTask(Task, CallbackFcn, Priority, ((qTime_t)(0)), ((qIteration_t)(1)), (0x00u), arg);
 }
-# 526 "QuarkTS.c"
+# 530 "QuarkTS.c"
 qBool_t qSchedulerAddSMTask(volatile struct _qTask_t *Task, qPriority_t Priority, qTime_t Time,
                             qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg){
     if(StateMachine==
-# 529 "QuarkTS.c" 3 4
+# 533 "QuarkTS.c" 3 4
                     ((void *)0) 
-# 529 "QuarkTS.c"
+# 533 "QuarkTS.c"
                          || InitState == 
-# 529 "QuarkTS.c" 3 4
+# 533 "QuarkTS.c" 3 4
                                          ((void *)0)
-# 529 "QuarkTS.c"
+# 533 "QuarkTS.c"
                                              ) return 0x00u;
     if (!qSchedulerAddxTask(Task, ((qTaskFcn_t)1), Priority, Time, ((qIteration_t)(-32768)), InitialTaskState, arg)) return 0x00u;
     qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
     Task->StateMachine = StateMachine;
     return 0x01u;
 }
-# 548 "QuarkTS.c"
+# 552 "QuarkTS.c"
 qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
     volatile struct _qTask_t *tmp = QUARKTS.Head;
     volatile struct _qTask_t *prev = 
-# 550 "QuarkTS.c" 3 4
+# 554 "QuarkTS.c" 3 4
                    ((void *)0)
-# 550 "QuarkTS.c"
+# 554 "QuarkTS.c"
                        ;
     if(tmp == 
-# 551 "QuarkTS.c" 3 4
+# 555 "QuarkTS.c" 3 4
              ((void *)0)
-# 551 "QuarkTS.c"
+# 555 "QuarkTS.c"
                  ) return 0x00u;
     while(tmp != Task && tmp->Next != 
-# 552 "QuarkTS.c" 3 4
+# 556 "QuarkTS.c" 3 4
                                      ((void *)0)
-# 552 "QuarkTS.c"
+# 556 "QuarkTS.c"
                                          ){
         prev = tmp;
         tmp = tmp->Next;
@@ -2078,9 +2077,9 @@ qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
         if(prev) prev->Next = tmp->Next;
         else QUARKTS.Head = tmp->Next;
         Task->Next = 
-# 559 "QuarkTS.c" 3 4
+# 563 "QuarkTS.c" 3 4
                     ((void *)0)
-# 559 "QuarkTS.c"
+# 563 "QuarkTS.c"
                         ;
         return 0x01u;
     }
@@ -2089,14 +2088,14 @@ qBool_t qSchedulerRemoveTask(volatile struct _qTask_t *Task){
 
 static void _qScheduler_PriorizedInsert(volatile struct _qTask_t **head, volatile struct _qTask_t *Task){
     volatile struct _qTask_t *tmp_node = 
-# 566 "QuarkTS.c" 3 4
+# 570 "QuarkTS.c" 3 4
                        ((void *)0)
-# 566 "QuarkTS.c"
+# 570 "QuarkTS.c"
                            ;
     if( (*head == 
-# 567 "QuarkTS.c" 3 4
+# 571 "QuarkTS.c" 3 4
                  ((void *)0)
-# 567 "QuarkTS.c"
+# 571 "QuarkTS.c"
                      ) || (Task->Priority>(*head)->Priority) ){
         Task->Next = *head;
         *head = Task;
@@ -2110,20 +2109,20 @@ static void _qScheduler_PriorizedInsert(volatile struct _qTask_t **head, volatil
 
 static void _qScheduler_RearrangeChain(volatile struct _qTask_t **head){
     volatile struct _qTask_t *new_head = 
-# 579 "QuarkTS.c" 3 4
+# 583 "QuarkTS.c" 3 4
                        ((void *)0)
-# 579 "QuarkTS.c"
+# 583 "QuarkTS.c"
                            ;
     volatile struct _qTask_t *tmp = *head;
     volatile struct _qTask_t *tmp1 = 
-# 581 "QuarkTS.c" 3 4
+# 585 "QuarkTS.c" 3 4
                    ((void *)0)
-# 581 "QuarkTS.c"
+# 585 "QuarkTS.c"
                        ;
     if(QUARKTS.I_Disable != 
-# 582 "QuarkTS.c" 3 4
+# 586 "QuarkTS.c" 3 4
    ((void *)0)
-# 582 "QuarkTS.c"
+# 586 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
     while(tmp){
         tmp1 = tmp;
@@ -2133,53 +2132,53 @@ static void _qScheduler_RearrangeChain(volatile struct _qTask_t **head){
     *head = new_head;
     QUARKTS.Flag.Init= 0x01u;
     if(QUARKTS.I_Restorer != 
-# 590 "QuarkTS.c" 3 4
+# 594 "QuarkTS.c" 3 4
    ((void *)0)
-# 590 "QuarkTS.c"
+# 594 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
 }
-# 633 "QuarkTS.c"
-qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg){
+# 637 "QuarkTS.c"
+qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == 
-# 634 "QuarkTS.c" 3 4
+# 638 "QuarkTS.c" 3 4
                     ((void *)0) 
-# 634 "QuarkTS.c"
+# 638 "QuarkTS.c"
                          || Task==
-# 634 "QuarkTS.c" 3 4
+# 638 "QuarkTS.c" 3 4
                                   ((void *)0) 
-# 634 "QuarkTS.c"
+# 638 "QuarkTS.c"
                                        || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return 0x00u;
     if(RingBuffer->data == 
-# 635 "QuarkTS.c" 3 4
+# 639 "QuarkTS.c" 3 4
                           ((void *)0)
-# 635 "QuarkTS.c"
+# 639 "QuarkTS.c"
                               ) return 0x00u;
     Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=0x00u));
     Task->RingBuff = (arg>0)? RingBuffer : 
-# 637 "QuarkTS.c" 3 4
+# 641 "QuarkTS.c" 3 4
                                           ((void *)0)
-# 637 "QuarkTS.c"
+# 641 "QuarkTS.c"
                                               ;
     return 0x01u;
 }
 
 static qTrigger_t _qCheckRBufferEvents(volatile struct _qTask_t *Task){
     if(Task==
-# 642 "QuarkTS.c" 3 4
+# 646 "QuarkTS.c" 3 4
             ((void *)0)
-# 642 "QuarkTS.c"
+# 646 "QuarkTS.c"
                 ) return qTriggerNULL;
     if(Task->RingBuff == 
-# 643 "QuarkTS.c" 3 4
+# 647 "QuarkTS.c" 3 4
                         ((void *)0)
-# 643 "QuarkTS.c"
+# 647 "QuarkTS.c"
                             ) return qTriggerNULL;
     if(Task->Flag[4]) if(_qRBufferFull(Task->RingBuff)) return byRBufferFull;
     if(Task->Flag[5]>0) if(_qRBufferCount(Task->RingBuff) >= Task->Flag[5] ) return byRBufferCount;
     if(Task->Flag[3]) if(qRBufferGetFront(Task->RingBuff)!=
-# 646 "QuarkTS.c" 3 4
+# 650 "QuarkTS.c" 3 4
                                                                              ((void *)0)
-# 646 "QuarkTS.c"
+# 650 "QuarkTS.c"
                                                                                  ) return byRBufferPop;
     if(Task->Flag[6]) if(qRBufferEmpty(Task->RingBuff)) return byRBufferEmpty;
     return qTriggerNULL;
@@ -2191,14 +2190,14 @@ static void _qTriggerReleaseSchedEvent(void){
     QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallReleased);
     QUARKTS.EventInfo.Trigger = bySchedulingRelease;
     QUARKTS.EventInfo.TaskData = 
-# 656 "QuarkTS.c" 3 4
+# 660 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 656 "QuarkTS.c"
+# 660 "QuarkTS.c"
                                     ;
     if(QUARKTS.ReleaseSchedCallback!=
-# 657 "QuarkTS.c" 3 4
+# 661 "QuarkTS.c" 3 4
                                     ((void *)0)
-# 657 "QuarkTS.c"
+# 661 "QuarkTS.c"
                                         ) QUARKTS.ReleaseSchedCallback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.Flag.FCallIdle = 0x01u;
 }
@@ -2210,12 +2209,12 @@ static void _qTriggerReleaseSchedEvent(void){
 
 
 void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
-# 676 "QuarkTS.c"
+# 680 "QuarkTS.c"
 void qSchedulerRun(void){
     volatile struct _qTask_t *Task = 
-# 677 "QuarkTS.c" 3 4
+# 681 "QuarkTS.c" 3 4
                    ((void *)0)
-# 677 "QuarkTS.c"
+# 681 "QuarkTS.c"
                        ;
     QUARKTS.Flag.Init=0x01u; do{
         if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((volatile struct _qTask_t**)&QUARKTS.Head);
@@ -2225,27 +2224,27 @@ void qSchedulerRun(void){
                 Task->State = (Task->State == 1u)? _qScheduler_Dispatch(Task, Task->Trigger) : 0u;
         }
         else if(Task==
-# 685 "QuarkTS.c" 3 4
+# 689 "QuarkTS.c" 3 4
                      ((void *)0) 
-# 685 "QuarkTS.c"
+# 689 "QuarkTS.c"
                           && QUARKTS.IDLECallback) _qScheduler_Dispatch(
-# 685 "QuarkTS.c" 3 4
+# 689 "QuarkTS.c" 3 4
                                                                         ((void *)0)
-# 685 "QuarkTS.c"
+# 689 "QuarkTS.c"
                                                                             , byNoReadyTasks);
     }while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent();
 }
 
 static volatile struct _qTask_t* _qScheduler_GetNodeFromChain(void){
-    static volatile struct _qTask_t *ChainIterator = ((volatile struct _qTask_t*)-1);
+    static volatile struct _qTask_t *ChainIterator = ((volatile struct _qTask_t*)&_qSysTick_Epochs_);
     volatile struct _qTask_t *Node;
-    if(ChainIterator == ((volatile struct _qTask_t*)-1)) ChainIterator = QUARKTS.Head;
+    if(ChainIterator == ((volatile struct _qTask_t*)&_qSysTick_Epochs_)) ChainIterator = QUARKTS.Head;
     Node = ChainIterator;
     ChainIterator = (ChainIterator)? ChainIterator->Next : QUARKTS.Head;
     return Node;
 }
 
-static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigger_t Event){
+static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, const qTrigger_t Event){
     switch(Event){
         case byTimeElapsed:
             Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=((qIteration_t)(-32768))) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
@@ -2265,17 +2264,17 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
         case byQueueExtraction:
             QUARKTS.EventInfo.EventData = QUARKTS.QueueData;
             QUARKTS.QueueData = 
-# 717 "QuarkTS.c" 3 4
+# 721 "QuarkTS.c" 3 4
                                ((void *)0)
-# 717 "QuarkTS.c"
+# 721 "QuarkTS.c"
                                    ;
         case byNoReadyTasks:
             QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = Event;
             QUARKTS.EventInfo.TaskData = 
-# 721 "QuarkTS.c" 3 4
+# 725 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 721 "QuarkTS.c"
+# 725 "QuarkTS.c"
                                             ;
             QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo);
             QUARKTS.Flag.FCallIdle = 0x01u;
@@ -2287,28 +2286,28 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
     QUARKTS.EventInfo.Trigger = Event; QUARKTS.EventInfo.FirstCall = (qBool_t)(!Task->Flag[0]); QUARKTS.EventInfo.TaskData = Task->TaskData;
     QUARKTS.CurrentRunningTask = Task;
     if (Task->StateMachine != 
-# 731 "QuarkTS.c" 3 4
+# 735 "QuarkTS.c" 3 4
                              ((void *)0) 
-# 731 "QuarkTS.c"
+# 735 "QuarkTS.c"
                                   && Task->Callback==((qTaskFcn_t)1)) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);
     else if (Task->Callback != 
-# 732 "QuarkTS.c" 3 4
+# 736 "QuarkTS.c" 3 4
                               ((void *)0)
-# 732 "QuarkTS.c"
+# 736 "QuarkTS.c"
                                   ) Task->Callback((qEvent_t)&QUARKTS.EventInfo);
     QUARKTS.CurrentRunningTask = 
-# 733 "QuarkTS.c" 3 4
+# 737 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 733 "QuarkTS.c"
+# 737 "QuarkTS.c"
                                     ;
     if(Event==byRBufferPop) Task->RingBuff->tail++;
     Task->Flag[0] = 0x01u;
 
     QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration = 0x00u;;
     QUARKTS.EventInfo.EventData = 
-# 738 "QuarkTS.c" 3 4
+# 742 "QuarkTS.c" 3 4
                                  ((void *)0)
-# 738 "QuarkTS.c"
+# 742 "QuarkTS.c"
                                      ;
 
     Task->Cycles++;
@@ -2317,9 +2316,9 @@ static qTaskState_t _qScheduler_Dispatch(volatile struct _qTask_t *Task, qTrigge
 
 static qBool_t _qScheduler_ReadyTasksAvailable(void){
     volatile struct _qTask_t *Task = 
-# 745 "QuarkTS.c" 3 4
+# 749 "QuarkTS.c" 3 4
                    ((void *)0)
-# 745 "QuarkTS.c"
+# 749 "QuarkTS.c"
                        ;
     qTrigger_t trg = qTriggerNULL;
     qBool_t nTaskReady = 0x00u;
@@ -2351,22 +2350,22 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){
     }
     return nTaskReady;
 }
-# 806 "QuarkTS.c"
+# 810 "QuarkTS.c"
 qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
     if(obj==
-# 807 "QuarkTS.c" 3 4
+# 811 "QuarkTS.c" 3 4
            ((void *)0) 
-# 807 "QuarkTS.c"
+# 811 "QuarkTS.c"
                 || InitState == 
-# 807 "QuarkTS.c" 3 4
+# 811 "QuarkTS.c" 3 4
                                 ((void *)0)
-# 807 "QuarkTS.c"
+# 811 "QuarkTS.c"
                                     ) return 0x00u;
     obj->NextState = InitState;
     *((qSM_State_t*)&(obj->PreviousState)) = 
-# 809 "QuarkTS.c" 3 4
+# 813 "QuarkTS.c" 3 4
                                                                             ((void *)0)
-# 809 "QuarkTS.c"
+# 813 "QuarkTS.c"
                                                                                 ;
     *((qBool_t*)&(obj->StateFirstEntry)) = 0;
     *((qSM_Status_t*)&(obj->PreviousReturnStatus)) = qSM_EXIT_SUCCESS;
@@ -2375,34 +2374,34 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t Suc
     *((qSM_SubState_t*)&(obj->_.__Unexpected)) = UnexpectedState;
     *((qSM_SubState_t*)&(obj->_.__BeforeAnyState)) = BeforeAnyState;
     *((qSM_State_t*)&(obj->LastState)) = 
-# 816 "QuarkTS.c" 3 4
+# 820 "QuarkTS.c" 3 4
                                                                     ((void *)0)
-# 816 "QuarkTS.c"
+# 820 "QuarkTS.c"
                                                                         ;
     return 0x01u;
 }
-# 833 "QuarkTS.c"
+# 837 "QuarkTS.c"
 void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev = 
-# 834 "QuarkTS.c" 3 4
+# 838 "QuarkTS.c" 3 4
                        ((void *)0)
-# 834 "QuarkTS.c"
+# 838 "QuarkTS.c"
                            ;
     if(obj == 
-# 835 "QuarkTS.c" 3 4
+# 839 "QuarkTS.c" 3 4
              ((void *)0)
-# 835 "QuarkTS.c"
+# 839 "QuarkTS.c"
                  ) return;
     *((void**)&(obj->Data)) = Data;
     if(obj->_.__BeforeAnyState != 
-# 837 "QuarkTS.c" 3 4
+# 841 "QuarkTS.c" 3 4
                                         ((void *)0)
-# 837 "QuarkTS.c"
+# 841 "QuarkTS.c"
                                             ) obj->_.__BeforeAnyState(obj);
     if(obj->NextState!=
-# 838 "QuarkTS.c" 3 4
+# 842 "QuarkTS.c" 3 4
                       ((void *)0)
-# 838 "QuarkTS.c"
+# 842 "QuarkTS.c"
                           ){
         *((qBool_t*)&(obj->StateFirstEntry)) = (qBool_t)(obj->LastState != obj->NextState);
         if(obj->StateFirstEntry) *((qSM_State_t*)&(obj->PreviousState)) = obj->LastState ;
@@ -2414,53 +2413,53 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
 
     switch(obj->PreviousReturnStatus){
         case qSM_EXIT_FAILURE: if(obj->_.__Failure != 
-# 848 "QuarkTS.c" 3 4
+# 852 "QuarkTS.c" 3 4
                                                              ((void *)0)
-# 848 "QuarkTS.c"
+# 852 "QuarkTS.c"
                                                                  ) obj->_.__Failure(obj);
             break;
         case qSM_EXIT_SUCCESS: if(obj->_.__Success != 
-# 850 "QuarkTS.c" 3 4
+# 854 "QuarkTS.c" 3 4
                                                              ((void *)0)
-# 850 "QuarkTS.c"
+# 854 "QuarkTS.c"
                                                                  ) obj->_.__Success(obj);
             break;
         default: if(obj->_.__Unexpected != 
-# 852 "QuarkTS.c" 3 4
+# 856 "QuarkTS.c" 3 4
                                                                 ((void *)0)
-# 852 "QuarkTS.c"
+# 856 "QuarkTS.c"
                                                                     ) obj->_.__Unexpected(obj);
             break;
     }
  }
-# 876 "QuarkTS.c"
+# 880 "QuarkTS.c"
 void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
     switch(Flag){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)val;
             *((qSM_State_t*)&(obj->PreviousState)) = 
-# 880 "QuarkTS.c" 3 4
+# 884 "QuarkTS.c" 3 4
                                                                                     ((void *)0)
-# 880 "QuarkTS.c"
+# 884 "QuarkTS.c"
                                                                                         ;
             *((qSM_State_t*)&(obj->LastState)) = 
-# 881 "QuarkTS.c" 3 4
+# 885 "QuarkTS.c" 3 4
                                                                             ((void *)0)
-# 881 "QuarkTS.c"
+# 885 "QuarkTS.c"
                                                                                 ;
             *((qBool_t*)&(obj->StateFirstEntry)) = 0;
             *((qSM_Status_t*)&(obj->PreviousReturnStatus)) = qSM_EXIT_SUCCESS;
             return;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
             *((qSM_State_t*)&(obj->PreviousState)) = 
-# 886 "QuarkTS.c" 3 4
+# 890 "QuarkTS.c" 3 4
                                                                                      ((void *)0)
-# 886 "QuarkTS.c"
+# 890 "QuarkTS.c"
                                                                                          ;
             *((qSM_State_t*)&(obj->LastState)) = 
-# 887 "QuarkTS.c" 3 4
+# 891 "QuarkTS.c" 3 4
                                                                             ((void *)0)
-# 887 "QuarkTS.c"
+# 891 "QuarkTS.c"
                                                                                 ;
             return;
         case qSM_FAILURE_STATE:
@@ -2479,12 +2478,12 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
             return;
     }
 }
-# 925 "QuarkTS.c"
-qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
+# 929 "QuarkTS.c"
+qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     if(obj==
-# 926 "QuarkTS.c" 3 4
+# 930 "QuarkTS.c" 3 4
            ((void *)0)
-# 926 "QuarkTS.c"
+# 930 "QuarkTS.c"
                ) return 0x00u;
     if ( (Time/2.0)<QUARKTS.Tick ) return 0x00u;
     *((qClock_t*)&(obj->TV)) = (qClock_t)(Time/QUARKTS.Tick);
@@ -2492,12 +2491,12 @@ qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time){
     *((qBool_t*)&(obj->SR)) = 0x01u;
     return 0x01u;
 }
-# 959 "QuarkTS.c"
-qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
+# 963 "QuarkTS.c"
+qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time){
     if(obj==
-# 960 "QuarkTS.c" 3 4
+# 964 "QuarkTS.c" 3 4
            ((void *)0)
-# 960 "QuarkTS.c"
+# 964 "QuarkTS.c"
                ) return 0x00u;
     if(obj->SR){
         if (qSTimerExpired(obj)){
@@ -2509,65 +2508,65 @@ qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time){
     qSTimerSet(obj, Time);
     return 0x00u;
 }
-# 986 "QuarkTS.c"
-qBool_t qSTimerExpired(qSTimer_t *obj){
+# 990 "QuarkTS.c"
+qBool_t qSTimerExpired(const qSTimer_t *obj){
     if(obj==
-# 987 "QuarkTS.c" 3 4
+# 991 "QuarkTS.c" 3 4
            ((void *)0)
-# 987 "QuarkTS.c"
+# 991 "QuarkTS.c"
                ) return 0x00u;
     if(!obj->SR) return 0x00u;
     return (qBool_t)(qSTimerElapsed(obj)>=obj->TV);
 }
-# 1004 "QuarkTS.c"
-qClock_t qSTimerElapsed(qSTimer_t *obj){
+# 1008 "QuarkTS.c"
+qClock_t qSTimerElapsed(const qSTimer_t *obj){
     if(obj==
-# 1005 "QuarkTS.c" 3 4
+# 1009 "QuarkTS.c" 3 4
            ((void *)0)
-# 1005 "QuarkTS.c"
+# 1009 "QuarkTS.c"
                ) return 0ul;
     return (_qSysTick_Epochs_- obj->Start);
 }
-# 1021 "QuarkTS.c"
-qClock_t qSTimerRemaining(qSTimer_t *obj){
+# 1025 "QuarkTS.c"
+qClock_t qSTimerRemaining(const qSTimer_t *obj){
     qClock_t elapsed;
     if(obj==
-# 1023 "QuarkTS.c" 3 4
+# 1027 "QuarkTS.c" 3 4
            ((void *)0)
-# 1023 "QuarkTS.c"
+# 1027 "QuarkTS.c"
                ) return 0;
     elapsed = qSTimerElapsed(obj);
     return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
-# 1036 "QuarkTS.c"
+# 1040 "QuarkTS.c"
 void qSTimerDisarm(qSTimer_t *obj){
     if(obj==
-# 1037 "QuarkTS.c" 3 4
+# 1041 "QuarkTS.c" 3 4
            ((void *)0)
-# 1037 "QuarkTS.c"
+# 1041 "QuarkTS.c"
                ) return;
     *((qBool_t*)&(obj->SR)) = 0x00u;
     *((qClock_t*)&(obj->Start)) = 0ul;
 }
-# 1058 "QuarkTS.c"
-void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
+# 1062 "QuarkTS.c"
+void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
     uint8_t i, j, k, c;
     uint16_t sum;
     uint8_t *offset = obj->Blocks;
     if(obj==
-# 1062 "QuarkTS.c" 3 4
+# 1066 "QuarkTS.c" 3 4
            ((void *)0)
-# 1062 "QuarkTS.c"
+# 1066 "QuarkTS.c"
                ) return 
-# 1062 "QuarkTS.c" 3 4
+# 1066 "QuarkTS.c" 3 4
                         ((void *)0)
-# 1062 "QuarkTS.c"
+# 1066 "QuarkTS.c"
                             ;
     j = 0;
     if(QUARKTS.I_Disable != 
-# 1064 "QuarkTS.c" 3 4
+# 1068 "QuarkTS.c" 3 4
    ((void *)0)
-# 1064 "QuarkTS.c"
+# 1068 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
     while( j < obj->NumberofBlocks ) {
         sum = 0;
@@ -2593,9 +2592,9 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
                 *(obj->BlockDescriptors+j) = k;
   for(c=0;c<size;c++) offset[i] = 0x00u;
                 if(QUARKTS.I_Restorer != 
-# 1088 "QuarkTS.c" 3 4
+# 1092 "QuarkTS.c" 3 4
                ((void *)0)
-# 1088 "QuarkTS.c"
+# 1092 "QuarkTS.c"
                ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
   return (void*)offset;
             }
@@ -2603,32 +2602,32 @@ void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size){
  if( i == obj->NumberofBlocks ) break;
     }
     if(QUARKTS.I_Restorer != 
-# 1094 "QuarkTS.c" 3 4
+# 1098 "QuarkTS.c" 3 4
    ((void *)0)
-# 1094 "QuarkTS.c"
+# 1098 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
     return 
-# 1095 "QuarkTS.c" 3 4
+# 1099 "QuarkTS.c" 3 4
           ((void *)0)
-# 1095 "QuarkTS.c"
+# 1099 "QuarkTS.c"
               ;
 }
-# 1110 "QuarkTS.c"
+# 1114 "QuarkTS.c"
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     uint8_t i, *p;
     if(obj==
-# 1112 "QuarkTS.c" 3 4
+# 1116 "QuarkTS.c" 3 4
            ((void *)0) 
-# 1112 "QuarkTS.c"
+# 1116 "QuarkTS.c"
                 || pmem==
-# 1112 "QuarkTS.c" 3 4
+# 1116 "QuarkTS.c" 3 4
                          ((void *)0)
-# 1112 "QuarkTS.c"
+# 1116 "QuarkTS.c"
                              ) return;
     if(QUARKTS.I_Disable != 
-# 1113 "QuarkTS.c" 3 4
+# 1117 "QuarkTS.c" 3 4
    ((void *)0)
-# 1113 "QuarkTS.c"
+# 1117 "QuarkTS.c"
    ) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
     p = (uint8_t*)obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
@@ -2639,9 +2638,9 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
  p += obj->BlockSize;
     }
     if(QUARKTS.I_Restorer != 
-# 1122 "QuarkTS.c" 3 4
+# 1126 "QuarkTS.c" 3 4
    ((void *)0)
-# 1122 "QuarkTS.c"
+# 1126 "QuarkTS.c"
    ) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
 }
 
@@ -2665,16 +2664,16 @@ static qSize_t _qRBufferCount(qRBuffer_t *obj){
 static qBool_t _qRBufferFull(qRBuffer_t *obj){
     return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == obj->Elementcount) : 0x01u);
 }
-# 1163 "QuarkTS.c"
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount){
+# 1167 "QuarkTS.c"
+void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount){
     if(obj==
-# 1164 "QuarkTS.c" 3 4
+# 1168 "QuarkTS.c" 3 4
            ((void *)0) 
-# 1164 "QuarkTS.c"
+# 1168 "QuarkTS.c"
                 || DataBlock==
-# 1164 "QuarkTS.c" 3 4
+# 1168 "QuarkTS.c" 3 4
                               ((void *)0)
-# 1164 "QuarkTS.c"
+# 1168 "QuarkTS.c"
                                   ) return;
     obj->head = 0;
     obj->tail = 0;
@@ -2682,38 +2681,38 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t
     obj->ElementSize = ElementSize;
     obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);
 }
-# 1184 "QuarkTS.c"
+# 1188 "QuarkTS.c"
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
     return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == 0) : 0x01u);
 }
-# 1200 "QuarkTS.c"
+# 1204 "QuarkTS.c"
 void* qRBufferGetFront(qRBuffer_t *obj){
     if (obj==
-# 1201 "QuarkTS.c" 3 4
+# 1205 "QuarkTS.c" 3 4
             ((void *)0)
-# 1201 "QuarkTS.c"
+# 1205 "QuarkTS.c"
                 ) return 
-# 1201 "QuarkTS.c" 3 4
+# 1205 "QuarkTS.c" 3 4
                          ((void *)0)
-# 1201 "QuarkTS.c"
+# 1205 "QuarkTS.c"
                              ;
     return (void*)(!qRBufferEmpty(obj) ? &(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]) : 
-# 1202 "QuarkTS.c" 3 4
+# 1206 "QuarkTS.c" 3 4
                                                                                                            ((void *)0)
-# 1202 "QuarkTS.c"
+# 1206 "QuarkTS.c"
                                                                                                                );
 }
-# 1218 "QuarkTS.c"
+# 1222 "QuarkTS.c"
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
     void *data = 
-# 1219 "QuarkTS.c" 3 4
+# 1223 "QuarkTS.c" 3 4
                 ((void *)0)
-# 1219 "QuarkTS.c"
+# 1223 "QuarkTS.c"
                     ;
     if(obj == 
-# 1220 "QuarkTS.c" 3 4
+# 1224 "QuarkTS.c" 3 4
              ((void *)0)
-# 1220 "QuarkTS.c"
+# 1224 "QuarkTS.c"
                  ) return 0x00u;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
@@ -2723,21 +2722,21 @@ qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
     }
     return 0x00u;
 }
-# 1243 "QuarkTS.c"
+# 1247 "QuarkTS.c"
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     qBool_t status = 0x00u;
     uint8_t *data_element = (uint8_t*)data;
     volatile uint8_t *ring_data = 
-# 1246 "QuarkTS.c" 3 4
+# 1250 "QuarkTS.c" 3 4
                                  ((void *)0)
-# 1246 "QuarkTS.c"
+# 1250 "QuarkTS.c"
                                      ;
     uint16_t i;
 
     if(obj==
-# 1249 "QuarkTS.c" 3 4
+# 1253 "QuarkTS.c" 3 4
            ((void *)0)
-# 1249 "QuarkTS.c"
+# 1253 "QuarkTS.c"
                ) return 0x00u;
     if(data_element){
         if(!_qRBufferFull(obj)){
@@ -2749,8 +2748,8 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     }
     return status;
 }
-# 1271 "QuarkTS.c"
-void qSwapBytes(void *data, qSize_t n){
+# 1275 "QuarkTS.c"
+void qSwapBytes(void *data, const qSize_t n){
     uint8_t *p = data;
     size_t lo, hi;
     for(lo=0, hi=n-1; hi>lo; lo++, hi--){
@@ -2759,27 +2758,27 @@ void qSwapBytes(void *data, qSize_t n){
         p[hi] = tmp;
     }
 }
-# 1289 "QuarkTS.c"
+# 1293 "QuarkTS.c"
 qBool_t qCheckEndianness(void){
     uint16_t i = 1;
     return (qBool_t)( *( (uint8_t*)&i ) );
 }
-# 1307 "QuarkTS.c"
+# 1311 "QuarkTS.c"
 void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
     size_t i = 0;
     char *cdata = data;
     for(i=0;i<n;i++) fcn(storagep, cdata[i]);
 }
-# 1323 "QuarkTS.c"
+# 1327 "QuarkTS.c"
 void qPrintString(qPutChar_t fcn, void* storagep, const char *s){
     while(*s) fcn(storagep, *s++);
 }
 
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
     if(pData == 
-# 1328 "QuarkTS.c" 3 4
+# 1332 "QuarkTS.c" 3 4
                ((void *)0) 
-# 1328 "QuarkTS.c"
+# 1332 "QuarkTS.c"
                     || size<2) return 0x00u;
     obj->AcceptCheck = AcceptCheck;
     obj->PreChar = PreChar;
@@ -2815,23 +2814,23 @@ qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
     }
     return 0x00u;
 }
-# 1376 "QuarkTS.c"
+# 1380 "QuarkTS.c"
 size_t qBSBuffer_Count(qBSBuffer_t const* obj){
     return (obj ? (obj->head - obj->tail) : 0);
 }
-# 1392 "QuarkTS.c"
+# 1396 "QuarkTS.c"
 qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
     return (obj ? (qBool_t)(qBSBuffer_Count(obj) == obj->length) : 0x01u);
 }
-# 1408 "QuarkTS.c"
+# 1412 "QuarkTS.c"
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
     return (obj ? (qBool_t)(qBSBuffer_Count(obj) == 0) : 0x01u);
 }
-# 1424 "QuarkTS.c"
+# 1428 "QuarkTS.c"
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
     return (obj ? (qBool_t)(obj->buffer[obj->tail % obj->length]) : 0x0u);
 }
-# 1441 "QuarkTS.c"
+# 1445 "QuarkTS.c"
 qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
     if (!qBSBuffer_Empty(obj)) {
         *dest = obj->buffer[obj->tail % obj->length];
@@ -2840,8 +2839,8 @@ qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
     }
     return 0x00u;
 }
-# 1463 "QuarkTS.c"
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n){
+# 1467 "QuarkTS.c"
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n){
     qSize_t i;
     uint8_t *data = (uint8_t*)dest;
     if(n<=0) return 0x00u;
@@ -2850,8 +2849,8 @@ qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n){
     }
     return 0x01u;
 }
-# 1486 "QuarkTS.c"
-qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
+# 1490 "QuarkTS.c"
+qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data){
     qBool_t status = 0x00u;
     if(obj){
         if(!qBSBuffer_IsFull(obj)) {
@@ -2862,8 +2861,8 @@ qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
     }
     return status;
 }
-# 1509 "QuarkTS.c"
-void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length){
+# 1513 "QuarkTS.c"
+void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length){
     if(obj){
         obj->head = 0;
         obj->tail = 0;
@@ -2879,9 +2878,9 @@ void qSchedulePrintChain(void){
     puts("TaskData\tPriority\tInterval\tIterations");
     puts("--------------------------------------------------------------------");
     for(Task = QUARKTS.Head; Task != 
-# 1524 "QuarkTS.c" 3 4
+# 1528 "QuarkTS.c" 3 4
                                     ((void *)0)
-# 1524 "QuarkTS.c"
+# 1528 "QuarkTS.c"
                                         ; Task = Task->Next){
         printf("%s\t\t%d\t\t%d\t\t", (char*)Task->TaskData,Task->Priority, Task->Interval);
         if(Task->Iterations == ((qIteration_t)(-32768))) puts("qPeriodic");

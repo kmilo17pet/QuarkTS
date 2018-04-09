@@ -2580,7 +2580,7 @@ int strtosigno (const char *__name);
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
     volatile struct _qTask_t* qTaskSelf(void);
-    qBool_t qTaskIsEnabled(volatile struct _qTask_t *Task);
+    qBool_t qTaskIsEnabled(const volatile struct _qTask_t *Task);
     void qSchedulerSetIdleTask(qTaskFcn_t Callback);
     void qSchedulerRelease(void);
     void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
@@ -2604,16 +2604,16 @@ int strtosigno (const char *__name);
 
 
 
-    qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg);
+    qBool_t qTaskLinkRBuffer(volatile struct _qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg);
 
-    void qTaskSetTime(volatile struct _qTask_t *Task, qTime_t Value);
-    void qTaskSetIterations(volatile struct _qTask_t *Task, qIteration_t Value);
-    void qTaskSetPriority(volatile struct _qTask_t *Task, qPriority_t Value);
+    void qTaskSetTime(volatile struct _qTask_t *Task, const qTime_t Value);
+    void qTaskSetIterations(volatile struct _qTask_t *Task, const qIteration_t Value);
+    void qTaskSetPriority(volatile struct _qTask_t *Task, const qPriority_t Value);
     void qTaskSetCallback(volatile struct _qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void qTaskSetState(volatile struct _qTask_t *Task, qState_t State);
+    void qTaskSetState(volatile struct _qTask_t *Task, const qState_t State);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
-    uint32_t qTaskGetCycles(volatile struct _qTask_t *Task);
+    uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task);
 # 425 "QuarkTS.h"
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
@@ -2623,11 +2623,11 @@ int strtosigno (const char *__name);
             const qBool_t SR;
             const qClock_t Start, TV;
         }qSTimer_t;
-        qBool_t qSTimerSet(qSTimer_t *obj, qTime_t Time);
-        qBool_t qSTimerExpired(qSTimer_t *obj);
-        qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time);
-        qClock_t qSTimerElapsed(qSTimer_t *obj);
-        qClock_t qSTimerRemaining(qSTimer_t *obj);
+        qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
+        qBool_t qSTimerExpired(const qSTimer_t *obj);
+        qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time);
+        qClock_t qSTimerElapsed(const qSTimer_t *obj);
+        qClock_t qSTimerRemaining(const qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
 
 
@@ -2647,12 +2647,12 @@ typedef enum {
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
 # 570 "QuarkTS.h"
-    void* qMemoryAlloc(qMemoryPool_t *obj, qSize_t size);
+    void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
 
 
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, qSize_t ElementSize, qSize_t ElementCount);
+void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
@@ -2682,7 +2682,7 @@ typedef struct{
 }qBSBuffer_t;
 
 typedef void (*qPutChar_t)(void*, const char);
-void qSwapBytes(void *data, qSize_t n);
+void qSwapBytes(void *data, const qSize_t n);
 void qPrintString(qPutChar_t fcn, void* storagep, const char *s);
 void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
 
@@ -2692,10 +2692,9 @@ qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
 qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
-qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data);
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, qSize_t n);
-void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, qSize_t length);
+qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n);
+qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data);
+void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length);
 
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
 qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
