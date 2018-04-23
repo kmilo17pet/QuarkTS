@@ -154,8 +154,15 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 /*============================================================================*/
-int main(int argc, char** argv) {
 
+/*============================================================================*/
+int main(int argc, char** argv) {
+    char buffer[100]={0};
+    qU32HexString(0x78F5A202, buffer, 8);
+    qU32HexString(0xBBCCDDFF, buffer+8, 8);
+    puts(buffer);
+    return EXIT_SUCCESS;
+    
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
@@ -166,16 +173,19 @@ int main(int argc, char** argv) {
     
     
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
+    
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y); y=1;
     qRBufferPush(&ringBuffer, &y); y=-7;
     qRBufferPush(&ringBuffer, &y); 
+    
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
     
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
+
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");

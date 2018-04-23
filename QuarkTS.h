@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.3
+ *  Version : 4.5.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ extern "C" {
     #include <stdlib.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.5.4"
+    #define QUARTKTS_VERSION "4.5.5"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -242,6 +242,7 @@ extern "C" {
     #define qRunning    2u
     #define qSuspended  3u
 
+    #ifdef Q_RINGBUFFERS 
     typedef struct{
         volatile uint8_t *data; /* block of memory or array of data */
         volatile qSize_t ElementSize;      /* how many bytes for each chunk */
@@ -249,7 +250,8 @@ extern "C" {
         volatile qSize_t head; /* where the writes go */
         volatile qSize_t tail; /* where the reads come from */
     }qRBuffer_t;
- 
+    #endif
+    
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define qPrivate    _
     #define _qSMData_t struct _qSM_t * const 
@@ -292,29 +294,31 @@ extern "C" {
     typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
     typedef void (*qSM_SubState_t)(qSMData_t); 
     #define StateJustChanged    StateFirstEntry /*backward compatibility*/
-    
-    typedef enum{
-        qSM_RESTART, 
-        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, 
-        qSM_FAILURE_STATE,
-        qSM_SUCCESS_STATE,
-        qSM_UNEXPECTED_STATE,
-        qSM_BEFORE_ANY_STATE               
-    }qFSM_Attribute_t;
+   
+    typedef enum{ /*FSM Attribute Flags definition*/
+        qSM_RESTART, /*Restart the FSM*/
+        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesnt change*/
+        qSM_FAILURE_STATE, /*Set the Failure State*/
+        qSM_SUCCESS_STATE, /*Set the Success State*/
+        qSM_UNEXPECTED_STATE, /*Set the Unexpected State*/
+        qSM_BEFORE_ANY_STATE /*Set the state executed before any state*/              
+    }qFSM_Attribute_t; 
           
     #define Q_TASK_EXTENDED_DATA
     struct _qTask_t{ /*Task node definition*/
-        volatile struct _qTask_t *Next;
-        void *TaskData,*AsyncData;
-        volatile qClock_t Interval, ClockStart;
-        qIteration_t Iterations;
-        uint32_t Cycles;
-        qPriority_t Priority;
-        qTaskFcn_t Callback;
-        volatile qBool_t Flag[7];
-        /*volatile qTaskFlags_t Flag;*/        
-        qRBuffer_t *RingBuff;
-        qSM_t *StateMachine;
+        volatile struct _qTask_t *Next; /*pointer to the next node*/
+        void *TaskData,*AsyncData; /*the storage pointers*/
+        volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
+        qIteration_t Iterations; 
+        uint32_t Cycles; 
+        qPriority_t Priority; 
+        qTaskFcn_t Callback; 
+        volatile qBool_t Flag[7]; 
+        /*volatile qTaskFlags_t Flag;*/
+        #ifdef Q_RINGBUFFERS
+        qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
+        #endif
+        qSM_t *StateMachine; /*pointer to the linked FSM*/
         qTaskState_t State;
         qTrigger_t Trigger;
     };
@@ -323,14 +327,14 @@ extern "C" {
     typedef struct{
         qTask_t *Task;
         void *QueueData;
-    }qQueueStack_t;
+    }qQueueStack_t;  
 
-    typedef struct{
+    typedef struct{ /*Scheduler Core-Flags*/
     	volatile uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
         volatile uint32_t IntFlags;
     }qTaskCoreFlags_t;
    
-    typedef struct{
+    typedef struct{ /*Main scheduler core data*/
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
         _qEvent_t_ EventInfo;
@@ -370,8 +374,9 @@ extern "C" {
     #define    RB_COUNT     qRB_COUNT
     #define    RB_EMPTY     qRB_EMPTY
     
-    
+    #ifdef Q_RINGBUFFERS 
     qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg);
+    #endif
     
     void qTaskSetTime(qTask_t *Task, const qTime_t Value);
     void qTaskSetIterations(qTask_t *Task, const qIteration_t Value);
@@ -514,9 +519,9 @@ Parameters:
         
     #endif  
     
-        typedef struct{
-            qConst qBool_t SR;
-            qConst qClock_t Start, TV;
+        typedef struct{ /*STimer defintion*/
+            qConst qBool_t SR; /*The SET-RESET flag*/
+            qConst qClock_t Start, TV; /*The time-epochs registers*/
         }qSTimer_t;
         qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
         qBool_t qSTimerExpired(const qSTimer_t *obj);
@@ -526,9 +531,9 @@ Parameters:
         void qSTimerDisarm(qSTimer_t *obj);
         #define QSTIMER_INITIALIZER     {0, 0, 0}
 
-#define QMEMORY_MANAGER       
+     
         
-#ifdef QMEMORY_MANAGER
+#ifdef Q_MEMORY_MANAGER
 /* This structure is the head of a memory pool. */
 typedef struct {
     qSize_t BlockSize;	
@@ -571,13 +576,13 @@ Parameters:
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 #endif
     
-    
+#ifdef Q_RINGBUFFERS     
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
-
+#endif
 
 typedef volatile char qISR_Byte_t;
 typedef volatile struct{
@@ -605,21 +610,25 @@ typedef void (*qPutChar_t)(void*, const char);
 void qSwapBytes(void *data, const qSize_t n);
 void qPrintString(qPutChar_t fcn, void* storagep, const char *s);
 void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
+void qU32HexString(uint32_t x, char *s, int8_t npos);
 
 
-size_t qBSBuffer_Count(qBSBuffer_t const* obj);
-qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
-qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
-uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
-qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n);
-qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data);
-void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length);
-
-qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
-qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
-qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
-
+#ifdef Q_BYTE_SIZED_BUFFERS
+    size_t qBSBuffer_Count(qBSBuffer_t const* obj);
+    qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
+    qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
+    uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
+    qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
+    qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n);
+    qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data);
+    void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length);
+#endif
+    
+#ifdef Q_ISR_BUFFERS    
+    qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
+    qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
+    qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
+#endif
 #ifdef	__cplusplus
 }
 #endif

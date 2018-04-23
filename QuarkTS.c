@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.4
+ *  Version : 4.5.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -26,9 +26,15 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 
 #include "QuarkTS.h"
 
+#ifdef __CC_ARM
+#endif
+#ifdef __arm__
+#endif
 #ifdef __MWERKS__
 #endif
 #ifdef __CWCC__
+#endif
+#ifdef __AVR_ARCH__
 #endif
 #ifdef __XC8
     #pragma warning push
@@ -38,7 +44,6 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
     #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
     #pragma warning disable 751    /*disable warning: (751) arithmetic overflow in constant expression*/
 #endif
-
 #ifdef __XC16
 #endif
 #ifdef __XC32
@@ -54,11 +59,13 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task);
 static qBool_t _qScheduler_ReadyTasksAvailable(void);
 static qTask_t* _qScheduler_PriorityQueueGet(void);
 static void _qTriggerReleaseSchedEvent(void);
-static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
-static qSize_t _qRBufferCount(qRBuffer_t *obj);
-static qBool_t _qRBufferFull(qRBuffer_t *obj);
-static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
 
+#ifdef Q_RINGBUFFERS 
+    static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
+    static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
+    static qSize_t _qRBufferCount(qRBuffer_t *obj);
+    static qBool_t _qRBufferFull(qRBuffer_t *obj);
+#endif
 
 #define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
@@ -437,7 +444,9 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = _qSysTick_Epochs_;
+    #ifdef Q_RINGBUFFERS
     Task->RingBuff = NULL;
+    #endif
     Task->StateMachine = NULL;
     Task->State = qSuspended;
     _qScheduler_PriorizedInsert((qTask_t**)&QUARKTS.Head, Task);
@@ -634,6 +643,7 @@ Return value:
 
     Returns qTrue on successs, otherwise returns qFalse;     
 */
+#ifdef Q_RINGBUFFERS
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
     if(RingBuffer == NULL || Task==NULL || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;   /*Validate*/
     if(RingBuffer->data == NULL) return qFalse;    
@@ -651,6 +661,7 @@ static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
     if(Task->Flag[_qIndex_RBEmpty])      if(qRBufferEmpty(Task->RingBuff))                                      return byRBufferEmpty;       
     return qTriggerNULL;
 }
+#endif
 /*============================================================================*/
 static void _qTriggerReleaseSchedEvent(void){
     QUARKTS.Flag.Init = qFalse;
@@ -710,12 +721,14 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
             Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
             break;
+        #ifdef Q_RINGBUFFERS    
         case byRBufferPop:
             QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
             break;
         case byRBufferFull: case byRBufferCount: case byRBufferEmpty:
             QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
             break;
+        #endif
         case byQueueExtraction:
             QUARKTS.EventInfo.EventData = QUARKTS.QueueData; /*get the extracted data from queue*/
             QUARKTS.QueueData = NULL;
@@ -735,7 +748,9 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
     else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
+    #ifdef Q_RINGBUFFERS 
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event was byRBufferPop*/
+    #endif
     Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
     
     QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration =  qFalse;;
@@ -747,7 +762,9 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
 /*============================================================================*/
 static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method check for  tasks that fullfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
+    #ifdef Q_RINGBUFFERS 
     qTrigger_t trg = qTriggerNULL;
+    #endif
     qBool_t nTaskReady = qFalse; 
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
         if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement*/
@@ -761,12 +778,14 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method check for  t
                 }
             }
         }
+        #ifdef Q_RINGBUFFERS 
         if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady; /*Put the task in ready state*/
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
             nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
             continue; /*check the next task*/
         }
+        #endif
         if( Task->Flag[_qIndex_AsyncRun]){   /*The last check will be if the task has an async event*/
             Task->State = qReady; /*Put the task in ready state*/
             Task->Trigger = byAsyncEvent; /*Set the corresponding trigger*/
@@ -1042,7 +1061,7 @@ void qSTimerDisarm(qSTimer_t *obj){
     qConstField_Set(qBool_t, obj->SR) /*obj->SR*/ = qFalse;
     qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = 0ul;
 }
-#ifdef QMEMORY_MANAGER
+#ifdef Q_MEMORY_MANAGER
 /*============================================================================*/
 /*void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size)
  
@@ -1128,6 +1147,7 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 /*============================================================================*/
 #endif
 
+#ifdef Q_RINGBUFFERS
 /*============================================================================*/
 static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     uint16_t i;
@@ -1261,6 +1281,7 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     }
     return status;    
 }
+#endif
 /*============================================================================*/
 /*void qSwapBytes(void *data, size_t n)
  
@@ -1327,6 +1348,26 @@ Parameters:
 void qPrintString(qPutChar_t fcn, void* storagep, const char *s){
     while(*s) fcn(storagep, *s++);
 }
+/*void qU32HexString(uint32_t x, char *s, int8_t npos)
+ 
+A fast unsigned integer to hex string method
+  
+Parameters:
+
+    - x : The number to be converted 
+    - s : The output buffer
+    - s: The number of chars used 's' 
+*/
+/*============================================================================*/
+void qU32HexString(uint32_t x, char *s, int8_t npos){ 
+    char ch;
+    int i;
+    for(i=npos-1; i>=0; x>>=4, i--){
+	ch = (char)(x & 0x0F) + '0';
+	s[i] = (ch > '9')? ch+7 : ch;
+    }
+}
+#ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
     if(pData == NULL || size<2) return qFalse;
@@ -1364,6 +1405,8 @@ qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
     }
     return qFalse;
 }
+#endif
+#ifdef Q_BYTE_SIZED_BUFFERS
 /*============================================================================*/
 /*size_t qBSBuffer_Count(qBSBuffer_t const* obj)
  
@@ -1515,9 +1558,14 @@ void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t le
         obj->head = 0;
         obj->tail = 0;
         obj->buffer = buffer;
-        obj->length = _qRBufferValidPowerOfTwo(length);
+        #ifdef Q_RINGBUFFERS
+            obj->length = _qRBufferValidPowerOfTwo(length);
+        #else
+            obj->length = length;
+        #endif      
     }
 }
+#endif
 /*============================================================================*/
 #ifdef Q_TASK_DEV_TEST
 void qSchedulePrintChain(void){
@@ -1535,6 +1583,21 @@ void qSchedulePrintChain(void){
 }
 #endif
 
+
+#ifdef __CC_ARM
+#endif
+#ifdef __arm__
+#endif
+#ifdef __MWERKS__
+#endif
+#ifdef __CWCC__
+#endif
+#ifdef __AVR_ARCH__
+#endif
 #ifdef __XC8
     #pragma warning pop
+#endif
+#ifdef __XC16
+#endif
+#ifdef __XC32
 #endif
