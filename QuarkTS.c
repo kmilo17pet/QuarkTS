@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.5
+ *  Version : 4.6.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1326,13 +1326,12 @@ Parameters:
     - storagep : The storage pointer passed to fcn
     - data: The data to be written
     - n: The size of "data"
-  
+    - AIP : Auto-Increment the storage-pointer
 */
-/*============================================================================*/
-void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
+void qOutputRAW(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
-    for(i=0;i<n;i++) fcn(storagep, cdata[i]);
+    for(i=0;i<n;i++) fcn( ((AIP)? (char*)storagep+i : storagep), cdata[i]);
 }
 /*============================================================================*/
 /*void qPrintString(qPutChar_t fcn, const char *s)
@@ -1345,28 +1344,88 @@ Parameters:
     - storagep : The storage pointer passed to fcn
     - s: The string to be written
 */
-void qPrintString(qPutChar_t fcn, void* storagep, const char *s){
-    while(*s) fcn(storagep, *s++);
+void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP){
+    size_t i = 0;
+    while(*s)  fcn(((AIP)? (char*)storagep+(i++): storagep), *s++);
 }
-/*void qU32HexString(uint32_t x, char *s, int8_t npos)
+/*============================================================================*/
+/*void qU32toX(uint32_t value, char *str, int8_t n)
  
-A fast unsigned integer to hex string method
+Converts an unsigned integer value to a null-terminated string using the 16 base
+and stores the result in the array given by str parameter.
+str should be an array long enough to contain any possible value.
   
 Parameters:
 
-    - x : The number to be converted 
-    - s : The output buffer
-    - s: The number of chars used 's' 
+    - value : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+    - n: The number of chars used to represent value in 'str' 
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
 */
-/*============================================================================*/
-void qU32HexString(uint32_t x, char *s, int8_t npos){ 
+char* qU32toX(uint32_t value, char *str, int8_t n){ 
     char ch;
     int i;
-    for(i=npos-1; i>=0; x>>=4, i--){
-	ch = (char)(x & 0x0F) + '0';
-	s[i] = (ch > '9')? ch+7 : ch;
+    str[n]='\0';
+    for(i=n-1; i>=0; value>>=4, i--){
+	ch = (char)(value & 0x0F) + '0';
+	str[i] = (ch > '9')? ch+7 : ch;        
     }
+    return str;
 }
+/*============================================================================*/
+/*uint32_t qXtoU32(const char *s)
+ 
+Converts the input string s consisting of hexadecimal digits into an unsigned 
+integer value. The input parameter s should consist exclusively of hexadecimal 
+digits, with optional whitespaces. The string will be processed one character at
+a time, until the function reaches a character which it doesn’t recognize 
+(including a null character).
+  
+Parameters:
+
+    - s : The hex string to be converted 
+
+Return value:
+
+  The numeric value in uint32_t 
+*/
+uint32_t qXtoU32(const char *s) {
+    uint32_t val = 0;
+    char byte;
+    uint8_t nparsed = 0;
+    while (*s != '\0' && nparsed<8) {
+        byte = toupper(*s++); 
+        if( isalnum(byte) && byte<='F'){
+            nparsed++;
+            if (byte >= '0' && byte <= '9') byte = byte - '0'; 
+            else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;           
+            val = (val << 4) | (byte & 0xF);                  
+        }
+        else if(isspace(byte)) continue;
+        else break;         
+    }
+    return val;
+}
+/*============================================================================*/
+int qItoA(char *s, int n){
+    unsigned int i = 1000000000;
+
+    if( ((signed)n) < 0 ) {
+        *s++ = '-';
+        n = -n;
+    }
+    while( i > n ) i /= 10;
+
+    do {
+       *s++ = '0' + (n-n%i)/i%10;
+    }while( i /= 10 );
+
+    *s = '\0';
+    return n;  
+} 
 #ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
@@ -1566,6 +1625,75 @@ void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t le
     }
 }
 #endif
+
+/*============================================================================*/
+/*void qResponseInitialize(qResponseHandler_t *obj)
+
+Initialize the Response Handler
+
+Parameters:
+
+    - obj : A pointer to the Response Handler object
+  
+*/
+void qResponseInitialize(qResponseHandler_t *obj){
+    obj->ptr2Match = NULL;
+    obj->length2Match = 0;
+    obj->contMatch = 0;
+    obj->Flag = qFalse;
+}   
+/*============================================================================*/
+/*qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n)
+ 
+Non-Blocking Response check
+
+Parameters:
+
+    - obj : A pointer to the Response Handler object
+    - ptr: The data checked in the receiver ISR
+    - n : The length of the data pointer by ptr
+  
+Return value:
+
+    qTrue if there is a response acknowledge, otherwise returns qFalse
+*/
+qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
+    if(obj->Flag==qFalse && obj->ptr2Match==NULL){
+        obj->length2Match = n;
+        obj->contMatch = 0;
+        obj->Flag = qFalse;
+        obj->ptr2Match = (char*)ptr;
+        return qFalse;
+    }
+    if(obj->Flag){
+        qResponseInitialize(obj);
+        return qTrue;
+    } 
+    else return qFalse;
+}
+/*============================================================================*/
+/*void qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
+
+Non-Blocking Response check
+
+Parameters:
+
+    - obj : A pointer to the Response Handler object
+    - rxchar: The byte-data from the receiver 
+
+Return value:
+
+    qTrue when the Response handler match the request from "qResponseReceived"
+*/
+qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
+    if(obj->Flag == qTrue || obj->ptr2Match==NULL) return qFalse;
+    
+    if(obj->ptr2Match[obj->contMatch] == rxchar){
+        obj->contMatch++;
+        if(obj->contMatch == obj->length2Match)  obj->Flag = qTrue;
+    }
+    return obj->Flag;
+}
 /*============================================================================*/
 #ifdef Q_TASK_DEV_TEST
 void qSchedulePrintChain(void){

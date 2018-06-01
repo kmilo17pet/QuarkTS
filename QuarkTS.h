@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.5.5
+ *  Version : 4.6.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -29,14 +29,20 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 #ifdef	__cplusplus
 extern "C" {
 #endif
-            
+      
+    #define Q_BYTE_SIZED_BUFFERS
+    #define Q_MEMORY_MANAGER
+    #define Q_RINGBUFFERS
+    
+    
     #include <stdint.h>
     #include <string.h>
     #include <stdio.h>
     #include <stdlib.h>
+    #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.5.5"
+    #define QUARTKTS_VERSION "4.6.2"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -85,6 +91,7 @@ extern "C" {
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
+        #define qCRPosition_t static _qTaskPC_t
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t; 
         typedef qCoroutineSemaphore_t qCRSem_t;
         #define qCR_PCInitVal   (-0x7FFE)           
@@ -435,6 +442,9 @@ Parameters:
         #define __qCRYield                               __qCRCodeStartBlock{ __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; } __qCRCodeEndBlock
         #define __qCRRestart                             __qCRCodeStartBlock{ __qTaskInitState ; __qTaskYield } __qCRCodeEndBlock
         #define __qCR_wu_Assert(_cond_)                  __qCRCodeStartBlock{ __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }__qCRCodeEndBlock
+        #define __qCR_GetPosition(_pos_)                 __qCRCodeStartBlock{_pos_=__qTaskProgress; __RestoreAfterYield;}__qCRCodeEndBlock
+        #define __qCR_RestoreFromPosition(_pos_)         __qCRCodeStartBlock{__qSetPC(_pos_); __qTaskYield} __qCRCodeEndBlock
+        #define __qCR_PositionReset(_pos_)               _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -516,7 +526,17 @@ Parameters:
 */     
         #define qCoroutineSemaphoreSignal(_qCRSemaphore_t_)             __qCRSemRelease(_qCRSemaphore_t_)
         #define qCRSemSignal(_qCRSemaphore_t_)                          __qCRSemRelease(_qCRSemaphore_t_)
-        
+
+    
+        #define qCoroutinePositionGet(_CRPos_)                          __qCR_GetPosition(_CRPos_)
+        #define qCRPositionGet(_CRPos_)                                 __qCR_GetPosition(_CRPos_)
+
+        #define qCoroutinePositionRestore(_CRPos_)                      __qCR_RestoreFromPosition(_CRPos_)
+        #define qCRPositionRestore(_CRPos_)                             __qCR_RestoreFromPosition(_CRPos_)
+
+        #define qCoroutinePositionReset(_CRPos_)                        __qCR_PositionReset(_CRPos_)
+        #define qCRPositionReset(_CRPos_)                               __qCR_PositionReset(_CRPos_)
+    
     #endif  
     
         typedef struct{ /*STimer defintion*/
@@ -608,10 +628,29 @@ typedef struct{
 
 typedef void (*qPutChar_t)(void*, const char);
 void qSwapBytes(void *data, const qSize_t n);
-void qPrintString(qPutChar_t fcn, void* storagep, const char *s);
-void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
-void qU32HexString(uint32_t x, char *s, int8_t npos);
+void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
+void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 
+#define qPrintString(fcn, storagep, s)          qOutputString(fcn, storagep, s, qFalse) 
+#define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, storagep, data, n, qFalse) 
+
+char* qU32toX(uint32_t value, char *str, int8_t npos);
+uint32_t qXtoU32(const char *s);
+int qItoA(char *s, int n);
+
+
+
+typedef struct{
+    char *ptr2Match;
+    qSize_t length2Match;
+    volatile qSize_t contMatch;
+    volatile qBool_t Flag;
+}qResponseHandler_t; 
+#define qRespHandler_t  qResponseHandler_t
+#define QRESPONSE_INITIALIZER   {NULL, 0, 0, qFalse}
+void qResponseInitialize(qResponseHandler_t *obj);   
+qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n);
+qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 
 #ifdef Q_BYTE_SIZED_BUFFERS
     size_t qBSBuffer_Count(qBSBuffer_t const* obj);

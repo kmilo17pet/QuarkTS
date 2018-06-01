@@ -24,7 +24,7 @@ firststate:
 	cmpb	$0, 28(%rbx)
 	jne	.L10
 .L3:
-	leaq	tmr.3885(%rip), %rcx
+	leaq	tmr.3907(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L4
@@ -43,7 +43,7 @@ firststate:
 	cmpb	$0, 28(%rbx)
 	je	.L3
 .L10:
-	leaq	tmr.3885(%rip), %rcx
+	leaq	tmr.3907(%rip), %rcx
 	movss	.LC1(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -71,7 +71,7 @@ secondstate:
 	movq	%rcx, %rbx
 	jne	.L17
 .L12:
-	leaq	tmr.3890(%rip), %rcx
+	leaq	tmr.3912(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L13
@@ -86,7 +86,7 @@ secondstate:
 	.p2align 4,,10
 .L17:
 	movq	32(%rcx), %rsi
-	leaq	tmr.3890(%rip), %rcx
+	leaq	tmr.3912(%rip), %rcx
 	movss	.LC1(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -167,7 +167,7 @@ Task1Callback:
 	cmpl	$3, (%rbx)
 	je	.L30
 .L25:
-	leaq	tmr.3894(%rip), %rcx
+	leaq	tmr.3916(%rip), %rcx
 	movss	.LC9(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
@@ -286,7 +286,7 @@ IdleTaskCallback:
 	subq	$32, %rsp
 	.seh_stackalloc	32
 	.seh_endprologue
-	leaq	t.3914(%rip), %rcx
+	leaq	t.3936(%rip), %rcx
 	movss	.LC13(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
@@ -311,93 +311,61 @@ IdleTaskCallback:
 	.section .rdata,"dr"
 .LC15:
 	.ascii "led on\0"
-.LC17:
-	.ascii "led off\0"
 	.text
 	.p2align 4,,15
 	.globl	blinktaskCallback
 	.def	blinktaskCallback;	.scl	2;	.type	32;	.endef
 	.seh_proc	blinktaskCallback
 blinktaskCallback:
-	pushq	%rsi
-	.seh_pushreg	%rsi
-	pushq	%rbx
-	.seh_pushreg	%rbx
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movl	_qCRTaskState_.3920(%rip), %eax
-	cmpl	$127, %eax
-	je	.L44
-	jle	.L65
+	movl	_qCRTaskState_.3943(%rip), %eax
 	cmpl	$128, %eax
-	je	.L54
-	xorl	%esi, %esi
-	cmpl	$133, %eax
-	movl	$1, %ebx
+	je	.L44
+	jle	.L68
+	cmpl	$130, %eax
+	je	.L48
+	jl	.L49
+	cmpl	$137, %eax
 	jne	.L42
-.L48:
-	leaq	tmr.3918(%rip), %rcx
+	leaq	tmr.3940(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L42
 .L46:
 	leaq	.LC15(%rip), %rcx
 	call	puts
-	leaq	tmr.3918(%rip), %rcx
+	movl	$126, state.3941(%rip)
+.L47:
+	leaq	tmr.3940(%rip), %rcx
 	movss	.LC16(%rip), %xmm1
 	call	qSTimerSet
-	leaq	tmr.3918(%rip), %rcx
-	movl	$127, _qCRTaskState_.3920(%rip)
+	movl	$128, _qCRTaskState_.3943(%rip)
+.L44:
+	leaq	tmr.3940(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L42
-	cmpl	%esi, %ebx
-	movl	$128, _qCRTaskState_.3920(%rip)
-	jne	.L51
+	movl	$129, _qCRTaskState_.3943(%rip)
+.L49:
+	movl	$130, state.3941(%rip)
+.L48:
+	leaq	tmr.3940(%rip), %rcx
+	movss	.LC16(%rip), %xmm1
+	call	qSTimerSet
+	movl	state.3941(%rip), %eax
+	movl	%eax, _qCRTaskState_.3943(%rip)
 .L42:
 	addq	$40, %rsp
-	popq	%rbx
-	popq	%rsi
 	ret
 	.p2align 4,,10
-.L54:
-	movl	$2, %ebx
-	movl	$1, %esi
-.L47:
-	leaq	tmr.3918(%rip), %rcx
-	movss	.LC16(%rip), %xmm1
-	call	qSTimerSet
-	leaq	.LC17(%rip), %rcx
-	call	puts
-	leaq	Task1(%rip), %rcx
-	xorl	%edx, %edx
-	call	qTaskSendEvent
-	movl	$133, _qCRTaskState_.3920(%rip)
-	jmp	.L48
-	.p2align 4,,10
-.L65:
-	xorl	%esi, %esi
+.L68:
 	cmpl	$-32766, %eax
-	movl	$1, %ebx
 	je	.L46
-	addq	$40, %rsp
-	popq	%rbx
-	popq	%rsi
-	ret
-	.p2align 4,,10
-.L44:
-	leaq	tmr.3918(%rip), %rcx
-	call	qSTimerExpired
-	testb	%al, %al
-	je	.L42
-	movl	$128, _qCRTaskState_.3920(%rip)
-	xorl	%esi, %esi
-	movl	$1, %ebx
-.L51:
-	addl	$1, %esi
-	addl	$1, %ebx
-	jmp	.L47
+	cmpl	$126, %eax
+	je	.L47
+	jmp	.L42
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qStringHash
@@ -406,16 +374,16 @@ blinktaskCallback:
 qStringHash:
 	.seh_endprologue
 	cmpb	$1, %dl
-	je	.L68
-	jb	.L69
+	je	.L71
+	jb	.L72
 	cmpb	$2, %dl
-	jne	.L84
+	jne	.L87
 	movzbl	(%rcx), %eax
 	xorl	%r8d, %r8d
 	testb	%al, %al
-	je	.L84
+	je	.L87
 	.p2align 4,,10
-.L80:
+.L83:
 	movsbl	%al, %edx
 	movl	%r8d, %r9d
 	addq	$1, %rcx
@@ -427,7 +395,7 @@ qStringHash:
 	xorl	%eax, %r8d
 	movzbl	(%rcx), %eax
 	testb	%al, %al
-	jne	.L80
+	jne	.L83
 	leal	(%r8,%r8,8), %edx
 	movl	%edx, %eax
 	shrl	$11, %eax
@@ -437,17 +405,17 @@ qStringHash:
 	addl	%edx, %eax
 	ret
 	.p2align 4,,10
-.L84:
+.L87:
 	xorl	%eax, %eax
 	ret
 	.p2align 4,,10
-.L69:
+.L72:
 	movzbl	(%rcx), %edx
 	movl	$5381, %eax
 	testb	%dl, %dl
-	je	.L78
+	je	.L81
 	.p2align 4,,10
-.L74:
+.L77:
 	movl	%eax, %r8d
 	addq	$1, %rcx
 	sall	$5, %r8d
@@ -455,26 +423,26 @@ qStringHash:
 	xorl	%edx, %eax
 	movzbl	(%rcx), %edx
 	testb	%dl, %dl
-	jne	.L74
+	jne	.L77
 	rep ret
 	.p2align 4,,10
-.L68:
+.L71:
 	movzbl	(%rcx), %edx
 	movl	$-2128831035, %eax
 	testb	%dl, %dl
-	je	.L85
+	je	.L88
 	.p2align 4,,10
-.L79:
+.L82:
 	addq	$1, %rcx
 	xorl	%edx, %eax
 	movzbl	(%rcx), %edx
 	imull	$16777619, %eax, %eax
 	testb	%dl, %dl
-	jne	.L79
+	jne	.L82
 	rep ret
-.L78:
+.L81:
 	rep ret
-.L85:
+.L88:
 	rep ret
 	.seh_endproc
 	.def	__main;	.scl	2;	.type	32;	.endef
@@ -484,42 +452,36 @@ qStringHash:
 	.def	main;	.scl	2;	.type	32;	.endef
 	.seh_proc	main
 main:
-	pushq	%rdi
-	.seh_pushreg	%rdi
-	subq	$144, %rsp
-	.seh_stackalloc	144
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$64, %rsp
+	.seh_stackalloc	64
 	.seh_endprologue
-	leaq	32(%rsp), %rdi
+	leaq	32(%rsp), %rbx
 	call	__main
-	xorl	%eax, %eax
-	movl	$12, %ecx
-	movl	$8, %r8d
-	rep stosq
-	movl	$2029363714, %ecx
-	movl	$0, (%rdi)
-	leaq	32(%rsp), %rdi
-	movq	%rdi, %rdx
-	call	qU32HexString
-	leaq	8(%rdi), %rdx
-	movl	$8, %r8d
-	movl	$-1144201729, %ecx
-	call	qU32HexString
-	movq	%rdi, %rcx
+	movl	$-788974, %edx
+	movq	%rbx, %rcx
+	movq	$0, 32(%rsp)
+	movq	$0, 40(%rsp)
+	movl	$0, 48(%rsp)
+	call	qItoA
+	movq	%rbx, %rcx
 	call	puts
 	xorl	%eax, %eax
-	addq	$144, %rsp
-	popq	%rdi
+	addq	$64, %rsp
+	popq	%rbx
 	ret
 	.seh_endproc
-.lcomm tmr.3918,12,8
+.lcomm tmr.3940,12,8
+.lcomm state.3941,4,4
 	.data
 	.align 4
-_qCRTaskState_.3920:
+_qCRTaskState_.3943:
 	.long	-32766
-.lcomm t.3914,12,8
-.lcomm tmr.3894,12,8
-.lcomm tmr.3890,12,8
-.lcomm tmr.3885,12,8
+.lcomm t.3936,12,8
+.lcomm tmr.3916,12,8
+.lcomm tmr.3912,12,8
+.lcomm tmr.3907,12,8
 	.comm	SMTask2, 88, 5
 	.comm	SMTask, 88, 5
 	.comm	blinktask, 88, 5
@@ -555,5 +517,4 @@ _qCRTaskState_.3920:
 	.def	qSTimerFreeRun;	.scl	2;	.type	32;	.endef
 	.def	qTaskSetIterations;	.scl	2;	.type	32;	.endef
 	.def	qTaskSetState;	.scl	2;	.type	32;	.endef
-	.def	qTaskSendEvent;	.scl	2;	.type	32;	.endef
-	.def	qU32HexString;	.scl	2;	.type	32;	.endef
+	.def	qItoA;	.scl	2;	.type	32;	.endef

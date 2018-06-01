@@ -36,7 +36,6 @@ qSM_Status_t firststate(qSMData_t fsm){
         puts("state machine init");
     }
     static qSTimer_t tmr;
-    
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
@@ -119,14 +118,19 @@ void IdleTaskCallback(qEvent_t e){
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
+    qCRPosition_t state;
     qCoroutineSemaphore_t mutex;
     qCoroutineSemaphoreInit(&mutex, 1);
     qCoroutineBegin{
         puts("led on");
+        qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
         qCoroutineSemaphoreWait(&mutex);
+        qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
+        qCoroutinePositionRestore(state);
+        
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qTaskSendEvent(&Task1, NULL);
@@ -154,24 +158,23 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 /*============================================================================*/
+  
+
+
 
 /*============================================================================*/
 int main(int argc, char** argv) {
-    char buffer[100]={0};
-    qU32HexString(0x78F5A202, buffer, 8);
-    qU32HexString(0xBBCCDDFF, buffer+8, 8);
-    puts(buffer);
-    return EXIT_SUCCESS;
+    char buff[20]={0};
+    qItoA(buff, -788974);
+    puts(buff);
     
+    return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
     qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
-
-    
-    
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
