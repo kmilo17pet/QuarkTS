@@ -1674,7 +1674,7 @@ qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
 /*============================================================================*/
 /*void qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
 
-Non-Blocking Response check
+ ISR receiver handler for the response for "qResponseReceived"
 
 Parameters:
 
