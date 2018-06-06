@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.2
+ *  Version : 4.6.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1359,7 +1359,7 @@ Parameters:
 
     - value : Value to be converted to a string.
     - str : Array in memory where to store the resulting null-terminated string.
-    - n: The number of chars used to represent value in 'str' 
+    - n: The number of chars used to represent the value in 'str' 
 
 Return value:
 
@@ -1377,20 +1377,20 @@ char* qU32toX(uint32_t value, char *str, int8_t n){
 }
 /*============================================================================*/
 /*uint32_t qXtoU32(const char *s)
- 
-Converts the input string s consisting of hexadecimal digits into an unsigned 
-integer value. The input parameter s should consist exclusively of hexadecimal 
-digits, with optional whitespaces. The string will be processed one character at
-a time, until the function reaches a character which it doesn’t recognize 
-(including a null character).
+  
+Converts an  integer value to a null-terminated string 
+and stores the result in the array given by str parameter.
+str should be an array long enough to contain any possible value.
   
 Parameters:
 
-    - s : The hex string to be converted 
+    - value : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+    - n: The number of chars used to represent value in 'str' 
 
 Return value:
 
-  The numeric value in uint32_t 
+  A pointer to the resulting null-terminated string, same as parameter str
 */
 uint32_t qXtoU32(const char *s) {
     uint32_t val = 0;
@@ -1410,22 +1410,55 @@ uint32_t qXtoU32(const char *s) {
     return val;
 }
 /*============================================================================*/
-int qItoA(char *s, int n){
-    unsigned int i = 1000000000;
+/* char* qItoA(int num, char* str, int base)
 
-    if( ((signed)n) < 0 ) {
-        *s++ = '-';
-        n = -n;
+Converts an integer value to a null-terminated string using the specified base 
+and stores the result in the array given by str parameter. If base is 10 and 
+value is negative, the resulting string is preceded with a minus sign (-). 
+With any other base, value is always considered unsigned.
+
+str should be an array long enough to contain any possible value: 
+(sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
+32-bits platforms.
+
+Parameters:
+
+    - num : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+    - base: Numerical base used to represent the value as a string, between 2 
+            and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
+*/
+char* qItoA(int num, char* str, int base){
+    int i = 0, rem;
+    uint8_t isNegative = 0;
+ 
+    if (num == 0){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
     }
-    while( i > n ) i /= 10;
 
-    do {
-       *s++ = '0' + (n-n%i)/i%10;
-    }while( i /= 10 );
+    if(num<0){ 
+        if(base==10) isNegative = 1; /* handle negative numbers only in base 10*/
+        num = -num;
+    }
 
-    *s = '\0';
-    return n;  
-} 
+    while (num != 0){ /*Process individual digits*/
+        rem = num % base;
+        str[i++] = (rem > 9)? (rem-10) + 'A' : rem + '0';
+        num = num/base;
+    }
+
+    if (isNegative) str[i++] = '-'; /*If number is negative, append '-'*/
+    str[i] = '\0'; /*Append string terminator*/
+    qSwapBytes(str, i);/*Reverse the string*/
+    return str;
+}
+
 #ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){

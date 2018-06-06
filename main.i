@@ -2624,7 +2624,7 @@ int strtosigno (const char *__name);
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 542 "QuarkTS.h"
+# 570 "QuarkTS.h"
         typedef struct{
             const qBool_t SR;
             const qClock_t Start, TV;
@@ -2652,7 +2652,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 595 "QuarkTS.h"
+# 623 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -2697,8 +2697,7 @@ void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t A
 
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
-int qItoA(char *s, int n);
-
+char* qItoA(int num, char* str, int base);
 
 
 typedef struct{
@@ -2853,15 +2852,14 @@ void blinktaskCallback(qEvent_t e){
         do{state=130; case (_qTaskPC_t)130:;}while(0x00u);
         qSTimerSet(&tmr, 1);
         do{_qCRTaskState_ = state; return;} while(0x00u);
-
         (++(&mutex)->head);
         puts("led off");
         qTaskSendEvent(&Task1, 
-# 136 "main.c" 3 4
+# 135 "main.c" 3 4
                               ((void *)0)
-# 136 "main.c"
+# 135 "main.c"
                                   );
-        do{ _qCRTaskState_ = 137 ; case (_qTaskPC_t)137: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
+        do{ _qCRTaskState_ = 136 ; case (_qTaskPC_t)136: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
     }goto _qCR_BEGIN_;}return;
 }
 
@@ -2888,27 +2886,29 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 
 
 
-
-
 int main(int argc, char** argv) {
-    char buff[20]={0};
-    qItoA(buff, -788974);
+    char buff[40]={0};
+    char buff2[40]={0};
+
+    qItoA(844, buff, 16);
+    qU32toX(844, buff2, 5);
     puts(buff);
+    puts(buff2);
 
     return 
-# 171 "main.c" 3 4
+# 172 "main.c" 3 4
           0
-# 171 "main.c"
+# 172 "main.c"
                       ;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, 
-# 173 "main.c" 3 4
+# 174 "main.c" 3 4
                                    ((void *)0)
-# 173 "main.c"
+# 174 "main.c"
                                        , TimerInterruptEmulation, 
-# 173 "main.c" 3 4
+# 174 "main.c" 3 4
                                                                   ((void *)0) 
-# 173 "main.c"
+# 174 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     qSM_t statemachine;
@@ -2933,21 +2933,21 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 196 "main.c" 3 4
+# 197 "main.c" 3 4
                                                                                 ((void *)0)
-# 196 "main.c"
+# 197 "main.c"
                                                                                     , 
-# 196 "main.c" 3 4
+# 197 "main.c" 3 4
                                                                                       ((void *)0)
-# 196 "main.c"
+# 197 "main.c"
                                                                                           , 
-# 196 "main.c" 3 4
+# 197 "main.c" 3 4
                                                                                             ((void *)0)
-# 196 "main.c"
+# 197 "main.c"
                                                                                                 , 
-# 196 "main.c" 3 4
+# 197 "main.c" 3 4
                                                                                                   ((void *)0)
-# 196 "main.c"
+# 197 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
@@ -2959,8 +2959,8 @@ int main(int argc, char** argv) {
     qSchedulerRun();
 
     return (
-# 206 "main.c" 3 4
+# 207 "main.c" 3 4
            0
-# 206 "main.c"
+# 207 "main.c"
                        );
 }

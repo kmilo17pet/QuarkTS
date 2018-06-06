@@ -130,7 +130,6 @@ void blinktaskCallback(qEvent_t e){
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
         qCoroutinePositionRestore(state);
-        
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qTaskSendEvent(&Task1, NULL);
@@ -160,13 +159,15 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 /*============================================================================*/
   
 
-
-
 /*============================================================================*/
-int main(int argc, char** argv) {
-    char buff[20]={0};
-    qItoA(buff, -788974);
+int main(int argc, char** argv) {   
+    char buff[40]={0};
+    char buff2[40]={0};
+    
+    qItoA(844, buff, 16);
+    qU32toX(844, buff2, 5);
     puts(buff);
+    puts(buff2);
     
     return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;

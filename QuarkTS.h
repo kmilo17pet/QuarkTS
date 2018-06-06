@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.2
+ *  Version : 4.6.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -437,18 +437,23 @@ Parameters:
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
+    
     #ifdef _QUARKTS_CR_DEFS_    
-        #define __qCRStart                               __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
-        #define __qCRYield                               __qCRCodeStartBlock{ __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; } __qCRCodeEndBlock
-        #define __qCRRestart                             __qCRCodeStartBlock{ __qTaskInitState ; __qTaskYield } __qCRCodeEndBlock
-        #define __qCR_wu_Assert(_cond_)                  __qCRCodeStartBlock{ __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }__qCRCodeEndBlock
-        #define __qCR_GetPosition(_pos_)                 __qCRCodeStartBlock{_pos_=__qTaskProgress; __RestoreAfterYield;}__qCRCodeEndBlock
-        #define __qCR_RestoreFromPosition(_pos_)         __qCRCodeStartBlock{__qSetPC(_pos_); __qTaskYield} __qCRCodeEndBlock
-        #define __qCR_PositionReset(_pos_)               _pos_ = qCR_PCInitVal
+        #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
+        #define __qCRYield                          __qCRCodeStartBlock{ __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; } __qCRCodeEndBlock
+        #define __qCRRestart                        __qCRCodeStartBlock{ __qTaskInitState ; __qTaskYield } __qCRCodeEndBlock
+        #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{ __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }__qCRCodeEndBlock
+        #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{_pos_=__qTaskProgress; __RestoreAfterYield;}__qCRCodeEndBlock
+        #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{__qSetPC(_pos_); __qTaskYield} __qCRCodeEndBlock
+        #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
 
+qCRBegin{
+  
+}qCREnd;
+ * 
 Defines a Coroutine segment. Only one segment is allowed inside a task; 
 The qCoroutineBegin statement is used to declare the starting point of 
 a Coroutine. It should be placed at the start of the function in which the 
@@ -457,7 +462,9 @@ It must always be used together with a matching qCoroutineBegin statement.
 */
         #define qCoroutineBegin                         __qCRStart
         #define qCRBegin                                __qCRStart
-/*
+/*qCoroutineYield
+qCRYield
+
 This statement is only allowed inside a Coroutine segment. qCoroutineYield 
 return the CPU control back to the scheduler but saving the execution progress. 
 With the next task activation, the Coroutine will resume the execution after 
@@ -468,6 +475,9 @@ the last 'qCoroutineYield' statement.
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
+qCRBegin{
+  
+}qCREnd;
 
 Defines a Coroutine segment. Only one segment is allowed inside a task; 
 The qCoroutineBegin statement is used to declare the starting point of 
@@ -477,18 +487,23 @@ It must always be used together with a matching qCoroutineBegin statement.
 */    
         #define qCoroutineEnd                           __qCRDispose
         #define qCREnd                                  __qCRDispose
-/*This statement cause the running Coroutine to restart its execution at the 
+/*qCoroutineRestart
+qCRRestart
+
+This statement cause the running Coroutine to restart its execution at the 
 place of the qCoroutineBegin statement.
 */
         #define qCoroutineRestart                       __qCRRestart  
         #define qCRRestart                              __qCRRestart 
 /*qCoroutineWaitUntil(_CONDITION_) 
+qCRWaitUntil(_CONDITION_)
 
 Yields until the logical condition being true
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
         #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
 /*qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_) 
+qCRSemInit(_qCRSemaphore_t_, _Value_)
 
 Initializes a semaphore with a value for the counter. Internally, the semaphores
 use an "unsigned int" to represent the counter, and therefore the "count" 
@@ -503,6 +518,7 @@ Parameters:
         #define qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_)      __qCRSemInit(_qCRSemaphore_t_, _Value_)
         #define qCRSemInit(_qCRSemaphore_t_, _Value_)                   __qCRSemInit(_qCRSemaphore_t_, _Value_)  
 /*qCoroutineSemaphoreWait(_qCRSemaphore_t_) 
+qCRSemWait(_qCRSemaphore_t_)  
 
 Carries out the "wait" operation on the semaphore. The wait operation causes 
 the Co-routine to block while the counter is zero. When the counter reaches a 
@@ -515,6 +531,7 @@ Parameters:
         #define qCoroutineSemaphoreWait(_qCRSemaphore_t_)               __qCRCodeStartBlock{ qCoroutineWaitUntil(__qCRSemCount(_qCRSemaphore_t_) > 0);  __qCRSemLock(_qCRSemaphore_t_); } __qCRCodeEndBlock    
         #define qCRSemWait(_qCRSemaphore_t_)                            qCoroutineSemaphoreWait(_qCRSemaphore_t_)
 /*qCoroutineSemaphoreSignal(_qCRSemaphore_t_) 
+qCRSemSignal(_qCRSemaphore_t_)
 
 Carries out the "signal" operation on the semaphore. The signal operation increments
 the counter inside the semaphore, which eventually will cause waiting Co-routines
@@ -526,14 +543,25 @@ Parameters:
 */     
         #define qCoroutineSemaphoreSignal(_qCRSemaphore_t_)             __qCRSemRelease(_qCRSemaphore_t_)
         #define qCRSemSignal(_qCRSemaphore_t_)                          __qCRSemRelease(_qCRSemaphore_t_)
+/*qCoroutinePositionGet(qCRPosition_t _CRPos_)
+qCRPositionGet(qCRPosition_t _CRPos_) 
 
-    
+Labels the current position and saves it to _CRPos_ so it can be later restored by qCoroutinePositionRestore
+*/    
         #define qCoroutinePositionGet(_CRPos_)                          __qCR_GetPosition(_CRPos_)
         #define qCRPositionGet(_CRPos_)                                 __qCR_GetPosition(_CRPos_)
+/*qCoroutinePositionRestore(qCRPosition_t _CRPos_)
+qCRPositionRestore(qCRPosition_t _CRPos_) 
 
+Restores the Co-Routine position saved in _CRPos_
+*/   
         #define qCoroutinePositionRestore(_CRPos_)                      __qCR_RestoreFromPosition(_CRPos_)
         #define qCRPositionRestore(_CRPos_)                             __qCR_RestoreFromPosition(_CRPos_)
+/*qCoroutinePositionReset(qCRPosition_t _CRPos_)
+qCRPositionReset(qCRPosition_t _CRPos_) 
 
+Resets the _CRPos_ variable to the begining of the Co-Routine
+*/ 
         #define qCoroutinePositionReset(_CRPos_)                        __qCR_PositionReset(_CRPos_)
         #define qCRPositionReset(_CRPos_)                               __qCR_PositionReset(_CRPos_)
     
@@ -636,8 +664,7 @@ void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t A
 
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
-int qItoA(char *s, int n);
-
+char* qItoA(int num, char* str, int base);
 
 
 typedef struct{
