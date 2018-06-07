@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
     char buff[40]={0};
     char buff2[40]={0};
     
-    qItoA(844, buff, 16);
+    qItoA(1567, buff, 2);
     qU32toX(844, buff2, 5);
     puts(buff);
     puts(buff2);

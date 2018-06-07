@@ -1933,10 +1933,10 @@ qCheckEndianness:
 	ret
 	.seh_endproc
 	.p2align 4,,15
-	.globl	qOutputRAW
-	.def	qOutputRAW;	.scl	2;	.type	32;	.endef
-	.seh_proc	qOutputRAW
-qOutputRAW:
+	.globl	qOutputRaw
+	.def	qOutputRaw;	.scl	2;	.type	32;	.endef
+	.seh_proc	qOutputRaw
+qOutputRaw:
 	pushq	%r13
 	.seh_pushreg	%r13
 	pushq	%r12

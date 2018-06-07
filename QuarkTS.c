@@ -43,6 +43,10 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
     #pragma warning disable 520    /*disable warning: (520) function "x" is never called*/
     #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
     #pragma warning disable 751    /*disable warning: (751) arithmetic overflow in constant expression*/
+    #pragma warning disable 1510    /*disable warning: (1510)  non-reentrant function @f appears in multiple call graphs and has been duplicated by the compiler*/
+    #pragma warning disable 2029    /*disable warning: (2029)  a function pointer cannot be used to hold the address of data*/
+    #pragma warning disable 2030    /*disable warning: (2030) a data pointer cannot be used to hold the address of a function*/
+    /*--MSGDISABLE=2029:off,2030:off,373:off */
 #endif
 #ifdef __XC16
 #endif
@@ -1328,7 +1332,7 @@ Parameters:
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputRAW(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
+void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
     for(i=0;i<n;i++) fcn( ((AIP)? (char*)storagep+i : storagep), cdata[i]);
@@ -1371,7 +1375,7 @@ char* qU32toX(uint32_t value, char *str, int8_t n){
     str[n]='\0';
     for(i=n-1; i>=0; value>>=4, i--){
 	ch = (char)(value & 0x0F) + '0';
-	str[i] = (ch > '9')? ch+7 : ch;        
+	str[i] = (ch > '9')? ch+7u : ch;        
     }
     return str;
 }
@@ -1402,7 +1406,7 @@ uint32_t qXtoU32(const char *s) {
             nparsed++;
             if (byte >= '0' && byte <= '9') byte = byte - '0'; 
             else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;           
-            val = (val << 4) | (byte & 0xF);                  
+            val = (uint32_t)((val << 4u) | (byte & 0xFu));                  
         }
         else if(isspace(byte)) continue;
         else break;         
@@ -1449,13 +1453,13 @@ char* qItoA(int num, char* str, int base){
 
     while (num != 0){ /*Process individual digits*/
         rem = num % base;
-        str[i++] = (rem > 9)? (rem-10) + 'A' : rem + '0';
+        str[i++] = (rem > 9)? (char)(rem-10) + 'A' : (char)rem + '0';
         num = num/base;
     }
 
     if (isNegative) str[i++] = '-'; /*If number is negative, append '-'*/
     str[i] = '\0'; /*Append string terminator*/
-    qSwapBytes(str, i);/*Reverse the string*/
+    qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
     return str;
 }
 

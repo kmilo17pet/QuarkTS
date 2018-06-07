@@ -463,8 +463,8 @@ main:
 	leaq	80(%rsp), %rbx
 	call	__main
 	movq	%rsi, %rdx
-	movl	$16, %r8d
-	movl	$844, %ecx
+	movl	$2, %r8d
+	movl	$1567, %ecx
 	movq	$0, 32(%rsp)
 	movq	$0, 40(%rsp)
 	movq	$0, 48(%rsp)
