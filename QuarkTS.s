@@ -796,17 +796,20 @@ _qScheduler_Dispatch:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L166:
-	movq	112+QUARKTS(%rip), %rax
-	movq	%rax, 32+QUARKTS(%rip)
-	movq	$0, 112+QUARKTS(%rip)
+.L199:
+	movq	64(%rbx), %rdx
+	movzwl	14(%rdx), %eax
+	addl	$1, %eax
+	movw	%ax, 14(%rdx)
+	jmp	.L179
+	.p2align 4,,10
 .L170:
 	movzbl	81+QUARKTS(%rip), %eax
 	leaq	16+QUARKTS(%rip), %rcx
 	testb	%al, %al
 	sete	%al
 	movb	%al, 40+QUARKTS(%rip)
-	movl	%esi, 16+QUARKTS(%rip)
+	movl	$9, 16+QUARKTS(%rip)
 	movq	$0, 24+QUARKTS(%rip)
 	movq	QUARKTS(%rip), %rax
 	call	*%rax
@@ -817,17 +820,10 @@ _qScheduler_Dispatch:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L199:
-	movq	64(%rbx), %rdx
-	movzwl	14(%rdx), %eax
-	addl	$1, %eax
-	movw	%ax, 14(%rdx)
-	jmp	.L179
-	.p2align 4,,10
-.L169:
-	movq	64(%rcx), %rax
-.L195:
+.L166:
+	movq	112+QUARKTS(%rip), %rax
 	movq	%rax, 32+QUARKTS(%rip)
+	movq	$0, 112+QUARKTS(%rip)
 	jmp	.L163
 	.p2align 4,,10
 .L167:
@@ -854,6 +850,12 @@ _qScheduler_Dispatch:
 	imull	%edx, %eax
 	cltq
 	addq	(%rcx), %rax
+.L195:
+	movq	%rax, 32+QUARKTS(%rip)
+	jmp	.L163
+	.p2align 4,,10
+.L169:
+	movq	64(%rcx), %rax
 	jmp	.L195
 	.p2align 4,,10
 .L197:

@@ -77,6 +77,10 @@ void Task1Callback(qEvent_t e){
     if(e->Trigger == byAsyncEvent){
         puts("TASK1 BY ASYNC EVENT");
     }
+
+    if(e->Trigger == byQueueExtraction){
+        puts("TASK1 BY QUEUE EXTRACTION");
+    }
     
     if(qSTimerFreeRun(&tmr, 0.5)){
         puts("Timer expired");
@@ -129,7 +133,8 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineSemaphoreWait(&mutex);
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
-        qCoroutinePositionRestore(state);
+        /*qCoroutinePositionRestore(state);*/
+        qTaskQueueEvent(&Task1, "HELLO");
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qTaskSendEvent(&Task1, NULL);
@@ -163,13 +168,6 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 int main(int argc, char** argv) {   
     char buff[40]={0};
     char buff2[40]={0};
-    
-    qItoA(1567, buff, 2);
-    qU32toX(844, buff2, 5);
-    puts(buff);
-    puts(buff2);
-    
-    return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
