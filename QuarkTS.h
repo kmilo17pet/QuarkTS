@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.4
+ *  Version : 4.6.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -29,10 +29,13 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 #ifdef	__cplusplus
 extern "C" {
 #endif
-      
-    #define Q_BYTE_SIZED_BUFFERS
-    #define Q_MEMORY_MANAGER
-    #define Q_RINGBUFFERS
+    
+    
+    #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
+    #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
+    #define Q_RINGBUFFERS           /*remove this line if you will never use Ring Buffers*/
+    #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
+    #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     
     
     #include <stdint.h>
@@ -42,7 +45,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.6.4"
+    #define QUARTKTS_VERSION "4.6.5"
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -350,11 +353,13 @@ extern "C" {
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
-        volatile qQueueStack_t *volatile QueueStack;
-        uint8_t QueueSize;
-        volatile int16_t QueueIndex;
+        #ifdef Q_PRIORITY_QUEUE
+            volatile qQueueStack_t *volatile QueueStack;
+            uint8_t QueueSize;
+            volatile int16_t QueueIndex;
+            void *QueueData;
+        #endif 
         qTask_t *CurrentRunningTask;
-        void *QueueData;
     }QuarkTSCoreData_t;
     void qSchedulerSysTick(void);
     qTask_t* qTaskSelf(void);
@@ -432,8 +437,11 @@ Parameters:
     - QueueSize : Size of the priority queue. This argument should be an integer
                   number greater than zero
      */
-    #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
-    
+    #ifdef Q_PRIORITY_QUEUE
+        #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
+    #else
+        #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   _qInitScheduler(ISRTick, IDLE_Callback, NULL, 0)
+    #endif
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
@@ -655,9 +663,11 @@ typedef struct{
 }qBSBuffer_t;
 
 typedef void (*qPutChar_t)(void*, const char);
+typedef char (*qGetChar_t)(void*);
 void qSwapBytes(void *data, const qSize_t n);
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
 void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
+void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 
 #define qPrintString(fcn, storagep, s)          qOutputString(fcn, storagep, s, qFalse) 
 #define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, storagep, data, n, qFalse) 

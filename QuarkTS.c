@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.4
+ *  Version : 4.6.5
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -43,9 +43,12 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
     #pragma warning disable 520    /*disable warning: (520) function "x" is never called*/
     #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
     #pragma warning disable 751    /*disable warning: (751) arithmetic overflow in constant expression*/
-    #pragma warning disable 1510    /*disable warning: (1510)  non-reentrant function @f appears in multiple call graphs and has been duplicated by the compiler*/
-    #pragma warning disable 2029    /*disable warning: (2029)  a function pointer cannot be used to hold the address of data*/
-    #pragma warning disable 2030    /*disable warning: (2030) a data pointer cannot be used to hold the address of a function*/
+    #if __XC8_VERSION > 1380     
+        #pragma warning disable 1510    /*disable warning: (1510)  non-reentrant function @f appears in multiple call graphs and has been duplicated by the compiler*/
+        #pragma warning disable 2029    /*disable warning: (2029)  a function pointer cannot be used to hold the address of data*/
+        #pragma warning disable 2030    /*disable warning: (2030) a data pointer cannot be used to hold the address of a function*/
+        /*--MSGDISABLE=2029:off,2030:off,373:off */
+    #endif
     /*--MSGDISABLE=2029:off,2030:off,373:off */
 #endif
 #ifdef __XC16
@@ -322,12 +325,16 @@ Return value:
     occurred (The queue exceeds the size).
 */
 qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
-    qQueueStack_t qtmp;
-    if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
-    qtmp.Task = Task; 
-    qtmp.QueueData = eventdata;
-    QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp; /*insert task and the corresponding eventdata to the queue*/
-    return qTrue;
+    #ifdef Q_PRIORITY_QUEUE
+        qQueueStack_t qtmp;
+        if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
+        qtmp.Task = Task; 
+        qtmp.QueueData = eventdata;
+        QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp; /*insert task and the corresponding eventdata to the queue*/
+        return qTrue;
+    #else
+        return qFalse;
+    #endif
 }
 /*============================================================================*/
 /*void qSchedulerSetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
@@ -346,6 +353,7 @@ void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(
     QUARKTS.I_Restorer = Restorer;
     QUARKTS.I_Disable = Disabler;
 }
+#ifdef Q_PRIORITY_QUEUE
 /*============================================================================*/
 static qTask_t* _qScheduler_PriorityQueueGet(void){
     qTask_t *Task = NULL;
@@ -371,6 +379,7 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     qExitCritical();
     return Task;
 }
+#endif
 /*============================================================================*/
 void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
     uint8_t i;
@@ -378,17 +387,19 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.Tick = ISRTick;
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = NULL;
-    QUARKTS.QueueStack = Q_Stack;
-    QUARKTS.QueueSize = Size_Q_Stack;
-    for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;    
-    QUARKTS.QueueIndex = -1;    
+    #ifdef Q_PRIORITY_QUEUE    
+        QUARKTS.QueueStack = Q_Stack;
+        QUARKTS.QueueSize = Size_Q_Stack;
+        for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;    
+        QUARKTS.QueueIndex = -1;    
+        QUARKTS.QueueData = NULL;
+    #endif
     QUARKTS.Flag.Init = qFalse;
     QUARKTS.Flag.ReleaseSched = qFalse;
     QUARKTS.Flag.FCallReleased = qFalse;
     QUARKTS.I_Restorer =  NULL;
     QUARKTS.I_Disable = NULL;
     QUARKTS.CurrentRunningTask = NULL;
-    QUARKTS.QueueData = NULL;
     _qSysTick_Epochs_ = 0ul;
 }
 /*============================================================================*/
@@ -591,6 +602,7 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
     Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
     tmp_node->Next = Task;
 }
+#ifdef Q_AUTO_CHAINREARRANGE
 /*============================================================================*/
 static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange the chain according the priority of all its nodes*/
     qTask_t *new_head = NULL;
@@ -606,6 +618,7 @@ static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange 
     QUARKTS.Flag.Init= qTrue; /*set the initializtion flag*/
     qExitCritical();
 }
+#endif
 /*============================================================================*/
 /*qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
 
@@ -695,8 +708,12 @@ pool has been defined.
 void qSchedulerRun(void){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     qSchedulerStartPoint{
+        #ifdef Q_AUTO_CHAINREARRANGE
         if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
-        if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/     
+        #endif
+        #ifdef Q_PRIORITY_QUEUE
+        if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
+        #endif
         if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
                 Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the qReady task, otherwise put it in qWaiting State*/
@@ -733,10 +750,12 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
             break;
         #endif
+        #ifdef Q_PRIORITY_QUEUE
         case byQueueExtraction:
             QUARKTS.EventInfo.EventData = QUARKTS.QueueData; /*get the extracted data from queue*/
             QUARKTS.QueueData = NULL;
             break;
+        #endif
         case byNoReadyTasks:
             QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = Event;
@@ -1321,7 +1340,7 @@ qBool_t qCheckEndianness(void){
     return (qBool_t)( *( (uint8_t*)&i ) );
 }
 /*============================================================================*/
-/*void qPrintRaw(qPutChar_t fcn, void* storagep, void *data, size_t n)
+/*void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
  
 Wrapper method to write n RAW data througth fcn
   
@@ -1329,7 +1348,7 @@ Parameters:
 
     - fcn : The basic output byte function
     - storagep : The storage pointer passed to fcn
-    - data: The data to be written
+    - data: Buffer to read data from
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
@@ -1339,7 +1358,25 @@ void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t A
     for(i=0;i<n;i++) fcn( ((AIP)? (char*)storagep+i : storagep), cdata[i]);
 }
 /*============================================================================*/
-/*void qPrintString(qPutChar_t fcn, const char *s)
+/*void qInputRaw(qGetChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
+ 
+Wrapper method to get n RAW data througth fcn
+  
+Parameters:
+
+    - fcn : The basic input byte function
+    - storagep : The storage pointer passed to fcn
+    - data: Buffer to read data from
+    - n: Number of bytes to get
+    - AIP : Auto-Increment the storage-pointer
+*/
+void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
+    size_t i = 0;
+    char *cdata = data;
+    for(i=0;i<n;i++) cdata[i] = fcn( ((AIP)? (char*)storagep+i : storagep));
+}
+/*============================================================================*/
+/*void qOutputString(qPutChar_t fcn, const char *s)
  
 Wrapper method to write a string througth fcn
   

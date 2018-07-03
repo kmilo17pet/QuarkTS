@@ -52,6 +52,7 @@ qSM_Status_t secondstate(qSMData_t fsm){
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] second\r\n", (char*)e->TaskData);
+        qTaskQueueEvent(&Task1, "HELLO");
     }
     
     if (qSTimerExpired(&tmr)){
@@ -133,8 +134,9 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineSemaphoreWait(&mutex);
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
-        /*qCoroutinePositionRestore(state);*/
-        qTaskQueueEvent(&Task1, "HELLO");
+        /**/
+        
+        qCoroutinePositionRestore(state);
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qTaskSendEvent(&Task1, NULL);
@@ -162,12 +164,18 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 /*============================================================================*/
-  
+void outputfcn(void* p, const char c){
+    printf("\r\n%d\r\n",(uint16_t)p);
+    putchar(c);
+}
+
+void inputfcn(void* p, const char c){
+    printf("\r\n%d\r\n",(int)p);
+    putchar(c);
+}
 
 /*============================================================================*/
-int main(int argc, char** argv) {   
-    char buff[40]={0};
-    char buff2[40]={0};
+int main(int argc, char** argv) {      
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);

@@ -40,7 +40,7 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-save-temps
+CFLAGS=-save-temps -pedantic
 
 # CC Compiler Flags
 CCFLAGS=
