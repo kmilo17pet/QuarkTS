@@ -136,11 +136,15 @@ void blinktaskCallback(qEvent_t e){
         qSTimerSet(&tmr, 1);
         /**/
         
-        qCoroutinePositionRestore(state);
+        /*qCoroutinePositionRestore(state);*/
         qCoroutineSemaphoreSignal(&mutex);
         puts("led off");
         qTaskSendEvent(&Task1, NULL);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
+        puts("led fuck");
+        qSTimerSet(&tmr, 2);
+        qCoroutineWaitUntil(qSTimerExpired(&tmr));
+        
     }qCoroutineEnd;
 }
 /*============================================================================*/

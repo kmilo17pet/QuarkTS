@@ -5,8 +5,8 @@
 # 27 "QuarkTS.c"
 # 1 "QuarkTS.h" 1
 # 41 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 3 4
 # 1 "/usr/include/stdint.h" 1 3 4
 # 12 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/machine/_default_types.h" 1 3 4
@@ -199,7 +199,7 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 2 3 4
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 2 3 4
 # 42 "QuarkTS.h" 2
 # 1 "/usr/include/string.h" 1 3 4
 # 10 "/usr/include/string.h" 3 4
@@ -222,12 +222,12 @@ typedef __uint_least64_t uint_least64_t;
 # 13 "/usr/include/sys/reent.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 14 "/usr/include/sys/reent.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
-# 149 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
+# 149 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef long int ptrdiff_t;
-# 216 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 216 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef long unsigned int size_t;
-# 328 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 328 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef short unsigned int wchar_t;
 # 15 "/usr/include/sys/reent.h" 2 3 4
 # 1 "/usr/include/sys/_types.h" 1 3 4
@@ -323,8 +323,8 @@ typedef long signed int _ssize_t;
 typedef _ssize_t __ssize_t;
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
-# 357 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
+# 357 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef unsigned int wint_t;
 # 160 "/usr/include/sys/_types.h" 2 3 4
 
@@ -656,14 +656,14 @@ void _reclaim_reent (struct _reent *);
 # 12 "/usr/include/string.h" 2 3 4
 # 1 "/usr/include/sys/cdefs.h" 1 3 4
 # 45 "/usr/include/sys/cdefs.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 46 "/usr/include/sys/cdefs.h" 2 3 4
 # 13 "/usr/include/string.h" 2 3 4
 
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 18 "/usr/include/string.h" 2 3 4
 # 27 "/usr/include/string.h" 3 4
 
@@ -714,13 +714,13 @@ int strtosigno (const char *__name);
 # 43 "QuarkTS.h" 2
 # 1 "/usr/include/stdio.h" 1 3 4
 # 36 "/usr/include/stdio.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 37 "/usr/include/stdio.h" 2 3 4
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 1 3 4
-# 40 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
 # 41 "/usr/include/stdio.h" 2 3 4
 # 61 "/usr/include/stdio.h" 3 4
@@ -739,7 +739,7 @@ typedef __uint64_t u_int64_t;
 
 typedef int register_t;
 # 62 "/usr/include/sys/types.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 63 "/usr/include/sys/types.h" 2 3 4
 # 113 "/usr/include/sys/types.h" 3 4
 typedef __blkcnt_t blkcnt_t;
@@ -1288,7 +1288,7 @@ _putchar_unlocked(int _c)
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 17 "/usr/include/stdlib.h" 2 3 4
 
 
@@ -1486,9 +1486,9 @@ extern __attribute__((dllimport)) const char _ctype_[];
 
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t;
         typedef qCoroutineSemaphore_t qCRSem_t;
-# 124 "QuarkTS.h"
+# 125 "QuarkTS.h"
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-# 135 "QuarkTS.h"
+# 136 "QuarkTS.h"
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -1496,9 +1496,9 @@ extern __attribute__((dllimport)) const char _ctype_[];
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
-# 174 "QuarkTS.h"
+# 175 "QuarkTS.h"
     typedef struct{
-# 207 "QuarkTS.h"
+# 208 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -1532,7 +1532,7 @@ extern __attribute__((dllimport)) const char _ctype_[];
     }_qEvent_t_ ;
     typedef const _qEvent_t_ *const qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);
-# 249 "QuarkTS.h"
+# 250 "QuarkTS.h"
     typedef uint8_t qTaskState_t;
 
 
@@ -1685,11 +1685,11 @@ extern __attribute__((dllimport)) const char _ctype_[];
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task);
-# 445 "QuarkTS.h"
+# 446 "QuarkTS.h"
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 578 "QuarkTS.h"
+# 579 "QuarkTS.h"
         typedef struct{
             const qBool_t SR;
             const qClock_t Start, TV;
@@ -1717,7 +1717,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 631 "QuarkTS.h"
+# 632 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 

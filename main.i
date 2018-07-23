@@ -89,22 +89,22 @@ typedef long int __intptr_t;
 typedef long unsigned int __uintptr_t;
 # 44 "/usr/include/sys/cdefs.h" 2 3 4
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
-# 216 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
+# 216 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef long unsigned int size_t;
 # 46 "/usr/include/sys/cdefs.h" 2 3 4
 # 36 "/usr/include/stdio.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
-# 149 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
+# 149 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef long int ptrdiff_t;
-# 328 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 328 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef short unsigned int wchar_t;
 # 37 "/usr/include/stdio.h" 2 3 4
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 1 3 4
-# 40 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdarg.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
 # 41 "/usr/include/stdio.h" 2 3 4
 # 60 "/usr/include/stdio.h" 3 4
@@ -112,7 +112,7 @@ typedef __builtin_va_list __gnuc_va_list;
 # 13 "/usr/include/sys/reent.h" 3 4
 # 1 "/usr/include/_ansi.h" 1 3 4
 # 14 "/usr/include/sys/reent.h" 2 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 15 "/usr/include/sys/reent.h" 2 3 4
 # 1 "/usr/include/sys/_types.h" 1 3 4
 # 24 "/usr/include/sys/_types.h" 3 4
@@ -207,8 +207,8 @@ typedef long signed int _ssize_t;
 typedef _ssize_t __ssize_t;
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
-# 357 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
+# 357 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 3 4
 typedef unsigned int wint_t;
 # 160 "/usr/include/sys/_types.h" 2 3 4
 
@@ -551,7 +551,7 @@ typedef __uint64_t u_int64_t;
 
 typedef int register_t;
 # 62 "/usr/include/sys/types.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 63 "/usr/include/sys/types.h" 2 3 4
 
 # 1 "/usr/include/sys/_stdint.h" 1 3 4
@@ -1188,7 +1188,7 @@ _putchar_unlocked(int _c)
 
 
 
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 17 "/usr/include/stdlib.h" 2 3 4
 
 
@@ -1745,7 +1745,7 @@ int sched_yield( void );
 # 14 "/usr/include/pthread.h" 2 3 4
 # 1 "/usr/include/time.h" 1 3 4
 # 16 "/usr/include/time.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 17 "/usr/include/time.h" 2 3 4
 
 
@@ -2009,7 +2009,7 @@ void pthread_testcancel (void);
 
 # 1 "/usr/include/sys/unistd.h" 1 3 4
 # 14 "/usr/include/sys/unistd.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 15 "/usr/include/sys/unistd.h" 2 3 4
 
 extern char **environ;
@@ -2287,8 +2287,8 @@ extern double fmod (double, double);
 
 # 1 "QuarkTS.h" 1
 # 41 "QuarkTS.h"
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 1 3 4
-# 9 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 1 3 4
+# 9 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 3 4
 # 1 "/usr/include/stdint.h" 1 3 4
 # 13 "/usr/include/stdint.h" 3 4
 # 1 "/usr/include/sys/_intsup.h" 1 3 4
@@ -2348,11 +2348,11 @@ typedef __uint_least64_t uint_least64_t;
 # 81 "/usr/include/stdint.h" 3 4
   typedef long int int_fast64_t;
   typedef long unsigned int uint_fast64_t;
-# 10 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stdint.h" 2 3 4
+# 10 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stdint.h" 2 3 4
 # 42 "QuarkTS.h" 2
 # 1 "/usr/include/string.h" 1 3 4
 # 17 "/usr/include/string.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include/stddef.h" 1 3 4
 # 18 "/usr/include/string.h" 2 3 4
 # 27 "/usr/include/string.h" 3 4
 
@@ -2423,9 +2423,9 @@ int strtosigno (const char *__name);
 
         typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t;
         typedef qCoroutineSemaphore_t qCRSem_t;
-# 124 "QuarkTS.h"
+# 125 "QuarkTS.h"
     typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-# 135 "QuarkTS.h"
+# 136 "QuarkTS.h"
     typedef float qTime_t;
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -2433,9 +2433,9 @@ int strtosigno (const char *__name);
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
-# 174 "QuarkTS.h"
+# 175 "QuarkTS.h"
     typedef struct{
-# 207 "QuarkTS.h"
+# 208 "QuarkTS.h"
         qTrigger_t Trigger;
 
 
@@ -2469,7 +2469,7 @@ int strtosigno (const char *__name);
     }_qEvent_t_ ;
     typedef const _qEvent_t_ *const qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);
-# 249 "QuarkTS.h"
+# 250 "QuarkTS.h"
     typedef uint8_t qTaskState_t;
 
 
@@ -2622,11 +2622,11 @@ int strtosigno (const char *__name);
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task);
-# 445 "QuarkTS.h"
+# 446 "QuarkTS.h"
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 578 "QuarkTS.h"
+# 579 "QuarkTS.h"
         typedef struct{
             const qBool_t SR;
             const qClock_t Start, TV;
@@ -2654,7 +2654,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 631 "QuarkTS.h"
+# 632 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -2769,7 +2769,7 @@ qSM_Status_t firststate(qSMData_t fsm){
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
     }
-    return qSM_EXIT_SUCCESS;
+    return ;
 }
 
 qSM_Status_t secondstate(qSMData_t fsm){
@@ -2856,13 +2856,13 @@ void blinktaskCallback(qEvent_t e){
         puts("led on");
         do{state=131; case (_qTaskPC_t)131:;}while(0x00u);
         qSTimerSet(&tmr, 1);
-        do{ _qCRTaskState_ = 133 ; case (_qTaskPC_t)133: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
-        do{ do{ _qCRTaskState_ = 134 ; case (_qTaskPC_t)134: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) return; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
+        do{ _qCRTaskState_ = 133 ; case (_qTaskPC_t)133: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
+        do{ do{ _qCRTaskState_ = 134 ; case (_qTaskPC_t)134: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) goto __qCRYield_ExitLabel; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
         do{state=135; case (_qTaskPC_t)135:;}while(0x00u);
         qSTimerSet(&tmr, 1);
 
 
-        do{_qCRTaskState_ = state; return;} while(0x00u);
+
         (++(&mutex)->head);
         puts("led off");
         qTaskSendEvent(&Task1, 
@@ -2870,8 +2870,12 @@ void blinktaskCallback(qEvent_t e){
                               ((void *)0)
 # 142 "main.c"
                                   );
-        do{ _qCRTaskState_ = 143 ; case (_qTaskPC_t)143: ; if(!(qSTimerExpired(&tmr))) return; }while(0x00u);
-    }goto _qCR_BEGIN_;}return;
+        do{ _qCRTaskState_ = 143 ; case (_qTaskPC_t)143: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
+        puts("led fuck");
+        qSTimerSet(&tmr, 2);
+        do{ _qCRTaskState_ = 146 ; case (_qTaskPC_t)146: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
+
+    }goto _qCR_BEGIN_;}__qCRYield_ExitLabel:;
 }
 
 uint32_t qStringHash(const char* s, uint8_t mode){
@@ -2908,13 +2912,13 @@ void inputfcn(void* p, const char c){
 int main(int argc, char** argv) {
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, 
-# 180 "main.c" 3 4
+# 184 "main.c" 3 4
                                    ((void *)0)
-# 180 "main.c"
+# 184 "main.c"
                                        , TimerInterruptEmulation, 
-# 180 "main.c" 3 4
+# 184 "main.c" 3 4
                                                                   ((void *)0) 
-# 180 "main.c"
+# 184 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     qSM_t statemachine;
@@ -2939,21 +2943,21 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 203 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                 ((void *)0)
-# 203 "main.c"
+# 207 "main.c"
                                                                                     , 
-# 203 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                       ((void *)0)
-# 203 "main.c"
+# 207 "main.c"
                                                                                           , 
-# 203 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                             ((void *)0)
-# 203 "main.c"
+# 207 "main.c"
                                                                                                 , 
-# 203 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                                   ((void *)0)
-# 203 "main.c"
+# 207 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
@@ -2965,8 +2969,8 @@ int main(int argc, char** argv) {
     qSchedulerRun();
 
     return (
-# 213 "main.c" 3 4
+# 217 "main.c" 3 4
            0
-# 213 "main.c"
+# 217 "main.c"
                        );
 }

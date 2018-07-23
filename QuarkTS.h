@@ -108,10 +108,11 @@ extern "C" {
         #define __qSetPC(_VAL_)          __qTaskPCVar = _VAL_
         #define __qTaskSaveState         __qSetPC(__qTaskProgress) 
         #define __qTaskInitState         __qSetPC(qCR_PCInitVal) 
-        #define __qTaskCheckPCJump(_PC_) switch(_PC_){      
-        #define __qExit                  return
+        #define __qTaskCheckPCJump(_PC_) switch(_PC_){    
+        #define __TagExitCCR             __qCRYield_ExitLabel
+        #define __qExit                  goto __TagExitCCR
         #define __qTaskYield             __qExit;
-        #define __qCRDispose             goto _qCR_BEGIN_;}__qExit
+        #define __qCRDispose             goto _qCR_BEGIN_;}__TagExitCCR:
         #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
         #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
