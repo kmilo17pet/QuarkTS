@@ -6,14 +6,16 @@
 .LC2:
 	.ascii "[%s] first\15\12\0"
 .LC3:
-	.ascii ">(main.c)@43:{\0"
+	.ascii ">(main.c)@43:\0"
 .LC4:
-	.ascii "} &tmr.Start = \0"
+	.ascii "\0"
 .LC5:
-	.ascii ">(main.c)@44:{\0"
+	.ascii " &tmr.Start = \0"
 .LC6:
-	.ascii "} tmr.Start = \0"
+	.ascii ">(main.c)@44:\0"
 .LC7:
+	.ascii " tmr.Start = \0"
+.LC8:
 	.ascii "\15\12\0"
 	.text
 	.p2align 4,,15
@@ -44,12 +46,12 @@ firststate:
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	__func__.3969(%rip), %r8
+	leaq	.LC4(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	.LC4(%rip), %r8
+	leaq	.LC5(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -61,17 +63,17 @@ firststate:
 	movq	(%rbx), %rcx
 	testq	%rcx, %rcx
 	je	.L5
-	leaq	.LC5(%rip), %r8
-	xorl	%r9d, %r9d
-	xorl	%edx, %edx
-	call	qOutputString
-	movq	(%rbx), %rcx
-	leaq	__func__.3969(%rip), %r8
-	xorl	%r9d, %r9d
-	xorl	%edx, %edx
-	call	qOutputString
-	movq	(%rbx), %rcx
 	leaq	.LC6(%rip), %r8
+	xorl	%r9d, %r9d
+	xorl	%edx, %edx
+	call	qOutputString
+	movq	(%rbx), %rcx
+	leaq	.LC4(%rip), %r8
+	xorl	%r9d, %r9d
+	xorl	%edx, %edx
+	call	qOutputString
+	movq	(%rbx), %rcx
+	leaq	.LC7(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -85,7 +87,7 @@ firststate:
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	.LC7(%rip), %r8
+	leaq	.LC8(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -118,9 +120,9 @@ firststate:
 	jmp	.L3
 	.seh_endproc
 	.section .rdata,"dr"
-.LC8:
-	.ascii "[%s] second\15\12\0"
 .LC9:
+	.ascii "[%s] second\15\12\0"
+.LC10:
 	.ascii "HELLO\0"
 	.text
 	.p2align 4,,15
@@ -139,7 +141,7 @@ secondstate:
 	movq	%rcx, %rbx
 	jne	.L23
 .L18:
-	leaq	tmr.3974(%rip), %rcx
+	leaq	tmr.3973(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L19
@@ -154,13 +156,13 @@ secondstate:
 	.p2align 4,,10
 .L23:
 	movq	32(%rcx), %rsi
-	leaq	tmr.3974(%rip), %rcx
+	leaq	tmr.3973(%rip), %rcx
 	movss	.LC1(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
-	leaq	.LC8(%rip), %rcx
+	leaq	.LC9(%rip), %rcx
 	call	printf
-	leaq	.LC9(%rip), %rdx
+	leaq	.LC10(%rip), %rdx
 	leaq	Task1(%rip), %rcx
 	call	qTaskQueueEvent
 	jmp	.L18
@@ -205,19 +207,19 @@ datacapture:
 	.seh_endproc
 	.section .rdata,"dr"
 	.align 8
-.LC10:
-	.ascii "Userdata : %s  Eventdata:%s   %d\15\12\0"
 .LC11:
-	.ascii "FirstCall\0"
+	.ascii "Userdata : %s  Eventdata:%s   %d\15\12\0"
 .LC12:
-	.ascii "FirtsIteration\0"
+	.ascii "FirstCall\0"
 .LC13:
-	.ascii "LastIteration\0"
+	.ascii "FirtsIteration\0"
 .LC14:
-	.ascii "TASK1 BY ASYNC EVENT\0"
+	.ascii "LastIteration\0"
 .LC15:
+	.ascii "TASK1 BY ASYNC EVENT\0"
+.LC16:
 	.ascii "TASK1 BY QUEUE EXTRACTION\0"
-.LC17:
+.LC18:
 	.ascii "Timer expired\0"
 	.text
 	.p2align 4,,15
@@ -235,7 +237,7 @@ Task1Callback:
 	call	qTaskGetCycles
 	movq	8(%rbx), %rdx
 	movq	16(%rbx), %r8
-	leaq	.LC10(%rip), %rcx
+	leaq	.LC11(%rip), %rcx
 	movl	%eax, %r9d
 	call	printf
 	cmpb	$0, 24(%rbx)
@@ -253,8 +255,8 @@ Task1Callback:
 	cmpl	$2, %eax
 	je	.L39
 .L33:
-	leaq	tmr.3978(%rip), %rcx
-	movss	.LC16(%rip), %xmm1
+	leaq	tmr.3977(%rip), %rcx
+	movss	.LC17(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
 	jne	.L40
@@ -263,40 +265,40 @@ Task1Callback:
 	ret
 	.p2align 4,,10
 .L40:
-	leaq	.LC17(%rip), %rcx
+	leaq	.LC18(%rip), %rcx
 	addq	$32, %rsp
 	popq	%rbx
 	jmp	puts
 	.p2align 4,,10
 .L37:
-	leaq	.LC13(%rip), %rcx
+	leaq	.LC14(%rip), %rcx
 	call	puts
 	movl	(%rbx), %eax
 	cmpl	$3, %eax
 	jne	.L32
 .L38:
-	leaq	.LC14(%rip), %rcx
+	leaq	.LC15(%rip), %rcx
 	call	puts
 	movl	(%rbx), %eax
 	cmpl	$2, %eax
 	jne	.L33
 .L39:
-	leaq	.LC15(%rip), %rcx
+	leaq	.LC16(%rip), %rcx
 	call	puts
 	jmp	.L33
 	.p2align 4,,10
 .L36:
-	leaq	.LC12(%rip), %rcx
+	leaq	.LC13(%rip), %rcx
 	call	puts
 	jmp	.L30
 	.p2align 4,,10
 .L35:
-	leaq	.LC11(%rip), %rcx
+	leaq	.LC12(%rip), %rcx
 	call	puts
 	jmp	.L29
 	.seh_endproc
 	.section .rdata,"dr"
-.LC18:
+.LC19:
 	.ascii "Userdata : %s  Eventdata:%s\15\12\0"
 	.text
 	.p2align 4,,15
@@ -307,11 +309,11 @@ Task2Callback:
 	.seh_endprologue
 	movq	8(%rcx), %rdx
 	movq	16(%rcx), %r8
-	leaq	.LC18(%rip), %rcx
+	leaq	.LC19(%rip), %rcx
 	jmp	printf
 	.seh_endproc
 	.section .rdata,"dr"
-.LC19:
+.LC20:
 	.ascii "ring extracted data %d\15\12\0"
 	.text
 	.p2align 4,,15
@@ -327,7 +329,7 @@ Task3Callback:
 	movq	8(%rcx), %rdx
 	movq	16(%rcx), %r8
 	movq	%rcx, %rbx
-	leaq	.LC18(%rip), %rcx
+	leaq	.LC19(%rip), %rcx
 	call	printf
 	cmpl	$4, (%rbx)
 	je	.L44
@@ -337,7 +339,7 @@ Task3Callback:
 	.p2align 4,,10
 .L44:
 	movq	16(%rbx), %rax
-	leaq	.LC19(%rip), %rcx
+	leaq	.LC20(%rip), %rcx
 	movl	(%rax), %edx
 	addq	$32, %rsp
 	popq	%rbx
@@ -368,7 +370,7 @@ Task6Callback:
 	jmp	Task2Callback
 	.seh_endproc
 	.section .rdata,"dr"
-.LC21:
+.LC22:
 	.ascii "hi\0"
 	.text
 	.p2align 4,,15
@@ -381,8 +383,8 @@ IdleTaskCallback:
 	subq	$32, %rsp
 	.seh_stackalloc	32
 	.seh_endprologue
-	leaq	t.3998(%rip), %rcx
-	movss	.LC20(%rip), %xmm1
+	leaq	t.3997(%rip), %rcx
+	movss	.LC21(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
 	jne	.L50
@@ -392,7 +394,7 @@ IdleTaskCallback:
 	.p2align 4,,10
 .L50:
 	leaq	Task1(%rip), %rbx
-	leaq	.LC21(%rip), %rcx
+	leaq	.LC22(%rip), %rcx
 	call	puts
 	movq	%rbx, %rcx
 	movl	$6, %edx
@@ -404,11 +406,11 @@ IdleTaskCallback:
 	jmp	qTaskSetState
 	.seh_endproc
 	.section .rdata,"dr"
-.LC22:
+.LC23:
 	.ascii "led on\0"
-.LC24:
-	.ascii "led off\0"
 .LC25:
+	.ascii "led off\0"
+.LC26:
 	.ascii "led fuck\0"
 	.text
 	.p2align 4,,15
@@ -423,7 +425,7 @@ blinktaskCallback:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movl	_qCRTaskState_.4005(%rip), %eax
+	movl	_qCRTaskState_.4004(%rip), %eax
 	cmpl	$138, %eax
 	je	.L66
 	jle	.L77
@@ -452,48 +454,48 @@ blinktaskCallback:
 	jmp	.L57
 	.p2align 4,,10
 .L79:
-	leaq	.LC25(%rip), %rcx
+	leaq	.LC26(%rip), %rcx
 	call	puts
-	leaq	tmr.4002(%rip), %rcx
-	movss	.LC26(%rip), %xmm1
+	leaq	tmr.4001(%rip), %rcx
+	movss	.LC27(%rip), %xmm1
 	call	qSTimerSet
-	movl	$150, _qCRTaskState_.4005(%rip)
+	movl	$150, _qCRTaskState_.4004(%rip)
 .L59:
-	leaq	tmr.4002(%rip), %rcx
+	leaq	tmr.4001(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L51
 .L57:
-	leaq	.LC22(%rip), %rcx
+	leaq	.LC23(%rip), %rcx
 	call	puts
 .L55:
-	leaq	tmr.4002(%rip), %rcx
-	movss	.LC23(%rip), %xmm1
+	leaq	tmr.4001(%rip), %rcx
+	movss	.LC24(%rip), %xmm1
 	call	qSTimerSet
-	movl	$137, _qCRTaskState_.4005(%rip)
+	movl	$137, _qCRTaskState_.4004(%rip)
 .L56:
-	leaq	tmr.4002(%rip), %rcx
+	leaq	tmr.4001(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L51
-	movl	$138, _qCRTaskState_.4005(%rip)
+	movl	$138, _qCRTaskState_.4004(%rip)
 .L53:
 	cmpl	%esi, %ebx
 	je	.L51
 	addl	$1, %esi
 	addl	$1, %ebx
 .L60:
-	leaq	tmr.4002(%rip), %rcx
-	movss	.LC23(%rip), %xmm1
+	leaq	tmr.4001(%rip), %rcx
+	movss	.LC24(%rip), %xmm1
 	call	qSTimerSet
-	leaq	.LC24(%rip), %rcx
+	leaq	.LC25(%rip), %rcx
 	call	puts
 	leaq	Task1(%rip), %rcx
 	xorl	%edx, %edx
 	call	qTaskSendEvent
-	movl	$147, _qCRTaskState_.4005(%rip)
+	movl	$147, _qCRTaskState_.4004(%rip)
 .L58:
-	leaq	tmr.4002(%rip), %rcx
+	leaq	tmr.4001(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	jne	.L79
@@ -607,7 +609,7 @@ qStringHash:
 	ret
 	.seh_endproc
 	.section .rdata,"dr"
-.LC27:
+.LC28:
 	.ascii "\15\12%d\15\12\0"
 	.text
 	.p2align 4,,15
@@ -622,7 +624,7 @@ outputfcn:
 	.seh_endprologue
 	movl	%edx, %ebx
 	movzwl	%cx, %edx
-	leaq	.LC27(%rip), %rcx
+	leaq	.LC28(%rip), %rcx
 	call	printf
 	movsbl	%bl, %ecx
 	addq	$32, %rsp
@@ -641,7 +643,7 @@ inputfcn:
 	.seh_endprologue
 	movl	%edx, %ebx
 	movl	%ecx, %edx
-	leaq	.LC27(%rip), %rcx
+	leaq	.LC28(%rip), %rcx
 	call	printf
 	movsbl	%bl, %ecx
 	addq	$32, %rsp
@@ -650,11 +652,11 @@ inputfcn:
 	.seh_endproc
 	.def	__main;	.scl	2;	.type	32;	.endef
 	.section .rdata,"dr"
-.LC28:
-	.ascii ">(main.c)@191:{\0"
 .LC29:
-	.ascii "} qXtoU32(\"0FA3423\") = \0"
+	.ascii ">(main.c)@191:\0"
 .LC30:
+	.ascii " qXtoU32(\"0FA3423\") = \0"
+.LC31:
 	.ascii "0FA3423\0"
 	.section	.text.startup,"x"
 	.p2align 4,,15
@@ -670,22 +672,22 @@ main:
 	call	__main
 	movq	.refptr.__qDebugOutputFcn(%rip), %rbx
 	leaq	putcharfcn(%rip), %rcx
-	leaq	.LC28(%rip), %r8
+	leaq	.LC29(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	movq	%rcx, (%rbx)
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	__func__.4049(%rip), %r8
+	leaq	.LC4(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	.LC29(%rip), %r8
+	leaq	.LC30(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
-	leaq	.LC30(%rip), %rcx
+	leaq	.LC31(%rip), %rcx
 	call	qXtoU32
 	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
 	movl	$16, %r8d
@@ -697,7 +699,7 @@ main:
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	.LC7(%rip), %r8
+	leaq	.LC8(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -706,21 +708,14 @@ main:
 	popq	%rbx
 	ret
 	.seh_endproc
-	.section .rdata,"dr"
-__func__.4049:
-	.ascii "main\0"
-.lcomm tmr.4002,12,8
+.lcomm tmr.4001,12,8
 	.data
 	.align 4
-_qCRTaskState_.4005:
+_qCRTaskState_.4004:
 	.long	-32766
-.lcomm t.3998,12,8
-.lcomm tmr.3978,12,8
-.lcomm tmr.3974,12,8
-	.section .rdata,"dr"
-	.align 8
-__func__.3969:
-	.ascii "firststate\0"
+.lcomm t.3997,12,8
+.lcomm tmr.3977,12,8
+.lcomm tmr.3973,12,8
 .lcomm tmr.3968,12,8
 	.comm	SMTask2, 88, 5
 	.comm	SMTask, 88, 5
@@ -733,20 +728,21 @@ __func__.3969:
 	.comm	Task2, 88, 5
 	.comm	Task1, 88, 5
 	.comm	TimerEmulation, 8, 3
+	.section .rdata,"dr"
 	.align 4
 .LC1:
 	.long	1075838976
 	.align 4
-.LC16:
+.LC17:
 	.long	1056964608
 	.align 4
-.LC20:
+.LC21:
 	.long	1084227584
 	.align 4
-.LC23:
+.LC24:
 	.long	1065353216
 	.align 4
-.LC26:
+.LC27:
 	.long	1073741824
 	.ident	"GCC: (GNU) 7.3.0"
 	.def	qOutputString;	.scl	2;	.type	32;	.endef

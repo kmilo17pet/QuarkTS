@@ -43,10 +43,12 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
     #pragma warning disable 520    /*disable warning: (520) function "x" is never called*/
     #pragma warning disable 759    /*disable warning: (759) expression generates no code*/
     #pragma warning disable 751    /*disable warning: (751) arithmetic overflow in constant expression*/
+    #pragma warning disable 373    /*disable warning: (373) implicit signed to unsigned conversion*/
     #if __XC8_VERSION > 1380     
         #pragma warning disable 1510    /*disable warning: (1510)  non-reentrant function @f appears in multiple call graphs and has been duplicated by the compiler*/
         #pragma warning disable 2029    /*disable warning: (2029)  a function pointer cannot be used to hold the address of data*/
         #pragma warning disable 2030    /*disable warning: (2030) a data pointer cannot be used to hold the address of a function*/
+        //#pragma warning disable 373    /*disable warning: (2030) a data pointer cannot be used to hold the address of a function*/
         /*--MSGDISABLE=2029:off,2030:off,373:off */
     #endif
     /*--MSGDISABLE=2029:off,2030:off,373:off */
@@ -1404,10 +1406,6 @@ static char qNibbletoX(uint8_t value){
     return (ch > '9')? ch+7u : ch;  
 }
 /*============================================================================*/
-static uint8_t qXtoNibble(char c){
-    
-}
-/*============================================================================*/
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
     uint8_t *pdat =(uint8_t*)data; 
     int i;
@@ -1526,12 +1524,14 @@ char* qItoA(int num, char* str, int base){
 }
 /*============================================================================*/
 qBool_t qIsNan(float f){
-    const uint32_t u = *(uint32_t*)&f;
+    uint32_t u;
+    u = *(uint32_t*)&f;
     return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);    /* Both NaN and qNan*/
 }
 /*============================================================================*/
 uint8_t qIsInf(float f){
-    const uint32_t u = *(uint32_t*)&f;
+    uint32_t u;
+    u = *(uint32_t*)&f;
     if(u == 0x7f800000ul) return 1u;
     if(u == 0xff800000ul) return 1u;
     return 0u;
@@ -1587,7 +1587,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
 	*ptr++ = '-';
     }
 
-    intPart = num;
+    intPart = (int32_t)num;
     num -= intPart;
 
     if (!intPart) *ptr++ = '0';
@@ -1605,7 +1605,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
         *ptr++ = '.'; /*place decimal point*/
         while (precision--){ /*convert*/
             num *= 10.0;
-            c = num;
+            c = (char)num;
             *ptr++ = c + '0';
             num -= c;
         }

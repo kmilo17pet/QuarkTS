@@ -30,6 +30,17 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 extern "C" {
 #endif
         
+    
+    #ifndef  __FUNCTION_NAME__
+        #if defined __FUNCTION__
+            #define __FUNCTION_NAME__   __FUNCTION__
+        #elif  defined  __PRETTY_FUNCTION__
+            #define __FUNCTION_NAME__   __FUNCTION__
+        #else
+            #define __FUNCTION_NAME__   ""
+        #endif
+    #endif
+
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
         #define __ORDER_LITTLE_ENDIAN__     1
     #endif
@@ -728,9 +739,9 @@ Parameters:
 Note: the Debug/Trace function must be previously defined with qSetDebugFcn
 */
 #define qTraceMem(Pointer, Size)   if(__qDebugOutputFcn!=NULL){ \
-                                    qPrintString(__qDebugOutputFcn, NULL, __qAT() "{"); \
-                                    qPrintString(__qDebugOutputFcn, NULL, __func__); \
-                                    qPrintString(__qDebugOutputFcn, NULL, "} " __qTOSTRING(Pointer) " = "); \
+                                    qPrintString(__qDebugOutputFcn, NULL, __qAT()); \
+                                    qPrintString(__qDebugOutputFcn, NULL, __FUNCTION_NAME__); \
+                                    qPrintString(__qDebugOutputFcn, NULL, " " __qTOSTRING(Pointer) " = "); \
                                     qPrintXData(__qDebugOutputFcn, NULL, (void*)Pointer, Size); \
                                 } \
 
@@ -761,9 +772,9 @@ Parameters:
 Note: the Debug/Trace function must be previously defined with qSetDebugFcn
 */
 #define qTraceVar(Var, SP_TYPE_MODE)    if(__qDebugOutputFcn!=NULL){ \
-                                        qPrintString(__qDebugOutputFcn, NULL, __qAT() "{"); \
-                                        qPrintString(__qDebugOutputFcn, NULL, __func__); \
-                                        qPrintString(__qDebugOutputFcn, NULL, "} " __qTOSTRING(Var) " = "); \
+                                        qPrintString(__qDebugOutputFcn, NULL, __qAT()); \
+                                        qPrintString(__qDebugOutputFcn, NULL, __FUNCTION_NAME__); \
+                                        qPrintString(__qDebugOutputFcn, NULL, " " __qTOSTRING(Var) " = "); \
                                         qPrintString(__qDebugOutputFcn, NULL,  (SP_TYPE_MODE==QT_FPT)? qFtoA(Var, qDebugTrace_Buffer, 10) : qItoA(Var, qDebugTrace_Buffer, SP_TYPE_MODE) ); \
                                         qPrintString(__qDebugOutputFcn, NULL, "\r\n"); \
                                         } \
