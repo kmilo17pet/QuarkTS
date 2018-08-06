@@ -2696,10 +2696,7 @@ void qSwapBytes(void *data, const qSize_t n);
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
 void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
-
-
-
-
+# 696 "QuarkTS.h"
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
 char* qItoA(int num, char* str, int base);
@@ -2708,11 +2705,11 @@ qBool_t qIsNan(float f);
 char* qFtoA(float num, char *str, uint8_t precision);
 
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
-
+# 715 "QuarkTS.h"
 extern qPutChar_t __qDebugOutputFcn;
-# 717 "QuarkTS.h"
+# 747 "QuarkTS.h"
 extern char qDebugTrace_Buffer[32];
-# 729 "QuarkTS.h"
+# 776 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;
@@ -2787,7 +2784,7 @@ qSM_Status_t firststate(qSMData_t fsm){
 # 43 "main.c" 3 4
    ((void *)0)
 # 43 "main.c"
-   , __FUNCTION__, 0x00u); qOutputString(__qDebugOutputFcn, 
+   , __func__, 0x00u); qOutputString(__qDebugOutputFcn, 
 # 43 "main.c" 3 4
    ((void *)0)
 # 43 "main.c"
@@ -2808,7 +2805,7 @@ qSM_Status_t firststate(qSMData_t fsm){
 # 44 "main.c" 3 4
    ((void *)0)
 # 44 "main.c"
-   , __FUNCTION__, 0x00u); qOutputString(__qDebugOutputFcn, 
+   , __func__, 0x00u); qOutputString(__qDebugOutputFcn, 
 # 44 "main.c" 3 4
    ((void *)0)
 # 44 "main.c"
@@ -2983,7 +2980,7 @@ int main(int argc, char** argv) {
 # 191 "main.c" 3 4
    ((void *)0)
 # 191 "main.c"
-   , __FUNCTION__, 0x00u); qOutputString(__qDebugOutputFcn, 
+   , __func__, 0x00u); qOutputString(__qDebugOutputFcn, 
 # 191 "main.c" 3 4
    ((void *)0)
 # 191 "main.c"

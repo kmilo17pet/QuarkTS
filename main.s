@@ -44,7 +44,7 @@ firststate:
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	__FUNCTION__.3969(%rip), %r8
+	leaq	__func__.3969(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -66,7 +66,7 @@ firststate:
 	xorl	%edx, %edx
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	__FUNCTION__.3969(%rip), %r8
+	leaq	__func__.3969(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -676,7 +676,7 @@ main:
 	movq	%rcx, (%rbx)
 	call	qOutputString
 	movq	(%rbx), %rcx
-	leaq	__FUNCTION__.4049(%rip), %r8
+	leaq	__func__.4049(%rip), %r8
 	xorl	%r9d, %r9d
 	xorl	%edx, %edx
 	call	qOutputString
@@ -707,7 +707,7 @@ main:
 	ret
 	.seh_endproc
 	.section .rdata,"dr"
-__FUNCTION__.4049:
+__func__.4049:
 	.ascii "main\0"
 .lcomm tmr.4002,12,8
 	.data
@@ -719,7 +719,7 @@ _qCRTaskState_.4005:
 .lcomm tmr.3974,12,8
 	.section .rdata,"dr"
 	.align 8
-__FUNCTION__.3969:
+__func__.3969:
 	.ascii "firststate\0"
 .lcomm tmr.3968,12,8
 	.comm	SMTask2, 88, 5
