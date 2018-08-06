@@ -74,6 +74,11 @@ static void _qTriggerReleaseSchedEvent(void);
     static qBool_t _qRBufferFull(qRBuffer_t *obj);
 #endif
 
+static char qNibbletoX(uint8_t value);    
+qPutChar_t __qDebugOutputFcn = NULL;
+#ifdef Q_TRACE_VARIABLES
+    char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
+#endif
 #define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
 /*========================== QuarkTS Private Macros ==========================*/
 #define qEnterCritical()                        if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
@@ -87,6 +92,7 @@ static void _qTriggerReleaseSchedEvent(void);
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
 #define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
+
 /*============================================================================*/
 /*
 qTask_t* qTaskSelf(void)
@@ -1318,10 +1324,10 @@ Parameters:
 */
 /*============================================================================*/
 void qSwapBytes(void *data, const qSize_t n){
-    uint8_t *p = data;
-    size_t lo, hi;
+    uint8_t *p = data, tmp;
+    qSize_t lo, hi;
     for(lo=0, hi=n-1; hi>lo; lo++, hi--){
-        char tmp=p[lo];
+        tmp=p[lo];
         p[lo] = p[hi];
         p[hi] = tmp;
     }
@@ -1376,7 +1382,7 @@ void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AI
     for(i=0;i<n;i++) cdata[i] = fcn( ((AIP)? (char*)storagep+i : storagep));
 }
 /*============================================================================*/
-/*void qOutputString(qPutChar_t fcn, const char *s)
+/*void qOutputString(qPutChar_t fcn, const char *s, qBool_t AIP)
  
 Wrapper method to write a string througth fcn
   
@@ -1385,10 +1391,32 @@ Parameters:
     - fcn : The basic output byte function
     - storagep : The storage pointer passed to fcn
     - s: The string to be written
+    - AIP : Auto-Increment the storage-pointer
 */
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP){
     size_t i = 0;
     while(*s)  fcn(((AIP)? (char*)storagep+(i++): storagep), *s++);
+}
+/*============================================================================*/
+static char qNibbletoX(uint8_t value){
+    char ch;
+    ch = (char)(value & 0x0F) + '0';
+    return (ch > '9')? ch+7u : ch;  
+}
+/*============================================================================*/
+static uint8_t qXtoNibble(char c){
+    
+}
+/*============================================================================*/
+void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
+    uint8_t *pdat =(uint8_t*)data; 
+    int i;
+    for(i=0;i<n;i++, fcn(storagep, ' ')){
+        fcn(storagep, qNibbletoX( qByteHighNibble(pdat[i]) ) );
+        fcn(storagep, qNibbletoX( qByteLowNibble(pdat[i]) ) );
+    }
+    fcn(storagep, '\r' );
+    fcn(storagep, '\n' );
 }
 /*============================================================================*/
 /*void qU32toX(uint32_t value, char *str, int8_t n)
@@ -1408,39 +1436,35 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qU32toX(uint32_t value, char *str, int8_t n){ 
-    char ch;
     int i;
     str[n]='\0';
-    for(i=n-1; i>=0; value>>=4, i--){
-	ch = (char)(value & 0x0F) + '0';
-	str[i] = (ch > '9')? ch+7u : ch;        
-    }
+    for(i=n-1; i>=0; value>>=4, i--) str[i] = qNibbletoX(value);
     return str;
 }
 /*============================================================================*/
 /*uint32_t qXtoU32(const char *s)
   
-Converts an  integer value to a null-terminated string 
-and stores the result in the array given by str parameter.
-str should be an array long enough to contain any possible value.
+Converts the input string s consisting of hexadecimal digits into an unsigned 
+integer value. The input parameter s should consist exclusively of hexadecimal 
+digits, with optional whitespaces. The string will be processed one character at
+a time, until the function reaches a character which it doesn’t recognize 
+(including a null character).
   
 Parameters:
 
-    - value : Value to be converted to a string.
-    - str : Array in memory where to store the resulting null-terminated string.
-    - n: The number of chars used to represent value in 'str' 
+    - s : The hex string to be converted
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  The numeric value uint32_t
 */
 uint32_t qXtoU32(const char *s) {
     uint32_t val = 0;
-    char byte;
+    uint8_t byte;
     uint8_t nparsed = 0;
     while (*s != '\0' && nparsed<8) {
         byte = toupper(*s++); 
-        if( isalnum(byte) && byte<='F'){
+        if( isxdigit(byte) ){
             nparsed++;
             if (byte >= '0' && byte <= '9') byte = byte - '0'; 
             else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;           
@@ -1500,7 +1524,95 @@ char* qItoA(int num, char* str, int base){
     qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
     return str;
 }
+/*============================================================================*/
+qBool_t qIsNan(float f){
+    const uint32_t u = *(uint32_t*)&f;
+    return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);    /* Both NaN and qNan*/
+}
+/*============================================================================*/
+uint8_t qIsInf(float f){
+    const uint32_t u = *(uint32_t*)&f;
+    if(u == 0x7f800000ul) return 1u;
+    if(u == 0xff800000ul) return 1u;
+    return 0u;
+}
+/*============================================================================*/
+/* char* qFtoA(float f, char *str, uint8_t precision)
 
+Converts a float value to a formatted string.
+
+Parameters:
+
+    - num : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+    - precision: Desired number of significant fractional digits in the string.
+                 (The max allowed precision is 10)
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
+*/
+char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*/
+    char *ptr = str;
+    char *p = ptr;
+    char c;
+    int32_t intPart;
+    
+    if(num==0.0f){
+        str[0]='0';
+        str[1]='.';
+        str[2]='0';
+        str[3]=0;        
+        return str;
+    }
+    if((c = qIsInf(num))){
+        str[0]=(c==1)?'+':'-';
+        str[1]='i';
+        str[2]='n';
+        str[3]='f';
+        str[4]=0;
+        return str;        
+    }
+    if(qIsNan(num)){
+        str[0]='n';
+        str[1]='a';
+        str[2]='n';
+        str[3]=0;
+        return str;
+    }
+    
+    if(precision > 10) precision = 10;
+    if(num < 0){
+        num = -num;
+	*ptr++ = '-';
+    }
+
+    intPart = num;
+    num -= intPart;
+
+    if (!intPart) *ptr++ = '0';
+    else{
+	p = ptr; /*save start pointer*/
+        while (intPart){ /*convert (reverse order)*/
+            *p++ = '0' + intPart % 10;
+            intPart /= 10;
+	}
+        qSwapBytes(ptr, (qSize_t)(p-ptr));
+        ptr = p;
+    }
+    
+    if (precision){ /*decimal part*/
+        *ptr++ = '.'; /*place decimal point*/
+        while (precision--){ /*convert*/
+            num *= 10.0;
+            c = num;
+            *ptr++ = c + '0';
+            num -= c;
+        }
+    }
+    *ptr = 0; /*put the null char*/
+    return str;
+}
 #ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){

@@ -40,6 +40,9 @@ qSM_Status_t firststate(qSMData_t fsm){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
     }
+    qTraceMem(&tmr.Start, sizeof(tmr.Start));
+    qTraceVar(tmr.Start, QT_DEC);
+
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
     }
@@ -64,6 +67,7 @@ qSM_Status_t secondstate(qSMData_t fsm){
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
     printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
+    
     
     if(e->FirstCall){
         puts("FirstCall");
@@ -177,9 +181,15 @@ void inputfcn(void* p, const char c){
     printf("\r\n%d\r\n",(int)p);
     putchar(c);
 }
+void putcharfcn(void* stp, char c){
+    putchar(c);
+}
 
 /*============================================================================*/
 int main(int argc, char** argv) {      
+    qSetDebugFcn(putcharfcn);
+    qTraceVar(qXtoU32("0FA3423"), QT_HEX);
+    return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);

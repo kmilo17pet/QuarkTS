@@ -31,13 +31,23 @@ extern "C" {
 #endif
     
     
+     
+    #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
+        #define __ORDER_LITTLE_ENDIAN__     1
+    #endif
+    #ifndef __BYTE_ORDER__
+        #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
+    #endif
+     
+    
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
     #define Q_RINGBUFFERS           /*remove this line if you will never use Ring Buffers*/
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
-    
-    
+    #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
+    #define Q_DEBUGTRACE_BUFSIZE    32  /*Size for the debug/trace buffer: 32 bytes should be enough*/
+ 
     #include <stdint.h>
     #include <string.h>
     #include <stdio.h>
@@ -140,7 +150,6 @@ extern "C" {
     typedef uint8_t qState_t;
     typedef uint8_t qBool_t;
     typedef uint16_t qSize_t;
-
     
     #define qLowest_Priority     ((qPriority_t)(0x00u))
     #define qMedium_Priority     ((qPriority_t)(0x7Fu))
@@ -362,6 +371,7 @@ extern "C" {
         #endif 
         qTask_t *CurrentRunningTask;
     }QuarkTSCoreData_t;
+    
     void qSchedulerSysTick(void);
     qTask_t* qTaskSelf(void);
     qBool_t qTaskIsEnabled(const qTask_t *Task);
@@ -670,14 +680,99 @@ void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
 void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 
+/*qPrintString(fcn, storagep, s)
+ 
+This macro is a Wrapper method to write a string througth fcn
+  
+Parameters:
+
+    - fcn : The basic output byte function
+    - storagep : The storage pointer passed to fcn
+    - s: The string to be written
+*/
 #define qPrintString(fcn, storagep, s)          qOutputString(fcn, storagep, s, qFalse) 
 #define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, storagep, data, n, qFalse) 
 
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
 char* qItoA(int num, char* str, int base);
+uint8_t qIsInf(float f);
+qBool_t qIsNan(float f);
+char* qFtoA(float num, char *str, uint8_t precision);
+
+void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
+
+/*qSetDebugFcn(fcn)
+
+This macro set the output method for debug/trace messages.
+
+Parameters:
+
+    - fcn : The basic output byte function
+
+*/ 
+#define qSetDebugFcn(fcn)   __qDebugOutputFcn = fcn
+extern qPutChar_t __qDebugOutputFcn;
+
+#define __qSTRINGIFY(x) #x
+#define __qTOSTRING(x) __qSTRINGIFY(x)
+#define __qAT() ">(" __FILE__ ")@" __qTOSTRING(__LINE__) ":" 
+
+/*qTraceMem(Pointer, Size)
+ 
+Trace memory from the specified address
+  
+Parameters:
+
+    - Pointer : The target memory address
+    - Size: Number of bytes
+
+Note: the Debug/Trace function must be previously defined with qSetDebugFcn
+*/
+#define qTraceMem(Pointer, Size)   if(__qDebugOutputFcn!=NULL){ \
+                                    qPrintString(__qDebugOutputFcn, NULL, __qAT() "{"); \
+                                    qPrintString(__qDebugOutputFcn, NULL, __FUNCTION__); \
+                                    qPrintString(__qDebugOutputFcn, NULL, "} " __qTOSTRING(Pointer) " = "); \
+                                    qPrintXData(__qDebugOutputFcn, NULL, (void*)Pointer, Size); \
+                                } \
 
 
+#define QT_BIN   2
+#define QT_OCT   8
+#define QT_DEC   10
+#define QT_HEX   16
+#define QT_FPT   255
+
+#ifdef Q_TRACE_VARIABLES
+extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
+
+/*qTraceVar(Pointer, Size)
+ 
+Trace a variable (up to 32bit data)
+  
+Parameters:
+
+    - Var : The target variable
+    - SP_TYPE_MODE: Visualization mode. It must be one of the following parameters:
+                    > QT_BIN : Binary
+                    > QT_OCT : Octal
+                    > QT_DEC : Decimal
+                    > QT_HEX : Hexadecimal    
+                    > QT_FTP : Floating-Point (Up to 10 digits of precision)    
+                                     
+Note: the Debug/Trace function must be previously defined with qSetDebugFcn
+*/
+#define qTraceVar(Var, SP_TYPE_MODE)    if(__qDebugOutputFcn!=NULL){ \
+                                        qPrintString(__qDebugOutputFcn, NULL, __qAT() "{"); \
+                                        qPrintString(__qDebugOutputFcn, NULL, __FUNCTION__); \
+                                        qPrintString(__qDebugOutputFcn, NULL, "} " __qTOSTRING(Var) " = "); \
+                                        qPrintString(__qDebugOutputFcn, NULL,  (SP_TYPE_MODE==QT_FPT)? qFtoA(Var, qDebugTrace_Buffer, 10) : qItoA(Var, qDebugTrace_Buffer, SP_TYPE_MODE) ); \
+                                        qPrintString(__qDebugOutputFcn, NULL, "\r\n"); \
+                                        } \
+
+#else
+    #define qTraceVar(Var, SP_TYPE)
+#endif
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;
