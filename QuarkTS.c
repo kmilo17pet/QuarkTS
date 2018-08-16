@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.5
+ *  Version : 4.6.6
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1474,6 +1474,110 @@ uint32_t qXtoU32(const char *s) {
     return val;
 }
 /*============================================================================*/
+/* double qAtoF(const char *s)
+Parses the C string s, interpreting its content as a floating point number and 
+returns its value as a double. The function first discards as many whitespace 
+characters (as in isspace) as necessary until the first non-whitespace character
+is found. Then, starting from this character, takes as many characters as possible 
+that are valid following a syntax resembling that of floating point literals 
+(see below), and interprets them as a numerical value. The rest of the string after 
+the last valid character is ignored and has no effect on the behavior of this function.
+ 
+Parameters:
+
+    - s : The string beginning with the representation of a floating-point number.
+
+Return value:
+
+    On success, the function returns the converted floating point number as 
+    a double value.
+    If no valid conversion could be performed, the function returns zero (0.0).
+    If the converted value would be out of the range of representable values by
+    a double, it causes undefined behavior
+*/
+double qAtoF(const char *s){
+    int i, sign;
+    double value, power;
+    #ifdef QATOF_FULL
+        int powersign; 
+        double power2;
+    #endif    
+    for(i = 0; isspace(s[i]); ++i);
+    sign = (s[i] == '-')? -1 : 1;
+    if(s[i] == '-' || s[i] == '+') ++i;
+  
+    for(value = 0.0; isdigit(s[i]); ++i) value = value * 10.0 + (s[i] - '0');   
+    if(s[i] == '.') ++i;
+    for(power = 1.0; isdigit(s[i]); ++i, power *= 10.0)    value = value * 10.0 + (s[i] - '0');
+    #ifdef SATOF_FULL
+        if(s[i] == 'e' || s[i] == 'E') ++i;
+        else return sign * value/power;
+
+        powersign = (s[i] == '-')? -1 : 1;
+        if(s[i] == '-' || s[i] == '+') ++i;
+
+        for(power2 = 0; isdigit(s[i]); ++i)  power2 = power2 * 10 + (s[i] - '0');
+
+        if(powersign == -1){
+            while(power2 != 0){
+                power *= 10;
+                --power2;
+            }
+        }
+        else{
+            while(power2 != 0){
+                power /= 10;
+                --power2;
+            }
+        }
+        return sign * value/power;
+    #else
+        return sign * value/power;
+    #endif      
+}
+/*============================================================================*/
+/*int qAtoI(const char *s)
+Parses the C-string s interpreting its content as an integral number, which is 
+returned as a value of type int. The function first discards as many whitespace
+characters (as in isspace) as necessary until the first non-whitespace character 
+is found. Then, starting from this character, takes an optional initial plus or
+minus sign followed by as many base-10 digits as possible, and interprets them 
+as a numerical value.
+TheThe string can contain additional characters after those that form the integral
+number, which are ignored and have no effect on the behavior of this function.
+If the first sequence of non-whitespace characters in str is not a valid integral 
+number, or if no such sequence exists because either str is empty or it contains 
+only whitespace characters, no conversion is performed and zero is returned.
+
+Parameters:
+
+    - s : The string beginning with the representation of a floating-point number.
+
+Return value:
+
+On success, the function returns the converted integral number as an int value.
+If the converted value would be out of the range of representable values by 
+an int, it causes undefined behavior.
+*/
+int qAtoI(const char *s){
+    int res = 0;
+    int sgn = 1;
+
+    for (; isspace(*s); ++s);
+
+    if (*s == '-'){
+        sgn = -1;
+        ++s;
+    } 
+    else if (*s == '+') ++s;
+   
+    for (; *s != 0; ++s){
+        if (*s < '0' || *s > '9')  return sgn * res;
+        res = res * 10 + *s - '0';
+    }
+    return sgn * res;
+}
+/*============================================================================*/
 /* char* qItoA(int num, char* str, int base)
 
 Converts an integer value to a null-terminated string using the specified base 
@@ -1523,18 +1627,40 @@ char* qItoA(int num, char* str, int base){
     return str;
 }
 /*============================================================================*/
+/*qBool_t qIsNan(float f)
+Determines if the given floating point number arg is a not-a-number (NaN) value. 
+
+Parameters:
+
+    - f : Floating point value(32bits).
+
+Return value:
+
+    qTrue is argument is NaN, otherwise qFalse
+*/
 qBool_t qIsNan(float f){
     uint32_t u;
     u = *(uint32_t*)&f;
-    return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);    /* Both NaN and qNan*/
+    return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);
 }
 /*============================================================================*/
-uint8_t qIsInf(float f){
+/*qBool_t qIsInf(float f)
+Determines if the given floating point number arg is positive or negative infinity
+
+Parameters:
+
+    - f : Floating point value(32bits).
+
+Return value:
+ 
+     True is argument has an infinite value, otherwise qFalse
+*/
+qBool_t qIsInf(float f){
     uint32_t u;
     u = *(uint32_t*)&f;
-    if(u == 0x7f800000ul) return 1u;
-    if(u == 0xff800000ul) return 1u;
-    return 0u;
+    if(u == 0x7f800000ul) return qTrue;
+    if(u == 0xff800000ul) return qTrue;
+    return qFalse;
 }
 /*============================================================================*/
 /* char* qFtoA(float f, char *str, uint8_t precision)
