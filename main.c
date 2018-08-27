@@ -7,6 +7,7 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <ctype.h>
+#include <termios.h>
 #include <math.h>
 
 #include "QuarkTS.h"
@@ -148,7 +149,7 @@ void blinktaskCallback(qEvent_t e){
         puts("led fuck");
         qSTimerSet(&tmr, 2);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
-        
+        qCoroutineRestart;
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -185,10 +186,11 @@ void putcharfcn(void* stp, char c){
     putchar(c);
 }
 
-/*============================================================================*/
+
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
-    qTraceVar(qXtoU32("0FA3423"), QT_HEX);
+
+    qTraceVariable(7485, qDisplayUnsignedDecimal);
     return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );

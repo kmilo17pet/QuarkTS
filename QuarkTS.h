@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6
+ *  Version : 4.6.6c
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -44,7 +44,7 @@ extern "C" {
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
-    #define Q_DEBUGTRACE_BUFSIZE    32  /*Size for the debug/trace buffer: 32 bytes should be enough*/
+    #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 32 bytes should be enough*/
     
     #undef QATOF_FULL
     
@@ -55,7 +55,8 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.6.6"
+    #define QUARTKTS_VERSION "4.6.6c"
+    #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -590,14 +591,17 @@ Resets the _CRPos_ variable to the begining of the Co-Routine
             qConst qBool_t SR; /*The SET-RESET flag*/
             qConst qClock_t Start, TV; /*The time-epochs registers*/
         }qSTimer_t;
+        
         qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
         qBool_t qSTimerExpired(const qSTimer_t *obj);
         qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time);
         qClock_t qSTimerElapsed(const qSTimer_t *obj);
         qClock_t qSTimerRemaining(const qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
+        void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time);
+        qBool_t qSTimerStatus(const qSTimer_t *obj);
+        qTime_t qClock2Time(const qClock_t t);
         #define QSTIMER_INITIALIZER     {0, 0, 0}
-
      
         
 #ifdef Q_MEMORY_MANAGER
@@ -690,15 +694,16 @@ Parameters:
     - storagep : The storage pointer passed to fcn
     - s: The string to be written
 */
-#define qPrintString(fcn, storagep, s)          qOutputString(fcn, storagep, s, qFalse) 
-#define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, storagep, data, n, qFalse) 
+#define qPrintString(fcn, storagep, s)          qOutputString(fcn, (void*)storagep, (const char *)s, qFalse) 
+#define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, (void*)storagep, (void*)data, n, qFalse) 
 
 /*Some utilities*/
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
 double qAtoF(const char *s);
 int qAtoI(const char *s);
-char* qItoA(int num, char* str, int base);
+char* qUtoA(uint32_t num, char* str, uint8_t base);
+char* qItoA(int32_t num, char* str, uint8_t base);
 uint8_t qIsInf(float f);
 qBool_t qIsNan(float f);
 char* qFtoA(float num, char *str, uint8_t precision);
@@ -721,11 +726,25 @@ extern qPutChar_t __qDebugOutputFcn;
 #define __qTOSTRING(x) __qSTRINGIFY(x)
 #define __qAT() "[" __FILE__ ":" __qTOSTRING(__LINE__) "] " 
 
+#define QT_UBIN -2
+#define QT_UOCT -8
+#define QT_UDEC -10
+#define QT_UHEX -16
 #define QT_BIN   2
 #define QT_OCT   8
 #define QT_DEC   10
 #define QT_HEX   16
 #define QT_FPT   254
+
+#define qDisplayBinary                  QT_BIN
+#define qDisplayOctal                   QT_OCT
+#define qDisplayHexadecimal             QT_HEX
+#define qDisplayDecimal                 QT_DEC
+#define qDisplayFloat                   QT_FPT
+#define qDisplayUnsignedBinary          QT_UBIN
+#define qDisplayUnsignedOctal           QT_UOCT
+#define qDisplayUnsignedHexadecimal     QT_UHEX
+#define qDisplayUnsignedDecimal         QT_UDEC
 
 #ifdef Q_TRACE_VARIABLES
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
@@ -737,19 +756,22 @@ extern qPutChar_t __qDebugOutputFcn;
 
         - Var : The target variable
         - DISP_TYPE_MODE: Visualization mode. It must be one of the following parameters:
-                        > QT_BIN : Binary       (value is always considered unsigned)
-                        > QT_OCT : Octal        (value is always considered unsigned)
-                        > QT_DEC : Decimal
-                        > QT_HEX : Hexadecimal  (value is always considered unsigned)  
-                        > QT_FTP : Floating-Point (Up to 10 digits of precision)    
-
+            > qDisplayBinary                : Binary       (discards the sign)
+            > qDisplayOctal                 : Octal        (discards the sign)
+            > qDisplayDecimal               : Decimal
+            > qDisplayHexadecimal           : Hexadecimal  (discards the sign)  
+            > qDisplayFloat                 : Floating-Point (Up to 10 digits of precision)    
+            > qDisplayUnsignedBinary        : Binary       (full 32bits)
+            > qDisplayUnsignedOctal         : Octal        (full 32bits)
+            > qDisplayUnsignedDecimal       : Decimal      (full 32bits)
+            > qDisplayUnsignedHexadecimal   : Hexadecimal  (full 32bits)  
     Note: the Debug/Trace function must be previously defined with qSetDebugFcn
     */
     
 
     #define qTraceVar(Var, DISP_TYPE_MODE)  if(__qDebugOutputFcn!=NULL){ \
                                                 qPrintString(__qDebugOutputFcn, NULL, __qAT() __qTOSTRING(Var) "="); \
-                                                qPrintString(__qDebugOutputFcn, NULL,  (DISP_TYPE_MODE==QT_FPT)? qFtoA(Var, qDebugTrace_Buffer, 10) : qItoA(Var, qDebugTrace_Buffer, DISP_TYPE_MODE) ); \
+                                                qPrintString(__qDebugOutputFcn, NULL,  (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE) ); \
                                                 qPrintString(__qDebugOutputFcn, NULL, "\r\n"); \
                                             }\
                                             

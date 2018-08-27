@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6
+ *  Version : 4.6.6c
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1058,6 +1058,7 @@ Return value:
 */
 qClock_t qSTimerElapsed(const qSTimer_t *obj){
     if(obj==NULL) return 0ul;
+    if(!obj->SR) return 0;
     return (_qSysTick_Epochs_- obj->Start);
 }
 /*============================================================================*/
@@ -1092,6 +1093,51 @@ void qSTimerDisarm(qSTimer_t *obj){
     if(obj==NULL) return;
     qConstField_Set(qBool_t, obj->SR) /*obj->SR*/ = qFalse;
     qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = 0ul;
+}
+/*============================================================================*/
+/*qBool_t qSTimerStatus(qSTimer_t *obj)
+
+Get the current status of the STimer (Armed or Disarmed)
+
+Parameters:
+
+    - obj : A pointer to the STimer object.  
+
+Return value:
+
+    qTrue when armed, otherwise qFalse when disarmed
+*/
+qBool_t qSTimerStatus(const qSTimer_t *obj){
+    return obj->SR;
+}
+/*============================================================================*/
+/*void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time)
+
+Change the time value for the STimer
+
+Parameters:
+
+    - obj : A pointer to the STimer object.  
+    - Time : The new expiration time(Must be specified in seconds).
+*/
+void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time){
+    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick);
+}
+/*qTime_t qClock2Time(const qClock_t t)
+
+Convert the specified input time in epochs to time in seconds
+
+Parameters:
+
+    - t : time in epochs   
+
+Return value:
+
+    time (t) in seconds
+*/
+
+qTime_t qClock2Time(const qClock_t t){
+    return (qTime_t)(QUARKTS.Tick*t);
 }
 #ifdef Q_MEMORY_MANAGER
 /*============================================================================*/
@@ -1543,7 +1589,7 @@ characters (as in isspace) as necessary until the first non-whitespace character
 is found. Then, starting from this character, takes an optional initial plus or
 minus sign followed by as many base-10 digits as possible, and interprets them 
 as a numerical value.
-TheThe string can contain additional characters after those that form the integral
+The string can contain additional characters after those that form the integral
 number, which are ignored and have no effect on the behavior of this function.
 If the first sequence of non-whitespace characters in str is not a valid integral 
 number, or if no such sequence exists because either str is empty or it contains 
@@ -1551,7 +1597,7 @@ only whitespace characters, no conversion is performed and zero is returned.
 
 Parameters:
 
-    - s : The string beginning with the representation of a floating-point number.
+    - s : The string beginning with the representation of a integer number.
 
 Return value:
 
@@ -1578,6 +1624,45 @@ int qAtoI(const char *s){
     return sgn * res;
 }
 /*============================================================================*/
+/* char* qUtoA(int num, char* str, int base)
+
+Converts an unsigned value to a null-terminated string using the specified base 
+and stores the result in the array given by str parameter. 
+
+str should be an array long enough to contain any possible value: 
+(sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
+32-bits platforms.
+
+Parameters:
+
+    - num : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+    - base: Numerical base used to represent the value as a string, between 2 
+            and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
+*/
+char* qUtoA(uint32_t num, char* str, uint8_t base){
+    int i = 0, rem;
+ 
+    if (num == 0){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+
+    while (num != 0){ /*Process individual digits*/
+        rem = num % base;
+        str[i++] = (rem > 9)? (char)(rem-10) + 'A' : (char)rem + '0';
+        num = num/base;
+    }
+    str[i] = '\0'; /*Append string terminator*/
+    qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
+    return str;
+}
+/*============================================================================*/
 /* char* qItoA(int num, char* str, int base)
 
 Converts an integer value to a null-terminated string using the specified base 
@@ -1600,8 +1685,9 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qItoA(int num, char* str, int base){
-    int i = 0, rem;
+char* qItoA(int32_t num, char* str, uint8_t base){
+    uint8_t i = 0;
+    int rem;
     uint8_t isNegative = 0;
  
     if (num == 0){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
@@ -1653,7 +1739,7 @@ Parameters:
 
 Return value:
  
-     True is argument has an infinite value, otherwise qFalse
+    qTrue is argument has an infinite value, otherwise qFalse
 */
 qBool_t qIsInf(float f){
     uint32_t u;
