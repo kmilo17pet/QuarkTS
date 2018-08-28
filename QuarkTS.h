@@ -276,6 +276,7 @@ extern "C" {
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define qPrivate    _
     #define _qSMData_t struct _qSM_t * const 
+    #define CurrentState   NextState
     typedef struct _qSM_t{ 
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
@@ -299,8 +300,8 @@ extern "C" {
         qConst qBool_t StateFirstEntry;
         /* Data: (Read Only)
         State-machine associated data.
-        Note: If the FSM is running as a task, the asociated event data can be 
-        queried throught the "Data" field. (cast to qEvent_t is mandatory)
+        Note: If the FSM is running as a task, the event data associated with it
+        can be queried throught the "Data" field. (casting to qEvent_t is mandatory)
          */
         void * qConst Data;
         /*Private members (DO NOT USE THEM)*/

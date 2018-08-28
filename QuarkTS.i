@@ -1552,6 +1552,7 @@ extern __attribute__((dllimport)) const char _ctype_[];
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
 
 
+
     typedef struct _qSM_t{
 
 
@@ -1686,11 +1687,11 @@ extern __attribute__((dllimport)) const char _ctype_[];
     void qTaskSetData(volatile struct _qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(volatile struct _qTask_t *Task);
     uint32_t qTaskGetCycles(const volatile struct _qTask_t *Task);
-# 457 "QuarkTS.h"
+# 458 "QuarkTS.h"
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
-# 590 "QuarkTS.h"
+# 591 "QuarkTS.h"
         typedef struct{
             const qBool_t SR;
             const qClock_t Start, TV;
@@ -1721,7 +1722,7 @@ typedef enum {
     qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
     qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192
 }qMEM_size_t;
-# 646 "QuarkTS.h"
+# 647 "QuarkTS.h"
     void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 
@@ -1762,7 +1763,7 @@ void qSwapBytes(void *data, const qSize_t n);
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
 void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
-# 701 "QuarkTS.h"
+# 702 "QuarkTS.h"
 char* qU32toX(uint32_t value, char *str, int8_t npos);
 uint32_t qXtoU32(const char *s);
 double qAtoF(const char *s);
@@ -1774,11 +1775,11 @@ qBool_t qIsNan(float f);
 char* qFtoA(float num, char *str, uint8_t precision);
 
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
-# 723 "QuarkTS.h"
+# 724 "QuarkTS.h"
 extern qPutChar_t __qDebugOutputFcn;
-# 750 "QuarkTS.h"
+# 751 "QuarkTS.h"
     extern char qDebugTrace_Buffer[36];
-# 801 "QuarkTS.h"
+# 802 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;

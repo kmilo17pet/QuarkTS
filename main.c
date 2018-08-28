@@ -103,6 +103,7 @@ void Task3Callback(qEvent_t e){
         int *ptr = (int*)e->EventData;
         printf("ring extracted data %d\r\n",*ptr);
     }
+    
 }
 /*============================================================================*/
 void Task4Callback(qEvent_t e){
@@ -189,9 +190,6 @@ void putcharfcn(void* stp, char c){
 
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
-
-    qTraceVariable(7485, qDisplayUnsignedDecimal);
-    return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
@@ -227,4 +225,4 @@ int main(int argc, char** argv) {
     qSchedulerRun();
     
     return (EXIT_SUCCESS);
-}
+}        
