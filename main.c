@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <termios.h>
 #include <math.h>
+#include <assert.h>
 
 #include "QuarkTS.h"
 /*============================================================================*/
@@ -30,6 +31,9 @@ qSM_Status_t secondstate(qSMData_t fsm);
 void datacapture(qSMData_t fsm){
     
 }
+void putcharfcn(void* stp, char c){
+    putchar(c);
+}
 /*============================================================================*/
 qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
@@ -41,9 +45,6 @@ qSM_Status_t firststate(qSMData_t fsm){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
     }
-    qTraceMem(&tmr.Start, sizeof(tmr.Start));
-    qTraceVar(tmr.Start, QT_DEC);
-
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
     }
@@ -102,8 +103,7 @@ void Task3Callback(qEvent_t e){
     if(e->Trigger == byRBufferPop){
         int *ptr = (int*)e->EventData;
         printf("ring extracted data %d\r\n",*ptr);
-    }
-    
+    } 
 }
 /*============================================================================*/
 void Task4Callback(qEvent_t e){
@@ -174,20 +174,6 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 /*============================================================================*/
-void outputfcn(void* p, const char c){
-    printf("\r\n%d\r\n",(uint16_t)p);
-    putchar(c);
-}
-
-void inputfcn(void* p, const char c){
-    printf("\r\n%d\r\n",(int)p);
-    putchar(c);
-}
-void putcharfcn(void* stp, char c){
-    putchar(c);
-}
-
-
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
     qRBuffer_t ringBuffer;
@@ -197,7 +183,7 @@ int main(int argc, char** argv) {
     void *memtest;
     int x=5 , y=6;
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    
+    assert(0==1);
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y); y=1;
@@ -207,6 +193,7 @@ int main(int argc, char** argv) {
     qSchedulerSetup(0.01, IdleTaskCallback, 10);  
     
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
+    
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
 
@@ -223,6 +210,5 @@ int main(int argc, char** argv) {
         qSchedulePrintChain();
     #endif
     qSchedulerRun();
-    
     return (EXIT_SUCCESS);
 }        

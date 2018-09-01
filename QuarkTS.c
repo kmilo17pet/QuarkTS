@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6c
+ *  Version : 4.6.6d
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -88,8 +88,8 @@ qPutChar_t __qDebugOutputFcn = NULL;
 
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_) /*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
-#define _qTaskDeadlineReached(_TASK_)            ( _TASK_->Interval == qTimeInmediate || ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval)  )
-#define _qTaskHasPendingIterations(_TASK_)       (_qabs(_TASK_->Iterations)>0 || _TASK_->Iterations==qPeriodic)
+#define _qTaskDeadlineReached(_TASK_)            ( (qTimeInmediate == _TASK_->Interval) || ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval)  )
+#define _qTaskHasPendingIterations(_TASK_)       (_qabs(_TASK_->Iterations)>0 || qPeriodic == _TASK_->Iterations)
 #define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    _eVar_.Trigger = _Trigger_; _eVar_.FirstCall = _FirstCall_; _eVar_.TaskData = _TaskData_ 
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
@@ -124,7 +124,7 @@ Return value:
     True if the task in on Enabled state, otherwise returns false.
 */    
 qBool_t qTaskIsEnabled(const qTask_t *Task){
-    if(Task==NULL) return qFalse;
+    if(NULL==Task) return qFalse;
     return (qBool_t)Task->Flag[_qIndex_Enabled];
 }
 /*============================================================================*/
@@ -175,7 +175,7 @@ Return value:
     A unsigned long value containing the number of task activations.
 */
 uint32_t qTaskGetCycles(const qTask_t *Task){
-    if (Task==NULL) return 0ul;
+    if (NULL==Task) return 0ul;
     return Task->Cycles;
 }
 /*============================================================================*/
@@ -194,7 +194,7 @@ Parameters:
     - eventdata : Specific event user-data.
 */ 
 void qTaskSendEvent(qTask_t *Task, void* eventdata){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     Task->Flag[_qIndex_AsyncRun] = qTrue;
     Task->AsyncData = eventdata;
 }
@@ -211,7 +211,7 @@ Parameters:
               For inmediate execution (tValue = qTimeInmediate).
 */
 void qTaskSetTime(qTask_t *Task, const qTime_t Value){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
 }
 /*============================================================================*/
@@ -231,8 +231,8 @@ Parameters:
               iterations again and resume.
 */
 void qTaskSetIterations(qTask_t *Task, const qIteration_t Value){
-    if(Task==NULL) return;
-    Task->Iterations = (Value==qPeriodic)? qPeriodic : -Value;  
+    if(NULL==Task) return;
+    Task->Iterations = (qPeriodic==Value)? qPeriodic : -Value;  
 }
 /*============================================================================*/
 /*void qTaskSetPriority(qTask_t *Task, qPriority_t Value)
@@ -246,7 +246,7 @@ Parameters:
     - Value : Priority Value. [0(min) - 255(max)]
 */
 void qTaskSetPriority(qTask_t *Task, const qPriority_t Value){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     QUARKTS.Flag.Init = qFalse; 
     Task->Priority = Value; 
 }
@@ -263,7 +263,7 @@ Parameters:
                  as input argument.
 */
 void qTaskSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     Task->Callback = CallbackFcn;
 }
 /*============================================================================*/
@@ -277,7 +277,7 @@ Parameters:
     - State : qEnabled or qDisabled 
 */
 void qTaskSetState(qTask_t *Task, const qState_t State){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     if(State && Task->Flag[_qIndex_Enabled]) return;
     Task->Flag[_qIndex_Enabled] = State;
     Task->ClockStart = _qSysTick_Epochs_;
@@ -296,7 +296,7 @@ Return value:
     A void pointer to the task data.
 */
 void qTaskSetData(qTask_t *Task, void* arg){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     Task->TaskData = arg;
 }
 /*============================================================================*/
@@ -309,7 +309,7 @@ Parameters:
     - Task : A pointer to the task node.
 */
 void qTaskClearTimeElapsed(qTask_t *Task){
-    if(Task==NULL) return;
+    if(NULL==Task) return;
     Task->ClockStart = _qSysTick_Epochs_;
 }
 /*============================================================================*/
@@ -335,7 +335,7 @@ Return value:
 qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
     #ifdef Q_PRIORITY_QUEUE
         qQueueStack_t qtmp;
-        if((Task==NULL) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
+        if((NULL==Task) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
         qtmp.Task = Task; 
         qtmp.QueueData = eventdata;
         QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp; /*insert task and the corresponding eventdata to the queue*/
@@ -372,7 +372,7 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     qEnterCritical(); 
     MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){ /*Find the task with the highest priority*/
-        if(QUARKTS.QueueStack[i].Task == NULL) break; /*break if the tail is reached*/
+        if(NULL == QUARKTS.QueueStack[i].Task ) break; /*break if the tail is reached*/
         if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
             MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
             IndexTaskToExtract = i; 
@@ -449,14 +449,14 @@ Return value:
     Returns qTrue on successs, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if(Task==NULL) return qFalse;
+    if(NULL==Task) return qFalse;
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;
     qSchedulerRemoveTask(Task); /*Remove the task if was previously added to the chain*/
     Task->Callback = CallbackFcn;
     Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
     Task->TaskData = arg;
     Task->Priority = Priority;
-    Task->Iterations = (nExecutions==qPeriodic)? qPeriodic : -nExecutions;    
+    Task->Iterations = (qPeriodic==nExecutions)? qPeriodic : -nExecutions;    
     Task->Flag[_qIndex_AsyncRun] = qFalse;
     Task->Flag[_qIndex_InitFlag] = qFalse;
     Task->Flag[_qIndex_RBAutoPop] = qFalse; 
@@ -562,7 +562,7 @@ Return value:
 qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                             qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg){
-    if(StateMachine==NULL || InitState == NULL) return qFalse;
+    if(NULL==StateMachine || NULL==InitState) return qFalse;
     if (!qSchedulerAddxTask(Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg)) return qFalse;    
     qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
     Task->StateMachine = StateMachine;
@@ -584,7 +584,7 @@ Return value:
 qBool_t qSchedulerRemoveTask(qTask_t *Task){
     qTask_t *tmp = QUARKTS.Head;
     qTask_t *prev = NULL;
-    if(tmp == NULL) return qFalse;
+    if(NULL == tmp) return qFalse;
     while(tmp != Task && tmp->Next != NULL){ /*find the task to remove*/
         prev = tmp; /*keep on track the previous node*/
         tmp = tmp->Next;
@@ -600,7 +600,7 @@ qBool_t qSchedulerRemoveTask(qTask_t *Task){
 /*============================================================================*/
 static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
     qTask_t *tmp_node = NULL;
-    if( (*head == NULL) || (Task->Priority>(*head)->Priority) ){ /*is the first task in the scheme or the task has the highest priority over all */
+    if( (NULL == *head ) || (Task->Priority>(*head)->Priority) ){ /*is the first task in the scheme or the task has the highest priority over all */
         Task->Next = *head; /*move the head and just add the task node on top*/
         *head = Task; /*this task will be the new head*/
         return;
@@ -670,16 +670,16 @@ Return value:
 */
 #ifdef Q_RINGBUFFERS
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
-    if(RingBuffer == NULL || Task==NULL || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;   /*Validate*/
-    if(RingBuffer->data == NULL) return qFalse;    
+    if(NULL==RingBuffer || NULL==Task || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;   /*Validate*/
+    if(NULL==RingBuffer->data) return qFalse;    
     Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse)); /*if mode is qRB_COUNT, use their value arg as count*/
     Task->RingBuff = (arg>0)? RingBuffer : NULL; /*reject no valid arg input*/
     return qTrue;
 }
 /*============================================================================*/
 static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
-    if(Task==NULL) return qTriggerNULL;
-    if(Task->RingBuff == NULL) return qTriggerNULL;
+    if(NULL==Task) return qTriggerNULL;
+    if(NULL==Task->RingBuff) return qTriggerNULL;
     if(Task->Flag[_qIndex_RBFull])       if(_qRBufferFull(Task->RingBuff))                                      return byRBufferFull;           
     if(Task->Flag[_qIndex_RBCount]>0)    if(_qRBufferCount(Task->RingBuff) >= Task->Flag[_qIndex_RBCount] )     return byRBufferCount;            
     if(Task->Flag[_qIndex_RBAutoPop])    if(qRBufferGetFront(Task->RingBuff)!=NULL)                             return byRBufferPop;   
@@ -724,16 +724,16 @@ void qSchedulerRun(void){
         #endif
         if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
-                Task->State = (Task->State == qReady)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the qReady task, otherwise put it in qWaiting State*/
+                Task->State = (qReady == Task->State)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the qReady task, otherwise put it in qWaiting State*/
         }
-        else if(Task==NULL && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
+        else if(NULL==Task && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
     }qSchedulerEndPoint; /*scheduling end-point (also check for scheduling-release request)*/
 }
 /*============================================================================*/
 static qTask_t* _qScheduler_GetNodeFromChain(void){ 
     static qTask_t *ChainIterator = __qChainInitializer; /*used to keep on track the current chain position*/
     qTask_t *Node;  /*used the hold the node*/
-    if(ChainIterator == __qChainInitializer) ChainIterator = QUARKTS.Head; /*First call, start from the head*/
+    if(__qChainInitializer == ChainIterator) ChainIterator = QUARKTS.Head; /*First call, start from the head*/
     Node = ChainIterator; /*obtain the current node from the chain*/
     ChainIterator = (ChainIterator)? ChainIterator->Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
     return Node; /*return the task node at current chain position*/
@@ -777,7 +777,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     /*Fill the event info structure*/
     _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag[_qIndex_InitFlag]), Task->TaskData); /*Fill common fields of EventInfo: Trigger, FirstCall and TaskData*/ 
     QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
-    if (Task->StateMachine != NULL && Task->Callback==__qFSMCallbackMode) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+    if (Task->StateMachine != NULL && __qFSMCallbackMode==Task->Callback) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
     else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
     #ifdef Q_RINGBUFFERS 
@@ -859,7 +859,7 @@ Return value:
     Returns 0 on successs, otherwise returns -1;
 */
 qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
-    if(obj==NULL || InitState == NULL) return qFalse;
+    if(NULL==obj || NULL==InitState) return qFalse;
     obj->NextState = InitState;
     qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
     qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0;
@@ -887,7 +887,7 @@ Parameters:
 */    
 void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
-    if(obj == NULL) return;
+    if(NULL==obj) return;
     qConstField_Set(void* ,obj->Data)/*obj->Data*/ = Data;   /*pass the data through the fsm*/
     if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj); /*eval the BeforeAnyState if available*/
     if(obj->NextState!=NULL){ /*eval nextState if available*/
@@ -978,7 +978,7 @@ Return value:
     Returns qTrue on success, otherwise, returns qFalse.
 */
 qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
-    if(obj==NULL) return qFalse;
+    if(NULL==obj) return qFalse;
     if ( (Time/2.0)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
     qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick); /*set the stimer time in epochs*/
     qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = _qSysTick_Epochs_; /*set the init time of the stimer with the current system epoch value*/
@@ -1012,7 +1012,7 @@ Return value:
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
 qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time){
-    if(obj==NULL) return qFalse;
+    if(NULL==obj) return qFalse;
     if(obj->SR){  /*if the stimer is enabled*/
         if (qSTimerExpired(obj)){ /*check for expiration*/
             qSTimerDisarm(obj); /*if expired, disarm the stimer*/
@@ -1039,7 +1039,7 @@ Return value:
 
 */
 qBool_t qSTimerExpired(const qSTimer_t *obj){
-    if(obj==NULL) return qFalse;
+    if(NULL==obj) return qFalse;
     if(!obj->SR) return qFalse; 
     return (qBool_t)(qSTimerElapsed(obj)>=obj->TV); 
 }
@@ -1057,7 +1057,7 @@ Return value:
     The Elapsed time specified in epochs
 */
 qClock_t qSTimerElapsed(const qSTimer_t *obj){
-    if(obj==NULL) return 0ul;
+    if(NULL==obj) return 0ul;
     if(!obj->SR) return 0;
     return (_qSysTick_Epochs_- obj->Start);
 }
@@ -1076,7 +1076,7 @@ Return value:
 */
 qClock_t qSTimerRemaining(const qSTimer_t *obj){
     qClock_t elapsed;
-    if(obj==NULL) return 0;
+    if(NULL==obj) return 0;
     elapsed = qSTimerElapsed(obj);
     return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
 }
@@ -1090,7 +1090,7 @@ Parameters:
     - obj : A pointer to the STimer object.  
 */
 void qSTimerDisarm(qSTimer_t *obj){
-    if(obj==NULL) return;
+    if(NULL==obj) return;
     qConstField_Set(qBool_t, obj->SR) /*obj->SR*/ = qFalse;
     qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = 0ul;
 }
@@ -1108,6 +1108,7 @@ Return value:
     qTrue when armed, otherwise qFalse when disarmed
 */
 qBool_t qSTimerStatus(const qSTimer_t *obj){
+    if(NULL==obj) return qFalse;
     return obj->SR;
 }
 /*============================================================================*/
@@ -1121,6 +1122,7 @@ Parameters:
     - Time : The new expiration time(Must be specified in seconds).
 */
 void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time){
+    if(NULL==obj) return;
     qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick);
 }
 /*qTime_t qClock2Time(const qClock_t t)
@@ -1135,10 +1137,10 @@ Return value:
 
     time (t) in seconds
 */
-
 qTime_t qClock2Time(const qClock_t t){
     return (qTime_t)(QUARKTS.Tick*t);
 }
+
 #ifdef Q_MEMORY_MANAGER
 /*============================================================================*/
 /*void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size)
@@ -1160,7 +1162,7 @@ void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
     uint8_t i, j, k, c;
     uint16_t sum;		
     uint8_t *offset = obj->Blocks;
-    if(obj==NULL) return NULL;			
+    if(NULL==obj) return NULL;			
     j = 0;	
     qEnterCritical();
     while( j < obj->NumberofBlocks ) {			
@@ -1210,7 +1212,7 @@ Note: The memory must be returned to the pool from where was allocated
  */
 void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     uint8_t i, *p;
-    if(obj==NULL || pmem==NULL) return;
+    if(NULL==obj || NULL==pmem) return;
     qEnterCritical();	
     p = (uint8_t*)obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
@@ -1263,7 +1265,7 @@ Note: Element_count should be a power of two, or it will only use the next
       lower power of two
  */
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount){
-    if(obj==NULL || DataBlock==NULL) return;
+    if(NULL==obj || NULL==DataBlock) return;
     obj->head = 0;
     obj->tail = 0;
     obj->data = DataBlock;
@@ -1284,7 +1286,7 @@ Return value:
     qTrue if the ring buffer is empty, qFalse if it is not.
  */
 qBool_t qRBufferEmpty(qRBuffer_t *obj){
-    return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == 0) : qTrue);    
+    return (qBool_t)(obj ? (qBool_t)(0==_qRBufferCount(obj)) : qTrue);    
 }
 /*============================================================================*/
 /*void* qRBufferGetFront(qRBuffer_t *obj)
@@ -1300,7 +1302,7 @@ Return value:
     Pointer to the data, or NULL if nothing in the list
  */
 void* qRBufferGetFront(qRBuffer_t *obj){
-    if (obj==NULL) return NULL;
+    if (NULL==obj) return NULL;
     return (void*)(!qRBufferEmpty(obj) ? &(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]) : NULL);    
 }
 /*============================================================================*/
@@ -1319,7 +1321,7 @@ Return value:
 */
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
     void *data = NULL;
-    if(obj == NULL) return qFalse;
+    if(NULL==obj) return qFalse;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
         memcpy(dest, data, obj->ElementSize);
@@ -1348,7 +1350,7 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     volatile uint8_t *ring_data = NULL;
     uint16_t i;
 
-    if(obj==NULL) return qFalse;
+    if(NULL==obj) return qFalse;
     if(data_element){
         if(!_qRBufferFull(obj)){ /*Limit the amount of elements to accpet*/
             ring_data = obj->data + ((obj->head % obj->Elementcount) * obj->ElementSize);
@@ -1549,18 +1551,18 @@ double qAtoF(const char *s){
         double power2;
     #endif    
     for(i = 0; isspace(s[i]); ++i);
-    sign = (s[i] == '-')? -1 : 1;
-    if(s[i] == '-' || s[i] == '+') ++i;
+    sign = ('-' == s[i])? -1 : 1;
+    if('-' == s[i] || '+' == s[i]) ++i;
   
     for(value = 0.0; isdigit(s[i]); ++i) value = value * 10.0 + (s[i] - '0');   
-    if(s[i] == '.') ++i;
+    if('.' == s[i] ) ++i;
     for(power = 1.0; isdigit(s[i]); ++i, power *= 10.0)    value = value * 10.0 + (s[i] - '0');
     #ifdef SATOF_FULL
-        if(s[i] == 'e' || s[i] == 'E') ++i;
+        if('e'  == s[i] || 'E' == s[i]) ++i;
         else return sign * value/power;
 
-        powersign = (s[i] == '-')? -1 : 1;
-        if(s[i] == '-' || s[i] == '+') ++i;
+        powersign = ('-' == s[i])? -1 : 1;
+        if('-' == s[i] || '+' == s[i]) ++i;
 
         for(power2 = 0; isdigit(s[i]); ++i)  power2 = power2 * 10 + (s[i] - '0');
 
@@ -1611,11 +1613,11 @@ int qAtoI(const char *s){
 
     for (; isspace(*s); ++s);
 
-    if (*s == '-'){
+    if ('-' == *s){
         sgn = -1;
         ++s;
     } 
-    else if (*s == '+') ++s;
+    else if ('+' == *s) ++s;
    
     for (; *s != 0; ++s){
         if (*s < '0' || *s > '9')  return sgn * res;
@@ -1624,7 +1626,7 @@ int qAtoI(const char *s){
     return sgn * res;
 }
 /*============================================================================*/
-/* char* qUtoA(int num, char* str, int base)
+/* char* qUtoA(int num, char* str, uint8_t base)
 
 Converts an unsigned value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. 
@@ -1645,9 +1647,9 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qUtoA(uint32_t num, char* str, uint8_t base){
-    int i = 0, rem;
+    uint16_t i = 0, rem;
  
-    if (num == 0){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
         str[i++] = '0';
         str[i] = '\0';
         return str;
@@ -1663,7 +1665,7 @@ char* qUtoA(uint32_t num, char* str, uint8_t base){
     return str;
 }
 /*============================================================================*/
-/* char* qItoA(int num, char* str, int base)
+/* char* qItoA(int num, char* str, uint8_t base)
 
 Converts an integer value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. If base is 10 and 
@@ -1690,14 +1692,14 @@ char* qItoA(int32_t num, char* str, uint8_t base){
     int rem;
     uint8_t isNegative = 0;
  
-    if (num == 0){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
         str[i++] = '0';
         str[i] = '\0';
         return str;
     }
 
     if(num<0){ 
-        if(base==10) isNegative = 1; /* handle negative numbers only in base 10*/
+        if(10 == base) isNegative = 1; /* handle negative numbers only in base 10*/
         num = -num;
     }
 
@@ -1744,8 +1746,8 @@ Return value:
 qBool_t qIsInf(float f){
     uint32_t u;
     u = *(uint32_t*)&f;
-    if(u == 0x7f800000ul) return qTrue;
-    if(u == 0xff800000ul) return qTrue;
+    if(0x7f800000ul == u ) return qTrue;
+    if(0xff800000ul == u ) return qTrue;
     return qFalse;
 }
 /*============================================================================*/
@@ -1770,7 +1772,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     char c;
     int32_t intPart;
     
-    if(num==0.0f){
+    if(0.0f == num){
         str[0]='0';
         str[1]='.';
         str[2]='0';
@@ -1785,7 +1787,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
         str[4]=0;
         return str;        
     }
-    if(qIsNan(num)){
+    if(qIsNan(num)){ 
         str[0]='n';
         str[1]='a';
         str[2]='n';
@@ -1828,7 +1830,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
 #ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
-    if(pData == NULL || size<2) return qFalse;
+    if(NULL == pData || size<2) return qFalse;
     obj->AcceptCheck = AcceptCheck;
     obj->PreChar = PreChar;
     obj->EndByte = EndChar;
@@ -1911,7 +1913,7 @@ Return value:
     qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
-    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == 0) : qTrue);
+    return (obj ? (qBool_t)(0 == qBSBuffer_Count(obj)) : qTrue);
 }
 /*============================================================================*/
 /*uint8_t qBSBuffer_Peek(qBSBuffer_t const* obj)
@@ -2057,7 +2059,7 @@ Return value:
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
 qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
-    if(obj->Flag==qFalse && obj->ptr2Match==NULL){
+    if(qFalse == obj->Flag && NULL == obj->ptr2Match){
         obj->length2Match = n;
         obj->contMatch = 0;
         obj->Flag = qFalse;
@@ -2085,7 +2087,7 @@ Return value:
     qTrue when the Response handler match the request from "qResponseReceived"
 */
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
-    if(obj->Flag == qTrue || obj->ptr2Match==NULL) return qFalse;
+    if(qTrue == obj->Flag || NULL == obj->ptr2Match) return qFalse;
     
     if(obj->ptr2Match[obj->contMatch] == rxchar){
         obj->contMatch++;
@@ -2097,16 +2099,22 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
 #ifdef Q_TASK_DEV_TEST
 void qSchedulePrintChain(void){
     qTask_t *Task;
-    puts("--------------------------------------------------------------------");
-    puts("TaskData\tPriority\tInterval\tIterations");
-    puts("--------------------------------------------------------------------");
+    const char *sepline = "--------------------------------------------------------------------\r\n";
+    qPrintString(__qDebugOutputFcn, NULL, sepline);
+    qPrintString(__qDebugOutputFcn, NULL, "TaskData\tPriority\tInterval\tIterations\r\n");
+    qPrintString(__qDebugOutputFcn, NULL, sepline);
     for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){
-        printf("%s\t\t%d\t\t%d\t\t", (char*)Task->TaskData,Task->Priority, Task->Interval);
-        if(Task->Iterations == qPeriodic) puts("qPeriodic");
-        else printf("%d\r\n",-Task->Iterations);    
-        
+        qPrintString(__qDebugOutputFcn, NULL, (char*)Task->TaskData);
+        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
+        qPrintValue(Task->Priority, qDisplayDecimal);
+        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
+        qPrintValue(Task->Interval, qDisplayDecimal);
+        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
+        if(qPeriodic == Task->Iterations) qPrintString(__qDebugOutputFcn, NULL, "qPeriodic");
+        else qPrintValue(-Task->Iterations, qDisplayDecimal);            
+        qPrintString(__qDebugOutputFcn, NULL, "\r\n");
     }
-    puts("--------------------------------------------------------------------");
+    qPrintString(__qDebugOutputFcn, NULL, sepline);
 }
 #endif
 

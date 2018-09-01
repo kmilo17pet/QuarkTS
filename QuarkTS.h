@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6c
+ *  Version : 4.6.6d
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -36,7 +36,6 @@ extern "C" {
     #ifndef __BYTE_ORDER__
         #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
     #endif
-     
     
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
@@ -44,9 +43,13 @@ extern "C" {
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
-    #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 32 bytes should be enough*/
-    
+    #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
+       
     #undef QATOF_FULL
+    
+    
+    /*================================================================================================================================*/
+    
     
     #include <stdint.h>
     #include <string.h>
@@ -55,7 +58,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.6.6c"
+    #define QUARTKTS_VERSION "4.6.6d"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -106,7 +109,7 @@ extern "C" {
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
         #define qCRPosition_t static _qTaskPC_t
-        typedef struct {unsigned int head, tail;} qCoroutineSemaphore_t; 
+        typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 
         typedef qCoroutineSemaphore_t qCRSem_t;
         #define qCR_PCInitVal   (-0x7FFE)           
         #define __qCRKeep                _qCR_BEGIN_:
@@ -276,7 +279,11 @@ extern "C" {
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define qPrivate    _
     #define _qSMData_t struct _qSM_t * const 
-    #define CurrentState   NextState
+    #define CurrentState    NextState
+    #define qMins2Time(t)    ((t)*60.0)
+    #define qHours2Time(t)   ((t)*3600.0)
+    #define qDays2Time(t)    ((t)*86400.0)
+    #define qWeeks2Time(t)   ((t)*604800.0)
     typedef struct _qSM_t{ 
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
@@ -300,8 +307,8 @@ extern "C" {
         qConst qBool_t StateFirstEntry;
         /* Data: (Read Only)
         State-machine associated data.
-        Note: If the FSM is running as a task, the event data associated with it
-        can be queried throught the "Data" field. (casting to qEvent_t is mandatory)
+        Note: If the FSM is running as a task, the asociated event data can be 
+        queried throught the "Data" field. (cast to qEvent_t is mandatory)
          */
         void * qConst Data;
         /*Private members (DO NOT USE THEM)*/
@@ -412,7 +419,7 @@ extern "C" {
     void qTaskClearTimeElapsed(qTask_t *Task);
     uint32_t qTaskGetCycles(const qTask_t *Task);
     
-    
+   
 /*void qTaskSuspend(qTask_t *Task)
 
 Put the task into a disabled state.    
@@ -769,10 +776,11 @@ extern qPutChar_t __qDebugOutputFcn;
     Note: the Debug/Trace function must be previously defined with qSetDebugFcn
     */
     
+    #define qPrintValue(Var, DISP_TYPE_MODE)    qPrintString(__qDebugOutputFcn, NULL,  (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE) )                                            
 
     #define qTraceVar(Var, DISP_TYPE_MODE)  if(__qDebugOutputFcn!=NULL){ \
                                                 qPrintString(__qDebugOutputFcn, NULL, __qAT() __qTOSTRING(Var) "="); \
-                                                qPrintString(__qDebugOutputFcn, NULL,  (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE) ); \
+                                                qPrintValue(Var, DISP_TYPE_MODE); \
                                                 qPrintString(__qDebugOutputFcn, NULL, "\r\n"); \
                                             }\
                                             
