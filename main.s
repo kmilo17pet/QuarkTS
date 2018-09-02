@@ -1,27 +1,6 @@
 	.file	"main.c"
 	.text
 	.p2align 4,,15
-	.globl	TimerInterruptEmulation
-	.def	TimerInterruptEmulation;	.scl	2;	.type	32;	.endef
-	.seh_proc	TimerInterruptEmulation
-TimerInterruptEmulation:
-	pushq	%rbx
-	.seh_pushreg	%rbx
-	subq	$48, %rsp
-	.seh_stackalloc	48
-	.seh_endprologue
-	leaq	32(%rsp), %rbx
-	movq	$0, 32(%rsp)
-	movq	$10000000, 40(%rsp)
-	.p2align 4,,10
-.L2:
-	xorl	%edx, %edx
-	movq	%rbx, %rcx
-	call	nanosleep
-	call	qSchedulerSysTick
-	jmp	.L2
-	.seh_endproc
-	.p2align 4,,15
 	.globl	putcharfcn
 	.def	putcharfcn;	.scl	2;	.type	32;	.endef
 	.seh_proc	putcharfcn
@@ -51,36 +30,36 @@ firststate:
 	movq	32(%rcx), %rsi
 	movq	%rcx, %rbx
 	cmpb	$0, 24(%rsi)
-	jne	.L12
+	jne	.L10
 	cmpb	$0, 28(%rbx)
-	jne	.L13
-.L7:
-	leaq	tmr.4059(%rip), %rcx
+	jne	.L11
+.L5:
+	leaq	tmr.4066(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L8
+	je	.L6
 	leaq	secondstate(%rip), %rax
 	movq	%rax, (%rbx)
-.L8:
+.L6:
 	movl	$-32768, %eax
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L12:
+.L10:
 	leaq	.LC0(%rip), %rcx
 	call	puts
 	cmpb	$0, 28(%rbx)
-	je	.L7
-.L13:
-	leaq	tmr.4059(%rip), %rcx
+	je	.L5
+.L11:
+	leaq	tmr.4066(%rip), %rcx
 	movss	.LC1(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
 	leaq	.LC2(%rip), %rcx
 	call	printf
-	jmp	.L7
+	jmp	.L5
 	.seh_endproc
 	.section .rdata,"dr"
 .LC3:
@@ -102,24 +81,24 @@ secondstate:
 	.seh_endprologue
 	cmpb	$0, 28(%rcx)
 	movq	%rcx, %rbx
-	jne	.L20
-.L15:
-	leaq	tmr.4064(%rip), %rcx
+	jne	.L18
+.L13:
+	leaq	tmr.4071(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
-	je	.L16
+	je	.L14
 	leaq	firststate(%rip), %rax
 	movq	%rax, (%rbx)
-.L16:
+.L14:
 	movl	$-32768, %eax
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L20:
+.L18:
 	movq	32(%rcx), %rsi
-	leaq	tmr.4064(%rip), %rcx
+	leaq	tmr.4071(%rip), %rcx
 	movss	.LC1(%rip), %xmm1
 	call	qSTimerSet
 	movq	8(%rsi), %rdx
@@ -128,7 +107,28 @@ secondstate:
 	leaq	.LC4(%rip), %rdx
 	leaq	Task1(%rip), %rcx
 	call	qTaskQueueEvent
-	jmp	.L15
+	jmp	.L13
+	.seh_endproc
+	.p2align 4,,15
+	.globl	TimerInterruptEmulation
+	.def	TimerInterruptEmulation;	.scl	2;	.type	32;	.endef
+	.seh_proc	TimerInterruptEmulation
+TimerInterruptEmulation:
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$48, %rsp
+	.seh_stackalloc	48
+	.seh_endprologue
+	leaq	32(%rsp), %rbx
+	movq	$0, 32(%rsp)
+	movq	$10000000, 40(%rsp)
+	.p2align 4,,10
+.L20:
+	xorl	%edx, %edx
+	movq	%rbx, %rcx
+	call	nanosleep
+	call	qSchedulerSysTick
+	jmp	.L20
 	.seh_endproc
 	.p2align 4,,15
 	.globl	datacapture
@@ -188,7 +188,7 @@ Task1Callback:
 	cmpl	$2, %eax
 	je	.L33
 .L27:
-	leaq	tmr.4068(%rip), %rcx
+	leaq	tmr.4075(%rip), %rcx
 	movss	.LC11(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
@@ -316,7 +316,7 @@ IdleTaskCallback:
 	subq	$32, %rsp
 	.seh_stackalloc	32
 	.seh_endprologue
-	leaq	t.4088(%rip), %rcx
+	leaq	t.4095(%rip), %rcx
 	movss	.LC15(%rip), %xmm1
 	call	qSTimerFreeRun
 	testb	%al, %al
@@ -354,7 +354,7 @@ blinktaskCallback:
 	subq	$40, %rsp
 	.seh_stackalloc	40
 	.seh_endprologue
-	movl	_qCRTaskState_.4095(%rip), %eax
+	movl	_qCRTaskState_.4102(%rip), %eax
 	cmpl	$141, %eax
 	jg	.L47
 	cmpl	$140, %eax
@@ -369,18 +369,18 @@ blinktaskCallback:
 	leaq	.LC17(%rip), %rcx
 	call	puts
 .L49:
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	movss	.LC18(%rip), %xmm1
 	call	qSTimerSet
-	movl	$139, _qCRTaskState_.4095(%rip)
+	movl	$139, _qCRTaskState_.4102(%rip)
 .L50:
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L45
-	movl	$140, _qCRTaskState_.4095(%rip)
+	movl	$140, _qCRTaskState_.4102(%rip)
 .L48:
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	movss	.LC18(%rip), %xmm1
 	call	qSTimerSet
 	leaq	.LC19(%rip), %rcx
@@ -388,9 +388,9 @@ blinktaskCallback:
 	leaq	Task1(%rip), %rcx
 	xorl	%edx, %edx
 	call	qTaskSendEvent
-	movl	$149, _qCRTaskState_.4095(%rip)
+	movl	$149, _qCRTaskState_.4102(%rip)
 .L52:
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	jne	.L75
@@ -404,11 +404,11 @@ blinktaskCallback:
 	je	.L52
 	cmpl	$152, %eax
 	jne	.L45
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L45
-	movl	$-32766, _qCRTaskState_.4095(%rip)
+	movl	$-32766, _qCRTaskState_.4102(%rip)
 .L76:
 	addq	$40, %rsp
 	ret
@@ -416,15 +416,15 @@ blinktaskCallback:
 .L75:
 	leaq	.LC20(%rip), %rcx
 	call	puts
-	leaq	tmr.4092(%rip), %rcx
+	leaq	tmr.4099(%rip), %rcx
 	movss	.LC21(%rip), %xmm1
 	call	qSTimerSet
-	leaq	tmr.4092(%rip), %rcx
-	movl	$152, _qCRTaskState_.4095(%rip)
+	leaq	tmr.4099(%rip), %rcx
+	movl	$152, _qCRTaskState_.4102(%rip)
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L45
-	movl	$-32766, _qCRTaskState_.4095(%rip)
+	movl	$-32766, _qCRTaskState_.4102(%rip)
 	jmp	.L76
 	.seh_endproc
 	.p2align 4,,15
@@ -504,64 +504,62 @@ qStringHash:
 	.def	__main;	.scl	2;	.type	32;	.endef
 	.section .rdata,"dr"
 .LC22:
-	.ascii "0==1\0"
+	.ascii "xv=\0"
 .LC23:
-	.ascii "main.c\0"
+	.ascii "[main.c:180] \0"
+.LC24:
+	.ascii "Var=\0"
+.LC25:
+	.ascii "[main.c:181] \0"
 	.section	.text.startup,"x"
 	.p2align 4,,15
 	.globl	main
 	.def	main;	.scl	2;	.type	32;	.endef
 	.seh_proc	main
 main:
-	subq	$136, %rsp
-	.seh_stackalloc	136
+	subq	$72, %rsp
+	.seh_stackalloc	72
 	.seh_endprologue
 	call	__main
 	movq	.refptr.__qDebugOutputFcn(%rip), %rax
 	leaq	putcharfcn(%rip), %rdx
-	leaq	TimerInterruptEmulation(%rip), %r8
-	leaq	TimerEmulation(%rip), %rcx
-	xorl	%r9d, %r9d
+	movl	$2, %r8d
+	movl	$34, %ecx
+	movl	$34, 60(%rsp)
 	movq	%rdx, (%rax)
-	xorl	%edx, %edx
-	call	pthread_create
-	xorl	%eax, %eax
-	movl	$4, %edx
-	leaq	48(%rsp), %rcx
-	movw	%ax, 46(%rsp)
-	leaq	38(%rsp), %rax
-	movw	%dx, 48(%rsp)
-	movl	$40, %edx
-	movq	$0, 80(%rsp)
-	movq	$0, 88(%rsp)
-	movq	%rax, 56(%rsp)
-	leaq	80(%rsp), %rax
-	movq	$0, 96(%rsp)
-	movq	$0, 104(%rsp)
-	movq	$0, 112(%rsp)
-	movq	$0, 38(%rsp)
-	movb	$10, 50(%rsp)
-	movq	%rax, 64(%rsp)
-	call	qMemoryAlloc
-	leaq	.LC22(%rip), %r9
-	leaq	__FUNCTION__.4135(%rip), %r8
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	call	qItoA
+	leaq	.LC22(%rip), %r8
+	leaq	__FUNCTION__.4135(%rip), %rdx
 	leaq	.LC23(%rip), %rcx
-	movl	$186, %edx
-	call	__assert_func
-	nop
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	leaq	60(%rsp), %rax
+	leaq	.LC24(%rip), %r8
+	leaq	__FUNCTION__.4135(%rip), %rdx
+	leaq	.LC25(%rip), %rcx
+	movl	$4, 40(%rsp)
+	xorl	%r9d, %r9d
+	movq	%rax, 32(%rsp)
+	call	__qtrace_func
+	xorl	%eax, %eax
+	addq	$72, %rsp
+	ret
 	.seh_endproc
 	.section .rdata,"dr"
 __FUNCTION__.4135:
 	.ascii "main\0"
-.lcomm tmr.4092,12,8
+.lcomm tmr.4099,12,8
 	.data
 	.align 4
-_qCRTaskState_.4095:
+_qCRTaskState_.4102:
 	.long	-32766
-.lcomm t.4088,12,8
-.lcomm tmr.4068,12,8
-.lcomm tmr.4064,12,8
-.lcomm tmr.4059,12,8
+.lcomm t.4095,12,8
+.lcomm tmr.4075,12,8
+.lcomm tmr.4071,12,8
+.lcomm tmr.4066,12,8
 	.comm	SMTask2, 88, 5
 	.comm	SMTask, 88, 5
 	.comm	blinktask, 88, 5
@@ -590,22 +588,26 @@ _qCRTaskState_.4095:
 .LC21:
 	.long	1073741824
 	.ident	"GCC: (GNU) 7.3.0"
-	.def	nanosleep;	.scl	2;	.type	32;	.endef
-	.def	qSchedulerSysTick;	.scl	2;	.type	32;	.endef
 	.def	putchar;	.scl	2;	.type	32;	.endef
 	.def	qSTimerExpired;	.scl	2;	.type	32;	.endef
 	.def	puts;	.scl	2;	.type	32;	.endef
 	.def	qSTimerSet;	.scl	2;	.type	32;	.endef
 	.def	printf;	.scl	2;	.type	32;	.endef
 	.def	qTaskQueueEvent;	.scl	2;	.type	32;	.endef
+	.def	nanosleep;	.scl	2;	.type	32;	.endef
+	.def	qSchedulerSysTick;	.scl	2;	.type	32;	.endef
 	.def	qTaskGetCycles;	.scl	2;	.type	32;	.endef
 	.def	qSTimerFreeRun;	.scl	2;	.type	32;	.endef
 	.def	qTaskSetIterations;	.scl	2;	.type	32;	.endef
 	.def	qTaskSetState;	.scl	2;	.type	32;	.endef
 	.def	qTaskSendEvent;	.scl	2;	.type	32;	.endef
-	.def	pthread_create;	.scl	2;	.type	32;	.endef
-	.def	qMemoryAlloc;	.scl	2;	.type	32;	.endef
-	.def	__assert_func;	.scl	2;	.type	32;	.endef
+	.def	qItoA;	.scl	2;	.type	32;	.endef
+	.def	__qtrace_func;	.scl	2;	.type	32;	.endef
+	.section	.rdata$.refptr.qDebugTrace_Buffer, "dr"
+	.globl	.refptr.qDebugTrace_Buffer
+	.linkonce	discard
+.refptr.qDebugTrace_Buffer:
+	.quad	qDebugTrace_Buffer
 	.section	.rdata$.refptr.__qDebugOutputFcn, "dr"
 	.globl	.refptr.__qDebugOutputFcn
 	.linkonce	discard

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6d
+ *  Version : 4.6.6e
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -58,7 +58,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.6.6d"
+    #define QUARTKTS_VERSION "4.6.6e"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -730,6 +730,21 @@ Parameters:
 #define qSetDebugFcn(fcn)   __qDebugOutputFcn = fcn
 extern qPutChar_t __qDebugOutputFcn;
 
+# ifndef __QTRACE_FUNC
+#  if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
+#   define __QTRACE_FUNC __PRETTY_FUNCTION__
+
+#  elif __STDC_VERSION__ >= 199901L /* C99 requires the use of __func__.  */
+#   define __QTRACE_FUNC __func__
+
+#  elif __GNUC__ >= 2 /* Older versions of gcc don't have __func__ but can use __FUNCTION__.  */
+#   define __QTRACE_FUNC __FUNCTION__
+
+#  else /* failed to detect __func__ support.  */
+#   define __QTRACE_FUNC ((char *) 0)
+#  endif
+# endif
+
 #define __qSTRINGIFY(x) #x
 #define __qTOSTRING(x) __qSTRINGIFY(x)
 #define __qAT() "[" __FILE__ ":" __qTOSTRING(__LINE__) "] " 
@@ -756,7 +771,31 @@ extern qPutChar_t __qDebugOutputFcn;
 
 #ifdef Q_TRACE_VARIABLES
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
-    /*qTraceVar(Pointer, DISP_TYPE_MODE)
+    void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
+    #define qTraceBinary(Var)                   __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer,  2), NULL, 0)
+    #define qTraceOctal(Var)                    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer,  8), NULL, 0)
+    #define qTraceHexadecimal(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer, 16), NULL, 0)
+    #define qTraceDecimal(Var)                  __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
+    #define qTraceFloat(Var)                    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qFtoA(  (float)Var, qDebugTrace_Buffer, 10), NULL, 0)
+    #define qTraceUnsignedBinary(Var)           __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer,  2), NULL, 0)
+    #define qTraceUnsignedOctal(Var)            __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer,  8), NULL, 0)
+    #define qTraceUnsignedHexadecimal(Var)      __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 16), NULL, 0)
+    #define qTraceUnsignedDecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
+    #define qTraceUnsignedDecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
+    /*qTraceMem/qTraceMemory(Pointer, BlockSize)
+
+    Trace memory from the specified address (HEX output)
+
+    Parameters:
+
+        - Pointer : The target memory address
+        - Size: Number of bytes
+
+    Note: the Debug/Trace function must be previously defined with qSetDebugFcn
+    */
+    #define qTraceMemory(Pointer, BlockSize)    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", NULL, Pointer, BlockSize)
+    #define qTraceMem(Pointer, BlockSize)       qTraceMemory(Pointer, BlockSize)
+    /*qTraceVar/qTraceVariable(Pointer, DISP_TYPE_MODE)
 
     Trace a variable (up to 32bit data)
 
@@ -775,37 +814,24 @@ extern qPutChar_t __qDebugOutputFcn;
             > qDisplayUnsignedHexadecimal   : Hexadecimal  (full 32bits)  
     Note: the Debug/Trace function must be previously defined with qSetDebugFcn
     */
-    
-    #define qPrintValue(Var, DISP_TYPE_MODE)    qPrintString(__qDebugOutputFcn, NULL,  (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE) )                                            
-
-    #define qTraceVar(Var, DISP_TYPE_MODE)  if(__qDebugOutputFcn!=NULL){ \
-                                                qPrintString(__qDebugOutputFcn, NULL, __qAT() __qTOSTRING(Var) "="); \
-                                                qPrintValue(Var, DISP_TYPE_MODE); \
-                                                qPrintString(__qDebugOutputFcn, NULL, "\r\n"); \
-                                            }\
-                                            
-    #define qTraceVariable(Var, DISP_TYPE_MODE) qTraceVar(Var, DISP_TYPE_MODE)
+    #define qTraceVariable(Var, DISP_TYPE_MODE) __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE), NULL, 0)
+    #define qTraceVar(Var, DISP_TYPE_MODE)      qTraceVar(Var, DISP_TYPE_MODE)
 #else
     #define qTraceVar(Var, DISP_TYPE_MODE)
     #define qTraceVariable(Var, DISP_TYPE_MODE)
+    #define qTraceBinary(Var)
+    #define qTraceOctal(Var)
+    #define qTraceHexadecimal(Var)
+    #define qTraceDecimal(Var) 
+    #define qTraceFloat(Var)
+    #define qTraceUnsignedBinary(Var)
+    #define qTraceUnsignedOctal(Var)
+    #define qTraceUnsignedHexadecimal(Var)
+    #define qTraceUnsignedDecimal(Var)
+    #define qTraceUnsignedDecimal(Var)
+    #define qTraceMemory(Pointer, BlockSize)
+    #define qTraceMem(Pointer, BlockSize)
 #endif
-/*qTraceMem(Pointer, BlockSize)
- 
-Trace memory from the specified address (HEX outptu)
-  
-Parameters:
-
-    - Pointer : The target memory address
-    - Size: Number of bytes
-
-Note: the Debug/Trace function must be previously defined with qSetDebugFcn
-*/
-#define qTraceMem(Pointer, BlockSize)       if(__qDebugOutputFcn!=NULL){ \
-                                                qPrintString(__qDebugOutputFcn, NULL, __qAT() __qTOSTRING(Pointer) "="); \
-                                                qPrintXData(__qDebugOutputFcn, NULL, (void*)Pointer, BlockSize); \
-                                            } \
-                                            
-#define qTraceMemory(Pointer, BlockSize)    qTraceMem(Pointer, BlockSize)
 
 typedef struct{
     char *ptr2Match;

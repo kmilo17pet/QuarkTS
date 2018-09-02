@@ -173,9 +173,13 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     }    
     return 0;
 }
-/*============================================================================*/
+/*========+====================================================================*/
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
+    int xv = 34;
+    qTraceBinary(xv);
+    qTraceMemory(&xv, sizeof(xv));
+    return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
@@ -183,7 +187,6 @@ int main(int argc, char** argv) {
     void *memtest;
     int x=5 , y=6;
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    assert(0==1);
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y); y=1;
@@ -205,10 +208,6 @@ int main(int argc, char** argv) {
     /*qISR_Byte_t DataAlloc[100] = {0};
     qISR_ByteBuffer_t Buffer;
     qISR_ByteBufferInit(&Buffer, DataAlloc, sizeof(DataAlloc), '\r', isalpha, tolower);*/
-    
-    #ifdef Q_TASK_DEV_TEST
-        qSchedulePrintChain();
-    #endif
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }        

@@ -1781,9 +1781,10 @@ char* qFtoA(float num, char *str, uint8_t precision);
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
 # 731 "QuarkTS.h"
 extern qPutChar_t __qDebugOutputFcn;
-# 758 "QuarkTS.h"
+# 773 "QuarkTS.h"
     extern char qDebugTrace_Buffer[36];
-# 810 "QuarkTS.h"
+    void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
+# 836 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;
@@ -3351,78 +3352,66 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
 }
 
 
-void qSchedulePrintChain(void){
-    volatile struct _qTask_t *Task;
-    const char *sepline = "--------------------------------------------------------------------\r\n";
-    qOutputString(__qDebugOutputFcn, (void*)
-# 2103 "QuarkTS.c" 3 4
-   ((void *)0)
-# 2103 "QuarkTS.c"
-   , (const char *)sepline, 0x00u);
-    qOutputString(__qDebugOutputFcn, (void*)
-# 2104 "QuarkTS.c" 3 4
-   ((void *)0)
-# 2104 "QuarkTS.c"
-   , (const char *)"TaskData\tPriority\tInterval\tIterations\r\n", 0x00u);
-    qOutputString(__qDebugOutputFcn, (void*)
-# 2105 "QuarkTS.c" 3 4
-   ((void *)0)
-# 2105 "QuarkTS.c"
-   , (const char *)sepline, 0x00u);
-    for(Task = QUARKTS.Head; Task != 
-# 2106 "QuarkTS.c" 3 4
-                                    ((void *)0)
-# 2106 "QuarkTS.c"
-                                        ; Task = Task->Next){
+void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize){
+    if(
+# 2101 "QuarkTS.c" 3 4
+      ((void *)0) 
+# 2101 "QuarkTS.c"
+           !=__qDebugOutputFcn){
         qOutputString(__qDebugOutputFcn, (void*)
-# 2107 "QuarkTS.c" 3 4
+# 2102 "QuarkTS.c" 3 4
        ((void *)0)
-# 2107 "QuarkTS.c"
-       , (const char *)(char*)Task->TaskData, 0x00u);
+# 2102 "QuarkTS.c"
+       , (const char *)loc, 0x00u);
+        if(fcn){
+            __qDebugOutputFcn(
+# 2104 "QuarkTS.c" 3 4
+                             ((void *)0)
+# 2104 "QuarkTS.c"
+                                 , '@');
+            qOutputString(__qDebugOutputFcn, (void*)
+# 2105 "QuarkTS.c" 3 4
+           ((void *)0)
+# 2105 "QuarkTS.c"
+           , (const char *)fcn, 0x00u);
+            __qDebugOutputFcn(
+# 2106 "QuarkTS.c" 3 4
+                             ((void *)0)
+# 2106 "QuarkTS.c"
+                                 , ' ');
+        }
         qOutputString(__qDebugOutputFcn, (void*)
 # 2108 "QuarkTS.c" 3 4
        ((void *)0)
 # 2108 "QuarkTS.c"
-       , (const char *)"\t\t", 0x00u);
-        qOutputString(__qDebugOutputFcn, (void*)
+       , (const char *)varname, 0x00u);
+        if(
 # 2109 "QuarkTS.c" 3 4
-       ((void *)0)
+          ((void *)0)
 # 2109 "QuarkTS.c"
-       , (const char *)(10==254)? qFtoA((float)Task->Priority, qDebugTrace_Buffer, 10) : (10<0)? qUtoA((uint32_t)Task->Priority, qDebugTrace_Buffer, -(10)) : qItoA((int32_t)Task->Priority, qDebugTrace_Buffer, 10), 0x00u);
-        qOutputString(__qDebugOutputFcn, (void*)
+              ==varvalue){
+            qPrintXData(__qDebugOutputFcn, 
 # 2110 "QuarkTS.c" 3 4
-       ((void *)0)
+                                          ((void *)0)
 # 2110 "QuarkTS.c"
-       , (const char *)"\t\t", 0x00u);
-        qOutputString(__qDebugOutputFcn, (void*)
-# 2111 "QuarkTS.c" 3 4
-       ((void *)0)
-# 2111 "QuarkTS.c"
-       , (const char *)(10==254)? qFtoA((float)Task->Interval, qDebugTrace_Buffer, 10) : (10<0)? qUtoA((uint32_t)Task->Interval, qDebugTrace_Buffer, -(10)) : qItoA((int32_t)Task->Interval, qDebugTrace_Buffer, 10), 0x00u);
-        qOutputString(__qDebugOutputFcn, (void*)
-# 2112 "QuarkTS.c" 3 4
-       ((void *)0)
-# 2112 "QuarkTS.c"
-       , (const char *)"\t\t", 0x00u);
-        if(((qIteration_t)(-32768)) == Task->Iterations) qOutputString(__qDebugOutputFcn, (void*)
+                                              , (void*)Pointer, BlockSize);
+        }
+        else{
+            qOutputString(__qDebugOutputFcn, (void*)
 # 2113 "QuarkTS.c" 3 4
-                                         ((void *)0)
+           ((void *)0)
 # 2113 "QuarkTS.c"
-                                         , (const char *)"qPeriodic", 0x00u);
-        else qOutputString(__qDebugOutputFcn, (void*)
+           , (const char *)varvalue, 0x00u);
+            __qDebugOutputFcn(
 # 2114 "QuarkTS.c" 3 4
-            ((void *)0)
+                             ((void *)0)
 # 2114 "QuarkTS.c"
-            , (const char *)(10==254)? qFtoA((float)-Task->Iterations, qDebugTrace_Buffer, 10) : (10<0)? qUtoA((uint32_t)-Task->Iterations, qDebugTrace_Buffer, -(10)) : qItoA((int32_t)-Task->Iterations, qDebugTrace_Buffer, 10), 0x00u);
-        qOutputString(__qDebugOutputFcn, (void*)
+                                 , '\r');
+            __qDebugOutputFcn(
 # 2115 "QuarkTS.c" 3 4
-       ((void *)0)
+                             ((void *)0)
 # 2115 "QuarkTS.c"
-       , (const char *)"\r\n", 0x00u);
+                                 , '\n');
+        }
     }
-    qOutputString(__qDebugOutputFcn, (void*)
-# 2117 "QuarkTS.c" 3 4
-   ((void *)0)
-# 2117 "QuarkTS.c"
-   , (const char *)sepline, 0x00u);
 }

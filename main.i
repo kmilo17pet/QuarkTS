@@ -2782,9 +2782,10 @@ char* qFtoA(float num, char *str, uint8_t precision);
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
 # 731 "QuarkTS.h"
 extern qPutChar_t __qDebugOutputFcn;
-# 758 "QuarkTS.h"
+# 773 "QuarkTS.h"
     extern char qDebugTrace_Buffer[36];
-# 810 "QuarkTS.h"
+    void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
+# 836 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;
@@ -2985,34 +2986,37 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 
 int main(int argc, char** argv) {
     __qDebugOutputFcn = putcharfcn;
+    int xv = 34;
+    __qtrace_func ("[" "main.c" ":" "180" "] ", __FUNCTION__, "xv" "=", qItoA((int32_t)xv, qDebugTrace_Buffer, 2), 
+# 180 "main.c" 3 4
+   ((void *)0)
+# 180 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "181" "] ", __FUNCTION__, "Var" "=", 
+# 181 "main.c" 3 4
+   ((void *)0)
+# 181 "main.c"
+   , &xv, sizeof(xv));
+    return 
+# 182 "main.c" 3 4
+          0
+# 182 "main.c"
+                      ;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, 
-# 180 "main.c" 3 4
+# 184 "main.c" 3 4
                                    ((void *)0)
-# 180 "main.c"
+# 184 "main.c"
                                        , TimerInterruptEmulation, 
-# 180 "main.c" 3 4
+# 184 "main.c" 3 4
                                                                   ((void *)0) 
-# 180 "main.c"
+# 184 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     qSM_t statemachine;
     void *memtest;
     int x=5 , y=6;
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    
-# 186 "main.c" 3 4
-   ((
-# 186 "main.c"
-   0==1
-# 186 "main.c" 3 4
-   ) ? (void)0 : __assert_func ("main.c", 186, __FUNCTION__, 
-# 186 "main.c"
-   "0==1"
-# 186 "main.c" 3 4
-   ))
-# 186 "main.c"
-               ;
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);
     qRBufferPush(&ringBuffer, &y); y=1;
@@ -3031,33 +3035,29 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 204 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                 ((void *)0)
-# 204 "main.c"
+# 207 "main.c"
                                                                                     , 
-# 204 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                       ((void *)0)
-# 204 "main.c"
+# 207 "main.c"
                                                                                           , 
-# 204 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                             ((void *)0)
-# 204 "main.c"
+# 207 "main.c"
                                                                                                 , 
-# 204 "main.c" 3 4
+# 207 "main.c" 3 4
                                                                                                   ((void *)0)
-# 204 "main.c"
+# 207 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
 
-
-
-        qSchedulePrintChain();
-
     qSchedulerRun();
     return (
-# 213 "main.c" 3 4
+# 212 "main.c" 3 4
            0
-# 213 "main.c"
+# 212 "main.c"
                        );
 }

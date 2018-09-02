@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6d
+ *  Version : 4.6.6e
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -2096,26 +2096,29 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
     return obj->Flag;
 }
 /*============================================================================*/
-#ifdef Q_TASK_DEV_TEST
-void qSchedulePrintChain(void){
-    qTask_t *Task;
-    const char *sepline = "--------------------------------------------------------------------\r\n";
-    qPrintString(__qDebugOutputFcn, NULL, sepline);
-    qPrintString(__qDebugOutputFcn, NULL, "TaskData\tPriority\tInterval\tIterations\r\n");
-    qPrintString(__qDebugOutputFcn, NULL, sepline);
-    for(Task = QUARKTS.Head; Task != NULL; Task = Task->Next){
-        qPrintString(__qDebugOutputFcn, NULL, (char*)Task->TaskData);
-        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
-        qPrintValue(Task->Priority, qDisplayDecimal);
-        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
-        qPrintValue(Task->Interval, qDisplayDecimal);
-        qPrintString(__qDebugOutputFcn, NULL, "\t\t");
-        if(qPeriodic == Task->Iterations) qPrintString(__qDebugOutputFcn, NULL, "qPeriodic");
-        else qPrintValue(-Task->Iterations, qDisplayDecimal);            
-        qPrintString(__qDebugOutputFcn, NULL, "\r\n");
-    }
-    qPrintString(__qDebugOutputFcn, NULL, sepline);
+#ifdef Q_TRACE_VARIABLES
+void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize){
+    if(NULL !=__qDebugOutputFcn){
+        qPrintString(__qDebugOutputFcn, NULL, loc);
+        if(fcn){
+            __qDebugOutputFcn(NULL, '@');
+            qPrintString(__qDebugOutputFcn, NULL, fcn);
+            __qDebugOutputFcn(NULL, ' ');
+        }
+        qPrintString(__qDebugOutputFcn, NULL, varname);
+        if(NULL==varvalue){/*trace memory*/
+            qPrintXData(__qDebugOutputFcn, NULL, (void*)Pointer, BlockSize);
+        }
+        else{
+            qPrintString(__qDebugOutputFcn, NULL, varvalue);
+            __qDebugOutputFcn(NULL, '\r');
+            __qDebugOutputFcn(NULL, '\n');
+        }       
+    }      
 }
+/*============================================================================*/
+#endif
+#ifdef Q_TASK_DEV_TEST
 #endif
 
 
