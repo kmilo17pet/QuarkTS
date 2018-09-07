@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6e
+ *  Version : 4.6.6f
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -44,7 +44,8 @@ extern "C" {
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
-       
+    #define Q_DEBUGTRACE_FULL       
+    
     #undef QATOF_FULL
     
     
@@ -58,7 +59,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION "4.6.6e"
+    #define QUARTKTS_VERSION    "4.6.6f"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -280,10 +281,11 @@ extern "C" {
     #define qPrivate    _
     #define _qSMData_t struct _qSM_t * const 
     #define CurrentState    NextState
-    #define qMins2Time(t)    ((t)*60.0)
-    #define qHours2Time(t)   ((t)*3600.0)
-    #define qDays2Time(t)    ((t)*86400.0)
-    #define qWeeks2Time(t)   ((t)*604800.0)
+    #define qMins2Time(t)    (((qTime_t)t)*60.0)
+    #define qHours2Time(t)   (((qTime_t)t)*3600.0)
+    #define qDays2Time(t)    (((qTime_t)t)*86400.0)
+    #define qWeeks2Time(t)   (((qTime_t)t)*604800.0)
+
     typedef struct _qSM_t{ 
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
@@ -342,20 +344,20 @@ extern "C" {
         uint32_t Cycles; 
         qPriority_t Priority; 
         qTaskFcn_t Callback; 
-        volatile qBool_t Flag[7]; 
+        volatile qBool_t Flag[7]; /*task related flags*/
         /*volatile qTaskFlags_t Flag;*/
         #ifdef Q_RINGBUFFERS
         qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
         #endif
         qSM_t *StateMachine; /*pointer to the linked FSM*/
         qTaskState_t State;
-        qTrigger_t Trigger;
+        qTrigger_t Trigger; 
     };
     #define qTask_t volatile struct _qTask_t
     typedef qTask_t** qHeadPointer_t;         
     typedef struct{
-        qTask_t *Task;
-        void *QueueData;
+        qTask_t *Task; /*the pointed task*/
+        void *QueueData; 
     }qQueueStack_t;  
 
     typedef struct{ /*Scheduler Core-Flags*/
@@ -373,9 +375,9 @@ extern "C" {
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
         #ifdef Q_PRIORITY_QUEUE
-            volatile qQueueStack_t *volatile QueueStack;
-            uint8_t QueueSize;
-            volatile int16_t QueueIndex;
+            volatile qQueueStack_t *volatile QueueStack; /*a pointer to the queue stack*/
+            uint8_t QueueSize; 
+            volatile int16_t QueueIndex; /*holds the current queue index*/
             void *QueueData;
         #endif 
         qTask_t *CurrentRunningTask;
@@ -712,6 +714,7 @@ double qAtoF(const char *s);
 int qAtoI(const char *s);
 char* qUtoA(uint32_t num, char* str, uint8_t base);
 char* qItoA(int32_t num, char* str, uint8_t base);
+char* qBtoA(qBool_t num, char *str);
 uint8_t qIsInf(float f);
 qBool_t qIsNan(float f);
 char* qFtoA(float num, char *str, uint8_t precision);
@@ -747,41 +750,44 @@ extern qPutChar_t __qDebugOutputFcn;
 
 #define __qSTRINGIFY(x) #x
 #define __qTOSTRING(x) __qSTRINGIFY(x)
-#define __qAT() "[" __FILE__ ":" __qTOSTRING(__LINE__) "] " 
 
-#define QT_UBIN -2
-#define QT_UOCT -8
-#define QT_UDEC -10
-#define QT_UHEX -16
-#define QT_BIN   2
-#define QT_OCT   8
-#define QT_DEC   10
-#define QT_HEX   16
-#define QT_FPT   254
+#ifdef Q_DEBUGTRACE_FULL
+    #ifndef __QTRACE_FUNC
+        #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
+            #define __QTRACE_FUNC __PRETTY_FUNCTION__
+        #elif __STDC_VERSION__ >= 199901L /* C99 requires the use of __func__.  */
+            #define __QTRACE_FUNC __func__
+        #elif __GNUC__ >= 2 /* Older versions of gcc don't have __func__ but can use __FUNCTION__.  */
+            #define __QTRACE_FUNC __FUNCTION__
+        #else /* failed to detect __func__ support.  */
+            #define __QTRACE_FUNC ((char *) 0)
+        #  endif
+    # endif
 
-#define qDisplayBinary                  QT_BIN
-#define qDisplayOctal                   QT_OCT
-#define qDisplayHexadecimal             QT_HEX
-#define qDisplayDecimal                 QT_DEC
-#define qDisplayFloat                   QT_FPT
-#define qDisplayUnsignedBinary          QT_UBIN
-#define qDisplayUnsignedOctal           QT_UOCT
-#define qDisplayUnsignedHexadecimal     QT_UHEX
-#define qDisplayUnsignedDecimal         QT_UDEC
+    #define __qAT() "[" __FILE__ ":" __qTOSTRING(__LINE__) "] " 
+#else
+    #define __qAT()         ""
+    #define __QTRACE_FUNC    ((char *) 0)
+#endif
 
 #ifdef Q_TRACE_VARIABLES
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
-    #define qTraceBinary(Var)                   __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer,  2), NULL, 0)
-    #define qTraceOctal(Var)                    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer,  8), NULL, 0)
-    #define qTraceHexadecimal(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer, 16), NULL, 0)
-    #define qTraceDecimal(Var)                  __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
-    #define qTraceFloat(Var)                    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qFtoA(  (float)Var, qDebugTrace_Buffer, 10), NULL, 0)
-    #define qTraceUnsignedBinary(Var)           __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer,  2), NULL, 0)
-    #define qTraceUnsignedOctal(Var)            __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer,  8), NULL, 0)
-    #define qTraceUnsignedHexadecimal(Var)      __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 16), NULL, 0)
-    #define qTraceUnsignedDecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
-    #define qTraceUnsignedDecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)Var, qDebugTrace_Buffer, 10), NULL, 0)
+    
+    /*On-demand trace macros*/
+    #define qDebugString(s)                 qOutputString(__qDebugOutputFcn, NULL, (const char *)s, qFalse)
+    #define qTraceString(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", (char*)(Var), NULL, 0)
+    #define qTraceBool(Var)                 __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qBtoA((qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
+    #define qTraceBinary(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
+    #define qTraceOctal(Var)                __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)(Var), qDebugTrace_Buffer,  8), NULL, 0)
+    #define qTraceHexadecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)(Var), qDebugTrace_Buffer, 16), NULL, 0)
+    #define qTraceDecimal(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qItoA((int32_t)(Var), qDebugTrace_Buffer, 10), NULL, 0)
+    #define qTraceFloat(Var)                __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qFtoA(( float )(Var), qDebugTrace_Buffer, 10), NULL, 0)
+    #define qTraceFloatPrec(Var, Pc)        __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qFtoA(( float )(Var), qDebugTrace_Buffer, Pc), NULL, 0)
+    #define qTraceUnsignedBinary(Var)       __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
+    #define qTraceUnsignedOctal(Var)        __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)(Var), qDebugTrace_Buffer,  8), NULL, 0)
+    #define qTraceUnsignedHexadecimal(Var)  __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)(Var), qDebugTrace_Buffer, 16), NULL, 0)
+    #define qTraceUnsignedDecimal(Var)      __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", qUtoA((int32_t)(Var), qDebugTrace_Buffer, 10), NULL, 0)
     /*qTraceMem/qTraceMemory(Pointer, BlockSize)
 
     Trace memory from the specified address (HEX output)
@@ -796,29 +802,25 @@ extern qPutChar_t __qDebugOutputFcn;
     #define qTraceMemory(Pointer, BlockSize)    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", NULL, Pointer, BlockSize)
     #define qTraceMem(Pointer, BlockSize)       qTraceMemory(Pointer, BlockSize)
     /*qTraceVar/qTraceVariable(Pointer, DISP_TYPE_MODE)
-
-    Trace a variable (up to 32bit data)
+    Trace a variable (up to 32bit data) 
 
     Parameters:
 
         - Var : The target variable
         - DISP_TYPE_MODE: Visualization mode. It must be one of the following parameters:
-            > qDisplayBinary                : Binary       (discards the sign)
-            > qDisplayOctal                 : Octal        (discards the sign)
-            > qDisplayDecimal               : Decimal
-            > qDisplayHexadecimal           : Hexadecimal  (discards the sign)  
-            > qDisplayFloat                 : Floating-Point (Up to 10 digits of precision)    
-            > qDisplayUnsignedBinary        : Binary       (full 32bits)
-            > qDisplayUnsignedOctal         : Octal        (full 32bits)
-            > qDisplayUnsignedDecimal       : Decimal      (full 32bits)
-            > qDisplayUnsignedHexadecimal   : Hexadecimal  (full 32bits)  
+                          Bool, Float, Binary, Octal, Decimal, Hexadecimal, UnsignedBinary, 
+                          UnsignedOctal, UnsignedDecimal, UnsignedHexadecimal.
+     
     Note: the Debug/Trace function must be previously defined with qSetDebugFcn
     */
-    #define qTraceVariable(Var, DISP_TYPE_MODE) __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", (DISP_TYPE_MODE==QT_FPT)? qFtoA((float)Var, qDebugTrace_Buffer, 10) : (DISP_TYPE_MODE<0)? qUtoA((uint32_t)Var, qDebugTrace_Buffer, -(DISP_TYPE_MODE)) : qItoA((int32_t)Var, qDebugTrace_Buffer, DISP_TYPE_MODE), NULL, 0)
-    #define qTraceVar(Var, DISP_TYPE_MODE)      qTraceVar(Var, DISP_TYPE_MODE)
+    #define qTraceVariable(Var, DISP_TYPE_MODE) qTrace##DISP_TYPE_MODE(Var)
+    #define qTraceVar(Var, DISP_TYPE_MODE)      qTrace##DISP_TYPE_MODE(Var)
 #else
+    #define qDebugString(s)
+    #define qTraceString(Var)
     #define qTraceVar(Var, DISP_TYPE_MODE)
     #define qTraceVariable(Var, DISP_TYPE_MODE)
+    #define qTraceBool(Var) 
     #define qTraceBinary(Var)
     #define qTraceOctal(Var)
     #define qTraceHexadecimal(Var)
@@ -866,4 +868,3 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 #endif
 
 #endif	/* H_QuarkTS */
-

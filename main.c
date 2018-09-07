@@ -37,10 +37,11 @@ void putcharfcn(void* stp, char c){
 /*============================================================================*/
 qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
+    static qSTimer_t tmr;
     if(e->FirstCall){
         puts("state machine init");
     }
-    static qSTimer_t tmr;
+    
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         printf("[%s] first\r\n", (char*)e->TaskData);
@@ -173,12 +174,16 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     }    
     return 0;
 }
+
+
+
 /*========+====================================================================*/
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
-    int xv = 34;
-    qTraceBinary(xv);
-    qTraceMemory(&xv, sizeof(xv));
+    int yy = 23;
+   
+    qTraceVariable( yy, Bool);
+    
     return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );

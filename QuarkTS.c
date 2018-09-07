@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6e
+ *  Version : 4.6.6f
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -717,7 +717,7 @@ void qSchedulerRun(void){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     qSchedulerStartPoint{
         #ifdef Q_AUTO_CHAINREARRANGE
-        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/        
+        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/    
         #endif
         #ifdef Q_PRIORITY_QUEUE
         if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
@@ -1648,7 +1648,7 @@ Return value:
 */
 char* qUtoA(uint32_t num, char* str, uint8_t base){
     uint16_t i = 0, rem;
- 
+    if(NULL == str) return str;
     if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
         str[i++] = '0';
         str[i] = '\0';
@@ -1691,7 +1691,7 @@ char* qItoA(int32_t num, char* str, uint8_t base){
     uint8_t i = 0;
     int rem;
     uint8_t isNegative = 0;
- 
+    if(NULL == str) return str;
     if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
         str[i++] = '0';
         str[i] = '\0';
@@ -1715,6 +1715,42 @@ char* qItoA(int32_t num, char* str, uint8_t base){
     return str;
 }
 /*============================================================================*/
+/* char* qBtoA(qBool_t num, char *str)
+
+Converts a boolean value to a null-terminated string. Input is considered true
+with any value diferent to zero (0).
+
+str should be an array long enough to contain the output
+
+Parameters:
+
+    - num : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
+*/
+char* qBtoA(qBool_t num, char *str){
+    if(NULL == str) return str;
+    if(num){
+        str[0]='t';
+        str[1]='r';
+        str[2]='u';
+        str[3]='e';
+        str[4]='\0';
+    }
+    else{
+        str[0]='f';
+        str[1]='a';
+        str[2]='l';
+        str[3]='s';
+        str[4]='e';        
+        str[5]='\0';  
+    }
+    return str;
+}
+/*============================================================================*/
 /*qBool_t qIsNan(float f)
 Determines if the given floating point number arg is a not-a-number (NaN) value. 
 
@@ -1728,7 +1764,10 @@ Return value:
 */
 qBool_t qIsNan(float f){
     uint32_t u;
-    u = *(uint32_t*)&f;
+    void *p;
+    p = &f;
+    u = *(uint32_t*)p;
+    /*u = *(uint32_t*)&f;*/ /*warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]*/
     return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);
 }
 /*============================================================================*/
@@ -1745,7 +1784,10 @@ Return value:
 */
 qBool_t qIsInf(float f){
     uint32_t u;
-    u = *(uint32_t*)&f;
+    void *p;
+    p = &f;
+    u = *(uint32_t*)p;
+    /*u = *(uint32_t*)&f;*/ /*warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]*/
     if(0x7f800000ul == u ) return qTrue;
     if(0xff800000ul == u ) return qTrue;
     return qFalse;
@@ -1771,7 +1813,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     char *p = ptr;
     char c;
     int32_t intPart;
-    
+    if(NULL == str) return str;
     if(0.0f == num){
         str[0]='0';
         str[1]='.';
