@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6f
+ *  Version : 4.6.6g
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -68,6 +68,7 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task);
 static qBool_t _qScheduler_ReadyTasksAvailable(void);
 static qTask_t* _qScheduler_PriorityQueueGet(void);
 static void _qTriggerReleaseSchedEvent(void);
+static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
 
 #ifdef Q_RINGBUFFERS 
     static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
@@ -1626,6 +1627,23 @@ int qAtoI(const char *s){
     return sgn * res;
 }
 /*============================================================================*/
+static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base){
+    uint8_t i = 0;
+    int rem;
+    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+        str[i++] = '0';        
+        return i;
+    }
+
+    while (0 != num){ /*Process individual digits*/
+        rem = num % base;
+        str[i++] = (rem > 9)? (char)(rem-10) + 'A' : (char)rem + '0';
+        num = num/base;
+    }
+    qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
+    return i;       
+}
+/*============================================================================*/
 /* char* qUtoA(int num, char* str, uint8_t base)
 
 Converts an unsigned value to a null-terminated string using the specified base 
@@ -1647,21 +1665,10 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qUtoA(uint32_t num, char* str, uint8_t base){
-    uint16_t i = 0, rem;
+    uint8_t i = 0;
     if(NULL == str) return str;
-    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
-        str[i++] = '0';
-        str[i] = '\0';
-        return str;
-    }
-
-    while (num != 0){ /*Process individual digits*/
-        rem = num % base;
-        str[i++] = (rem > 9)? (char)(rem-10) + 'A' : (char)rem + '0';
-        num = num/base;
-    }
-    str[i] = '\0'; /*Append string terminator*/
-    qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
+    i = __q_revuta(num, str, base); /*make the unsigned conversion without the null terminator*/
+    str[i] = '\0';
     return str;
 }
 /*============================================================================*/
@@ -1689,29 +1696,15 @@ Return value:
 */
 char* qItoA(int32_t num, char* str, uint8_t base){
     uint8_t i = 0;
-    int rem;
-    uint8_t isNegative = 0;
     if(NULL == str) return str;
-    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
-        str[i++] = '0';
-        str[i] = '\0';
-        return str;
-    }
-
-    if(num<0){ 
-        if(10 == base) isNegative = 1; /* handle negative numbers only in base 10*/
+    if( num < 0 ){ 
+        if(10 == base){
+            str[i++]='-';/*put the sign at the begining*/
+        } 
         num = -num;
     }
-
-    while (num != 0){ /*Process individual digits*/
-        rem = num % base;
-        str[i++] = (rem > 9)? (char)(rem-10) + 'A' : (char)rem + '0';
-        num = num/base;
-    }
-
-    if (isNegative) str[i++] = '-'; /*If number is negative, append '-'*/
+    i += __q_revuta((uint32_t)num, str+i, base); /*make the unsigned conversion without the null terminator*/   
     str[i] = '\0'; /*Append string terminator*/
-    qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
     return str;
 }
 /*============================================================================*/
@@ -1809,64 +1802,44 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*/
-    char *ptr = str;
-    char *p = ptr;
     char c;
-    int32_t intPart;
+    uint8_t i = 0;
+    uint32_t intPart;
     if(NULL == str) return str;
     if(0.0f == num){
-        str[0]='0';
-        str[1]='.';
-        str[2]='0';
-        str[3]=0;        
+        _qsetfstringto_0(str);      
         return str;
     }
     if((c = qIsInf(num))){
         str[0]=(c==1)?'+':'-';
-        str[1]='i';
-        str[2]='n';
-        str[3]='f';
-        str[4]=0;
+        _qsetfstringto_inf(str);
         return str;        
     }
     if(qIsNan(num)){ 
-        str[0]='n';
-        str[1]='a';
-        str[2]='n';
-        str[3]=0;
+        _qsetfstringto_nan(str);
         return str;
     }
     
     if(precision > 10) precision = 10;
+    
     if(num < 0){
         num = -num;
-	*ptr++ = '-';
-    }
-
-    intPart = (int32_t)num;
-    num -= intPart;
-
-    if (!intPart) *ptr++ = '0';
-    else{
-	p = ptr; /*save start pointer*/
-        while (intPart){ /*convert (reverse order)*/
-            *p++ = '0' + intPart % 10;
-            intPart /= 10;
-	}
-        qSwapBytes(ptr, (qSize_t)(p-ptr));
-        ptr = p;
+	str[i++] = '-';
     }
     
+    intPart = (uint32_t)num;
+    num -= intPart;
+    i += __q_revuta(intPart, str+i, 10); /*convert the integer part*/
     if (precision){ /*decimal part*/
-        *ptr++ = '.'; /*place decimal point*/
+        str[i++] = '.'; /*place decimal point*/
         while (precision--){ /*convert*/
             num *= 10.0;
             c = (char)num;
-            *ptr++ = c + '0';
+            str[i++] = c + '0';
             num -= c;
         }
     }
-    *ptr = 0; /*put the null char*/
+    str[i] = '\0'; /*put the null char*/
     return str;
 }
 #ifdef Q_ISR_BUFFERS 
@@ -2115,7 +2088,7 @@ qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
     else return qFalse;
 }
 /*============================================================================*/
-/*void qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
+/*qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
 
  ISR receiver handler for the response for "qResponseReceived"
 

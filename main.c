@@ -10,6 +10,7 @@
 #include <termios.h>
 #include <math.h>
 #include <assert.h>
+#include <float.h>
 
 #include "QuarkTS.h"
 /*============================================================================*/
@@ -180,9 +181,18 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 /*========+====================================================================*/
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
-    int yy = 23;
+    int yy = -128;
    
-    qTraceVariable( yy, Bool);
+    qTraceVariable( yy, Decimal);
+    
+    qTraceVariable( 48765, UnsignedDecimal);
+    qTraceVar( yy, Binary);
+    qTraceVariable( yy, UnsignedHexadecimal );
+    qTraceVariable( yy, UnsignedBinary);
+    qTraceVariable( 0, UnsignedHexadecimal );
+    qTraceVariable( 0b01001101, Binary );
+    
+    qTraceVariable( 3.1416, Float);
     
     return EXIT_SUCCESS;
     qRBuffer_t ringBuffer;

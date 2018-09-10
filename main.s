@@ -355,13 +355,13 @@ blinktaskCallback:
 	.seh_stackalloc	40
 	.seh_endprologue
 	movl	_qCRTaskState_.4105(%rip), %eax
-	cmpl	$142, %eax
+	cmpl	$143, %eax
 	jg	.L47
-	cmpl	$141, %eax
+	cmpl	$142, %eax
 	jge	.L48
-	cmpl	$138, %eax
+	cmpl	$139, %eax
 	je	.L49
-	cmpl	$140, %eax
+	cmpl	$141, %eax
 	je	.L50
 	cmpl	$-32766, %eax
 	jne	.L45
@@ -372,13 +372,13 @@ blinktaskCallback:
 	leaq	tmr.4102(%rip), %rcx
 	movss	.LC18(%rip), %xmm1
 	call	qSTimerSet
-	movl	$140, _qCRTaskState_.4105(%rip)
+	movl	$141, _qCRTaskState_.4105(%rip)
 .L50:
 	leaq	tmr.4102(%rip), %rcx
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L45
-	movl	$141, _qCRTaskState_.4105(%rip)
+	movl	$142, _qCRTaskState_.4105(%rip)
 .L48:
 	leaq	tmr.4102(%rip), %rcx
 	movss	.LC18(%rip), %xmm1
@@ -388,7 +388,7 @@ blinktaskCallback:
 	leaq	Task1(%rip), %rcx
 	xorl	%edx, %edx
 	call	qTaskSendEvent
-	movl	$150, _qCRTaskState_.4105(%rip)
+	movl	$151, _qCRTaskState_.4105(%rip)
 .L52:
 	leaq	tmr.4102(%rip), %rcx
 	call	qSTimerExpired
@@ -400,9 +400,9 @@ blinktaskCallback:
 	ret
 	.p2align 4,,10
 .L47:
-	cmpl	$150, %eax
+	cmpl	$151, %eax
 	je	.L52
-	cmpl	$153, %eax
+	cmpl	$154, %eax
 	jne	.L45
 	leaq	tmr.4102(%rip), %rcx
 	call	qSTimerExpired
@@ -420,7 +420,7 @@ blinktaskCallback:
 	movss	.LC21(%rip), %xmm1
 	call	qSTimerSet
 	leaq	tmr.4102(%rip), %rcx
-	movl	$153, _qCRTaskState_.4105(%rip)
+	movl	$154, _qCRTaskState_.4105(%rip)
 	call	qSTimerExpired
 	testb	%al, %al
 	je	.L45
@@ -506,7 +506,29 @@ qStringHash:
 .LC22:
 	.ascii "yy=\0"
 .LC23:
-	.ascii "[main.c:185] \0"
+	.ascii "[main.c:186] \0"
+.LC24:
+	.ascii "48765=\0"
+.LC25:
+	.ascii "[main.c:188] \0"
+.LC26:
+	.ascii "[main.c:189] \0"
+.LC27:
+	.ascii "[main.c:190] \0"
+.LC28:
+	.ascii "[main.c:191] \0"
+.LC29:
+	.ascii "0=\0"
+.LC30:
+	.ascii "[main.c:192] \0"
+.LC31:
+	.ascii "0b01001101=\0"
+.LC32:
+	.ascii "[main.c:193] \0"
+.LC34:
+	.ascii "3.1416=\0"
+.LC35:
+	.ascii "[main.c:195] \0"
 	.section	.text.startup,"x"
 	.p2align 4,,15
 	.globl	main
@@ -518,14 +540,92 @@ main:
 	.seh_endprologue
 	call	__main
 	movq	.refptr.__qDebugOutputFcn(%rip), %rax
-	leaq	putcharfcn(%rip), %rdx
-	movl	$23, %ecx
-	movq	%rdx, (%rax)
+	leaq	putcharfcn(%rip), %rcx
 	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
-	call	qBtoA
+	movl	$10, %r8d
+	movq	%rcx, (%rax)
+	movl	$-128, %ecx
+	call	qItoA
 	leaq	.LC22(%rip), %r8
 	leaq	__FUNCTION__.4138(%rip), %rdx
 	leaq	.LC23(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$10, %r8d
+	movl	$48765, %ecx
+	call	qUtoA
+	leaq	.LC24(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC25(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$2, %r8d
+	movl	$-128, %ecx
+	call	qItoA
+	leaq	.LC22(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC26(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$16, %r8d
+	movl	$-128, %ecx
+	call	qUtoA
+	leaq	.LC22(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC27(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$2, %r8d
+	movl	$-128, %ecx
+	call	qUtoA
+	leaq	.LC22(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC28(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	xorl	%ecx, %ecx
+	movl	$16, %r8d
+	call	qUtoA
+	leaq	.LC29(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC30(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$2, %r8d
+	movl	$77, %ecx
+	call	qItoA
+	leaq	.LC32(%rip), %rcx
+	leaq	.LC31(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movss	.LC33(%rip), %xmm0
+	movl	$10, %r8d
+	call	qFtoA
+	leaq	.LC34(%rip), %r8
+	leaq	__FUNCTION__.4138(%rip), %rdx
+	leaq	.LC35(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
@@ -573,6 +673,9 @@ _qCRTaskState_.4105:
 	.align 4
 .LC21:
 	.long	1073741824
+	.align 4
+.LC33:
+	.long	1078530041
 	.ident	"GCC: (GNU) 7.3.0"
 	.def	putchar;	.scl	2;	.type	32;	.endef
 	.def	qSTimerExpired;	.scl	2;	.type	32;	.endef
@@ -587,8 +690,10 @@ _qCRTaskState_.4105:
 	.def	qTaskSetIterations;	.scl	2;	.type	32;	.endef
 	.def	qTaskSetState;	.scl	2;	.type	32;	.endef
 	.def	qTaskSendEvent;	.scl	2;	.type	32;	.endef
-	.def	qBtoA;	.scl	2;	.type	32;	.endef
+	.def	qItoA;	.scl	2;	.type	32;	.endef
 	.def	__qtrace_func;	.scl	2;	.type	32;	.endef
+	.def	qUtoA;	.scl	2;	.type	32;	.endef
+	.def	qFtoA;	.scl	2;	.type	32;	.endef
 	.section	.rdata$.refptr.qDebugTrace_Buffer, "dr"
 	.globl	.refptr.qDebugTrace_Buffer
 	.linkonce	discard
