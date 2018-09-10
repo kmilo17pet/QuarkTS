@@ -123,9 +123,7 @@ void Task6Callback(qEvent_t e){
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = QSTIMER_INITIALIZER;
     if(qSTimerFreeRun(&t, 5.0)){
-        puts("hi");
-        qTaskSetIterations(&Task1, 6);
-        qTaskResume(&Task1);      
+   
     }
 }
 /*============================================================================*/
@@ -135,7 +133,7 @@ void blinktaskCallback(qEvent_t e){
     qCoroutineSemaphore_t mutex;
     qCoroutineSemaphoreInit(&mutex, 1);
     qCoroutineBegin{
-        puts("led on");
+        puts(">>>>>>>>>>>>>>led on");
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
@@ -146,13 +144,12 @@ void blinktaskCallback(qEvent_t e){
         
         /*qCoroutinePositionRestore(state);*/
         qCoroutineSemaphoreSignal(&mutex);
-        puts("led off");
+        puts(">>>>>>>>>>>>>>led off");
         qTaskSendEvent(&Task1, NULL);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
-        puts("led fuck");
-        qSTimerSet(&tmr, 2);
+        puts(">>>>>>>>>>>>>>led fuck");
+        qSTimerSet(&tmr, 0.5);
         qCoroutineWaitUntil(qSTimerExpired(&tmr));
-        qCoroutineRestart;
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -175,14 +172,10 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     }    
     return 0;
 }
-
-
-
 /*========+====================================================================*/
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
     int yy = -128;
-   
     qTraceVariable( yy, Decimal);
     
     qTraceVariable( 48765, UnsignedDecimal);
@@ -193,8 +186,7 @@ int main(int argc, char** argv) {
     qTraceVariable( 0b01001101, Binary );
     
     qTraceVariable( 3.1416, Float);
-    
-    return EXIT_SUCCESS;
+
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
@@ -208,8 +200,7 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &y); y=-7;
     qRBufferPush(&ringBuffer, &y); 
     
-    qSchedulerSetup(0.01, IdleTaskCallback, 10);  
-    
+    qSchedulerSetup(0.01, IdleTaskCallback, 10);           
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");

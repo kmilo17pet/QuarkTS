@@ -113,7 +113,7 @@ extern "C" {
         typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 
         typedef qCoroutineSemaphore_t qCRSem_t;
         #define qCR_PCInitVal   (-0x7FFE)           
-        #define __qCRKeep                _qCR_BEGIN_:
+        #define __qCRKeep
         #define __qCRCodeStartBlock      do
         #define __qCRCodeEndBlock        while(qFalse)
         #define __qPersistent            static _qTaskPC_t
@@ -127,7 +127,7 @@ extern "C" {
         #define __TagExitCCR             __qCRYield_ExitLabel
         #define __qExit                  goto __TagExitCCR
         #define __qTaskYield             __qExit;
-        #define __qCRDispose             goto _qCR_BEGIN_;}__TagExitCCR:
+        #define __qCRDispose            __qTaskInitState;} __TagExitCCR:
         #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
         #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
@@ -469,12 +469,12 @@ Parameters:
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
     
     #ifdef _QUARKTS_CR_DEFS_    
-        #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin ; __qCRKeep
-        #define __qCRYield                          __qCRCodeStartBlock{ __qTaskSaveState ; __qTaskYield  __RestoreAfterYield; } __qCRCodeEndBlock
-        #define __qCRRestart                        __qCRCodeStartBlock{ __qTaskInitState ; __qTaskYield } __qCRCodeEndBlock
-        #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{ __qTaskSaveState ; __RestoreAfterYield ; __qAssert(_cond_) __qTaskYield }__qCRCodeEndBlock
-        #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{_pos_=__qTaskProgress; __RestoreAfterYield;}__qCRCodeEndBlock
-        #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{__qSetPC(_pos_); __qTaskYield} __qCRCodeEndBlock
+        #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin
+        #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
+        #define __qCRRestart                        __qCRCodeStartBlock{  __qTaskInitState      ; __qTaskYield }                                            __qCRCodeEndBlock
+        #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
+        #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;}                                  __qCRCodeEndBlock
+        #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
         #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
   

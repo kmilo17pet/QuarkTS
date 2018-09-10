@@ -2928,9 +2928,7 @@ void Task6Callback(qEvent_t e){
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = {0, 0, 0};
     if(qSTimerFreeRun(&t, 5.0)){
-        puts("hi");
-        qTaskSetIterations(&Task1, 6);
-        qTaskSetState(&Task1, (0x01u));
+
     }
 }
 
@@ -2939,30 +2937,29 @@ void blinktaskCallback(qEvent_t e){
     static _qTaskPC_t state;
     qCoroutineSemaphore_t mutex;
     do{ (&mutex)->tail = 0; (&mutex)->head = (1); }while(0x00u);
-    static _qTaskPC_t _qCRTaskState_ = (-0x7FFE) ; switch(_qCRTaskState_){ case (_qTaskPC_t)(-0x7FFE): ; _qCR_BEGIN_:{
-        puts("led on");
-        do{state=139; case (_qTaskPC_t)139:;}while(0x00u);
+    static _qTaskPC_t _qCRTaskState_ = (-0x7FFE) ; switch(_qCRTaskState_){ case (_qTaskPC_t)(-0x7FFE):{
+        puts(">>>>>>>>>>>>>>led on");
+        do{ state=137 ; case (_qTaskPC_t)137: ;} while(0x00u);
         qSTimerSet(&tmr, 1);
-        do{ _qCRTaskState_ = 141 ; case (_qTaskPC_t)141: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
-        do{ do{ _qCRTaskState_ = 142 ; case (_qTaskPC_t)142: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) goto __qCRYield_ExitLabel; }while(0x00u); (++(&mutex)->tail); } while(0x00u);
-        do{state=143; case (_qTaskPC_t)143:;}while(0x00u);
+        do{ _qCRTaskState_ = 139 ; case (_qTaskPC_t)139: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; } while(0x00u);
+        do{ do{ _qCRTaskState_ = 140 ; case (_qTaskPC_t)140: ; if(!(((&mutex)->head - (&mutex)->tail) > 0)) goto __qCRYield_ExitLabel; } while(0x00u); (++(&mutex)->tail); } while(0x00u);
+        do{ state=141 ; case (_qTaskPC_t)141: ;} while(0x00u);
         qSTimerSet(&tmr, 1);
 
 
 
         (++(&mutex)->head);
-        puts("led off");
+        puts(">>>>>>>>>>>>>>led off");
         qTaskSendEvent(&Task1, 
-# 150 "main.c" 3 4
+# 148 "main.c" 3 4
                               ((void *)0)
-# 150 "main.c"
+# 148 "main.c"
                                   );
-        do{ _qCRTaskState_ = 151 ; case (_qTaskPC_t)151: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
-        puts("led fuck");
-        qSTimerSet(&tmr, 2);
-        do{ _qCRTaskState_ = 154 ; case (_qTaskPC_t)154: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; }while(0x00u);
-        do{ _qCRTaskState_ = (-0x7FFE) ; goto __qCRYield_ExitLabel; } while(0x00u);
-    }goto _qCR_BEGIN_;}__qCRYield_ExitLabel:;
+        do{ _qCRTaskState_ = 149 ; case (_qTaskPC_t)149: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; } while(0x00u);
+        puts(">>>>>>>>>>>>>>led fuck");
+        qSTimerSet(&tmr, 0.5);
+        do{ _qCRTaskState_ = 152 ; case (_qTaskPC_t)152: ; if(!(qSTimerExpired(&tmr))) goto __qCRYield_ExitLabel; } while(0x00u);
+    }_qCRTaskState_ = (-0x7FFE);} __qCRYield_ExitLabel:;
 }
 
 uint32_t qStringHash(const char* s, uint8_t mode){
@@ -2985,70 +2982,61 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 
-
-
-
 int main(int argc, char** argv) {
     __qDebugOutputFcn = putcharfcn;
     int yy = -128;
+    __qtrace_func ("[" "main.c" ":" "179" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 10), 
+# 179 "main.c" 3 4
+   ((void *)0)
+# 179 "main.c"
+   , 0);
 
-    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "181" "] ", __FUNCTION__, "48765" "=", qUtoA((int32_t)(48765), qDebugTrace_Buffer, 10), 
+# 181 "main.c" 3 4
+   ((void *)0)
+# 181 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "182" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
+# 182 "main.c" 3 4
+   ((void *)0)
+# 182 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "183" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 16), 
+# 183 "main.c" 3 4
+   ((void *)0)
+# 183 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "184" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
+# 184 "main.c" 3 4
+   ((void *)0)
+# 184 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "185" "] ", __FUNCTION__, "0" "=", qUtoA((int32_t)(0), qDebugTrace_Buffer, 16), 
+# 185 "main.c" 3 4
+   ((void *)0)
+# 185 "main.c"
+   , 0);
+    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "0b01001101" "=", qItoA((int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
 # 186 "main.c" 3 4
    ((void *)0)
 # 186 "main.c"
    , 0);
 
-    __qtrace_func ("[" "main.c" ":" "188" "] ", __FUNCTION__, "48765" "=", qUtoA((int32_t)(48765), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "188" "] ", __FUNCTION__, "3.1416" "=", qFtoA(( float )(3.1416), qDebugTrace_Buffer, 10), 
 # 188 "main.c" 3 4
    ((void *)0)
 # 188 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "189" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
-# 189 "main.c" 3 4
-   ((void *)0)
-# 189 "main.c"
-   , 0);
-    __qtrace_func ("[" "main.c" ":" "190" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 16), 
-# 190 "main.c" 3 4
-   ((void *)0)
-# 190 "main.c"
-   , 0);
-    __qtrace_func ("[" "main.c" ":" "191" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
-# 191 "main.c" 3 4
-   ((void *)0)
-# 191 "main.c"
-   , 0);
-    __qtrace_func ("[" "main.c" ":" "192" "] ", __FUNCTION__, "0" "=", qUtoA((int32_t)(0), qDebugTrace_Buffer, 16), 
-# 192 "main.c" 3 4
-   ((void *)0)
-# 192 "main.c"
-   , 0);
-    __qtrace_func ("[" "main.c" ":" "193" "] ", __FUNCTION__, "0b01001101" "=", qItoA((int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
-# 193 "main.c" 3 4
-   ((void *)0)
-# 193 "main.c"
-   , 0);
 
-    __qtrace_func ("[" "main.c" ":" "195" "] ", __FUNCTION__, "3.1416" "=", qFtoA(( float )(3.1416), qDebugTrace_Buffer, 10), 
-# 195 "main.c" 3 4
-   ((void *)0)
-# 195 "main.c"
-   , 0);
-
-    return 
-# 197 "main.c" 3 4
-          0
-# 197 "main.c"
-                      ;
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, 
-# 199 "main.c" 3 4
+# 191 "main.c" 3 4
                                    ((void *)0)
-# 199 "main.c"
+# 191 "main.c"
                                        , TimerInterruptEmulation, 
-# 199 "main.c" 3 4
+# 191 "main.c" 3 4
                                                                   ((void *)0) 
-# 199 "main.c"
+# 191 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     qSM_t statemachine;
@@ -3062,7 +3050,6 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &y);
 
     volatile qQueueStack_t _qQueueStack[10]; _qInitScheduler(0.01, IdleTaskCallback, _qQueueStack, 10);
-
     qSchedulerAddxTask(&blinktask, blinktaskCallback, ((qPriority_t)(0x00u)), 0.05, ((qIteration_t)(-32768)), (0x01u), "blink");
 
     qSchedulerAddxTask(&Task1, Task1Callback, ((qPriority_t)(0xFEu)), 0.5, 5, (0x01u), "TASK1");
@@ -3073,29 +3060,29 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 222 "main.c" 3 4
+# 213 "main.c" 3 4
                                                                                 ((void *)0)
-# 222 "main.c"
+# 213 "main.c"
                                                                                     , 
-# 222 "main.c" 3 4
+# 213 "main.c" 3 4
                                                                                       ((void *)0)
-# 222 "main.c"
+# 213 "main.c"
                                                                                           , 
-# 222 "main.c" 3 4
+# 213 "main.c" 3 4
                                                                                             ((void *)0)
-# 222 "main.c"
+# 213 "main.c"
                                                                                                 , 
-# 222 "main.c" 3 4
+# 213 "main.c" 3 4
                                                                                                   ((void *)0)
-# 222 "main.c"
+# 213 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
 
     qSchedulerRun();
     return (
-# 227 "main.c" 3 4
+# 218 "main.c" 3 4
            0
-# 227 "main.c"
+# 218 "main.c"
                        );
 }
