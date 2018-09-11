@@ -2985,38 +2985,38 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 int main(int argc, char** argv) {
     __qDebugOutputFcn = putcharfcn;
     int yy = -128;
-    __qtrace_func ("[" "main.c" ":" "179" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "179" "] ", __FUNCTION__, "yy" "=", qItoA(( int32_t)(yy), qDebugTrace_Buffer, 10), 
 # 179 "main.c" 3 4
    ((void *)0)
 # 179 "main.c"
    , 0);
 
-    __qtrace_func ("[" "main.c" ":" "181" "] ", __FUNCTION__, "48765" "=", qUtoA((int32_t)(48765), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "181" "] ", __FUNCTION__, "48765" "=", qUtoA((uint32_t)(48765), qDebugTrace_Buffer, 10), 
 # 181 "main.c" 3 4
    ((void *)0)
 # 181 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "182" "] ", __FUNCTION__, "yy" "=", qItoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "182" "] ", __FUNCTION__, "yy" "=", qItoA(( int32_t)(yy), qDebugTrace_Buffer, 2), 
 # 182 "main.c" 3 4
    ((void *)0)
 # 182 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "183" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 16), 
+    __qtrace_func ("[" "main.c" ":" "183" "] ", __FUNCTION__, "yy" "=", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 16), 
 # 183 "main.c" 3 4
    ((void *)0)
 # 183 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "184" "] ", __FUNCTION__, "yy" "=", qUtoA((int32_t)(yy), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "184" "] ", __FUNCTION__, "yy" "=", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 2), 
 # 184 "main.c" 3 4
    ((void *)0)
 # 184 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "185" "] ", __FUNCTION__, "0" "=", qUtoA((int32_t)(0), qDebugTrace_Buffer, 16), 
+    __qtrace_func ("[" "main.c" ":" "185" "] ", __FUNCTION__, "0" "=", qUtoA((uint32_t)(0), qDebugTrace_Buffer, 16), 
 # 185 "main.c" 3 4
    ((void *)0)
 # 185 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "0b01001101" "=", qItoA((int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "0b01001101" "=", qItoA(( int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
 # 186 "main.c" 3 4
    ((void *)0)
 # 186 "main.c"
