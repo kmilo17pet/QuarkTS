@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6g
+ *  Version : 4.6.6h
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -46,6 +46,7 @@ extern "C" {
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL       
     
+    #define Q_MAX_FTOA_PRECISION      10
     #undef QATOF_FULL
     
     
@@ -59,7 +60,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.6g"
+    #define QUARTKTS_VERSION    "4.6.6h"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -76,6 +77,7 @@ extern "C" {
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
+
     #ifdef __XC8
         #define qConst
         #define qConstField_Set(TYPE, STRUCT_FIELD)    STRUCT_FIELD
@@ -83,6 +85,7 @@ extern "C" {
         #define qConst const  
         #define qConstField_Set(TYPE, STRUCT_FIELD)    *((TYPE*)&(STRUCT_FIELD))
     #endif
+    
     #define qBitsSet(Register, Bits)                    (Register) |= (Bits)
     #define qBitsClear(Register, Bits)                  (Register) &= ~(Bits)
     #define qBitSet(Register, Bit)                      (Register) |= (1 << (Bit))
@@ -375,7 +378,7 @@ extern "C" {
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
         #ifdef Q_PRIORITY_QUEUE
-            volatile qQueueStack_t *volatile QueueStack; /*a pointer to the queue stack*/
+            qQueueStack_t *QueueStack; /*a pointer to the queue stack*/
             uint8_t QueueSize; 
             volatile int16_t QueueIndex; /*holds the current queue index*/
             void *QueueData;
@@ -383,6 +386,8 @@ extern "C" {
         qTask_t *CurrentRunningTask;
     }QuarkTSCoreData_t;
     
+    qTime_t qClock2Time(const qClock_t t);
+    qClock_t qTime2Clock(const qTime_t t);
     void qSchedulerSysTick(void);
     qTask_t* qTaskSelf(void);
     qBool_t qTaskIsEnabled(const qTask_t *Task);
@@ -610,7 +615,6 @@ Resets the _CRPos_ variable to the begining of the Co-Routine
         void qSTimerDisarm(qSTimer_t *obj);
         void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time);
         qBool_t qSTimerStatus(const qSTimer_t *obj);
-        qTime_t qClock2Time(const qClock_t t);
         #define QSTIMER_INITIALIZER     {0, 0, 0}
      
         
@@ -690,6 +694,7 @@ typedef struct{
 typedef void (*qPutChar_t)(void*, const char);
 typedef char (*qGetChar_t)(void*);
 void qSwapBytes(void *data, const qSize_t n);
+qBool_t qCheckEndianness(void);
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
 void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
 void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
@@ -773,12 +778,53 @@ extern qPutChar_t __qDebugOutputFcn;
     #define __QTRACE_FUNC    ((char *) 0)
 #endif
 
+
+
+    #ifndef Message
+        #define Message
+    #endif
+    #ifndef String
+        #define String
+    #endif
+    #ifndef Bool
+        #define Bool
+    #endif
+    #ifndef Float
+        #define Float 
+    #endif
+    #ifndef Binary
+        #define Binary 
+    #endif
+    #ifndef Octal
+        #define Octal 
+    #endif
+    #ifndef Decimal
+        #define Decimal 
+    #endif
+    #ifndef Hexadecimal
+        #define Hexadecimal 
+    #endif
+    #ifndef UnsignedBinary
+        #define UnsignedBinary 
+    #endif
+    #ifndef UnsignedOctal
+        #define UnsignedOctal 
+    #endif
+    #ifndef UnsignedDecimal
+        #define UnsignedDecimal 
+    #endif
+    #ifndef UnsignedHexadecimal
+        #define UnsignedHexadecimal 
+    #endif
+
+
 #ifdef Q_TRACE_VARIABLES
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
     
     /*On-demand trace macros*/
     #define qDebugString(s)                 qOutputString(__qDebugOutputFcn, NULL, (const char *)s, qFalse)
+    #define qTraceMessage(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, "", (char*)(Var), NULL, 0)
     #define qTraceString(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=", (char*)(Var), NULL, 0)
     #define qTraceBool(Var)                 __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=", qBtoA(( qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
     #define qTraceBinary(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=", qItoA(( int32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
@@ -820,6 +866,7 @@ extern qPutChar_t __qDebugOutputFcn;
     #define qTraceVar(Var, DISP_TYPE_MODE)      qTrace##DISP_TYPE_MODE(Var)
 #else
     #define qDebugString(s)
+    #define qTraceMessage(Var)
     #define qTraceString(Var)
     #define qTraceVar(Var, DISP_TYPE_MODE)
     #define qTraceVariable(Var, DISP_TYPE_MODE)
@@ -851,7 +898,7 @@ qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n);
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 
 #ifdef Q_BYTE_SIZED_BUFFERS
-    size_t qBSBuffer_Count(qBSBuffer_t const* obj);
+    qSize_t qBSBuffer_Count(qBSBuffer_t const* obj);
     qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
     qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
     uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);

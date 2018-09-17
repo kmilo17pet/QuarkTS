@@ -167,7 +167,10 @@ uint32_t qStringHash(const char* s, uint8_t mode){
             hash += (hash << 3);
             hash ^= (hash >> 11);
             hash += (hash << 15);
-            return hash;         
+            return hash;
+        case 3: /*sdbm*/
+            for(hash=0; *s; hash = (*s++) + (hash<<6) + (hash<<16) - hash );
+            return hash; 
         default : return 0;
     }    
     return 0;
@@ -177,15 +180,18 @@ int main(int argc, char** argv) {
     qSetDebugFcn(putcharfcn);
     int yy = -128;
     qTraceVariable( yy, Decimal);
-    
+    qTraceMessage( "test" );
     qTraceVariable( 48765, UnsignedDecimal);
-    qTraceVar( yy, Binary);
+    qTraceVariable( yy, Binary);
     qTraceVariable( yy, UnsignedHexadecimal );
     qTraceVariable( yy, UnsignedBinary);
     qTraceVariable( 0, UnsignedHexadecimal );
     qTraceVariable( 0b01001101, Binary );
     
     qTraceVariable( 3.1416, Float);
+    qTraceVariable( qStringHash("aloh", 0), UnsignedDecimal);
+    qTraceVariable( qStringHash("hola", 0), UnsignedDecimal);
+    qTraceVariable( qStringHash("hannah", 0), UnsignedDecimal);
 
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
@@ -214,6 +220,7 @@ int main(int argc, char** argv) {
     /*qISR_Byte_t DataAlloc[100] = {0};
     qISR_ByteBuffer_t Buffer;
     qISR_ByteBufferInit(&Buffer, DataAlloc, sizeof(DataAlloc), '\r', isalpha, tolower);*/
+    
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }        

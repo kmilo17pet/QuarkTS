@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6g
+ *  Version : 4.6.6h
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -61,7 +61,7 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
-static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event);
+static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event);
 static qTask_t* _qScheduler_GetNodeFromChain(void);
 static void _qScheduler_RearrangeChain(qTask_t **head);
 static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task);
@@ -82,20 +82,52 @@ qPutChar_t __qDebugOutputFcn = NULL;
 #ifdef Q_TRACE_VARIABLES
     char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
 #endif
-#define _qabs(x)    (((x<0) && (x!=qPeriodic))? -x : x) 
+#define _qabs(x)    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 /*========================== QuarkTS Private Macros ==========================*/
 #define qEnterCritical()                        if(QUARKTS.I_Disable != NULL) QUARKTS.Flag.IntFlags = QUARKTS.I_Disable()
 #define qExitCritical()                         if(QUARKTS.I_Restorer != NULL) QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags)
 
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_) /*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
-#define _qTaskDeadlineReached(_TASK_)            ( (qTimeInmediate == _TASK_->Interval) || ((_qSysTick_Epochs_ - _TASK_->ClockStart)>=_TASK_->Interval)  )
-#define _qTaskHasPendingIterations(_TASK_)       (_qabs(_TASK_->Iterations)>0 || qPeriodic == _TASK_->Iterations)
-#define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    _eVar_.Trigger = _Trigger_; _eVar_.FirstCall = _FirstCall_; _eVar_.TaskData = _TaskData_ 
+#define _qTaskDeadlineReached(_TASK_)            ( (qTimeInmediate == (_TASK_)->Interval) || ((_qSysTick_Epochs_ - (_TASK_)->ClockStart)>=(_TASK_)->Interval)  )
+#define _qTaskHasPendingIterations(_TASK_)       (_qabs((_TASK_)->Iterations)>0 || qPeriodic == (_TASK_)->Iterations)
+#define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    (_eVar_).Trigger = _Trigger_; (_eVar_).FirstCall = _FirstCall_; (_eVar_).TaskData = _TaskData_
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
 #define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
 
+/*============================================================================*/
+/*qTime_t qClock2Time(const qClock_t t)
+
+Convert the specified input time(epochs) to time(seconds)
+
+Parameters:
+
+    - t : time in epochs   
+
+Return value:
+
+    time (t) in seconds
+*/
+qTime_t qClock2Time(const qClock_t t){
+    return (qTime_t)(QUARKTS.Tick*t);
+}
+/*============================================================================*/
+/*qCLock_t qTime2Clock(const qTime_t t)
+
+Convert the specified input time(seconds) to time(epochs)
+
+Parameters:
+
+    - t : time in seconds   
+
+Return value:
+
+    time (t) in epochs
+*/
+qClock_t qTime2Clock(const qTime_t t){
+    return (qClock_t)(t/QUARKTS.Tick);
+}
 /*============================================================================*/
 /*
 qTask_t* qTaskSelf(void)
@@ -213,7 +245,7 @@ Parameters:
 */
 void qTaskSetTime(qTask_t *Task, const qTime_t Value){
     if(NULL==Task) return;
-    Task->Interval = (qClock_t)(Value/QUARKTS.Tick);
+    Task->Interval = qTime2Clock(Value);
 }
 /*============================================================================*/
 /*void qTaskSetIterations(qTask_t *Task, qIteration_t Value)
@@ -317,10 +349,10 @@ void qTaskClearTimeElapsed(qTask_t *Task){
 /*qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata)
 
 Insert an asyncrohous event in the FIFO priority queue. The task will be ready 
-for execution according to the queue extraction (determined by priority), even 
-if task is disabled (More info here). When extracted, the scheduler will set 
-Trigger flag to "byQueueExtraction". Specific user-data can be passed through, 
-and will be available inside the EventData field, only in corresponding launch.
+for execution according to the queue order (determined by priority), even 
+if task is disabled. When extracted, the scheduler will set Trigger flag to 
+"byQueueExtraction". Specific user-data can be passed through, and will be
+ available inside the EventData field, only in corresponding launch.
 
 Parameters:
 
@@ -335,12 +367,12 @@ Return value:
 */
 qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
     #ifdef Q_PRIORITY_QUEUE
-        qQueueStack_t qtmp;
+        volatile qQueueStack_t tmp;
         if((NULL==Task) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
-        qtmp.Task = Task; 
-        qtmp.QueueData = eventdata;
-        QUARKTS.QueueStack[++QUARKTS.QueueIndex] = qtmp; /*insert task and the corresponding eventdata to the queue*/
-        return qTrue;
+        tmp.QueueData = eventdata;
+        tmp.Task = Task;
+        QUARKTS.QueueStack[++QUARKTS.QueueIndex] = tmp; /*insert task and the corresponding eventdata to the queue*/
+    return qTrue;
     #else
         return qFalse;
     #endif
@@ -374,13 +406,13 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){ /*Find the task with the highest priority*/
         if(NULL == QUARKTS.QueueStack[i].Task ) break; /*break if the tail is reached*/
-        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){
-            MaxpValue = QUARKTS.QueueStack[i].Task->Priority;
-            IndexTaskToExtract = i; 
+        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){ /*check if the queueded task has the max priority value*/
+            MaxpValue = QUARKTS.QueueStack[i].Task->Priority; /*reasign the max value*/
+            IndexTaskToExtract = i;  /*save the index*/
         }
     }   
     QUARKTS.QueueData = QUARKTS.QueueStack[IndexTaskToExtract].QueueData; /*get the data from the queue*/
-    Task = QUARKTS.QueueStack[IndexTaskToExtract].Task;
+    Task = QUARKTS.QueueStack[IndexTaskToExtract].Task; /*assign the task to the output*/
     Task->State = qReady; /*set the task as ready*/
     QUARKTS.QueueStack[IndexTaskToExtract].Task = NULL; /*set the position in the queue as empty*/  
     for(i=IndexTaskToExtract; i<QUARKTS.QueueIndex; i++) QUARKTS.QueueStack[i] = QUARKTS.QueueStack[i+1]; /*shift the queue*/
@@ -397,10 +429,10 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = NULL;
     #ifdef Q_PRIORITY_QUEUE    
-        QUARKTS.QueueStack = Q_Stack;
+        QUARKTS.QueueStack = (qQueueStack_t*)Q_Stack;
         QUARKTS.QueueSize = Size_Q_Stack;
-        for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;    
-        QUARKTS.QueueIndex = -1;    
+        for(i=0;i<QUARKTS.QueueSize;i++) QUARKTS.QueueStack[i].Task = NULL;  /*set the priority queue as empty*/  
+        QUARKTS.QueueIndex = -1;     
         QUARKTS.QueueData = NULL;
     #endif
     QUARKTS.Flag.Init = qFalse;
@@ -415,7 +447,7 @@ void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueSt
 /*qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)
 
 Add a task to the scheduling scheme. The task is scheduled to run every <Time> 
-seconds, <nExecutions> times and executing <CallbackFcb> method on every pass.
+seconds, <nExecutions> times and executing <CallbackFcn> method on every pass.
 
 Parameters:
     - Task : A pointer to the task node.
@@ -426,16 +458,16 @@ Parameters:
     - Priority : Task priority Value. [0(min) - 255(max)]
 
     - Time : Execution interval defined in seconds (floating-point format). 
-               For inmediate execution (tValue = TIME_INMEDIATE).
+               For inmediate execution (tValue = qTimeInmediate).
 
     - nExecutions : Number of task executions (Integer value). For indefinite 
-               execution (nExecutions = PERIODIC or INDEFINITE). Tasks do not 
+               execution (nExecutions = qPeriodic or qIndefinite). Tasks do not 
                remember the number of iteration set initially. After the 
                iterations are done, internal iteration counter is 0. If you 
                need to perform another set of iterations, you need to set the 
                number of iterations again.
     >Note 1: Tasks which performed all their iterations put their own 
-             state to DISABLED.
+             state to qDisabled.
     >Note 2: Asynchronous triggers do not affect the iteration counter.
 
     - InitialState : Specifies the initial state of the task (qEnabled or qDisabled).
@@ -454,7 +486,7 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;
     qSchedulerRemoveTask(Task); /*Remove the task if was previously added to the chain*/
     Task->Callback = CallbackFcn;
-    Task->Interval = (qClock_t)(Time/QUARKTS.Tick);
+    Task->Interval = qTime2Clock(Time);
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = (qPeriodic==nExecutions)? qPeriodic : -nExecutions;    
@@ -473,7 +505,7 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     #endif
     Task->StateMachine = NULL;
     Task->State = qSuspended;
-    _qScheduler_PriorizedInsert((qTask_t**)&QUARKTS.Head, Task);
+    _qScheduler_PriorizedInsert((qTask_t**)&QUARKTS.Head, Task); /*put the task on the list according to its priority*/
     return qTrue;
 }
 /*============================================================================*/
@@ -513,7 +545,7 @@ qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
                          qState_t InitialTaskState, void *arg)
 
 Add a task to the scheduling scheme running a dedicated state-machine. 
-The task is scheduled to run every <Time> seconds in PERIODIC mode. The event info
+The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
 will be available as a generic pointer inside the <Data> field of the qSM_t pointer
 passed as input argument inside every state.
 
@@ -523,9 +555,9 @@ Parameters:
     - Priority : Task priority Value. [0(min) - 255(max)]
 
     - Time : Execution interval defined in seconds (floating-point format). 
-               For inmediate execution (tValue = TIME_INMEDIATE).
+               For inmediate execution (tValue = qTimeInmediate).
 
-    - StateMachine: A pointer to Finite State-Machine (FSM) object
+    - StateMachine: A pointer to the Finite State-Machine (FSM) object
   
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
@@ -606,10 +638,10 @@ static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
         *head = Task; /*this task will be the new head*/
         return;
     }
-    tmp_node = *head; 
+    tmp_node = *head; /*start the head with the highest priority task*/
     while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the right place for this task according its priority*/
     Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
-    tmp_node->Next = Task;
+    tmp_node->Next = Task; /*assign the task*/
 }
 #ifdef Q_AUTO_CHAINREARRANGE
 /*============================================================================*/
@@ -623,7 +655,7 @@ static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange 
         tmp = tmp->Next;
         _qScheduler_PriorizedInsert(&new_head, tmp1);  
     }
-    *head = new_head;
+    *head = new_head; /*a new head will be created after the rearrangement*/
     QUARKTS.Flag.Init= qTrue; /*set the initializtion flag*/
     qExitCritical();
 }
@@ -673,8 +705,8 @@ Return value:
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
     if(NULL==RingBuffer || NULL==Task || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;   /*Validate*/
     if(NULL==RingBuffer->data) return qFalse;    
-    Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse)); /*if mode is qRB_COUNT, use their value arg as count*/
-    Task->RingBuff = (arg>0)? RingBuffer : NULL; /*reject no valid arg input*/
+    Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse)); /*if mode is qRB_COUNT, use their arg value as count*/
+    Task->RingBuff = (arg>0)? RingBuffer : NULL; /*reject, no valid arg input*/
     return qTrue;
 }
 /*============================================================================*/
@@ -718,14 +750,14 @@ void qSchedulerRun(void){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     qSchedulerStartPoint{
         #ifdef Q_AUTO_CHAINREARRANGE
-        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/    
+        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/
         #endif
         #ifdef Q_PRIORITY_QUEUE
         if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
         #endif
         if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
-                Task->State = (qReady == Task->State)? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting;  /*Dispatch the qReady task, otherwise put it in qWaiting State*/
+                Task->State = (qTaskState_t) ((qReady == Task->State) ? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
         }
         else if(NULL==Task && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
     }qSchedulerEndPoint; /*scheduling end-point (also check for scheduling-release request)*/
@@ -741,21 +773,22 @@ static qTask_t* _qScheduler_GetNodeFromChain(void){
 }
 /*============================================================================*/
 static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
-    switch(Event){ /*take the necessary actions before dispatching depending on the event that triggered the task*/
+    switch(Event){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
         case byTimeElapsed:
+            /*handle the iteration value and the FirstIteration flag*/
             Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
             if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
             if((QUARKTS.EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/            
             break;
         case byAsyncEvent:
-            QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async data to the eventinfo structure*/
+            QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
             Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
             break;
         #ifdef Q_RINGBUFFERS    
         case byRBufferPop:
-            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the front data of the RBuffer*/
+            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the RBuffer front-data*/
             break;
-        case byRBufferFull: case byRBufferCount: case byRBufferEmpty:
+        case byRBufferFull: case byRBufferCount: case byRBufferEmpty: 
             QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
             break;
         #endif
@@ -765,13 +798,13 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             QUARKTS.QueueData = NULL;
             break;
         #endif
-        case byNoReadyTasks:
+        case byNoReadyTasks: /*only used for the idle task*/
             QUARKTS.EventInfo.FirstCall = (qBool_t)(!QUARKTS.Flag.FCallIdle);
             QUARKTS.EventInfo.Trigger = Event;
             QUARKTS.EventInfo.TaskData = NULL;
             QUARKTS.IDLECallback((qEvent_t)&QUARKTS.EventInfo); /*run the idle callback*/
             QUARKTS.Flag.FCallIdle = qTrue;      
-            return qSuspended; /*No more thing to do*/
+            return qSuspended; /*No more things to do*/
         default: break;
     }
     Task->State = qRunning; /*put the task in running state*/
@@ -785,24 +818,23 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event was byRBufferPop*/
     #endif
     Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
-    
-    QUARKTS.EventInfo.FirstIteration = QUARKTS.EventInfo.LastIteration =  qFalse;;
+    QUARKTS.EventInfo.FirstIteration = qFalse;
+    QUARKTS.EventInfo.LastIteration =  qFalse; 
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
-    
-    Task->Cycles++; /*increase the task cycles*/
+    Task->Cycles++; /*increase the task cycles value*/
     return qSuspended;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method check for  tasks that fullfill the conditions to get the qReady state*/
+static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for tasks that fullfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
     #ifdef Q_RINGBUFFERS 
     qTrigger_t trg = qTriggerNULL;
     #endif
-    qBool_t nTaskReady = qFalse; 
+    qBool_t nTaskReady = qFalse; /*this flag will let me know if at least one task is in qReady state*/
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
-        if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement*/
+        if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
-                if(_qTaskDeadlineReached(Task)){ /*finally, check the deadline*/
+                if(_qTaskDeadlineReached(Task)){ /*finally, check the time deadline*/
                     Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
                     Task->State = qReady; /*Put the task in ready state*/
                     Task->Trigger = byTimeElapsed; /*Set the corresponding trigger*/
@@ -981,7 +1013,7 @@ Return value:
 qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     if(NULL==obj) return qFalse;
     if ( (Time/2.0)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
-    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick); /*set the stimer time in epochs*/
+    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time); /*set the stimer time in epochs*/
     qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = _qSysTick_Epochs_; /*set the init time of the stimer with the current system epoch value*/
     qConstField_Set(qBool_t, obj->SR)/*obj->SR*/ = qTrue; /*enable the stimer*/
     return qTrue;
@@ -1124,24 +1156,8 @@ Parameters:
 */
 void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time){
     if(NULL==obj) return;
-    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = (qClock_t)(Time/QUARKTS.Tick);
+    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time);
 }
-/*qTime_t qClock2Time(const qClock_t t)
-
-Convert the specified input time in epochs to time in seconds
-
-Parameters:
-
-    - t : time in epochs   
-
-Return value:
-
-    time (t) in seconds
-*/
-qTime_t qClock2Time(const qClock_t t){
-    return (qTime_t)(QUARKTS.Tick*t);
-}
-
 #ifdef Q_MEMORY_MANAGER
 /*============================================================================*/
 /*void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size)
@@ -1157,7 +1173,7 @@ Parameters:
  
 Return value:
 
-    A pointer to allocated memory or null in there is no avaible memory
+    A pointer to allocated memory or null if there is not available memory
  */
 void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
     uint8_t i, j, k, c;
@@ -1166,31 +1182,32 @@ void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
     if(NULL==obj) return NULL;			
     j = 0;	
     qEnterCritical();
-    while( j < obj->NumberofBlocks ) {			
+    while( j < obj->NumberofBlocks ) {	/*loop until we find a free memory block*/		
         sum  = 0;
-	i = j;
+        i = j;
 	while( i < obj->NumberofBlocks ) {		
             if( *(obj->BlockDescriptors+i) ) {
                 offset += (*(obj->BlockDescriptors+i)) * (obj->BlockSize);
-		i += *(obj->BlockDescriptors+i);				 
-		continue;
+		        i += *(obj->BlockDescriptors+i);				 
+		        continue;
             }
             break;				
 	}
-	j = i;	
+	
+        j = i;	/*<j> should be the index of the first free mem block and <offset> is the offset in the buffer*/
 	for(k = 1, i = j; i < obj->NumberofBlocks; k++, i++) {
-            if( *(obj->BlockDescriptors+i) ) {				
-                j = (uint8_t)(i + *(obj->BlockDescriptors+i));
-		offset = (uint8_t*) obj->Blocks;
-		offset += j * (obj->BlockSize);
-		break;
+            if( *(obj->BlockDescriptors+i) ) {	 /*We haven't found the required amount of mem blocks. Continue with the next free memory block.*/		
+                j = (uint8_t)(i + *(obj->BlockDescriptors+i)); /*Increment j for the number of used memory blocks*/
+                    offset = obj->Blocks;
+                    offset += j * (obj->BlockSize);
+                    break;
             }
             sum += obj->BlockSize;
-            if( sum >= size ) {
-                *(obj->BlockDescriptors+j) = k;
-		for(c=0;c<size;c++) offset[i] = 0x00u;/*zero-initialized memory block*/ 
+            if( sum >= size ) { /*memory area found*/
+                *(obj->BlockDescriptors+j) = k; /*leave the record*/
+		for(c=0;c<size;c++) offset[i] = 0x00u; /*zero-initialized memory block*/ 
                 qExitCritical();
-		return (void*)offset;
+		return (void*)offset; /*return the pointer to the free memory block*/
             }						
 	}
 	if( i == obj->NumberofBlocks ) break;
@@ -1215,7 +1232,7 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
     uint8_t i, *p;
     if(NULL==obj || NULL==pmem) return;
     qEnterCritical();	
-    p = (uint8_t*)obj->Blocks;
+    p = obj->Blocks;
     for(i = 0; i < obj->NumberofBlocks; i++) {
         if( p == pmem ){
             *(obj->BlockDescriptors + i) = 0;
@@ -1234,14 +1251,14 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     uint16_t i;
     if ( ((k-1) & k) != 0) {
         k--;
-        for (i = 1; i<sizeof(uint16_t)*8; i=i*2)  k = k|k>>i;
-        k = (k+1)>>1;
+        for (i = 1; i<sizeof(uint16_t)*8; i= (uint16_t) (i * 2)) k = k | k >> i;
+        k = (qSize_t) ((k + 1) >> 1);
     }
     return k;
 }
 /*============================================================================*/
 static qSize_t _qRBufferCount(qRBuffer_t *obj){
-    return (obj ? (obj->head - obj->tail) : 0);
+    return (qSize_t)(obj ? (obj->head - obj->tail) : 0);
 }
 /*============================================================================*/
 static qBool_t _qRBufferFull(qRBuffer_t *obj){
@@ -1271,7 +1288,7 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, c
     obj->tail = 0;
     obj->data = DataBlock;
     obj->ElementSize = ElementSize;
-    obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount);
+    obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount); /*limit to a power of two, this allos a bit to be used to count the final slot*/
 }
 /*============================================================================*/
 /*qBool_t qRBufferEmpty(qRBuffer_t *obj)
@@ -1416,7 +1433,7 @@ void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t A
 }
 /*============================================================================*/
 /*void qInputRaw(qGetChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
- 
+
 Wrapper method to get n RAW data througth fcn
   
 Parameters:
@@ -1452,7 +1469,7 @@ void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP){
 static char qNibbletoX(uint8_t value){
     char ch;
     ch = (char)(value & 0x0F) + '0';
-    return (ch > '9')? ch+7u : ch;  
+    return (char) ((ch > '9') ? ch + 7u : ch);
 }
 /*============================================================================*/
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
@@ -1485,7 +1502,7 @@ Return value:
 char* qU32toX(uint32_t value, char *str, int8_t n){ 
     int i;
     str[n]='\0';
-    for(i=n-1; i>=0; value>>=4, i--) str[i] = qNibbletoX(value);
+    for(i=n-1; i>=0; value>>=4, i--) str[i] = qNibbletoX((uint8_t)value);
     return str;
 }
 /*============================================================================*/
@@ -1509,16 +1526,16 @@ uint32_t qXtoU32(const char *s) {
     uint32_t val = 0;
     uint8_t byte;
     uint8_t nparsed = 0;
-    while (*s != '\0' && nparsed<8) {
-        byte = toupper(*s++); 
-        if( isxdigit(byte) ){
-            nparsed++;
-            if (byte >= '0' && byte <= '9') byte = byte - '0'; 
-            else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;           
-            val = (uint32_t)((val << 4u) | (byte & 0xFu));                  
+    while (*s != '\0' && nparsed<8) { /*loop ultil the end of the string or the number of parsed chars exceeds the 32bit notation*/
+        byte = toupper(*s++); /*get the hex char, considerate only upper case*/
+        if( isxdigit(byte) ){ /*if is a valid hex digit*/
+            nparsed++; /*increase the parsed char count*/
+            if (byte >= '0' && byte <= '9') byte = byte - '0'; /*make the conversion in the 0-9 range*/ 
+            else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;  /*make the conversion in the A-F range*/         
+            val = (uint32_t)((val << 4u) | (byte & 0xFu));  /*add the corresponding nibble to the output*/                
         }
-        else if(isspace(byte)) continue;
-        else break;         
+        else if(isspace(byte)) continue; /*discard any white-space char*/
+        else break;  /*not valid chars break the conversion*/       
     }
     return val;
 }
@@ -1551,15 +1568,15 @@ double qAtoF(const char *s){
         int powersign; 
         double power2;
     #endif    
-    for(i = 0; isspace(s[i]); ++i);
-    sign = ('-' == s[i])? -1 : 1;
-    if('-' == s[i] || '+' == s[i]) ++i;
+    for(i = 0; isspace(s[i]); ++i); /*discard whitespaces*/
+    sign = ('-' == s[i])? -1 : 1; /*set the sign*/
+    if('-' == s[i] || '+' == s[i]) ++i; /*discards any other sign chars*/
   
-    for(value = 0.0; isdigit(s[i]); ++i) value = value * 10.0 + (s[i] - '0');   
-    if('.' == s[i] ) ++i;
-    for(power = 1.0; isdigit(s[i]); ++i, power *= 10.0)    value = value * 10.0 + (s[i] - '0');
-    #ifdef SATOF_FULL
-        if('e'  == s[i] || 'E' == s[i]) ++i;
+    for(value = 0.0; isdigit(s[i]); ++i) value = value * 10.0 + (s[i] - '0');  /*compute the integer part until a non-digit char is found*/
+    if('.' == s[i] ) ++i; /*if the next char is a dot, move to the next char to process the floating point*/
+    for(power = 1.0; isdigit(s[i]); ++i, power *= 10.0)    value = value * 10.0 + (s[i] - '0'); /*loop until a non-digit char is found*/
+    #ifdef SATOF_FULL /*handle the sci-notation*/
+        if('e'  == s[i] || 'E' == s[i]) ++i; /*if sci notation char is found, move to the next char and process it*/
         else return sign * value/power;
 
         powersign = ('-' == s[i])? -1 : 1;
@@ -1567,21 +1584,21 @@ double qAtoF(const char *s){
 
         for(power2 = 0; isdigit(s[i]); ++i)  power2 = power2 * 10 + (s[i] - '0');
 
-        if(powersign == -1){
-            while(power2 != 0){
+        if(-1 == powersign ){
+            while(0 != power2){
                 power *= 10;
                 --power2;
             }
         }
         else{
-            while(power2 != 0){
+            while(0 != power2 ){
                 power /= 10;
                 --power2;
             }
         }
         return sign * value/power;
     #else
-        return sign * value/power;
+        return sign * value/power; 
     #endif      
 }
 /*============================================================================*/
@@ -1609,24 +1626,27 @@ If the converted value would be out of the range of representable values by
 an int, it causes undefined behavior.
 */
 int qAtoI(const char *s){
-    int res = 0;
-    int sgn = 1;
+    int res = 0; /*holds the resulting integer*/
+    int sgn = 1; /*only to hold the sign*/
 
-    for (; isspace(*s); ++s);
+    for (; isspace(*s); ++s); /*discard whitespaces*/
 
-    if ('-' == *s){
-        sgn = -1;
-        ++s;
+    if ('-' == *s){ /*if negative found*/
+        sgn = -1; /*set the sign*/
+        ++s; /*move to next*/
     } 
-    else if ('+' == *s) ++s;
+    else if ('+' == *s) ++s; /*plus sign ignored, move to next*/
    
-    for (; *s != 0; ++s){
-        if (*s < '0' || *s > '9')  return sgn * res;
-        res = res * 10 + *s - '0';
+    for (; *s != 0; ++s){ /*iterate until null char is found*/
+        if (*s < '0' || *s > '9')  return sgn * res; /*if the char is not a digit, return the computed integer with sign*/
+        res = res * 10 + *s - '0'; /*if the char is digit, compute the resulting integer*/
     }
-    return sgn * res;
+    return sgn * res; /*return the computed integer with sign*/
 }
 /*============================================================================*/
+/*this method makes the basic conversion of unsigned integer to ascii
+NULL Terminator not included
+*/
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base){
     uint8_t i = 0;
     int rem;
@@ -1668,7 +1688,7 @@ char* qUtoA(uint32_t num, char* str, uint8_t base){
     uint8_t i = 0;
     if(NULL == str) return str;
     i = __q_revuta(num, str, base); /*make the unsigned conversion without the null terminator*/
-    str[i] = '\0';
+    str[i] = '\0'; /*add the null terminator*/
     return str;
 }
 /*============================================================================*/
@@ -1698,7 +1718,7 @@ char* qItoA(int32_t num, char* str, uint8_t base){
     uint8_t i = 0;
     if(NULL == str) return str;
     if( num < 0 ){ 
-        if(10 == base){
+        if(10 == base){ /*handle negative numbers only with 10-base*/
             str[i++]='-';/*put the sign at the begining*/
         } 
         num = -num;
@@ -1727,19 +1747,10 @@ Return value:
 char* qBtoA(qBool_t num, char *str){
     if(NULL == str) return str;
     if(num){
-        str[0]='t';
-        str[1]='r';
-        str[2]='u';
-        str[3]='e';
-        str[4]='\0';
+        str[0]='t'; str[1]='r'; str[2]='u'; str[3]='e'; str[4]='\0';
     }
     else{
-        str[0]='f';
-        str[1]='a';
-        str[2]='l';
-        str[3]='s';
-        str[4]='e';        
-        str[5]='\0';  
+        str[0]='f'; str[1]='a'; str[2]='l'; str[3]='s'; str[4]='e'; str[5]='\0';  
     }
     return str;
 }
@@ -1761,7 +1772,7 @@ qBool_t qIsNan(float f){
     p = &f;
     u = *(uint32_t*)p;
     /*u = *(uint32_t*)&f;*/ /*warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]*/
-    return (u&0x7F800000) == 0x7F800000 && (u&0x7FFFFF);
+    return (qBool_t)((qBool_t) ((u & 0x7F800000) == 0x7F800000 && (u & 0x7FFFFF)));
 }
 /*============================================================================*/
 /*qBool_t qIsInf(float f)
@@ -1795,7 +1806,7 @@ Parameters:
     - num : Value to be converted to a string.
     - str : Array in memory where to store the resulting null-terminated string.
     - precision: Desired number of significant fractional digits in the string.
-                 (The max allowed precision is 10)
+                 (The max allowed precision is MAX_FTOA_PRECISION=10)
 
 Return value:
 
@@ -1806,37 +1817,37 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     uint8_t i = 0;
     uint32_t intPart;
     if(NULL == str) return str;
-    if(0.0f == num){
+    if(0.0f == num){ /*handle the 0.0f*/
         _qsetfstringto_0(str);      
         return str;
     }
-    if((c = qIsInf(num))){
+    if((c = qIsInf(num))){ /*handle the infinity*/
         str[0]=(c==1)?'+':'-';
         _qsetfstringto_inf(str);
         return str;        
     }
-    if(qIsNan(num)){ 
+    if(qIsNan(num)){ /*handle the NAN*/
         _qsetfstringto_nan(str);
         return str;
     }
     
-    if(precision > 10) precision = 10;
+    if(precision > Q_MAX_FTOA_PRECISION) precision = Q_MAX_FTOA_PRECISION; /*clip the precision*/
     
-    if(num < 0){
-        num = -num;
-	str[i++] = '-';
+    if(num < 0){ /*handle the negative numbers*/
+        num = -num; /*leave it positive for the __q_revuta method*/
+        str[i++] = '-'; /*add the negative sign*/
     }
     
-    intPart = (uint32_t)num;
-    num -= intPart;
-    i += __q_revuta(intPart, str+i, 10); /*convert the integer part*/
+    intPart = (uint32_t)num; /*get the integer parts*/
+    num -= intPart; /*get the floating-point part substracting the integer part from the original value*/
+    i += __q_revuta(intPart, str+i, 10); /*convert the integer part in decimal form*/
     if (precision){ /*decimal part*/
         str[i++] = '.'; /*place decimal point*/
-        while (precision--){ /*convert*/
-            num *= 10.0;
-            c = (char)num;
-            str[i++] = c + '0';
-            num -= c;
+        while (precision--){ /*convert until precision reached*/
+            num *= 10.0;  /*start moving the floating-point part one by one multipliying by 10*/
+            c = (char)num; /*get the bcd byte*/
+            str[i++] = c + '0'; /*convert to ascii and put it inside the buffer*/
+            num -= c; /*substract the procesed floating-point digit*/
         }
     }
     str[i] = '\0'; /*put the null char*/
@@ -1895,8 +1906,8 @@ Return value:
 
     Number of elements in the BSBuffer(Byte-sized Buffer)
 */
-size_t qBSBuffer_Count(qBSBuffer_t const* obj){
-    return (obj ? (obj->head - obj->tail) : 0);
+qSize_t qBSBuffer_Count(qBSBuffer_t const* obj){
+    return (qSize_t)(obj ? (obj->head - obj->tail) : 0);
 }
 /*============================================================================*/
 /*qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj)
@@ -1912,7 +1923,7 @@ Return value:
     qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
 */
 qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
-    return (obj ? (qBool_t)(qBSBuffer_Count(obj) == obj->length) : qTrue);
+    return (qBool_t)(obj ? (qBool_t)(qBSBuffer_Count(obj) == obj->length) : qTrue);
 }
 /*============================================================================*/
 /*qBool_t qBSBuffer_Empty(qBSBuffer_t const* obj)
@@ -1928,7 +1939,7 @@ Return value:
     qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
 qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
-    return (obj ? (qBool_t)(0 == qBSBuffer_Count(obj)) : qTrue);
+    return (qBool_t)(obj ? (qBool_t)(0 == qBSBuffer_Count(obj)) : qTrue);
 }
 /*============================================================================*/
 /*uint8_t qBSBuffer_Peek(qBSBuffer_t const* obj)
@@ -1944,7 +1955,7 @@ Return value:
     byte of data, or zero if nothing in the list
 */
 uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
-    return (obj ? (qBool_t)(obj->buffer[obj->tail % obj->length]) : 0x0u);
+    return (uint8_t)(obj ? (qBool_t)(obj->buffer[obj->tail % obj->length]) : 0x0u);
 }
 /*============================================================================*/
 /*qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest)
@@ -2074,23 +2085,23 @@ Return value:
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
 qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
-    if(qFalse == obj->Flag && NULL == obj->ptr2Match){
-        obj->length2Match = n;
-        obj->contMatch = 0;
-        obj->Flag = qFalse;
-        obj->ptr2Match = (char*)ptr;
-        return qFalse;
+    if(qFalse == obj->Flag && NULL == obj->ptr2Match){ /*handler no configured yet*/
+        obj->length2Match = n; /*set the number of chars to match*/
+        obj->contMatch = 0; /*reinitialize the chars match count*/
+        obj->Flag = qFalse; /*clear the ready flag*/
+        obj->ptr2Match = (char*)ptr; /*set the expected response*/
+        return qFalse; 
     }
-    if(obj->Flag){
-        qResponseInitialize(obj);
-        return qTrue;
+    if(obj->Flag){ /*if response received from ISR match the expected*/
+        qResponseInitialize(obj); /*re-initialize the response handler*/
+        return qTrue; /*let it know to the caller that expected response was received*/
     } 
     else return qFalse;
 }
 /*============================================================================*/
 /*qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
 
- ISR receiver handler for the response for "qResponseReceived"
+ISR receiver handler for the response for "qResponseReceived"
 
 Parameters:
 
@@ -2102,29 +2113,29 @@ Return value:
     qTrue when the Response handler match the request from "qResponseReceived"
 */
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
-    if(qTrue == obj->Flag || NULL == obj->ptr2Match) return qFalse;
+    if(qTrue == obj->Flag || NULL == obj->ptr2Match) return qFalse; /*wait until the qResponseReceived release the flag*/
     
-    if(obj->ptr2Match[obj->contMatch] == rxchar){
-        obj->contMatch++;
-        if(obj->contMatch == obj->length2Match)  obj->Flag = qTrue;
+    if(obj->ptr2Match[obj->contMatch] == rxchar){ /*if the received char match with the expected*/
+        obj->contMatch++; /*move to the next char in the expected buffer*/
+        if(obj->contMatch == obj->length2Match)  obj->Flag = qTrue; /*if all the requested chars match, set the ready flag */
     }
-    return obj->Flag;
+    return obj->Flag; /*return the ready flag*/
 }
 /*============================================================================*/
 #ifdef Q_TRACE_VARIABLES
 void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize){
-    if(NULL !=__qDebugOutputFcn){
-        qPrintString(__qDebugOutputFcn, NULL, loc);
-        if(fcn){
+    if(NULL !=__qDebugOutputFcn){ /*trace only if the output-function is defined*/
+        qPrintString(__qDebugOutputFcn, NULL, loc); /*print out the line location*/
+        if(fcn){ /*print out the function if available*/
             __qDebugOutputFcn(NULL, '@');
-            qPrintString(__qDebugOutputFcn, NULL, fcn);
+            qPrintString(__qDebugOutputFcn, NULL, fcn); 
             __qDebugOutputFcn(NULL, ' ');
         }
         qPrintString(__qDebugOutputFcn, NULL, varname);
-        if(NULL==varvalue){/*trace memory*/
-            qPrintXData(__qDebugOutputFcn, NULL, (void*)Pointer, BlockSize);
+        if(NULL == varvalue){ /*if the varvalue is not defined, the call must correspond to memory tracing*/
+            qPrintXData(__qDebugOutputFcn, NULL, Pointer, BlockSize); /*print out the memory in hex format*/
         }
-        else{
+        else{ /*print out the variable value*/
             qPrintString(__qDebugOutputFcn, NULL, varvalue);
             __qDebugOutputFcn(NULL, '\r');
             __qDebugOutputFcn(NULL, '\n');

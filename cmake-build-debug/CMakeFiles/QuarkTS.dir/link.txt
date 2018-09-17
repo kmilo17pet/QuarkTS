@@ -1,0 +1,1 @@
+C:/cygwin64/bin/gcc.exe -g  -Wl,--enable-auto-import CMakeFiles/QuarkTS.dir/main.c.o CMakeFiles/QuarkTS.dir/QuarkTS.c.o  -o QuarkTS.exe -Wl,--out-implib,libQuarkTS.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

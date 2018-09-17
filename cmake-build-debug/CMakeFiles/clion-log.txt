@@ -1,0 +1,17 @@
+C:\Users\HP\.CLion2018.2\system\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/cygwin64/bin/make.exe -DCMAKE_C_COMPILER=C:/cygwin64/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/cygwin64/bin/g++.exe -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS
+-- The C compiler identification is GNU 7.3.0
+-- Check for working C compiler: C:/cygwin64/bin/gcc.exe
+-- Check for working C compiler: C:/cygwin64/bin/gcc.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_CXX_COMPILER
+
+
+-- Build files have been written to: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug

@@ -1,0 +1,215 @@
+The system is: CYGWIN - 2.10.0(0.325/5/3) - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/cygwin64/bin/gcc.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+
+The C compiler identification is GNU, found in "/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/3.12.1/CompilerIdC/a.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_3f323/fast"
+C:/cygwin64/bin/make -f CMakeFiles/cmTC_3f323.dir/build.make CMakeFiles/cmTC_3f323.dir/build
+make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3f323.dir/testCCompiler.c.o
+C:/cygwin64/bin/gcc.exe    -o CMakeFiles/cmTC_3f323.dir/testCCompiler.c.o   -c /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_3f323.exe
+/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_3f323.dir/link.txt --verbose=1
+C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import  CMakeFiles/cmTC_3f323.dir/testCCompiler.c.o  -o cmTC_3f323.exe -Wl,--out-implib,libcmTC_3f323.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_6c8fe/fast"
+C:/cygwin64/bin/make -f CMakeFiles/cmTC_6c8fe.dir/build.make CMakeFiles/cmTC_6c8fe.dir/build
+make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o
+C:/cygwin64/bin/gcc.exe    -o CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o   -c /cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/share/cmake-3.12.1/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_6c8fe.exe
+/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_6c8fe.dir/link.txt --verbose=1
+C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import -v CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o  -o cmTC_6c8fe.exe -Wl,--out-implib,libcmTC_6c8fe.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Using built-in specs.
+COLLECT_GCC=C:/cygwin64/bin/gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/lto-wrapper.exe
+Target: x86_64-pc-cygwin
+Configured with: /cygdrive/i/szsz/tmpp/gcc/gcc-7.3.0-3.x86_64/src/gcc-7.3.0/configure --srcdir=/cygdrive/i/szsz/tmpp/gcc/gcc-7.3.0-3.x86_64/src/gcc-7.3.0 --prefix=/usr --exec-prefix=/usr --localstatedir=/var --sysconfdir=/etc --docdir=/usr/share/doc/gcc --htmldir=/usr/share/doc/gcc/html -C --build=x86_64-pc-cygwin --host=x86_64-pc-cygwin --target=x86_64-pc-cygwin --without-libiconv-prefix --without-libintl-prefix --libexecdir=/usr/lib --enable-shared --enable-shared-libgcc --enable-static --enable-version-specific-runtime-libs --enable-bootstrap --enable-__cxa_atexit --with-dwarf2 --with-tune=generic --enable-languages=ada,c,c++,fortran,lto,objc,obj-c++ --enable-graphite --enable-threads=posix --enable-libatomic --enable-libcilkrts --enable-libgomp --enable-libitm --enable-libquadmath --enable-libquadmath-support --disable-libssp --enable-libada --disable-symvers --with-gnu-ld --with-gnu-as --with-cloog-include=/usr/include/cloog-isl --without-libiconv-prefix --without-libintl-prefix --with-system-zlib --enable-linker-build-id --with-default-libstdcxx-abi=gcc4-compatible --enable-libstdcxx-filesystem-ts
+Thread model: posix
+gcc version 7.3.0 (GCC) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/bin/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6c8fe.exe' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/collect2.exe -plugin /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/cyglto_plugin.dll -plugin-opt=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/lto-wrapper.exe -plugin-opt=-fresolution=/tmp/ccpPo3yl.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lcygwin -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id -m i386pep --wrap _Znwm --wrap _Znam --wrap _ZdlPv --wrap _ZdaPv --wrap _ZnwmRKSt9nothrow_t --wrap _ZnamRKSt9nothrow_t --wrap _ZdlPvRKSt9nothrow_t --wrap _ZdaPvRKSt9nothrow_t -Bdynamic --dll-search-prefix=cyg --tsaware -o cmTC_6c8fe.exe /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/crt0.o /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtbegin.o -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0 -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../.. --enable-auto-import CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o --out-implib libcmTC_6c8fe.dll.a --major-image-version 0 --minor-image-version 0 -lgcc_s -lgcc -lcygwin -ladvapi32 -lshell32 -luser32 -lkernel32 -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/default-manifest.o /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtend.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6c8fe.exe' '-mtune=generic' '-march=x86-64'
+make[1]: Leaving directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_6c8fe/fast"]
+  ignore line: [C:/cygwin64/bin/make -f CMakeFiles/cmTC_6c8fe.dir/build.make CMakeFiles/cmTC_6c8fe.dir/build]
+  ignore line: [make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o]
+  ignore line: [C:/cygwin64/bin/gcc.exe    -o CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o   -c /cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/share/cmake-3.12.1/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_6c8fe.exe]
+  ignore line: [/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_6c8fe.dir/link.txt --verbose=1]
+  ignore line: [C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import -v CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o  -o cmTC_6c8fe.exe -Wl,--out-implib,libcmTC_6c8fe.dll.a -Wl,--major-image-version,0,--minor-image-version,0 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=C:/cygwin64/bin/gcc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/lto-wrapper.exe]
+  ignore line: [Target: x86_64-pc-cygwin]
+  ignore line: [Configured with: /cygdrive/i/szsz/tmpp/gcc/gcc-7.3.0-3.x86_64/src/gcc-7.3.0/configure --srcdir=/cygdrive/i/szsz/tmpp/gcc/gcc-7.3.0-3.x86_64/src/gcc-7.3.0 --prefix=/usr --exec-prefix=/usr --localstatedir=/var --sysconfdir=/etc --docdir=/usr/share/doc/gcc --htmldir=/usr/share/doc/gcc/html -C --build=x86_64-pc-cygwin --host=x86_64-pc-cygwin --target=x86_64-pc-cygwin --without-libiconv-prefix --without-libintl-prefix --libexecdir=/usr/lib --enable-shared --enable-shared-libgcc --enable-static --enable-version-specific-runtime-libs --enable-bootstrap --enable-__cxa_atexit --with-dwarf2 --with-tune=generic --enable-languages=ada,c,c++,fortran,lto,objc,obj-c++ --enable-graphite --enable-threads=posix --enable-libatomic --enable-libcilkrts --enable-libgomp --enable-libitm --enable-libquadmath --enable-libquadmath-support --disable-libssp --enable-libada --disable-symvers --with-gnu-ld --with-gnu-as --with-cloog-include=/usr/include/cloog-isl --without-libiconv-prefix --without-libintl-prefix --with-system-zlib --enable-linker-build-id --with-default-libstdcxx-abi=gcc4-compatible --enable-libstdcxx-filesystem-ts]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 7.3.0 (GCC) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/bin/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/:/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6c8fe.exe' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/collect2.exe -plugin /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/cyglto_plugin.dll -plugin-opt=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/lto-wrapper.exe -plugin-opt=-fresolution=/tmp/ccpPo3yl.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lcygwin -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id -m i386pep --wrap _Znwm --wrap _Znam --wrap _ZdlPv --wrap _ZdaPv --wrap _ZnwmRKSt9nothrow_t --wrap _ZnamRKSt9nothrow_t --wrap _ZdlPvRKSt9nothrow_t --wrap _ZdaPvRKSt9nothrow_t -Bdynamic --dll-search-prefix=cyg --tsaware -o cmTC_6c8fe.exe /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/crt0.o /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtbegin.o -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0 -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib -L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../.. --enable-auto-import CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o --out-implib libcmTC_6c8fe.dll.a --major-image-version 0 --minor-image-version 0 -lgcc_s -lgcc -lcygwin -ladvapi32 -lshell32 -luser32 -lkernel32 -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/default-manifest.o /usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtend.o]
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/collect2.exe] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/cyglto_plugin.dll] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/lto-wrapper.exe] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccpPo3yl.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lcygwin] ==> ignore
+    arg [-plugin-opt=-pass-through=-ladvapi32] ==> ignore
+    arg [-plugin-opt=-pass-through=-lshell32] ==> ignore
+    arg [-plugin-opt=-pass-through=-luser32] ==> ignore
+    arg [-plugin-opt=-pass-through=-lkernel32] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [-m] ==> ignore
+    arg [i386pep] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_Znwm] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_Znam] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZdlPv] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZdaPv] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZnwmRKSt9nothrow_t] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZnamRKSt9nothrow_t] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZdlPvRKSt9nothrow_t] ==> ignore
+    arg [--wrap] ==> ignore
+    arg [_ZdaPvRKSt9nothrow_t] ==> ignore
+    arg [-Bdynamic] ==> ignore
+    arg [--dll-search-prefix=cyg] ==> ignore
+    arg [--tsaware] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_6c8fe.exe] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/crt0.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0] ==> dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0]
+    arg [-L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib] ==> dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib] ==> dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib]
+    arg [-L/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../..]
+    arg [--enable-auto-import] ==> ignore
+    arg [CMakeFiles/cmTC_6c8fe.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [--out-implib] ==> ignore
+    arg [libcmTC_6c8fe.dll.a] ==> ignore
+    arg [--major-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [--minor-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lcygwin] ==> lib [cygwin]
+    arg [-ladvapi32] ==> lib [advapi32]
+    arg [-lshell32] ==> lib [shell32]
+    arg [-luser32] ==> lib [user32]
+    arg [-lkernel32] ==> lib [kernel32]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/default-manifest.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/crtend.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0] ==> [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib/../lib] ==> [/usr/x86_64-pc-cygwin/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../x86_64-pc-cygwin/lib] ==> [/usr/x86_64-pc-cygwin/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../..] ==> [/usr/lib]
+  implicit libs: [gcc_s;gcc;cygwin;advapi32;shell32;user32;kernel32;gcc_s;gcc]
+  implicit dirs: [/usr/lib/gcc/x86_64-pc-cygwin/7.3.0;/usr/x86_64-pc-cygwin/lib;/usr/lib;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_c7d08/fast"
+C:/cygwin64/bin/make -f CMakeFiles/cmTC_c7d08.dir/build.make CMakeFiles/cmTC_c7d08.dir/build
+make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c7d08.dir/feature_tests.c.o
+C:/cygwin64/bin/gcc.exe   -std=c11 -o CMakeFiles/cmTC_c7d08.dir/feature_tests.c.o   -c /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/feature_tests.c
+Linking C executable cmTC_c7d08.exe
+/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_c7d08.dir/link.txt --verbose=1
+C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import  CMakeFiles/cmTC_c7d08.dir/feature_tests.c.o  -o cmTC_c7d08.exe -Wl,--out-implib,libcmTC_c7d08.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_846ad/fast"
+C:/cygwin64/bin/make -f CMakeFiles/cmTC_846ad.dir/build.make CMakeFiles/cmTC_846ad.dir/build
+make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_846ad.dir/feature_tests.c.o
+C:/cygwin64/bin/gcc.exe   -std=c99 -o CMakeFiles/cmTC_846ad.dir/feature_tests.c.o   -c /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/feature_tests.c
+Linking C executable cmTC_846ad.exe
+/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_846ad.dir/link.txt --verbose=1
+C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import  CMakeFiles/cmTC_846ad.dir/feature_tests.c.o  -o cmTC_846ad.exe -Wl,--out-implib,libcmTC_846ad.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/cygwin64/bin/make.exe" "cmTC_54d00/fast"
+C:/cygwin64/bin/make -f CMakeFiles/cmTC_54d00.dir/build.make CMakeFiles/cmTC_54d00.dir/build
+make[1]: Entering directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_54d00.dir/feature_tests.c.o
+C:/cygwin64/bin/gcc.exe   -std=c90 -o CMakeFiles/cmTC_54d00.dir/feature_tests.c.o   -c /cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/feature_tests.c
+Linking C executable cmTC_54d00.exe
+/cygdrive/c/Users/HP/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_54d00.dir/link.txt --verbose=1
+C:/cygwin64/bin/gcc.exe    -Wl,--enable-auto-import  CMakeFiles/cmTC_54d00.dir/feature_tests.c.o  -o cmTC_54d00.exe -Wl,--out-implib,libcmTC_54d00.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+make[1]: Leaving directory '/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros

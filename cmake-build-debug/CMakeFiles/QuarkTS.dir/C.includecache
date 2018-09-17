@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/QuarkTS.c
+QuarkTS.h
+/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/QuarkTS.h
+
+/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/QuarkTS.h
+stdint.h
+-
+string.h
+-
+stdio.h
+-
+stdlib.h
+-
+ctype.h
+-
+
