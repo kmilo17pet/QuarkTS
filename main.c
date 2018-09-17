@@ -192,6 +192,7 @@ int main(int argc, char** argv) {
     qTraceVariable( qStringHash("aloh", 0), UnsignedDecimal);
     qTraceVariable( qStringHash("hola", 0), UnsignedDecimal);
     qTraceVariable( qStringHash("hannah", 0), UnsignedDecimal);
+    qTrace();
 
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );

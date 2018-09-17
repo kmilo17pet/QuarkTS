@@ -1784,7 +1784,7 @@ extern qPutChar_t __qDebugOutputFcn;
 # 822 "QuarkTS.h"
     extern char qDebugTrace_Buffer[36];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
-# 888 "QuarkTS.h"
+# 890 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;

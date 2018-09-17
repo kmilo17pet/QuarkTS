@@ -2787,7 +2787,7 @@ extern qPutChar_t __qDebugOutputFcn;
 # 822 "QuarkTS.h"
     extern char qDebugTrace_Buffer[36];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
-# 888 "QuarkTS.h"
+# 890 "QuarkTS.h"
 typedef struct{
     char *ptr2Match;
     qSize_t length2Match;
@@ -2990,7 +2990,7 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 int main(int argc, char** argv) {
     __qDebugOutputFcn = putcharfcn;
     int yy = -128;
-    __qtrace_func ("[" "main.c" ":" "182" "] ", __FUNCTION__, "yy" "=", qItoA(( int32_t)(yy), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "182" "] ", __FUNCTION__, "yy" "=" , qItoA(( int32_t)(yy), qDebugTrace_Buffer, 10), 
 # 182 "main.c" 3 4
    ((void *)0)
 # 182 "main.c"
@@ -3000,67 +3000,72 @@ int main(int argc, char** argv) {
    ((void *)0)
 # 183 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "184" "] ", __FUNCTION__, "48765" "=", qUtoA((uint32_t)(48765), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "184" "] ", __FUNCTION__, "48765" "=" , qUtoA((uint32_t)(48765), qDebugTrace_Buffer, 10), 
 # 184 "main.c" 3 4
    ((void *)0)
 # 184 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "185" "] ", __FUNCTION__, "yy" "=", qItoA(( int32_t)(yy), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "185" "] ", __FUNCTION__, "yy" "=0b", qItoA(( int32_t)(yy), qDebugTrace_Buffer, 2), 
 # 185 "main.c" 3 4
    ((void *)0)
 # 185 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "yy" "=", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 16), 
+    __qtrace_func ("[" "main.c" ":" "186" "] ", __FUNCTION__, "yy" "=0x", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 16), 
 # 186 "main.c" 3 4
    ((void *)0)
 # 186 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "187" "] ", __FUNCTION__, "yy" "=", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "187" "] ", __FUNCTION__, "yy" "=0b", qUtoA((uint32_t)(yy), qDebugTrace_Buffer, 2), 
 # 187 "main.c" 3 4
    ((void *)0)
 # 187 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "188" "] ", __FUNCTION__, "0" "=", qUtoA((uint32_t)(0), qDebugTrace_Buffer, 16), 
+    __qtrace_func ("[" "main.c" ":" "188" "] ", __FUNCTION__, "0" "=0x", qUtoA((uint32_t)(0), qDebugTrace_Buffer, 16), 
 # 188 "main.c" 3 4
    ((void *)0)
 # 188 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "189" "] ", __FUNCTION__, "0b01001101" "=", qItoA(( int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
+    __qtrace_func ("[" "main.c" ":" "189" "] ", __FUNCTION__, "0b01001101" "=0b", qItoA(( int32_t)(0b01001101), qDebugTrace_Buffer, 2), 
 # 189 "main.c" 3 4
    ((void *)0)
 # 189 "main.c"
    , 0);
 
-    __qtrace_func ("[" "main.c" ":" "191" "] ", __FUNCTION__, "3.1416" "=", qFtoA(( float )(3.1416), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "191" "] ", __FUNCTION__, "3.1416" "=" , qFtoA(( float )(3.1416), qDebugTrace_Buffer, 10), 
 # 191 "main.c" 3 4
    ((void *)0)
 # 191 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "192" "] ", __FUNCTION__, "qStringHash(\"aloh\", 0)" "=", qUtoA((uint32_t)(qStringHash("aloh", 0)), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "192" "] ", __FUNCTION__, "qStringHash(\"aloh\", 0)" "=" , qUtoA((uint32_t)(qStringHash("aloh", 0)), qDebugTrace_Buffer, 10), 
 # 192 "main.c" 3 4
    ((void *)0)
 # 192 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "193" "] ", __FUNCTION__, "qStringHash(\"hola\", 0)" "=", qUtoA((uint32_t)(qStringHash("hola", 0)), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "193" "] ", __FUNCTION__, "qStringHash(\"hola\", 0)" "=" , qUtoA((uint32_t)(qStringHash("hola", 0)), qDebugTrace_Buffer, 10), 
 # 193 "main.c" 3 4
    ((void *)0)
 # 193 "main.c"
    , 0);
-    __qtrace_func ("[" "main.c" ":" "194" "] ", __FUNCTION__, "qStringHash(\"hannah\", 0)" "=", qUtoA((uint32_t)(qStringHash("hannah", 0)), qDebugTrace_Buffer, 10), 
+    __qtrace_func ("[" "main.c" ":" "194" "] ", __FUNCTION__, "qStringHash(\"hannah\", 0)" "=" , qUtoA((uint32_t)(qStringHash("hannah", 0)), qDebugTrace_Buffer, 10), 
 # 194 "main.c" 3 4
    ((void *)0)
 # 194 "main.c"
    , 0);
+    __qtrace_func ("[" "main.c" ":" "195" "] ", __FUNCTION__, "", "", 
+# 195 "main.c" 3 4
+   ((void *)0)
+# 195 "main.c"
+   , 0);
 
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, 
-# 197 "main.c" 3 4
+# 198 "main.c" 3 4
                                    ((void *)0)
-# 197 "main.c"
+# 198 "main.c"
                                        , TimerInterruptEmulation, 
-# 197 "main.c" 3 4
+# 198 "main.c" 3 4
                                                                   ((void *)0) 
-# 197 "main.c"
+# 198 "main.c"
                                                                        );
     uint32_t qMEM_AREA_mtxheap[(10*qMB_4B)>>2]={0}; uint8_t qMEM_BDES_mtxheap[10]={0}; qMemoryPool_t mtxheap; mtxheap.BlockSize = qMB_4B; mtxheap.NumberofBlocks = 10; mtxheap.BlockDescriptors = &qMEM_BDES_mtxheap[0]; mtxheap.Blocks = (uint8_t*)&qMEM_AREA_mtxheap[0];
     qSM_t statemachine;
@@ -3084,21 +3089,21 @@ int main(int argc, char** argv) {
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, ((qPriority_t)(0xFEu)), 0.1, &statemachine, firststate, 
-# 219 "main.c" 3 4
+# 220 "main.c" 3 4
                                                                                 ((void *)0)
-# 219 "main.c"
+# 220 "main.c"
                                                                                     , 
-# 219 "main.c" 3 4
+# 220 "main.c" 3 4
                                                                                       ((void *)0)
-# 219 "main.c"
+# 220 "main.c"
                                                                                           , 
-# 219 "main.c" 3 4
+# 220 "main.c" 3 4
                                                                                             ((void *)0)
-# 219 "main.c"
+# 220 "main.c"
                                                                                                 , 
-# 219 "main.c" 3 4
+# 220 "main.c" 3 4
                                                                                                   ((void *)0)
-# 219 "main.c"
+# 220 "main.c"
                                                                                                       , (0x01u), "smtask");
 
 
@@ -3106,8 +3111,8 @@ int main(int argc, char** argv) {
 
     qSchedulerRun();
     return (
-# 225 "main.c" 3 4
+# 226 "main.c" 3 4
            0
-# 225 "main.c"
+# 226 "main.c"
                        );
 }

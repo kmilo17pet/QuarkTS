@@ -507,54 +507,60 @@ qStringHash:
 .LC26:
 	.ascii "[main.c:184] \0"
 .LC27:
-	.ascii "[main.c:185] \0"
+	.ascii "yy=0b\0"
 .LC28:
-	.ascii "[main.c:186] \0"
+	.ascii "[main.c:185] \0"
 .LC29:
-	.ascii "[main.c:187] \0"
+	.ascii "yy=0x\0"
 .LC30:
-	.ascii "0=\0"
+	.ascii "[main.c:186] \0"
 .LC31:
-	.ascii "[main.c:188] \0"
+	.ascii "[main.c:187] \0"
 .LC32:
-	.ascii "0b01001101=\0"
+	.ascii "0=0x\0"
 .LC33:
-	.ascii "[main.c:189] \0"
+	.ascii "[main.c:188] \0"
+.LC34:
+	.ascii "0b01001101=0b\0"
 .LC35:
-	.ascii "3.1416=\0"
-.LC36:
-	.ascii "[main.c:191] \0"
+	.ascii "[main.c:189] \0"
 .LC37:
-	.ascii "aloh\0"
+	.ascii "3.1416=\0"
 .LC38:
-	.ascii "qStringHash(\"aloh\", 0)=\0"
+	.ascii "[main.c:191] \0"
 .LC39:
-	.ascii "[main.c:192] \0"
+	.ascii "aloh\0"
 .LC40:
-	.ascii "hola\0"
+	.ascii "qStringHash(\"aloh\", 0)=\0"
 .LC41:
-	.ascii "qStringHash(\"hola\", 0)=\0"
+	.ascii "[main.c:192] \0"
 .LC42:
-	.ascii "[main.c:193] \0"
+	.ascii "hola\0"
 .LC43:
-	.ascii "hannah\0"
+	.ascii "qStringHash(\"hola\", 0)=\0"
 .LC44:
-	.ascii "qStringHash(\"hannah\", 0)=\0"
+	.ascii "[main.c:193] \0"
 .LC45:
-	.ascii "[main.c:194] \0"
+	.ascii "hannah\0"
+.LC46:
+	.ascii "qStringHash(\"hannah\", 0)=\0"
 .LC47:
-	.ascii "blink\0"
-.LC49:
-	.ascii "TASK1\0"
+	.ascii "[main.c:194] \0"
+.LC48:
+	.ascii "[main.c:195] \0"
 .LC50:
-	.ascii "TASK3\0"
-.LC51:
-	.ascii "TASK4\0"
+	.ascii "blink\0"
 .LC52:
-	.ascii "TASK5\0"
+	.ascii "TASK1\0"
 .LC53:
-	.ascii "TASK6\0"
+	.ascii "TASK3\0"
 .LC54:
+	.ascii "TASK4\0"
+.LC55:
+	.ascii "TASK5\0"
+.LC56:
+	.ascii "TASK6\0"
+.LC57:
 	.ascii "smtask\0"
 	.section	.text.startup,"x"
 	.p2align 4,,15
@@ -608,9 +614,9 @@ main:
 	movl	$2, %r8d
 	movl	$-128, %ecx
 	call	qItoA
-	leaq	.LC20(%rip), %r8
+	leaq	.LC27(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC27(%rip), %rcx
+	leaq	.LC28(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
@@ -619,9 +625,9 @@ main:
 	movl	$16, %r8d
 	movl	$-128, %ecx
 	call	qUtoA
-	leaq	.LC20(%rip), %r8
+	leaq	.LC29(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC28(%rip), %rcx
+	leaq	.LC30(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
@@ -630,9 +636,9 @@ main:
 	movl	$2, %r8d
 	movl	$-128, %ecx
 	call	qUtoA
-	leaq	.LC20(%rip), %r8
+	leaq	.LC27(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC29(%rip), %rcx
+	leaq	.LC31(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
@@ -641,9 +647,9 @@ main:
 	xorl	%ecx, %ecx
 	movl	$16, %r8d
 	call	qUtoA
-	leaq	.LC30(%rip), %r8
+	leaq	.LC32(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC31(%rip), %rcx
+	leaq	.LC33(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
@@ -652,65 +658,72 @@ main:
 	movl	$2, %r8d
 	movl	$77, %ecx
 	call	qItoA
-	leaq	.LC33(%rip), %rcx
-	leaq	.LC32(%rip), %r8
+	leaq	.LC35(%rip), %rcx
+	leaq	.LC34(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
 	call	__qtrace_func
 	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
-	movss	.LC34(%rip), %xmm0
+	movss	.LC36(%rip), %xmm0
 	movl	$10, %r8d
 	call	qFtoA
-	leaq	.LC35(%rip), %r8
+	leaq	.LC37(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC36(%rip), %rcx
+	leaq	.LC38(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
 	call	__qtrace_func
-	leaq	.LC37(%rip), %rcx
-	xorl	%edx, %edx
-	call	qStringHash
-	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
-	movl	$10, %r8d
-	movl	%eax, %ecx
-	call	qUtoA
-	leaq	.LC38(%rip), %r8
-	leaq	__FUNCTION__.4145(%rip), %rdx
 	leaq	.LC39(%rip), %rcx
-	movq	%rax, %r9
-	movl	$0, 40(%rsp)
-	movq	$0, 32(%rsp)
-	call	__qtrace_func
-	leaq	.LC40(%rip), %rcx
 	xorl	%edx, %edx
 	call	qStringHash
 	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
 	movl	$10, %r8d
 	movl	%eax, %ecx
 	call	qUtoA
-	leaq	.LC41(%rip), %r8
+	leaq	.LC40(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
+	leaq	.LC41(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
 	leaq	.LC42(%rip), %rcx
-	movq	%rax, %r9
-	movl	$0, 40(%rsp)
-	movq	$0, 32(%rsp)
-	call	__qtrace_func
-	leaq	.LC43(%rip), %rcx
 	xorl	%edx, %edx
 	call	qStringHash
 	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
 	movl	$10, %r8d
 	movl	%eax, %ecx
 	call	qUtoA
-	leaq	.LC44(%rip), %r8
+	leaq	.LC43(%rip), %r8
 	leaq	__FUNCTION__.4145(%rip), %rdx
-	leaq	.LC45(%rip), %rcx
+	leaq	.LC44(%rip), %rcx
 	movq	%rax, %r9
 	movl	$0, 40(%rsp)
 	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	leaq	.LC45(%rip), %rcx
+	xorl	%edx, %edx
+	call	qStringHash
+	movq	.refptr.qDebugTrace_Buffer(%rip), %rdx
+	movl	$10, %r8d
+	movl	%eax, %ecx
+	call	qUtoA
+	leaq	.LC46(%rip), %r8
+	leaq	__FUNCTION__.4145(%rip), %rdx
+	leaq	.LC47(%rip), %rcx
+	movq	%rax, %r9
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	call	__qtrace_func
+	leaq	.LC23(%rip), %r9
+	leaq	__FUNCTION__.4145(%rip), %rdx
+	leaq	.LC48(%rip), %rcx
+	movl	$0, 40(%rsp)
+	movq	$0, 32(%rsp)
+	movq	%r9, %r8
 	call	__qtrace_func
 	leaq	TimerInterruptEmulation(%rip), %r8
 	leaq	TimerEmulation(%rip), %rcx
@@ -759,19 +772,19 @@ main:
 	leaq	304(%rsp), %r8
 	leaq	IdleTaskCallback(%rip), %rdx
 	movl	$10, %r9d
-	movss	.LC46(%rip), %xmm0
+	movss	.LC49(%rip), %xmm0
 	leaq	Task3(%rip), %rsi
 	call	_qInitScheduler
-	leaq	.LC47(%rip), %rax
+	leaq	.LC50(%rip), %rax
 	leaq	blinktaskCallback(%rip), %rdx
 	leaq	blinktask(%rip), %rcx
 	xorl	%r8d, %r8d
 	movl	$1, 40(%rsp)
 	movl	$-32768, 32(%rsp)
 	movq	%rax, 48(%rsp)
-	movss	.LC48(%rip), %xmm3
+	movss	.LC51(%rip), %xmm3
 	call	qSchedulerAddxTask
-	leaq	.LC49(%rip), %rax
+	leaq	.LC52(%rip), %rax
 	leaq	Task1Callback(%rip), %rdx
 	leaq	Task1(%rip), %rcx
 	movss	.LC11(%rip), %xmm3
@@ -780,7 +793,7 @@ main:
 	movl	$5, 32(%rsp)
 	movl	$254, %r8d
 	call	qSchedulerAddxTask
-	leaq	.LC50(%rip), %r9
+	leaq	.LC53(%rip), %r9
 	leaq	Task3Callback(%rip), %rdx
 	movq	%rsi, %rcx
 	movl	$127, %r8d
@@ -790,25 +803,25 @@ main:
 	movl	$1, %r9d
 	movl	$3, %r8d
 	call	qTaskLinkRBuffer
-	leaq	.LC51(%rip), %r9
+	leaq	.LC54(%rip), %r9
 	leaq	Task4Callback(%rip), %rdx
 	leaq	Task4(%rip), %rcx
 	movl	$10, %r8d
 	call	qSchedulerAddeTask
-	leaq	.LC52(%rip), %r9
+	leaq	.LC55(%rip), %r9
 	leaq	Task5Callback(%rip), %rdx
 	leaq	Task5(%rip), %rcx
 	movl	$80, %r8d
 	call	qSchedulerAddeTask
-	leaq	.LC53(%rip), %r9
+	leaq	.LC56(%rip), %r9
 	leaq	Task6Callback(%rip), %rdx
 	leaq	Task6(%rip), %rcx
 	movl	$10, %r8d
 	call	qSchedulerAddeTask
-	leaq	.LC54(%rip), %rax
+	leaq	.LC57(%rip), %rax
 	leaq	224(%rsp), %r9
 	leaq	SMTask(%rip), %rcx
-	movss	.LC55(%rip), %xmm2
+	movss	.LC58(%rip), %xmm2
 	movl	$254, %edx
 	movq	%rax, 80(%rsp)
 	leaq	firststate(%rip), %rax
@@ -863,16 +876,16 @@ _qCRTaskState_.4109:
 .LC15:
 	.long	1065353216
 	.align 4
-.LC34:
+.LC36:
 	.long	1078530041
 	.align 4
-.LC46:
+.LC49:
 	.long	1008981770
 	.align 4
-.LC48:
+.LC51:
 	.long	1028443341
 	.align 4
-.LC55:
+.LC58:
 	.long	1036831949
 	.ident	"GCC: (GNU) 7.3.0"
 	.def	nanosleep;	.scl	2;	.type	32;	.endef
