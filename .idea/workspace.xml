@@ -13,10 +13,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ebc33f-2dfc-4565-9285-68bf8de550ef" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QuarkTS.h" beforeDir="false" afterPath="$PROJECT_DIR$/QuarkTS.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QuarkTS.i" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/QuarkTS.s" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/QuarkTS.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/QuarkTS.dir/C.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/QuarkTS.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/QuarkTS.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/Release/Cygwin-Windows/quarkts.exe" beforeDir="false" afterPath="$PROJECT_DIR$/dist/Release/Cygwin-Windows/quarkts.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.i" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.s" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
@@ -33,46 +34,50 @@
     <session id="-1234048232">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
-          <entry key="project.open.time.12" value="1" />
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.12" value="2" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="c" value="9" />
-          <entry key="h" value="3" />
+          <entry key="Makefile" value="1" />
+          <entry key="c" value="14" />
+          <entry key="h" value="4" />
           <entry key="i" value="5" />
+          <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="ObjectiveC" value="17" />
+          <entry key="CMakeLists.txt" value="1" />
+          <entry key="ObjectiveC" value="23" />
+          <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="c" value="87" />
+          <entry key="c" value="88" />
           <entry key="h" value="7" />
           <entry key="i" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="98" />
+          <entry key="ObjectiveC" value="99" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/QuarkTS.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="2049" column="15" selection-start-line="2049" selection-start-column="12" selection-end-line="2049" selection-end-column="15" />
+            <state relative-caret-position="12">
+              <caret line="971" column="19" lean-forward="true" selection-start-line="971" selection-start-column="19" selection-end-line="971" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -89,6 +94,7 @@
         <option value="$PROJECT_DIR$/QuarkTS.i" />
         <option value="$PROJECT_DIR$/QuarkTS.h" />
         <option value="$PROJECT_DIR$/QuarkTS.c" />
+        <option value="$PROJECT_DIR$/main.c" />
       </list>
     </option>
   </component>
@@ -110,7 +116,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -118,15 +123,11 @@
               <item name="QuarkTS" type="b2602c69:ProjectViewProjectNode" />
               <item name="QuarkTS" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="QuarkTS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QuarkTS" type="462c0819:PsiDirectoryNode" />
-              <item name="cmake-build-debug" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -135,7 +136,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -178,11 +179,12 @@
       <workItem from="1537109903261" duration="5015000" />
       <workItem from="1537198446575" duration="1083000" />
       <workItem from="1537200427959" duration="1037000" />
+      <workItem from="1537499015803" duration="728000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7135000" />
+    <option name="totallyTimeSpent" value="7863000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -197,7 +199,7 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18176973" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18336888" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -206,14 +208,14 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32976446" />
+      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Inspection Results" order="8" visible="true" weight="0.30513918" />
+      <window_info anchor="bottom" id="Inspection Results" order="8" weight="0.30513918" />
       <window_info anchor="bottom" id="Messages" order="9" weight="0.22912206" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32976446" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="12" show_stripe_button="false" />
-      <window_info anchor="bottom" id="CMake" order="13" weight="0.32762313" />
+      <window_info anchor="bottom" id="CMake" order="13" weight="0.3272727" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -227,9 +229,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://C:/cygwin64/usr/include/sys/_stdint.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -241,21 +240,38 @@
     <entry file="file://$PROJECT_DIR$/QuarkTS.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
-          <caret line="696" column="31" selection-start-line="696" selection-start-column="31" selection-end-line="696" selection-end-column="31" />
+          <caret line="116" column="38" selection-start-line="116" selection-start-column="38" selection-end-line="116" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="528">
+          <caret line="131" column="24" lean-forward="true" selection-start-line="131" selection-start-column="24" selection-end-line="131" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbuffer_example.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="46" column="7" lean-forward="true" selection-start-line="46" selection-start-column="7" selection-end-line="46" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="835">
+          <caret line="128" lean-forward="true" selection-start-line="128" selection-end-line="128" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QuarkTS.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="2049" column="15" selection-start-line="2049" selection-start-column="12" selection-end-line="2049" selection-end-column="15" />
+        <state relative-caret-position="12">
+          <caret line="971" column="19" lean-forward="true" selection-start-line="971" selection-start-column="19" selection-end-line="971" selection-end-column="19" />
         </state>
       </provider>
     </entry>

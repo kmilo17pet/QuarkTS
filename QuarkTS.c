@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6h
+ *  Version : 4.6.6i
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -833,7 +833,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
     qBool_t nTaskReady = qFalse; /*this flag will let me know if at least one task is in qReady state*/
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
         if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
-            if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have pending iters*/
+            if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have available iters*/
                 if(_qTaskDeadlineReached(Task)){ /*finally, check the time deadline*/
                     Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
                     Task->State = qReady; /*Put the task in ready state*/
@@ -857,7 +857,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
             nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
             continue; /*check the next task*/
         }
-        Task->State = qSuspended; /*If the task has no pending events, put it in a suspended state*/
+        Task->State = qSuspended; /*If the task has no available events, put it in a suspended state*/
     }
     return nTaskReady;
 }
@@ -1855,6 +1855,9 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
 }
 #ifdef Q_ISR_BUFFERS 
 /*============================================================================*/
+/*
+ * TODO: Describe method
+*/
 qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
     if(NULL == pData || size<2) return qFalse;
     obj->AcceptCheck = AcceptCheck;
@@ -1866,6 +1869,9 @@ qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t 
     return qTrue;
 }
 /*============================================================================*/
+/*
+ * TODO: Describe method
+ */
 qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
     if (!obj->ReadyFlag ){
         if(obj->AcceptCheck){
@@ -2064,10 +2070,10 @@ Parameters:
   
 */
 void qResponseInitialize(qResponseHandler_t *obj){
-    obj->ptr2Match = NULL;
-    obj->length2Match = 0;
-    obj->contMatch = 0;
-    obj->Flag = qFalse;
+    obj->Pattern2Match = NULL;
+    obj->PatternLength = 0;
+    obj->MatchedCount = 0;
+    obj->ResponseReceived = qFalse;
 }   
 /*============================================================================*/
 /*qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n)
@@ -2077,26 +2083,57 @@ Non-Blocking Response check
 Parameters:
 
     - obj : A pointer to the Response Handler object
-    - ptr: The data checked in the receiver ISR
-    - n : The length of the data pointer by ptr
+    - Pattern: The data checked in the receiver ISR
+    - n : The length of the data pointer by ptr 
+          (if ptr is string, set n to 0 to auto-compute the length)
   
 Return value:
 
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
-qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n){
-    if(qFalse == obj->Flag && NULL == obj->ptr2Match){ /*handler no configured yet*/
-        obj->length2Match = n; /*set the number of chars to match*/
-        obj->contMatch = 0; /*reinitialize the chars match count*/
-        obj->Flag = qFalse; /*clear the ready flag*/
-        obj->ptr2Match = (char*)ptr; /*set the expected response*/
+qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n){
+    return qResponseReceivedWithTimeout(obj, Pattern, n, NULL, 0);
+}
+/*============================================================================*/
+/*qBool_t qResponseReceivedTimeout(qResponseHandler_t *obj, const char *ptr, qSize_t n)
+ 
+Non-Blocking Response check with timeout
+
+Parameters:
+
+    - obj : A pointer to the Response Handler object
+    - Pattern: The data checked in the receiver ISR
+    - n : The length of the data pointer by ptr 
+          (if ptr is string, set n to 0 to auto-compute the length)
+    - timeout : A pointer to the qSTimer object
+    - t : the timeout object
+  
+Return value:
+
+    qTrue if there is a response acknowledge,
+    qTimeoutReached if timeout t expires
+    otherwise returns qFalse
+*/
+qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qSTimer_t *timeout, qTime_t t){
+    if(qFalse == obj->ResponseReceived && NULL == obj->Pattern2Match){ /*handler no configured yet*/
+        obj->PatternLength = (0 == n)? strlen(Pattern) : n; /*set the number of chars to match*/
+        obj->MatchedCount = 0; /*reinitialize the chars match count*/
+        obj->ResponseReceived = qFalse; /*clear the ready flag*/
+        obj->Pattern2Match = (char*)Pattern; /*set the expected response pattern*/
+        qSTimerSet(timeout, t);
         return qFalse; 
     }
-    if(obj->Flag){ /*if response received from ISR match the expected*/
+    if(qSTimerExpired(timeout)){
         qResponseInitialize(obj); /*re-initialize the response handler*/
+        qSTimerDisarm(timeout);
+        return qResponseTimeout;
+    }        
+    if(obj->ResponseReceived){ /*if response received from ISR match the expected*/
+        qResponseInitialize(obj); /*re-initialize the response handler*/
+        qSTimerDisarm(timeout);
         return qTrue; /*let it know to the caller that expected response was received*/
     } 
-    else return qFalse;
+    else return qFalse;    
 }
 /*============================================================================*/
 /*qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
@@ -2113,18 +2150,18 @@ Return value:
     qTrue when the Response handler match the request from "qResponseReceived"
 */
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
-    if(qTrue == obj->Flag || NULL == obj->ptr2Match) return qFalse; /*wait until the qResponseReceived release the flag*/
+    if(qTrue == obj->ResponseReceived || NULL == obj->Pattern2Match) return qFalse; /*wait until the qResponseReceived release the flag*/
     
-    if(obj->ptr2Match[obj->contMatch] == rxchar){ /*if the received char match with the expected*/
-        obj->contMatch++; /*move to the next char in the expected buffer*/
-        if(obj->contMatch == obj->length2Match)  obj->Flag = qTrue; /*if all the requested chars match, set the ready flag */
+    if(obj->Pattern2Match[obj->MatchedCount] == rxchar){ /*if the received char match with the expected*/
+        obj->MatchedCount++; /*move to the next char in the expected buffer*/
+        if(obj->MatchedCount == obj->PatternLength)  obj->ResponseReceived = qTrue; /*if all the requested chars match, set the ready flag */
     }
-    return obj->Flag; /*return the ready flag*/
+    return obj->ResponseReceived; /*return the ready flag*/
 }
 /*============================================================================*/
 #ifdef Q_TRACE_VARIABLES
 void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize){
-    if(NULL !=__qDebugOutputFcn){ /*trace only if the output-function is defined*/
+    if(NULL != __qDebugOutputFcn){ /*trace only if the output-function is defined*/
         qPrintString(__qDebugOutputFcn, NULL, loc); /*print out the line location*/
         if(fcn){ /*print out the function if available*/
             __qDebugOutputFcn(NULL, '@');
@@ -2139,8 +2176,8 @@ void __qtrace_func(const char *loc, const char* fcn, const char *varname, const 
             qPrintString(__qDebugOutputFcn, NULL, varvalue);
             __qDebugOutputFcn(NULL, '\r');
             __qDebugOutputFcn(NULL, '\n');
-        }       
-    }      
+        }
+    }
 }
 /*============================================================================*/
 #endif

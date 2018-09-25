@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6h
+ *  Version : 4.6.6i
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -60,7 +60,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.6h"
+    #define QUARTKTS_VERSION    "4.6.6i"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -68,6 +68,7 @@ extern "C" {
    
     /*#define Q_TASK_INSERT_BEGINNING*/
     #define qTrue                   0x01u
+    #define qResponseTimeout        0x02u
     #define qFalse                  0x00u
     #define qEnabled                (qTrue)
     #define qDisabled               (qFalse)
@@ -823,8 +824,8 @@ extern qPutChar_t __qDebugOutputFcn;
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
     
     /*On-demand trace macros*/
-    #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)
     #define qDebugString(s)                 qOutputString(__qDebugOutputFcn, NULL, (const char *)s, qFalse)
+    #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)        
     #define qTraceMessage(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, "", (char*)(Var), NULL, 0)
     #define qTraceString(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , (char*)(Var), NULL, 0)
     #define qTraceBool(Var)                 __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , qBtoA(( qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
@@ -888,15 +889,16 @@ extern qPutChar_t __qDebugOutputFcn;
 #endif
 
 typedef struct{
-    char *ptr2Match;
-    qSize_t length2Match;
-    volatile qSize_t contMatch;
-    volatile qBool_t Flag;
+    char *Pattern2Match;
+    qSize_t PatternLength;
+    volatile qSize_t MatchedCount;
+    volatile qBool_t ResponseReceived;
 }qResponseHandler_t; 
 #define qRespHandler_t  qResponseHandler_t
 #define QRESPONSE_INITIALIZER   {NULL, 0, 0, qFalse}
 void qResponseInitialize(qResponseHandler_t *obj);   
-qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n);
+qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n);
+qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qSTimer_t *timeout, qTime_t t);
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 
 #ifdef Q_BYTE_SIZED_BUFFERS

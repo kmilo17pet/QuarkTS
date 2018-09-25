@@ -1244,7 +1244,7 @@ qSchedulerRun:
 	jmp	.L245
 	.p2align 4,,10
 .L333:
-	movq	ChainIterator.3335(%rip), %rdi
+	movq	ChainIterator.3341(%rip), %rdi
 	jmp	.L255
 	.p2align 4,,10
 .L256:
@@ -1253,7 +1253,7 @@ qSchedulerRun:
 .L335:
 	movq	(%rdi), %rdx
 	movzbl	80(%rdi), %eax
-	movq	%rdx, ChainIterator.3335(%rip)
+	movq	%rdx, ChainIterator.3341(%rip)
 	cmpb	$1, %al
 	je	.L258
 	xorl	%eax, %eax
@@ -1265,11 +1265,11 @@ qSchedulerRun:
 	jne	.L256
 	movq	56+QUARKTS(%rip), %rdi
 	testq	%rdi, %rdi
-	movq	%rdi, ChainIterator.3335(%rip)
+	movq	%rdi, ChainIterator.3341(%rip)
 	jne	.L335
 .L257:
 	movq	56+QUARKTS(%rip), %rax
-	movq	%rax, ChainIterator.3335(%rip)
+	movq	%rax, ChainIterator.3341(%rip)
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
 	je	.L261
@@ -1279,7 +1279,7 @@ qSchedulerRun:
 	movl	84(%rdi), %edx
 	movq	%rdi, %rcx
 	call	_qScheduler_Dispatch
-	movq	ChainIterator.3335(%rip), %rdx
+	movq	ChainIterator.3341(%rip), %rdx
 	jmp	.L259
 	.p2align 4,,10
 .L330:
@@ -3112,37 +3112,128 @@ qResponseInitialize:
 	ret
 	.seh_endproc
 	.p2align 4,,15
+	.globl	qResponseReceivedWithTimeout
+	.def	qResponseReceivedWithTimeout;	.scl	2;	.type	32;	.endef
+	.seh_proc	qResponseReceivedWithTimeout
+qResponseReceivedWithTimeout:
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$48, %rsp
+	.seh_stackalloc	48
+	.seh_endprologue
+	movq	%rcx, %rbx
+	movzbl	12(%rcx), %ecx
+	movl	%r8d, %eax
+	testb	%cl, %cl
+	jne	.L715
+	cmpq	$0, (%rbx)
+	je	.L727
+.L715:
+	testq	%r9, %r9
+	je	.L720
+	cmpb	$0, (%r9)
+	jne	.L728
+.L721:
+	movzbl	12(%rbx), %eax
+	testb	%al, %al
+	je	.L726
+	xorl	%eax, %eax
+	xorl	%edx, %edx
+	movq	$0, (%rbx)
+	movw	%ax, 8(%rbx)
+	movl	$1, %eax
+	movw	%dx, 10(%rbx)
+	movb	$0, 12(%rbx)
+	movb	$0, (%r9)
+	movl	$0, 4(%r9)
+	addq	$48, %rsp
+	popq	%rbx
+	ret
+	.p2align 4,,10
+.L727:
+	testw	%r8w, %r8w
+	jne	.L716
+	movq	%rdx, %rcx
+	movq	%r9, 40(%rsp)
+	movq	%rdx, 32(%rsp)
+	call	strlen
+	movq	40(%rsp), %r9
+	movq	32(%rsp), %rdx
+.L716:
+	movw	%ax, 8(%rbx)
+	xorl	%eax, %eax
+	testq	%r9, %r9
+	movw	%ax, 10(%rbx)
+	movq	%rdx, (%rbx)
+	movb	$0, 12(%rbx)
+	je	.L726
+	pxor	%xmm0, %xmm0
+	movss	48+QUARKTS(%rip), %xmm1
+	cvtss2sd	%xmm1, %xmm1
+	cvtss2sd	96(%rsp), %xmm0
+	mulsd	.LC2(%rip), %xmm0
+	ucomisd	%xmm0, %xmm1
+	ja	.L726
+	movss	48+QUARKTS(%rip), %xmm0
+	movss	96(%rsp), %xmm2
+	divss	%xmm0, %xmm2
+	cvttss2siq	%xmm2, %rax
+	movl	%eax, 8(%r9)
+	movl	_qSysTick_Epochs_(%rip), %eax
+	movb	$1, (%r9)
+	movl	%eax, 4(%r9)
+	.p2align 4,,10
+.L726:
+	xorl	%eax, %eax
+.L714:
+	addq	$48, %rsp
+	popq	%rbx
+	ret
+	.p2align 4,,10
+.L720:
+	movzbl	12(%rbx), %eax
+	testb	%al, %al
+	je	.L726
+	xorl	%ecx, %ecx
+	xorl	%r8d, %r8d
+	movl	$1, %eax
+	movw	%r8w, 10(%rbx)
+	movq	$0, (%rbx)
+	movw	%cx, 8(%rbx)
+	movb	$0, 12(%rbx)
+	addq	$48, %rsp
+	popq	%rbx
+	ret
+	.p2align 4,,10
+.L728:
+	movl	_qSysTick_Epochs_(%rip), %eax
+	subl	4(%r9), %eax
+	cmpl	8(%r9), %eax
+	jb	.L721
+	xorl	%r10d, %r10d
+	xorl	%r11d, %r11d
+	movq	$0, (%rbx)
+	movw	%r11w, 10(%rbx)
+	movw	%r10w, 8(%rbx)
+	movl	$2, %eax
+	movb	$0, 12(%rbx)
+	movb	$0, (%r9)
+	movl	$0, 4(%r9)
+	jmp	.L714
+	.seh_endproc
+	.p2align 4,,15
 	.globl	qResponseReceived
 	.def	qResponseReceived;	.scl	2;	.type	32;	.endef
 	.seh_proc	qResponseReceived
 qResponseReceived:
+	subq	$56, %rsp
+	.seh_stackalloc	56
 	.seh_endprologue
-	movzbl	12(%rcx), %eax
-	testb	%al, %al
-	jne	.L715
-	cmpq	$0, (%rcx)
-	je	.L719
-.L715:
-	movzbl	12(%rcx), %edx
-	xorl	%eax, %eax
-	testb	%dl, %dl
-	je	.L714
-	xorl	%eax, %eax
-	xorl	%edx, %edx
-	movq	$0, (%rcx)
-	movw	%ax, 8(%rcx)
-	movw	%dx, 10(%rcx)
-	movl	$1, %eax
-	movb	$0, 12(%rcx)
-.L714:
-	ret
-	.p2align 4,,10
-.L719:
-	movw	%r8w, 8(%rcx)
-	xorl	%r8d, %r8d
-	movq	%rdx, (%rcx)
-	movw	%r8w, 10(%rcx)
-	movb	$0, 12(%rcx)
+	xorl	%r9d, %r9d
+	movl	$0x00000000, 32(%rsp)
+	movzwl	%r8w, %r8d
+	call	qResponseReceivedWithTimeout
+	addq	$56, %rsp
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -3154,27 +3245,27 @@ qResponseISRHandler:
 	movzbl	12(%rcx), %r8d
 	xorl	%eax, %eax
 	cmpb	$1, %r8b
-	je	.L720
+	je	.L730
 	movq	(%rcx), %r8
 	testq	%r8, %r8
-	je	.L720
+	je	.L730
 	movzwl	10(%rcx), %eax
 	cmpb	%dl, (%r8,%rax)
-	je	.L729
-.L723:
+	je	.L739
+.L733:
 	movzbl	12(%rcx), %eax
-.L720:
+.L730:
 	ret
 	.p2align 4,,10
-.L729:
+.L739:
 	movzwl	10(%rcx), %eax
 	addl	$1, %eax
 	movw	%ax, 10(%rcx)
 	movzwl	10(%rcx), %eax
 	cmpw	8(%rcx), %ax
-	jne	.L723
+	jne	.L733
 	movb	$1, 12(%rcx)
-	jmp	.L723
+	jmp	.L733
 	.seh_endproc
 	.p2align 4,,15
 	.globl	__qtrace_func
@@ -3206,72 +3297,72 @@ __qtrace_func:
 	movq	%r9, %rdi
 	movl	136(%rsp), %r12d
 	testq	%rbx, %rbx
-	je	.L730
+	je	.L740
 	movsbl	(%rcx), %edx
 	testb	%dl, %dl
-	je	.L732
+	je	.L742
 	.p2align 4,,10
-.L733:
+.L743:
 	addq	$1, %r14
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%r14), %edx
 	testb	%dl, %dl
-	jne	.L733
+	jne	.L743
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L732:
+.L742:
 	testq	%r13, %r13
-	je	.L734
+	je	.L744
 	movl	$64, %edx
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	0(%r13), %edx
 	movq	__qDebugOutputFcn(%rip), %rbx
 	testb	%dl, %dl
-	je	.L735
+	je	.L745
 	.p2align 4,,10
-.L736:
+.L746:
 	addq	$1, %r13
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	0(%r13), %edx
 	testb	%dl, %dl
-	jne	.L736
+	jne	.L746
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L735:
+.L745:
 	movl	$32, %edx
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L734:
+.L744:
 	movsbl	(%rsi), %edx
 	testb	%dl, %dl
-	je	.L737
+	je	.L747
 	.p2align 4,,10
-.L738:
+.L748:
 	addq	$1, %rsi
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%rsi), %edx
 	testb	%dl, %dl
-	jne	.L738
+	jne	.L748
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L737:
+.L747:
 	testq	%rdi, %rdi
-	je	.L761
+	je	.L771
 	movsbl	(%rdi), %edx
 	testb	%dl, %dl
-	je	.L740
+	je	.L750
 	.p2align 4,,10
-.L741:
+.L751:
 	addq	$1, %rdi
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%rdi), %edx
 	testb	%dl, %dl
-	jne	.L741
+	jne	.L751
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L740:
+.L750:
 	xorl	%ecx, %ecx
 	movl	$13, %edx
 	call	*%rbx
@@ -3287,7 +3378,7 @@ __qtrace_func:
 	popq	%r14
 	rex.W jmp	*__qDebugOutputFcn(%rip)
 	.p2align 4,,10
-.L730:
+.L740:
 	addq	$32, %rsp
 	popq	%rbx
 	popq	%rsi
@@ -3298,7 +3389,7 @@ __qtrace_func:
 	popq	%r14
 	ret
 	.p2align 4,,10
-.L761:
+.L771:
 	movzwl	%r12w, %r9d
 	movq	%rbp, %r8
 	xorl	%edx, %edx
@@ -3315,7 +3406,7 @@ __qtrace_func:
 	.seh_endproc
 	.data
 	.align 8
-ChainIterator.3335:
+ChainIterator.3341:
 	.quad	_qSysTick_Epochs_
 	.globl	qDebugTrace_Buffer
 	.bss
@@ -3357,3 +3448,4 @@ __qDebugOutputFcn:
 	.def	memcpy;	.scl	2;	.type	32;	.endef
 	.def	__locale_ctype_ptr;	.scl	2;	.type	32;	.endef
 	.def	toupper;	.scl	2;	.type	32;	.endef
+	.def	strlen;	.scl	2;	.type	32;	.endef

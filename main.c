@@ -129,6 +129,7 @@ void IdleTaskCallback(qEvent_t e){
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
+    static qResponseHandler_t rep;
     qCRPosition_t state;
     qCoroutineSemaphore_t mutex;
     qCoroutineSemaphoreInit(&mutex, 1);
@@ -136,7 +137,8 @@ void blinktaskCallback(qEvent_t e){
         puts(">>>>>>>>>>>>>>led on");
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
-        qCoroutineWaitUntil(qSTimerExpired(&tmr));
+        qCoroutineWaitUntil( qSTimerExpired(&tmr) );
+        
         qCoroutineSemaphoreWait(&mutex);
         qCoroutinePositionGet(state);
         qSTimerSet(&tmr, 1);
@@ -175,6 +177,8 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     }    
     return 0;
 }
+
+
 /*========+====================================================================*/
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
@@ -187,12 +191,13 @@ int main(int argc, char** argv) {
     qTraceVariable( yy, UnsignedBinary);
     qTraceVariable( 0, UnsignedHexadecimal );
     qTraceVariable( 0b01001101, Binary );
-    
+    qTraceMemory( &yy, sizeof(yy));
     qTraceVariable( 3.1416, Float);
     qTraceVariable( qStringHash("aloh", 0), UnsignedDecimal);
     qTraceVariable( qStringHash("hola", 0), UnsignedDecimal);
     qTraceVariable( qStringHash("hannah", 0), UnsignedDecimal);
     qTrace();
+    
 
     qRBuffer_t ringBuffer;
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
@@ -224,4 +229,4 @@ int main(int argc, char** argv) {
     
     qSchedulerRun();
     return (EXIT_SUCCESS);
-}        
+}
