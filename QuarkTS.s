@@ -45,6 +45,20 @@ _qScheduler_PriorizedInsert:
 	ret
 	.seh_endproc
 	.p2align 4,,15
+	.globl	__qReg_32Bits
+	.def	__qReg_32Bits;	.scl	2;	.type	32;	.endef
+	.seh_proc	__qReg_32Bits
+__qReg_32Bits:
+	.seh_endprologue
+	movl	$1, %eax
+	movq	%rcx, %r8
+	movl	%edx, %ecx
+	sall	%cl, %eax
+	testl	%eax, (%r8)
+	setne	%al
+	ret
+	.seh_endproc
+	.p2align 4,,15
 	.def	__q_revuta.part.5;	.scl	3;	.type	32;	.endef
 	.seh_proc	__q_revuta.part.5
 __q_revuta.part.5:
@@ -54,14 +68,14 @@ __q_revuta.part.5:
 	testl	%ecx, %ecx
 	movl	%ecx, %eax
 	movq	%rdx, %r10
-	je	.L26
+	je	.L27
 	movzbl	%r8b, %r8d
 	xorl	%r9d, %r9d
-	jmp	.L23
+	jmp	.L24
 	.p2align 4,,10
-.L27:
+.L28:
 	movzbl	%r11b, %r9d
-.L23:
+.L24:
 	xorl	%edx, %edx
 	divl	%r8d
 	leal	48(%rdx), %r11d
@@ -71,14 +85,14 @@ __q_revuta.part.5:
 	testl	%eax, %eax
 	leal	1(%r9), %r11d
 	movb	%cl, (%r10,%r9)
-	jne	.L27
+	jne	.L28
 	movzbl	%r11b, %r8d
 	subw	$1, %r8w
-	je	.L19
-.L20:
+	je	.L20
+.L21:
 	xorl	%r9d, %r9d
 	.p2align 4,,10
-.L25:
+.L26:
 	movzwl	%r9w, %ecx
 	movzwl	%r8w, %edx
 	addl	$1, %r9d
@@ -90,16 +104,16 @@ __q_revuta.part.5:
 	cmpw	%r8w, %r9w
 	movb	%bl, (%rcx)
 	movb	%al, (%rdx)
-	jb	.L25
-.L19:
+	jb	.L26
+.L20:
 	movl	%r11d, %eax
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L26:
+.L27:
 	xorl	%r11d, %r11d
 	movl	$-1, %r8d
-	jmp	.L20
+	jmp	.L21
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qClock2Time
@@ -142,9 +156,9 @@ qTaskIsEnabled:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L37
+	je	.L38
 	movzbl	58(%rcx), %eax
-.L37:
+.L38:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -182,9 +196,9 @@ qTaskGetCycles:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L44
+	je	.L45
 	movl	36(%rcx), %eax
-.L44:
+.L45:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -194,10 +208,10 @@ qTaskGetCycles:
 qTaskSendEvent:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L48
+	je	.L49
 	movb	$1, 57(%rcx)
 	movq	%rdx, 16(%rcx)
-.L48:
+.L49:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -207,12 +221,12 @@ qTaskSendEvent:
 qTaskSetTime:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L53
+	je	.L54
 	movss	48+QUARKTS(%rip), %xmm0
 	divss	%xmm0, %xmm1
 	cvttss2siq	%xmm1, %rax
 	movl	%eax, 24(%rcx)
-.L53:
+.L54:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -222,13 +236,13 @@ qTaskSetTime:
 qTaskSetIterations:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L58
+	je	.L59
 	movl	%edx, %eax
 	negl	%eax
 	cmpw	$-32768, %dx
 	cmovne	%eax, %edx
 	movw	%dx, 32(%rcx)
-.L58:
+.L59:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -238,10 +252,10 @@ qTaskSetIterations:
 qTaskSetPriority:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L65
+	je	.L66
 	movb	$0, 80+QUARKTS(%rip)
 	movb	%dl, 40(%rcx)
-.L65:
+.L66:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -251,9 +265,9 @@ qTaskSetPriority:
 qTaskSetCallback:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L70
+	je	.L71
 	movq	%rdx, 48(%rcx)
-.L70:
+.L71:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -263,17 +277,17 @@ qTaskSetCallback:
 qTaskSetState:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L75
+	je	.L76
 	testb	%dl, %dl
-	je	.L77
+	je	.L78
 	movzbl	58(%rcx), %eax
 	testb	%al, %al
-	jne	.L75
-.L77:
+	jne	.L76
+.L78:
 	movb	%dl, 58(%rcx)
 	movl	_qSysTick_Epochs_(%rip), %eax
 	movl	%eax, 28(%rcx)
-.L75:
+.L76:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -283,9 +297,9 @@ qTaskSetState:
 qTaskSetData:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L81
+	je	.L82
 	movq	%rdx, 8(%rcx)
-.L81:
+.L82:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -295,10 +309,10 @@ qTaskSetData:
 qTaskClearTimeElapsed:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L86
+	je	.L87
 	movl	_qSysTick_Epochs_(%rip), %eax
 	movl	%eax, 28(%rcx)
-.L86:
+.L87:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -311,12 +325,12 @@ qTaskQueueEvent:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L91
+	je	.L92
 	movswl	98+QUARKTS(%rip), %r9d
 	movzbl	96+QUARKTS(%rip), %r8d
 	subl	$1, %r8d
 	cmpl	%r8d, %r9d
-	jge	.L91
+	jge	.L92
 	movq	%rdx, 8(%rsp)
 	movq	%rcx, (%rsp)
 	movq	88+QUARKTS(%rip), %rdx
@@ -330,7 +344,7 @@ qTaskQueueEvent:
 	movq	%r9, (%rdx,%rax)
 	movq	%r10, 8(%rdx,%rax)
 	movl	$1, %eax
-.L91:
+.L92:
 	addq	$24, %rsp
 	ret
 	.seh_endproc
@@ -358,10 +372,10 @@ _qInitScheduler:
 	movb	%r9b, 96+QUARKTS(%rip)
 	movzbl	96+QUARKTS(%rip), %eax
 	testb	%al, %al
-	je	.L98
+	je	.L99
 	xorl	%eax, %eax
 	.p2align 4,,10
-.L99:
+.L100:
 	movq	88+QUARKTS(%rip), %rcx
 	movzbl	%al, %edx
 	addl	$1, %eax
@@ -369,8 +383,8 @@ _qInitScheduler:
 	movq	$0, (%rcx,%rdx)
 	movzbl	96+QUARKTS(%rip), %edx
 	cmpb	%al, %dl
-	ja	.L99
-.L98:
+	ja	.L100
+.L99:
 	movl	$-1, %eax
 	movw	%ax, 98+QUARKTS(%rip)
 	movq	$0, 104+QUARKTS(%rip)
@@ -392,39 +406,39 @@ qSchedulerRemoveTask:
 	movq	56+QUARKTS(%rip), %rdx
 	xorl	%eax, %eax
 	testq	%rdx, %rdx
-	je	.L104
+	je	.L105
 	cmpq	%rcx, %rdx
-	je	.L106
+	je	.L107
 	movq	(%rdx), %r8
 	testq	%r8, %r8
-	jne	.L108
-	jmp	.L104
+	jne	.L109
+	jmp	.L105
 	.p2align 4,,10
-.L115:
+.L116:
 	movq	(%rax), %r8
 	movq	%rax, %rdx
 	testq	%r8, %r8
-	je	.L114
-.L108:
+	je	.L115
+.L109:
 	movq	(%rdx), %rax
 	cmpq	%rax, %rcx
-	jne	.L115
+	jne	.L116
 	movq	(%rcx), %rax
 	movq	%rax, (%rdx)
-.L109:
+.L110:
 	movq	$0, (%rcx)
 	movl	$1, %eax
-.L104:
+.L105:
 	ret
 	.p2align 4,,10
-.L114:
+.L115:
 	xorl	%eax, %eax
 	ret
 	.p2align 4,,10
-.L106:
+.L107:
 	movq	(%rcx), %rax
 	movq	%rax, 56+QUARKTS(%rip)
-	jmp	.L109
+	jmp	.L110
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qSchedulerAddxTask
@@ -441,25 +455,25 @@ qSchedulerAddxTask:
 	movl	104(%rsp), %r11d
 	testq	%rcx, %rcx
 	movq	%rcx, %r9
-	je	.L116
+	je	.L117
 	movss	.LC0(%rip), %xmm0
 	mulss	%xmm3, %xmm0
 	movss	48+QUARKTS(%rip), %xmm1
 	ucomiss	%xmm0, %xmm1
-	jbe	.L124
+	jbe	.L125
 	pxor	%xmm0, %xmm0
 	movl	$1, %ebx
 	ucomiss	%xmm0, %xmm3
 	setp	%cl
 	cmovne	%ebx, %ecx
 	testb	%cl, %cl
-	jne	.L116
-.L124:
+	jne	.L117
+.L125:
 	xorl	%eax, %eax
 	testq	%rdx, %rdx
 	movl	%r8d, 44(%rsp)
 	movq	%rdx, 32(%rsp)
-	je	.L116
+	je	.L117
 	movq	%r9, %rcx
 	call	qSchedulerRemoveTask
 	movq	32(%rsp), %rdx
@@ -497,7 +511,7 @@ qSchedulerAddxTask:
 	movb	$3, 80(%r9)
 	call	_qScheduler_PriorizedInsert
 	movl	$1, %eax
-.L116:
+.L117:
 	addq	$48, %rsp
 	popq	%rbx
 	ret
@@ -515,9 +529,9 @@ qSchedulerAddSMTask:
 	movl	168(%rsp), %eax
 	testq	%r9, %r9
 	movq	%rcx, %rbx
-	je	.L133
+	je	.L134
 	cmpq	$0, 128(%rsp)
-	je	.L133
+	je	.L134
 	movq	176(%rsp), %rcx
 	movzbl	%al, %eax
 	movzbl	%dl, %r8d
@@ -531,14 +545,14 @@ qSchedulerAddSMTask:
 	call	qSchedulerAddxTask
 	testb	%al, %al
 	movq	72(%rsp), %r9
-	jne	.L137
-.L133:
+	jne	.L138
+.L134:
 	xorl	%eax, %eax
 	addq	$80, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L137:
+.L138:
 	movq	128(%rsp), %rax
 	movq	$0, 8(%r9)
 	movb	$0, 28(%r9)
@@ -571,10 +585,10 @@ qSchedulerAddeTask:
 	testq	%rcx, %rcx
 	movq	%rdx, %r11
 	movl	%r8d, 44(%rsp)
-	je	.L138
+	je	.L139
 	testq	%rdx, %rdx
 	movss	48+QUARKTS(%rip), %xmm0
-	je	.L138
+	je	.L139
 	call	qSchedulerRemoveTask
 	pxor	%xmm0, %xmm0
 	movq	%r11, 48(%rcx)
@@ -605,7 +619,7 @@ qSchedulerAddeTask:
 	leaq	56+QUARKTS(%rip), %rcx
 	call	_qScheduler_PriorizedInsert
 	movl	$1, %eax
-.L138:
+.L139:
 	addq	$56, %rsp
 	ret
 	.seh_endproc
@@ -616,21 +630,21 @@ qSchedulerAddeTask:
 qTaskLinkRBuffer:
 	.seh_endprologue
 	testq	%rdx, %rdx
-	je	.L148
+	je	.L149
 	testq	%rcx, %rcx
-	je	.L148
+	je	.L149
 	leal	-3(%r8), %r10d
 	xorl	%eax, %eax
 	cmpl	$3, %r10d
-	ja	.L144
+	ja	.L145
 	cmpq	$0, (%rdx)
-	je	.L144
+	je	.L145
 	cmpl	$5, %r8d
 	movl	%r9d, %eax
-	je	.L146
+	je	.L147
 	testb	%r9b, %r9b
 	setne	%al
-.L146:
+.L147:
 	movl	%r8d, %r8d
 	testb	%r9b, %r9b
 	movb	%al, 56(%rcx,%r8)
@@ -638,10 +652,10 @@ qTaskLinkRBuffer:
 	cmove	%rax, %rdx
 	movl	$1, %eax
 	movq	%rdx, 64(%rcx)
-.L144:
+.L145:
 	ret
 	.p2align 4,,10
-.L148:
+.L149:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -663,9 +677,9 @@ qSchedulerSysTick:
 qStateMachine_Init:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L156
+	je	.L157
 	testq	%rdx, %rdx
-	je	.L156
+	je	.L157
 	movq	40(%rsp), %rax
 	movq	%rdx, (%rcx)
 	movq	$0, 8(%rcx)
@@ -680,7 +694,7 @@ qStateMachine_Init:
 	movl	$1, %eax
 	ret
 	.p2align 4,,10
-.L156:
+.L157:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -698,56 +712,56 @@ qStateMachine_Run:
 	.seh_endprologue
 	testq	%rcx, %rcx
 	movq	%rcx, %rbx
-	je	.L157
+	je	.L158
 	movq	64(%rcx), %rax
 	movq	%rdx, 32(%rcx)
 	testq	%rax, %rax
-	je	.L160
+	je	.L161
 	call	*%rax
-.L160:
+.L161:
 	movq	(%rbx), %rsi
 	testq	%rsi, %rsi
-	je	.L161
+	je	.L162
 	movq	16(%rbx), %rax
 	cmpq	%rax, %rsi
 	setne	28(%rbx)
-	je	.L162
+	je	.L163
 	movq	%rax, 8(%rbx)
-.L162:
+.L163:
 	movq	%rbx, %rcx
 	call	*%rsi
 	cmpl	$-32768, %eax
 	movl	%eax, 24(%rbx)
 	movq	%rsi, 16(%rbx)
-	je	.L164
-	cmpl	$-32767, %eax
 	je	.L165
+	cmpl	$-32767, %eax
+	je	.L166
 	movq	56(%rbx), %rax
 	testq	%rax, %rax
-	je	.L157
-.L183:
+	je	.L158
+.L184:
 	movq	%rbx, %rcx
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	rex.W jmp	*%rax
 	.p2align 4,,10
-.L164:
+.L165:
 	movq	48(%rbx), %rax
 	testq	%rax, %rax
-	jne	.L183
-.L157:
+	jne	.L184
+.L158:
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L161:
+.L162:
 	movl	$-32767, 24(%rbx)
-.L165:
+.L166:
 	movq	40(%rbx), %rax
 	testq	%rax, %rax
-	je	.L157
+	je	.L158
 	movq	%rbx, %rcx
 	addq	$40, %rsp
 	popq	%rbx
@@ -768,54 +782,54 @@ _qScheduler_Dispatch:
 	cmpl	$9, %edx
 	movq	%rcx, %rbx
 	movl	%edx, %esi
-	ja	.L185
+	ja	.L186
 	movl	%edx, %eax
-	leaq	.L187(%rip), %rdx
+	leaq	.L188(%rip), %rdx
 	movslq	(%rdx,%rax,4), %rax
 	addq	%rdx, %rax
 	jmp	*%rax
 	.section .rdata,"dr"
 	.align 4
-.L187:
-	.long	.L185-.L187
-	.long	.L186-.L187
-	.long	.L188-.L187
-	.long	.L189-.L187
-	.long	.L190-.L187
-	.long	.L191-.L187
-	.long	.L191-.L187
-	.long	.L191-.L187
-	.long	.L185-.L187
-	.long	.L192-.L187
+.L188:
+	.long	.L186-.L188
+	.long	.L187-.L188
+	.long	.L189-.L188
+	.long	.L190-.L188
+	.long	.L191-.L188
+	.long	.L192-.L188
+	.long	.L192-.L188
+	.long	.L192-.L188
+	.long	.L186-.L188
+	.long	.L193-.L188
 	.text
 	.p2align 4,,10
-.L186:
+.L187:
 	movzwl	32(%rcx), %eax
 	cmpw	$-32768, %ax
-	je	.L193
+	je	.L194
 	movzwl	32(%rcx), %eax
 	testw	%ax, %ax
-	js	.L219
-.L193:
+	js	.L220
+.L194:
 	movb	$0, 41+QUARKTS(%rip)
 	movzwl	32(%rbx), %eax
-.L201:
+.L202:
 	movw	%ax, 32(%rbx)
 	movzwl	32(%rbx), %eax
 	cmpw	$-32768, %ax
-	je	.L195
+	je	.L196
 	movzwl	32(%rbx), %eax
 	subl	$1, %eax
 	movw	%ax, 32(%rbx)
-.L195:
+.L196:
 	movzwl	32(%rbx), %eax
 	testw	%ax, %ax
 	sete	%dl
 	movb	%dl, 42+QUARKTS(%rip)
-	jne	.L185
+	jne	.L186
 	movb	$0, 58(%rbx)
 	.p2align 4,,10
-.L185:
+.L186:
 	movb	$2, 80(%rbx)
 	movl	%esi, 16+QUARKTS(%rip)
 	movzbl	56(%rbx), %eax
@@ -827,26 +841,26 @@ _qScheduler_Dispatch:
 	movq	%rbx, 112+QUARKTS(%rip)
 	movq	72(%rbx), %rax
 	testq	%rax, %rax
-	je	.L198
+	je	.L199
 	movq	48(%rbx), %rax
 	cmpq	$1, %rax
-	je	.L220
-.L198:
+	je	.L221
+.L199:
 	movq	48(%rbx), %rax
 	testq	%rax, %rax
-	je	.L199
+	je	.L200
 	movq	48(%rbx), %rax
 	leaq	16+QUARKTS(%rip), %rcx
 	call	*%rax
-.L199:
+.L200:
 	cmpl	$4, %esi
 	movq	$0, 112+QUARKTS(%rip)
-	jne	.L200
+	jne	.L201
 	movq	64(%rbx), %rdx
 	movzwl	14(%rdx), %eax
 	addl	$1, %eax
 	movw	%ax, 14(%rdx)
-.L200:
+.L201:
 	movb	$1, 56(%rbx)
 	movb	$0, 41+QUARKTS(%rip)
 	movb	$0, 42+QUARKTS(%rip)
@@ -860,7 +874,7 @@ _qScheduler_Dispatch:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L192:
+.L193:
 	movzbl	81+QUARKTS(%rip), %eax
 	leaq	16+QUARKTS(%rip), %rcx
 	testb	%al, %al
@@ -877,27 +891,27 @@ _qScheduler_Dispatch:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L188:
+.L189:
 	movq	104+QUARKTS(%rip), %rax
 	movq	%rax, 32+QUARKTS(%rip)
 	movq	$0, 104+QUARKTS(%rip)
-	jmp	.L185
+	jmp	.L186
 	.p2align 4,,10
-.L189:
+.L190:
 	movq	16(%rcx), %rax
 	movq	%rax, 32+QUARKTS(%rip)
 	movb	$0, 57(%rcx)
-	jmp	.L185
+	jmp	.L186
 	.p2align 4,,10
-.L190:
+.L191:
 	movq	64(%rcx), %rcx
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L218
+	je	.L219
 	movzwl	12(%rcx), %r8d
 	movzwl	14(%rcx), %edx
 	cmpw	%dx, %r8w
-	je	.L218
+	je	.L219
 	movzwl	14(%rcx), %eax
 	movzwl	10(%rcx), %r9d
 	xorl	%edx, %edx
@@ -908,25 +922,25 @@ _qScheduler_Dispatch:
 	imull	%edx, %eax
 	cltq
 	addq	(%rcx), %rax
-.L218:
+.L219:
 	movq	%rax, 32+QUARKTS(%rip)
-	jmp	.L185
+	jmp	.L186
 	.p2align 4,,10
-.L191:
+.L192:
 	movq	64(%rcx), %rax
-	jmp	.L218
+	jmp	.L219
 	.p2align 4,,10
-.L220:
+.L221:
 	movq	72(%rbx), %rcx
 	leaq	16+QUARKTS(%rip), %rdx
 	call	qStateMachine_Run
-	jmp	.L199
+	jmp	.L200
 	.p2align 4,,10
-.L219:
+.L220:
 	movb	$1, 41+QUARKTS(%rip)
 	movzwl	32(%rcx), %eax
 	negl	%eax
-	jmp	.L201
+	jmp	.L202
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qSchedulerRun
@@ -949,62 +963,62 @@ qSchedulerRun:
 	leaq	_qSysTick_Epochs_(%rip), %rbx
 	movb	$1, 80+QUARKTS(%rip)
 	.p2align 4,,10
-.L261:
+.L262:
 	movzbl	80+QUARKTS(%rip), %eax
 	testb	%al, %al
-	je	.L330
-.L222:
+	je	.L331
+.L223:
 	movzwl	98+QUARKTS(%rip), %eax
 	testw	%ax, %ax
-	js	.L227
-.L336:
+	js	.L228
+.L337:
 	movq	64+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L228
+	je	.L229
 	movq	64+QUARKTS(%rip), %rax
 	call	*%rax
 	movl	%eax, 84+QUARKTS(%rip)
-.L228:
+.L229:
 	movq	88+QUARKTS(%rip), %rax
 	movq	(%rax), %rax
 	movzbl	40(%rax), %r9d
 	movzbl	96+QUARKTS(%rip), %eax
 	cmpb	$1, %al
-	jbe	.L265
+	jbe	.L266
 	movq	88+QUARKTS(%rip), %rax
 	cmpq	$0, 16(%rax)
-	je	.L265
+	je	.L266
 	xorl	%edx, %edx
 	movl	$16, %eax
 	movl	$1, %ecx
-	jmp	.L230
+	jmp	.L231
 	.p2align 4,,10
-.L232:
+.L233:
 	movq	88+QUARKTS(%rip), %r8
 	movzbl	%cl, %eax
 	salq	$4, %rax
 	cmpq	$0, (%r8,%rax)
-	je	.L329
-.L230:
+	je	.L330
+.L231:
 	movq	88+QUARKTS(%rip), %r8
 	movq	(%r8,%rax), %r8
 	movzbl	40(%r8), %r8d
 	cmpb	%r9b, %r8b
-	jbe	.L231
+	jbe	.L232
 	movq	88+QUARKTS(%rip), %rdx
 	movq	(%rdx,%rax), %rax
 	movl	%ecx, %edx
 	movzbl	40(%rax), %r9d
-.L231:
+.L232:
 	movzbl	96+QUARKTS(%rip), %eax
 	addl	$1, %ecx
 	cmpb	%al, %cl
-	jb	.L232
-.L329:
+	jb	.L233
+.L330:
 	movzbl	%dl, %eax
 	movzbl	%dl, %r8d
 	salq	$4, %rax
-.L229:
+.L230:
 	movq	88+QUARKTS(%rip), %rcx
 	movq	8(%rcx,%rax), %rcx
 	movq	%rcx, 104+QUARKTS(%rip)
@@ -1015,9 +1029,9 @@ qSchedulerRun:
 	movq	$0, (%rcx,%rax)
 	movswl	98+QUARKTS(%rip), %eax
 	cmpl	%eax, %r8d
-	jge	.L233
+	jge	.L234
 	.p2align 4,,10
-.L234:
+.L235:
 	movq	88+QUARKTS(%rip), %r8
 	movzbl	%dl, %eax
 	movq	88+QUARKTS(%rip), %rcx
@@ -1031,90 +1045,90 @@ qSchedulerRun:
 	movzbl	%dl, %ecx
 	movswl	98+QUARKTS(%rip), %eax
 	cmpl	%eax, %ecx
-	jl	.L234
-.L233:
+	jl	.L235
+.L234:
 	movzwl	98+QUARKTS(%rip), %eax
 	subl	$1, %eax
 	movw	%ax, 98+QUARKTS(%rip)
 	movq	72+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L235
+	je	.L236
 	movq	72+QUARKTS(%rip), %rax
 	movl	84+QUARKTS(%rip), %ecx
 	call	*%rax
-.L235:
+.L236:
 	movq	%rdi, %rcx
 	movl	$2, %edx
 	call	_qScheduler_Dispatch
 	movb	%al, 80(%rdi)
 	movq	56+QUARKTS(%rip), %rcx
 	testq	%rcx, %rcx
-	je	.L260
-.L263:
+	je	.L261
+.L264:
 	xorl	%r8d, %r8d
-	jmp	.L253
+	jmp	.L254
 	.p2align 4,,10
-.L238:
+.L239:
 	movzwl	32(%rcx), %eax
 	testw	%ax, %ax
-	jle	.L240
-.L239:
+	jle	.L241
+.L240:
 	movl	24(%rcx), %eax
 	pxor	%xmm0, %xmm0
 	cvtsi2ssq	%rax, %xmm0
 	ucomiss	%xmm6, %xmm0
-	jp	.L272
-	je	.L241
-.L272:
+	jp	.L273
+	je	.L242
+.L273:
 	movl	_qSysTick_Epochs_(%rip), %eax
 	movl	28(%rcx), %r9d
 	movl	24(%rcx), %edx
 	subl	%r9d, %eax
 	cmpl	%edx, %eax
-	jnb	.L241
-.L237:
+	jnb	.L242
+.L238:
 	movq	64(%rcx), %rax
 	testq	%rax, %rax
-	je	.L246
+	je	.L247
 	movzbl	60(%rcx), %eax
 	testb	%al, %al
-	je	.L247
+	je	.L248
 	movq	64(%rcx), %rax
 	testq	%rax, %rax
-	je	.L267
+	je	.L268
 	movzwl	12(%rax), %edx
 	movzwl	14(%rax), %r10d
 	movzwl	10(%rax), %r9d
 	movl	%edx, %eax
 	subl	%r10d, %eax
 	cmpw	%r9w, %ax
-	je	.L267
-.L247:
+	je	.L268
+.L248:
 	movzbl	61(%rcx), %eax
 	testb	%al, %al
-	je	.L249
+	je	.L250
 	movq	64(%rcx), %rdx
 	xorl	%eax, %eax
 	testq	%rdx, %rdx
-	je	.L250
+	je	.L251
 	movzwl	12(%rdx), %eax
 	movzwl	14(%rdx), %edx
 	subl	%edx, %eax
-.L250:
+.L251:
 	movzbl	61(%rcx), %edx
 	cmpw	%ax, %dx
-	jbe	.L269
-.L249:
+	jbe	.L270
+.L250:
 	movzbl	59(%rcx), %eax
 	testb	%al, %al
-	je	.L251
+	je	.L252
 	movq	64(%rcx), %r9
 	testq	%r9, %r9
-	je	.L251
+	je	.L252
 	movzwl	12(%r9), %edx
 	movzwl	14(%r9), %eax
 	cmpw	%ax, %dx
-	je	.L251
+	je	.L252
 	movzwl	14(%r9), %eax
 	movzwl	10(%r9), %r11d
 	xorl	%edx, %edx
@@ -1126,48 +1140,48 @@ qSchedulerRun:
 	movslq	%edx, %rax
 	addq	(%r9), %rax
 	movl	$4, %edx
-	jne	.L248
+	jne	.L249
 	.p2align 4,,10
-.L251:
+.L252:
 	movzbl	62(%rcx), %eax
 	testb	%al, %al
-	je	.L246
+	je	.L247
 	movq	64(%rcx), %rax
 	testq	%rax, %rax
-	je	.L271
+	je	.L272
 	movzwl	12(%rax), %edx
 	movzwl	14(%rax), %eax
 	cmpw	%ax, %dx
-	je	.L271
-.L246:
+	je	.L272
+.L247:
 	movzbl	57(%rcx), %eax
 	testb	%al, %al
-	jne	.L331
+	jne	.L332
 	movb	$3, 80(%rcx)
-.L245:
+.L246:
 	movq	(%rcx), %rcx
 	testq	%rcx, %rcx
-	je	.L332
-.L253:
+	je	.L333
+.L254:
 	movzbl	58(%rcx), %eax
 	testb	%al, %al
-	je	.L237
-	movzwl	32(%rcx), %eax
-	testw	%ax, %ax
-	jns	.L238
-	movzwl	32(%rcx), %eax
-	cmpw	$-32768, %ax
 	je	.L238
 	movzwl	32(%rcx), %eax
 	testw	%ax, %ax
-	js	.L239
-.L240:
+	jns	.L239
 	movzwl	32(%rcx), %eax
 	cmpw	$-32768, %ax
-	jne	.L237
-	jmp	.L239
-	.p2align 4,,10
+	je	.L239
+	movzwl	32(%rcx), %eax
+	testw	%ax, %ax
+	js	.L240
 .L241:
+	movzwl	32(%rcx), %eax
+	cmpw	$-32768, %ax
+	jne	.L238
+	jmp	.L240
+	.p2align 4,,10
+.L242:
 	movl	_qSysTick_Epochs_(%rip), %eax
 	movl	$1, %r8d
 	movl	%eax, 28(%rcx)
@@ -1175,17 +1189,17 @@ qSchedulerRun:
 	movl	$1, 84(%rcx)
 	movq	(%rcx), %rcx
 	testq	%rcx, %rcx
-	jne	.L253
-.L332:
+	jne	.L254
+.L333:
 	testb	%r8b, %r8b
-	jne	.L333
+	jne	.L334
 	testq	%rdi, %rdi
-	je	.L236
-.L260:
+	je	.L237
+.L261:
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
-	je	.L261
-.L334:
+	je	.L262
+.L335:
 	movb	$0, 80+QUARKTS(%rip)
 	movb	$0, 82+QUARKTS(%rip)
 	movzbl	83+QUARKTS(%rip), %eax
@@ -1196,12 +1210,12 @@ qSchedulerRun:
 	movq	$0, 24+QUARKTS(%rip)
 	movq	8+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L262
+	je	.L263
 	movq	8+QUARKTS(%rip), %rax
 	leaq	16+QUARKTS(%rip), %rcx
 	call	*%rax
 	nop
-.L262:
+.L263:
 	movaps	64(%rsp), %xmm6
 	movb	$1, 81+QUARKTS(%rip)
 	addq	$80, %rsp
@@ -1210,133 +1224,133 @@ qSchedulerRun:
 	popq	%rdi
 	ret
 	.p2align 4,,10
-.L269:
+.L270:
 	movl	$6, %edx
-.L248:
+.L249:
 	movb	$1, 80(%rcx)
 	movl	$1, %r8d
 	movl	%edx, 84(%rcx)
-	jmp	.L245
+	jmp	.L246
 	.p2align 4,,10
-.L331:
+.L332:
 	movb	$1, 80(%rcx)
 	movl	$1, %r8d
 	movl	$3, 84(%rcx)
-	jmp	.L245
+	jmp	.L246
 	.p2align 4,,10
-.L236:
+.L237:
 	movq	(%rsi), %rax
 	testq	%rax, %rax
-	je	.L260
+	je	.L261
 	xorl	%ecx, %ecx
 	movl	$9, %edx
 	call	_qScheduler_Dispatch
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
-	je	.L261
-	jmp	.L334
+	je	.L262
+	jmp	.L335
 	.p2align 4,,10
-.L267:
+.L268:
 	movl	$5, %edx
 	movb	$1, 80(%rcx)
 	movl	$1, %r8d
 	movl	%edx, 84(%rcx)
-	jmp	.L245
+	jmp	.L246
 	.p2align 4,,10
-.L333:
-	movq	ChainIterator.3341(%rip), %rdi
-	jmp	.L255
+.L334:
+	movq	ChainIterator.3391(%rip), %rdi
+	jmp	.L256
 	.p2align 4,,10
-.L256:
+.L257:
 	testq	%rdi, %rdi
-	je	.L257
-.L335:
+	je	.L258
+.L336:
 	movq	(%rdi), %rdx
 	movzbl	80(%rdi), %eax
-	movq	%rdx, ChainIterator.3341(%rip)
+	movq	%rdx, ChainIterator.3391(%rip)
 	cmpb	$1, %al
-	je	.L258
+	je	.L259
 	xorl	%eax, %eax
-.L259:
+.L260:
 	movb	%al, 80(%rdi)
 	movq	%rdx, %rdi
-.L255:
+.L256:
 	cmpq	%rbx, %rdi
-	jne	.L256
+	jne	.L257
 	movq	56+QUARKTS(%rip), %rdi
 	testq	%rdi, %rdi
-	movq	%rdi, ChainIterator.3341(%rip)
-	jne	.L335
-.L257:
+	movq	%rdi, ChainIterator.3391(%rip)
+	jne	.L336
+.L258:
 	movq	56+QUARKTS(%rip), %rax
-	movq	%rax, ChainIterator.3341(%rip)
+	movq	%rax, ChainIterator.3391(%rip)
 	movzbl	82+QUARKTS(%rip), %eax
 	testb	%al, %al
-	je	.L261
-	jmp	.L334
+	je	.L262
+	jmp	.L335
 	.p2align 4,,10
-.L258:
+.L259:
 	movl	84(%rdi), %edx
 	movq	%rdi, %rcx
 	call	_qScheduler_Dispatch
-	movq	ChainIterator.3341(%rip), %rdx
-	jmp	.L259
+	movq	ChainIterator.3391(%rip), %rdx
+	jmp	.L260
 	.p2align 4,,10
-.L330:
+.L331:
 	movq	64+QUARKTS(%rip), %rax
 	movq	$0, 56(%rsp)
 	movq	56+QUARKTS(%rip), %rdx
 	testq	%rax, %rax
-	je	.L223
+	je	.L224
 	movq	%rdx, 40(%rsp)
 	movq	64+QUARKTS(%rip), %rax
 	call	*%rax
 	movq	40(%rsp), %rdx
 	movl	%eax, 84+QUARKTS(%rip)
-.L223:
+.L224:
 	testq	%rdx, %rdx
-	je	.L224
+	je	.L225
 	leaq	56(%rsp), %r11
 	.p2align 4,,10
-.L225:
+.L226:
 	movq	(%rdx), %r10
 	movq	%r11, %rcx
 	call	_qScheduler_PriorizedInsert
 	testq	%r10, %r10
 	movq	%r10, %rdx
-	jne	.L225
-.L224:
+	jne	.L226
+.L225:
 	movq	56(%rsp), %rax
 	movb	$1, 80+QUARKTS(%rip)
 	movq	%rax, 56+QUARKTS(%rip)
 	movq	72+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L222
+	je	.L223
 	movq	72+QUARKTS(%rip), %rax
 	movl	84+QUARKTS(%rip), %ecx
 	call	*%rax
 	movzwl	98+QUARKTS(%rip), %eax
 	testw	%ax, %ax
-	jns	.L336
-.L227:
+	jns	.L337
+.L228:
 	movq	56+QUARKTS(%rip), %rcx
 	testq	%rcx, %rcx
-	je	.L236
+	je	.L237
 	xorl	%edi, %edi
-	jmp	.L263
+	jmp	.L264
 	.p2align 4,,10
-.L271:
+.L272:
 	movl	$7, %edx
 	movb	$1, 80(%rcx)
 	movl	$1, %r8d
 	movl	%edx, 84(%rcx)
-	jmp	.L245
+	jmp	.L246
 	.p2align 4,,10
-.L265:
+.L266:
 	xorl	%r8d, %r8d
 	xorl	%eax, %eax
 	xorl	%edx, %edx
-	jmp	.L229
+	jmp	.L230
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qStateMachine_Attribute
@@ -1345,33 +1359,33 @@ qSchedulerRun:
 qStateMachine_Attribute:
 	.seh_endprologue
 	cmpl	$5, %edx
-	ja	.L337
-	leaq	.L340(%rip), %r9
+	ja	.L338
+	leaq	.L341(%rip), %r9
 	movl	%edx, %edx
 	movslq	(%r9,%rdx,4), %rax
 	addq	%r9, %rax
 	jmp	*%rax
 	.section .rdata,"dr"
 	.align 4
-.L340:
-	.long	.L339-.L340
-	.long	.L341-.L340
-	.long	.L342-.L340
-	.long	.L343-.L340
-	.long	.L344-.L340
-	.long	.L345-.L340
+.L341:
+	.long	.L340-.L341
+	.long	.L342-.L341
+	.long	.L343-.L341
+	.long	.L344-.L341
+	.long	.L345-.L341
+	.long	.L346-.L341
 	.text
 	.p2align 4,,10
-.L345:
+.L346:
 	movq	%r8, 64(%rcx)
-.L337:
+.L338:
 	ret
 	.p2align 4,,10
-.L344:
+.L345:
 	movq	%r8, 56(%rcx)
 	ret
 	.p2align 4,,10
-.L339:
+.L340:
 	movq	%r8, (%rcx)
 	movq	$0, 8(%rcx)
 	movq	$0, 16(%rcx)
@@ -1379,16 +1393,16 @@ qStateMachine_Attribute:
 	movl	$-32768, 24(%rcx)
 	ret
 	.p2align 4,,10
-.L341:
+.L342:
 	movq	$0, 8(%rcx)
 	movq	$0, 16(%rcx)
 	ret
 	.p2align 4,,10
-.L342:
+.L343:
 	movq	%r8, 40(%rcx)
 	ret
 	.p2align 4,,10
-.L343:
+.L344:
 	movq	%r8, 48(%rcx)
 	ret
 	.seh_endproc
@@ -1400,14 +1414,14 @@ qSTimerSet:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L346
+	je	.L347
 	pxor	%xmm0, %xmm0
 	movss	48+QUARKTS(%rip), %xmm2
 	cvtss2sd	%xmm2, %xmm2
 	cvtss2sd	%xmm1, %xmm0
 	mulsd	.LC2(%rip), %xmm0
 	ucomisd	%xmm0, %xmm2
-	ja	.L346
+	ja	.L347
 	movss	48+QUARKTS(%rip), %xmm0
 	divss	%xmm0, %xmm1
 	cvttss2siq	%xmm1, %rax
@@ -1416,7 +1430,7 @@ qSTimerSet:
 	movb	$1, (%rcx)
 	movl	%eax, 4(%rcx)
 	movl	$1, %eax
-.L346:
+.L347:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1427,30 +1441,30 @@ qSTimerFreeRun:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L351
+	je	.L352
 	cmpb	$0, (%rcx)
-	jne	.L358
+	jne	.L359
 	pxor	%xmm0, %xmm0
 	movss	48+QUARKTS(%rip), %xmm2
 	cvtss2sd	%xmm2, %xmm2
 	cvtss2sd	%xmm1, %xmm0
 	mulsd	.LC2(%rip), %xmm0
 	ucomisd	%xmm0, %xmm2
-	jbe	.L359
-.L351:
+	jbe	.L360
+.L352:
 	ret
 	.p2align 4,,10
-.L358:
+.L359:
 	movl	_qSysTick_Epochs_(%rip), %edx
 	subl	4(%rcx), %edx
 	cmpl	8(%rcx), %edx
-	jb	.L351
+	jb	.L352
 	movl	$1, %eax
 	movb	$0, (%rcx)
 	movl	$0, 4(%rcx)
 	ret
 	.p2align 4,,10
-.L359:
+.L360:
 	movss	48+QUARKTS(%rip), %xmm0
 	divss	%xmm0, %xmm1
 	cvttss2siq	%xmm1, %rdx
@@ -1468,14 +1482,14 @@ qSTimerExpired:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L360
+	je	.L361
 	cmpb	$0, (%rcx)
-	je	.L360
+	je	.L361
 	movl	_qSysTick_Epochs_(%rip), %eax
 	subl	4(%rcx), %eax
 	cmpl	8(%rcx), %eax
 	setnb	%al
-.L360:
+.L361:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1486,12 +1500,12 @@ qSTimerElapsed:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L365
+	je	.L366
 	cmpb	$0, (%rcx)
-	je	.L365
+	je	.L366
 	movl	_qSysTick_Epochs_(%rip), %eax
 	subl	4(%rcx), %eax
-.L365:
+.L366:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1502,18 +1516,18 @@ qSTimerRemaining:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L370
+	je	.L371
 	cmpb	$0, (%rcx)
 	movl	8(%rcx), %eax
-	jne	.L379
-.L370:
+	jne	.L380
+.L371:
 	ret
 	.p2align 4,,10
-.L379:
+.L380:
 	testl	%eax, %eax
 	movl	_qSysTick_Epochs_(%rip), %edx
 	movl	4(%rcx), %ecx
-	je	.L370
+	je	.L371
 	subl	%ecx, %edx
 	movl	%eax, %ecx
 	subl	%edx, %ecx
@@ -1528,10 +1542,10 @@ qSTimerRemaining:
 qSTimerDisarm:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L380
+	je	.L381
 	movb	$0, (%rcx)
 	movl	$0, 4(%rcx)
-.L380:
+.L381:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1542,9 +1556,9 @@ qSTimerStatus:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L385
+	je	.L386
 	movzbl	(%rcx), %eax
-.L385:
+.L386:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1554,12 +1568,12 @@ qSTimerStatus:
 qSTimerChangeTime:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L389
+	je	.L390
 	movss	48+QUARKTS(%rip), %xmm0
 	divss	%xmm0, %xmm1
 	cvttss2siq	%xmm1, %rax
 	movl	%eax, 8(%rcx)
-.L389:
+.L390:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1592,16 +1606,16 @@ qMemoryAlloc:
 	movl	%edx, %r15d
 	movl	%edx, %esi
 	testq	%rax, %rax
-	je	.L395
+	je	.L396
 	movq	64+QUARKTS(%rip), %rax
 	call	*%rax
 	movl	%eax, 84+QUARKTS(%rip)
-.L395:
+.L396:
 	movzbl	2(%r14), %ebx
 	xorl	%r12d, %r12d
-.L406:
+.L407:
 	cmpb	%r12b, %bl
-	jbe	.L405
+	jbe	.L406
 	movq	8(%r14), %rdi
 	movzbl	%r12b, %eax
 	movzwl	(%r14), %r11d
@@ -1609,82 +1623,82 @@ qMemoryAlloc:
 	movzwl	%r11w, %r8d
 	movzbl	(%rdx), %ecx
 	testb	%cl, %cl
-	jne	.L407
+	jne	.L408
 	cmpw	%si, %r11w
-	jnb	.L428
-.L426:
+	jnb	.L429
+.L427:
 	leal	1(%r12), %eax
 	movl	%r11d, %r8d
 	movl	$1, %r9d
 	movzbl	%al, %eax
-	jmp	.L400
+	jmp	.L401
 	.p2align 4,,10
-.L404:
+.L405:
 	movzbl	(%rdi,%rax), %r10d
 	testb	%r10b, %r10b
-	jne	.L429
+	jne	.L430
 	addl	%r11d, %r8d
 	leaq	1(%rax), %r10
 	cmpw	%si, %r8w
-	jnb	.L408
+	jnb	.L409
 	movq	%r10, %rax
-.L400:
+.L401:
 	addl	$1, %r9d
 	cmpb	%al, %bl
 	movl	%eax, %ebp
-	ja	.L404
-.L398:
+	ja	.L405
+.L399:
 	cmpb	%bpl, %bl
-	jne	.L406
-.L405:
+	jne	.L407
+.L406:
 	movq	72+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L411
+	je	.L412
 	movq	72+QUARKTS(%rip), %rax
 	xorl	%r13d, %r13d
 	movl	84+QUARKTS(%rip), %ecx
 	call	*%rax
-	jmp	.L394
+	jmp	.L395
 	.p2align 4,,10
-.L407:
+.L408:
 	movzbl	%cl, %eax
 	addl	%ecx, %r12d
 	imull	%r8d, %eax
 	cltq
 	addq	%rax, %r13
 	cmpb	%r12b, %bl
-	jbe	.L430
+	jbe	.L431
 	movzbl	%r12b, %eax
 	leaq	(%rdi,%rax), %rdx
 	movzbl	(%rdx), %ecx
 	testb	%cl, %cl
-	jne	.L407
+	jne	.L408
 	cmpw	%si, %r11w
-	jb	.L426
-.L428:
+	jb	.L427
+.L429:
 	movl	$1, %r9d
 	.p2align 4,,10
-.L408:
+.L409:
 	testw	%r15w, %r15w
 	movb	%r9b, (%rdx)
-	je	.L401
+	je	.L402
 	addq	%r13, %rax
 	xorl	%edx, %edx
 	.p2align 4,,10
-.L402:
+.L403:
 	addl	$1, %edx
 	movzbl	%dl, %ecx
 	cmpw	%si, %cx
-	jb	.L402
+	jb	.L403
 	movb	$0, (%rax)
-.L401:
+.L402:
 	movq	72+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L394
+	je	.L395
 	movq	72+QUARKTS(%rip), %rax
 	movl	84+QUARKTS(%rip), %ecx
 	call	*%rax
-.L394:
+.L395:
 	movq	%r13, %rax
 	addq	$40, %rsp
 	popq	%rbx
@@ -1697,21 +1711,21 @@ qMemoryAlloc:
 	popq	%r15
 	ret
 	.p2align 4,,10
-.L429:
+.L430:
 	leal	(%r10,%rbp), %r12d
 	movzbl	%r12b, %r13d
 	imull	%r11d, %r13d
 	movslq	%r13d, %r13
 	addq	16(%r14), %r13
 	cmpb	%bpl, %bl
-	jne	.L406
-	jmp	.L405
-.L430:
+	jne	.L407
+	jmp	.L406
+.L431:
 	movl	%r12d, %ebp
-	jmp	.L398
-.L411:
+	jmp	.L399
+.L412:
 	xorl	%r13d, %r13d
-	jmp	.L394
+	jmp	.L395
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qMemoryFree
@@ -1728,38 +1742,38 @@ qMemoryFree:
 	testq	%rcx, %rcx
 	movq	%rcx, %rsi
 	movq	%rdx, %rbx
-	je	.L431
+	je	.L432
 	testq	%rdx, %rdx
-	je	.L431
+	je	.L432
 	movq	64+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L435
+	je	.L436
 	movq	64+QUARKTS(%rip), %rax
 	call	*%rax
 	movl	%eax, 84+QUARKTS(%rip)
-.L435:
+.L436:
 	movzbl	2(%rsi), %edx
 	movq	16(%rsi), %r8
 	testb	%dl, %dl
-	je	.L436
-	cmpq	%r8, %rbx
-	je	.L454
-	movzwl	(%rsi), %ecx
-	xorl	%eax, %eax
-	jmp	.L439
-	.p2align 4,,10
-.L440:
+	je	.L437
 	cmpq	%r8, %rbx
 	je	.L455
-.L439:
+	movzwl	(%rsi), %ecx
+	xorl	%eax, %eax
+	jmp	.L440
+	.p2align 4,,10
+.L441:
+	cmpq	%r8, %rbx
+	je	.L456
+.L440:
 	addl	$1, %eax
 	addq	%rcx, %r8
 	cmpb	%dl, %al
-	jne	.L440
-.L436:
+	jne	.L441
+.L437:
 	movq	72+QUARKTS(%rip), %rax
 	testq	%rax, %rax
-	je	.L431
+	je	.L432
 	movq	72+QUARKTS(%rip), %rax
 	movl	84+QUARKTS(%rip), %ecx
 	addq	$40, %rsp
@@ -1767,22 +1781,22 @@ qMemoryFree:
 	popq	%rsi
 	rex.W jmp	*%rax
 	.p2align 4,,10
-.L431:
+.L432:
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L455:
+.L456:
 	movzbl	%al, %eax
-.L437:
+.L438:
 	movq	8(%rsi), %rdx
 	movb	$0, (%rdx,%rax)
-	jmp	.L436
-	.p2align 4,,10
-.L454:
-	xorl	%eax, %eax
 	jmp	.L437
+	.p2align 4,,10
+.L455:
+	xorl	%eax, %eax
+	jmp	.L438
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qRBufferInit
@@ -1793,9 +1807,9 @@ qRBufferInit:
 	testq	%rcx, %rcx
 	movq	%rcx, %r10
 	movl	%r9d, %eax
-	je	.L456
+	je	.L457
 	testq	%rdx, %rdx
-	je	.L456
+	je	.L457
 	xorl	%ecx, %ecx
 	movq	%rdx, (%r10)
 	movzwl	%r9w, %edx
@@ -1805,27 +1819,27 @@ qRBufferInit:
 	movw	%r11w, 14(%r10)
 	movw	%r8w, 8(%r10)
 	testl	%edx, %ecx
-	jne	.L464
+	jne	.L465
 	movw	%ax, 10(%r10)
-.L456:
+.L457:
 	ret
 	.p2align 4,,10
-.L464:
+.L465:
 	subl	$1, %r9d
 	movl	$4, %edx
 	movl	$1, %ecx
-.L459:
+.L460:
 	movzwl	%r9w, %eax
 	sarl	%cl, %eax
 	addl	%ecx, %ecx
 	orl	%eax, %r9d
 	subl	$1, %edx
-	jne	.L459
+	jne	.L460
 	movzwl	%r9w, %eax
 	addl	$1, %eax
 	sarl	%eax
 	movw	%ax, 10(%r10)
-	jmp	.L456
+	jmp	.L457
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qRBufferEmpty
@@ -1835,12 +1849,12 @@ qRBufferEmpty:
 	.seh_endprologue
 	movl	$1, %eax
 	testq	%rcx, %rcx
-	je	.L465
+	je	.L466
 	movzwl	12(%rcx), %edx
 	movzwl	14(%rcx), %eax
 	cmpw	%ax, %dx
 	sete	%al
-.L465:
+.L466:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -1850,11 +1864,11 @@ qRBufferEmpty:
 qRBufferGetFront:
 	.seh_endprologue
 	testq	%rcx, %rcx
-	je	.L472
+	je	.L473
 	movzwl	12(%rcx), %edx
 	movzwl	14(%rcx), %eax
 	cmpw	%ax, %dx
-	je	.L472
+	je	.L473
 	movzwl	14(%rcx), %eax
 	movzwl	10(%rcx), %r9d
 	xorl	%edx, %edx
@@ -1867,7 +1881,7 @@ qRBufferGetFront:
 	addq	(%rcx), %rax
 	ret
 	.p2align 4,,10
-.L472:
+.L473:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -1885,11 +1899,11 @@ qRBufferPopFront:
 	movq	%rcx, %rbx
 	movq	%rdx, %rcx
 	testq	%rbx, %rbx
-	je	.L473
+	je	.L474
 	movzwl	12(%rbx), %r8d
 	movzwl	14(%rbx), %edx
 	cmpw	%dx, %r8w
-	je	.L473
+	je	.L474
 	movzwl	14(%rbx), %eax
 	movzwl	10(%rbx), %r10d
 	xorl	%edx, %edx
@@ -1905,7 +1919,7 @@ qRBufferPopFront:
 	addl	$1, %eax
 	movw	%ax, 14(%rbx)
 	movl	$1, %eax
-.L473:
+.L474:
 	addq	$32, %rsp
 	popq	%rbx
 	ret
@@ -1918,16 +1932,16 @@ qRBufferPush:
 	.seh_endprologue
 	testq	%rdx, %rdx
 	movq	%rdx, %r10
-	je	.L482
+	je	.L483
 	testq	%rcx, %rcx
-	je	.L482
+	je	.L483
 	movzwl	12(%rcx), %edx
 	movzwl	14(%rcx), %eax
 	movzwl	10(%rcx), %r8d
 	subl	%eax, %edx
 	xorl	%eax, %eax
 	cmpw	%r8w, %dx
-	je	.L478
+	je	.L479
 	movzwl	12(%rcx), %eax
 	movzwl	10(%rcx), %r9d
 	xorl	%edx, %edx
@@ -1940,10 +1954,10 @@ qRBufferPush:
 	imull	%r9d, %edx
 	testw	%ax, %ax
 	movslq	%edx, %r9
-	je	.L480
+	je	.L481
 	xorl	%eax, %eax
 	.p2align 4,,10
-.L481:
+.L482:
 	movzwl	%ax, %r8d
 	addl	$1, %eax
 	leaq	(%r9,%r8), %rdx
@@ -1952,16 +1966,16 @@ qRBufferPush:
 	movb	%r8b, (%rdx)
 	movzwl	8(%rcx), %edx
 	cmpw	%ax, %dx
-	ja	.L481
-.L480:
+	ja	.L482
+.L481:
 	movzwl	12(%rcx), %eax
 	addl	$1, %eax
 	movw	%ax, 12(%rcx)
 	movl	$1, %eax
-.L478:
+.L479:
 	ret
 	.p2align 4,,10
-.L482:
+.L483:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -1972,10 +1986,10 @@ qRBufferPush:
 qSwapBytes:
 	.seh_endprologue
 	subw	$1, %dx
-	je	.L494
+	je	.L495
 	xorl	%r9d, %r9d
 	.p2align 4,,10
-.L496:
+.L497:
 	movzwl	%r9w, %r8d
 	movzwl	%dx, %eax
 	addl	$1, %r9d
@@ -1987,8 +2001,8 @@ qSwapBytes:
 	cmpw	%dx, %r9w
 	movb	%r11b, (%r8)
 	movb	%r10b, (%rax)
-	jb	.L496
-.L494:
+	jb	.L497
+.L495:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2026,10 +2040,10 @@ qOutputRaw:
 	movq	%rdx, %rsi
 	testq	%rdi, %rdi
 	movq	%r8, %r12
-	je	.L502
+	je	.L503
 	xorl	%ebx, %ebx
 	.p2align 4,,10
-.L505:
+.L506:
 	leaq	(%rsi,%rbx), %rcx
 	testb	%r13b, %r13b
 	movsbl	(%r12,%rbx), %edx
@@ -2037,8 +2051,8 @@ qOutputRaw:
 	addq	$1, %rbx
 	call	*%rbp
 	cmpq	%rdi, %rbx
-	jne	.L505
-.L502:
+	jne	.L506
+.L503:
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
@@ -2074,10 +2088,10 @@ qInputRaw:
 	movq	%rdx, %rsi
 	testq	%rdi, %rdi
 	movq	%r8, %r12
-	je	.L511
+	je	.L512
 	xorl	%ebx, %ebx
 	.p2align 4,,10
-.L514:
+.L515:
 	leaq	(%rsi,%rbx), %rcx
 	testb	%r13b, %r13b
 	cmove	%rsi, %rcx
@@ -2085,8 +2099,8 @@ qInputRaw:
 	movb	%al, (%r12,%rbx)
 	addq	$1, %rbx
 	cmpq	%rdi, %rbx
-	jne	.L514
-.L511:
+	jne	.L515
+.L512:
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
@@ -2120,22 +2134,22 @@ qOutputString:
 	movq	%r8, %rbx
 	movl	%r9d, %r12d
 	testb	%dl, %dl
-	je	.L520
+	je	.L521
 	xorl	%edi, %edi
 	.p2align 4,,10
-.L523:
+.L524:
 	addq	$1, %rbx
 	testb	%r12b, %r12b
 	movq	%rsi, %rcx
-	je	.L522
+	je	.L523
 	leaq	(%rsi,%rdi), %rcx
 	addq	$1, %rdi
-.L522:
+.L523:
 	call	*%rbp
 	movsbl	(%rbx), %edx
 	testb	%dl, %dl
-	jne	.L523
-.L520:
+	jne	.L524
+.L521:
 	addq	$32, %rsp
 	popq	%rbx
 	popq	%rsi
@@ -2163,13 +2177,13 @@ qPrintXData:
 	testw	%r9w, %r9w
 	movq	%rcx, %rbx
 	movq	%rdx, %rsi
-	je	.L531
+	je	.L532
 	movzwl	%r9w, %r9d
 	movq	%r8, %rbp
 	leal	-1(%r9), %eax
 	leaq	1(%r8,%rax), %rdi
 	.p2align 4,,10
-.L534:
+.L535:
 	movzbl	0(%rbp), %eax
 	movq	%rsi, %rcx
 	shrb	$4, %al
@@ -2193,8 +2207,8 @@ qPrintXData:
 	movq	%rsi, %rcx
 	call	*%rbx
 	cmpq	%rbp, %rdi
-	jne	.L534
-.L531:
+	jne	.L535
+.L532:
 	movq	%rsi, %rcx
 	movl	$13, %edx
 	call	*%rbx
@@ -2219,14 +2233,14 @@ qU32toX:
 	movsbl	%r8b, %r8d
 	subl	$1, %r8d
 	movb	$0, (%rax,%rdx)
-	js	.L537
+	js	.L538
 	movslq	%r8d, %rdx
 	movl	%r8d, %r8d
 	leaq	-1(%rax,%rdx), %r11
 	leaq	(%rax,%rdx), %r10
 	subq	%r8, %r11
 	.p2align 4,,10
-.L539:
+.L540:
 	movl	%ecx, %r9d
 	andl	$15, %r9d
 	leal	48(%r9), %r8d
@@ -2237,8 +2251,8 @@ qU32toX:
 	shrl	$4, %ecx
 	movb	%r8b, 1(%r10)
 	cmpq	%r11, %r10
-	jne	.L539
-.L537:
+	jne	.L540
+.L538:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2264,13 +2278,13 @@ qXtoU32:
 	xorl	%edi, %edi
 	xorl	%ebp, %ebp
 	movq	%rcx, %rsi
-.L542:
+.L543:
 	cmpb	$7, %dil
 	movzbl	(%rsi), %ebx
-	ja	.L541
-.L554:
+	ja	.L542
+.L555:
 	testb	%bl, %bl
-	je	.L541
+	je	.L542
 	call	__locale_ctype_ptr
 	movsbl	%bl, %ecx
 	addq	$1, %rsi
@@ -2279,25 +2293,25 @@ qXtoU32:
 	movl	%eax, %ebx
 	call	__locale_ctype_ptr
 	testb	$68, 1(%rax,%r13)
-	je	.L543
+	je	.L544
 	leal	-48(%rbx), %edx
 	addl	$1, %edi
 	cmpb	$9, %dl
-	jbe	.L544
+	jbe	.L545
 	leal	-65(%rbx), %eax
 	movl	%r13d, %edx
 	subl	$55, %ebx
 	cmpb	$6, %al
 	cmovb	%ebx, %edx
-.L544:
+.L545:
 	movl	%edx, %ebx
 	sall	$4, %ebp
 	andl	$15, %ebx
 	orl	%ebx, %ebp
 	cmpb	$7, %dil
 	movzbl	(%rsi), %ebx
-	jbe	.L554
-.L541:
+	jbe	.L555
+.L542:
 	movl	%ebp, %eax
 	addq	$40, %rsp
 	popq	%rbx
@@ -2308,10 +2322,10 @@ qXtoU32:
 	popq	%r13
 	ret
 	.p2align 4,,10
-.L543:
+.L544:
 	call	__locale_ctype_ptr
 	testb	$8, 1(%rax,%r13)
-	jne	.L542
+	jne	.L543
 	movl	%ebp, %eax
 	addq	$40, %rsp
 	popq	%rbx
@@ -2347,25 +2361,25 @@ qAtoF:
 	xorl	%esi, %esi
 	movq	%rcx, %rbx
 	.p2align 4,,10
-.L556:
+.L557:
 	call	__locale_ctype_ptr
 	movsbq	(%rbx,%rsi), %rcx
 	movl	%esi, %edi
 	addq	$1, %rsi
 	testb	$8, 1(%rax,%rcx)
-	jne	.L556
+	jne	.L557
 	cmpb	$45, %cl
-	je	.L564
+	je	.L565
 	cmpb	$43, %cl
 	movl	$1, %esi
-	je	.L557
-.L558:
+	je	.L558
+.L559:
 	movslq	%edi, %rdi
 	pxor	%xmm6, %xmm6
 	movsd	.LC5(%rip), %xmm7
-	jmp	.L559
+	jmp	.L560
 	.p2align 4,,10
-.L560:
+.L561:
 	pxor	%xmm0, %xmm0
 	subl	$48, %edx
 	movapd	%xmm6, %xmm1
@@ -2373,14 +2387,14 @@ qAtoF:
 	mulsd	%xmm7, %xmm1
 	movapd	%xmm0, %xmm6
 	addsd	%xmm1, %xmm6
-.L559:
+.L560:
 	call	__locale_ctype_ptr
 	movsbl	(%rbx,%rdi), %edx
 	movl	%edi, %ebp
 	addq	$1, %rdi
 	movsbq	%dl, %rcx
 	testb	$4, 1(%rax,%rcx)
-	jne	.L560
+	jne	.L561
 	xorl	%eax, %eax
 	cmpb	$46, %dl
 	sete	%al
@@ -2389,9 +2403,9 @@ qAtoF:
 	movsd	.LC5(%rip), %xmm8
 	movslq	%ebp, %rbp
 	addq	%rbp, %rbx
-	jmp	.L562
+	jmp	.L563
 	.p2align 4,,10
-.L563:
+.L564:
 	pxor	%xmm1, %xmm1
 	subl	$48, %edx
 	movapd	%xmm6, %xmm0
@@ -2400,13 +2414,13 @@ qAtoF:
 	mulsd	%xmm8, %xmm0
 	addsd	%xmm0, %xmm1
 	movapd	%xmm1, %xmm6
-.L562:
+.L563:
 	call	__locale_ctype_ptr
 	movsbl	(%rbx), %edx
 	addq	$1, %rbx
 	movsbq	%dl, %rcx
 	testb	$4, 1(%rax,%rcx)
-	jne	.L563
+	jne	.L564
 	pxor	%xmm0, %xmm0
 	movaps	64(%rsp), %xmm8
 	cvtsi2sd	%esi, %xmm0
@@ -2421,11 +2435,11 @@ qAtoF:
 	popq	%rbp
 	ret
 	.p2align 4,,10
-.L564:
+.L565:
 	movl	$-1, %esi
-.L557:
+.L558:
 	addl	$1, %edi
-	jmp	.L558
+	jmp	.L559
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qAtoI
@@ -2438,62 +2452,62 @@ qAtoI:
 	.seh_stackalloc	32
 	.seh_endprologue
 	movq	%rcx, %rbx
-	jmp	.L568
+	jmp	.L569
 	.p2align 4,,10
-.L569:
+.L570:
 	addq	$1, %rbx
-.L568:
+.L569:
 	call	__locale_ctype_ptr
 	movsbq	(%rbx), %rcx
 	testb	$8, 1(%rax,%rcx)
 	movq	%rcx, %rdx
-	jne	.L569
+	jne	.L570
 	cmpb	$45, %cl
-	je	.L583
+	je	.L584
 	cmpb	$43, %cl
 	movl	$1, %r8d
-	je	.L584
-.L571:
+	je	.L585
+.L572:
 	testb	%dl, %dl
-	je	.L579
+	je	.L580
 	leal	-48(%rdx), %eax
 	cmpb	$9, %al
 	movl	$0, %eax
-	jbe	.L572
-	jmp	.L567
+	jbe	.L573
+	jmp	.L568
 	.p2align 4,,10
-.L574:
+.L575:
 	leal	-48(%rdx), %ecx
 	cmpb	$9, %cl
-	ja	.L582
-.L572:
+	ja	.L583
+.L573:
 	leal	(%rax,%rax,4), %ecx
 	addq	$1, %rbx
 	leal	-48(%rdx,%rcx,2), %eax
 	movsbl	(%rbx), %edx
 	testb	%dl, %dl
-	jne	.L574
-.L582:
+	jne	.L575
+.L583:
 	imull	%r8d, %eax
-.L567:
+.L568:
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L584:
+.L585:
 	movsbl	1(%rbx), %edx
 	addq	$1, %rbx
-	jmp	.L571
+	jmp	.L572
 	.p2align 4,,10
-.L583:
+.L584:
 	movsbl	1(%rbx), %edx
 	movl	$-1, %r8d
 	addq	$1, %rbx
-	jmp	.L571
+	jmp	.L572
 	.p2align 4,,10
-.L579:
+.L580:
 	xorl	%eax, %eax
-	jmp	.L567
+	jmp	.L568
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qUtoA
@@ -2507,24 +2521,24 @@ qUtoA:
 	.seh_endprologue
 	testq	%rdx, %rdx
 	movq	%rdx, %rbx
-	je	.L586
+	je	.L587
 	testl	%ecx, %ecx
-	jne	.L592
+	jne	.L593
 	movb	$48, (%rdx)
 	movl	$1, %eax
-.L588:
+.L589:
 	movb	$0, (%rbx,%rax)
-.L586:
+.L587:
 	movq	%rbx, %rax
 	addq	$32, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L592:
+.L593:
 	movzbl	%r8b, %r8d
 	call	__q_revuta.part.5
 	movzbl	%al, %eax
-	jmp	.L588
+	jmp	.L589
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qItoA
@@ -2540,42 +2554,42 @@ qItoA:
 	.seh_endprologue
 	testq	%rdx, %rdx
 	movq	%rdx, %rbx
-	je	.L594
+	je	.L595
 	testl	%ecx, %ecx
-	js	.L604
-	jne	.L605
+	js	.L605
+	jne	.L606
 	movb	$48, (%rdx)
 	movl	$1, %eax
-.L599:
+.L600:
 	movb	$0, (%rbx,%rax)
-.L594:
+.L595:
 	movq	%rbx, %rax
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L604:
+.L605:
 	xorl	%esi, %esi
 	cmpb	$10, %r8b
-	je	.L606
-.L596:
-	negl	%ecx
+	je	.L607
 .L597:
+	negl	%ecx
+.L598:
 	movzbl	%r8b, %r8d
 	call	__q_revuta.part.5
 	addl	%esi, %eax
 	movzbl	%al, %eax
-	jmp	.L599
+	jmp	.L600
 	.p2align 4,,10
-.L606:
+.L607:
 	movb	$45, (%rdx)
 	movl	$1, %esi
 	leaq	1(%rdx), %rdx
-	jmp	.L596
-.L605:
-	xorl	%esi, %esi
 	jmp	.L597
+.L606:
+	xorl	%esi, %esi
+	jmp	.L598
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qBtoA
@@ -2585,18 +2599,78 @@ qBtoA:
 	.seh_endprologue
 	testq	%rdx, %rdx
 	movq	%rdx, %rax
-	je	.L608
+	je	.L609
 	testb	%cl, %cl
-	jne	.L613
+	jne	.L614
 	movl	$1936482662, (%rdx)
 	movl	$101, %edx
 	movw	%dx, 4(%rax)
-.L608:
+.L609:
 	ret
 	.p2align 4,,10
-.L613:
+.L614:
 	movl	$1702195828, (%rdx)
 	movb	$0, 4(%rdx)
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	qQBtoA
+	.def	qQBtoA;	.scl	2;	.type	32;	.endef
+	.seh_proc	qQBtoA
+qQBtoA:
+	.seh_endprologue
+	movq	%rdx, %rax
+	movzbl	%cl, %edx
+	testq	%rax, %rax
+	je	.L616
+	cmpb	$4, %cl
+	ja	.L617
+	leaq	.L619(%rip), %rcx
+	movslq	(%rcx,%rdx,4), %rdx
+	addq	%rcx, %rdx
+	jmp	*%rdx
+	.section .rdata,"dr"
+	.align 4
+.L619:
+	.long	.L618-.L619
+	.long	.L620-.L619
+	.long	.L621-.L619
+	.long	.L622-.L619
+	.long	.L623-.L619
+	.text
+	.p2align 4,,10
+.L620:
+	movl	$1702195828, (%rax)
+	movb	$0, 4(%rax)
+.L616:
+	ret
+	.p2align 4,,10
+.L622:
+	movl	$26478, %edx
+	movl	$1769171314, (%rax)
+	movb	$0, 6(%rax)
+	movw	%dx, 4(%rax)
+	ret
+	.p2align 4,,10
+.L623:
+	movabsq	$29113321670861158, %rcx
+	movq	%rcx, (%rax)
+	ret
+	.p2align 4,,10
+.L618:
+	movl	$101, %ecx
+	movl	$1936482662, (%rax)
+	movw	%cx, 4(%rax)
+	ret
+	.p2align 4,,10
+.L621:
+	movabsq	$32780218601924980, %rcx
+	movq	%rcx, (%rax)
+	ret
+	.p2align 4,,10
+.L617:
+	movabsq	$31093567915781749, %rcx
+	movq	%rcx, (%rax)
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2610,10 +2684,10 @@ qIsNan:
 	movd	%xmm0, %edx
 	andl	$2139095040, %ecx
 	cmpl	$2139095040, %ecx
-	je	.L617
+	je	.L630
 	ret
 	.p2align 4,,10
-.L617:
+.L630:
 	andl	$8388607, %edx
 	setne	%al
 	ret
@@ -2649,20 +2723,20 @@ qFtoA:
 	testq	%rdx, %rdx
 	movq	%rdx, %rbx
 	movl	%r8d, %esi
-	je	.L636
+	je	.L649
 	pxor	%xmm1, %xmm1
 	ucomiss	%xmm1, %xmm0
-	jp	.L621
-	je	.L641
-.L621:
+	jp	.L634
+	je	.L654
+.L634:
 	movd	%xmm0, %edx
 	movd	%xmm0, %eax
 	andl	$2147483647, %edx
 	cmpl	$2139095040, %edx
-	jne	.L642
+	jne	.L655
 	movl	$1718511915, (%rbx)
 	movb	$0, 4(%rbx)
-.L636:
+.L649:
 	movq	%rbx, %rax
 	addq	$40, %rsp
 	popq	%rbx
@@ -2671,7 +2745,7 @@ qFtoA:
 	popq	%rbp
 	ret
 	.p2align 4,,10
-.L641:
+.L654:
 	movq	%rbx, %rax
 	movl	$3157552, (%rdx)
 	addq	$40, %rsp
@@ -2681,28 +2755,28 @@ qFtoA:
 	popq	%rbp
 	ret
 	.p2align 4,,10
-.L642:
+.L655:
 	movd	%xmm0, %edx
 	andl	$2139095040, %edx
 	cmpl	$2139095040, %edx
-	je	.L643
-.L625:
+	je	.L656
+.L638:
 	ucomiss	%xmm0, %xmm1
-	ja	.L633
+	ja	.L646
 	movq	%rbx, %rdx
 	xorl	%edi, %edi
-.L634:
+.L647:
 	cvttss2siq	%xmm0, %rbp
 	testl	%ebp, %ebp
-	jne	.L644
+	jne	.L657
 	movb	$48, (%rdx)
 	movl	$1, %eax
-.L628:
+.L641:
 	leal	(%rdi,%rax), %ecx
 	movzbl	%cl, %eax
 	addq	%rbx, %rax
 	testb	%sil, %sil
-	je	.L629
+	je	.L642
 	pxor	%xmm1, %xmm1
 	movl	%ebp, %ebp
 	movb	$46, (%rax)
@@ -2716,7 +2790,7 @@ qFtoA:
 	movl	%r10d, %edx
 	subss	%xmm1, %xmm0
 	.p2align 4,,10
-.L632:
+.L645:
 	mulss	%xmm2, %xmm0
 	movzbl	%dl, %r8d
 	addl	$1, %edx
@@ -2728,11 +2802,11 @@ qFtoA:
 	cvtsi2ss	%eax, %xmm1
 	movb	%r9b, (%rbx,%r8)
 	subss	%xmm1, %xmm0
-	jne	.L632
+	jne	.L645
 	leal	(%r10,%rsi), %eax
 	movzbl	%al, %eax
 	addq	%rbx, %rax
-.L629:
+.L642:
 	movb	$0, (%rax)
 	movq	%rbx, %rax
 	addq	$40, %rsp
@@ -2742,24 +2816,24 @@ qFtoA:
 	popq	%rbp
 	ret
 	.p2align 4,,10
-.L643:
+.L656:
 	testl	$8388607, %eax
-	je	.L625
+	je	.L638
 	movl	$7233902, (%rbx)
-	jmp	.L636
+	jmp	.L649
 	.p2align 4,,10
-.L633:
+.L646:
 	xorps	.LC6(%rip), %xmm0
 	leaq	1(%rbx), %rdx
 	movb	$45, (%rbx)
 	movl	$1, %edi
-	jmp	.L634
+	jmp	.L647
 	.p2align 4,,10
-.L644:
+.L657:
 	movl	$10, %r8d
 	movl	%ebp, %ecx
 	call	__q_revuta.part.5
-	jmp	.L628
+	jmp	.L641
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qISR_ByteBufferInit
@@ -2768,9 +2842,9 @@ qFtoA:
 qISR_ByteBufferInit:
 	.seh_endprologue
 	testq	%rdx, %rdx
-	je	.L647
+	je	.L660
 	cmpw	$1, %r8w
-	jbe	.L647
+	jbe	.L660
 	movq	40(%rsp), %rax
 	subl	$1, %r8d
 	movq	%rax, 16(%rcx)
@@ -2784,7 +2858,7 @@ qISR_ByteBufferInit:
 	movl	$1, %eax
 	ret
 	.p2align 4,,10
-.L647:
+.L660:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -2804,23 +2878,23 @@ qISR_ByteBufferFill:
 	movq	%rcx, %rbx
 	movl	%edx, %esi
 	testb	%al, %al
-	jne	.L654
+	jne	.L667
 	movq	16(%rcx), %rax
 	testq	%rax, %rax
-	je	.L655
+	je	.L668
 	movq	16(%rcx), %rax
 	movsbl	%dl, %ecx
 	call	*%rax
 	testb	%al, %al
-	je	.L654
-.L655:
+	je	.L667
+.L668:
 	movq	24(%rbx), %rax
 	testq	%rax, %rax
-	je	.L660
+	je	.L673
 	movq	24(%rbx), %rax
 	movsbl	%sil, %ecx
 	call	*%rax
-.L653:
+.L666:
 	movq	(%rbx), %rcx
 	movzwl	8(%rbx), %edx
 	leal	1(%rdx), %r8d
@@ -2834,21 +2908,21 @@ qISR_ByteBufferFill:
 	movzwl	8(%rbx), %edx
 	movzwl	34(%rbx), %eax
 	cmpw	%ax, %dx
-	jb	.L656
+	jb	.L669
 	xorl	%edx, %edx
 	movw	%dx, 8(%rbx)
-.L656:
+.L669:
 	movzbl	32(%rbx), %eax
 	cmpb	%sil, %al
-	je	.L661
-.L654:
+	je	.L674
+.L667:
 	xorl	%eax, %eax
 	addq	$40, %rsp
 	popq	%rbx
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L661:
+.L674:
 	xorl	%eax, %eax
 	movb	$1, 10(%rbx)
 	movw	%ax, 8(%rbx)
@@ -2858,9 +2932,9 @@ qISR_ByteBufferFill:
 	popq	%rsi
 	ret
 	.p2align 4,,10
-.L660:
+.L673:
 	movl	%esi, %eax
-	jmp	.L653
+	jmp	.L666
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qISR_ByteBufferGet
@@ -2877,13 +2951,13 @@ qISR_ByteBufferGet:
 	movq	%rdx, %rcx
 	movzbl	10(%rbx), %edx
 	testb	%dl, %dl
-	je	.L662
+	je	.L675
 	movzwl	8(%rbx), %r8d
 	movq	(%rbx), %rdx
 	call	memcpy
 	movb	$0, 10(%rbx)
 	movl	$1, %eax
-.L662:
+.L675:
 	addq	$32, %rsp
 	popq	%rbx
 	ret
@@ -2896,11 +2970,11 @@ qBSBuffer_Count:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L666
+	je	.L679
 	movzwl	(%rcx), %eax
 	movzwl	2(%rcx), %edx
 	subl	%edx, %eax
-.L666:
+.L679:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2911,13 +2985,13 @@ qBSBuffer_IsFull:
 	.seh_endprologue
 	movl	$1, %eax
 	testq	%rcx, %rcx
-	je	.L670
+	je	.L683
 	movzwl	(%rcx), %eax
 	movzwl	2(%rcx), %edx
 	subl	%edx, %eax
 	cmpw	%ax, 16(%rcx)
 	sete	%al
-.L670:
+.L683:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2928,12 +3002,12 @@ qBSBuffer_Empty:
 	.seh_endprologue
 	movl	$1, %eax
 	testq	%rcx, %rcx
-	je	.L674
+	je	.L687
 	movzwl	(%rcx), %edx
 	movzwl	2(%rcx), %eax
 	cmpw	%ax, %dx
 	sete	%al
-.L674:
+.L687:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2944,14 +3018,14 @@ qBSBuffer_Peek:
 	.seh_endprologue
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
-	je	.L678
+	je	.L691
 	movzwl	2(%rcx), %eax
 	xorl	%edx, %edx
 	divw	16(%rcx)
 	movzwl	%dx, %edx
 	addq	8(%rcx), %rdx
 	movzbl	(%rdx), %eax
-.L678:
+.L691:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2963,11 +3037,11 @@ qBSBuffer_Get:
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
 	movq	%rdx, %r8
-	je	.L682
+	je	.L695
 	movzwl	(%rcx), %r9d
 	movzwl	2(%rcx), %edx
 	cmpw	%dx, %r9w
-	je	.L682
+	je	.L695
 	movzwl	2(%rcx), %eax
 	xorl	%edx, %edx
 	divw	16(%rcx)
@@ -2979,7 +3053,7 @@ qBSBuffer_Get:
 	addl	$1, %eax
 	movw	%ax, 2(%rcx)
 	movl	$1, %eax
-.L682:
+.L695:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -2989,26 +3063,26 @@ qBSBuffer_Get:
 qBSBuffer_Read:
 	.seh_endprologue
 	testw	%r8w, %r8w
-	je	.L690
+	je	.L703
 	testq	%rcx, %rcx
-	je	.L690
+	je	.L703
 	movzwl	(%rcx), %r9d
 	movzwl	2(%rcx), %eax
 	cmpw	%ax, %r9w
-	je	.L690
+	je	.L703
 	subl	$1, %r8d
 	movq	%rdx, %r9
 	movzwl	%r8w, %r8d
 	addq	%rdx, %r8
-	jmp	.L691
+	jmp	.L704
 	.p2align 4,,10
-.L692:
+.L705:
 	movzwl	(%rcx), %edx
 	movzwl	2(%rcx), %eax
 	addq	$1, %r9
 	cmpw	%ax, %dx
-	je	.L690
-.L691:
+	je	.L703
+.L704:
 	movzwl	2(%rcx), %eax
 	xorl	%edx, %edx
 	divw	16(%rcx)
@@ -3020,11 +3094,11 @@ qBSBuffer_Read:
 	addl	$1, %eax
 	cmpq	%r8, %r9
 	movw	%ax, 2(%rcx)
-	jne	.L692
+	jne	.L705
 	movl	$1, %eax
 	ret
 	.p2align 4,,10
-.L690:
+.L703:
 	xorl	%eax, %eax
 	ret
 	.seh_endproc
@@ -3037,13 +3111,13 @@ qBSBuffer_Put:
 	xorl	%eax, %eax
 	testq	%rcx, %rcx
 	movl	%edx, %r9d
-	je	.L696
+	je	.L709
 	movzwl	(%rcx), %edx
 	movzwl	2(%rcx), %r10d
 	movzwl	16(%rcx), %r8d
 	subl	%r10d, %edx
 	cmpw	%r8w, %dx
-	je	.L696
+	je	.L709
 	movzwl	(%rcx), %eax
 	xorl	%edx, %edx
 	divw	%r8w
@@ -3054,7 +3128,7 @@ qBSBuffer_Put:
 	addl	$1, %eax
 	movw	%ax, (%rcx)
 	movl	$1, %eax
-.L696:
+.L709:
 	ret
 	.seh_endproc
 	.p2align 4,,15
@@ -3066,7 +3140,7 @@ qBSBuffer_Init:
 	testq	%rcx, %rcx
 	movq	%rcx, %r9
 	movl	%r8d, %eax
-	je	.L701
+	je	.L714
 	xorl	%ecx, %ecx
 	movq	%rdx, 8(%r9)
 	movzwl	%r8w, %edx
@@ -3075,27 +3149,27 @@ qBSBuffer_Init:
 	xorl	%r10d, %r10d
 	movw	%r10w, 2(%r9)
 	testl	%edx, %ecx
-	jne	.L712
+	jne	.L725
 	movw	%ax, 16(%r9)
-.L701:
+.L714:
 	ret
 	.p2align 4,,10
-.L712:
+.L725:
 	subl	$1, %r8d
 	movl	$4, %edx
 	movl	$1, %ecx
-.L704:
+.L717:
 	movzwl	%r8w, %eax
 	sarl	%cl, %eax
 	addl	%ecx, %ecx
 	orl	%eax, %r8d
 	subl	$1, %edx
-	jne	.L704
+	jne	.L717
 	movzwl	%r8w, %eax
 	addl	$1, %eax
 	sarl	%eax
 	movw	%ax, 16(%r9)
-	jmp	.L701
+	jmp	.L714
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qResponseInitialize
@@ -3125,18 +3199,18 @@ qResponseReceivedWithTimeout:
 	movzbl	12(%rcx), %ecx
 	movl	%r8d, %eax
 	testb	%cl, %cl
-	jne	.L715
-	cmpq	$0, (%rbx)
-	je	.L727
-.L715:
-	testq	%r9, %r9
-	je	.L720
-	cmpb	$0, (%r9)
 	jne	.L728
-.L721:
+	cmpq	$0, (%rbx)
+	je	.L740
+.L728:
+	testq	%r9, %r9
+	je	.L733
+	cmpb	$0, (%r9)
+	jne	.L741
+.L734:
 	movzbl	12(%rbx), %eax
 	testb	%al, %al
-	je	.L726
+	je	.L739
 	xorl	%eax, %eax
 	xorl	%edx, %edx
 	movq	$0, (%rbx)
@@ -3150,30 +3224,30 @@ qResponseReceivedWithTimeout:
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L727:
+.L740:
 	testw	%r8w, %r8w
-	jne	.L716
+	jne	.L729
 	movq	%rdx, %rcx
 	movq	%r9, 40(%rsp)
 	movq	%rdx, 32(%rsp)
 	call	strlen
 	movq	40(%rsp), %r9
 	movq	32(%rsp), %rdx
-.L716:
+.L729:
 	movw	%ax, 8(%rbx)
 	xorl	%eax, %eax
 	testq	%r9, %r9
 	movw	%ax, 10(%rbx)
 	movq	%rdx, (%rbx)
 	movb	$0, 12(%rbx)
-	je	.L726
+	je	.L739
 	pxor	%xmm0, %xmm0
 	movss	48+QUARKTS(%rip), %xmm1
 	cvtss2sd	%xmm1, %xmm1
 	cvtss2sd	96(%rsp), %xmm0
 	mulsd	.LC2(%rip), %xmm0
 	ucomisd	%xmm0, %xmm1
-	ja	.L726
+	ja	.L739
 	movss	48+QUARKTS(%rip), %xmm0
 	movss	96(%rsp), %xmm2
 	divss	%xmm0, %xmm2
@@ -3183,17 +3257,17 @@ qResponseReceivedWithTimeout:
 	movb	$1, (%r9)
 	movl	%eax, 4(%r9)
 	.p2align 4,,10
-.L726:
+.L739:
 	xorl	%eax, %eax
-.L714:
+.L727:
 	addq	$48, %rsp
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L720:
+.L733:
 	movzbl	12(%rbx), %eax
 	testb	%al, %al
-	je	.L726
+	je	.L739
 	xorl	%ecx, %ecx
 	xorl	%r8d, %r8d
 	movl	$1, %eax
@@ -3205,11 +3279,11 @@ qResponseReceivedWithTimeout:
 	popq	%rbx
 	ret
 	.p2align 4,,10
-.L728:
+.L741:
 	movl	_qSysTick_Epochs_(%rip), %eax
 	subl	4(%r9), %eax
 	cmpl	8(%r9), %eax
-	jb	.L721
+	jb	.L734
 	xorl	%r10d, %r10d
 	xorl	%r11d, %r11d
 	movq	$0, (%rbx)
@@ -3219,7 +3293,7 @@ qResponseReceivedWithTimeout:
 	movb	$0, 12(%rbx)
 	movb	$0, (%r9)
 	movl	$0, 4(%r9)
-	jmp	.L714
+	jmp	.L727
 	.seh_endproc
 	.p2align 4,,15
 	.globl	qResponseReceived
@@ -3245,27 +3319,27 @@ qResponseISRHandler:
 	movzbl	12(%rcx), %r8d
 	xorl	%eax, %eax
 	cmpb	$1, %r8b
-	je	.L730
+	je	.L743
 	movq	(%rcx), %r8
 	testq	%r8, %r8
-	je	.L730
+	je	.L743
 	movzwl	10(%rcx), %eax
 	cmpb	%dl, (%r8,%rax)
-	je	.L739
-.L733:
+	je	.L752
+.L746:
 	movzbl	12(%rcx), %eax
-.L730:
+.L743:
 	ret
 	.p2align 4,,10
-.L739:
+.L752:
 	movzwl	10(%rcx), %eax
 	addl	$1, %eax
 	movw	%ax, 10(%rcx)
 	movzwl	10(%rcx), %eax
 	cmpw	8(%rcx), %ax
-	jne	.L733
+	jne	.L746
 	movb	$1, 12(%rcx)
-	jmp	.L733
+	jmp	.L746
 	.seh_endproc
 	.p2align 4,,15
 	.globl	__qtrace_func
@@ -3297,72 +3371,72 @@ __qtrace_func:
 	movq	%r9, %rdi
 	movl	136(%rsp), %r12d
 	testq	%rbx, %rbx
-	je	.L740
+	je	.L753
 	movsbl	(%rcx), %edx
 	testb	%dl, %dl
-	je	.L742
+	je	.L755
 	.p2align 4,,10
-.L743:
+.L756:
 	addq	$1, %r14
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%r14), %edx
 	testb	%dl, %dl
-	jne	.L743
+	jne	.L756
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L742:
+.L755:
 	testq	%r13, %r13
-	je	.L744
+	je	.L757
 	movl	$64, %edx
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	0(%r13), %edx
 	movq	__qDebugOutputFcn(%rip), %rbx
 	testb	%dl, %dl
-	je	.L745
+	je	.L758
 	.p2align 4,,10
-.L746:
+.L759:
 	addq	$1, %r13
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	0(%r13), %edx
 	testb	%dl, %dl
-	jne	.L746
+	jne	.L759
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L745:
+.L758:
 	movl	$32, %edx
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L744:
+.L757:
 	movsbl	(%rsi), %edx
 	testb	%dl, %dl
-	je	.L747
+	je	.L760
 	.p2align 4,,10
-.L748:
+.L761:
 	addq	$1, %rsi
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%rsi), %edx
 	testb	%dl, %dl
-	jne	.L748
+	jne	.L761
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L747:
+.L760:
 	testq	%rdi, %rdi
-	je	.L771
+	je	.L784
 	movsbl	(%rdi), %edx
 	testb	%dl, %dl
-	je	.L750
+	je	.L763
 	.p2align 4,,10
-.L751:
+.L764:
 	addq	$1, %rdi
 	xorl	%ecx, %ecx
 	call	*%rbx
 	movsbl	(%rdi), %edx
 	testb	%dl, %dl
-	jne	.L751
+	jne	.L764
 	movq	__qDebugOutputFcn(%rip), %rbx
-.L750:
+.L763:
 	xorl	%ecx, %ecx
 	movl	$13, %edx
 	call	*%rbx
@@ -3378,7 +3452,7 @@ __qtrace_func:
 	popq	%r14
 	rex.W jmp	*__qDebugOutputFcn(%rip)
 	.p2align 4,,10
-.L740:
+.L753:
 	addq	$32, %rsp
 	popq	%rbx
 	popq	%rsi
@@ -3389,7 +3463,7 @@ __qtrace_func:
 	popq	%r14
 	ret
 	.p2align 4,,10
-.L771:
+.L784:
 	movzwl	%r12w, %r9d
 	movq	%rbp, %r8
 	xorl	%edx, %edx
@@ -3404,9 +3478,201 @@ __qtrace_func:
 	popq	%r14
 	jmp	qPrintXData
 	.seh_endproc
+	.p2align 4,,15
+	.globl	__qReg_08Bits
+	.def	__qReg_08Bits;	.scl	2;	.type	32;	.endef
+	.seh_proc	__qReg_08Bits
+__qReg_08Bits:
+	.seh_endprologue
+	movzbl	(%rcx), %eax
+	movl	%edx, %ecx
+	sarl	%cl, %eax
+	andl	$1, %eax
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	__qReg_16Bits
+	.def	__qReg_16Bits;	.scl	2;	.type	32;	.endef
+	.seh_proc	__qReg_16Bits
+__qReg_16Bits:
+	.seh_endprologue
+	movzwl	(%rcx), %eax
+	movl	%edx, %ecx
+	sarl	%cl, %eax
+	andl	$1, %eax
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	qEdgeCheck_Initialize
+	.def	qEdgeCheck_Initialize;	.scl	2;	.type	32;	.endef
+	.seh_proc	qEdgeCheck_Initialize
+qEdgeCheck_Initialize:
+	.seh_endprologue
+	xorl	%eax, %eax
+	testq	%rcx, %rcx
+	je	.L787
+	leaq	__qReg_32Bits(%rip), %rax
+	testq	%rdx, %rdx
+	movq	$0, (%rcx)
+	movl	%r8d, 12(%rcx)
+	movb	$2, 24(%rcx)
+	cmove	%rax, %rdx
+	movl	_qSysTick_Epochs_(%rip), %eax
+	movq	%rdx, 16(%rcx)
+	movl	%eax, 8(%rcx)
+	movl	$1, %eax
+.L787:
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	qEdgeCheck_InsertNode
+	.def	qEdgeCheck_InsertNode;	.scl	2;	.type	32;	.endef
+	.seh_proc	qEdgeCheck_InsertNode
+qEdgeCheck_InsertNode:
+	pushq	%rsi
+	.seh_pushreg	%rsi
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$40, %rsp
+	.seh_stackalloc	40
+	.seh_endprologue
+	testq	%rdx, %rdx
+	movq	%rcx, %rsi
+	movq	%rdx, %rbx
+	je	.L794
+	testq	%rcx, %rcx
+	je	.L794
+	movb	%r9b, 24(%rdx)
+	movq	(%rcx), %rax
+	movq	%r8, %rcx
+	movq	%r8, 16(%rdx)
+	movq	%rax, (%rdx)
+	movzbl	%r9b, %edx
+	call	*16(%rsi)
+	movb	%al, 8(%rbx)
+	movl	$1, %eax
+	movq	%rbx, (%rsi)
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.p2align 4,,10
+.L794:
+	xorl	%eax, %eax
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	qEdgeCheck_Update
+	.def	qEdgeCheck_Update;	.scl	2;	.type	32;	.endef
+	.seh_proc	qEdgeCheck_Update
+qEdgeCheck_Update:
+	pushq	%rsi
+	.seh_pushreg	%rsi
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$40, %rsp
+	.seh_stackalloc	40
+	.seh_endprologue
+	xorl	%eax, %eax
+	testq	%rcx, %rcx
+	movq	%rcx, %rsi
+	je	.L795
+	movzbl	24(%rcx), %eax
+	testb	%al, %al
+	je	.L816
+	movq	(%rcx), %rbx
+	testq	%rbx, %rbx
+	jne	.L805
+	jmp	.L799
+	.p2align 4,,10
+.L800:
+	je	.L817
+.L802:
+	movq	(%rbx), %rbx
+	testq	%rbx, %rbx
+	je	.L818
+.L805:
+	movzbl	24(%rbx), %edx
+	movq	16(%rbx), %rcx
+	call	*16(%rsi)
+	movzbl	24(%rsi), %edx
+	cmpb	$1, %dl
+	jbe	.L800
+	cmpb	%al, 8(%rbx)
+	je	.L801
+	addl	$1, %edx
+	movb	$-1, 9(%rbx)
+	movb	%dl, 24(%rsi)
+	movq	(%rbx), %rbx
+	testq	%rbx, %rbx
+	jne	.L805
+.L818:
+	movzbl	24(%rsi), %eax
+.L799:
+	cmpb	$1, %al
+	je	.L819
+	cmpb	$2, %al
+	jbe	.L815
+	movb	$0, 24(%rsi)
+.L815:
+	movl	$1, %eax
+.L795:
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.p2align 4,,10
+.L816:
+	movl	_qSysTick_Epochs_(%rip), %eax
+	subl	8(%rcx), %eax
+	cmpl	12(%rcx), %eax
+	jb	.L815
+	movl	$1, %eax
+	movb	$1, 24(%rcx)
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.p2align 4,,10
+.L817:
+	cmpb	%al, 8(%rbx)
+	je	.L803
+	testb	%al, %al
+	sete	%dl
+	addl	$3, %edx
+	movb	%dl, 9(%rbx)
+.L803:
+	movb	%al, 8(%rbx)
+	jmp	.L802
+	.p2align 4,,10
+.L801:
+	movb	%al, 9(%rbx)
+	jmp	.L802
+	.p2align 4,,10
+.L819:
+	movl	_qSysTick_Epochs_(%rip), %edx
+	movb	$2, 24(%rsi)
+	movl	%edx, 8(%rsi)
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rsi
+	ret
+	.seh_endproc
+	.p2align 4,,15
+	.globl	qEdgeCheck_GetNodeStatus
+	.def	qEdgeCheck_GetNodeStatus;	.scl	2;	.type	32;	.endef
+	.seh_proc	qEdgeCheck_GetNodeStatus
+qEdgeCheck_GetNodeStatus:
+	.seh_endprologue
+	movzbl	9(%rcx), %eax
+	ret
+	.seh_endproc
 	.data
 	.align 8
-ChainIterator.3341:
+ChainIterator.3391:
 	.quad	_qSysTick_Epochs_
 	.globl	qDebugTrace_Buffer
 	.bss

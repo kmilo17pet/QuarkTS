@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6i
+ *  Version : 4.6.6j
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -44,7 +44,7 @@ extern "C" {
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
-    #define Q_DEBUGTRACE_FULL       
+    #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
     
     #define Q_MAX_FTOA_PRECISION      10
     #undef QATOF_FULL
@@ -67,9 +67,21 @@ extern "C" {
     #endif
    
     /*#define Q_TASK_INSERT_BEGINNING*/
-    #define qTrue                   0x01u
-    #define qResponseTimeout        0x02u
     #define qFalse                  0x00u
+    #define qTrue                   0x01u
+    #define qRESPONSETIMEOUT        0x02u
+    #define qRISING                 0x03u
+    #define qFALLING                0x04u
+    #define qUNKNOWN                0xFFu
+    
+    #define QREG_8BIT   __qReg_08Bits
+    #define QREG_16BIT  __qReg_16Bits
+    #define QREG_32BIT  __qReg_32Bits
+    
+    #define QEDGECHECK_WAIT         0u
+    #define QEDGECHECK_UPDATE       1u
+    #define QEDGECHECK_CHECK        2u
+
     #define qEnabled                (qTrue)
     #define qDisabled               (qFalse)
     #define qLINK                   (qTrue)
@@ -78,7 +90,16 @@ extern "C" {
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
-
+    
+    typedef enum{
+        qOff                = qOFF,
+        qOn                 = qON,
+        qResponseTimeout    = qRESPONSETIMEOUT,           
+        qRising             = qRISING,
+        qFalling            = qFALLING,  
+        qUnknown            = qUNKNOWN     
+    }qIOStatus_t;
+    
     #ifdef __XC8
         #define qConst
         #define qConstField_Set(TYPE, STRUCT_FIELD)    STRUCT_FIELD
@@ -110,6 +131,8 @@ extern "C" {
     #define qClipUpper(X, Max)                          (((X) > (Max)) ? (Max) : (X))
     #define qClipLower(X, Min)                          (((X) < (Min)) ? (Min) : (X))
     #define qIsBetween(X, Low, High)                    ((qBool_t)((X) >= (Low) && (X) <= (High)))
+    #define qMin(a,b)                                   (((a)<(b))?(a):(b))
+    #define qMax(a,b)                                   (((a)>(b))?(a):(b))
     
     #ifdef _QUARKTS_CR_DEFS_
         typedef int32_t _qTaskPC_t;
@@ -386,7 +409,7 @@ extern "C" {
         #endif 
         qTask_t *CurrentRunningTask;
     }QuarkTSCoreData_t;
-    
+       
     qTime_t qClock2Time(const qClock_t t);
     qClock_t qTime2Clock(const qTime_t t);
     void qSchedulerSysTick(void);
@@ -426,8 +449,8 @@ extern "C" {
     void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
     uint32_t qTaskGetCycles(const qTask_t *Task);
+
     
-   
 /*void qTaskSuspend(qTask_t *Task)
 
 Put the task into a disabled state.    
@@ -721,6 +744,7 @@ int qAtoI(const char *s);
 char* qUtoA(uint32_t num, char* str, uint8_t base);
 char* qItoA(int32_t num, char* str, uint8_t base);
 char* qBtoA(qBool_t num, char *str);
+char* qQBtoA(qBool_t num, char *str);
 uint8_t qIsInf(float f);
 qBool_t qIsNan(float f);
 #define _qsetfstringto_0(str)           str[0]='0'; str[1]='.'; str[2]='0'; str[3]='\0';  
@@ -779,8 +803,6 @@ extern qPutChar_t __qDebugOutputFcn;
     #define __QTRACE_FUNC    ((char *) 0)
 #endif
 
-
-
     #ifndef Message
         #define Message
     #endif
@@ -789,6 +811,9 @@ extern qPutChar_t __qDebugOutputFcn;
     #endif
     #ifndef Bool
         #define Bool
+    #endif
+    #ifndef qBool
+        #define qBool
     #endif
     #ifndef Float
         #define Float 
@@ -829,6 +854,7 @@ extern qPutChar_t __qDebugOutputFcn;
     #define qTraceMessage(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, "", (char*)(Var), NULL, 0)
     #define qTraceString(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , (char*)(Var), NULL, 0)
     #define qTraceBool(Var)                 __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , qBtoA(( qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
+    #define qTraceqBool(Var)                __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , qQBtoA(( qBool_t)(Var), qDebugTrace_Buffer   ), NULL, 0)
     #define qTraceBinary(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=0b", qItoA(( int32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
     #define qTraceOctal(Var)                __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=0" , qItoA(( int32_t)(Var), qDebugTrace_Buffer,  8), NULL, 0)
     #define qTraceHexadecimal(Var)          __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "=0x", qItoA(( int32_t)(Var), qDebugTrace_Buffer, 16), NULL, 0)
@@ -917,6 +943,32 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
     qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
     qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
 #endif
+    
+    
+    
+struct _qIONode_t{
+    struct _qIONode_t *Next;
+    qBool_t PreviousPinValue, Status;
+    void *Port;
+    qBool_t Pin;
+};
+#define qIONode_t struct _qIONode_t
+
+typedef qBool_t (*qCoreRegSize_t)(void*, qBool_t);
+typedef struct{
+    qIONode_t *Head;
+    qClock_t Start, DebounceTime;
+    qCoreRegSize_t Reader;
+    qBool_t State;
+}qIOEdgeCheck_t;
+qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber);
+qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber);
+qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber);
+qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime);
+qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber);    
+qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
+qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
+
 #ifdef	__cplusplus
 }
 #endif

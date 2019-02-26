@@ -13,13 +13,20 @@
 #include <float.h>
 
 #include "QuarkTS.h"
+
+
+
 /*============================================================================*/
+uint32_t PORTA = 0x0A;
+qIOEdgeCheck_t INPUTS;
+qIONode_t buton1, sensor1, buton2, sensor2;
+
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
     for(;;){
         nanosleep(&tick, NULL);
-        qSchedulerSysTick();
+        qSchedulerSysTick();       
     }
 }
 /*============================================================================*/
@@ -122,8 +129,10 @@ void Task6Callback(qEvent_t e){
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = QSTIMER_INITIALIZER;
-    if(qSTimerFreeRun(&t, 5.0)){
-   
+    qEdgeCheck_Update(&INPUTS);
+    qTraceVariable( buton2.Status , qBool );
+    if(qSTimerFreeRun(&t, 0.5)){
+        PORTA = ~PORTA;
     }
 }
 /*============================================================================*/
@@ -178,11 +187,20 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     return 0;
 }
 
-
-/*========+====================================================================*/
+/*============================================================================*/
 int main(int argc, char** argv) {      
-    qSetDebugFcn(putcharfcn);
     int yy = -128;
+    
+    qSetDebugFcn(putcharfcn);
+           
+    qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
+    qEdgeCheck_InsertNode(&INPUTS, &buton1, &PORTA, 0);
+    qEdgeCheck_InsertNode(&INPUTS, &buton2, &PORTA, 1);
+    qEdgeCheck_InsertNode(&INPUTS, &sensor1, &PORTA, 2);
+    qEdgeCheck_InsertNode(&INPUTS, &sensor2, &PORTA, 3);
+    
+    pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
+   
     qTraceVariable( yy, Decimal);
     qTraceMessage( "test" );
     qTraceVariable( 48765, UnsignedDecimal);
@@ -200,7 +218,7 @@ int main(int argc, char** argv) {
     
 
     qRBuffer_t ringBuffer;
-    pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
+    
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
     qSM_t statemachine;
     void *memtest;
@@ -214,7 +232,6 @@ int main(int argc, char** argv) {
     
     qSchedulerSetup(0.01, IdleTaskCallback, 10);           
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
-    
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
 

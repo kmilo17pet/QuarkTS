@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6i
+ *  Version : 4.6.6j
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1755,6 +1755,47 @@ char* qBtoA(qBool_t num, char *str){
     return str;
 }
 /*============================================================================*/
+/* char* qQBtoA(qBool_t num, char *str)
+
+Converts a qBool_t value to a null-terminated string. Input is considered true
+with any value diferent to zero (0).
+
+str should be an array long enough to contain the output
+
+Parameters:
+
+    - num : Value to be converted to a string.
+    - str : Array in memory where to store the resulting null-terminated string.
+
+Return value:
+
+  A pointer to the resulting null-terminated string, same as parameter str
+*/
+char* qQBtoA(qBool_t num, char *str){
+    if(NULL == str) return str;
+    switch(num){
+        case qTrue:
+            str[0]='t'; str[1]='r'; str[2]='u'; str[3]='e'; str[4]='\0';
+            break;
+        case qFalse:
+            str[0]='f'; str[1]='a'; str[2]='l'; str[3]='s'; str[4]='e'; str[5]='\0'; 
+            break;
+        case qRESPONSETIMEOUT:
+            str[0]='t'; str[1]='i'; str[2]='m'; str[3]='e'; str[4]='o'; str[5]='u';str[6]='t';str[7]='\0';
+            break;
+        case qRISING:
+            str[0]='r'; str[1]='i'; str[2]='s'; str[3]='i'; str[4]='n'; str[5]='g';str[6]='\0';
+            break;
+        case qFALLING:
+            str[0]='f'; str[1]='a'; str[2]='l'; str[3]='l'; str[4]='i'; str[5]='n';str[6]='g';str[7]='\0';
+            break;
+        default:
+            str[0]='u'; str[1]='n'; str[2]='k'; str[3]='n'; str[4]='o'; str[5]='w';str[6]='n';str[7]='\0';
+            break;            
+    }
+    return str;
+}
+/*============================================================================*/
 /*qBool_t qIsNan(float f)
 Determines if the given floating point number arg is a not-a-number (NaN) value. 
 
@@ -2076,7 +2117,7 @@ void qResponseInitialize(qResponseHandler_t *obj){
     obj->ResponseReceived = qFalse;
 }   
 /*============================================================================*/
-/*qBool_t qResponseReceived(qResponseHandler_t *obj, const char *ptr, qSize_t n)
+/*qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n)
  
 Non-Blocking Response check
 
@@ -2095,7 +2136,7 @@ qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t 
     return qResponseReceivedWithTimeout(obj, Pattern, n, NULL, 0);
 }
 /*============================================================================*/
-/*qBool_t qResponseReceivedTimeout(qResponseHandler_t *obj, const char *ptr, qSize_t n)
+/*qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n)
  
 Non-Blocking Response check with timeout
 
@@ -2103,10 +2144,10 @@ Parameters:
 
     - obj : A pointer to the Response Handler object
     - Pattern: The data checked in the receiver ISR
-    - n : The length of the data pointer by ptr 
-          (if ptr is string, set n to 0 to auto-compute the length)
+    - n : The length of the data pointed by Pattern 
+          (if Pattern is string, set n to 0 to auto-compute the length)
     - timeout : A pointer to the qSTimer object
-    - t : the timeout object
+    - t : The timeout value
   
 Return value:
 
@@ -2169,7 +2210,7 @@ void __qtrace_func(const char *loc, const char* fcn, const char *varname, const 
             __qDebugOutputFcn(NULL, ' ');
         }
         qPrintString(__qDebugOutputFcn, NULL, varname);
-        if(NULL == varvalue){ /*if the varvalue is not defined, the call must correspond to memory tracing*/
+        if(NULL == varvalue){ /*if varvalue is not defined, the call must correspond to memory tracing*/
             qPrintXData(__qDebugOutputFcn, NULL, Pointer, BlockSize); /*print out the memory in hex format*/
         }
         else{ /*print out the variable value*/
@@ -2179,8 +2220,144 @@ void __qtrace_func(const char *loc, const char* fcn, const char *varname, const 
         }
     }
 }
-/*============================================================================*/
 #endif
+/*============================================================================*/
+qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
+    uint8_t Register = 0;
+    Register = *((uint8_t*)Address);
+    return qBitRead(Register, PinNumber);
+}
+/*============================================================================*/
+qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber){
+    uint16_t Register = 0;
+    Register = *((uint16_t*)Address);
+    return qBitRead(Register, PinNumber);
+}
+/*============================================================================*/
+qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
+    uint32_t Register = 0;
+    Register = *((uint32_t*)Address);
+    return qBitRead(Register, PinNumber);
+}
+/*============================================================================*/
+/*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime)
+ 
+Initialize a I/O Edge-Check instance 
+
+Parameters:
+
+    - Instance : A pointer to the I/O Edge-Check object
+    - RegisterSize: The specific-core register size: QREG_8BIT, QREG_16BIT or QREG_32BIT(Default)
+    - DebounceTime : The specified time to bypass the bounce of the input nodes
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime){
+    if(NULL == Instance) return qFalse;
+    Instance->Head = NULL;
+    Instance->DebounceTime = DebounceTime;
+    Instance->Reader = (RegisterSize==NULL)? QREG_32BIT  : RegisterSize;
+    Instance->State = QEDGECHECK_CHECK;
+    Instance->Start = _qSysTick_Epochs_;
+    return qTrue;
+}
+/*============================================================================*/
+/*qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber)
+ 
+Initialize a I/O Edge-Check instance 
+
+Parameters:
+
+    - Instance : A pointer to the I/O Edge-Check object
+    - Node: A pointer to the Input-Node object
+    - PortAddress : The address of the core PORTx-register to read the levels of the specified PinNumber
+    - PinNumber : The specified Pin to read from PortAddress 
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber){
+    if(NULL == Node || NULL == Instance) return qFalse;
+    Node->Port = PortAddress;
+    Node->Pin = PinNumber;
+    Node->Next = Instance->Head;
+    Node->PreviousPinValue = Instance->Reader( Node->Port, Node->Pin );
+    Instance->Head = Node;
+    return qTrue;
+}
+/*============================================================================*/
+/*qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance)
+ 
+Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
+
+Parameters:
+
+    - Instance : A pointer to the I/O Edge-Check object
+  
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+*/
+/*============================================================================*/
+qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
+    qIONode_t *Node;
+    qBool_t CurrentPinValue;   
+    if(NULL == Instance) return qFalse;
+    
+    if( QEDGECHECK_WAIT == Instance->State){ /*debounce wait state*/
+        if( (_qSysTick_Epochs_- Instance->Start)>=Instance->DebounceTime )  Instance->State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/       
+        return qTrue;
+    }
+    
+    for(Node = Instance->Head; NULL != Node ; Node = Node->Next){ /*iterate through all the input-nodes*/
+        CurrentPinValue = Instance->Reader( Node->Port, Node->Pin ); /*read the pin level*/        
+        if( Instance->State >= QEDGECHECK_CHECK ){ /*check state*/
+            if( Node->PreviousPinValue != CurrentPinValue){ /*check if the input level change since the last inputs-sweep*/
+                Node->Status = qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
+                Instance->State++; /* just to know that at least one node changed its state(count of nodes subject to the range of uint8_t)*/
+            }
+            else{
+                Node->Status = CurrentPinValue; /*if there is no change, let the state of the pin be equal to its own level*/
+            } 
+            continue; /*jump to the next iter, and bypass the conditional below*/
+        }
+        
+        if( QEDGECHECK_UPDATE == Instance->State){ /*update state*/
+            if(Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is efective*/
+                Node->Status = (CurrentPinValue)? qRISING : qFALLING; /*set the edge status*/
+            }      
+            Node->PreviousPinValue = CurrentPinValue; /*keep the previous level*/
+        }
+    }    
+    
+    if(QEDGECHECK_UPDATE == Instance->State ){ /*reload the instance to a full check*/
+        Instance->State = QEDGECHECK_CHECK; /*reload the init state*/
+        Instance->Start = _qSysTick_Epochs_; /*reload the time*/
+    }
+    if(Instance->State > QEDGECHECK_CHECK) Instance->State = QEDGECHECK_WAIT; /*at least one pin change detected, do the de-bounce wait*/
+           
+    return qTrue;
+}
+/*============================================================================*/
+/*qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node)
+ 
+Query the status of the specified input-node.
+
+Parameters:
+
+    - Node : Node: A pointer to the Input-Node object
+  
+Return value:
+
+    The status of the input node : qTrue, qFalse, qRising, qFalling or qUnknown
+*/
+qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node){
+    return Node->Status;
+}
+/*============================================================================*/
 #ifdef Q_TASK_DEV_TEST
 #endif
 
