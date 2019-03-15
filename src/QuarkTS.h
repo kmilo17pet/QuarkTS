@@ -720,8 +720,8 @@ typedef char (*qGetChar_t)(void*);
 void qSwapBytes(void *data, const qSize_t n);
 qBool_t qCheckEndianness(void);
 void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
-void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
-void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP);
+void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP);
+void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP);
 
 /*qPrintString(fcn, storagep, s)
  

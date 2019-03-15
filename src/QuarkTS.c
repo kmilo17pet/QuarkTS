@@ -69,6 +69,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void);
 static qTask_t* _qScheduler_PriorityQueueGet(void);
 static void _qTriggerReleaseSchedEvent(void);
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
+static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
 
 #ifdef Q_RINGBUFFERS 
     static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
@@ -144,13 +145,13 @@ qTask_t* qTaskSelf(void){
 }
 /*============================================================================*/
 /*
-qBool_t qTaskIsEnabled(qTask_t Identifier)
+qBool_t qTaskIsEnabled(const qTask_t *Task)
 
 Retrieve the enabled/disabled state
 
 Parameters:
 
-    - Identifier : The task node identifier.
+    Pointer to the task node.
 
 Return value:
 
@@ -346,7 +347,7 @@ void qTaskClearTimeElapsed(qTask_t *Task){
     Task->ClockStart = _qSysTick_Epochs_;
 }
 /*============================================================================*/
-/*qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata)
+/*qBool_t qTaskQueueEvent(const qTask_t *Task, void* eventdata)
 
 Insert an asyncrohous event in the FIFO priority queue. The task will be ready 
 for execution according to the queue order (determined by priority), even 
@@ -422,7 +423,7 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
 }
 #endif
 /*============================================================================*/
-void _qInitScheduler(qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, uint8_t Size_Q_Stack){
+void _qInitScheduler(const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
     uint8_t i;
     QUARKTS.Head = NULL;
     QUARKTS.Tick = ISRTick;
@@ -905,6 +906,10 @@ qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t Suc
     return qTrue;
 }
 /*============================================================================*/
+static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj){
+    if (NULL != substate) substate(obj);
+}
+/*============================================================================*/
 /*void qStateMachine_Run(qSM_t *obj, void* Data)
 
 Execute the Finite State Machine (FSM).
@@ -922,8 +927,8 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
     if(NULL==obj) return;
     qConstField_Set(void* ,obj->Data)/*obj->Data*/ = Data;   /*pass the data through the fsm*/
-    if(obj->qPrivate.__BeforeAnyState != NULL) obj->qPrivate.__BeforeAnyState(obj); /*eval the BeforeAnyState if available*/
-    if(obj->NextState!=NULL){ /*eval nextState if available*/
+    qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
+    if(NULL != obj->NextState){ /*eval nextState if available*/
         qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = (qBool_t)(obj->LastState != obj->NextState);  /*Get the StateFirstEntry flag*/
         if(obj->StateFirstEntry) qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = obj->LastState ; /*if StateFistEntry is set, update the PreviousState*/
         prev = obj->NextState; /*keep the next state in prev for LastState update*/
@@ -933,11 +938,11 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     else    qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
     
     switch(obj->PreviousReturnStatus){ /*Check return status to eval extra states*/
-        case qSM_EXIT_FAILURE:  if(obj->qPrivate.__Failure != NULL) obj->qPrivate.__Failure(obj);  /*Run failure state if available*/
+        case qSM_EXIT_FAILURE:  qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Failure, obj); /*Run failure state if available*/
             break;
-        case qSM_EXIT_SUCCESS:  if(obj->qPrivate.__Success != NULL) obj->qPrivate.__Success(obj);  /*Run success state if available*/
+        case qSM_EXIT_SUCCESS:  qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Success, obj); /*Run success state if available*/
             break;
-        default:                if(obj->qPrivate.__Unexpected != NULL) obj->qPrivate.__Unexpected(obj); /*Run unexpected state if available*/
+        default:                qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Unexpected, obj ); /*Run unexpected state if available*/
             break;
     }
  }
@@ -991,7 +996,7 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
     }
 }
 /*============================================================================*/
-/*qBool_t qSTimerSet(qSTimer_t OBJ, qTime_t Time)
+/*qBool_t qSTimerSet(qSTimer_t obj, const qTime_t Time)
  
 Set the expiration time for a STimer. On success, the Stimer gets 
 armed immediately
@@ -1019,7 +1024,7 @@ qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     return qTrue;
 }
 /*============================================================================*/
-/*qBool_t qSTimerFreeRun(qSTimer_t *obj, qTime_t Time)
+/*qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time)
 
 Non-Blocking STimer check with automatic arming. 
 Behavior:
@@ -1185,32 +1190,32 @@ void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
     while( j < obj->NumberofBlocks ) {	/*loop until we find a free memory block*/		
         sum  = 0;
         i = j;
-	while( i < obj->NumberofBlocks ) {		
+        while( i < obj->NumberofBlocks ) {		
             if( *(obj->BlockDescriptors+i) ) {
                 offset += (*(obj->BlockDescriptors+i)) * (obj->BlockSize);
-		        i += *(obj->BlockDescriptors+i);				 
-		        continue;
+                i += *(obj->BlockDescriptors+i);				 
+                continue;
             }
             break;				
-	}
-	
+        }
+        
         j = i;	/*<j> should be the index of the first free mem block and <offset> is the offset in the buffer*/
-	for(k = 1, i = j; i < obj->NumberofBlocks; k++, i++) {
+        for(k = 1, i = j; i < obj->NumberofBlocks; k++, i++) {
             if( *(obj->BlockDescriptors+i) ) {	 /*We haven't found the required amount of mem blocks. Continue with the next free memory block.*/		
                 j = (uint8_t)(i + *(obj->BlockDescriptors+i)); /*Increment j for the number of used memory blocks*/
-                    offset = obj->Blocks;
-                    offset += j * (obj->BlockSize);
-                    break;
+                offset = obj->Blocks;
+                offset += j * (obj->BlockSize);
+                break;
             }
             sum += obj->BlockSize;
             if( sum >= size ) { /*memory area found*/
                 *(obj->BlockDescriptors+j) = k; /*leave the record*/
-		for(c=0;c<size;c++) offset[i] = 0x00u; /*zero-initialized memory block*/ 
+                for(c=0;c<size;c++) offset[i] = 0x00u; /*zero-initialized memory block*/ 
                 qExitCritical();
-		return (void*)offset; /*return the pointer to the free memory block*/
+                return (void*)offset; /*return the pointer to the free memory block*/
             }						
-	}
-	if( i == obj->NumberofBlocks ) break;
+        }
+        if( i == obj->NumberofBlocks ) break;
     }
     qExitCritical();
     return NULL; /*memory not available*/
@@ -1237,8 +1242,8 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
         if( p == pmem ){
             *(obj->BlockDescriptors + i) = 0;
             break;
-	}
-	p += obj->BlockSize;
+	    }
+	    p += obj->BlockSize;
     }
     qExitCritical();
 }
@@ -1426,7 +1431,7 @@ Parameters:
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
+void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
     for(i=0;i<n;i++) fcn( ((AIP)? (char*)storagep+i : storagep), cdata[i]);
@@ -1444,7 +1449,7 @@ Parameters:
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
 */
-void qInputRaw(qGetChar_t fcn, void* storagep, void *data, qSize_t n, qBool_t AIP){
+void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
     for(i=0;i<n;i++) cdata[i] = fcn( ((AIP)? (char*)storagep+i : storagep));
@@ -2258,7 +2263,7 @@ qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterS
     if(NULL == Instance) return qFalse;
     Instance->Head = NULL;
     Instance->DebounceTime = DebounceTime;
-    Instance->Reader = (RegisterSize==NULL)? QREG_32BIT  : RegisterSize;
+    Instance->Reader = (NULL==RegisterSize)? QREG_32BIT  : RegisterSize;
     Instance->State = QEDGECHECK_CHECK;
     Instance->Start = _qSysTick_Epochs_;
     return qTrue;
@@ -2266,7 +2271,7 @@ qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterS
 /*============================================================================*/
 /*qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber)
  
-Initialize a I/O Edge-Check instance 
+Initialize an I/O Edge-Check instance 
 
 Parameters:
 
