@@ -1,3 +1,0 @@
-/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/QuarkTS.dir
-/cygdrive/c/Users/HP/Documents/GitHub/QuarkTS/cmake-build-debug/CMakeFiles/edit_cache.dir
