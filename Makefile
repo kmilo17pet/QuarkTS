@@ -1,59 +1,52 @@
 ####
-#### Generic Makefile for C 
+#### Generic Makefile only for C projects
 ####
 #### This file is public domain.
-#### Author: Eng. J. Camilo Gomez Cadavid
+#### J. Camilo Gomez C.
 ####
 
-###################################
-### User configurable variables ###
-###################################
-TARGET   = $(shell basename $$(pwd))
-CC       = gcc
-LIBS     = 
-INCS 	 = -I.
-CFLAGS   = -pedantic $(INCS) -std=c99 -O0
-LINKER   = gcc
-LFLAGS   = -Wall $(LIBS) -lm -lpthread
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR   = bin
-##############################################
-### Do not modify anything below this line ###
-##############################################
-SUBDIRS = $(OBJDIR) $(BINDIR) 
-SOURCES := $(wildcard *.c */*.c */*/*.c */*/*/*.c)
-INCLUDES := $(dir $(wildcard *.h */*.h */*/*.h */*/*/*.h))
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-OBJS_FILENAME := $(notdir $(OBJECTS))
-OBJS_OUTPATH := $(OBJS_FILENAME:%=$(OBJDIR)/%)
-INC_PATHS = $(INCLUDES:%=-I./%)
-rm       = rm -f
+##############################
+### Configurable variables ###
+##############################
+# The compiler
+CC = gcc
+# The linker
+LD = gcc
+# Flags to pass to the compiler for release builds
+CFLAGS ?= -std=c89 -Wall -O3
+# Flags to pass to the linker
+LFLAGS ?= -lm -lpthread
+# Output directories
+OBJ_DIR := obj
+BIN_DIR := bin
+OBJ_EXT ?= .o
+#################################
+### Do touch the lines below  ###
+#################################
+INC 	:= 	-I. $(addprefix -I./,$(dir $(wildcard src/**/*.h)))
+SRC 	:= 	$(wildcard src/**/*.c)
+OBJ 	:= 	$(addprefix $(OBJ_DIR)/,$(SRC:.c=$(OBJ_EXT)))
+OUT 	= 	$(BIN_DIR)/$(notdir $(CURDIR))
 
-all: $(BINDIR)/$(TARGET)
-	@echo "======================="
-	@echo "||   BUILD SUCCESS   ||"
-	@echo "======================="
+.SUFFIXES:
+.PHONY: clean show
 
-$(BINDIR)/$(TARGET): $(OBJECTS)
-	$(LINKER) $(CFLAGS) $(OBJS_OUTPATH) $(LFLAGS) -o $@
-	@echo "(*) LINKING COMPLETE!"
+$(OUT): $(OBJ)
+	@mkdir -p $(dir $@)
+	$(LD) $^ $(LFLAGS) -o $@
+	@echo "-------------------------------"
+	@echo "Build Success!"
 
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c | subdirs
-	$(CC) $(CFLAGS) $(INC_PATHS) -c $< -o $(OBJDIR)/$(notdir $@) 
-	@echo "(*) COMPILED "$<" SUCCESSFULLY"
+$(OBJ_DIR)/%$(OBJ_EXT): %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC)  -c $< -o $@
 
-.PHONY: subdirs $(SUBDIRS)
-subdirs: $(SUBDIRS)
-$(SUBDIRS):
-	@mkdir -p $@
+run: $(OUT)
+	@./$(OUT)
 
-.PHONY: clean
-clean: remove
-	@$(rm) $(OBJS_OUTPATH)
-	@echo "Cleanup complete!"
+test: run
+clean:
+	@$(RM) -rf $(OUT) $(OBJ_DIR) $(BIN_DIR)
 
-.PHONY: remove
-remove: 
-	@$(rm) $(BINDIR)/$(TARGET)
-	@echo "Executable removed!"
+show:
+	@echo SRC =  $(SRC)
