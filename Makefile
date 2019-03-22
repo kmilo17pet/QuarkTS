@@ -20,9 +20,9 @@ LFLAGS ?= -lm -lpthread
 OBJ_DIR := obj
 BIN_DIR := bin
 OBJ_EXT ?= .o
-#################################
-### Do touch the lines below  ###
-#################################
+#####################################
+### Do NOT touch the lines below  ###
+#####################################
 INC 	:= 	-I. $(addprefix -I./,$(dir $(wildcard src/**/*.h)))
 SRC 	:= 	$(wildcard src/**/*.c)
 OBJ 	:= 	$(addprefix $(OBJ_DIR)/,$(SRC:.c=$(OBJ_EXT)))
