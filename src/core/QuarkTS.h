@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6j
+ *  Version : 4.6.7
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -45,6 +45,7 @@ extern "C" {
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
+    #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
     
     #define Q_MAX_FTOA_PRECISION      10
     #undef QATOF_FULL
@@ -968,6 +969,58 @@ qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterS
 qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber);    
 qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
+
+
+#ifdef Q_ATCOMMAND_PARSER
+    #define     AT_MAX_OUTPUT_BUFFER    64    
+    #define     AT_MAX_BUFFER_IN        32
+
+    #define     AT_ERROR                (-1)
+    #define     AT_NORESPONSE           (0)
+    #define     AT_OK                   (1)
+    #define     AT_ERRORCODE(_num_)     (-_num_)
+
+    typedef volatile struct{
+        volatile char buff[AT_MAX_BUFFER_IN];
+        volatile uint16_t index;
+        volatile uint8_t chkcmd;
+    }qATBuffer_t;
+
+
+    typedef void(*qATOutputFcn_t)(const char); 
+    typedef int16_t qATResponse_t; 
+    
+    typedef struct{
+        qATBuffer_t Buffer;
+        void *First;
+        char *OK_Response;
+        char *ERROR_Response;
+        char *NOTFOUND_Response;
+        char *Identifier;
+        char *term_EOF;
+        void (*putc)(const char);
+        void (*puts)(const char*);
+        qTask_t task;
+    }qATParser_t;   
+    
+    struct _qATCommand_t{
+        char *Text;
+        qSize_t CmdLen;
+        qATResponse_t (*CommandCallback)(qATParser_t*, const char*, qSize_t);
+        struct _qATCommand_t *Next;
+    };
+    #define qATCommand_t struct _qATCommand_t
+
+    typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, const char*, qSize_t);
+    
+    void qATCommandParser_Setup(qATParser_t *obj, qATOutputFcn_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
+    void qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback);
+    void qATCommandParser_ISRHandler(qATParser_t *obj, char c);
+    qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority);
+    
+
+#endif
+
 
 #ifdef	__cplusplus
 }

@@ -137,7 +137,6 @@ void IdleTaskCallback(qEvent_t e){
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
     static qSTimer_t tmr;
-    static qResponseHandler_t rep;
     qCRPosition_t state;
     qCoroutineSemaphore_t mutex;
     qCoroutineSemaphoreInit(&mutex, 1);
@@ -189,6 +188,10 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 /*============================================================================*/
 int main(int argc, char** argv) {      
     int yy = -128;
+    qRBuffer_t ringBuffer;
+    qSM_t statemachine;
+    void *memtest;
+    int x=5 , y=6;
     
     qSetDebugFcn(putcharfcn);
            
@@ -216,12 +219,8 @@ int main(int argc, char** argv) {
     qTrace();
     
 
-    qRBuffer_t ringBuffer;
     
     qMemoryHeapCreate(mtxheap, 10, qMB_4B);
-    qSM_t statemachine;
-    void *memtest;
-    int x=5 , y=6;
     memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
     qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
     qRBufferPush(&ringBuffer, &x);

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.6j
+ *  Version : 4.6.7
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -2362,7 +2362,119 @@ Return value:
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node){
     return Node->Status;
 }
+
+static void qATCommandParser_TaskCallback(qEvent_t e);
+static void(*qAToutcharfcn)(const char) = NULL;
 /*============================================================================*/
+static void _qATOutputString(const char *s){
+	uint16_t i=0;
+	while(s[i]) qAToutcharfcn(s[i++]);
+}
+/*============================================================================*/
+void qATCommandParser_Setup(qATParser_t *obj, qATOutputFcn_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF){
+    obj->First  = NULL;
+    obj->putc = OutputFcn;
+    obj->puts = _qATOutputString;
+    obj->Identifier = (char*)Identifier;
+    obj->OK_Response = (char*)OK_Response;
+    obj->ERROR_Response = (char*)ERROR_Response;
+    obj->NOTFOUND_Response = (char*)NOTFOUND_Response;
+    obj->term_EOF = (char*)term_EOF;
+    memset((void*)obj->Buffer.buff, 0, AT_MAX_BUFFER_IN);
+    obj->Buffer.chkcmd = 0;
+    obj->Buffer.index = 0;
+}
+/*============================================================================*/
+void qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback){
+    cmd->Text = (char*)textcmd;
+    cmd->CmdLen = strlen(textcmd);
+    cmd->CommandCallback = Callback;
+    cmd->Next = obj->First;
+    obj->First = cmd;
+}
+/*============================================================================*/
+void qATCommandParser_ISRHandler(qATParser_t *obj, char c){
+    if(isgraph(c) && obj->Buffer.chkcmd==0){
+        obj->Buffer.buff[obj->Buffer.index++] = tolower(c);
+        obj->Buffer.buff[obj->Buffer.index]=0x00;
+        if (obj->Buffer.index>=(AT_MAX_BUFFER_IN-1)) obj->Buffer.index = 0;
+    }
+    if (c=='\r'){
+       obj->Buffer.chkcmd = 1;
+       obj->Buffer.index=0;
+       qTaskSendEvent(&obj->task, NULL);
+    }
+}
+/*============================================================================*/
+qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority){
+    return qSchedulerAddxTask(&Parser->task, qATCommandParser_TaskCallback, Priority, qTimeInmediate, qSingleShot, qDisabled, Parser);
+}
+/*============================================================================*/
+static void qATCommandParser_TaskCallback(qEvent_t e){
+    qATParser_t *obj = (qATParser_t*)e->TaskData;
+    qATResponse_t retval;
+    qATCommand_t *Command = (qATCommand_t*)obj->First;
+    char Buff[25]={0};
+    char *ptr= NULL;
+    qSize_t n;
+    const char *cmd;
+    qAToutcharfcn = obj->putc;
+    if(obj->Buffer.chkcmd){
+        obj->Buffer.chkcmd=0;
+        if (strcmp((const char*)obj->Buffer.buff, "at")==0){
+        	if(obj->OK_Response){
+        		obj->puts(obj->OK_Response);
+        		obj->puts(obj->term_EOF);
+        	}
+            goto EXIT_ATCMD_PARSER;
+        }
+        
+        while(Command != NULL){
+            ptr=strstr((const char*)obj->Buffer.buff, Command->Text);
+            if(ptr==(obj->Buffer.buff)){  
+                n = strlen((const char*)obj->Buffer.buff) - Command->CmdLen;
+                cmd = (const char*)(ptr+Command->CmdLen);
+                retval = Command->CommandCallback(obj, cmd, n);
+                switch(retval){
+                    case -1: 
+                    	obj->puts(obj->ERROR_Response);
+                    	obj->puts(obj->term_EOF);
+                        break;
+                    case 1:
+                        if(obj->OK_Response){
+                        	obj->puts(obj->OK_Response);
+                        	obj->puts(obj->term_EOF);
+                        }
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        if(retval<0){
+                            sprintf(Buff,"%s:%d%s",obj->ERROR_Response, -retval, obj->term_EOF);
+                            obj->puts(Buff);
+                        }                            
+                        break;
+                }      
+                goto EXIT_ATCMD_PARSER;
+            }
+            Command = Command->Next;
+        }
+        if (strcmp((const char*)obj->Buffer.buff, "atid")==0){
+        	obj->puts(obj->Identifier);
+        	obj->puts(obj->term_EOF);
+            goto EXIT_ATCMD_PARSER;
+        }
+        if(strlen((const char*)obj->Buffer.buff)>2){
+        	obj->puts(obj->NOTFOUND_Response);
+        	obj->puts(obj->term_EOF);
+        }
+        EXIT_ATCMD_PARSER:
+        obj->Buffer.index = 0;
+        obj->Buffer.buff[0] = 0x00;
+        return;
+    }
+}
+
 #ifdef Q_TASK_DEV_TEST
 #endif
 
