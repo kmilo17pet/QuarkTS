@@ -2363,41 +2363,113 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node){
     return Node->Status;
 }
 
+
+#ifdef Q_ATCOMMAND_PARSER
+
 static void qATCommandParser_TaskCallback(qEvent_t e);
-static void(*qAToutcharfcn)(const char) = NULL;
+static  qPutChar_t ATOutCharFcn = NULL;
+static void _qATPutc_Wrapper(const char c);
+static void _qATPuts_Wrapper(const char *s);
+
 /*============================================================================*/
-static void _qATOutputString(const char *s){
-	uint16_t i=0;
-	while(s[i]) qAToutcharfcn(s[i++]);
+static void _qATPutc_Wrapper(const char c){
+	ATOutCharFcn(NULL, c);
 }
 /*============================================================================*/
-void qATCommandParser_Setup(qATParser_t *obj, qATOutputFcn_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF){
+static void _qATPuts_Wrapper(const char *s){
+	uint16_t i=0;
+	while(s[i]) ATOutCharFcn(NULL, s[i++]);
+}
+/*============================================================================*/
+qSize_t _qAT_CountChars(const char *str, const char character){
+	size_t count = 0;
+	while(*str) if (*str++ == character) ++count;
+	return count;
+}
+/*============================================================================*/
+/*qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF)
+ 
+Setup an instance of the AT Command parser.
+
+Parameters:
+
+    - obj : A pointer to the ATParser instance
+    - OutputFcn : The basic output-char wrapper function. All the parser responses 
+                   will be printed-out through this function.
+    - Identifier: The device identifier string. This string will be printed-out
+                  acter a call to the AT_DEFAULT_ID_COMMAND
+    - OK_Response: The output message when a command callback returns QAT_OK.  
+    - ERROR_Response: The output message when a command callback returns QAT_ERROR or any
+                      QAT_ERRORCODE(#)
+    - NOTFOUND_Response: The output message when input doesn't match with any of 
+                         the available commands
+    - term_EOF: The EOF string printed out after any of the parser messages 
+  
+Return value:
+
+    qTrue on success, otherwise return qFalse
+*/
+qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF){
+    if ( NULL == obj || NULL == OutputFcn) return qFalse;
     obj->First  = NULL;
-    obj->putc = OutputFcn;
-    obj->puts = _qATOutputString;
+    obj->OutputFcn = OutputFcn;
+    obj->putc = _qATPutc_Wrapper;
+    obj->puts = _qATPuts_Wrapper;
     obj->Identifier = (char*)Identifier;
     obj->OK_Response = (char*)OK_Response;
     obj->ERROR_Response = (char*)ERROR_Response;
     obj->NOTFOUND_Response = (char*)NOTFOUND_Response;
     obj->term_EOF = (char*)term_EOF;
-    memset((void*)obj->Buffer.buff, 0, AT_MAX_BUFFER_IN);
+    memset((void*)obj->Buffer.buff, 0, QAT_MAX_BUFFER_IN);
     obj->Buffer.chkcmd = 0;
     obj->Buffer.index = 0;
+    return qTrue;
 }
 /*============================================================================*/
-void qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback){
+/*void qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback)
+ 
+Add an AT Command to the parser interface.
+
+Parameters:
+
+    - obj : A pointer to the ATParser instance
+    - cmd : A pointer to the AT command object.
+    - textcmd: The AT Command string in lowercase.
+    - Callback: The output message when a command callback returns QAT_OK.  
+  
+Return value:
+
+    qTrue on success, otherwise return qFalse
+*/
+qBool_t qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback){
+    if( NULL == obj || NULL == cmd || NULL == textcmd || NULL== Callback ) return qFalse;
     cmd->Text = (char*)textcmd;
     cmd->CmdLen = strlen(textcmd);
+    if(cmd->CmdLen<2) return qFalse; /*not enougth to be a valid at command*/ 
     cmd->CommandCallback = Callback;
     cmd->Next = obj->First;
     obj->First = cmd;
+    return qTrue;
 }
 /*============================================================================*/
+/*void qATCommandParser_ISRHandler(qATParser_t *obj, char c)
+ 
+Feed the parser input with a single character. This call is mandatory 
+from an interrupt context. Put it inside the desired peripheral's ISR.
+
+Note: This API assumes that the respective ISR catch a single byte at a time.
+
+Parameters:
+
+    - obj : A pointer to the ATParser instance
+    - c : A pointer to the AT command object. 
+  
+*/
 void qATCommandParser_ISRHandler(qATParser_t *obj, char c){
     if(isgraph(c) && obj->Buffer.chkcmd==0){
         obj->Buffer.buff[obj->Buffer.index++] = tolower(c);
         obj->Buffer.buff[obj->Buffer.index]=0x00;
-        if (obj->Buffer.index>=(AT_MAX_BUFFER_IN-1)) obj->Buffer.index = 0;
+        if (obj->Buffer.index>=(QAT_MAX_BUFFER_IN-1)) obj->Buffer.index = 0;
     }
     if (c=='\r'){
        obj->Buffer.chkcmd = 1;
@@ -2414,19 +2486,21 @@ static void qATCommandParser_TaskCallback(qEvent_t e){
     qATParser_t *obj = (qATParser_t*)e->TaskData;
     qATResponse_t retval;
     qATCommand_t *Command = (qATCommand_t*)obj->First;
-    char Buff[25]={0};
+    char Buff[QAT_MAX_OUTPUT_BUFFER]={0};
     char *ptr= NULL;
     qSize_t n;
     const char *cmd;
-    qAToutcharfcn = obj->putc;
+
+    ATOutCharFcn = obj->OutputFcn;
+
     if(obj->Buffer.chkcmd){
         obj->Buffer.chkcmd=0;
-        if (strcmp((const char*)obj->Buffer.buff, "at")==0){
+        if (strcmp((const char*)obj->Buffer.buff, QAT_DEFAULT_AT_COMMAND)==0){
         	if(obj->OK_Response){
         		obj->puts(obj->OK_Response);
         		obj->puts(obj->term_EOF);
         	}
-            goto EXIT_ATCMD_PARSER;
+            goto QEXIT_ATCMD_PARSER;
         }
         
         while(Command != NULL){
@@ -2436,45 +2510,46 @@ static void qATCommandParser_TaskCallback(qEvent_t e){
                 cmd = (const char*)(ptr+Command->CmdLen);
                 retval = Command->CommandCallback(obj, cmd, n);
                 switch(retval){
-                    case -1: 
+                    case QAT_ERROR:
                     	obj->puts(obj->ERROR_Response);
                     	obj->puts(obj->term_EOF);
                         break;
-                    case 1:
+                    case QAT_OK:
                         if(obj->OK_Response){
                         	obj->puts(obj->OK_Response);
                         	obj->puts(obj->term_EOF);
                         }
                         break;
-                    case 0:
+                    case QAT_NORESPONSE:
                         break;
-                    default:
+                    default: /*AT_ERRORCODE(#) */
                         if(retval<0){
                             sprintf(Buff,"%s:%d%s",obj->ERROR_Response, -retval, obj->term_EOF);
                             obj->puts(Buff);
                         }                            
                         break;
                 }      
-                goto EXIT_ATCMD_PARSER;
+                goto QEXIT_ATCMD_PARSER;
             }
             Command = Command->Next;
         }
-        if (strcmp((const char*)obj->Buffer.buff, "atid")==0){
+        if (strcmp((const char*)obj->Buffer.buff, QAT_DEFAULT_ID_COMMAND)==0){
         	obj->puts(obj->Identifier);
         	obj->puts(obj->term_EOF);
-            goto EXIT_ATCMD_PARSER;
+            goto QEXIT_ATCMD_PARSER;
         }
         if(strlen((const char*)obj->Buffer.buff)>2){
         	obj->puts(obj->NOTFOUND_Response);
         	obj->puts(obj->term_EOF);
         }
-        EXIT_ATCMD_PARSER:
+        QEXIT_ATCMD_PARSER:
         obj->Buffer.index = 0;
         obj->Buffer.buff[0] = 0x00;
         return;
     }
 }
 
+#endif
 #ifdef Q_TASK_DEV_TEST
 #endif
 

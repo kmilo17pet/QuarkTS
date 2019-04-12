@@ -972,22 +972,23 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
 
 #ifdef Q_ATCOMMAND_PARSER
-    #define     AT_MAX_OUTPUT_BUFFER    64    
-    #define     AT_MAX_BUFFER_IN        32
+    #define     QAT_MAX_OUTPUT_BUFFER    32
+    #define     QAT_MAX_BUFFER_IN        32
 
-    #define     AT_ERROR                (-1)
-    #define     AT_NORESPONSE           (0)
-    #define     AT_OK                   (1)
-    #define     AT_ERRORCODE(_num_)     (-_num_)
+	#define		QAT_DEFAULT_AT_COMMAND	 "at"
+	#define		QAT_DEFAULT_ID_COMMAND	 "atid"
+
+    #define     QAT_ERROR                (-32768)
+    #define     QAT_NORESPONSE           (0)
+    #define     QAT_OK                   (1)
+    #define     QAT_ERRORCODE(_num_)     (-_num_)
 
     typedef volatile struct{
-        volatile char buff[AT_MAX_BUFFER_IN];
+        volatile char buff[QAT_MAX_BUFFER_IN];
         volatile uint16_t index;
         volatile uint8_t chkcmd;
     }qATBuffer_t;
 
-
-    typedef void(*qATOutputFcn_t)(const char); 
     typedef int16_t qATResponse_t; 
     
     typedef struct{
@@ -998,6 +999,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         char *NOTFOUND_Response;
         char *Identifier;
         char *term_EOF;
+        qPutChar_t OutputFcn;
         void (*putc)(const char);
         void (*puts)(const char*);
         qTask_t task;
@@ -1013,12 +1015,10 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
     typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, const char*, qSize_t);
     
-    void qATCommandParser_Setup(qATParser_t *obj, qATOutputFcn_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
-    void qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback);
+    qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
+    qBool_t qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback);
     void qATCommandParser_ISRHandler(qATParser_t *obj, char c);
     qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority);
-    
-
 #endif
 
 
