@@ -224,7 +224,6 @@ inside the EventData field, only in corresponding launch.
 Parameters:
 
     - Task : Pointer to the task node.
-
     - eventdata : Specific event user-data.
 */ 
 void qTaskSendEvent(qTask_t *Task, void* eventdata){
@@ -240,7 +239,6 @@ Set/Change the Task execution interval
 Parameters:
 
     - Task : A pointer to the task node.
-
     - Value : Execution interval defined in seconds (floating-point format). 
               For inmediate execution (tValue = qTimeInmediate).
 */
@@ -256,7 +254,6 @@ Set/Change the number of task iterations
 Parameters:
 
     - Task : A pointer to the task node.
-
     - Value : Number of task executions (Integer value). For indefinite 
               execution (iValue = qPeriodic or qIndefinite). Tasks do not remember
               the number of iteration set initially. After the iterations are 
@@ -276,7 +273,6 @@ Set/Change the task priority value
 Parameters:
 
     - Task : A pointer to the task node.
-
     - Value : Priority Value. [0(min) - 255(max)]
 */
 void qTaskSetPriority(qTask_t *Task, const qPriority_t Value){
@@ -292,7 +288,6 @@ Set/Change the task callback function
 Parameters:
 
     - Task : A pointer to the task node.
-
     - Callback : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
@@ -358,7 +353,6 @@ if task is disabled. When extracted, the scheduler will set Trigger flag to
 Parameters:
 
     - Task : A pointer to the task node.
-
     - eventdata - Specific event user-data.
 
 Return value:
@@ -452,27 +446,21 @@ seconds, <nExecutions> times and executing <CallbackFcn> method on every pass.
 
 Parameters:
     - Task : A pointer to the task node.
-
     - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
-
     - Priority : Task priority Value. [0(min) - 255(max)]
-
     - Time : Execution interval defined in seconds (floating-point format). 
                For inmediate execution (tValue = qTimeInmediate).
-
     - nExecutions : Number of task executions (Integer value). For indefinite 
                execution (nExecutions = qPeriodic or qIndefinite). Tasks do not 
                remember the number of iteration set initially. After the 
                iterations are done, internal iteration counter is 0. If you 
                need to perform another set of iterations, you need to set the 
                number of iterations again.
-    >Note 1: Tasks which performed all their iterations put their own 
-             state to qDisabled.
-    >Note 2: Asynchronous triggers do not affect the iteration counter.
-
+                >Note 1: Tasks which performed all their iterations put their own 
+                        state to qDisabled.
+                >Note 2: Asynchronous triggers do not affect the iteration counter.
     - InitialState : Specifies the initial state of the task (qEnabled or qDisabled).
-
     - arg : Represents the task arguments. All arguments must be passed by
             reference and cast to (void *). Only one argument is allowed, 
             so, for multiple arguments, create a structure that contains 
@@ -520,12 +508,9 @@ time using qTaskSetTime or qTaskSetIterations.
 Parameters:
 
     - Task : A pointer to the task node.
-
     - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter
                  as input argument.
-
     - Priority : Task priority Value. [0(min) - 255(max)]
-
     - arg :      Represents the task arguments. All arguments must be passed by
                  reference and cast to (void *). Only one argument is allowed, 
                  so, for multiple arguments, create a structure that contains 
@@ -552,42 +537,31 @@ passed as input argument inside every state.
 
 Parameters:
     - Task : A pointer to the task node.
-
     - Priority : Task priority Value. [0(min) - 255(max)]
-
     - Time : Execution interval defined in seconds (floating-point format). 
                For inmediate execution (tValue = qTimeInmediate).
-
     - StateMachine: A pointer to the Finite State-Machine (FSM) object
-  
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qSM_t pointer as input argument.
-
     - BeforeAnyState : A state called before the normal state machine execution.
                   This argument is a pointer to a callback function,  with a 
                   qSM_t pointer as input argument.
- 
     - SuccessState : State performed after a state finish with return status 
                      qSM_EXIT_SUCCESS. This argument is a pointer to a callback
                      function with a qSM_t pointer as input argument.
-
     - FailureState : State performed after a state finish with return status 
                      qSM_EXIT_FAILURE. This argument is a pointer to a callback
                      function with a qSM_t pointer as input argument.
-
     - UnexpectedState : State performed after a state finish with return status
                         value between -32766 and 32767. This argument is a 
                         pointer to a callback function with a qSM_t pointer
                         as input argument.
- 
     - InitialTaskState : Specifies the initial state of the task (qEnabled or qDisabled).
-
     - arg : Represents the task arguments. All arguments must be passed by
                      reference and cast to (void *). Only one argument is allowed, 
                      so, for multiple arguments, create a structure that contains 
                      all of the arguments and pass a pointer to that structure.
-    Note:
  
 Return value:
 
@@ -669,9 +643,7 @@ Links the Task with a Ring Buffer.
 Parameters:
 
     - Task : A pointer to the task node.
-
     - RingBuffer : A pointer to a Ring Buffer object
- 
     - Mode: Linking mode. This implies the event that will trigger the task according
             to one of the following modes:
                         > qRB_AUTOPOP: The task will be triggered if there is elements 
@@ -691,7 +663,6 @@ Parameters:
                         > qRB_EMPTY: the task will be triggered if the Ring Buffer
                           is empty. The pointer to the RingBuffer will be 
                           available in the <EventData> field of qEvent_t structure.
- 
     - arg: This argument defines if the Ring buffer will be linked (qLINK) or 
            unlinked (qUNLINK) from the task.
            If the qRB_COUNT mode is specified, this value will be used to check
@@ -870,19 +841,15 @@ Initializes a finite state machine (FSM).
 Parameters:
 
     - obj : a pointer to the FSM object.
-
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qFSM_t pointer as input argument.
-
     - SuccessState : State performed after a state finish with return status 
                      qSM_EXIT_SUCCESS. This argument is a pointer to a callback
                      function with a qFSM_t pointer as input argument.
-
     - FailureState : State performed after a state finish with return status 
                      qSM_EXIT_FAILURE. This argument is a pointer to a callback
                      function with a qFSM_t pointer as input argument.
-
     - UnexpectedState : State performed after a state finish with return status
                         value between -32766 and 32767. This argument is a 
                         pointer to a callback function with a qFSM_t pointer
@@ -890,7 +857,7 @@ Parameters:
 
 Return value:
 
-    Returns 0 on successs, otherwise returns -1;
+    Returns qTrue on successs, otherwise returns qFalse;
 */
 qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
     if(NULL==obj || NULL==InitState) return qFalse;
@@ -917,7 +884,6 @@ Execute the Finite State Machine (FSM).
 Parameters:
 
     - obj : a pointer to the FSM object.
-
     - Data : Represents the FSM arguments. All arguments must be passed by 
              reference and cast to (void *). Only one argument is allowed, so,
              for multiple arguments, create a structure that contains all of 
@@ -954,7 +920,6 @@ Change attributes or set actions to the Finite State Machine (FSM).
 Parameters:
 
     - obj : a pointer to the FSM object.
- 
     - Flag: The attribute/action to be taken
          > qSM_RESTART : Restart the FSM (val argument must correspond to the init state)
          > qSM_CLEAR_STATE_FIRST_ENTRY_FLAG: clear the entry flag for the 
@@ -1004,7 +969,6 @@ armed immediately
 Parameters:
 
     - obj : A pointer to the STimer object.
-
     - Time : The expiration time(Must be specified in seconds).
 
     > Note 1: The scheduler must be running before using STimers.
@@ -1035,7 +999,6 @@ When the time expires, the STimer gets armed inmediatly taking the specified tim
 Parameters:
 
     - obj : A pointer to the STimer object.
-  
     - Time : The expiration time(Must be specified in seconds). 
  
     > Note 1: The scheduler must be running before using STimers.
@@ -1173,7 +1136,6 @@ is rounded to the memory block size.
 Parameters:
 
     - obj : a pointer to the memory pool object
- 
     - size : amount of memory to allocate
  
 Return value:
@@ -1228,7 +1190,6 @@ Free the previously allocated memory by returning it to the specified memory poo
 Parameters:
 
     - obj : a pointer to the memory pool object
- 
     - pmem : pointer to the previously allocated memory
  
 Note: The memory must be returned to the pool from where was allocated
@@ -1277,11 +1238,8 @@ Configures the ring buffer
 Parameters:
 
     - obj : a pointer to the Ring Buffer object
- 
     - DataBlock :  data block or array of data
-
     - ElementSize : size of one element in the data block
- 
     - ElementCount : Max number of elements in the bufffer
  
 Note: Element_count should be a power of two, or it will only use the next 
@@ -2393,7 +2351,7 @@ Setup an instance of the AT Command parser.
 
 Parameters:
 
-    - obj : A pointer to the ATParser instance
+    - Parser : A pointer to the AT Command Parser instance
     - OutputFcn : The basic output-char wrapper function. All the parser responses 
                    will be printed-out through this function.
     - Identifier: The device identifier string. This string will be printed-out
@@ -2409,20 +2367,20 @@ Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF){
-    if ( NULL == obj || NULL == OutputFcn) return qFalse;
-    obj->First  = NULL;
-    obj->OutputFcn = OutputFcn;
-    obj->putc = _qATPutc_Wrapper;
-    obj->puts = _qATPuts_Wrapper;
-    obj->Identifier = (char*)Identifier;
-    obj->OK_Response = (char*)OK_Response;
-    obj->ERROR_Response = (char*)ERROR_Response;
-    obj->NOTFOUND_Response = (char*)NOTFOUND_Response;
-    obj->term_EOF = (char*)term_EOF;
-    memset((void*)obj->Buffer.buff, 0, QAT_MAX_BUFFER_IN);
-    obj->Buffer.chkcmd = 0;
-    obj->Buffer.index = 0;
+qBool_t qATCommandParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF){
+    if ( NULL == Parser || NULL == OutputFcn) return qFalse;
+    Parser->First  = NULL;
+    Parser->OutputFcn = OutputFcn;
+    Parser->putc = _qATPutc_Wrapper;
+    Parser->puts = _qATPuts_Wrapper;
+    Parser->Identifier = (char*)Identifier;
+    Parser->OK_Response = (char*)OK_Response;
+    Parser->ERROR_Response = (char*)ERROR_Response;
+    Parser->NOTFOUND_Response = (char*)NOTFOUND_Response;
+    Parser->term_EOF = (char*)term_EOF;
+    memset((void*)Parser->Input.Buffer, 0, QAT_MAX_BUFFER_IN);
+    Parser->Input.Ready = qFalse;
+    Parser->Input.index = 0;
     return qTrue;
 }
 /*============================================================================*/
@@ -2432,23 +2390,23 @@ Add an AT Command to the parser interface.
 
 Parameters:
 
-    - obj : A pointer to the ATParser instance
-    - cmd : A pointer to the AT command object.
-    - textcmd: The AT Command string in lowercase.
+    - Parser : A pointer to the ATParser instance
+    - Command : A pointer to the AT command object.
+    - TextCommand: The AT Command string in lowercase.
     - Callback: The output message when a command callback returns QAT_OK.  
   
 Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback){
-    if( NULL == obj || NULL == cmd || NULL == textcmd || NULL== Callback ) return qFalse;
-    cmd->Text = (char*)textcmd;
-    cmd->CmdLen = strlen(textcmd);
-    if(cmd->CmdLen<2) return qFalse; /*not enougth to be a valid at command*/ 
-    cmd->CommandCallback = Callback;
-    cmd->Next = obj->First;
-    obj->First = cmd;
+qBool_t qATCommandParser_Add(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback){
+    if( NULL == Parser || NULL == Command || NULL == TextCommand || NULL== Callback ) return qFalse;
+    Command->Text = (char*)TextCommand;
+    Command->CmdLen = strlen(TextCommand);
+    if(Command->CmdLen<2) return qFalse; /*not enougth to be a valid at command*/ 
+    Command->CommandCallback = Callback;
+    Command->Next = Parser->First;
+    Parser->First = Command;
     return qTrue;
 }
 /*============================================================================*/
@@ -2461,71 +2419,110 @@ Note: This API assumes that the respective ISR catch a single byte at a time.
 
 Parameters:
 
-    - obj : A pointer to the ATParser instance
+    - Parser : A pointer to the ATParser instance
     - c : A pointer to the AT command object. 
-  
+
+Return value:
+
+    qTrue when the obj is ready to process the input, otherwise return qFalse
+
 */
-void qATCommandParser_ISRHandler(qATParser_t *obj, char c){
-    if(isgraph(c) && obj->Buffer.chkcmd==0){
-        obj->Buffer.buff[obj->Buffer.index++] = tolower(c);
-        obj->Buffer.buff[obj->Buffer.index]=0x00;
-        if (obj->Buffer.index>=(QAT_MAX_BUFFER_IN-1)) obj->Buffer.index = 0;
+qBool_t qATCommandParser_ISRHandler(qATParser_t *Parser, char c){
+    if(isgraph(c) && Parser->Input.Ready==qFalse){
+        Parser->Input.Buffer[Parser->Input.index++] = tolower(c);
+        Parser->Input.Buffer[Parser->Input.index]=0x00;
+        if (Parser->Input.index>=(QAT_MAX_BUFFER_IN-1)) Parser->Input.index = 0;
     }
     if (c=='\r'){
-       obj->Buffer.chkcmd = 1;
-       obj->Buffer.index=0;
-       qTaskSendEvent(&obj->task, NULL);
+       Parser->Input.Ready = qTrue;
+       Parser->Input.index=0;
+       if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
     }
+    return qFalse;
 }
 /*============================================================================*/
-qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority){
-    return qSchedulerAddxTask(&Parser->task, qATCommandParser_TaskCallback, Priority, qTimeInmediate, qSingleShot, qDisabled, Parser);
+/*qBool_t qSchedulerAdd_ATCommandParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority)
+
+Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
+as an event-triggered task. The parser will reside in the TaskData storage-Pointer.
+
+Parameters:
+
+    - Task : A pointer to the task node.
+    - Parser: A pointer to the AT Command Parser
+    - Priority : Task priority Value. [0(min) - 255(max)]
+
+Return value:
+
+    Returns qTrue on successs, otherwise returns qFalse;
+*/
+qBool_t qSchedulerAdd_ATCommandParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority){
+    Parser->Task = Task;
+    return qSchedulerAddxTask(Task, qATCommandParser_TaskCallback, Priority, qTimeInmediate, qSingleShot, qDisabled, Parser);
 }
 /*============================================================================*/
 static void qATCommandParser_TaskCallback(qEvent_t e){
-    qATParser_t *obj = (qATParser_t*)e->TaskData;
+    qATCommandParser_Run( (qATParser_t*)e->TaskData );
+}
+/*============================================================================*/
+/*qBool_t qATCommandParser_Run(qATParser_t *Parser)
+ 
+Run the AT Command Parser pooling the input for matching commands.
+
+Parameters:
+
+    - Parser : A pointer to the ATParser instance
+
+Return value:
+
+    qTrue on success, otherwise return qFalse
+
+*/
+qBool_t qATCommandParser_Run(qATParser_t *Parser){
+    if( NULL == Parser) return qFalse;
     qATResponse_t retval;
-    qATCommand_t *Command = (qATCommand_t*)obj->First;
+    qATParserInput_t *Input = &Parser->Input;
+    qATCommand_t *Command = (qATCommand_t*)Parser->First;
     char Buff[QAT_MAX_OUTPUT_BUFFER]={0};
     char *ptr= NULL;
     qSize_t n;
     const char *cmd;
 
-    ATOutCharFcn = obj->OutputFcn;
+    ATOutCharFcn = Parser->OutputFcn;
 
-    if(obj->Buffer.chkcmd){
-        obj->Buffer.chkcmd=0;
-        if (strcmp((const char*)obj->Buffer.buff, QAT_DEFAULT_AT_COMMAND)==0){
-        	if(obj->OK_Response){
-        		obj->puts(obj->OK_Response);
-        		obj->puts(obj->term_EOF);
+    if( Input->Ready ){
+        Input->Ready = qFalse;
+        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND)==0){
+        	if(Parser->OK_Response){
+        		Parser->puts(Parser->OK_Response);
+        		Parser->puts(Parser->term_EOF);
         	}
             goto QEXIT_ATCMD_PARSER;
         }
         
         while(Command != NULL){
-            ptr=strstr((const char*)obj->Buffer.buff, Command->Text);
-            if(ptr==(obj->Buffer.buff)){  
-                n = strlen((const char*)obj->Buffer.buff) - Command->CmdLen;
+            ptr=strstr( (const char*)Input->Buffer, Command->Text );
+            if( ptr == Input->Buffer ){  
+                n = strlen((const char*)Input->Buffer) - Command->CmdLen;
                 cmd = (const char*)(ptr+Command->CmdLen);
-                retval = Command->CommandCallback(obj, cmd, n);
+                retval = Command->CommandCallback(Parser, cmd, n);
                 switch(retval){
                     case QAT_ERROR:
-                    	obj->puts(obj->ERROR_Response);
-                    	obj->puts(obj->term_EOF);
+                    	Parser->puts(Parser->ERROR_Response);
+                    	Parser->puts(Parser->term_EOF);
                         break;
                     case QAT_OK:
-                        if(obj->OK_Response){
-                        	obj->puts(obj->OK_Response);
-                        	obj->puts(obj->term_EOF);
+                        if(Parser->OK_Response){
+                        	Parser->puts(Parser->OK_Response);
+                        	Parser->puts(Parser->term_EOF);
                         }
                         break;
                     case QAT_NORESPONSE:
                         break;
                     default: /*AT_ERRORCODE(#) */
                         if(retval<0){
-                            sprintf(Buff,"%s:%d%s",obj->ERROR_Response, -retval, obj->term_EOF);
-                            obj->puts(Buff);
+                            sprintf(Buff,"%s:%d%s",Parser->ERROR_Response, -retval, Parser->term_EOF);
+                            Parser->puts(Buff);
                         }                            
                         break;
                 }      
@@ -2533,21 +2530,23 @@ static void qATCommandParser_TaskCallback(qEvent_t e){
             }
             Command = Command->Next;
         }
-        if (strcmp((const char*)obj->Buffer.buff, QAT_DEFAULT_ID_COMMAND)==0){
-        	obj->puts(obj->Identifier);
-        	obj->puts(obj->term_EOF);
+        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND)==0){
+        	Parser->puts(Parser->Identifier);
+        	Parser->puts(Parser->term_EOF);
             goto QEXIT_ATCMD_PARSER;
         }
-        if(strlen((const char*)obj->Buffer.buff)>2){
-        	obj->puts(obj->NOTFOUND_Response);
-        	obj->puts(obj->term_EOF);
+        if(strlen((const char*)Input->Buffer)>2){
+        	Parser->puts(Parser->NOTFOUND_Response);
+        	Parser->puts(Parser->term_EOF);
         }
         QEXIT_ATCMD_PARSER:
-        obj->Buffer.index = 0;
-        obj->Buffer.buff[0] = 0x00;
-        return;
+        Input->index = 0;
+        Input->Buffer[0] = 0x00;
+        return qTrue;
     }
+    return qFalse;
 }
+/*============================================================================*/
 
 #endif
 #ifdef Q_TASK_DEV_TEST

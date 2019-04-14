@@ -984,15 +984,15 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #define     QAT_ERRORCODE(_num_)     (-_num_)
 
     typedef volatile struct{
-        volatile char buff[QAT_MAX_BUFFER_IN];
+        volatile char Buffer[QAT_MAX_BUFFER_IN];
         volatile uint16_t index;
-        volatile uint8_t chkcmd;
-    }qATBuffer_t;
+        volatile uint8_t Ready;
+    }qATParserInput_t;
 
     typedef int16_t qATResponse_t; 
     
     typedef struct{
-        qATBuffer_t Buffer;
+        qATParserInput_t Input;
         void *First;
         char *OK_Response;
         char *ERROR_Response;
@@ -1002,7 +1002,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         qPutChar_t OutputFcn;
         void (*putc)(const char);
         void (*puts)(const char*);
-        qTask_t task;
+        qTask_t *Task;
     }qATParser_t;   
     
     struct _qATCommand_t{
@@ -1015,10 +1015,11 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
     typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, const char*, qSize_t);
     
-    qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
-    qBool_t qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback);
-    void qATCommandParser_ISRHandler(qATParser_t *obj, char c);
-    qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority);
+    qBool_t qATCommandParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
+    qBool_t qATCommandParser_Add(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback);
+    qBool_t qATCommandParser_ISRHandler(qATParser_t *Parser, char c);
+    qBool_t qSchedulerAdd_ATCommandParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
+    qBool_t qATCommandParser_Run(qATParser_t *Parser);
 #endif
 
 
