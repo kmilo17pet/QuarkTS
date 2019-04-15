@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.7
+ *  Version : 4.6.7d
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -61,7 +61,7 @@ extern "C" {
     #include <ctype.h>
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.6i"
+    #define QUARTKTS_VERSION    "4.6.7d"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -972,9 +972,6 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
 
 #ifdef Q_ATCOMMAND_PARSER
-    #define     QAT_MAX_OUTPUT_BUFFER    32
-    #define     QAT_MAX_BUFFER_IN        32
-
 	#define		QAT_DEFAULT_AT_COMMAND	 "at"
 	#define		QAT_DEFAULT_ID_COMMAND	 "atid"
 
@@ -984,41 +981,70 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #define     QAT_ERRORCODE(_num_)     (-_num_)
 
     typedef volatile struct{
-        volatile char buff[QAT_MAX_BUFFER_IN];
+        volatile char *Buffer;
         volatile uint16_t index;
-        volatile uint8_t chkcmd;
-    }qATBuffer_t;
+        volatile uint8_t Ready;
+        qSize_t Size;
+    }qATParserInput_t;
 
     typedef int16_t qATResponse_t; 
     
     typedef struct{
-        qATBuffer_t Buffer;
+        qATParserInput_t Input;
         void *First;
         char *OK_Response;
         char *ERROR_Response;
         char *NOTFOUND_Response;
         char *Identifier;
-        char *term_EOF;
+        char *term_EOL;
         qPutChar_t OutputFcn;
         void (*putc)(const char);
         void (*puts)(const char*);
-        qTask_t task;
+        qTask_t *Task;
+        char *Output;
+        qSize_t SizeOutput;
     }qATParser_t;   
+    
+    #define QATCMDTYPE_UNDEF    0
+    #define QATCMDTYPE_CHECK    1
+    #define QATCMDTYPE_TEST     2
+    #define QATCMDTYPE_READ     3
+    #define QATCMDTYPE_SET      4
+    #define QATCMDTYPE_EXEC     5 
+
+    typedef enum{
+        qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF,
+        qATCMDTYPE_CHECK    = QATCMDTYPE_CHECK,
+        qATCMDTYPE_TEST     = QATCMDTYPE_TEST,
+        qATCMDTYPE_READ     = QATCMDTYPE_READ,
+        qATCMDTYPE_SET      = QATCMDTYPE_SET
+    }qATCommandType_t;
+
+    typedef struct{
+        void *Command;
+        qATCommandType_t Type;
+        char *StrData;
+        qSize_t StrLen;
+    }ATParser_CmdPreParser_t;
+
+    typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, ATParser_CmdPreParser_t*);
     
     struct _qATCommand_t{
         char *Text;
         qSize_t CmdLen;
-        qATResponse_t (*CommandCallback)(qATParser_t*, const char*, qSize_t);
+        qATCommandCallback_t CommandCallback;
         struct _qATCommand_t *Next;
     };
     #define qATCommand_t struct _qATCommand_t
 
-    typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, const char*, qSize_t);
-    
-    qBool_t qATCommandParser_Setup(qATParser_t *obj, qPutChar_t OutputFcn, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOF);
-    qBool_t qATCommandParser_Add(qATParser_t *obj, qATCommand_t *cmd, const char *textcmd, qATCommandCallback_t Callback);
-    void qATCommandParser_ISRHandler(qATParser_t *obj, char c);
-    qBool_t qSchedulerAdd_ATCommandParserTask(qATParser_t *Parser, qPriority_t Priority);
+
+
+    qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL);
+    qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback);
+    qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c);
+    qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
+    qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
+    qBool_t qATParser_Run(qATParser_t *Parser);
 #endif
 
 
