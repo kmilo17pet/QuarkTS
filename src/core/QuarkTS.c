@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.7d
+ *  Version : 4.6.7e
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 /*
-For documentation, read the wiki
+For documentation, read the Wiki
 https://github.com/kmilo17pet/QuarkTS/wiki
 and the available API
 https://github.com/kmilo17pet/QuarkTS/wiki/APIs
@@ -215,7 +215,7 @@ uint32_t qTaskGetCycles(const qTask_t *Task){
 /*============================================================================*/
 /*void qTaskSendEvent(qTask_t *Task, void* eventdata)
 
-Sends a simple asyncrohous event. This method marks the task as 'qReady' for 
+Sends a simple asynchronous event. This method marks the task as 'qReady' for
 execution, therefore, the planner will launch the task immediately according to
 the scheduling rules (even if task is disabled) and setting the Trigger flag to
 "byAsyncEvent". Specific user-data can be passed through, and will be available
@@ -240,7 +240,7 @@ Parameters:
 
     - Task : A pointer to the task node.
     - Value : Execution interval defined in seconds (floating-point format). 
-              For inmediate execution (tValue = qTimeInmediate).
+              For immediate execution (tValue = qTimeInmediate).
 */
 void qTaskSetTime(qTask_t *Task, const qTime_t Value){
     if(NULL==Task) return;
@@ -344,7 +344,7 @@ void qTaskClearTimeElapsed(qTask_t *Task){
 /*============================================================================*/
 /*qBool_t qTaskQueueEvent(const qTask_t *Task, void* eventdata)
 
-Insert an asyncrohous event in the FIFO priority queue. The task will be ready 
+Insert an asynchronous event in the FIFO priority queue. The task will be ready
 for execution according to the queue order (determined by priority), even 
 if task is disabled. When extracted, the scheduler will set Trigger flag to 
 "byQueueExtraction". Specific user-data can be passed through, and will be
@@ -401,8 +401,8 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     MaxpValue = QUARKTS.QueueStack[0].Task->Priority;
     for(i=1;i<QUARKTS.QueueSize;i++){ /*Find the task with the highest priority*/
         if(NULL == QUARKTS.QueueStack[i].Task ) break; /*break if the tail is reached*/
-        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){ /*check if the queueded task has the max priority value*/
-            MaxpValue = QUARKTS.QueueStack[i].Task->Priority; /*reasign the max value*/
+        if(QUARKTS.QueueStack[i].Task->Priority > MaxpValue){ /*check if the queued task has the max priority value*/
+            MaxpValue = QUARKTS.QueueStack[i].Task->Priority; /*Reassign the max value*/
             IndexTaskToExtract = i;  /*save the index*/
         }
     }   
@@ -450,7 +450,7 @@ Parameters:
                  as input argument.
     - Priority : Task priority Value. [0(min) - 255(max)]
     - Time : Execution interval defined in seconds (floating-point format). 
-               For inmediate execution (tValue = qTimeInmediate).
+               For immediate execution (tValue = qTimeInmediate).
     - nExecutions : Number of task executions (Integer value). For indefinite 
                execution (nExecutions = qPeriodic or qIndefinite). Tasks do not 
                remember the number of iteration set initially. After the 
@@ -468,7 +468,7 @@ Parameters:
 
 Return value:
 
-    Returns qTrue on successs, otherwise returns qFalse;
+    Returns qTrue on success, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
     if(NULL==Task) return qFalse;
@@ -518,7 +518,7 @@ Parameters:
      
 Return value:
 
-    Returns qTrue on successs, otherwise returns qFalse;     
+    Returns qTrue on success, otherwise returns qFalse;
      */
 qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
     return qSchedulerAddxTask(Task, CallbackFcn, Priority, qTimeInmediate, qSingleShot, qDisabled, arg);
@@ -539,7 +539,7 @@ Parameters:
     - Task : A pointer to the task node.
     - Priority : Task priority Value. [0(min) - 255(max)]
     - Time : Execution interval defined in seconds (floating-point format). 
-               For inmediate execution (tValue = qTimeInmediate).
+               For immediate execution (tValue = qTimeInmediate).
     - StateMachine: A pointer to the Finite State-Machine (FSM) object
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
@@ -565,7 +565,7 @@ Parameters:
  
 Return value:
 
-    Returns qTrue on successs, otherwise returns qFalse;
+    Returns qTrue on success, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                             qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
@@ -631,7 +631,7 @@ static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange 
         _qScheduler_PriorizedInsert(&new_head, tmp1);  
     }
     *head = new_head; /*a new head will be created after the rearrangement*/
-    QUARKTS.Flag.Init= qTrue; /*set the initializtion flag*/
+    QUARKTS.Flag.Init= qTrue; /*set the initialization flag*/
     qExitCritical();
 }
 #endif
@@ -671,7 +671,7 @@ Parameters:
 
 Return value:
 
-    Returns qTrue on successs, otherwise returns qFalse;     
+    Returns qTrue on success, otherwise returns qFalse;
 */
 #ifdef Q_RINGBUFFERS
 qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
@@ -710,6 +710,10 @@ Feed the scheduler system tick. This call is mandatory and must be called once
 inside the dedicated timer interrupt service routine (ISR). 
 */    
 void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
+/*============================================================================*/
+qClock_t qSchedulerGetTick(void){
+	return _qSysTick_Epochs_;
+}
 /*============================================================================*/
 /*void qSchedule(void)
     
@@ -797,7 +801,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     return qSuspended;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for tasks that fullfill the conditions to get the qReady state*/
+static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for tasks that fulfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
     #ifdef Q_RINGBUFFERS 
     qTrigger_t trg = qTriggerNULL;
@@ -923,7 +927,7 @@ Parameters:
     - Flag: The attribute/action to be taken
          > qSM_RESTART : Restart the FSM (val argument must correspond to the init state)
          > qSM_CLEAR_STATE_FIRST_ENTRY_FLAG: clear the entry flag for the 
-                current state if the NextState field doesnt change.
+                current state if the NextState field doesn't change.
          > qSM_FAILURE_STATE: Set the Failure State
          > qSM_SUCCESS_STATE: Set the Success State
          > qSM_UNEXPECTED_STATE: Set the Unexpected State
@@ -963,7 +967,7 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
 /*============================================================================*/
 /*qBool_t qSTimerSet(qSTimer_t obj, const qTime_t Time)
  
-Set the expiration time for a STimer. On success, the Stimer gets 
+Set the expiration time for a STimer. On success, the STimer gets
 armed immediately
 
 Parameters:
@@ -972,7 +976,7 @@ Parameters:
     - Time : The expiration time(Must be specified in seconds).
 
     > Note 1: The scheduler must be running before using STimers.
-    > Note 2: The expiration time should be at least, two times greather than 
+    > Note 2: The expiration time should be at least, two times greater than
               the scheduler-Tick.
 
 Return value:
@@ -992,9 +996,9 @@ qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
 
 Non-Blocking STimer check with automatic arming. 
 Behavior:
-If disarmed, it gets armed inmediatly with the specified time. 
+If disarmed, it gets armed immediately with the specified time.
 If armed, the time argument is ignored and the API only checks for expiration.
-When the time expires, the STimer gets armed inmediatly taking the specified time.
+When the time expires, the STimer gets armed immediately taking the specified time.
 
 Parameters:
 
@@ -1002,7 +1006,7 @@ Parameters:
     - Time : The expiration time(Must be specified in seconds). 
  
     > Note 1: The scheduler must be running before using STimers.
-    > Note 2: The expiration time should be at least, two times greather than  
+    > Note 2: The expiration time should be at least, two times greater than
               the scheduler-Tick.
     > Note 3: Time parameter is only taken when the STimer is re-armed
   
@@ -1021,13 +1025,13 @@ qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time){
         }
         else return qFalse;
     }
-    qSTimerSet(obj, Time); /*if stimer not enabled, rearm the timer*/
+    qSTimerSet(obj, Time); /*if STimer not enabled, re-arm the timer*/
     return qFalse;    
 }
 /*============================================================================*/
 /*qBool_t qSTimerExpired(qSTimer_t *obj)
 
-Non-Blocking Stimer check
+Non-Blocking STimer check
 
 Parameters:
 
@@ -1240,7 +1244,7 @@ Parameters:
     - obj : a pointer to the Ring Buffer object
     - DataBlock :  data block or array of data
     - ElementSize : size of one element in the data block
-    - ElementCount : Max number of elements in the bufffer
+    - ElementCount : Max number of elements in the buffer
  
 Note: Element_count should be a power of two, or it will only use the next 
       lower power of two
@@ -1298,7 +1302,7 @@ Parameters:
   
 Return value:
 
-    qTrue if data was retrived from Rbuffer, otherwise returns qFalse
+    qTrue if data was retrieved from RBuffer, otherwise returns qFalse
 */
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
     void *data = NULL;
@@ -1323,7 +1327,7 @@ Parameters:
   
 Return value:
 
-    qTrue on succesful add, qFalse if not added
+    qTrue on successful add, qFalse if not added
 */
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
     qBool_t status = qFalse;
@@ -1379,7 +1383,7 @@ qBool_t qCheckEndianness(void){
 /*============================================================================*/
 /*void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
  
-Wrapper method to write n RAW data througth fcn
+Wrapper method to write n RAW data through fcn
   
 Parameters:
 
@@ -1397,7 +1401,7 @@ void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, const qSize_t n, qBo
 /*============================================================================*/
 /*void qInputRaw(qGetChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
 
-Wrapper method to get n RAW data througth fcn
+Wrapper method to get n RAW data through fcn
   
 Parameters:
 
@@ -1415,7 +1419,7 @@ void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBoo
 /*============================================================================*/
 /*void qOutputString(qPutChar_t fcn, const char *s, qBool_t AIP)
  
-Wrapper method to write a string througth fcn
+Wrapper method to write a string through fcn
   
 Parameters:
 
@@ -1474,7 +1478,7 @@ char* qU32toX(uint32_t value, char *str, int8_t n){
 Converts the input string s consisting of hexadecimal digits into an unsigned 
 integer value. The input parameter s should consist exclusively of hexadecimal 
 digits, with optional whitespaces. The string will be processed one character at
-a time, until the function reaches a character which it doesn’t recognize 
+a time, until the function reaches a character which it doesn't recognize
 (including a null character).
   
 Parameters:
@@ -1489,7 +1493,8 @@ uint32_t qXtoU32(const char *s) {
     uint32_t val = 0;
     uint8_t byte;
     uint8_t nparsed = 0;
-    while (*s != '\0' && nparsed<8) { /*loop ultil the end of the string or the number of parsed chars exceeds the 32bit notation*/
+    if( NULL == s ) return 0;
+    while (*s != '\0' && nparsed<8) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
         byte = toupper(*s++); /*get the hex char, considerate only upper case*/
         if( isxdigit(byte) ){ /*if is a valid hex digit*/
             nparsed++; /*increase the parsed char count*/
@@ -1531,6 +1536,7 @@ double qAtoF(const char *s){
         int powersign; 
         double power2;
     #endif    
+    if( NULL == s ) return 0.0;
     for(i = 0; isspace(s[i]); ++i); /*discard whitespaces*/
     sign = ('-' == s[i])? -1 : 1; /*set the sign*/
     if('-' == s[i] || '+' == s[i]) ++i; /*discards any other sign chars*/
@@ -1589,8 +1595,10 @@ If the converted value would be out of the range of representable values by
 an int, it causes undefined behavior.
 */
 int qAtoI(const char *s){
-    int res = 0; /*holds the resulting integer*/
+	int res = 0; /*holds the resulting integer*/
     int sgn = 1; /*only to hold the sign*/
+
+    if( NULL == s ) return 0;
 
     for (; isspace(*s); ++s); /*discard whitespaces*/
 
@@ -1607,13 +1615,13 @@ int qAtoI(const char *s){
     return sgn * res; /*return the computed integer with sign*/
 }
 /*============================================================================*/
-/*this method makes the basic conversion of unsigned integer to ascii
+/*this method makes the basic conversion of unsigned integer to ASCII
 NULL Terminator not included
 */
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base){
     uint8_t i = 0;
     int rem;
-    if (0 == num){ /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (0 == num){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
         str[i++] = '0';        
         return i;
     }
@@ -1694,7 +1702,7 @@ char* qItoA(int32_t num, char* str, uint8_t base){
 /* char* qBtoA(qBool_t num, char *str)
 
 Converts a boolean value to a null-terminated string. Input is considered true
-with any value diferent to zero (0).
+with any value different to zero (0).
 
 str should be an array long enough to contain the output
 
@@ -1721,7 +1729,7 @@ char* qBtoA(qBool_t num, char *str){
 /* char* qQBtoA(qBool_t num, char *str)
 
 Converts a qBool_t value to a null-terminated string. Input is considered true
-with any value diferent to zero (0).
+with any value different to zero (0).
 
 str should be an array long enough to contain the output
 
@@ -1843,15 +1851,15 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     }
     
     intPart = (uint32_t)num; /*get the integer parts*/
-    num -= intPart; /*get the floating-point part substracting the integer part from the original value*/
+    num -= intPart; /*get the floating-point part subtracting the integer part from the original value*/
     i += __q_revuta(intPart, str+i, 10); /*convert the integer part in decimal form*/
     if (precision){ /*decimal part*/
         str[i++] = '.'; /*place decimal point*/
         while (precision--){ /*convert until precision reached*/
-            num *= 10.0;  /*start moving the floating-point part one by one multipliying by 10*/
+            num *= 10.0;  /*start moving the floating-point part one by one multiplying by 10*/
             c = (char)num; /*get the bcd byte*/
-            str[i++] = c + '0'; /*convert to ascii and put it inside the buffer*/
-            num -= c; /*substract the procesed floating-point digit*/
+            str[i++] = c + '0'; /*convert to ASCII and put it inside the buffer*/
+            num -= c; /*Subtract the processed floating-point digit*/
         }
     }
     str[i] = '\0'; /*put the null char*/
@@ -2270,7 +2278,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
     qBool_t CurrentPinValue;   
     if(NULL == Instance) return qFalse;
     
-    if( QEDGECHECK_WAIT == Instance->State){ /*debounce wait state*/
+    if( QEDGECHECK_WAIT == Instance->State){ /*de-bounce wait state*/
         if( (_qSysTick_Epochs_- Instance->Start)>=Instance->DebounceTime )  Instance->State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/       
         return qTrue;
     }
@@ -2289,7 +2297,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
         }
         
         if( QEDGECHECK_UPDATE == Instance->State){ /*update state*/
-            if(Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is efective*/
+            if(Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
                 Node->Status = (CurrentPinValue)? qRISING : qFALLING; /*set the edge status*/
             }      
             Node->PreviousPinValue = CurrentPinValue; /*keep the previous level*/
@@ -2328,6 +2336,7 @@ static void qATParser_TaskCallback(qEvent_t e);
 static  qPutChar_t ATOutCharFcn = NULL;
 static void _qATPutc_Wrapper(const char c);
 static void _qATPuts_Wrapper(const char *s);
+static qSize_t qATParser_NumOfArgs(const char *str);
 
 /*============================================================================*/
 static void _qATPutc_Wrapper(const char c){
@@ -2338,13 +2347,6 @@ static void _qATPuts_Wrapper(const char *s){
 	uint16_t i=0;
 	while(s[i]) ATOutCharFcn(NULL, s[i++]);
 }
-/*============================================================================*/
-qSize_t _qAT_CountChars(const char *str, const char character){
-	size_t count = 0;
-	while(*str) if (*str++ == character) ++count;
-	return count;
-}
-
 /*============================================================================*/
 /*qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, 
                                 char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, 
@@ -2412,6 +2414,7 @@ Parameters:
                     Since this service only handles AT commands, this string has 
                     to begin by the "at" characters and should be in lower case.
     - Callback: The handler of the callback function associated to the command.
+    			Prototype: qATResponse_t xCallback(qATParser_t* parser, qATParser_PreCmd_t* param)
   
 Return value:
 
@@ -2423,7 +2426,7 @@ qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const
     if( Command->CmdLen < 2) return qFalse;
     if( 'a' != TextCommand[0] || 't' != TextCommand[1] ) return qFalse;
     Command->Text = (char*)TextCommand;
-    if(Command->CmdLen<2) return qFalse; /*not enougth to be a valid at command*/ 
+    if(Command->CmdLen<2) return qFalse; /*not enough to be a valid at command*/
     Command->CommandCallback = Callback;
     Command->Next = Parser->First;
     Parser->First = Command;
@@ -2527,7 +2530,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
     qATResponse_t retval;
     qATParserInput_t *Input = &Parser->Input;
     qATCommand_t *Command = (qATCommand_t*)Parser->First;
-    ATParser_CmdPreParser_t params; 
+    qATParser_PreCmd_t params;
     char *ptr= NULL;
     ATOutCharFcn = Parser->OutputFcn;
 
@@ -2544,12 +2547,12 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         while( NULL != Command ){
             ptr=strstr( (const char*)Input->Buffer, Command->Text );
             if( ptr == Input->Buffer ){ 
-                /*command pre-parsing*/  
             	Parser->Output[0] = 0;
                 params.Type = qATCMDTYPE_UNDEF;
                 params.Command = Command;
                 params.StrLen = strlen((const char*)Input->Buffer) - Command->CmdLen;
                 params.StrData = (char*)(ptr+Command->CmdLen);
+                params.NumArgs = 0;
                 if( 0 == params.StrLen ) params.Type = qATCMDTYPE_CHECK;
                 if ( params.StrLen > 0){
                     if( '?' == params.StrData[0] ){
@@ -2559,7 +2562,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
                     } 
                     else if( params.StrLen>=2 ){
                         if( '=' == params.StrData[0]){
-                        	if('?' == params.StrData[1] ){
+                        	if( '?' == params.StrData[1] ){
                         		if(2 == params.StrLen){
                         			params.Type = qATCMDTYPE_TEST;
                                 	params.StrData+=2;
@@ -2571,6 +2574,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
                                 params.Type = qATCMDTYPE_SET;
                                 params.StrData++;
                                 params.StrLen--;
+                                params.NumArgs = qATParser_NumOfArgs(params.StrData);
                         	}
                         }
                         else params.Type = qATCMDTYPE_UNDEF;
@@ -2623,6 +2627,140 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         return qTrue;
     }
     return qFalse;
+}
+/*============================================================================*/
+/*char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out)
+
+This function get the <n> argument parsed as <String> from the incoming AT command.
+This function should be only invoked from the callback context of the  recognized command.
+
+Parameters:
+
+    - param : A pointer to the pre-parser instance
+    		  (only available from the at-command callback)
+    - n : The number of the argument
+    - out: Array in memory where to store the resulting null-terminated string.
+
+Return value:
+
+    Same as <out>  on success, otherwise returns NULL.
+*/
+char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out){
+	int8_t i,j, argc = 0;
+	char *ret = NULL;
+
+	if( NULL == param || NULL == out || n<=0 ) return NULL;
+	if( QATCMDTYPE_SET !=  param->Type) return NULL;
+
+	n--;
+	for(i=0, j=0 ; '\0' != param->StrData[i]; i++){
+		if(argc == n){
+			ret = out;
+			if( argc>n || QAT_DEFAULT_ATSET_DELIM == param->StrData[i] ) break;
+			out[j++]=param->StrData[i];
+			out[j]='\0';
+		}
+		if( QAT_DEFAULT_ATSET_DELIM == param->StrData[i] ) argc++;
+	}
+	return ret;
+}
+/*============================================================================*/
+static qSize_t qATParser_NumOfArgs(const char *str){
+	qSize_t count = 0;
+	while(*str) if ( QAT_DEFAULT_ATSET_DELIM == *str++ ) ++count;
+	return count+1;
+}
+/*============================================================================*/
+/*char* qATParser_GetArgPtr(qATParser_PreCmd_t *param, int8_t n)
+
+Get the pointer where the desired argument starts.
+This function should be only invoked from the callback context of the  recognized command.
+
+Parameters:
+
+    - param : A pointer to the pre-parser instance
+    		  (only available from the at-command callback)
+    - n : The number of the argument
+
+Return value:
+
+    A pointer to the desired argument. NULL  pointer if the argument is not present.
+*/
+char* qATParser_GetArgPtr(qATParser_PreCmd_t *param, int8_t n){
+	int16_t i, argc = 0;
+	if( NULL == param  || n<=0) return NULL;
+	if( QATCMDTYPE_SET !=  param->Type) return NULL;
+	if( n==1 ) return param->StrData;
+	n--;
+	for(i=0; '\0' != param->StrData[i]; i++){
+		if( QAT_DEFAULT_ATSET_DELIM == param->StrData[i] ){
+			if(++argc >= n) return (param->StrData+i+1);
+		}
+	}
+	return NULL;
+}
+
+/*============================================================================*/
+/*int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n)
+
+This function get the <n> argument parsed as <Integer> from the incoming AT command.
+This function should be only invoked from the callback context of the  recognized command.
+Note: see qAtoI
+
+
+Parameters:
+
+    - param : A pointer to the pre-parser instance
+    		  (only available from the at-command callback)
+    - n : The number of the argument
+
+Return value:
+
+    The argument parsed as Float. Same behavior of qAtoI. If argument not found returns 0
+*/
+int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n){
+	return (int) qAtoI( qATParser_GetArgPtr(param, n) );
+}
+/*============================================================================*/
+/*float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n)
+
+This function get the <n> argument parsed as <Float> from the incoming AT command.
+This function should be only invoked from the callback context of the  recognized command.
+Note: see qAtoF
+
+Parameters:
+
+    - param : A pointer to the pre-parser instance
+    		  (only available from the at-command callback)
+    - n : The number of the argument
+
+Return value:
+
+    The argument parsed as Float. Same behavior of qAtoF. If argument not found returns 0
+*/
+float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n){
+	return (float) qAtoF( qATParser_GetArgPtr(param, n) );
+}
+/*============================================================================*/
+/*float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n)
+
+This function get the <n> HEX argument parsed <uint32_t> from the
+incoming AT command.
+This function should be only invoked from the callback context of the  recognized command.
+Note: see qXtoU32
+
+Parameters:
+
+    - param : A pointer to the pre-parser instance
+    		  (only available from the at-command callback)
+    - n : The number of the argument
+
+Return value:
+
+    The HEX argument parsed as uint32_t. Same behavior of qXtoU32. If argument not found returns 0
+*/
+uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n){
+	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
 
