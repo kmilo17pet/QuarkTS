@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.7e
+ *  Version : 4.6.7f
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -1316,7 +1316,7 @@ qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
     if(NULL==obj) return qFalse;
     if (!qRBufferEmpty(obj)) {
         data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
-        memcpy(dest, data, obj->ElementSize);
+        qMemCpy(dest, data, obj->ElementSize);
         obj->tail++;
         return qTrue;
     }
@@ -2135,7 +2135,7 @@ Return value:
 */
 qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qSTimer_t *timeout, qTime_t t){
     if(qFalse == obj->ResponseReceived && NULL == obj->Pattern2Match){ /*handler no configured yet*/
-        obj->PatternLength = (0 == n)? strlen(Pattern) : n; /*set the number of chars to match*/
+        obj->PatternLength = (0 == n)? qStrLen(Pattern) : n; /*set the number of chars to match*/
         obj->MatchedCount = 0; /*reinitialize the chars match count*/
         obj->ResponseReceived = qFalse; /*clear the ready flag*/
         obj->Pattern2Match = (char*)Pattern; /*set the expected response pattern*/
@@ -2359,7 +2359,9 @@ void qMemSet(void *dest, uint8_t value, qSize_t count){
     uint8_t *s = (uint8_t *)dest;
     while(count--) *s++ = value;
 }
-/*
+/*============================================================================*/
+/*char* qStrStr(const char *str, const char *substr)
+
 Returns a pointer to the first occurrence of <substr> in <str>, or a null pointer if 
 <substr> is not part of <str>.
 The matching process does not include the terminating null-characters, but it stops there.
@@ -2392,7 +2394,9 @@ char* qStrStr(const char *str, const char *substr){
 	}
 	return NULL;
 }
-/*
+/*============================================================================*/
+/*int qStrCmp(const char * s1, const char * s2)
+
 Compares the C string <s1> to the C string <str2>. 
 This function starts comparing the first character of each string. If they are equal 
 to each other, it continues with the following pairs until the characters differ or 
@@ -2418,6 +2422,34 @@ int qStrCmp(const char * s1, const char * s2){
     if(i > 0) return 1;
     return i;
 }
+/*============================================================================*/
+qSize_t qStrLen(const char *s){
+    size_t i;
+    for (i = 0; s[i] != '\0'; i++) ;
+    return i; 
+}
+/*============================================================================*/
+char* qStrChr(const char *s, const char c){
+    for (; *s != '\0'; ++s){
+        if (*s == c) return (char *) s;
+    }
+    return NULL;
+}
+/*============================================================================*/
+void* qMemCpy(void *dst, const void *src, qSize_t len){
+    char *d = dst;
+    const char *s = src;
+    while (len--) *d++ = *s++;
+    return dst;
+}
+/*============================================================================*/
+char* qStrnCpy( char* dst, const char* src, qSize_t n ){
+   qSize_t i = 0;
+   char *ret = dst;
+   while( (i++ != n ) && (*dst++ = *src++));
+   return ret;
+}
+/*============================================================================*/
 #endif
 
 
@@ -2526,7 +2558,7 @@ Return value:
 */
 qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt){
     if( NULL == Parser || NULL == Command || NULL == TextCommand || NULL== Callback ) return qFalse;
-    Command->CmdLen = strlen(TextCommand);
+    Command->CmdLen = qStrLen(TextCommand);
     if( Command->CmdLen < 2) return qFalse;
     if( 'a' != TextCommand[0] || 't' != TextCommand[1] ) return qFalse;
     Command->Text = (char*)TextCommand;
@@ -2585,8 +2617,8 @@ Return value:
 
 qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
 	if( NULL == Parser || NULL == cmd) return qFalse;
-	if( Parser->Input.Ready || strlen(cmd) > (Parser->Input.Size-1)) return qFalse; /*Parser Busy with another command or cmd to long*/
-	strncpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
+	if( Parser->Input.Ready || qStrLen(cmd) > (Parser->Input.Size-1)) return qFalse; /*Parser Busy with another command or cmd to long*/
+	qStrnCpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
 	Parser->Input.index = 0;
 	Parser->Input.Ready = qTrue;
 	return qTrue;
@@ -2655,7 +2687,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
             	Parser->Output[0] = 0;
                 params.Type = qATCMDTYPE_UNDEF;
                 params.Command = Command;
-                params.StrLen = strlen((const char*)Input->Buffer) - Command->CmdLen;
+                params.StrLen = qStrLen((const char*)Input->Buffer) - Command->CmdLen;
                 params.StrData = (char*)(ptr+Command->CmdLen);
                 params.NumArgs = 0;
                 if( 0 == params.StrLen ){ /*command should be an ACT command */
@@ -2747,7 +2779,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         	Parser->puts(Parser->term_EOL);
             goto QEXIT_ATCMD_PARSER;
         }
-        if(strlen((const char*)Input->Buffer)>2){
+        if(qStrLen((const char*)Input->Buffer)>2){
         	Parser->puts(Parser->NOTFOUND_Response);
         	Parser->puts(Parser->term_EOL);
         }

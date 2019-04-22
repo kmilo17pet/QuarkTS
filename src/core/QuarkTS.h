@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.7e
+ *  Version : 4.6.7f
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -56,7 +56,9 @@ extern "C" {
     
     
     #include <stdint.h>
-    #include <string.h>
+    #ifndef  Q_USE_QSTRING
+        #include <string.h>
+    #endif
     #include <stdio.h>
     #include <stdlib.h>
     #include <ctype.h>
@@ -64,7 +66,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.7e"
+    #define QUARTKTS_VERSION    "4.6.7f"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -976,10 +978,18 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     void qMemSet(void *dest, uint8_t value, qSize_t count);
     char* qStrStr(const char *str, const char *substr);
     int qStrCmp(const char * s1, const char * s2);
+    qSize_t qStrLen(const char *s);
+    char* qStrChr(const char *s, const char c);
+    void* qMemCpy(void *dst, const void *src, qSize_t len);
+    char* qStrnCpy( char* dst, const char* src, qSize_t n );
 #else
-    #define qMemSet memset
-    #define qStrStr strstr
-    #define qStrCmp strcmp
+    #define qMemSet     memset
+    #define qStrStr     strstr
+    #define qStrCmp     strcmp
+    #define qStrLen     strlen
+    #define qStrChr     strchr
+    #define qMemCpy     memcpy
+    #define qStrnCpy    strncpy
 #endif
 
 #ifdef Q_ATCOMMAND_PARSER
