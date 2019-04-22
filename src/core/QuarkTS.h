@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.7f
+ *  Version : 4.6.7g
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -46,27 +46,20 @@ extern "C" {
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
     #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
-    #define Q_USE_QSTRING           /*some tiny funcions from string.h*/
 
     #define Q_MAX_FTOA_PRECISION      10
     #undef QATOF_FULL
-    
-    
-    /*================================================================================================================================*/
-    
-    
+        
+    /*================================================================================================================================*/   
     #include <stdint.h>
-    #ifndef  Q_USE_QSTRING
-        #include <string.h>
-    #endif
+    #include <string.h>
     #include <stdio.h>
     #include <stdlib.h>
     #include <ctype.h>
 
-
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.7f"
+    #define QUARTKTS_VERSION    "4.6.7g"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -974,24 +967,6 @@ qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *P
 qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
-#ifdef  Q_USE_QSTRING
-    void qMemSet(void *dest, uint8_t value, qSize_t count);
-    char* qStrStr(const char *str, const char *substr);
-    int qStrCmp(const char * s1, const char * s2);
-    qSize_t qStrLen(const char *s);
-    char* qStrChr(const char *s, const char c);
-    void* qMemCpy(void *dst, const void *src, qSize_t len);
-    char* qStrnCpy( char* dst, const char* src, qSize_t n );
-#else
-    #define qMemSet     memset
-    #define qStrStr     strstr
-    #define qStrCmp     strcmp
-    #define qStrLen     strlen
-    #define qStrChr     strchr
-    #define qMemCpy     memcpy
-    #define qStrnCpy    strncpy
-#endif
-
 #ifdef Q_ATCOMMAND_PARSER
 	#define		QAT_DEFAULT_AT_COMMAND	 "at"
 	#define		QAT_DEFAULT_ID_COMMAND	 "atid"
@@ -1010,7 +985,6 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #define     QAT_OK                   qAT_OK
     #define     QAT_ERRORCODE(_num_)     qAT_ERRORCODE(_num_)
 
-
     typedef volatile struct{
         volatile char *Buffer;
         volatile uint16_t index;
@@ -1018,8 +992,6 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         qSize_t Size;
     }qATParserInput_t;
 
-
-    
     typedef struct{
         qATParserInput_t Input;
         void *First;
@@ -1029,7 +1001,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         char *Identifier;
         char *term_EOL;
         qPutChar_t OutputFcn;
-        void (*putc)(const char);
+        void (*putch)(const char);
         void (*puts)(const char*);
         qTask_t *Task;
         char *Output;
