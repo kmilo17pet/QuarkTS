@@ -63,8 +63,9 @@ static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
 static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event);
 static qTask_t* _qScheduler_GetNodeFromChain(void);
-static void _qScheduler_RearrangeChain(qTask_t **head);
-static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task);
+static qTask_t* _qScheduler_RearrangeChain(qTask_t *head);
+static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task);
+static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task);
 static qBool_t _qScheduler_ReadyTasksAvailable(void);
 static qTask_t* _qScheduler_PriorityQueueGet(void);
 static void _qTriggerReleaseSchedEvent(void);
@@ -471,8 +472,7 @@ Return value:
     Returns qTrue on success, otherwise returns qFalse;
     */
 qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
-    if(NULL==Task) return qFalse;
-    if (((Time/2)<QUARKTS.Tick && Time) || CallbackFcn == NULL) return qFalse;
+    if(NULL==Task || NULL == CallbackFcn) return qFalse;
     qSchedulerRemoveTask(Task); /*Remove the task if was previously added to the chain*/
     Task->Callback = CallbackFcn;
     Task->Interval = qTime2Clock(Time);
@@ -494,7 +494,7 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     #endif
     Task->StateMachine = NULL;
     Task->State = qSuspended;
-    _qScheduler_PriorizedInsert((qTask_t**)&QUARKTS.Head, Task); /*put the task on the list according to its priority*/
+    QUARKTS.Head =  _qScheduler_PriorizedInsert( QUARKTS.Head, Task ); /*put the task on the list according to its priority*/
     return qTrue;
 }
 /*============================================================================*/
@@ -606,33 +606,40 @@ qBool_t qSchedulerRemoveTask(qTask_t *Task){
     return qFalse;
 }
 /*============================================================================*/
-static void _qScheduler_PriorizedInsert(qTask_t **head, qTask_t *Task){
-    qTask_t *tmp_node = NULL;
-    if( (NULL == *head ) || (Task->Priority>(*head)->Priority) ){ /*is the first task in the scheme or the task has the highest priority over all */
-        Task->Next = *head; /*move the head and just add the task node on top*/
-        *head = Task; /*this task will be the new head*/
-        return;
+static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task){ /*return the new head if modified*/
+    if( (NULL == head ) || (Task->Priority > head->Priority) ){ /*Is the first task in the scheme or the task has the highest priority over all */
+        Task->Next = head; /*move the head and just add the task node on top*/
+        return Task; /*this task will be the new head*/
     }
-    tmp_node = *head; /*start the head with the highest priority task*/
-    while(tmp_node->Next && (Task->Priority<=tmp_node->Next->Priority) )  tmp_node = tmp_node->Next; /*find the right place for this task according its priority*/
+    _qScheduler_FindPlace( head, Task);
+    return head; /*no change in the head, keep it*/
+}
+/*============================================================================*/
+static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task){
+    qTask_t *tmp_node = NULL;
+    qPriority_t PrioTask = Task->Priority;
+    tmp_node = head; /*start the head with the highest priority task*/
+    while(tmp_node->Next && (PrioTask <= tmp_node->Next->Priority) ) { 
+        tmp_node = tmp_node->Next; /*find the right place for this task according its priority*/
+    }
     Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
-    tmp_node->Next = Task; /*assign the task*/
+    tmp_node->Next = Task; /*assign the task*/    
 }
 #ifdef Q_AUTO_CHAINREARRANGE
 /*============================================================================*/
-static void _qScheduler_RearrangeChain(qTask_t **head){ /*this method rearrange the chain according the priority of all its nodes*/
+static qTask_t* _qScheduler_RearrangeChain(qTask_t *head){ /*this method rearrange the chain according the priority of all its nodes*/
     qTask_t *new_head = NULL;
-    qTask_t *tmp = *head;
+    qTask_t *tmp = head;
     qTask_t *tmp1 = NULL;
     qEnterCritical();
     while(tmp){ /*start with a new head and re-insert the entire chain*/
         tmp1 = tmp;
         tmp = tmp->Next;
-        _qScheduler_PriorizedInsert(&new_head, tmp1);  
+        new_head = _qScheduler_PriorizedInsert( new_head, tmp1);  
     }
-    *head = new_head; /*a new head will be created after the rearrangement*/
     QUARKTS.Flag.Init= qTrue; /*set the initialization flag*/
     qExitCritical();
+    return new_head; /*return the new head*/
 }
 #endif
 /*============================================================================*/
@@ -726,7 +733,7 @@ void qSchedulerRun(void){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     qSchedulerStartPoint{
         #ifdef Q_AUTO_CHAINREARRANGE
-        if(!QUARKTS.Flag.Init) _qScheduler_RearrangeChain((qTask_t**)&QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/
+        if(!QUARKTS.Flag.Init) QUARKTS.Head = _qScheduler_RearrangeChain(QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/
         #endif
         #ifdef Q_PRIORITY_QUEUE
         if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
@@ -2192,10 +2199,11 @@ void __qtrace_func(const char *loc, const char* fcn, const char *varname, const 
     }
 }
 #endif
+
 /*============================================================================*/
-qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
-    uint8_t Register = 0;
-    Register = *((uint8_t*)Address);
+qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
+    uint32_t Register = 0;
+    Register = *((uint32_t*)Address);
     return qBitRead(Register, PinNumber);
 }
 /*============================================================================*/
@@ -2204,10 +2212,11 @@ qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber){
     Register = *((uint16_t*)Address);
     return qBitRead(Register, PinNumber);
 }
+
 /*============================================================================*/
-qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
-    uint32_t Register = 0;
-    Register = *((uint32_t*)Address);
+qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
+    uint8_t Register = 0;
+    Register = *((uint8_t*)Address);
     return qBitRead(Register, PinNumber);
 }
 /*============================================================================*/
@@ -2329,6 +2338,88 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node){
     return Node->Status;
 }
 
+#ifdef  Q_USE_QSTRING
+/*============================================================================*/
+/*void* qMemSet(void *dest, uint8_t value, int num)
+Tiny version of <memset>. Sets the first <num> bytes of the block of memory 
+pointed by <dest> to the specified value. If <num > is greater than the size of the data 
+pointed by <dest>, the behavior is undefined.
+
+Parameters:
+
+    - dest : Pointer to the block of memory to fill.
+    - value : Value to be set 
+    - num : Number of bytes to be set to the value.
+  
+Return value:
+
+    Same as <dest>.
+*/
+void qMemSet(void *dest, uint8_t value, qSize_t count){
+    uint8_t *s = (uint8_t *)dest;
+    while(count--) *s++ = value;
+}
+/*
+Returns a pointer to the first occurrence of <substr> in <str>, or a null pointer if 
+<substr> is not part of <str>.
+The matching process does not include the terminating null-characters, but it stops there.
+This is a lightweight implementation of <strstr>(in terms of code-size)
+
+Parameters:
+    - str : C string to be scanned.
+    - substr : C string containing the sequence of characters to match.
+
+Return Value:
+
+    A pointer to the first occurrence in <str> of the entire sequence of characters 
+    specified in <substr>, or NULL if the sequence is not present in <str>.
+
+*/
+char* qStrStr(const char *str, const char *substr){ 
+    const char *Begin;
+	const char *pattern;
+    
+    while (*str) {
+        Begin = str;
+	    pattern = substr;
+		while (*str && *pattern && *str == *pattern) { /* If first char of substr match, check for whole string*/
+		    str++;
+			pattern++;
+		}
+		 
+		if (!*pattern) return (char*)Begin; /*If complete substr match, return start address*/
+		str = Begin + 1;	/*Increament main string*/
+	}
+	return NULL;
+}
+/*
+Compares the C string <s1> to the C string <str2>. 
+This function starts comparing the first character of each string. If they are equal 
+to each other, it continues with the following pairs until the characters differ or 
+until a terminating null-character is reached.
+
+Parameters:
+    - s1 : C string to be compared.
+    - s2 : C string to be compared.
+
+Return Value:
+
+    Returns an integral value indicating the relationship between the strings:
+    < 0 : the first character that does not match has a lower value in s1 than in s2
+    0 : the contents of both strings are equal
+    > 0 : the first character that does not match has a greater value in s1 than in s2
+
+*/
+int qStrCmp(const char * s1, const char * s2){
+    int i = 0;
+    while (*s1 == *s2 && *s1++ | *s2++);
+    i = *s1 - *s2;
+    if(i < 0) return -1;
+    if(i > 0) return 1;
+    return i;
+}
+#endif
+
 
 #ifdef Q_ATCOMMAND_PARSER
 
@@ -2388,8 +2479,8 @@ qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, 
     Parser->ERROR_Response = (char*)ERROR_Response;
     Parser->NOTFOUND_Response = (char*)NOTFOUND_Response;
     Parser->term_EOL = (char*)term_EOF;
-    memset((void*)Parser->Input.Buffer, 0, Parser->Input.Size);
-    memset((void*)Parser->Output, 0, Parser->SizeOutput);
+    qMemSet((void*)Parser->Input.Buffer, 0, Parser->Input.Size);
+    qMemSet((void*)Parser->Output, 0, Parser->SizeOutput);
     Parser->Output = Output;
     Parser->SizeOutput = SizeOutput;
 
@@ -2400,11 +2491,12 @@ qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, 
     return qTrue;
 }
 /*============================================================================*/
-/*void qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback)
+/*void qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt)
  
 This function subscribes the parser to a specific command with an associated callback function,
 so that next time the required command is sent to the parser input, the callback function will be
 executed. 
+The parser only analyze commands that follows the extended AT-Commands syntax (+ can be ignored).
 
 Parameters:
 
@@ -2415,12 +2507,24 @@ Parameters:
                     to begin by the "at" characters and should be in lower case.
     - Callback: The handler of the callback function associated to the command.
     			Prototype: qATResponse_t xCallback(qATParser_t* parser, qATParser_PreCmd_t* param)
-  
+    - CmdOpt : This flag combines with a bitwise ‘OR’ (‘|’) the following information:
+                
+                > QATCMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
+                                     function also depends on whether the number of argument 
+                                     is valid or not. Information about number of arguments is
+                                     combined with a bitwise 'OR' : ADL_CMD_TYPE_PARA | 0xXY , 
+                                     where X which defines maximum argument number for incoming
+                                     command and Y which defines minimum argument number for 
+                                     incoming command
+                > QATCMDTYPE_TEST  : "AT+cmd=?" is allowed. 
+                > QATCMDTYPE_READ  : "AT+cmd?" is allowed.  
+                > QATCMDTYPE_ACT   : "AT+cmd" is allowed.   
+
 Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback){
+qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt){
     if( NULL == Parser || NULL == Command || NULL == TextCommand || NULL== Callback ) return qFalse;
     Command->CmdLen = strlen(TextCommand);
     if( Command->CmdLen < 2) return qFalse;
@@ -2428,6 +2532,7 @@ qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const
     Command->Text = (char*)TextCommand;
     if(Command->CmdLen<2) return qFalse; /*not enough to be a valid at command*/
     Command->CommandCallback = Callback;
+    Command->CmdOpt = 0x0FFF & CmdOpt; /*high nibble not used yet*/
     Command->Next = Parser->First;
     Parser->First = Command;
     return qTrue;
@@ -2514,7 +2619,7 @@ static void qATParser_TaskCallback(qEvent_t e){
 /*============================================================================*/
 /*qBool_t qATCommandParser_Run(qATParser_t *Parser)
  
-Run the AT Command Parser pooling the input for matching commands.
+Run the AT Command Parser when the input is ready.
 
 Parameters:
 
@@ -2533,10 +2638,9 @@ qBool_t qATParser_Run(qATParser_t *Parser){
     qATParser_PreCmd_t params;
     char *ptr= NULL;
     ATOutCharFcn = Parser->OutputFcn;
-
     if( Input->Ready ){
         Input->Ready = qFalse;
-        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND)==0){
+        if (qStrCmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND)==0){
         	if(Parser->OK_Response){
         		Parser->puts(Parser->OK_Response);
         		Parser->puts(Parser->term_EOL);
@@ -2545,36 +2649,53 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         }
         
         while( NULL != Command ){
-            ptr=strstr( (const char*)Input->Buffer, Command->Text );
-            if( ptr == Input->Buffer ){ 
+            ptr=qStrStr( (const char*)Input->Buffer, Command->Text );
+            if( ptr == Input->Buffer ){ /*command should start form the beggining*/
+                retval = qAT_NOTALLOWED;  
             	Parser->Output[0] = 0;
                 params.Type = qATCMDTYPE_UNDEF;
                 params.Command = Command;
                 params.StrLen = strlen((const char*)Input->Buffer) - Command->CmdLen;
                 params.StrData = (char*)(ptr+Command->CmdLen);
                 params.NumArgs = 0;
-                if( 0 == params.StrLen ) params.Type = qATCMDTYPE_CHECK;
+                if( 0 == params.StrLen ){ /*command should be an ACT command */
+                    if(Command->CmdOpt & qATCMDTYPE_ACT){ /*check if is allowed*/
+                        params.Type = qATCMDTYPE_ACT;        
+                    }
+                    else goto Q_OUTPUT_CMDRESPONSE;
+                } 
                 if ( params.StrLen > 0){
-                    if( '?' == params.StrData[0] ){
-                        params.Type = qATCMDTYPE_READ;
-                        params.StrData++;
-                        params.StrLen--;        
+                    if( '?' == params.StrData[0] ){ /*command should be READ command */
+                        if(Command->CmdOpt & qATCMDTYPE_READ){ /*check if is allowed*/
+                            params.Type = qATCMDTYPE_READ;
+                            params.StrData++;
+                            params.StrLen--;      
+                        }
+                        else goto Q_OUTPUT_CMDRESPONSE;                     
                     } 
-                    else if( params.StrLen>=2 ){
-                        if( '=' == params.StrData[0]){
-                        	if( '?' == params.StrData[1] ){
-                        		if(2 == params.StrLen){
-                        			params.Type = qATCMDTYPE_TEST;
-                                	params.StrData+=2;
-                                	params.StrLen-=2;
+                    else if( params.StrLen>=2 ){ 
+                        if( '=' == params.StrData[0]){ /*could be a TEST or PARA command*/
+                        	if( '?' == params.StrData[1] ){ 
+                        		if(2 == params.StrLen){ /*command should be a TEST Command*/
+                                    if(Command->CmdOpt & qATCMDTYPE_TEST){ /*check if is allowed*/
+                        			    params.Type = qATCMDTYPE_TEST;
+                                	    params.StrData+=2;
+                                	    params.StrLen-=2; 
+                                    }
+                                    else goto Q_OUTPUT_CMDRESPONSE;
+                                    
                         		}
                         		else params.Type = qATCMDTYPE_UNDEF;
                         	}
-                        	else{
-                                params.Type = qATCMDTYPE_SET;
-                                params.StrData++;
-                                params.StrLen--;
-                                params.NumArgs = qATParser_NumOfArgs(params.StrData);
+                        	else{ /*definitely is a PARA command*/
+                                if(Command->CmdOpt & qATCMDTYPE_PARA){ /*check if is allowed*/
+                                    params.NumArgs = qATParser_NumOfArgs(params.StrData);
+                                    if(params.NumArgs > QATCMDMASK_ARG_MAXNUM(Command->CmdOpt) || params.NumArgs < QATCMDMASK_ARG_MINNUM(Command->CmdOpt)) goto Q_OUTPUT_CMDRESPONSE;    
+                                    params.Type = qATCMDTYPE_PARA;
+                                    params.StrData++;
+                                    params.StrLen--;
+                                }
+                                else goto Q_OUTPUT_CMDRESPONSE;
                         	}
                         }
                         else params.Type = qATCMDTYPE_UNDEF;
@@ -2588,6 +2709,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
                         Parser->puts(Parser->term_EOL);
                     }
                 }
+                Q_OUTPUT_CMDRESPONSE:
                 switch(retval){
                     case QAT_ERROR:
                     	Parser->puts(Parser->ERROR_Response);
@@ -2601,10 +2723,18 @@ qBool_t qATParser_Run(qATParser_t *Parser){
                         break;
                     case QAT_NORESPONSE:
                         break;
+                    case qAT_NOTALLOWED:   
+                        Parser->puts(Parser->ERROR_Response);
+                        Parser->puts(":NOT ALLOWED");
+                        Parser->puts(Parser->term_EOL);
+                        break; 
                     default: /*AT_ERRORCODE(#) */
                         if(retval<0){
-                            sprintf(Parser->Output, "%s:%d%s", Parser->ERROR_Response, QAT_ERRORCODE(retval), Parser->term_EOL);
+                            qItoA(QAT_ERRORCODE(retval), Parser->Output, 10);
+                            Parser->puts(Parser->ERROR_Response);
+                            Parser->putc(':');
                             Parser->puts(Parser->Output);
+                            Parser->puts(Parser->term_EOL);
                         }                            
                         break;
                 }      
@@ -2612,7 +2742,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
             }
             Command = Command->Next;
         }
-        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND)==0){
+        if (qStrCmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND)==0){
         	Parser->puts(Parser->Identifier);
         	Parser->puts(Parser->term_EOL);
             goto QEXIT_ATCMD_PARSER;
@@ -2763,6 +2893,7 @@ uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n){
 	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
+
 
 #endif /*Q_ATCOMMAND_PARSER*/
 

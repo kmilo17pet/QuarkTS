@@ -46,7 +46,8 @@ extern "C" {
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
     #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
-    
+    #define Q_USE_QSTRING           /*some tiny funcions from string.h*/
+
     #define Q_MAX_FTOA_PRECISION      10
     #undef QATOF_FULL
     
@@ -971,6 +972,15 @@ qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *P
 qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
+#ifdef  Q_USE_QSTRING
+    void qMemSet(void *dest, uint8_t value, qSize_t count);
+    char* qStrStr(const char *str, const char *substr);
+    int qStrCmp(const char * s1, const char * s2);
+#else
+    #define qMemSet memset
+    #define qStrStr strstr
+    #define qStrCmp strcmp
+#endif
 
 #ifdef Q_ATCOMMAND_PARSER
 	#define		QAT_DEFAULT_AT_COMMAND	 "at"
@@ -979,6 +989,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
     typedef enum{
         qAT_ERROR = -32768,
+        qAT_NOTALLOWED = -32767,
         qAT_NORESPONSE = 0,
         qAT_OK = 1
     }qATResponse_t; 
@@ -1015,19 +1026,24 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         qSize_t SizeOutput;
     }qATParser_t;   
     
-    #define QATCMDTYPE_UNDEF    0
-    #define QATCMDTYPE_CHECK    1
-    #define QATCMDTYPE_TEST     2
-    #define QATCMDTYPE_READ     3
-    #define QATCMDTYPE_SET      4
-    #define QATCMDTYPE_EXEC     5 
+    #define QATCMDTYPE_UNDEF    0x0000
+    #define QATCMDTYPE_PARA     0x0100
+    #define QATCMDTYPE_TEST     0x0200
+    #define QATCMDTYPE_READ     0x0400
+    #define QATCMDTYPE_ACT      0x0800
+
+    #define QATCMDTYPE_SET      QATCMDTYPE_PARA
+    #define QATCMDTYPE_CHECK    QATCMDTYPE_ACT
+
+    #define QATCMDMASK_ARG_MAXNUM(opt)   (((opt)>>4)&0x000F)
+    #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000F)
 
     typedef enum{
-        qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF,
-        qATCMDTYPE_CHECK    = QATCMDTYPE_CHECK,
-        qATCMDTYPE_TEST     = QATCMDTYPE_TEST,
-        qATCMDTYPE_READ     = QATCMDTYPE_READ,
-        qATCMDTYPE_SET      = QATCMDTYPE_SET
+        qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF, /* None of the above */
+        qATCMDTYPE_PARA     = QATCMDTYPE_PARA,  /* AT+cmd=x,y */
+        qATCMDTYPE_TEST     = QATCMDTYPE_TEST,  /* AT+cmd=? */
+        qATCMDTYPE_READ     = QATCMDTYPE_READ,  /* AT+cmd? */
+        qATCMDTYPE_ACT      = QATCMDTYPE_ACT    /* AT+cmd */     
     }qATCommandType_t;
 
     typedef struct{
@@ -1045,18 +1061,18 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         qSize_t CmdLen;
         qATCommandCallback_t CommandCallback;
         struct _qATCommand_t *Next;
+        uint16_t CmdOpt;
     };
     #define qATCommand_t struct _qATCommand_t
 
     qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL);
-    qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback);
+    qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt);
     qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c);
     qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
     qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
     qBool_t qATParser_Run(qATParser_t *Parser);
 
     char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out);
-
     char* qATParser_GetArgPtr(qATParser_PreCmd_t *param, int8_t n);
     int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n);
     float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n);

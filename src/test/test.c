@@ -19,6 +19,9 @@ uint32_t PORTA = 0x0A;
 qIOEdgeCheck_t INPUTS;
 qIONode_t buton1, sensor1, buton2, sensor2;
 
+qSM_t statemachine;
+
+
 pthread_t TimerEmulation;
 void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
@@ -189,7 +192,7 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 int main(int argc, char** argv) {      
     int yy = -128;
     qRBuffer_t ringBuffer;
-    qSM_t statemachine;
+    
     void *memtest;
     int x=5 , y=6;
     
@@ -234,15 +237,20 @@ int main(int argc, char** argv) {
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
 
+    
+
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
     qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAddSMTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+
+
     /*qISR_Byte_t DataAlloc[100] = {0};
     qISR_ByteBuffer_t Buffer;
     qISR_ByteBufferInit(&Buffer, DataAlloc, sizeof(DataAlloc), '\r', isalpha, tolower);*/
     
+    /*qSchedulePrintChain();*/
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }
