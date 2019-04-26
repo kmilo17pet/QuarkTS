@@ -968,22 +968,35 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
 #ifdef Q_ATCOMMAND_PARSER
-	#define		QAT_DEFAULT_AT_COMMAND	 "at"
-	#define		QAT_DEFAULT_ID_COMMAND	 "atid"
-	#define		QAT_DEFAULT_ATSET_DELIM	 ','
+	#define		QAT_DEFAULT_AT_COMMAND	            "at"
+	#define		QAT_DEFAULT_ID_COMMAND	            "atid"
+	#define		QAT_DEFAULT_ATSET_DELIM	            ','
+    #define     QAT_DEFAULT_ERROR_RSP_STRING        "ERROR"
+    #define     QAT_DEFAULT_OK_RSP_STRING           "OK"
+    #define     QAT_DEFAULT_NOTFOUND_RSP_STRING     "UNKNOWN"
+    #define     QAT_DEFAULT_DEVID_STRING            QUARKTS_CAPTION
+    #define     QAT_DEFAULT_EOL_STRING              "\r\n"              
+
+    #define     QAT_MIN_INPUT_LENGTH                3
 
     typedef enum{
         qAT_ERROR = -32768,
         qAT_NOTALLOWED = -32767,
         qAT_NORESPONSE = 0,
-        qAT_OK = 1
+        qAT_OK = 1,
+        qAT_DEVID = 32765,
+        qAT_NOTFOUND = 32766,
+        qAT_OUTPUT = 32767
     }qATResponse_t; 
-    #define     qAT_ERRORCODE(ecode)     (-ecode)
 
+    #define     qAT_ERRORCODE(ecode)     (-ecode)
     #define     QAT_ERROR                qAT_ERROR
     #define     QAT_NORESPONSE           qAT_NORESPONSE
     #define     QAT_OK                   qAT_OK
     #define     QAT_ERRORCODE(_num_)     qAT_ERRORCODE(_num_)
+    #define     QAT_DEVID                qAT_DEVID
+    #define     QAT_NOTFOUND             qAT_NOTFOUND    
+    #define     QAT_OUTPUT               qAT_OUTPUT
 
     typedef volatile struct{
         volatile char *Buffer;
@@ -1050,6 +1063,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL);
     qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt);
     qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c);
+    qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n);
     qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
     qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
     qBool_t qATParser_Run(qATParser_t *Parser);

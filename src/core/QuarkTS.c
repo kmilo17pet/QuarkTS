@@ -2345,7 +2345,9 @@ static  qPutChar_t ATOutCharFcn = NULL;
 static void _qATPutc_Wrapper(const char c);
 static void _qATPuts_Wrapper(const char *s);
 static qSize_t qATParser_NumOfArgs(const char *str);
-
+static char* _qATParser_FixInput(char *s);
+static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval);
+static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params);
 /*============================================================================*/
 static void _qATPutc_Wrapper(const char c){
 	ATOutCharFcn(NULL, c);
@@ -2405,6 +2407,7 @@ qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, 
     Parser->Input.Size = SizeInput;
     Parser->Input.Ready = qFalse;
     Parser->Input.index = 0;
+    Parser->Task = NULL;
     return qTrue;
 }
 /*============================================================================*/
@@ -2429,7 +2432,7 @@ Parameters:
                 > QATCMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
                                      function also depends on whether the number of argument 
                                      is valid or not. Information about number of arguments is
-                                     combined with a bitwise 'OR' : ADL_CMD_TYPE_PARA | 0xXY , 
+                                     combined with a bitwise 'OR' : QATCMDTYPE_PARA | 0xXY , 
                                      where X which defines maximum argument number for incoming
                                      command and Y which defines minimum argument number for 
                                      incoming command
@@ -2459,6 +2462,7 @@ qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const
  
 Feed the parser input with a single character. This call is mandatory 
 from an interrupt context. Put it inside the desired peripheral's ISR.
+If your ISR get a block of data, use instead qATParser_ISRHandlerBlock
 
 Note: This API assumes that the respective ISR catch a single byte at a time.
 
@@ -2482,9 +2486,61 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
        Parser->Input.Ready = qTrue;
        Parser->Input.index=0;
        if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
+       return qTrue;
     }
     return qFalse;
 }
+/*============================================================================*/
+/*
+Feed the parser input with a string. This call is mandatory 
+from an interrupt context. Put it inside the desired peripheral's ISR.
+If your ISR only get a single char, use instead qATParser_ISRHandler
+
+Parameters:
+
+    - Parser : A pointer to the ATParser instance
+    - data : The incoming string.
+    - n : The Len of the string
+
+Return value:
+
+    qTrue when the Parser is ready to process the input, otherwise return qFalse
+
+*/
+qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n){
+    if( n<= 0 || n>(Parser->Input.Size-1) || Parser->Input.Ready) return qFalse; /*non valid or parser busy*/
+    if ( 1 == n ) return qATParser_ISRHandler(Parser, data[0]);
+    if( isgraph(data[0])){
+        if( strchr(data, '\r') ){ 
+            strncpy((char*)Parser->Input.Buffer, data, n);
+            _qATParser_FixInput( (char*)Parser->Input.Buffer );
+            Parser->Input.Ready = qTrue;
+            Parser->Input.index=0;
+            if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
+            return qTrue;
+        }
+    }
+    return qFalse;
+}
+/*============================================================================*/
+/*
+modifies the input string removing non-graph chars 
+*/
+static char* _qATParser_FixInput(char *s){
+    int i,j;
+    for(i=0, j = 0; '\0'!=s[i]; i++ ){
+        if( '\r' == s[i] ){
+            s[i] = '\0';
+            return s;    
+        } 
+        if( isgraph( s[i]) ){
+            s[j++] = tolower(s[i]);
+        }
+    }
+    s[j] = '\0';
+    return s;
+}
+/*============================================================================*/
 /*qBool_t qATParser_Raise(qATParser_t *Parser, char *cmd)
 
 Sends a command to the specified Parser.
@@ -2503,12 +2559,14 @@ Return value:
 qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
 	if( NULL == Parser || NULL == cmd) return qFalse;
 	if( Parser->Input.Ready || strlen(cmd) > (Parser->Input.Size-1)) return qFalse; /*Parser Busy with another command or cmd to long*/
-	strncpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
-	Parser->Input.index = 0;
 	Parser->Input.Ready = qTrue;
+    Parser->Input.index = 0;
+    strncpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
+	_qATParser_FixInput( (char*)Parser->Input.Buffer );
+
+    if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
 	return qTrue;
 }
-
 /*============================================================================*/
 /*qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority)
 
@@ -2551,130 +2609,136 @@ qBool_t qATParser_Run(qATParser_t *Parser){
     if( NULL == Parser) return qFalse;
     qATResponse_t retval;
     qATParserInput_t *Input = &Parser->Input;
-    qATCommand_t *Command = (qATCommand_t*)Parser->First;
+    qATCommand_t *Command = NULL;
     qATParser_PreCmd_t params;
-    char *ptr= NULL;
     ATOutCharFcn = Parser->OutputFcn;
     if( Input->Ready ){
-        Input->Ready = qFalse;
-        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND)==0){
-        	if(Parser->OK_Response){
-        		Parser->puts(Parser->OK_Response);
-        		Parser->puts(Parser->term_EOL);
-        	}
+        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
+        	_qATParser_HandleCommandResponse(Parser, QAT_OK);
             goto QEXIT_ATCMD_PARSER;
         }
-        
-        while( NULL != Command ){
-            ptr=strstr( (const char*)Input->Buffer, Command->Text );
-            if( ptr == Input->Buffer ){ /*command should start form the begining*/
-                retval = qAT_NOTALLOWED;  
-            	Parser->Output[0] = 0;
-                params.Type = qATCMDTYPE_UNDEF;
-                params.Command = Command;
-                params.StrLen = strlen((const char*)Input->Buffer) - Command->CmdLen;
-                params.StrData = (char*)(ptr+Command->CmdLen);
-                params.NumArgs = 0;
-                if( 0 == params.StrLen ){ /*command should be an ACT command */
-                    if(Command->CmdOpt & qATCMDTYPE_ACT){ /*check if is allowed*/
-                        params.Type = qATCMDTYPE_ACT;  /*set the type to ACT*/
-                    }
-                    else goto Q_OUTPUT_CMDRESPONSE; /*ACT not allowed*/
-                } 
-                else if ( params.StrLen > 0){
-                    if( '?' == params.StrData[0] ){ /*command should be READ command */
-                        if(Command->CmdOpt & qATCMDTYPE_READ){ /*check if is allowed*/
-                            params.Type = qATCMDTYPE_READ; /*set the type to READ*/
-                            params.StrData++; /*move string pointer once*/
-                            params.StrLen--;  /*decrease the len one*/
-                        }
-                        else goto Q_OUTPUT_CMDRESPONSE; /*READ not allowed*/
-                    } 
-                    else if( params.StrLen>=2 ){ 
-                        if( '=' == params.StrData[0]){ /*could be a TEST or PARA command*/
-                        	if( '?' == params.StrData[1] ){ 
-                        		if(2 == params.StrLen){ /*command should be a TEST Command*/
-                                    if(Command->CmdOpt & qATCMDTYPE_TEST){ /*check if is allowed*/
-                        			    params.Type = qATCMDTYPE_TEST; /*set the type to TEXT*/
-                                	    params.StrData+=2; /*move string two positions ahead*/
-                                	    params.StrLen-=2;  /*decrease the len*/
-                                    }
-                                    else goto Q_OUTPUT_CMDRESPONSE; /*TEST not allowed*/
-                        		}
-                        		else params.Type = qATCMDTYPE_UNDEF;
-                        	}
-                        	else{ /*definitely is a PARA command*/
-                                if(Command->CmdOpt & qATCMDTYPE_PARA){ /*check if is allowed*/
-                                    params.NumArgs = qATParser_NumOfArgs(params.StrData); /*get the args count using the default delimiter*/
-                                    if(params.NumArgs > QATCMDMASK_ARG_MAXNUM(Command->CmdOpt) || params.NumArgs < QATCMDMASK_ARG_MINNUM(Command->CmdOpt)){
-                                    	goto Q_OUTPUT_CMDRESPONSE;     /*arg count not allowed*/
-                                    }
-                                    params.Type = qATCMDTYPE_PARA; /*set the type to PARA*/
-                                    params.StrData++; /*move string pointer once*/
-                                    params.StrLen--; /*decrease the len one*/
-                                }
-                                else goto Q_OUTPUT_CMDRESPONSE; /*PARA not allowed*/
-                        	}
-                        }
-                        else goto Q_OUTPUT_CMDRESPONSE;
-                    }
-                }
-                retval = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
                 
-                if( NULL != Parser->Output ){
-                    if( Parser->Output[0] ){
-                        Parser->puts( Parser->Output );
-                        Parser->puts(Parser->term_EOL);
+        for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
+            if( strstr( (const char*)Input->Buffer, Command->Text ) == Input->Buffer ){ /*check if the input match the subscribed command starting from the beginning*/
+                retval = qAT_NOTALLOWED;  
+                Parser->Output[0] = '\0';
+                if( _qATParser_PreProcessing(Command, Input->Buffer, &params) ){ /*if success, proceed with the user pos-processing*/
+                    retval = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
+                    if( NULL != Parser->Output ){  /*print the user Output if available*/
+                    	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
                     }
                 }
-                Q_OUTPUT_CMDRESPONSE:
-                switch(retval){
-                    case QAT_ERROR:
-                    	Parser->puts(Parser->ERROR_Response);
-                    	Parser->puts(Parser->term_EOL);
-                        break;
-                    case QAT_OK:
-                        if(Parser->OK_Response){
-                        	Parser->puts(Parser->OK_Response);
-                        	Parser->puts(Parser->term_EOL);
-                        }
-                        break;
-                    case QAT_NORESPONSE:
-                        break;
-                    case qAT_NOTALLOWED:   
-                        Parser->puts(Parser->ERROR_Response);
-                        Parser->puts(":NOT ALLOWED");
-                        Parser->puts(Parser->term_EOL);
-                        break; 
-                    default: /*AT_ERRORCODE(#) */
-                        if(retval<0){
-                            qItoA(QAT_ERRORCODE(retval), Parser->Output, 10);
-                            Parser->puts(Parser->ERROR_Response);
-                            Parser->putch(':');
-                            Parser->puts(Parser->Output);
-                            Parser->puts(Parser->term_EOL);
-                        }                            
-                        break;
-                }      
+                _qATParser_HandleCommandResponse(Parser, retval);    
                 goto QEXIT_ATCMD_PARSER;
             }
-            Command = Command->Next;
         }
-        if (strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND)==0){
-        	Parser->puts(Parser->Identifier);
-        	Parser->puts(Parser->term_EOL);
+        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){ /*the input match the QAT_DEFAULT_ID_COMMAND*/
+        	_qATParser_HandleCommandResponse(Parser, QAT_DEVID);
             goto QEXIT_ATCMD_PARSER;
         }
-        if(strlen((const char*)Input->Buffer)>2){
-        	Parser->puts(Parser->NOTFOUND_Response);
-        	Parser->puts(Parser->term_EOL);
+        if( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH ){ /*if not found, only print the NOTFOUND response  when input has enough chars*/
+        	_qATParser_HandleCommandResponse(Parser, QAT_NOTFOUND);
         }
-        QEXIT_ATCMD_PARSER:
+        QEXIT_ATCMD_PARSER: /*clean-up the input*/
+		Input->Ready = qFalse;
         Input->index = 0;
         Input->Buffer[0] = 0x00;
         return qTrue;
     }
     return qFalse;
+}
+/*============================================================================*/
+static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params){
+    params->Type = qATCMDTYPE_UNDEF;
+    params->Command = Command;
+    params->StrLen = strlen((const char*)InputBuffer) - Command->CmdLen;
+    params->StrData = (char*)(InputBuffer+Command->CmdLen);
+    params->NumArgs = 0;
+
+    if( 0 == params->StrLen ){ /*command should be an ACT command */
+        if(Command->CmdOpt & qATCMDTYPE_ACT){ /*check if is allowed*/
+            params->Type = qATCMDTYPE_ACT;  /*set the type to ACT*/
+            return qTrue;
+        }
+        else return qFalse; /*ACT not allowed*/
+    } 
+    else if ( params->StrLen > 0){
+        if( '?' == params->StrData[0] ){ /*command should be READ command */
+            if(Command->CmdOpt & qATCMDTYPE_READ){ /*check if is allowed*/
+                params->Type = qATCMDTYPE_READ; /*set the type to READ*/
+                params->StrData++; /*move string pointer once*/
+                params->StrLen--;  /*decrease the len one*/
+                return qTrue;
+            }
+            else return qFalse; /*READ not allowed*/
+        } 
+        else if( params->StrLen>=2 ){ /*can be at+xx=? or at+xx=...*/
+            if( '=' == params->StrData[0]){ /*could be a TEST or PARA command*/
+                if( '?' == params->StrData[1] ){ 
+                    if(2 == params->StrLen){ /*command should be a TEST Command*/
+                        if(Command->CmdOpt & qATCMDTYPE_TEST){ /*check if is allowed*/
+                            params->Type = qATCMDTYPE_TEST; /*set the type to TEXT*/
+                            params->StrData+=2; /*move string two positions ahead*/
+                            params->StrLen-=2;  /*decrease the len*/
+                            return qTrue;
+                        }
+                        else return qFalse; /*TEST not allowed*/
+                    }
+                    else params->Type = qATCMDTYPE_UNDEF;
+                }
+                else{ /*definitely is a PARA command*/
+                    if(Command->CmdOpt & qATCMDTYPE_PARA){ /*check if is allowed*/
+                        params->NumArgs = qATParser_NumOfArgs(params->StrData); /*get the args count using the default delimiter*/
+                        if(params->NumArgs > QATCMDMASK_ARG_MAXNUM(Command->CmdOpt) || params->NumArgs < QATCMDMASK_ARG_MINNUM(Command->CmdOpt)){
+                            return qFalse;     /*arg count not allowed*/
+                        }
+                        params->Type = qATCMDTYPE_PARA; /*set the type to PARA*/
+                        params->StrData++; /*move string pointer once*/
+                        params->StrLen--; /*decrease the len one*/
+                        return qTrue;
+                    }
+                    else return qFalse; /*PARA not allowed*/
+                }
+            }
+            else return qFalse;
+        }
+    }
+    return qTrue;
+}
+/*============================================================================*/
+static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval){
+	if(QAT_NORESPONSE == retval) return; 
+    switch(retval){ /*handle the command-callback response*/
+        case qAT_ERROR:
+            Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+            break;
+        case qAT_OK:
+            Parser->puts( (Parser->OK_Response)? Parser->OK_Response: QAT_DEFAULT_OK_RSP_STRING );
+            break;
+        case qAT_NOTALLOWED:   
+            Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+            Parser->puts(":NOT ALLOWED");
+            break; 
+        case qAT_DEVID:
+            Parser->puts( (Parser->Identifier)? Parser->Identifier: QAT_DEFAULT_DEVID_STRING );
+            break;
+        case qAT_NOTFOUND:
+            Parser->puts( (Parser->NOTFOUND_Response)? Parser->NOTFOUND_Response: QAT_DEFAULT_NOTFOUND_RSP_STRING );
+            break;        
+        case qAT_OUTPUT:
+            Parser->puts( Parser->Output );
+            break;
+        default: /*AT_ERRORCODE(#) */
+            if(retval<0){
+                qItoA(QAT_ERRORCODE(retval), Parser->Output, 10);
+                Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                Parser->putch(':');
+                Parser->puts(Parser->Output);
+                Parser->Output[0] = '\0';
+            }                            
+            break;
+    }
+    Parser->puts( (Parser->term_EOL)? Parser->term_EOL : QAT_DEFAULT_EOL_STRING );
 }
 /*============================================================================*/
 /*char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out)
