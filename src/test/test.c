@@ -195,9 +195,10 @@ int main(int argc, char** argv) {
     
     void *memtest;
     int x=5 , y=6;
-    
+
     qSetDebugFcn(putcharfcn);
-           
+     
+
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &buton1, &PORTA, 0);
     qEdgeCheck_InsertNode(&INPUTS, &buton2, &PORTA, 1);
@@ -232,7 +233,7 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &y); 
     
 
-    qSchedulerSetup(0.01, IdleTaskCallback, 10);           
+    qSchedulerSetup(NULL, 0.01, IdleTaskCallback, 10);           
     qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");

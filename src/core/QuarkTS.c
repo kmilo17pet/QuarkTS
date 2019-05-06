@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.8
+ *  Version : 4.7.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -91,7 +91,7 @@ qPutChar_t __qDebugOutputFcn = NULL;
 
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_) /*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
-#define _qTaskDeadlineReached(_TASK_)            ( (qTimeInmediate == (_TASK_)->Interval) || ((_qSysTick_Epochs_ - (_TASK_)->ClockStart)>=(_TASK_)->Interval)  )
+#define _qTaskDeadlineReached(_TASK_)            ( (qTimeInmediate == (_TASK_)->Interval) || ((qSchedulerGetTick() - (_TASK_)->ClockStart)>=(_TASK_)->Interval)  )
 #define _qTaskHasPendingIterations(_TASK_)       (_qabs((_TASK_)->Iterations)>0 || qPeriodic == (_TASK_)->Iterations)
 #define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    (_eVar_).Trigger = _Trigger_; (_eVar_).FirstCall = _FirstCall_; (_eVar_).TaskData = _TaskData_
 
@@ -310,7 +310,7 @@ void qTaskSetState(qTask_t *Task, const qState_t State){
     if(NULL==Task) return;
     if(State && Task->Flag[_qIndex_Enabled]) return;
     Task->Flag[_qIndex_Enabled] = State;
-    Task->ClockStart = _qSysTick_Epochs_;
+    Task->ClockStart = qSchedulerGetTick();
 }
 /*============================================================================*/
 /*void qTaskSetData(qTask_t *Task, void* UserData)
@@ -340,7 +340,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed(qTask_t *Task){
     if(NULL==Task) return;
-    Task->ClockStart = _qSysTick_Epochs_;
+    Task->ClockStart = qSchedulerGetTick();
 }
 /*============================================================================*/
 /*qBool_t qTaskQueueEvent(const qTask_t *Task, void* eventdata)
@@ -418,7 +418,7 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
 }
 #endif
 /*============================================================================*/
-void _qInitScheduler(const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
+void _qInitScheduler(qGetTickFcn_t TickProvider, const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
     uint8_t i;
     QUARKTS.Head = NULL;
     QUARKTS.Tick = ISRTick;
@@ -437,6 +437,7 @@ void _qInitScheduler(const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQ
     QUARKTS.I_Restorer =  NULL;
     QUARKTS.I_Disable = NULL;
     QUARKTS.CurrentRunningTask = NULL;
+    QUARKTS.GetSysTick = TickProvider;
     _qSysTick_Epochs_ = 0ul;
 }
 /*============================================================================*/
@@ -488,7 +489,7 @@ qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Flag[_qIndex_Enabled] = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
     Task->Cycles = 0;
-    Task->ClockStart = _qSysTick_Epochs_;
+    Task->ClockStart = qSchedulerGetTick();
     #ifdef Q_RINGBUFFERS
     Task->RingBuff = NULL;
     #endif
@@ -718,8 +719,8 @@ inside the dedicated timer interrupt service routine (ISR).
 */    
 void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
 /*============================================================================*/
-qClock_t qSchedulerGetTick(void){
-	return _qSysTick_Epochs_;
+qClock_t qSchedulerGetTick(void){   
+	return ( NULL != QUARKTS.GetSysTick )? QUARKTS.GetSysTick() : _qSysTick_Epochs_;
 }
 /*============================================================================*/
 /*void qSchedule(void)
@@ -742,7 +743,7 @@ void qSchedulerRun(void){
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
                 Task->State = (qTaskState_t) ((qReady == Task->State) ? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
         }
-        else if(NULL==Task && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
+        else if( NULL==Task && QUARKTS.IDLECallback) _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
     }qSchedulerEndPoint; /*scheduling end-point (also check for scheduling-release request)*/
 }
 /*============================================================================*/
@@ -760,8 +761,8 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
         case byTimeElapsed:
             /*handle the iteration value and the FirstIteration flag*/
             Task->Iterations = (QUARKTS.EventInfo.FirstIteration = (qBool_t)((Task->Iterations!=qPeriodic) && (Task->Iterations<0)))? -Task->Iterations : Task->Iterations;
-            if(Task->Iterations!= qPeriodic) Task->Iterations--; /*Decrease the iteration value*/
-            if((QUARKTS.EventInfo.LastIteration = (qBool_t)(Task->Iterations == 0))) Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/            
+            if( qPeriodic!= Task->Iterations) Task->Iterations--; /*Decrease the iteration value*/
+            if( (QUARKTS.EventInfo.LastIteration = (qBool_t)(0 == Task->Iterations)) ) Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/            
             break;
         case byAsyncEvent:
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
@@ -794,11 +795,11 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     /*Fill the event info structure*/
     _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag[_qIndex_InitFlag]), Task->TaskData); /*Fill common fields of EventInfo: Trigger, FirstCall and TaskData*/ 
     QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
-    if (Task->StateMachine != NULL && __qFSMCallbackMode==Task->Callback) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
-    else if (Task->Callback != NULL) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
+    if ( NULL != Task->StateMachine  && __qFSMCallbackMode==Task->Callback) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+    else if ( NULL != Task->Callback ) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
     #ifdef Q_RINGBUFFERS 
-    if(Event==byRBufferPop) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event was byRBufferPop*/
+    if( byRBufferPop == Event) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event was byRBufferPop*/
     #endif
     Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
     QUARKTS.EventInfo.FirstIteration = qFalse;
@@ -818,7 +819,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
         if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have available iters*/
                 if(_qTaskDeadlineReached(Task)){ /*finally, check the time deadline*/
-                    Task->ClockStart = _qSysTick_Epochs_; /*Restart the task time*/
+                    Task->ClockStart = qSchedulerGetTick(); /*Restart the task time*/
                     Task->State = qReady; /*Put the task in ready state*/
                     Task->Trigger = byTimeElapsed; /*Set the corresponding trigger*/
                     nTaskReady = qTrue; /*at least one task in the chain is ready to run*/
@@ -871,7 +872,7 @@ Return value:
     Returns qTrue on successs, otherwise returns qFalse;
 */
 qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
-    if(NULL==obj || NULL==InitState) return qFalse;
+    if( NULL==obj || NULL==InitState ) return qFalse;
     obj->NextState = InitState;
     qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
     qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0;
@@ -902,10 +903,10 @@ Parameters:
 */    
 void qStateMachine_Run(qSM_t *obj, void *Data){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
-    if(NULL==obj) return;
+    if( NULL == obj ) return;
     qConstField_Set(void* ,obj->Data)/*obj->Data*/ = Data;   /*pass the data through the fsm*/
     qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
-    if(NULL != obj->NextState){ /*eval nextState if available*/
+    if( NULL != obj->NextState ){ /*eval nextState if available*/
         qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = (qBool_t)(obj->LastState != obj->NextState);  /*Get the StateFirstEntry flag*/
         if(obj->StateFirstEntry) qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = obj->LastState ; /*if StateFistEntry is set, update the PreviousState*/
         prev = obj->NextState; /*keep the next state in prev for LastState update*/
@@ -992,9 +993,9 @@ Return value:
 */
 qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     if(NULL==obj) return qFalse;
-    if ( (Time/2.0)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
+    if ( (Time*0.5f)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
     qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time); /*set the stimer time in epochs*/
-    qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = _qSysTick_Epochs_; /*set the init time of the stimer with the current system epoch value*/
+    qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = qSchedulerGetTick(); /*set the init time of the stimer with the current system epoch value*/
     qConstField_Set(qBool_t, obj->SR)/*obj->SR*/ = qTrue; /*enable the stimer*/
     return qTrue;
 }
@@ -1071,7 +1072,7 @@ Return value:
 qClock_t qSTimerElapsed(const qSTimer_t *obj){
     if(NULL==obj) return 0ul;
     if(!obj->SR) return 0;
-    return (_qSysTick_Epochs_- obj->Start);
+    return (qSchedulerGetTick()- obj->Start);
 }
 /*============================================================================*/
 /*qClock_t qSTimerRemainingEpochs(qSTimer_t *obj)
@@ -1520,9 +1521,9 @@ Parses the C string s, interpreting its content as a floating point number and
 returns its value as a double. The function first discards as many whitespace 
 characters (as in isspace) as necessary until the first non-whitespace character
 is found. Then, starting from this character, takes as many characters as possible 
-that are valid following a syntax resembling that of floating point literals 
-(see below), and interprets them as a numerical value. The rest of the string after 
-the last valid character is ignored and has no effect on the behavior of this function.
+that are valid following a syntax resembling that of floating point literals, and 
+interprets them as a numerical value. The rest of the string after the last valid 
+character is ignored and has no effect on the behavior of this function.
  
 Parameters:
 
@@ -1537,44 +1538,45 @@ Return value:
     a double, it causes undefined behavior
 */
 double qAtoF(const char *s){
-    int i, sign;
-    double value, power;
+    double rez = 0, fact ;
+    int point_seen;
+    char c;
     #ifdef QATOF_FULL
-        int powersign; 
-        double power2;
-    #endif    
-    if( NULL == s ) return 0.0;
-    for(i = 0; isspace(s[i]); ++i); /*discard whitespaces*/
-    sign = ('-' == s[i])? -1 : 1; /*set the sign*/
-    if('-' == s[i] || '+' == s[i]) ++i; /*discards any other sign chars*/
-  
-    for(value = 0.0; isdigit(s[i]); ++i) value = value * 10.0 + (s[i] - '0');  /*compute the integer part until a non-digit char is found*/
-    if('.' == s[i] ) ++i; /*if the next char is a dot, move to the next char to process the floating point*/
-    for(power = 1.0; isdigit(s[i]); ++i, power *= 10.0)    value = value * 10.0 + (s[i] - '0'); /*loop until a non-digit char is found*/
-    #ifdef SATOF_FULL /*handle the sci-notation*/
-        if('e'  == s[i] || 'E' == s[i]) ++i; /*if sci notation char is found, move to the next char and process it*/
-        else return sign * value/power;
+        int power2, powersign = 1;
+        double power, efactor;
+    #endif
+   
+    for(; isspace(*s); s++); /*discard whitespaces*/
+    fact = ('-' == *s)? -1.0 : 1.0; /*set the sign*/
+    if ( '-' == *s || '+' == *s )  s++; /*move to the next sign*/
 
-        powersign = ('-' == s[i])? -1 : 1;
-        if('-' == s[i] || '+' == s[i]) ++i;
-
-        for(power2 = 0; isdigit(s[i]); ++i)  power2 = power2 * 10 + (s[i] - '0');
-
-        if(-1 == powersign ){
-            while(0 != power2){
-                power *= 10;
-                --power2;
-            }
+    for (point_seen = 0; (c=*s); s++){
+        if (c == '.'){
+            point_seen = 1; 
+            continue;
         }
-        else{
-            while(0 != power2 ){
-                power /= 10;
-                --power2;
-            }
+        if (isdigit(c)){
+            if (point_seen) fact *= 0.1;
+            rez = rez * 10.0 + (c-'0');
         }
-        return sign * value/power;
+        else break;
+    }
+    
+    #ifdef QATOF_FULL
+        if('e'  == *s || 'E' == *s) s++; 
+        else return rez * fact;
+        
+        if('-' == *s || '+' == *s){
+            powersign = ('-' == *s)? -1 : 1;
+            s++;    
+        } 
+        for(power2 = 0; isdigit(*s); s++)  power2 = power2 * 10 + (*s - '0');
+        if( 0 == power2) return  rez * fact;
+        efactor = (-1 == powersign)? 0.1 : 10.0;
+        for(power=1; 0 != power2; power2--) power *= efactor;
+        return power * rez * fact;
     #else
-        return sign * value/power; 
+        return rez * fact;
     #endif      
 }
 /*============================================================================*/
@@ -2212,7 +2214,6 @@ qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber){
     Register = *((uint16_t*)Address);
     return qBitRead(Register, PinNumber);
 }
-
 /*============================================================================*/
 qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
     uint8_t Register = 0;
@@ -2240,7 +2241,7 @@ qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterS
     Instance->DebounceTime = DebounceTime;
     Instance->Reader = (NULL==RegisterSize)? QREG_32BIT  : RegisterSize;
     Instance->State = QEDGECHECK_CHECK;
-    Instance->Start = _qSysTick_Epochs_;
+    Instance->Start = qSchedulerGetTick();
     return qTrue;
 }
 /*============================================================================*/
@@ -2288,7 +2289,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
     if(NULL == Instance) return qFalse;
     
     if( QEDGECHECK_WAIT == Instance->State){ /*de-bounce wait state*/
-        if( (_qSysTick_Epochs_- Instance->Start)>=Instance->DebounceTime )  Instance->State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/       
+        if( (qSchedulerGetTick() - Instance->Start)>=Instance->DebounceTime )  Instance->State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/       
         return qTrue;
     }
     
@@ -2315,7 +2316,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
     
     if(QEDGECHECK_UPDATE == Instance->State ){ /*reload the instance to a full check*/
         Instance->State = QEDGECHECK_CHECK; /*reload the init state*/
-        Instance->Start = _qSysTick_Epochs_; /*reload the time*/
+        Instance->Start = qSchedulerGetTick(); /*reload the time*/
     }
     if(Instance->State > QEDGECHECK_CHECK) Instance->State = QEDGECHECK_WAIT; /*at least one pin change detected, do the de-bounce wait*/
            
@@ -2749,7 +2750,7 @@ This function should be only invoked from the callback context of the  recognize
 Parameters:
 
     - param : A pointer to the pre-parser instance
-    		  (only available from the at-command callback)
+    		  (only available from the AT-Command callback)
     - n : The number of the argument
     - out: Array in memory where to store the resulting null-terminated string.
 
@@ -2791,7 +2792,7 @@ This function should be only invoked from the callback context of the  recognize
 Parameters:
 
     - param : A pointer to the pre-parser instance
-    		  (only available from the at-command callback)
+    		  (only available from the AT-Command callback)
     - n : The number of the argument
 
 Return value:
@@ -2816,7 +2817,7 @@ char* qATParser_GetArgPtr(qATParser_PreCmd_t *param, int8_t n){
 /*int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n)
 
 This function get the <n> argument parsed as <Integer> from the incoming AT command.
-This function should be only invoked from the callback context of the  recognized command.
+This function should be only invoked from the callback context of the recognized command.
 Note: see qAtoI
 
 
@@ -2858,13 +2859,13 @@ float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n){
 
 This function get the <n> HEX argument parsed <uint32_t> from the
 incoming AT command.
-This function should be only invoked from the callback context of the  recognized command.
+This function should be only invoked from the callback context of the recognized command.
 Note: see qXtoU32
 
 Parameters:
 
     - param : A pointer to the pre-parser instance
-    		  (only available from the at-command callback)
+    		  (only available from the AT-Command callback)
     - n : The number of the argument
 
 Return value:

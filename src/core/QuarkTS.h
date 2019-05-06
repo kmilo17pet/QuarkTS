@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
- *  Version : 4.6.8
+ *  Version : 4.7.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -59,7 +59,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.6.8"
+    #define QUARTKTS_VERSION    "4.7.1"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -173,6 +173,7 @@ extern "C" {
     #define qTrigger_RBufferEmpty       byRBufferEmpty
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
+
 
     typedef float qTime_t;
     typedef uint32_t qClock_t;
@@ -391,6 +392,8 @@ extern "C" {
         volatile uint32_t IntFlags;
     }qTaskCoreFlags_t;
    
+    typedef qClock_t (*qGetTickFcn_t)(void);
+
     typedef struct{ /*Main scheduler core data*/
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
@@ -407,6 +410,7 @@ extern "C" {
             void *QueueData;
         #endif 
         qTask_t *CurrentRunningTask;
+        qGetTickFcn_t GetSysTick;
     }QuarkTSCoreData_t;
        
     qTime_t qClock2Time(const qClock_t t);
@@ -418,8 +422,9 @@ extern "C" {
     void qSchedulerSetIdleTask(qTaskFcn_t Callback);
     void qSchedulerRelease(void);
     void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
-    
-    void _qInitScheduler(const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+
+
+    void _qInitScheduler(qGetTickFcn_t TickProvider, const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
     qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
@@ -489,9 +494,9 @@ Parameters:
                   number greater than zero
      */
     #ifdef Q_PRIORITY_QUEUE
-        #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler(ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
+        #define qSchedulerSetup(TickProviderFcn, ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler((qGetTickFcn_t)TickProviderFcn, ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
     #else
-        #define qSchedulerSetup(ISRTick, IDLE_Callback, QueueSize)                                   _qInitScheduler(ISRTick, IDLE_Callback, NULL, 0)
+        #define qSchedulerSetup(TickProviderFcn, ISRTick, IDLE_Callback, QueueSize)                                   _qInitScheduler((qGetTickFcn_t)TickProviderFcn, ISRTick, IDLE_Callback, NULL, 0)
     #endif
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
