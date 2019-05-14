@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  QuarkTS - A Non-Preemptive Task Scheduler for low-range MCUs
+ *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
  *  Version : 4.7.1
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
@@ -189,7 +189,7 @@ extern "C" {
     #define qPeriodic            ((qIteration_t)(-32768))
     #define qIndefinite          qPeriodic
     #define qSingleShot          ((qIteration_t)(1))
-    #define qTimeInmediate       ((qTime_t)(0))
+    #define qTimeImmediate       ((qTime_t)(0))
 
     #define LOWEST_Priority     qLowest_Priority
     #define MEDIUM_Priority     qMedium_Priority
@@ -208,8 +208,8 @@ extern "C" {
         #define SINGLESHOT          qSingleShot
     #endif
     
-    #ifndef TIME_INMEDIATE
-        #define TIME_INMEDIATE      qTimeInmediate
+    #ifndef TIME_IMMEDIATE
+        #define TIME_IMMEDIATE      qTimeImmediate
     #endif      
           
     #define _QEVENTINFO_INITIALIZER     {_Q_NO_VALID_TRIGGER_, NULL, NULL, qFalse, qFalse, qFalse}  
@@ -264,15 +264,15 @@ extern "C" {
         qBool_t FirstCall;
         /* FirstIteration:
         Indicates whether current pass is the first iteration of the task. 
-        This flag will be only set when time-elapsed events occours and the
-        Iteration counter has been parametrized. Asyncronous events never change
+        This flag will be only set when time-elapsed events occurs and the
+        Iteration counter has been parameterized. Asynchronous events never change
         the task iteration counter, consequently doesn't have effect in this flag 
         */
         qBool_t FirstIteration;
         /* LastIteration:
         Indicates whether current pass is the last iteration of the task. 
-        This flag will be only set when time-elapsed events occours and the
-        Iteration counter has been parametrized. Asyncronous events never change
+        This flag will be only set when time-elapsed events occurs and the
+        Iteration counter has been parameterized. Asynchronous events never change
         the task iteration counter, consequently doesn't have effect in this flag 
         */
         qBool_t LastIteration;
@@ -327,7 +327,7 @@ extern "C" {
         */        
         qSM_Status_t (* qConst LastState)(_qSMData_t);
         /* PreviousReturnStatus: (Read Only)
-        The return status of <PreviusStateState>
+        The return status of <PreviousState>
         */
         qConst qSM_Status_t PreviousReturnStatus;
         /* StateFirstEntry: [== StateJustChanged] (Read Only)
@@ -336,7 +336,7 @@ extern "C" {
         qConst qBool_t StateFirstEntry;
         /* Data: (Read Only)
         State-machine associated data.
-        Note: If the FSM is running as a task, the asociated event data can be 
+        Note: If the FSM is running as a task, the associated event data can be 
         queried throught the "Data" field. (cast to qEvent_t is mandatory)
          */
         void * qConst Data;
@@ -355,7 +355,7 @@ extern "C" {
    
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART, /*Restart the FSM*/
-        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesnt change*/
+        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesn't change*/
         qSM_FAILURE_STATE, /*Set the Failure State*/
         qSM_SUCCESS_STATE, /*Set the Success State*/
         qSM_UNEXPECTED_STATE, /*Set the Unexpected State*/
@@ -413,6 +413,9 @@ extern "C" {
         qGetTickFcn_t GetSysTick;
     }QuarkTSCoreData_t;
        
+    void qEnterCritical(void);
+    void qExitCritical(void);
+
     qTime_t qClock2Time(const qClock_t t);
     qClock_t qTime2Clock(const qTime_t t);
     void qSchedulerSysTick(void);
@@ -426,12 +429,18 @@ extern "C" {
 
     void _qInitScheduler(qGetTickFcn_t TickProvider, const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
-    qBool_t qSchedulerAddxTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
-    qBool_t qSchedulerAddeTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
-    qBool_t qSchedulerAddSMTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+   
+    /*only for backward compatibility*/
+    #define qSchedulerAddxTask      qSchedulerAdd_Task
+    #define qSchedulerAddeTask      qSchedulerAdd_EventTask
+    #define qSchedulerAddSMTask     qSchedulerAdd_StateMachineTask
+
+    qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
+    qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
+    qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                 qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                                 qState_t InitialTaskState, void *arg);
-    qBool_t qSchedulerRemoveTask(qTask_t *TasktoRemove);
+    qBool_t qSchedulerRemoveTask(qTask_t *Task);
     void qSchedulerRun(void);
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     void qTaskSendEvent(qTask_t *Task, void* eventdata);
@@ -477,12 +486,16 @@ Parameters:
 
     
     
-/*void qSchedulerSetup(qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
+/*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
 Task Scheduler Setup. This function is required and must be called once in 
 the application main thread before any tasks creation.
 
 Parameters:
+
+    - TickProviderFcn :  The function that provides the tick value. If the user application 
+                        uses the qSchedulerSysTick from the ISR, this parameter can be NULL.
+                        Note: Function should take void and return a 32bit value. 
 
     - ISRTick : This parameter specifies the ISR background timer period in 
                 seconds(Floating-point format).
@@ -651,7 +664,7 @@ Resets the _CRPos_ variable to the begining of the Co-Routine
 /* This structure is the head of a memory pool. */
 typedef struct {
     qSize_t BlockSize;	
-    uint8_t NumberofBlocks;
+    uint8_t NumberOfBlocks;
     uint8_t *BlockDescriptors;
     uint8_t *Blocks;
 }qMemoryPool_t;        
@@ -680,7 +693,7 @@ Parameters:
 						uint8_t qMEM_BDES_##NAME[N]={0}; \
 						qMemoryPool_t NAME; \
                                                 NAME.BlockSize = ALLOC_SIZE; \
-                                                NAME.NumberofBlocks =  N; \
+                                                NAME.NumberOfBlocks =  N; \
                                                 NAME.BlockDescriptors = &qMEM_BDES_##NAME[0]; \
                                                 NAME.Blocks = (uint8_t*)&qMEM_AREA_##NAME[0] \
                                                 
@@ -730,7 +743,7 @@ void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBoo
 
 /*qPrintString(fcn, storagep, s)
  
-This macro is a Wrapper method to write a string througth fcn
+This macro is a Wrapper method to write a string through fcn
   
 Parameters:
 
