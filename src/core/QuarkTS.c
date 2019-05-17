@@ -668,28 +668,28 @@ Parameters:
     - RingBuffer : A pointer to a Ring Buffer object
     - Mode: Linking mode. This implies the event that will trigger the task according
             to one of the following modes:
-                        > qRB_AUTOPOP: The task will be triggered if there is elements 
-                          in the Ring Buffer. Data data will be popped
-                          automatically in every trigger and will be available 
-                          in the <EventData> field of qEvent_t structure.
+                        > qRB_AUTOPOP: The task will be triggered if there are elements 
+                          in the Ring Buffer. Data will be extracted automatically in 
+                          every trigger and will be available in the <EventData> field 
+                          of qEvent_t structure.
      
                         > qRB_FULL: the task will be triggered if the Ring Buffer
-                          is full. The pointer to the RingBuffer will be 
-                          available in the <EventData> field of qEvent_t structure.
+                          is full. A pointer to the RingBuffer will be available in the
+                          <EventData> field of qEvent_t structure.
 
                         > qRB_COUNT: the task will be triggered if the count of 
                           elements in the Ring Buffer reach the specified value. 
-                          The pointer to the RingBuffer will be available in the
+                          A pointer to the RingBuffer will be available in the
                           <EventData> field of qEvent_t structure.
 
                         > qRB_EMPTY: the task will be triggered if the Ring Buffer
-                          is empty. The pointer to the RingBuffer will be 
-                          available in the <EventData> field of qEvent_t structure.
+                          is empty. A pointer to the RingBuffer will be available in the
+                          <EventData> field of qEvent_t structure.
     - arg: This argument defines if the Ring buffer will be linked (qLINK) or 
            unlinked (qUNLINK) from the task.
            If the qRB_COUNT mode is specified, this value will be used to check
            the element count of the Ring Buffer. A zero value will act as 
-           an unlink action. 
+           an qUNLINK action. 
 
 Return value:
 
@@ -828,7 +828,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
     #ifdef Q_RINGBUFFERS 
     qTrigger_t trg = qTriggerNULL;
     #endif
-    qBool_t nTaskReady = qFalse; /*the return is to notify hat at least one task gained the qReady state*/
+    qBool_t nTaskReady = qFalse; /*the return is to notify that at least one task gained the qReady state*/
     for(Task = QUARKTS.Head; Task; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
         if(Task->Flag[_qIndex_Enabled]){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
             if(_qTaskHasPendingIterations(Task)){ /*then task should be periodic or must have available iters*/
@@ -1282,7 +1282,7 @@ void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, c
 /*============================================================================*/
 /*qBool_t qRBufferEmpty(qRBuffer_t *obj)
  
-Returns the empty/full status of the ring buffer
+Returns the empty status of the ring buffer
  
 Parameters:
 
@@ -1298,7 +1298,7 @@ qBool_t qRBufferEmpty(qRBuffer_t *obj){
 /*============================================================================*/
 /*void* qRBufferGetFront(qRBuffer_t *obj)
  
-Looks at the data from the head of the list without removing it
+Looks at the data from the front of the Ring-Buffer without removing it
  
 Parameters:
 
@@ -1313,9 +1313,31 @@ void* qRBufferGetFront(qRBuffer_t *obj){
     return (void*)(!qRBufferEmpty(obj) ? &(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]) : NULL);    
 }
 /*============================================================================*/
+/*qBool_t qRBufferRemoveFront(qRBuffer_t *obj)
+ 
+Remove the data located at the front of the Ring-Buffer
+ 
+Parameters:
+
+    - obj : a pointer to the Ring Buffer object
+  
+Return value:
+
+    qTrue if data was removed from RBuffer, otherwise returns qFalse
+ */
+qBool_t qRBufferRemoveFront(qRBuffer_t *obj){
+    if (NULL==obj) return qFalse;
+    if (!qRBufferEmpty(obj)) {
+        obj->tail++;
+        return qTrue;    
+    }    
+    return qFalse;
+}
+
+/*============================================================================*/
 /*void* qRBufferPopFront(qRBuffer_t *obj)
  
-Extract the data from the front of the list, and removes it
+Extract the data from the front of the Ring-Buffer, and removes it
  
 Parameters:
 

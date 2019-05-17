@@ -707,6 +707,7 @@ Parameters:
 void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
 qBool_t qRBufferEmpty(qRBuffer_t *obj);
 void* qRBufferGetFront(qRBuffer_t *obj);
+qBool_t qRBufferRemoveFront(qRBuffer_t *obj);
 qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
 qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 #endif

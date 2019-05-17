@@ -85,7 +85,7 @@ void Task1Callback(qEvent_t e){
         puts("FirstCall");
     }
     if(e->FirstIteration){
-        puts("FirtsIteration");
+        puts("FirstIteration");
     }
     if(e->LastIteration){
         puts("LastIteration");
