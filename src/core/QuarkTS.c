@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.1
+ *  Version : 4.7.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -243,11 +243,41 @@ Parameters:
 
     - Task : Pointer to the task node.
     - eventdata : Specific event user-data.
+
+Return value:
+
+    qTrue on success. Otherwise qFalse.
 */ 
-void qTaskSendEvent(qTask_t *Task, void* eventdata){
-    if(NULL==Task) return;
+qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata){
+    if(NULL==Task) return qFalse;
     Task->Flag[_qIndex_AsyncRun] = qTrue;
     Task->AsyncData = eventdata;
+    return qTrue;
+}
+/*============================================================================*/
+/*void qTaskSendEvent(qTask_t *Task, void* eventdata)
+
+Spread an event among all the tasks in the scheduling scheme
+
+Parameters:
+
+    - eventdata : Specific event user-data.
+    - mode : the method used to spread the event:
+              QSEND_EVENT_SIMPLE or QSEND_EVENT_QUEUED.
+
+Return value:
+
+    qTrue if the event could be spread in all tasks. Otherwise qFalse.              
+*/ 
+/*============================================================================*/
+qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode){
+    qTask_t *Task = NULL;
+    if(QSEND_EVENT_SIMPLE==mode || QSEND_EVENT_QUEUED == mode ){
+        for(Task = QUARKTS.Head; Task; Task = Task->Next){
+            if(qFalse == mode(Task, eventdata)) return qFalse;
+        } 
+    }
+    return qTrue;
 }
 /*============================================================================*/
 /*void qTaskSetTime(qTask_t *Task, qTime_t Value)
@@ -2408,7 +2438,7 @@ Parameters:
     - Input : A memory location to store the parser input (Mandatory)
     - SizeInput: The size of the memory allocated in <Input> 
     - Output: A memory location to store the parser output
-    - SizeOutput : The size of the memory allocated in <Output 
+    - SizeOutput : The size of the memory allocated in <Output> 
     - Identifier: The device identifier string. This string will be printed-out
                   after a call to the AT_DEFAULT_ID_COMMAND
     - OK_Response: The output message when a command callback returns QAT_OK.  
@@ -2504,7 +2534,7 @@ Note: This API assumes that the respective ISR catch a single byte at a time.
 Parameters:
 
     - Parser : A pointer to the ATParser instance
-    - c : A pointer to the AT command object. 
+    - c : The incoming byte/char to the input. 
 
 Return value:
 
@@ -2535,7 +2565,7 @@ Parameters:
 
     - Parser : A pointer to the ATParser instance
     - data : The incoming string.
-    - n : The Len of the string
+    - n : The length of the string
 
 Return value:
 
@@ -2863,7 +2893,7 @@ Parameters:
 
 Return value:
 
-    The argument parsed as Float. Same behavior of qAtoI. If argument not found returns 0
+    The argument parsed as integer. Same behavior of qAtoI. If argument not found returns 0
 */
 int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n){
 	return (int) qAtoI( qATParser_GetArgPtr(param, n) );

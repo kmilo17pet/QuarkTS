@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.1
+ *  Version : 4.7.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -59,12 +59,13 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.7.1"
+    #define QUARTKTS_VERSION    "4.7.2"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
    
+    #define _UNUSED_(x)             (void)(x)
     /*#define Q_TASK_INSERT_BEGINNING*/
     #define qFalse                  0x00u
     #define qTrue                   0x01u
@@ -413,6 +414,7 @@ extern "C" {
         qGetTickFcn_t GetSysTick;
     }QuarkTSCoreData_t;
        
+
     void qEnterCritical(void);
     void qExitCritical(void);
 
@@ -442,8 +444,13 @@ extern "C" {
                                 qState_t InitialTaskState, void *arg);
     qBool_t qSchedulerRemoveTask(qTask_t *Task);
     void qSchedulerRun(void);
+
+    typedef qBool_t (*qTaskSendEventMode_t)(qTask_t*, void*);
+    #define QSEND_EVENT_SIMPLE      qTaskSendEvent
+    #define QSEND_EVENT_QUEUED      qTaskQueueEvent
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
-    void qTaskSendEvent(qTask_t *Task, void* eventdata);
+    qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata);
+    qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode);
           
     typedef enum{qRB_AUTOPOP=_qIndex_RBAutoPop, qRB_FULL=_qIndex_RBFull, qRB_COUNT=_qIndex_RBCount, qRB_EMPTY=_qIndex_RBEmpty}qRBLinkMode_t;
     #define    RB_AUTOPOP   qRB_AUTOPOP
@@ -520,7 +527,7 @@ Parameters:
         #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
         #define __qCRRestart                        __qCRCodeStartBlock{  __qTaskInitState      ; __qTaskYield }                                            __qCRCodeEndBlock
         #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
-        #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;}                                  __qCRCodeEndBlock
+        #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_(_pos_);}                                  __qCRCodeEndBlock
         #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
         #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
@@ -867,9 +874,25 @@ extern qPutChar_t __qDebugOutputFcn;
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
     
-    /*On-demand trace macros*/
-    #define qDebugString(s)                 qOutputString(__qDebugOutputFcn, NULL, (const char *)s, qFalse)
+    /*On-demand debug/trace macros*/
     #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)        
+
+    #define qDebugMessage(Var)              __qtrace_func ("", NULL, "", (char*)(Var), NULL, 0)
+    #define qDebugString(Var)               __qtrace_func ("", NULL, #Var "="  , (char*)(Var), NULL, 0)
+    #define qDebugBool(Var)                 __qtrace_func ("", NULL, #Var "="  , qBtoA(( qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
+    #define qDebugqBool(Var)                __qtrace_func ("", NULL, #Var "="  , qQBtoA(( qBool_t)(Var), qDebugTrace_Buffer   ), NULL, 0)
+    #define qDebugBinary(Var)               __qtrace_func ("", NULL, #Var "=0b", qItoA(( int32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
+    #define qDebugOctal(Var)                __qtrace_func ("", NULL, #Var "=0" , qItoA(( int32_t)(Var), qDebugTrace_Buffer,  8), NULL, 0)
+    #define qDebugHexadecimal(Var)          __qtrace_func ("", NULL, #Var "=0x", qItoA(( int32_t)(Var), qDebugTrace_Buffer, 16), NULL, 0)
+    #define qDebugDecimal(Var)              __qtrace_func ("", NULL, #Var "="  , qItoA(( int32_t)(Var), qDebugTrace_Buffer, 10), NULL, 0)
+    #define qDebugFloat(Var)                __qtrace_func ("", NULL, #Var "="  , qFtoA(( float  )(Var), qDebugTrace_Buffer, 10), NULL, 0)
+    #define qDebugFloatPrec(Var, Pc)        __qtrace_func ("", NULL, #Var "="  , qFtoA(( float  )(Var), qDebugTrace_Buffer, Pc), NULL, 0)
+    #define qDebugUnsignedBinary(Var)       __qtrace_func ("", NULL, #Var "=0b", qUtoA((uint32_t)(Var), qDebugTrace_Buffer,  2), NULL, 0)
+    #define qDebugUnsignedOctal(Var)        __qtrace_func ("", NULL, #Var "=0" , qUtoA((uint32_t)(Var), qDebugTrace_Buffer,  8), NULL, 0)
+    #define qDebugUnsignedHexadecimal(Var)  __qtrace_func ("", NULL, #Var "=0x", qUtoA((uint32_t)(Var), qDebugTrace_Buffer, 16), NULL, 0)
+    #define qDebugUnsignedDecimal(Var)      __qtrace_func ("", NULL, #Var "="  , qUtoA((uint32_t)(Var), qDebugTrace_Buffer, 10), NULL, 0)
+    
+
     #define qTraceMessage(Var)              __qtrace_func (__qAT(), __QTRACE_FUNC, "", (char*)(Var), NULL, 0)
     #define qTraceString(Var)               __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , (char*)(Var), NULL, 0)
     #define qTraceBool(Var)                 __qtrace_func (__qAT(), __QTRACE_FUNC, #Var "="  , qBtoA(( qBool_t)(Var), qDebugTrace_Buffer    ), NULL, 0)
@@ -897,6 +920,8 @@ extern qPutChar_t __qDebugOutputFcn;
     */
     #define qTraceMemory(Pointer, BlockSize)    __qtrace_func (__qAT(), __QTRACE_FUNC, __qTOSTRING(Var) "=", NULL, Pointer, BlockSize)
     #define qTraceMem(Pointer, BlockSize)       qTraceMemory(Pointer, BlockSize)
+    #define qDebugMemory(Pointer, BlockSize)    __qtrace_func ("", NULL, __qTOSTRING(Var) "=", NULL, Pointer, BlockSize)
+    #define qDebugMem(Pointer, BlockSize)       qDebugMemory(Pointer, BlockSize) 
     /*qTraceVar/qTraceVariable(Pointer, DISP_TYPE_MODE)
     Trace a variable (up to 32bit data) 
 
@@ -911,6 +936,8 @@ extern qPutChar_t __qDebugOutputFcn;
     */
     #define qTraceVariable(Var, DISP_TYPE_MODE) qTrace##DISP_TYPE_MODE(Var)
     #define qTraceVar(Var, DISP_TYPE_MODE)      qTrace##DISP_TYPE_MODE(Var)
+    #define qDebugVar(Var, DISP_TYPE_MODE)      qDebug##DISP_TYPE_MODE(Var)    
+    #define qDebugVariable(Var, DISP_TYPE_MODE) qDebug##DISP_TYPE_MODE(Var)  
 #else
     #define qTrace()
     #define qDebugString(s)

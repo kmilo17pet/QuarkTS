@@ -234,17 +234,18 @@ int main(int argc, char** argv) {
     
 
     qSchedulerSetup(NULL, 0.01, IdleTaskCallback, 10);           
-    qSchedulerAddxTask(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
-    qSchedulerAddxTask(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
-    qSchedulerAddeTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
+    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
+    qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
+    qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
 
     
 
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
-    qSchedulerAddeTask(&Task4, Task4Callback, 10, "TASK4");
-    qSchedulerAddeTask(&Task5, Task5Callback, 80, "TASK5");
-    qSchedulerAddeTask(&Task6, Task6Callback, 10, "TASK6");
-    qSchedulerAddSMTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+    qDebugString("fuck you");
+    qSchedulerAdd_EventTask(&Task4, Task4Callback, 10, "TASK4");
+    qSchedulerAdd_EventTask(&Task5, Task5Callback, 80, "TASK5");
+    qSchedulerAdd_EventTask(&Task6, Task6Callback, 10, "TASK6");
+    qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
 
 
     /*qISR_Byte_t DataAlloc[100] = {0};
