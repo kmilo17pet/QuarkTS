@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.2
+ *  Version : 4.7.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -51,7 +51,24 @@ extern "C" {
     #undef QATOF_FULL
         
     /*================================================================================================================================*/   
-    #include <stdint.h>
+    #ifdef __IAR_SYSTEMS_ICC__ /*stdint.h missing for some stupid reason*/
+        #ifdef __ICC8051__
+          #ifndef STDINT_H
+              #define STDINT_H
+              typedef unsigned char uint8_t;
+              typedef unsigned short uint16_t;
+              typedef unsigned long uint32_t;
+              typedef uint32_t uint64_t[2];
+
+              typedef signed char int8_t;
+              typedef short int16_t;
+              typedef long int32_t;
+              typedef int32_t int64_t[2];
+          #endif
+        #endif      
+    #else
+        #include <stdint.h>
+    #endif    
     #include <string.h>
     #include <stdio.h>
     #include <stdlib.h>
@@ -59,7 +76,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.7.2"
+    #define QUARTKTS_VERSION    "4.7.3"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -520,7 +537,7 @@ Parameters:
     #endif
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
-    void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val);
+    void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);
     
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin

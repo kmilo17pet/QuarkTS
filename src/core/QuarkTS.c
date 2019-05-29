@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.2
+ *  Version : 4.7.3
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -56,6 +56,11 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 #ifdef __XC16
 #endif
 #ifdef __XC32
+#endif
+#ifdef __IAR_SYSTEMS_ICC__
+  #ifdef __ICC8051__
+    #pragma diag_suppress=Pa082
+  #endif
 #endif
 /*=========================== QuarkTS Private Data ===========================*/
 static volatile QuarkTSCoreData_t QUARKTS;
@@ -233,11 +238,12 @@ uint32_t qTaskGetCycles(const qTask_t *Task){
 /*============================================================================*/
 /*void qTaskSendEvent(qTask_t *Task, void* eventdata)
 
-Sends a simple asynchronous event. This method marks the task as 'qReady' for
-execution, therefore, the planner will launch the task immediately according to
-the scheduling rules (even if task is disabled) and setting the Trigger flag to
-"byAsyncEvent". Specific user-data can be passed through, and will be available
-in the respective callback inside the EventData field.
+Sends a simple asynchronous event (QSEND_EVENT_SIMPLE). This method marks the 
+task as 'qReady' for execution, therefore, the planner will launch the task 
+immediately according to the scheduling rules (even if task is disabled) and 
+setting the Trigger flag to "byAsyncEvent". Specific user-data can be passed 
+through, and will be available in the respective callback inside the <EventData> 
+field.
 
 Parameters:
 
@@ -255,7 +261,7 @@ qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata){
     return qTrue;
 }
 /*============================================================================*/
-/*void qTaskSendEvent(qTask_t *Task, void* eventdata)
+/*qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode)
 
 Spread an event among all the tasks in the scheduling scheme
 
@@ -276,8 +282,9 @@ qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode){
         for(Task = QUARKTS.Head; Task; Task = Task->Next){
             if(qFalse == mode(Task, eventdata)) return qFalse;
         } 
+        return qTrue;
     }
-    return qTrue;
+    return qFalse;
 }
 /*============================================================================*/
 /*void qTaskSetTime(qTask_t *Task, qTime_t Value)
@@ -969,7 +976,7 @@ void qStateMachine_Run(qSM_t *obj, void *Data){
     }
  }
 /*============================================================================*/
-/*void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val)
+/*void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs)
 
 Change attributes or set actions to the Finite State Machine (FSM).
 
@@ -984,13 +991,14 @@ Parameters:
          > qSM_SUCCESS_STATE: Set the Success State
          > qSM_UNEXPECTED_STATE: Set the Unexpected State
          > qSM_BEFORE_ANY_STATE: Set the state executed before any state.
- 
-    - Data : Specific attribute Data or Value.
+    - s : The new value for state (only apply in qSM_RESTART). If not used, pass NULL.
+    - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
+             qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
 */    
-void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
+void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs){
     switch(Flag){
         case qSM_RESTART:
-            obj->NextState = (qSM_State_t)val;
+            obj->NextState = (qSM_State_t)s;
             qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
             qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
             qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0;
@@ -1001,21 +1009,24 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag ,void *val){
             qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
             return;
         case qSM_FAILURE_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = (qSM_SubState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = (qSM_SubState_t)subs;
             return;
         case qSM_SUCCESS_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = (qSM_SubState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = (qSM_SubState_t)subs;
             return;    
         case qSM_UNEXPECTED_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = (qSM_SubState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = (qSM_SubState_t)subs;
             return;   
         case qSM_BEFORE_ANY_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = (qSM_SubState_t)val;
+            qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = (qSM_SubState_t)subs;
             return;              
         default:
             return;
     }
 }
+#ifdef __IAR_SYSTEMS_ICC__
+#else
+#endif
 /*============================================================================*/
 /*qBool_t qSTimerSet(qSTimer_t obj, const qTime_t Time)
  
@@ -1271,12 +1282,13 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 /*============================================================================*/
 static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     uint16_t i;
+    qSize_t r = k;
     if ( ((k-1) & k) != 0) {
         k--;
         for (i = 1; i<sizeof(uint16_t)*8; i= (uint16_t) (i * 2)) k = k | k >> i;
         k = (qSize_t) ((k + 1) >> 1);
     }
-    return k;
+    return (k<r)? k*2 : k;
 }
 /*============================================================================*/
 static qSize_t _qRBufferCount(qRBuffer_t *obj){
@@ -2964,4 +2976,9 @@ uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n){
 #ifdef __XC16
 #endif
 #ifdef __XC32
+#endif
+#ifdef __IAR_SYSTEMS_ICC__
+  #ifdef __ICC8051__
+    #pragma diag_warning=Pa082
+  #endif
 #endif
