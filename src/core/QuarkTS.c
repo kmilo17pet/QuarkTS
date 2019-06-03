@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.3
+ *  Version : 4.7.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -99,6 +99,13 @@ qPutChar_t __qDebugOutputFcn = NULL;
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
 #define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
+
+
+qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t){
+    qClock_t tdelay;
+    tdelay = qTime2Clock(t);
+    return (qBool_t)((qSchedulerGetTick() - cr->crdelay)>=tdelay);
+}
 
 /*============================================================================*/
 /*void qEnterCritical(void)

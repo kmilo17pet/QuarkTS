@@ -143,25 +143,24 @@ void blinktaskCallback(qEvent_t e){
     qCRPosition_t state;
     qCoroutineSemaphore_t mutex;
     qCoroutineSemaphoreInit(&mutex, 1);
+    static  int count = 0;
     qCoroutineBegin{
-        qTraceMessage("");
+        puts("CR:A");
+        puts("CR:B");
+        puts("CR:C");
         qCoroutinePositionGet(state);
-        qSTimerSet(&tmr, 1);
-        qCoroutineWaitUntil( qSTimerExpired(&tmr) );
+        puts("CR:D");
+        puts("CR:E");
+        qCoroutineDelay(0.1);
+        qTraceVariable(count, Decimal);
+        puts("CR:F");
+        puts("CR:G");
+        if(++count>10)  qCoroutinePositionRestore(state);
+        puts("CR:H");
+        qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2));
+        puts("CR:I");
+        puts("CR:J");
         
-        qCoroutineSemaphoreWait(&mutex);
-        qCoroutinePositionGet(state);
-        qSTimerSet(&tmr, 1);
-        /**/
-        
-        /*qCoroutinePositionRestore(state);*/
-        qCoroutineSemaphoreSignal(&mutex);
-        qTraceMessage("");
-        qTaskSendEvent(&Task1, NULL);
-        qCoroutineWaitUntil(qSTimerExpired(&tmr));
-        qTraceMessage("");
-        qSTimerSet(&tmr, 0.5);
-        qCoroutineWaitUntil(qSTimerExpired(&tmr));
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -235,13 +234,14 @@ int main(int argc, char** argv) {
 
     qSchedulerSetup(NULL, 0.01, IdleTaskCallback, 10);           
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
+    
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
 
     
 
     qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
-    qDebugString("fuck you");
+    qDebugString("some message");
     qSchedulerAdd_EventTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAdd_EventTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, Task6Callback, 10, "TASK6");

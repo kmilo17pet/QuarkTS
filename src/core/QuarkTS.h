@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.3
+ *  Version : 4.7.4
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -76,7 +76,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.7.3"
+    #define QUARTKTS_VERSION    "4.7.4"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -156,22 +156,24 @@ extern "C" {
         #define qCRPosition_t static _qTaskPC_t
         typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 
         typedef qCoroutineSemaphore_t qCRSem_t;
-        #define qCR_PCInitVal   (-0x7FFE)           
+        #define qCR_PCInitVal   -0x7FFE           
         #define __qCRKeep
         #define __qCRCodeStartBlock      do
         #define __qCRCodeEndBlock        while(qFalse)
-        #define __qPersistent            static _qTaskPC_t
+        #define __qPersistent            static qCoroutineInstance_t/*static _qTaskPC_t*/
         #define __qTaskProgress          __LINE__
         #define __qAssert(_COND_)        if(!(_COND_))
-        #define __qTaskPCVar             _qCRTaskState_
+        #define __qTaskPCVar             _qCRTaskState_.instr /*_qCRTaskState_*/
+        #define __qCRDelayVar            _qCRTaskState_.crdelay           
+        #define __qCRDelayPrepare        __qCRDelayVar = qSchedulerGetTick()
         #define __qSetPC(_VAL_)          __qTaskPCVar = _VAL_
         #define __qTaskSaveState         __qSetPC(__qTaskProgress) 
-        #define __qTaskInitState         __qSetPC(qCR_PCInitVal) 
+        #define __qTaskInitState         _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */
         #define __qTaskCheckPCJump(_PC_) switch(_PC_){    
         #define __TagExitCCR             __qCRYield_ExitLabel
         #define __qExit                  goto __TagExitCCR
         #define __qTaskYield             __qExit;
-        #define __qCRDispose            __qTaskInitState;} __TagExitCCR:
+        #define __qCRDispose            __qSetPC(qCR_PCInitVal);} __TagExitCCR:/*__qTaskInitState;} __TagExitCCR:*/
         #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
         #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
         #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
@@ -539,6 +541,12 @@ Parameters:
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);
     
+
+    typedef struct{
+        _qTaskPC_t instr;
+        qClock_t crdelay;
+    }qCoroutineInstance_t;
+    qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t);
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin
         #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
@@ -546,6 +554,7 @@ Parameters:
         #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
         #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_(_pos_);}                                  __qCRCodeEndBlock
         #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
+        #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert(__qCRDelay_Reached(&_qCRTaskState_, _time_)) __qTaskYield } __qCRCodeEndBlock
         #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
   
@@ -665,7 +674,19 @@ Resets the _CRPos_ variable to the begining of the Co-Routine
 */ 
         #define qCoroutinePositionReset(_CRPos_)                        __qCR_PositionReset(_CRPos_)
         #define qCRPositionReset(_CRPos_)                               __qCR_PositionReset(_CRPos_)
+
+/*qCoroutineDelay(_qTime_t_) 
+qCRDelay(_qTime_t_)  
+
+Delay a coroutine for a given number of time
+
+Parameters:
+
+    - _qTime_t_ :  The amount of time (In seconds), that the calling coroutine should yield.
+*/        
     
+        #define qCoroutineDelay(_qTime_t_)                              __qCR_Delay(_qTime_t_)
+        #define qCRDelay(_qTime_t_)                                     __qCR_Delay(_qTime_t_)
     #endif  
     
         typedef struct{ /*STimer defintion*/
