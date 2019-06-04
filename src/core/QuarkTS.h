@@ -386,19 +386,18 @@ extern "C" {
     struct _qTask_t{ /*Task node definition*/
         volatile struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
+        qTaskFcn_t Callback; 
+        qSM_t *StateMachine; /*pointer to the linked FSM*/
+        #ifdef Q_RINGBUFFERS
+            qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
+        #endif
         volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
         uint32_t Cycles; 
-        qTaskFcn_t Callback; 
-        /*volatile qTaskFlags_t Flag;*/
-        #ifdef Q_RINGBUFFERS
-        qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
-        #endif
-        qSM_t *StateMachine; /*pointer to the linked FSM*/
+        qTrigger_t Trigger; 
         qIteration_t Iterations; 
         qPriority_t Priority; 
-        volatile qBool_t Flag[7]; /*task related flags*/
         qTaskState_t State;      
-        qTrigger_t Trigger; 
+        volatile qBool_t Flag[7]; /*task related flags*/
     };
     #define qTask_t volatile struct _qTask_t
     typedef qTask_t** qHeadPointer_t;         
@@ -431,7 +430,6 @@ extern "C" {
         qTask_t *CurrentRunningTask;
         qGetTickFcn_t GetSysTick;
         _qEvent_t_ EventInfo;
-        
     }QuarkTSCoreData_t;
 
     void qEnterCritical(void);
@@ -708,10 +706,10 @@ Parameters:
 #ifdef Q_MEMORY_MANAGER
 /* This structure is the head of a memory pool. */
 typedef struct {
-    qSize_t BlockSize;	
-    uint8_t NumberOfBlocks;
     uint8_t *BlockDescriptors;
     uint8_t *Blocks;
+    qSize_t BlockSize;	
+    uint8_t NumberOfBlocks;
 }qMemoryPool_t;        
         
 typedef enum {
@@ -760,12 +758,12 @@ qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
 typedef volatile char qISR_Byte_t;
 typedef volatile struct{
     qISR_Byte_t *pdata;
-    volatile uint16_t index;
-    volatile qBool_t ReadyFlag;
     qBool_t (*AcceptCheck)(const char);
-    char (*PreChar)(const char);
-    char EndByte;
+    char (*PreChar)(const char);    
+    volatile uint16_t index;
     uint16_t MaxIndex;
+    volatile qBool_t ReadyFlag;
+    char EndByte;
 }qISR_ByteBuffer_t;
 
 #ifdef Q_TASK_DEV_TEST
@@ -775,8 +773,8 @@ void qSchedulePrintChain(void);
 typedef struct{
     volatile uint16_t head;
     volatile uint16_t tail;
-    volatile uint8_t *buffer;
     qSize_t length;
+    volatile uint8_t *buffer;
 }qBSBuffer_t;
 
 typedef void (*qPutChar_t)(void*, const char);
@@ -1029,10 +1027,9 @@ qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 #endif  
     
 struct _qIONode_t{
+    qBool_t Pin, PreviousPinValue, Status;
     struct _qIONode_t *Next;
-    qBool_t PreviousPinValue, Status;
     void *Port;
-    qBool_t Pin;
 };
 #define qIONode_t struct _qIONode_t
 
@@ -1083,14 +1080,13 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #define     QAT_OUTPUT               qAT_OUTPUT
 
     typedef volatile struct{
-        volatile char *Buffer;
-        volatile uint16_t index;
         volatile uint8_t Ready;
+        volatile uint16_t index;
         qSize_t Size;
+        volatile char *Buffer;
     }qATParserInput_t;
 
     typedef struct{
-        qATParserInput_t Input;
         void *First;
         char *OK_Response;
         char *ERROR_Response;
@@ -1103,6 +1099,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         qTask_t *Task;
         char *Output;
         qSize_t SizeOutput;
+        qATParserInput_t Input;
     }qATParser_t;   
     
     #define QATCMDTYPE_UNDEF    0x0000
@@ -1127,8 +1124,8 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
     typedef struct{
         void *Command; /*a pointer to the calling AT Command object*/
-        qATCommandType_t Type; /*The command type*/
         char *StrData; /*the string data*/
+        qATCommandType_t Type; /*The command type*/
         qSize_t StrLen; /*the length of StrData*/
         qSize_t NumArgs; /*Number of arguments, only available if Type = QATCMDTYPE_SET*/
     }qATParser_PreCmd_t;
@@ -1137,10 +1134,10 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     
     struct _qATCommand_t{
         char *Text;
-        qSize_t CmdLen;
         qATCommandCallback_t CommandCallback;
         struct _qATCommand_t *Next;
         uint16_t CmdOpt;
+        qSize_t CmdLen;
     };
     #define qATCommand_t struct _qATCommand_t
 
