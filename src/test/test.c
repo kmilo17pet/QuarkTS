@@ -189,15 +189,14 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 
 /*============================================================================*/
 int main(int argc, char** argv) {      
+    qSetDebugFcn(putcharfcn);
     int yy = -128;
     qRBuffer_t ringBuffer;
     
     void *memtest;
     int x=5 , y=6;
 
-    qSetDebugFcn(putcharfcn);
-     
-
+    
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &buton1, &PORTA, 0);
     qEdgeCheck_InsertNode(&INPUTS, &buton2, &PORTA, 1);

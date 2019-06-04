@@ -234,6 +234,16 @@ extern "C" {
           
     #define _QEVENTINFO_INITIALIZER     {_Q_NO_VALID_TRIGGER_, NULL, NULL, qFalse, qFalse, qFalse}  
     typedef struct{
+        /* TaskData (Storage-Pointer):
+        Task arguments defined at the time of its creation.
+        */
+        void *TaskData;
+        /* EventData:
+        Associated data of the event. Specific data will reside here according
+        to the event source. This field will only have a NULL value when the 
+        trigger is <byTimeElapsed> or <byPriority>.
+         */
+        void *EventData;
         /* Trigger:
         This flag indicates the event source that triggers the task execution.
         
@@ -267,16 +277,6 @@ extern "C" {
         - byNoReadyTasks: Only when the Idle Task is triggered.
         */
         qTrigger_t Trigger;
-        /* TaskData (Storage-Pointer):
-        Task arguments defined at the time of its creation.
-        */
-        void *TaskData;
-        /* EventData:
-        Associated data of the event. Specific data will reside here according
-        to the event source. This field will only have a NULL value when the 
-        trigger is <byTimeElapsed> or <byPriority>.
-         */
-        void *EventData;
         /* FirstCall:
         This flag indicates that a task is running for the first time. 
         This flag can be used for data initialization purposes.
@@ -387,17 +387,17 @@ extern "C" {
         volatile struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
         volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
-        qIteration_t Iterations; 
         uint32_t Cycles; 
-        qPriority_t Priority; 
         qTaskFcn_t Callback; 
-        volatile qBool_t Flag[7]; /*task related flags*/
         /*volatile qTaskFlags_t Flag;*/
         #ifdef Q_RINGBUFFERS
         qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
         #endif
         qSM_t *StateMachine; /*pointer to the linked FSM*/
-        qTaskState_t State;
+        qIteration_t Iterations; 
+        qPriority_t Priority; 
+        volatile qBool_t Flag[7]; /*task related flags*/
+        qTaskState_t State;      
         qTrigger_t Trigger; 
     };
     #define qTask_t volatile struct _qTask_t
@@ -408,31 +408,31 @@ extern "C" {
     }qQueueStack_t;  
 
     typedef struct{ /*Scheduler Core-Flags*/
-    	volatile uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
         volatile uint32_t IntFlags;
+    	volatile uint8_t Init, FCallIdle, ReleaseSched, FCallReleased;
     }qTaskCoreFlags_t;
    
     typedef qClock_t (*qGetTickFcn_t)(void);
 
     typedef struct{ /*Main scheduler core data*/
+        #ifdef Q_PRIORITY_QUEUE
+            volatile int16_t QueueIndex; /*holds the current queue index*/
+            uint8_t QueueSize;
+            qQueueStack_t *QueueStack; /*a pointer to the queue stack*/
+            void *QueueData;                 
+        #endif 
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
-        _qEvent_t_ EventInfo;
         qTime_t Tick;
         qTask_t *Head;
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
         volatile qTaskCoreFlags_t Flag;
-        #ifdef Q_PRIORITY_QUEUE
-            qQueueStack_t *QueueStack; /*a pointer to the queue stack*/
-            uint8_t QueueSize; 
-            volatile int16_t QueueIndex; /*holds the current queue index*/
-            void *QueueData;
-        #endif 
         qTask_t *CurrentRunningTask;
         qGetTickFcn_t GetSysTick;
+        _qEvent_t_ EventInfo;
+        
     }QuarkTSCoreData_t;
-       
 
     void qEnterCritical(void);
     void qExitCritical(void);
@@ -690,8 +690,8 @@ Parameters:
     #endif  
     
         typedef struct{ /*STimer defintion*/
-            qConst qBool_t SR; /*The SET-RESET flag*/
             qConst qClock_t Start, TV; /*The time-epochs registers*/
+            qConst qBool_t SR; /*The SET-RESET flag*/
         }qSTimer_t;
         
         qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
