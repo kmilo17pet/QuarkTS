@@ -167,7 +167,7 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2.0));
         puts("CR:I");
         puts("CR:J");
-        
+        qCoroutineRestart;
     }qCoroutineEnd;
 }
 /*============================================================================*/
