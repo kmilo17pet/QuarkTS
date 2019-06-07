@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.4
+ *  Version : 4.8.0
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -66,13 +66,16 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
+static qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
 static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event);
 static qTask_t* _qScheduler_GetNodeFromChain(void);
 static qTask_t* _qScheduler_RearrangeChain(qTask_t *head);
 static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task);
 static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task);
 static qBool_t _qScheduler_ReadyTasksAvailable(void);
-static qTask_t* _qScheduler_PriorityQueueGet(void);
+#ifdef Q_PRIORITY_QUEUE 
+    static qTask_t* _qScheduler_PriorityQueueGet(void);
+#endif
 static void _qTriggerReleaseSchedEvent(void);
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
 static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
@@ -93,20 +96,21 @@ qPutChar_t __qDebugOutputFcn = NULL;
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_) /*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
-#define _qTaskDeadlineReached(_TASK_)            ( (qTimeImmediate == (_TASK_)->Interval) || ((qSchedulerGetTick() - (_TASK_)->ClockStart)>=(_TASK_)->Interval)  )
+#define _qTaskDeadlineReached(_TASK_)            ( (qTimeImmediate == (_TASK_)->Interval) || _qScheduler_TimeDeadlineCheck( (_TASK_)->ClockStart, (_TASK_)->Interval )  )
 #define _qTaskHasPendingIterations(_TASK_)       (_qabs((_TASK_)->Iterations)>0 || qPeriodic == (_TASK_)->Iterations)
 #define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    (_eVar_).Trigger = _Trigger_; (_eVar_).FirstCall = _FirstCall_; (_eVar_).TaskData = _TaskData_
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
 #define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
 
-
-qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t){
-    qClock_t tdelay;
-    tdelay = qTime2Clock(t);
-    return (qBool_t)((qSchedulerGetTick() - cr->crdelay)>=tdelay);
+/*============================================================================*/
+static qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td){
+    return (qBool_t)((qSchedulerGetTick() - ti)>=td); 
 }
-
+/*============================================================================*/
+qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t){
+    return _qScheduler_TimeDeadlineCheck( cr->crdelay,  qTime2Clock(t) );
+}
 /*============================================================================*/
 /*void qEnterCritical(void)
 
@@ -141,7 +145,15 @@ Return value:
     time (t) in seconds
 */
 qTime_t qClock2Time(const qClock_t t){
-    return (qTime_t)(QUARKTS.Tick*t);
+    #ifdef Q_SETUP_TIME_CANONICAL
+        return (qTime_t)t;
+    #else
+        #ifdef Q_SETUP_TICK_IN_HERTZ
+            return (qTime_t)(t/QUARKTS.TimmingBase);
+        #else
+            return (qTime_t)(QUARKTS.TimmingBase*t);
+        #endif      
+    #endif      
 }
 /*============================================================================*/
 /*qCLock_t qTime2Clock(const qTime_t t)
@@ -157,7 +169,15 @@ Return value:
     time (t) in epochs
 */
 qClock_t qTime2Clock(const qTime_t t){
-    return (qClock_t)(t/QUARKTS.Tick);
+    #ifdef Q_SETUP_TIME_CANONICAL
+        return (qClock_t)t;
+    #else 
+        #ifdef Q_SETUP_TICK_IN_HERTZ
+            return (qClock_t)(t*QUARKTS.TimmingBase);
+        #else
+            return (qClock_t)(t/QUARKTS.TimmingBase);
+        #endif    
+    #endif
 }
 /*============================================================================*/
 /*
@@ -479,10 +499,18 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
 }
 #endif
 /*============================================================================*/
-void _qInitScheduler(qGetTickFcn_t TickProvider, const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
-    uint8_t i;
+#ifdef Q_SETUP_TIME_CANONICAL
+    void _qInitScheduler(qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
+#else
+    void _qInitScheduler(qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
+#endif
+    #ifdef Q_PRIORITY_QUEUE  
+        uint8_t i;
+    #endif
     QUARKTS.Head = NULL;
-    QUARKTS.Tick = ISRTick;
+    #ifndef Q_SETUP_TIME_CANONICAL
+        QUARKTS.TimmingBase = BaseTimming;
+    #endif
     QUARKTS.IDLECallback = IdleCallback;
     QUARKTS.ReleaseSchedCallback = NULL;
     #ifdef Q_PRIORITY_QUEUE    
@@ -1055,7 +1083,6 @@ Return value:
 */
 qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     if(NULL==obj) return qFalse;
-    if ( (Time*0.5f)<QUARKTS.Tick ) return qFalse; /*check if the input time is higher than half of the system tick*/
     qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time); /*set the STimer time in epochs*/
     qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = qSchedulerGetTick(); /*set the init time of the STimer with the current system epoch value*/
     qConstField_Set(qBool_t, obj->SR)/*obj->SR*/ = qTrue; /*enable the STimer*/

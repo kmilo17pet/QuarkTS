@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.7.4
+ *  Version : 4.8.0
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -37,6 +37,10 @@ extern "C" {
         #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
     #endif
     
+    /*================================================================================================================================*/
+    #undef Q_SETUP_TIME_CANONICAL   /*Kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
+    #undef Q_SETUP_TICK_IN_HERTZ    /*Use this to define the timming base as frequency(Hz) instead of period(S)*/
+
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
     #define Q_RINGBUFFERS           /*remove this line if you will never use Ring Buffers*/
@@ -47,9 +51,8 @@ extern "C" {
     #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
     #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
 
-    #define Q_MAX_FTOA_PRECISION      10
-    #undef QATOF_FULL
-        
+    #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
+    #undef QATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
     /*================================================================================================================================*/   
     #ifdef __IAR_SYSTEMS_ICC__ /*stdint.h missing for some stupid reason*/
         #ifdef __ICC8051__
@@ -76,7 +79,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.7.4"
+    #define QUARTKTS_VERSION    "4.8.0"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -194,8 +197,11 @@ extern "C" {
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
 
-
-    typedef float qTime_t;
+    #ifdef Q_SETUP_TIME_CANONICAL
+        typedef uint32_t qTime_t;
+    #else
+        typedef float qTime_t;
+    #endif
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
     typedef int16_t qIteration_t;
@@ -413,6 +419,12 @@ extern "C" {
    
     typedef qClock_t (*qGetTickFcn_t)(void);
 
+    #ifdef Q_SETUP_TICK_IN_HERTZ
+            #define qTimingBase_type qClock_t
+    #else
+            #define qTimingBase_type qTime_t
+    #endif 
+
     typedef struct{ /*Main scheduler core data*/
         #ifdef Q_PRIORITY_QUEUE
             volatile int16_t QueueIndex; /*holds the current queue index*/
@@ -422,7 +434,9 @@ extern "C" {
         #endif 
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
-        qTime_t Tick;
+        #ifndef Q_SETUP_TIME_CANONICAL
+            qTimingBase_type TimmingBase;
+        #endif
         qTask_t *Head;
         uint32_t (*I_Disable)(void);
         void (*I_Restorer)(uint32_t);
@@ -445,8 +459,11 @@ extern "C" {
     void qSchedulerRelease(void);
     void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
 
-
-    void _qInitScheduler(qGetTickFcn_t TickProvider, const qTime_t ISRTick, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+    #ifdef Q_SETUP_TIME_CANONICAL
+        void _qInitScheduler(qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+    #else
+        void _qInitScheduler(qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+    #endif
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
    
     /*only for backward compatibility*/
@@ -508,7 +525,15 @@ Parameters:
 */
     #define qTaskResume(pTask_)    qTaskSetState(pTask_, qEnabled)
 
-    
+    #ifdef Q_PRIORITY_QUEUE    
+        #define _qQueueStackName                    _qQueueStack
+        #define _qQueueStackCreate(QueueSize)       volatile qQueueStack_t _qQueueStackName[QueueSize];
+        #define _qQueueLength(QueueSize)            QueueSize
+    #else
+        #define _qQueueStackName                    NULL           
+        #define _qQueueStackCreate(QueueSize)       
+        #define _qQueueLength(QueueSize)            0                             
+    #endif
     
 /*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
     
@@ -521,8 +546,9 @@ Parameters:
                         uses the qSchedulerSysTick from the ISR, this parameter can be NULL.
                         Note: Function should take void and return a 32bit value. 
 
-    - ISRTick : This parameter specifies the ISR background timer period in 
-                seconds(Floating-point format).
+    - TimmingBase : This parameter specifies the ISR background timer base time.
+                    This can be the period in seconds(Floating-point format) or frequency 
+                    in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is defined).
 
     - IDLE_Callback : Callback function to the Idle Task. To disable the 
                       Idle Task functionality, pass NULL as argument.
@@ -530,11 +556,16 @@ Parameters:
     - QueueSize : Size of the priority queue. This argument should be an integer
                   number greater than zero
      */
-    #ifdef Q_PRIORITY_QUEUE
-        #define qSchedulerSetup(TickProviderFcn, ISRTick, IDLE_Callback, QueueSize)                                   volatile qQueueStack_t _qQueueStack[QueueSize]; _qInitScheduler((qGetTickFcn_t)TickProviderFcn, ISRTick, IDLE_Callback, _qQueueStack, QueueSize)
-    #else
-        #define qSchedulerSetup(TickProviderFcn, ISRTick, IDLE_Callback, QueueSize)                                   _qInitScheduler((qGetTickFcn_t)TickProviderFcn, ISRTick, IDLE_Callback, NULL, 0)
+
+
+    #ifdef Q_SETUP_TIME_CANONICAL
+        #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)TickProviderFcn, IDLE_Callback, _qQueueStackName, _qQueueLength(QueueSize) )
+    #else 
+        #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)TickProviderFcn, TimmingBase, IDLE_Callback, _qQueueStackName, _qQueueLength(QueueSize) )
     #endif
+    
+
+    
     qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
     void qStateMachine_Run(qSM_t *obj, void *Data);
     void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);

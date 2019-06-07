@@ -14,6 +14,11 @@
 
 #include "QuarkTS.h"
 
+uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (uint32_t)(ts.tv_nsec / 1000000) + ((uint32_t)ts.tv_sec * 1000ull);
+}
 /*============================================================================*/
 uint32_t PORTA = 0x0A;
 qIOEdgeCheck_t INPUTS;
@@ -27,7 +32,9 @@ void* TimerInterruptEmulation(void* arg){
     struct timespec tick={0, 0.01*1E9};
     for(;;){
         nanosleep(&tick, NULL);
+        /*
         qSchedulerSysTick();       
+        */
     }
 }
 /*============================================================================*/
@@ -157,7 +164,7 @@ void blinktaskCallback(qEvent_t e){
         puts("CR:G");
         if(++count>10)  qCoroutinePositionRestore(state);
         puts("CR:H");
-        qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2));
+        qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2.0));
         puts("CR:I");
         puts("CR:J");
         
@@ -231,7 +238,7 @@ int main(int argc, char** argv) {
     qRBufferPush(&ringBuffer, &y); 
     
 
-    qSchedulerSetup(NULL, 0.01, IdleTaskCallback, 10);           
+    qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
