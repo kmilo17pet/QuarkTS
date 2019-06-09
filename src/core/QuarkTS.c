@@ -66,7 +66,6 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 static volatile QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
-static qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
 static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, qTrigger_t Event);
 static qTask_t* _qScheduler_GetNodeFromChain(void);
 static qTask_t* _qScheduler_RearrangeChain(qTask_t *head);
@@ -104,12 +103,8 @@ qPutChar_t __qDebugOutputFcn = NULL;
 #define qSchedulerEndPoint                      while(!QUARKTS.Flag.ReleaseSched); _qTriggerReleaseSchedEvent()
 
 /*============================================================================*/
-static qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td){
+qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td){
     return (qBool_t)((qSchedulerGetTick() - ti)>=td); 
-}
-/*============================================================================*/
-qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t){
-    return _qScheduler_TimeDeadlineCheck( cr->crdelay,  qTime2Clock(t) );
 }
 /*============================================================================*/
 /*void qEnterCritical(void)

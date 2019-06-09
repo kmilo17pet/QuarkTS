@@ -471,6 +471,7 @@ extern "C" {
     #define qSchedulerAddeTask      qSchedulerAdd_EventTask
     #define qSchedulerAddSMTask     qSchedulerAdd_StateMachineTask
 
+    qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
     qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t Callback, qPriority_t Priority, void* arg);
     qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
@@ -575,7 +576,6 @@ Parameters:
         _qTaskPC_t instr;
         qClock_t crdelay;
     }qCoroutineInstance_t;
-    qBool_t __qCRDelay_Reached(qCoroutineInstance_t *cr, qTime_t t);
     #ifdef _QUARKTS_CR_DEFS_    
         #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin
         #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
@@ -583,7 +583,7 @@ Parameters:
         #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
         #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_(_pos_);}                                  __qCRCodeEndBlock
         #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
-        #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert(__qCRDelay_Reached(&_qCRTaskState_, _time_)) __qTaskYield } __qCRCodeEndBlock
+        #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( _qScheduler_TimeDeadlineCheck(_qCRTaskState_.crdelay, qTime2Clock(_time_))  ) __qTaskYield } __qCRCodeEndBlock
         #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
 /*qCoroutineBegin{
   
