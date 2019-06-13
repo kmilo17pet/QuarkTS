@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.8.0
+ *  Version : 4.8.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -29,21 +29,14 @@ https://github.com/kmilo17pet/QuarkTS/wiki/APIs
 #ifdef	__cplusplus
 extern "C" {
 #endif
-        
-    #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
-        #define __ORDER_LITTLE_ENDIAN__     1
-    #endif
-    #ifndef __BYTE_ORDER__
-        #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
-    #endif
-    
-    /*================================================================================================================================*/
+           
+    /*==================================================  CONFIGURATION FLAGS  =======================================================*/
     #undef Q_SETUP_TIME_CANONICAL   /*Kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
     #undef Q_SETUP_TICK_IN_HERTZ    /*Use this to define the timming base as frequency(Hz) instead of period(S)*/
 
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
-    #define Q_RINGBUFFERS           /*remove this line if you will never use Ring Buffers*/
+    #define Q_QUEUES                /*remove this line if you will never use the qQueues*/
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
@@ -54,6 +47,14 @@ extern "C" {
     #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
     #undef QATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
     /*================================================================================================================================*/   
+
+    #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
+        #define __ORDER_LITTLE_ENDIAN__     1
+    #endif
+    #ifndef __BYTE_ORDER__
+        #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
+    #endif
+
     #ifdef __IAR_SYSTEMS_ICC__ /*stdint.h missing for some stupid reason*/
         #ifdef __ICC8051__
           #ifndef STDINT_H
@@ -79,7 +80,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.8.0"
+    #define QUARTKTS_VERSION    "4.8.2"
     #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -107,6 +108,10 @@ extern "C" {
     #define qLINK                   (qTrue)
     #define qUNLINK                 (qFalse)  
     #define qLink                   (qTrue)
+    #define qATTACH                 (qTrue)
+    #define qDETACH                 (qFalse)
+    #define qAttach                 (qTrue)
+    #define qDetach                 (qFalse)    
     #define qUnLink                 (qFalse)
     #define qON                     (qTrue)
     #define qOFF                    (qFalse)
@@ -186,14 +191,26 @@ extern "C" {
         #define __qCRSemRelease(s)      (++(s)->head)
     #endif
 
-    typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byRBufferPop, byRBufferFull, byRBufferCount, byRBufferEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
+    typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byQueueReceiver, byQueueFull, byQueueCount, byQueueEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
+    
+    /*BACKWARD COMPATIBILITY: START*/
+    #define byRBufferPop        byQueueReceiver
+    #define byRBufferFull       byQueueFull
+    #define byRBufferCount      byQueueCount
+    #define byRBufferEmpty      byQueueEmpty
+    #define qTrigger_RBufferPop         byQueueReceiver
+    #define qTrigger_RBufferFull        byQueueFull
+    #define qTrigger_RBufferCount       byQueueCount
+    #define qTrigger_RBufferEmpty       byQueueEmpty
+    /*BACKWARD COMPATIBILITY: END*/
+
     #define qTrigger_TimeElapsed        byTimeElapsed
     #define qTrigger_QueueExtraction    byQueueExtraction
     #define qTrigger_AsyncEvent         byAsyncEvent
-    #define qTrigger_RBufferPop         byRBufferPop
-    #define qTrigger_RBufferFull        byRBufferFull
-    #define qTrigger_RBufferCount       byRBufferCount
-    #define qTrigger_RBufferEmpty       byRBufferEmpty
+    #define qTrigger_QueueReceiver      byQueueReceiver
+    #define qTrigger_QueueFull          byQueueFull
+    #define qTrigger_QueueCount         byQueueCount
+    #define qTrigger_QueueEmpty         byQueueEmpty
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
 
@@ -265,20 +282,20 @@ extern "C" {
         - byAsyncEvent: When the execution chain does, according to a 
                         requirement of asynchronous event prompted by qSendEvent
         
-        - byRBufferPop: When there is elements available in the linked ring-buffer,
-                        the scheduler makes a data extraction (auto-pop) from the
-                        head. A pointer to the extracted (popped) data will be 
+        - byQueueReceiver: When there is elements available in the attached qQueue,
+                        the scheduler make a data dequeue (auto-receive) from the
+                        front. A pointer to the received data will be 
                         available in the <EventData> field.
         
-        - byRBufferFull: When the linked ring-buffer is full. A pointer to the 
-                         RingBuffer will be available in the <EventData> field.
+        - byQueueFull: When the  attached qQueue is full. A pointer to the 
+                         queue will be available in the <EventData> field.
          
-        - byRBufferCount: When the element-count of the linked ring-buffer reaches
-                         the specified value. A pointer to the RingBuffer will 
+        - byQueueCount: When the element-count of the  attached qQueue reaches
+                         the specified value. A pointer to the queue will 
                          be available in the <EventData> field.
         
-        - byRBufferEmpty: When the linked ring-buffer is empty.  A pointer to the 
-                         RingBuffer will be available in the <EventData> field.
+        - byQueueEmpty: When the  attached qQueue is empty.  A pointer to the 
+                        queue will be available in the <EventData> field.
         
         - byNoReadyTasks: Only when the Idle Task is triggered.
         */
@@ -306,28 +323,74 @@ extern "C" {
     typedef const _qEvent_t_ *qConst qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
-    #define _qIndex_InitFlag        0
-    #define _qIndex_AsyncRun        1
-    #define _qIndex_Enabled         2
+    #define _qIndex_InitFlag            0
+    #define _qIndex_AsyncRun            1
+    #define _qIndex_Enabled             2
+    #define _qIndex_QueueReceiver       3
+    #define _qIndex_QueueFull           4
+    #define _qIndex_QueueCount          5
+    #define _qIndex_QueueEmpty          6
+
+    /*
     #define _qIndex_RBAutoPop       3
     #define _qIndex_RBFull          4
     #define _qIndex_RBCount         5
     #define _qIndex_RBEmpty         6
-    
+    */
     typedef uint8_t qTaskState_t;
     #define qWaiting    0u
     #define qReady      1u
     #define qRunning    2u
     #define qSuspended  3u
 
-    #ifdef Q_RINGBUFFERS 
-    typedef struct{
-        volatile uint8_t *data; /* block of memory or array of data */
-        volatile qSize_t ElementSize;      /* how many bytes for each chunk */
-        volatile qSize_t Elementcount;     /* number of chunks of data */
-        volatile qSize_t head; /* where the writes go */
-        volatile qSize_t tail; /* where the reads come from */
-    }qRBuffer_t;
+    #ifdef Q_QUEUES 
+        typedef struct{
+            volatile uint8_t *data; /* block of memory or array of data */
+            volatile qSize_t ElementSize;      /* how many bytes for each chunk */
+            volatile qSize_t Elementcount;     /* number of chunks of data */
+            volatile qSize_t head; /* where the writes go */
+            volatile qSize_t tail; /* where the reads come from */
+            qSize_t LastIndex;
+        }qQueue_t;
+        /*qRBuffer_t is deprecated, insted use qQueue_t*/
+        #define qRBuffer_t qQueue_t  /*Backward compatibility*/
+        #define QUEUE_SEND_TO_BACK     1 /*must be 1*/
+        #define QUEUE_SEND_TO_FRONT    0
+        /*qBool_t qQueueSendToBack(qQueue_t *obj, void *ItemToQueue)
+ 
+        Post an item to the back of the queue. The item is queued by copy, not by reference
+        
+        Parameters:
+
+            - obj : a pointer to the Queue object
+            - ItemToQueue : A pointer to the item that is to be placed on the queue. The size of 
+                    the items the queue will hold was defined when the queue was created, 
+                    so this many bytes will be copied from ItemToQueue into the queue storage
+                    area.
+        
+        Return value:
+
+            qTrue on successful add, qFalse if not added
+        */
+        #define qQueueSendToBack(_qQueue_t_, _ItemToQueue_)     qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
+        #define qQueueSend(_qQueue_t_, _ItemToQueue_)           qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
+        /*qBool_t qQueueSendToFront(qQueue_t *obj, void *ItemToQueue)
+        
+        Post an item in the front of the queue. The item is queued by copy, not by reference
+        
+        Parameters:
+
+            - obj : a pointer to the Queue object
+            - item : A pointer to the item that is to be placed on the queue. The size of 
+                    the items the queue will hold was defined when the queue was created, 
+                    so this many bytes will be copied from ItemToQueue into the queue storage
+                    area.
+        
+        Return value:
+
+            qTrue on successful add, qFalse if not added
+        */        
+        #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 0)
     #endif
     
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
@@ -394,8 +457,8 @@ extern "C" {
         void *TaskData,*AsyncData; /*the storage pointers*/
         qTaskFcn_t Callback; 
         qSM_t *StateMachine; /*pointer to the linked FSM*/
-        #ifdef Q_RINGBUFFERS
-            qRBuffer_t *RingBuff; /*pointer to the linked RBuffer*/
+        #ifdef Q_QUEUES
+            qQueue_t *Queue; /*pointer to the linked RBuffer*/
         #endif
         volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
         uint32_t Cycles; 
@@ -467,8 +530,11 @@ extern "C" {
     void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
    
     /*only for backward compatibility*/
+    /*qSchedulerAddxTask is deprecated, instead use qSchedulerAdd_Task*/
     #define qSchedulerAddxTask      qSchedulerAdd_Task
+    /*qSchedulerAddeTask is deprecated, instead use qSchedulerAdd_EventTask*/
     #define qSchedulerAddeTask      qSchedulerAdd_EventTask
+    /*qSchedulerAddSMTask is deprecated, instead use qSchedulerAdd_StateMachineTask*/
     #define qSchedulerAddSMTask     qSchedulerAdd_StateMachineTask
 
     qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
@@ -486,15 +552,48 @@ extern "C" {
     qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
     qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata);
     qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode);
-          
-    typedef enum{qRB_AUTOPOP=_qIndex_RBAutoPop, qRB_FULL=_qIndex_RBFull, qRB_COUNT=_qIndex_RBCount, qRB_EMPTY=_qIndex_RBEmpty}qRBLinkMode_t;
-    #define    RB_AUTOPOP   qRB_AUTOPOP
-    #define    RB_FULL      qRB_FULL
-    #define    RB_COUNT     qRB_COUNT
-    #define    RB_EMPTY     qRB_EMPTY
+
+    typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qRBLinkMode_t;
+    /*backward compatibility*/
+    #define     qRB_AUTOPOP	    qQUEUE_RECEIVER
+    #define	    qRB_FULL	    qQUEUE_FULL
+    #define     qRB_COUNT	    qQUEUE_COUNT
+    #define     qRB_EMPTY	    qQUEUE_EMPTY
+
+    #define     QUEUE_RECEIVER  qQUEUE_RECEIVER  
+    #define     QUEUE_FULL      qQUEUE_FULL
+    #define     QUEUE_COUNT     qQUEUE_COUNT
+    #define     QUEUE_EMPTY     qQUEUE_EMPTY
     
-    #ifdef Q_RINGBUFFERS 
-    qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg);
+    #ifdef Q_QUEUES 
+        qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg);
+
+        void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
+        qSize_t qQueueCount(qQueue_t *obj);
+        qBool_t qQueueIsFull(qQueue_t *obj);
+        qBool_t qQueueIsEmpty(qQueue_t *obj);
+        void* qQueuePeek(qQueue_t *obj);
+        qBool_t qQueueRemoveFront(qQueue_t *obj);
+        qBool_t qQueueReceive(qQueue_t *obj, void *dest);
+        qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode);
+
+        /*BACKWARD COMPATIBILITY: Start */
+        /*qTaskLinkBuffer is deprecated, instead use qTaskAttachQueue */
+        #define qTaskLinkBuffer		    qTaskAttachQueue
+        /*qRBufferInit is deprecated, instead use qQueueCreate */
+        #define qRBufferInit		    qQueueCreate
+        /*qRBufferEmpty is deprecated, instead use qQueueIsEmpty */
+        #define	qRBufferEmpty		    qQueueIsEmpty
+        /*qRBufferGetFront is deprecated, instead use qQueuePeek */
+        #define qRBufferGetFront	    qQueuePeek
+        /*qRBufferRemoveFront is deprecated, instead use qQueueRemoveFront */
+        #define qRBufferRemoveFront 	qQueueRemoveFront
+        /*qRBufferPopFront is deprecated, instead use qQueueReceive */
+        #define qRBufferPopFront	    qQueueReceive
+        /*qRBufferPush is deprecated, instead use qQueueSendToBack */
+        #define qRBufferPush		    qQueueSendToBack
+        /*BACKWARD COMPATIBILITY: End */
+
     #endif
     
     void qTaskSetTime(qTask_t *Task, const qTime_t Value);
@@ -777,14 +876,7 @@ Parameters:
     void qMemoryFree(qMemoryPool_t *obj, void* pmem);
 #endif
     
-#ifdef Q_RINGBUFFERS     
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
-qBool_t qRBufferEmpty(qRBuffer_t *obj);
-void* qRBufferGetFront(qRBuffer_t *obj);
-qBool_t qRBufferRemoveFront(qRBuffer_t *obj);
-qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest);
-qBool_t qRBufferPush(qRBuffer_t *obj, void *data);
-#endif
+
 
 typedef volatile char qISR_Byte_t;
 typedef volatile struct{

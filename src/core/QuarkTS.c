@@ -1,6 +1,6 @@
 /*******************************************************************************
  *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.8.0
+ *  Version : 4.8.2
  *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  *
  *  QuarkTS is free software: you can redistribute it and/or modify it
@@ -79,11 +79,12 @@ static void _qTriggerReleaseSchedEvent(void);
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
 static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
 
-#ifdef Q_RINGBUFFERS 
-    static qTrigger_t _qCheckRBufferEvents(qTask_t *Task);
-    static qSize_t _qRBufferValidPowerOfTwo(qSize_t k);
-    static qSize_t _qRBufferCount(qRBuffer_t *obj);
-    static qBool_t _qRBufferFull(qRBuffer_t *obj);
+#ifdef Q_QUEUES
+    static qTrigger_t _qCheckQueueEvents(qTask_t *Task);
+    static qSize_t _qQueueValidPowerOfTwo(qSize_t k);
+
+    static void _qQueueIncTail(qQueue_t *obj);
+    static void _qQueueDecTail(qQueue_t *obj);
 #endif
 
 static char qNibbletoX(uint8_t value);    
@@ -476,7 +477,7 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     if(QUARKTS.QueueIndex < 0) return NULL; /*Return if no elements available*/
     qEnterCritical(); 
     MaxPriorityValue = QUARKTS.QueueStack[0].Task->Priority;
-    for(i=1;i<QUARKTS.QueueSize;i++){ /*Find the task with the highest priority*/
+    for( i=1; i<QUARKTS.QueueSize; i++){ /*Find the task with the highest priority*/
         if(NULL == QUARKTS.QueueStack[i].Task ) break; /*break if the tail is reached*/
         if(QUARKTS.QueueStack[i].Task->Priority > MaxPriorityValue){ /*check if the queued task has the max priority value*/
             MaxPriorityValue = QUARKTS.QueueStack[i].Task->Priority; /*Reassign the max value*/
@@ -565,16 +566,16 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Iterations = (qPeriodic==nExecutions)? qPeriodic : -nExecutions;    
     Task->Flag[_qIndex_AsyncRun] = qFalse;
     Task->Flag[_qIndex_InitFlag] = qFalse;
-    Task->Flag[_qIndex_RBAutoPop] = qFalse; 
-    Task->Flag[_qIndex_RBCount] = qFalse;
-    Task->Flag[_qIndex_RBCount] = qFalse;
-    Task->Flag[_qIndex_RBEmpty] = qFalse;
+    Task->Flag[_qIndex_QueueReceiver] = qFalse; 
+    Task->Flag[_qIndex_QueueFull] = qFalse;
+    Task->Flag[_qIndex_QueueCount] = qFalse;
+    Task->Flag[_qIndex_QueueEmpty] = qFalse;
     Task->Flag[_qIndex_Enabled] = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
     Task->Cycles = 0;
     Task->ClockStart = qSchedulerGetTick();
-    #ifdef Q_RINGBUFFERS
-    Task->RingBuff = NULL;
+    #ifdef Q_QUEUES
+        Task->Queue = NULL;
     #endif
     Task->StateMachine = NULL;
     Task->State = qSuspended;
@@ -725,59 +726,59 @@ static qTask_t* _qScheduler_RearrangeChain(qTask_t *head){ /*this method rearran
 }
 #endif
 /*============================================================================*/
-/*qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, qRBLinkMode_t Mode, uint8_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg)
 
-Links the Task with a Ring Buffer. 
+Attach a Queue to the Task. 
 
 Parameters:
 
     - Task : A pointer to the task node.
-    - RingBuffer : A pointer to a Ring Buffer object
-    - Mode: Linking mode. This implies the event that will trigger the task according
+    - Queue : A pointer to a Queue  object
+    - Mode: Attach mode. This implies the event that will trigger the task according
             to one of the following modes:
-                        > qRB_AUTOPOP: The task will be triggered if there are elements 
-                          in the Ring Buffer. Data will be extracted automatically in 
+                        > qQUEUE_DEQUEUE: The task will be triggered if there are elements 
+                          in the Queue. Data will be extracted automatically in 
                           every trigger and will be available in the <EventData> field 
                           of qEvent_t structure.
      
-                        > qRB_FULL: the task will be triggered if the Ring Buffer
-                          is full. A pointer to the RingBuffer will be available in the
+                        > qQUEUE_FULL: the task will be triggered if the Queue
+                          is full. A pointer to the queue will be available in the
                           <EventData> field of qEvent_t structure.
 
-                        > qRB_COUNT: the task will be triggered if the count of 
-                          elements in the Ring Buffer reach the specified value. 
-                          A pointer to the RingBuffer will be available in the
+                        > qQUEUE_COUNT: the task will be triggered if the count of 
+                          elements in the queue reach the specified value. 
+                          A pointer to the queue will be available in the
                           <EventData> field of qEvent_t structure.
 
-                        > qRB_EMPTY: the task will be triggered if the Ring Buffer
-                          is empty. A pointer to the RingBuffer will be available in the
+                        > qQUEUE_EMPTY: the task will be triggered if the queue
+                          is empty. A pointer to the queue will be available in the
                           <EventData> field of qEvent_t structure.
-    - arg: This argument defines if the Ring buffer will be linked (qLINK) or 
-           unlinked (qUNLINK) from the task.
-           If the qRB_COUNT mode is specified, this value will be used to check
-           the element count of the Ring Buffer. A zero value will act as 
-           an qUNLINK action. 
+    - arg: This argument defines if the queue will be attached (qATTACH) or 
+           detached (qDETACH) from the task.
+           If the qQUEUE_COUNT mode is specified, this value will be used to check
+           the element count of the queue. A zero value will act as 
+           an qDETACH action. 
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-#ifdef Q_RINGBUFFERS
-qBool_t qTaskLinkRBuffer(qTask_t *Task, qRBuffer_t *RingBuffer, const qRBLinkMode_t Mode, uint8_t arg){
-    if(NULL==RingBuffer || NULL==Task || Mode<qRB_AUTOPOP || Mode>qRB_EMPTY) return qFalse;   /*Validate*/
-    if(NULL==RingBuffer->data) return qFalse;    
-    Task->Flag[Mode] = (qBool_t)((Mode==qRB_COUNT)? arg : (arg!=qFalse)); /*if mode is qRB_COUNT, use their arg value as count*/
-    Task->RingBuff = (arg>0)? RingBuffer : NULL; /*reject, no valid arg input*/
+#ifdef Q_QUEUES
+qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg){
+    if(NULL==Queue || NULL==Task || Mode<qQUEUE_RECEIVER || Mode>qQUEUE_EMPTY) return qFalse;   /*Validate*/
+    if(NULL==Queue->data) return qFalse;    
+    Task->Flag[Mode] = (qBool_t)((Mode==qQUEUE_COUNT)? arg : (arg!=qFalse)); /*if mode is qQUEUE_COUNT, use their arg value as count*/
+    Task->Queue = (arg>0)? Queue : NULL; /*reject, no valid arg input*/
     return qTrue;
 }
 /*============================================================================*/
-static qTrigger_t _qCheckRBufferEvents(qTask_t *Task){
+static qTrigger_t _qCheckQueueEvents(qTask_t *Task){
     if(NULL==Task) return qTriggerNULL;
-    if(NULL==Task->RingBuff) return qTriggerNULL;
-    if(Task->Flag[_qIndex_RBFull])       if(_qRBufferFull(Task->RingBuff))                                      return byRBufferFull;           
-    if(Task->Flag[_qIndex_RBCount]>0)    if(_qRBufferCount(Task->RingBuff) >= Task->Flag[_qIndex_RBCount] )     return byRBufferCount;            
-    if(Task->Flag[_qIndex_RBAutoPop])    if(qRBufferGetFront(Task->RingBuff)!=NULL)                             return byRBufferPop;   
-    if(Task->Flag[_qIndex_RBEmpty])      if(qRBufferEmpty(Task->RingBuff))                                      return byRBufferEmpty;       
+    if(NULL==Task->Queue) return qTriggerNULL;
+    if(Task->Flag[_qIndex_QueueFull])       if(qQueueIsFull(Task->Queue))                                       return byQueueFull;           
+    if(Task->Flag[_qIndex_QueueCount]>0)    if(qQueueCount(Task->Queue) >= Task->Flag[_qIndex_QueueCount] )     return byQueueCount;            
+    if(Task->Flag[_qIndex_QueueReceiver])   if(qQueueCount(Task->Queue) >0)                                     return byQueueReceiver;   
+    if(Task->Flag[_qIndex_QueueEmpty])      if(qQueueIsEmpty(Task->Queue))                                      return byQueueEmpty;       
     return qTriggerNULL;
 }
 #endif
@@ -849,12 +850,12 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
             Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
             break;
-        #ifdef Q_RINGBUFFERS    
-        case byRBufferPop:
-            QUARKTS.EventInfo.EventData = qRBufferGetFront(Task->RingBuff); /*the EventData will point to the RBuffer front-data*/
+        #ifdef Q_QUEUES    
+        case byQueueReceiver:
+            QUARKTS.EventInfo.EventData = qQueuePeek(Task->Queue); /*the EventData will point to the RBuffer front-data*/
             break;
-        case byRBufferFull: case byRBufferCount: case byRBufferEmpty: 
-            QUARKTS.EventInfo.EventData = (void*)Task->RingBuff;  /*the EventData will point to the the linked RingBuffer*/
+        case byQueueFull: case byQueueCount: case byQueueEmpty: 
+            QUARKTS.EventInfo.EventData = (void*)Task->Queue;  /*the EventData will point to the the linked RingBuffer*/
             break;
         #endif
         #ifdef Q_PRIORITY_QUEUE
@@ -879,8 +880,8 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     if ( NULL != Task->StateMachine  && __qFSMCallbackMode==Task->Callback) qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
     else if ( NULL != Task->Callback ) Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/        
     QUARKTS.CurrentRunningTask = NULL;
-    #ifdef Q_RINGBUFFERS 
-    if( byRBufferPop == Event) Task->RingBuff->tail++;  /*remove the data from the RBuffer, if the event was byRBufferPop*/
+    #ifdef Q_QUEUES 
+        if( byQueueReceiver == Event) qQueueRemoveFront(Task->Queue);  /*remove the data from the Queue, if the event was byQueueDequeue*/
     #endif
     Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
     QUARKTS.EventInfo.FirstIteration = qFalse;
@@ -892,7 +893,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
 /*============================================================================*/
 static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for tasks that fulfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
-    #ifdef Q_RINGBUFFERS 
+    #ifdef Q_QUEUES 
     qTrigger_t trg = qTriggerNULL;
     #endif
     qBool_t nTaskReady = qFalse; /*the return is to notify that at least one task gained the qReady state*/
@@ -908,8 +909,8 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
                 }
             }
         }
-        #ifdef Q_RINGBUFFERS 
-        if((trg=_qCheckRBufferEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
+        #ifdef Q_QUEUES  
+        if((trg=_qCheckQueueEvents(Task)) != qTriggerNULL){ /*If the deadline has not met, check if there is a RBuffer event available*/
             Task->State = qReady; /*Put the task in ready state*/
             Task->Trigger = trg; /*If a RBuffer event exist, the flag will be available in the <trg> variable*/
             nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
@@ -1307,9 +1308,9 @@ void qMemoryFree(qMemoryPool_t *obj, void* pmem){
 /*============================================================================*/
 #endif
 
-#ifdef Q_RINGBUFFERS
+#ifdef Q_QUEUES
 /*============================================================================*/
-static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
+static qSize_t _qQueueValidPowerOfTwo(qSize_t k){
     uint16_t i;
     qSize_t r = k;
     if ( ((k-1) & k) != 0) {
@@ -1320,142 +1321,210 @@ static qSize_t _qRBufferValidPowerOfTwo(qSize_t k){
     return (k<r)? k*2 : k;
 }
 /*============================================================================*/
-static qSize_t _qRBufferCount(qRBuffer_t *obj){
-    return (qSize_t)(obj ? (obj->head - obj->tail) : 0);
+static void _qQueueIncTail(qQueue_t *obj){
+    obj->tail = ( obj->tail >= obj->LastIndex ) ? 0 : obj->tail+1;
 }
 /*============================================================================*/
-static qBool_t _qRBufferFull(qRBuffer_t *obj){
-    return (qBool_t)(obj ? (qBool_t)(_qRBufferCount(obj) == obj->Elementcount) : qTrue);
+static void _qQueueDecTail(qQueue_t *obj){
+    obj->tail = ( 0 == obj->tail )? obj->LastIndex : obj->tail-1;
 }
 /*============================================================================*/
-/*void qRBufferInit(qRBuffer_t *obj, void* DataBlock, uint16_t ElementSize, uint16_t ElementCount)
+/*void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
  
-Configures the ring buffer
+Create and configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
+is statically allocated at compile time by the application writer.
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
+    - obj : a pointer to the Queue object
     - DataBlock :  data block or array of data
     - ElementSize : size of one element in the data block
-    - ElementCount : Max number of elements in the buffer
+    - ElementCount : Max number of elements in the Queue
  
 Note: Element_count should be a power of two, or it will only use the next 
-      lower power of two
+      higher power of two
  */
-void qRBufferInit(qRBuffer_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount){
+void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount){
     if(NULL==obj || NULL==DataBlock) return;
     obj->head = 0;
     obj->tail = 0;
     obj->data = DataBlock;
     obj->ElementSize = ElementSize;
-    obj->Elementcount = _qRBufferValidPowerOfTwo(ElementCount); /*limit to a power of two, this allos a bit to be used to count the final slot*/
+    obj->Elementcount = _qQueueValidPowerOfTwo(ElementCount); /*limit to a power of two, this allows a bit to be used to count the final slot*/
+    obj->LastIndex = obj->Elementcount-1;
 }
 /*============================================================================*/
-/*qBool_t qRBufferEmpty(qRBuffer_t *obj)
+/*void qQueueReset(qQueue_t *obj)
  
-Returns the empty status of the ring buffer
+Resets a queue to its original empty state.
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
+    - obj : a pointer to the Queue object
+*/
+void qQueueReset(qQueue_t *obj){
+    if(NULL == obj) return;
+    obj->head = 0;
+    obj->tail = 0;
+    memset( (void*)obj->data, 0x00, obj->ElementSize*obj->Elementcount);
+}
+/*============================================================================*/
+/*qBool_t qQueueIsEmpty(qQueue_t *obj)
+ 
+Returns the empty status of the Queue
+ 
+Parameters:
+
+    - obj : a pointer to the Queue object
   
 Return value:
 
-    qTrue if the ring buffer is empty, qFalse if it is not.
+    qTrue if the Queue is empty, qFalse if it is not.
  */
-qBool_t qRBufferEmpty(qRBuffer_t *obj){
-    return (qBool_t)(obj ? (qBool_t)(0==_qRBufferCount(obj)) : qTrue);    
+qBool_t qQueueIsEmpty(qQueue_t *obj){
+    return (qBool_t)(obj ? (qBool_t)(0==qQueueCount(obj)) : qTrue);    
 }
 /*============================================================================*/
-/*void* qRBufferGetFront(qRBuffer_t *obj)
+/*qSize_t qQueueCount(qQueue_t *obj)
  
-Looks at the data from the front of the Ring-Buffer without removing it
+Returns the number of items in the Queue
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
+    - obj : a pointer to the Queue object
+  
+Return value:
+
+    The number of elements in the queue
+ */
+qSize_t qQueueCount(qQueue_t *obj){
+    if(obj->head == obj->tail) return 0;
+    return (obj->head > obj->tail)?  obj->head - obj->tail : obj->Elementcount - (obj->tail - obj->head);
+}
+/*============================================================================*/
+/*qBool_t qQueueIsFull(qQueue_t *obj)
+ 
+Returns the full status of the Queue
+ 
+Parameters:
+
+    - obj : a pointer to the Queue object
+  
+Return value:
+
+    qTrue if the Queue is full, qFalse if it is not.
+ */
+/*============================================================================*/
+qBool_t qQueueIsFull(qQueue_t *obj){
+    return (qBool_t)(obj ? (qBool_t)(qQueueCount(obj) == obj->Elementcount) : qTrue);
+}
+/*============================================================================*/
+/*void* qQueuePeek(qQueue_t *obj)
+ 
+Looks at the data from the front of the Queue without removing it. 
+ 
+Parameters:
+
+    - obj : a pointer to the Queue object
   
 Return value:
 
     Pointer to the data, or NULL if nothing in the list
  */
-void* qRBufferGetFront(qRBuffer_t *obj){
+void* qQueuePeek(qQueue_t *obj){
     if (NULL==obj) return NULL;
-    return (void*)(!qRBufferEmpty(obj) ? &(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]) : NULL);    
+    return (void*)(!qQueueIsEmpty(obj) ? &(obj->data[(obj->tail & obj->LastIndex) * obj->ElementSize]) : NULL); /*optimized*/
 }
 /*============================================================================*/
-/*qBool_t qRBufferRemoveFront(qRBuffer_t *obj)
+/*qBool_t qQueueRemoveFront(qQueue_t *obj)
  
-Remove the data located at the front of the Ring-Buffer
+Remove the data located at the front of the Queue
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
+    - obj : a pointer to the Queue object
   
 Return value:
 
-    qTrue if data was removed from RBuffer, otherwise returns qFalse
+    qTrue if data was removed from the Queue, otherwise returns qFalse
  */
-qBool_t qRBufferRemoveFront(qRBuffer_t *obj){
+qBool_t qQueueRemoveFront(qQueue_t *obj){
     if (NULL==obj) return qFalse;
-    if (!qRBufferEmpty(obj)) {
-        obj->tail++;
+    if (!qQueueIsEmpty(obj)) {
+        qEnterCritical();
+        _qQueueIncTail(obj); /*obj->tail++;*/
+        qExitCritical();
         return qTrue;    
     }    
     return qFalse;
 }
 
 /*============================================================================*/
-/*void* qRBufferPopFront(qRBuffer_t *obj)
+/*void* qQueueReceive(qQueue_t *obj, void *dest)
  
-Extract the data from the front of the Ring-Buffer, and removes it
+Receive an item from a queue (and removes it). The item is received by copy so a 
+buffer of adequate size must be provided. The number of bytes copied into the buffer 
+was defined when the queue was created.
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
-    - dest: pointer to where the data will be written
+    - obj : a pointer to the Queue object
+    - dest: Pointer to the buffer into which the received item will be copied.
   
 Return value:
 
-    qTrue if data was retrieved from RBuffer, otherwise returns qFalse
+    qTrue if data was retrieved from the Queue, otherwise returns qFalse
 */
-qBool_t qRBufferPopFront(qRBuffer_t *obj, void *dest){
+qBool_t qQueueReceive(qQueue_t *obj, void *dest){
     void *data = NULL;
-    if(NULL==obj) return qFalse;
-    if (!qRBufferEmpty(obj)) {
-        data = (void*)(&(obj->data[(obj->tail % obj->Elementcount) * obj->ElementSize]));
-        memcpy(dest, data, obj->ElementSize);
-        obj->tail++;
-        return qTrue;
-    }
-    return qFalse;    
+    data = qQueuePeek(obj);
+    if(NULL == data) return qFalse;
+    qEnterCritical();
+    memcpy(dest, data, obj->ElementSize);
+    _qQueueIncTail(obj);/* obj->tail++; */
+    qExitCritical();
+    return qTrue;
 }
 /*============================================================================*/
-/*qBool_t qRBufferPush(qRBuffer_t *obj, void *data)
+/*qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, qBool_t InsertMode)
  
-Adds an element of data to the ring buffer
+Post an item to the back of the queue. The item is queued by copy, not by reference
  
 Parameters:
 
-    - obj : a pointer to the Ring Buffer object
-    - data : a pointer to the element who needs to be added to the ring-buffer
+    - obj : a pointer to the Queue object
+    - ItemToQueue : A pointer to the item that is to be placed on the queue. The size of 
+            the items the queue will hold was defined when the queue was created, 
+            so this many bytes will be copied from ItemToQueue into the queue storage
+            area.
+    - InsertMode : Can take the value QQUEUE_SEND_TO_BACK to place the item at the back 
+                  of the queue, or QQUEUE_SEND_TO_FRONT to place the item at the front of 
+                  the queue (for high priority messages).
   
 Return value:
 
     qTrue on successful add, qFalse if not added
 */
-qBool_t qRBufferPush(qRBuffer_t *obj, void *data){
+qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode){
     qBool_t status = qFalse;
-    uint8_t *data_element = (uint8_t*)data;
-    volatile uint8_t *ring_data = NULL;
+    uint8_t *data_element = (uint8_t*)ItemToQueue;
+    volatile uint8_t *queue_data = NULL;
     uint16_t i;
-
-    if(NULL==obj) return qFalse;
+    qSize_t Index;
+    if(NULL==obj || (QUEUE_SEND_TO_FRONT != InsertMode &&  QUEUE_SEND_TO_BACK != InsertMode))  return qFalse;
     if(data_element){
-        if(!_qRBufferFull(obj)){ /*Limit the amount of elements to accept*/
-            ring_data = obj->data + ((obj->head % obj->Elementcount) * obj->ElementSize);
-            for (i = 0; i < obj->ElementSize; i++) ring_data[i] = data_element[i];            
-            obj->head++;
+        if(!qQueueIsFull(obj)){ /*Limit the amount of elements to accept*/
+            qEnterCritical();
+            if(QUEUE_SEND_TO_FRONT == InsertMode){ /*in front of the queue */
+                _qQueueDecTail(obj);
+                Index = obj->tail;
+            }
+            else Index = obj->head; /*in the back */
+            
+            queue_data = obj->data + ((Index & obj->LastIndex) * obj->ElementSize); /*optimized */
+            for (i = 0; i < obj->ElementSize; i++) queue_data[i] = data_element[i];            
+            obj->head += InsertMode;
+            qExitCritical();
             status = qTrue;
         }
     }
@@ -2176,8 +2245,8 @@ void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t le
         obj->head = 0;
         obj->tail = 0;
         obj->buffer = buffer;
-        #ifdef Q_RINGBUFFERS
-            obj->length = _qRBufferValidPowerOfTwo(length);
+        #ifdef Q_QUEUES
+            obj->length = _qQueueValidPowerOfTwo(length);
         #else
             obj->length = length;
         #endif      

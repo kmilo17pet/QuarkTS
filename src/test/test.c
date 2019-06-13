@@ -55,12 +55,12 @@ qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(e->FirstCall){
-        puts("state machine init");
+        qDebugMessage("state machine init");
     }
     
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
-        printf("[%s] first\r\n", (char*)e->TaskData);
+        qTraceMessage( (char*)e->TaskData );
     }
     if (qSTimerExpired(&tmr)){
         fsm->NextState = secondstate;
@@ -73,7 +73,7 @@ qSM_Status_t secondstate(qSMData_t fsm){
     static qSTimer_t tmr;
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
-        printf("[%s] second\r\n", (char*)e->TaskData);
+        qTraceMessage( (char*)e->TaskData );
         qTaskQueueEvent(&Task1, "HELLO");
     }
     
@@ -85,54 +85,61 @@ qSM_Status_t secondstate(qSMData_t fsm){
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
-    printf("Userdata : %s  Eventdata:%s   %d\r\n", (char*)e->TaskData, (char*)e->EventData, qTaskGetCycles(&Task1));
-    
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );
+    qTraceVariable( qTaskGetCycles(&Task1), UnsignedDecimal );
     
     if(e->FirstCall){
-        puts("FirstCall");
+        qDebugMessage("FirstCall");
     }
     if(e->FirstIteration){
-        puts("FirstIteration");
+        qDebugMessage("FirstIteration");
     }
     if(e->LastIteration){
-        puts("LastIteration");
+        qDebugMessage("LastIteration");
     }
     
     if(e->Trigger == byAsyncEvent){
-        puts("TASK1 BY ASYNC EVENT");
+        qDebugMessage("TASK1 BY ASYNC EVENT");
     }
 
     if(e->Trigger == byQueueExtraction){
-        puts("TASK1 BY QUEUE EXTRACTION");
+        qDebugMessage("TASK1 BY QUEUE EXTRACTION");
     }
     
     if(qSTimerFreeRun(&tmr, 0.5)){
-        puts("Timer expired");
+        qDebugMessage("Timer expired");
     }         
 }
 /*============================================================================*/
 void Task2Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );
 }
 /*============================================================================*/
 void Task3Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
-    if(e->Trigger == byRBufferPop){
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );
+    if(e->Trigger == byQueueReceiver){
         int *ptr = (int*)e->EventData;
-        printf("ring extracted data %d\r\n",*ptr);
+        qDebugMessage("Queue event: byQueueReceiver");
+        qDebugVariable(*ptr, Decimal);
     } 
 }
 /*============================================================================*/
 void Task4Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );
 }
 /*============================================================================*/
 void Task5Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );
 }
 /*============================================================================*/
 void Task6Callback(qEvent_t e){
-    printf("Userdata : %s  Eventdata:%s\r\n", (char*)e->TaskData, (char*)e->EventData);   
+    qTraceMessage( (char*)e->TaskData );
+    qTraceMessage( (char*)e->EventData );   
 }
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
@@ -152,21 +159,21 @@ void blinktaskCallback(qEvent_t e){
     qCoroutineSemaphoreInit(&mutex, 1);
     static  int count = 0;
     qCoroutineBegin{
-        puts("CR:A");
-        puts("CR:B");
-        puts("CR:C");
+        qDebugMessage("CR:A");
+        qDebugMessage("CR:B");
+        qDebugMessage("CR:C");
         qCoroutinePositionGet(state);
-        puts("CR:D");
-        puts("CR:E");
+        qDebugMessage("CR:D");
+        qDebugMessage("CR:E");
         qCoroutineDelay(0.1);
         qTraceVariable(count, Decimal);
-        puts("CR:F");
-        puts("CR:G");
+        qDebugMessage("CR:F");
+        qDebugMessage("CR:G");
         if(++count>10)  qCoroutinePositionRestore(state);
-        puts("CR:H");
+        qDebugMessage("CR:H");
         qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2.0));
-        puts("CR:I");
-        puts("CR:J");
+        qDebugMessage("CR:I");
+        qDebugMessage("CR:J");
         qCoroutineYield;
         qCoroutineRestart;
     }qCoroutineEnd;
@@ -199,10 +206,10 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 int main(int argc, char** argv) {      
     qSetDebugFcn(putcharfcn);
     int yy = -128;
-    qRBuffer_t ringBuffer;
-    
+    qQueue_t somequeue;
     void *memtest;
-    int x=5 , y=6;
+
+    int x[]={10,20,30,40,50,60,70,80,90,100};
 
     
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
@@ -223,43 +230,90 @@ int main(int argc, char** argv) {
     qTraceVariable( 0b01001101, Binary );
     qTraceMemory( &yy, sizeof(yy));
     qTraceVariable( 3.1416, Float);
-    qTraceVariable( qStringHash("aloh", 0), UnsignedDecimal);
-    qTraceVariable( qStringHash("hola", 0), UnsignedDecimal);
-    qTraceVariable( qStringHash("hannah", 0), UnsignedDecimal);
     qTrace();
     
 
+    qBool_t (*test)(qQueue_t, void *);
     
-    qMemoryHeapCreate(mtxheap, 10, qMB_4B);
-    memtest = qMemoryAlloc(&mtxheap, 10*sizeof(int));
-    qRBufferInit(&ringBuffer, memtest, sizeof(int), 10);
-    qRBufferPush(&ringBuffer, &x);
-    qRBufferPush(&ringBuffer, &y); y=1;
-    qRBufferPush(&ringBuffer, &y); y=-7;
-    qRBufferPush(&ringBuffer, &y); 
+    qMemoryHeapCreate(mtxheap, 16, qMB_4B);
+    memtest = qMemoryAlloc(&mtxheap, 16*sizeof(int));
+
+    qQueueCreate(&somequeue, memtest, sizeof(int), 8);
+    qQueueSendToBack(&somequeue, &x[0]);
+    qQueueSendToFront(&somequeue, &x[1]);
+    qQueueSendToBack(&somequeue, &x[2]);
+    qQueueSendToFront(&somequeue, &x[3]);
+    qQueueSendToBack(&somequeue, &x[4]);
+    qQueueSendToBack(&somequeue, &x[5]);
+    qQueueSendToFront(&somequeue, &x[6]);
+  
+    /*
+    int rx = -1;
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
     
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    return EXIT_SUCCESS;
+    */
+    /*
+    int qdata = -1;
+
+    int *ptr;
+    ptr = qQueuePeek(&somequeue);
+    qTraceVariable(*ptr, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+    qQueueReceive( &somequeue,  &qdata);
+    qTraceVariable(qdata, Decimal);
+
+    qTraceVariable( qQueueCount(&somequeue), Decimal );
+    return EXIT_SUCCESS;
+    */
 
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
+       
 
-    
-
-    qTaskLinkRBuffer(&Task3, &ringBuffer, qRB_AUTOPOP, qLink);
+    qTaskAttachQueue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH);
     qDebugString("some message");
     qSchedulerAdd_EventTask(&Task4, Task4Callback, 10, "TASK4");
     qSchedulerAdd_EventTask(&Task5, Task5Callback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, Task6Callback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
 
-
-    /*qISR_Byte_t DataAlloc[100] = {0};
-    qISR_ByteBuffer_t Buffer;
-    qISR_ByteBufferInit(&Buffer, DataAlloc, sizeof(DataAlloc), '\r', isalpha, tolower);*/
-    
-    /*qSchedulePrintChain();*/
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }
