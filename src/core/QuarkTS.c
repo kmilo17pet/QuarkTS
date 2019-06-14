@@ -82,9 +82,10 @@ static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t
 #ifdef Q_QUEUES
     static qTrigger_t _qCheckQueueEvents(qTask_t *Task);
     static qSize_t _qQueueValidPowerOfTwo(qSize_t k);
-
+    /*
     static void _qQueueIncTail(qQueue_t *obj);
     static void _qQueueDecTail(qQueue_t *obj);
+    */
 #endif
 
 static char qNibbletoX(uint8_t value);    
@@ -1321,13 +1322,14 @@ static qSize_t _qQueueValidPowerOfTwo(qSize_t k){
     return (k<r)? k*2 : k;
 }
 /*============================================================================*/
+/*
 static void _qQueueIncTail(qQueue_t *obj){
     obj->tail = ( obj->tail >= obj->LastIndex ) ? 0 : obj->tail+1;
 }
-/*============================================================================*/
 static void _qQueueDecTail(qQueue_t *obj){
     obj->tail = ( 0 == obj->tail )? obj->LastIndex : obj->tail-1;
 }
+*/
 /*============================================================================*/
 /*void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
  
@@ -1398,8 +1400,11 @@ Return value:
     The number of elements in the queue
  */
 qSize_t qQueueCount(qQueue_t *obj){
+    return (qSize_t)(obj ? (obj->head - obj->tail) : 0);
+    /*
     if(obj->head == obj->tail) return 0;
     return (obj->head > obj->tail)?  obj->head - obj->tail : obj->Elementcount - (obj->tail - obj->head);
+    */
 }
 /*============================================================================*/
 /*qBool_t qQueueIsFull(qQueue_t *obj)
@@ -1452,7 +1457,7 @@ qBool_t qQueueRemoveFront(qQueue_t *obj){
     if (NULL==obj) return qFalse;
     if (!qQueueIsEmpty(obj)) {
         qEnterCritical();
-        _qQueueIncTail(obj); /*obj->tail++;*/
+        obj->tail++; /* _qQueueIncTail(obj); */ 
         qExitCritical();
         return qTrue;    
     }    
@@ -1481,12 +1486,12 @@ qBool_t qQueueReceive(qQueue_t *obj, void *dest){
     if(NULL == data) return qFalse;
     qEnterCritical();
     memcpy(dest, data, obj->ElementSize);
-    _qQueueIncTail(obj);/* obj->tail++; */
+    obj->tail++; /*_qQueueIncTail(obj); */
     qExitCritical();
     return qTrue;
 }
 /*============================================================================*/
-/*qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, qBool_t InsertMode)
+/*qBool_t qQueueSend(qQueue_t *obj, void *ItemToQueue, qBool_t InsertMode)
  
 Post an item to the back of the queue. The item is queued by copy, not by reference
  
@@ -1497,33 +1502,21 @@ Parameters:
             the items the queue will hold was defined when the queue was created, 
             so this many bytes will be copied from ItemToQueue into the queue storage
             area.
-    - InsertMode : Can take the value QQUEUE_SEND_TO_BACK to place the item at the back 
-                  of the queue, or QQUEUE_SEND_TO_FRONT to place the item at the front of 
-                  the queue (for high priority messages).
   
 Return value:
 
     qTrue on successful add, qFalse if not added
 */
-qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode){
+qBool_t qQueueSend(qQueue_t *obj, void *ItemToQueue){
     qBool_t status = qFalse;
-    uint8_t *data_element = (uint8_t*)ItemToQueue;
-    volatile uint8_t *queue_data = NULL;
-    uint16_t i;
-    qSize_t Index;
-    if(NULL==obj || (QUEUE_SEND_TO_FRONT != InsertMode &&  QUEUE_SEND_TO_BACK != InsertMode))  return qFalse;
-    if(data_element){
+    uint16_t offset;
+    if(NULL==obj)  return qFalse;
+    if(ItemToQueue){
         if(!qQueueIsFull(obj)){ /*Limit the amount of elements to accept*/
-            qEnterCritical();
-            if(QUEUE_SEND_TO_FRONT == InsertMode){ /*in front of the queue */
-                _qQueueDecTail(obj);
-                Index = obj->tail;
-            }
-            else Index = obj->head; /*in the back */
-            
-            queue_data = obj->data + ((Index & obj->LastIndex) * obj->ElementSize); /*optimized */
-            for (i = 0; i < obj->ElementSize; i++) queue_data[i] = data_element[i];            
-            obj->head += InsertMode;
+            qEnterCritical();            
+            offset =  (obj->head & obj->LastIndex) * obj->ElementSize; /*optimized */
+            memcpy((void*)(obj->data+offset), ItemToQueue, obj->ElementSize);         
+            obj->head++;
             qExitCritical();
             status = qTrue;
         }

@@ -231,25 +231,32 @@ int main(int argc, char** argv) {
     qTraceMemory( &yy, sizeof(yy));
     qTraceVariable( 3.1416, Float);
     qTrace();
-    
-
-    qBool_t (*test)(qQueue_t, void *);
-    
+       
     qMemoryHeapCreate(mtxheap, 16, qMB_4B);
     memtest = qMemoryAlloc(&mtxheap, 16*sizeof(int));
 
     qQueueCreate(&somequeue, memtest, sizeof(int), 8);
-    qQueueSendToBack(&somequeue, &x[0]);
-    qQueueSendToFront(&somequeue, &x[1]);
-    qQueueSendToBack(&somequeue, &x[2]);
-    qQueueSendToFront(&somequeue, &x[3]);
-    qQueueSendToBack(&somequeue, &x[4]);
-    qQueueSendToBack(&somequeue, &x[5]);
-    qQueueSendToFront(&somequeue, &x[6]);
-  
-    /*
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[0]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[1]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[2]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[3]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[4]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[5]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[6]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    qQueueSend(&somequeue, &x[7]);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    
     int rx = -1;
-    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+    
+    puts("=============================================================================================");
     qQueueReceive(&somequeue, &rx);
     qTraceVariable(rx, Decimal);
     printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
@@ -275,8 +282,17 @@ int main(int argc, char** argv) {
     qQueueReceive(&somequeue, &rx);
     qTraceVariable(rx, Decimal);
     printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
+    qQueueReceive(&somequeue, &rx);
+    qTraceVariable(rx, Decimal);
+    printf("full:%d empty:%d count:%d head: %d tail:%d\r\n", qQueueIsFull(&somequeue), qQueueIsEmpty(&somequeue), qQueueCount(&somequeue), somequeue.head, somequeue.tail);
+
     return EXIT_SUCCESS;
-    */
+    
     /*
     int qdata = -1;
 
