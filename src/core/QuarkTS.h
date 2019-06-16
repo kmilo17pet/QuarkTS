@@ -350,10 +350,48 @@ extern "C" {
             volatile qSize_t Elementcount;     /* number of chunks of data */
             volatile qSize_t head; /* where the writes go */
             volatile qSize_t tail; /* where the reads come from */
-            qSize_t LastIndex;
+            volatile qSize_t WaitingItems;
+            volatile qSize_t LastIndex;
         }qQueue_t;
         /*qRBuffer_t is deprecated, insted use qQueue_t*/
         #define qRBuffer_t qQueue_t  /*Backward compatibility*/
+        #define QUEUE_SEND_TO_BACK     1 /*must be 1*/
+        #define QUEUE_SEND_TO_FRONT    0
+        /*qBool_t qQueueSendToBack(qQueue_t *obj, void *ItemToQueue)
+ 
+        Post an item to the back of the queue. The item is queued by copy, not by reference
+        
+        Parameters:
+
+            - obj : a pointer to the Queue object
+            - ItemToQueue : A pointer to the item that is to be placed on the queue. The size of 
+                    the items the queue will hold was defined when the queue was created, 
+                    so this many bytes will be copied from ItemToQueue into the queue storage
+                    area.
+        
+        Return value:
+
+            qTrue on successful add, qFalse if not added
+        */
+        #define qQueueSendToBack(_qQueue_t_, _ItemToQueue_)     qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
+        #define qQueueSend(_qQueue_t_, _ItemToQueue_)           qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
+        /*qBool_t qQueueSendToFront(qQueue_t *obj, void *ItemToQueue)
+        
+        Post an item in the front of the queue. The item is queued by copy, not by reference
+        
+        Parameters:
+
+            - obj : a pointer to the Queue object
+            - item : A pointer to the item that is to be placed on the queue. The size of 
+                    the items the queue will hold was defined when the queue was created, 
+                    so this many bytes will be copied from ItemToQueue into the queue storage
+                    area.
+        
+        Return value:
+
+            qTrue on successful add, qFalse if not added
+        */        
+        #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 0)
     #endif
     
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
@@ -538,7 +576,7 @@ extern "C" {
         void* qQueuePeek(qQueue_t *obj);
         qBool_t qQueueRemoveFront(qQueue_t *obj);
         qBool_t qQueueReceive(qQueue_t *obj, void *dest);
-        qBool_t qQueueSend(qQueue_t *obj, void *ItemToQueue);
+        qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode);
 
         /*BACKWARD COMPATIBILITY: Start */
         /*qTaskLinkBuffer is deprecated, instead use qTaskAttachQueue */
@@ -554,7 +592,7 @@ extern "C" {
         /*qRBufferPopFront is deprecated, instead use qQueueReceive */
         #define qRBufferPopFront	    qQueueReceive
         /*qRBufferPush is deprecated, instead use qQueueSendToBack */
-        #define qRBufferPush		    qQueueSend
+        #define qRBufferPush		    qQueueSendToBack
         /*BACKWARD COMPATIBILITY: End */
 
     #endif
@@ -899,7 +937,7 @@ qBool_t qIsNan(float f);
 #define _qsetfstringto_inf(str)         str[1]='i'; str[2]='n'; str[3]='f'; str[4]='\0';
 #define _qsetfstringto_nan(str)         str[0]='n'; str[1]='a'; str[2]='n'; str[3]='\0';
 char* qFtoA(float num, char *str, uint8_t precision);
-
+uint32_t qStringHash(const char* s, uint8_t mode);
 void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
 
 /*qSetDebugFcn(fcn)
@@ -990,7 +1028,6 @@ extern qPutChar_t __qDebugOutputFcn;
     #ifndef UnsignedHexadecimal
         #define UnsignedHexadecimal 
     #endif
-
 
 #ifdef Q_TRACE_VARIABLES
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
