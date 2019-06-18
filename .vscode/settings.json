@@ -1,6 +1,25 @@
 {
     "cSpell.words": [
+        "ATCMD",
         "ATCMDTYPE",
+        "ATCOMMAND",
+        "ATSET",
+        "CWCC",
+        "FTOA",
+        "Herzt",
+        "NORESPONSE",
+        "QATCMDMASK",
+        "QATCMDTYPE",
+        "QATOF",
+        "QEDGECHECK",
+        "QEVENTINFO",
+        "QEXIT",
+        "QREG",
+        "QRESPONSE",
+        "QSEND",
+        "QSTIMER",
+        "kmilo",
+        "putch",
         "quarkts",
         "rtos"
     ]

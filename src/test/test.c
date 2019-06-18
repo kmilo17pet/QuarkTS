@@ -17,7 +17,7 @@
 uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (uint32_t)(ts.tv_nsec / 1000000) + ((uint32_t)ts.tv_sec * 1000ull);
+    return (uint32_t)(ts.tv_nsec / 1000000) + ((uint32_t)ts.tv_sec * 1000ul);
 }
 /*============================================================================*/
 uint32_t PORTA = 0x0A;
@@ -114,10 +114,11 @@ void Task1Callback(qEvent_t e){
 void Task3Callback(qEvent_t e){
     qTraceMessage( (char*)e->TaskData );
     qTraceMessage( (char*)e->EventData );
+    int data = -1;
     if(e->Trigger == byQueueReceiver){
-        int *ptr = (int*)e->EventData;
+        data = *((int*)e->EventData);
         qDebugMessage("Queue event: byQueueReceiver");
-        qDebugVariable(*ptr, Decimal);
+        qDebugVariable(data, Decimal);
     } 
 }
 /*============================================================================*/
@@ -127,8 +128,9 @@ void TaskSameCallback(qEvent_t e){
 }
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
-    return;
     static qSTimer_t t = QSTIMER_INITIALIZER;
+    
+    return;
     qEdgeCheck_Update(&INPUTS);
     qTraceVariable( buton2.Status , qBool );
     if(qSTimerFreeRun(&t, 0.5)){

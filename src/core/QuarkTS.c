@@ -82,22 +82,22 @@ static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t
 #ifdef Q_QUEUES
     static qTrigger_t _qCheckQueueEvents(qTask_t *Task);
     static qSize_t _qQueueValidPowerOfTwo(qSize_t k);
-
-    static void _qQueueIncTail(qQueue_t *obj);
-    static void _qQueueDecTail(qQueue_t *obj);
+    static void qQueueCopyDataToQueue(qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition);
+    static void qQueueMoveReader(qQueue_t *obj);
+    static void qQueueCopyDataFromQueue(qQueue_t *obj, const void *pvBuffer );
 #endif
 
-static char qNibbletoX(uint8_t value);    
+static char qNibbleToX(uint8_t value);    
 qPutChar_t __qDebugOutputFcn = NULL;
 #ifdef Q_TRACE_VARIABLES
     char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
 #endif
-#define _qabs(x)    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
+#define _qAbs(x)    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_) /*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
 #define _qTaskDeadlineReached(_TASK_)            ( (qTimeImmediate == (_TASK_)->Interval) || _qScheduler_TimeDeadlineCheck( (_TASK_)->ClockStart, (_TASK_)->Interval )  )
-#define _qTaskHasPendingIterations(_TASK_)       (_qabs((_TASK_)->Iterations)>0 || qPeriodic == (_TASK_)->Iterations)
+#define _qTaskHasPendingIterations(_TASK_)       (_qAbs((_TASK_)->Iterations)>0 || qPeriodic == (_TASK_)->Iterations)
 #define _qEvent_FillCommonFields(_eVar_, _Trigger_, _FirstCall_, _TaskData_)    (_eVar_).Trigger = _Trigger_; (_eVar_).FirstCall = _FirstCall_; (_eVar_).TaskData = _TaskData_
 
 #define qSchedulerStartPoint                    QUARKTS.Flag.Init=qTrue; do
@@ -766,7 +766,7 @@ Return value:
 #ifdef Q_QUEUES
 qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg){
     if(NULL==Queue || NULL==Task || Mode<qQUEUE_RECEIVER || Mode>qQUEUE_EMPTY) return qFalse;   /*Validate*/
-    if(NULL==Queue->data) return qFalse;    
+    if(NULL==Queue->pHead) return qFalse;    
     Task->Flag[Mode] = (qBool_t)((Mode==qQUEUE_COUNT)? arg : (arg!=qFalse)); /*if mode is qQUEUE_COUNT, use their arg value as count*/
     Task->Queue = (arg>0)? Queue : NULL; /*reject, no valid arg input*/
     return qTrue;
@@ -1321,15 +1321,7 @@ static qSize_t _qQueueValidPowerOfTwo(qSize_t k){
     return (k<r)? k*2 : k;
 }
 /*============================================================================*/
-static void _qQueueIncTail(qQueue_t *obj){
-    obj->tail = ( obj->tail >= obj->LastIndex ) ? 0 : obj->tail+1;
-}
-/*============================================================================*/
-static void _qQueueDecTail(qQueue_t *obj){
-    obj->tail = ( 0 == obj->tail )? obj->LastIndex : obj->tail-1;
-}
-/*============================================================================*/
-/*void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
+/*qBool_t qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
  
 Create and configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
 is statically allocated at compile time by the application writer.
@@ -1343,16 +1335,20 @@ Parameters:
  
 Note: Element_count should be a power of two, or it will only use the next 
       higher power of two
+
+    Return value:
+
+    qTrue on success, otherwise returns qFalse.
+
  */
-void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount){
-    if(NULL==obj || NULL==DataBlock) return;
-    obj->head = 0;
-    obj->tail = 0;
-    obj->data = DataBlock;
-    obj->ElementSize = ElementSize;
-    obj->Elementcount = _qQueueValidPowerOfTwo(ElementCount); /*limit to a power of two, this allows a bit to be used to count the final slot*/
-    obj->LastIndex = obj->Elementcount-1;
-    obj->WaitingItems = 0;
+qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount ){
+    if( NULL == obj || NULL == DataArea || ItemsCount <= 0 || ItemsCount <= 0)  return qFalse;
+    obj->ItemsCount = ItemsCount;   /* Initialise the queue members*/
+    obj->ItemSize = ItemSize;
+    obj->pHead = DataArea;
+    obj->pTail = obj->pHead + (obj->ItemsCount * obj->ItemSize); 
+    qQueueReset(obj);
+    return qTrue;
 }
 /*============================================================================*/
 /*void qQueueReset(qQueue_t *obj)
@@ -1365,10 +1361,11 @@ Parameters:
 */
 void qQueueReset(qQueue_t *obj){
     if(NULL == obj) return;
-    obj->head = 0;
-    obj->tail = 0;
-    obj->WaitingItems = 0;
-    memset( (void*)obj->data, 0x00, obj->ElementSize*obj->Elementcount);
+    qEnterCritical();
+    obj->ItemsWaiting = 0u;
+    obj->pcWriteTo = obj->pHead;
+    obj->pcReadFrom = obj->pHead + ( ( obj->ItemsCount - 1u ) * obj->ItemSize );
+    qExitCritical();
 }
 /*============================================================================*/
 /*qBool_t qQueueIsEmpty(qQueue_t *obj)
@@ -1384,7 +1381,7 @@ Return value:
     qTrue if the Queue is empty, qFalse if it is not.
  */
 qBool_t qQueueIsEmpty(qQueue_t *obj){
-    return (qBool_t)(obj ? (qBool_t)(0==qQueueCount(obj)) : qTrue);    
+    return (qBool_t)(obj ?  obj->ItemsWaiting == 0u : qTrue);    
 }
 /*============================================================================*/
 /*qSize_t qQueueCount(qQueue_t *obj)
@@ -1400,7 +1397,7 @@ Return value:
     The number of elements in the queue
  */
 qSize_t qQueueCount(qQueue_t *obj){
-    return obj->WaitingItems;
+    return (qBool_t)(obj ?  obj->ItemsWaiting : 0u);
 }
 /*============================================================================*/
 /*qBool_t qQueueIsFull(qQueue_t *obj)
@@ -1417,7 +1414,7 @@ Return value:
  */
 /*============================================================================*/
 qBool_t qQueueIsFull(qQueue_t *obj){
-    return (qBool_t)(obj ? (qBool_t)(qQueueCount(obj) == obj->Elementcount) : qTrue);
+    return (qBool_t)(obj ?  obj->ItemsWaiting == obj->ItemsCount : qFalse);  
 }
 /*============================================================================*/
 /*void* qQueuePeek(qQueue_t *obj)
@@ -1430,11 +1427,18 @@ Parameters:
   
 Return value:
 
-    Pointer to the data, or NULL if nothing in the list
+    Pointer to the data, or NULL if there is nothing in the queue
  */
 void* qQueuePeek(qQueue_t *obj){
-    if (NULL==obj) return NULL;
-    return (void*)(!qQueueIsEmpty(obj) ? &(obj->data[(obj->tail & obj->LastIndex) * obj->ElementSize]) : NULL); /*optimized*/
+    uint8_t *RetValue = NULL;
+    if(NULL == obj) return RetValue;
+    if( obj->ItemsWaiting > 0u ){
+        qEnterCritical();
+        RetValue = (void*)(obj->pcReadFrom + obj->ItemSize);
+        if( RetValue >= obj->pTail ) RetValue = obj->pHead;
+        qExitCritical();
+    }
+    return (void*)RetValue;
 }
 /*============================================================================*/
 /*qBool_t qQueueRemoveFront(qQueue_t *obj)
@@ -1451,16 +1455,40 @@ Return value:
  */
 qBool_t qQueueRemoveFront(qQueue_t *obj){
     if (NULL==obj) return qFalse;
-    if (!qQueueIsEmpty(obj)) {
+    if( obj->ItemsWaiting > 0u ){
         qEnterCritical();
-        _qQueueIncTail(obj); /*obj->tail++;*/
-        obj->WaitingItems--;
+        qQueueMoveReader(obj);
+        --( obj->ItemsWaiting ); /* remove the data. */
         qExitCritical();
-        return qTrue;    
-    }    
+        return qTrue;
+    }
     return qFalse;
 }
-
+/*============================================================================*/
+static void qQueueCopyDataToQueue(qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition){
+    if( xPosition == QUEUE_SEND_TO_BACK ){
+        memcpy( (void*) obj->pcWriteTo, pvItemToQueue, (unsigned)obj->ItemSize );
+        obj->pcWriteTo += obj->ItemSize;
+        if( obj->pcWriteTo >= obj->pTail ) obj->pcWriteTo = obj->pHead;
+              
+    }
+    else{
+        memcpy( (void*) obj->pcReadFrom, pvItemToQueue, (unsigned)obj->ItemSize );
+        obj->pcReadFrom -= obj->ItemSize;
+        if( obj->pcReadFrom < obj->pHead ) obj->pcReadFrom = ( obj->pTail - obj->ItemSize );    
+    }
+    ++( obj->ItemsWaiting );
+}
+/*==================================================================================*/
+static void qQueueMoveReader(qQueue_t *obj){
+    obj->pcReadFrom += obj->ItemSize;
+    if( obj->pcReadFrom >= obj->pTail ) obj->pcReadFrom = obj->pHead;
+}
+/*==================================================================================*/
+static void qQueueCopyDataFromQueue(qQueue_t *obj, const void *pvBuffer ){
+    qQueueMoveReader(obj);
+    memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, (unsigned)obj->ItemSize );
+}
 /*============================================================================*/
 /*void* qQueueReceive(qQueue_t *obj, void *dest)
  
@@ -1478,15 +1506,14 @@ Return value:
     qTrue if data was retrieved from the Queue, otherwise returns qFalse
 */
 qBool_t qQueueReceive(qQueue_t *obj, void *dest){
-    void *data = NULL;
-    data = qQueuePeek(obj);
-    if(NULL == data) return qFalse;
-    qEnterCritical();
-    memcpy(dest, data, obj->ElementSize);
-    _qQueueIncTail(obj);/* obj->tail++; */
-    obj->WaitingItems--;
-    qExitCritical();
-    return qTrue;
+    if( obj->ItemsWaiting > 0u ){
+        qEnterCritical();
+        qQueueCopyDataFromQueue( obj, dest );
+        --( obj->ItemsWaiting ); /* remove the data. */
+        qExitCritical();
+        return qTrue;
+    }
+    return qFalse;
 }
 /*============================================================================*/
 /*qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, qBool_t InsertMode)
@@ -1500,8 +1527,8 @@ Parameters:
             the items the queue will hold was defined when the queue was created, 
             so this many bytes will be copied from ItemToQueue into the queue storage
             area.
-    - InsertMode : Can take the value QQUEUE_SEND_TO_BACK to place the item at the back 
-                  of the queue, or QQUEUE_SEND_TO_FRONT to place the item at the front of 
+    - InsertMode : Can take the value QUEUE_SEND_TO_BACK to place the item at the back 
+                  of the queue, or QUEUE_SEND_TO_FRONT to place the item at the front of 
                   the queue (for high priority messages).
   
 Return value:
@@ -1509,30 +1536,14 @@ Return value:
     qTrue on successful add, qFalse if not added
 */
 qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode){
-    qBool_t status = qFalse;
-    uint8_t *data_element = (uint8_t*)ItemToQueue;
-    volatile uint8_t *queue_data = NULL;
-    uint16_t i;
-    qSize_t Index;
-    if(NULL==obj ||  InsertMode>QUEUE_SEND_TO_BACK )  return qFalse;
-    if(data_element){
-        if(!qQueueIsFull(obj)){ /*Limit the amount of elements to accept*/
-            qEnterCritical();
-            if(QUEUE_SEND_TO_FRONT == InsertMode){ /*in front of the queue */
-                _qQueueDecTail(obj);
-                Index = obj->tail;
-            }
-            else Index = obj->head; /*in the back */
-            
-            queue_data = obj->data + ((Index & obj->LastIndex) * obj->ElementSize); /*optimized */
-            for (i = 0; i < obj->ElementSize; i++) queue_data[i] = data_element[i];            
-            obj->head += InsertMode;
-            obj->WaitingItems++;
-            qExitCritical();
-            status = qTrue;
-        }
+    if( NULL==obj || InsertMode>1u) return qFalse;
+    if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/
+        qEnterCritical();
+        qQueueCopyDataToQueue( obj, ItemToQueue, InsertMode );
+        qExitCritical();
+        return qTrue;
     }
-    return status;    
+    return qFalse;   
 }
 #endif
 /*============================================================================*/
@@ -1569,73 +1580,73 @@ qBool_t qCheckEndianness(void){
     return (qBool_t)( *( (uint8_t*)&i ) );
 }
 /*============================================================================*/
-/*void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
+/*void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, size_t n, qBool_t AIP)
  
 Wrapper method to write n RAW data through fcn
   
 Parameters:
 
     - fcn : The basic output byte function
-    - storagep : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to fcn
     - data: Buffer to read data from
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP){
+void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
-    for(i=0;i<n;i++) fcn( ((AIP)? (char*)storagep+i : storagep), cdata[i]);
+    for(i=0;i<n;i++) fcn( ((AIP)? (char*)pStorage+i : pStorage), cdata[i]);
 }
 /*============================================================================*/
-/*void qInputRaw(qGetChar_t fcn, void* storagep, void *data, size_t n, qBool_t AIP)
+/*void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, size_t n, qBool_t AIP)
 
 Wrapper method to get n RAW data through fcn
   
 Parameters:
 
     - fcn : The basic input byte function
-    - storagep : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to fcn
     - data: Buffer to read data from
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
 */
-void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP){
+void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP){
     size_t i = 0;
     char *cdata = data;
-    for(i=0;i<n;i++) cdata[i] = fcn( ((AIP)? (char*)storagep+i : storagep));
+    for(i=0;i<n;i++) cdata[i] = fcn( ((AIP)? (char*)pStorage+i : pStorage));
 }
 /*============================================================================*/
-/*void qOutputString(qPutChar_t fcn, const char *s, qBool_t AIP)
+/*void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP)
  
 Wrapper method to write a string through fcn
   
 Parameters:
 
     - fcn : The basic output byte function
-    - storagep : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to fcn
     - s: The string to be written
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP){
+void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP){
     size_t i = 0;
-    while(*s)  fcn(((AIP)? (char*)storagep+(i++): storagep), *s++);
+    while(*s)  fcn(((AIP)? (char*)pStorage+(i++): pStorage), *s++);
 }
 /*============================================================================*/
-static char qNibbletoX(uint8_t value){
+static char qNibbleToX(uint8_t value){
     char ch;
     ch = (char)(value & 0x0F) + '0';
     return (char) ((ch > '9') ? ch + 7u : ch);
 }
 /*============================================================================*/
-void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n){
+void qPrintXData(qPutChar_t fcn, void* pStorage, void *data, qSize_t n){
     uint8_t *pdat =(uint8_t*)data; 
     int i;
-    for(i=0;i<n;i++, fcn(storagep, ' ')){
-        fcn(storagep, qNibbletoX( qByteHighNibble(pdat[i]) ) );
-        fcn(storagep, qNibbletoX( qByteLowNibble(pdat[i]) ) );
+    for(i=0;i<n;i++, fcn(pStorage, ' ')){
+        fcn(pStorage, qNibbleToX( qByteHighNibble(pdat[i]) ) );
+        fcn(pStorage, qNibbleToX( qByteLowNibble(pdat[i]) ) );
     }
-    fcn(storagep, '\r' );
-    fcn(storagep, '\n' );
+    fcn(pStorage, '\r' );
+    fcn(pStorage, '\n' );
 }
 /*============================================================================*/
 /*void qU32toX(uint32_t value, char *str, int8_t n)
@@ -1657,7 +1668,7 @@ Return value:
 char* qU32toX(uint32_t value, char *str, int8_t n){ 
     int i;
     str[n]='\0';
-    for(i=n-1; i>=0; value>>=4, i--) str[i] = qNibbletoX((uint8_t)value);
+    for(i=n-1; i>=0; value>>=4, i--) str[i] = qNibbleToX((uint8_t)value);
     return str;
 }
 /*============================================================================*/
@@ -2017,16 +2028,16 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     uint32_t intPart;
     if(NULL == str) return str;
     if(0.0f == num){ /*handle the 0.0f*/
-        _qsetfstringto_0(str);      
+        _qSetfStringTo_0(str);      
         return str;
     }
     if((c = qIsInf(num))){ /*handle the infinity*/
         str[0]=(c==1)?'+':'-';
-        _qsetfstringto_inf(str);
+        _qSetfStringTo_inf(str);
         return str;        
     }
     if(qIsNan(num)){ /*handle the NAN*/
-        _qsetfstringto_nan(str);
+        _qSetfStringTo_nan(str);
         return str;
     }
     
@@ -2063,7 +2074,7 @@ qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t 
     obj->PreChar = PreChar;
     obj->EndByte = EndChar;
     obj->MaxIndex = (uint16_t)(size - 1);
-    obj->pdata = pData;
+    obj->pData = pData;
     obj->index = 0;
     return qTrue;
 }
@@ -2076,8 +2087,8 @@ qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
         if(obj->AcceptCheck){
             if(!obj->AcceptCheck(newChar)) return qFalse;
         }
-        obj->pdata[obj->index++] = (qISR_Byte_t)((obj->PreChar)? obj->PreChar(newChar) : newChar);
-        obj->pdata[obj->index] = 0x0u;
+        obj->pData[obj->index++] = (qISR_Byte_t)((obj->PreChar)? obj->PreChar(newChar) : newChar);
+        obj->pData[obj->index] = 0x0u;
         if (obj->index>=(obj->MaxIndex)) obj->index = 0;
         if(newChar == obj->EndByte){
             obj->ReadyFlag = qTrue;
@@ -2090,7 +2101,7 @@ qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
 /*============================================================================*/
 qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
     if(obj->ReadyFlag){
-        memcpy(dest, (void*)obj->pdata, obj->index);
+        memcpy(dest, (void*)obj->pData, obj->index);
         obj->ReadyFlag = qFalse;
         return qTrue;
     }
@@ -2808,11 +2819,13 @@ Return value:
 
 */
 qBool_t qATParser_Run(qATParser_t *Parser){
-    if( NULL == Parser) return qFalse;
     qATResponse_t retval;
-    qATParserInput_t *Input = &Parser->Input;
-    qATCommand_t *Command = NULL;
     qATParser_PreCmd_t params;
+    qATCommand_t *Command = NULL;
+    qATParserInput_t *Input = &Parser->Input;
+    
+    if( NULL == Parser) return qFalse;
+    
     ATOutCharFcn = Parser->OutputFcn;
     if( Input->Ready ){
         if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){

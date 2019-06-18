@@ -80,8 +80,8 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARTKTS_VERSION    "4.8.2"
-    #define QUARKTS_CAPTION     "QuarkTS " QUARTKTS_VERSION
+    #define QUARKTS_VERSION    "4.8.2"
+    #define QUARKTS_CAPTION     "QuarkTS " QUARKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
     #endif
@@ -344,19 +344,19 @@ extern "C" {
     #define qSuspended  3u
 
     #ifdef Q_QUEUES 
-        typedef struct{
-            volatile uint8_t *data; /* block of memory or array of data */
-            volatile qSize_t ElementSize;      /* how many bytes for each chunk */
-            volatile qSize_t Elementcount;     /* number of chunks of data */
-            volatile qSize_t head; /* where the writes go */
-            volatile qSize_t tail; /* where the reads come from */
-            volatile qSize_t WaitingItems;
-            volatile qSize_t LastIndex;
-        }qQueue_t;
+    typedef struct {
+        uint8_t *pHead;			        /*< Points to the beginning of the queue storage area. */
+        uint8_t *pTail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
+        volatile uint8_t *pcWriteTo;	/*< Points to the free next place in the storage area. */
+        volatile uint8_t *pcReadFrom;	/*< Points to the last place that a queued item was read from. */
+        volatile qSize_t ItemsWaiting;  /*< The number of items currently in the queue. */
+        qSize_t ItemsCount;		        /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
+        qSize_t ItemSize;		        /*< The size of each items that the queue will hold. */
+    }qQueue_t;
         /*qRBuffer_t is deprecated, insted use qQueue_t*/
         #define qRBuffer_t qQueue_t  /*Backward compatibility*/
-        #define QUEUE_SEND_TO_BACK     1 /*must be 1*/
-        #define QUEUE_SEND_TO_FRONT    0
+        #define QUEUE_SEND_TO_BACK     0
+        #define QUEUE_SEND_TO_FRONT    1
         /*qBool_t qQueueSendToBack(qQueue_t *obj, void *ItemToQueue)
  
         Post an item to the back of the queue. The item is queued by copy, not by reference
@@ -373,8 +373,24 @@ extern "C" {
 
             qTrue on successful add, qFalse if not added
         */
-        #define qQueueSendToBack(_qQueue_t_, _ItemToQueue_)     qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
-        #define qQueueSend(_qQueue_t_, _ItemToQueue_)           qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 1)
+        #define qQueueSendToBack(_qQueue_t_, _ItemToQueue_)     qQueueGenericSend(_qQueue_t_, _ItemToQueue_, QUEUE_SEND_TO_BACK)
+        /*qBool_t qQueueSend(qQueue_t *obj, void *ItemToQueue)
+ 
+        Post an item to the back of the queue. The item is queued by copy, not by reference
+        
+        Parameters:
+
+            - obj : a pointer to the Queue object
+            - ItemToQueue : A pointer to the item that is to be placed on the queue. The size of 
+                    the items the queue will hold was defined when the queue was created, 
+                    so this many bytes will be copied from ItemToQueue into the queue storage
+                    area.
+        
+        Return value:
+
+            qTrue on successful add, qFalse if not added
+        */
+        #define qQueueSend(_qQueue_t_, _ItemToQueue_)           qQueueGenericSend(_qQueue_t_, _ItemToQueue_, QUEUE_SEND_TO_BACK)
         /*qBool_t qQueueSendToFront(qQueue_t *obj, void *ItemToQueue)
         
         Post an item in the front of the queue. The item is queued by copy, not by reference
@@ -391,7 +407,7 @@ extern "C" {
 
             qTrue on successful add, qFalse if not added
         */        
-        #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend(_qQueue_t_, _ItemToQueue_, 0)
+        #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend(_qQueue_t_, _ItemToQueue_, QUEUE_SEND_TO_FRONT)
     #endif
     
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
@@ -569,18 +585,19 @@ extern "C" {
     #ifdef Q_QUEUES 
         qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg);
 
-        void qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount);
+        qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
+        void qQueueReset(qQueue_t *obj);
         qSize_t qQueueCount(qQueue_t *obj);
         qBool_t qQueueIsFull(qQueue_t *obj);
         qBool_t qQueueIsEmpty(qQueue_t *obj);
         void* qQueuePeek(qQueue_t *obj);
         qBool_t qQueueRemoveFront(qQueue_t *obj);
-        qBool_t qQueueReceive(qQueue_t *obj, void *dest);
         qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode);
+        qBool_t qQueueReceive(qQueue_t *obj, void *dest);
 
         /*BACKWARD COMPATIBILITY: Start */
         /*qTaskLinkBuffer is deprecated, instead use qTaskAttachQueue */
-        #define qTaskLinkBuffer		    qTaskAttachQueue
+        #define qTaskLinkRBuffer		qTaskAttachQueue
         /*qRBufferInit is deprecated, instead use qQueueCreate */
         #define qRBufferInit		    qQueueCreate
         /*qRBufferEmpty is deprecated, instead use qQueueIsEmpty */
@@ -864,11 +881,11 @@ Parameters:
     - ALLOC_SIZE: Size of each memory block
 */ 
 #define qMemoryHeapCreate(NAME, N, ALLOC_SIZE)	uint32_t qMEM_AREA_##NAME[(N*ALLOC_SIZE)>>2]={0}; \
-						uint8_t qMEM_BDES_##NAME[N]={0}; \
+						uint8_t qMEM_BlockDescriptors_##NAME[N]={0}; \
 						qMemoryPool_t NAME; \
                                                 NAME.BlockSize = ALLOC_SIZE; \
                                                 NAME.NumberOfBlocks =  N; \
-                                                NAME.BlockDescriptors = &qMEM_BDES_##NAME[0]; \
+                                                NAME.BlockDescriptors = &qMEM_BlockDescriptors_##NAME[0]; \
                                                 NAME.Blocks = (uint8_t*)&qMEM_AREA_##NAME[0] \
                                                 
 
@@ -881,7 +898,7 @@ Parameters:
 
 typedef volatile char qISR_Byte_t;
 typedef volatile struct{
-    qISR_Byte_t *pdata;
+    qISR_Byte_t *pData;
     qBool_t (*AcceptCheck)(const char);
     char (*PreChar)(const char);    
     volatile uint16_t index;
@@ -905,22 +922,22 @@ typedef void (*qPutChar_t)(void*, const char);
 typedef char (*qGetChar_t)(void*);
 void qSwapBytes(void *data, const qSize_t n);
 qBool_t qCheckEndianness(void);
-void qOutputString(qPutChar_t fcn, void* storagep, const char *s, qBool_t AIP);
-void qOutputRaw(qPutChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP);
-void qInputRaw(qGetChar_t fcn, void* storagep, void *data, const qSize_t n, qBool_t AIP);
+void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP);
+void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
+void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
 
-/*qPrintString(fcn, storagep, s)
+/*qPrintString(fcn, pStorage, s)
  
 This macro is a Wrapper method to write a string through fcn
   
 Parameters:
 
     - fcn : The basic output byte function
-    - storagep : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to fcn
     - s: The string to be written
 */
-#define qPrintString(fcn, storagep, s)          qOutputString(fcn, (void*)storagep, (const char *)s, qFalse) 
-#define qPrintRaw(fcn, storagep, data, n)       qOutputRaw(fcn, (void*)storagep, (void*)data, n, qFalse) 
+#define qPrintString(fcn, pStorage, s)          qOutputString(fcn, (void*)pStorage, (const char *)s, qFalse) 
+#define qPrintRaw(fcn, pStorage, data, n)       qOutputRaw(fcn, (void*)pStorage, (void*)data, n, qFalse) 
 
 /*Some utilities*/
 char* qU32toX(uint32_t value, char *str, int8_t npos);
@@ -933,12 +950,12 @@ char* qBtoA(qBool_t num, char *str);
 char* qQBtoA(qBool_t num, char *str);
 uint8_t qIsInf(float f);
 qBool_t qIsNan(float f);
-#define _qsetfstringto_0(str)           str[0]='0'; str[1]='.'; str[2]='0'; str[3]='\0';  
-#define _qsetfstringto_inf(str)         str[1]='i'; str[2]='n'; str[3]='f'; str[4]='\0';
-#define _qsetfstringto_nan(str)         str[0]='n'; str[1]='a'; str[2]='n'; str[3]='\0';
+#define _qSetfStringTo_0(str)           str[0]='0'; str[1]='.'; str[2]='0'; str[3]='\0';  
+#define _qSetfStringTo_inf(str)         str[1]='i'; str[2]='n'; str[3]='f'; str[4]='\0';
+#define _qSetfStringTo_nan(str)         str[0]='n'; str[1]='a'; str[2]='n'; str[3]='\0';
 char* qFtoA(float num, char *str, uint8_t precision);
 uint32_t qStringHash(const char* s, uint8_t mode);
-void qPrintXData(qPutChar_t fcn, void* storagep, void *data, qSize_t n);
+void qPrintXData(qPutChar_t fcn, void* pStorage, void *data, qSize_t n);
 
 /*qSetDebugFcn(fcn)
 
