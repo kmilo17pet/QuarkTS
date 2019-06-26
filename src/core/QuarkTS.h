@@ -1,27 +1,13 @@
-/*******************************************************************************
- *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.8.2
- *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
- *
- *  QuarkTS is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License (LGPL)as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  QuarkTS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*******************************************************************************/
-/*
-For documentation, read the wiki
-https://github.com/kmilo17pet/QuarkTS/wiki
-and the available API
-https://github.com/kmilo17pet/QuarkTS/wiki/APIs
-*/
+/*!
+ * *******************************************************************************
+ * @file QuarkTS.h
+ * @author J.Camilo Gomez C.
+ * @version 4.8.3
+ * @date May 09, 2019
+ * @brief A Non-Preemptive RTOS for small embedded systems
+ * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
+ * @license GNU Lesser General Public License (LGPL)
+ * ********************************************************************************/
 
 #ifndef H_QuarkTS
 #define	H_QuarkTS
@@ -37,12 +23,13 @@ extern "C" {
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
     #define Q_QUEUES                /*remove this line if you will never use the qQueues*/
-    #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue events*/
+    #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue notification events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
     #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
     #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
     #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
+    #define Q_TASK_COUNT_CYCLES     /*remove this line if you will never need the task cycles*/
 
     #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
     #undef QATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
@@ -80,7 +67,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION    "4.8.2"
+    #define QUARKTS_VERSION    "4.8.3"
     #define QUARKTS_CAPTION     "QuarkTS " QUARKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -191,8 +178,11 @@ extern "C" {
         #define __qCRSemRelease(s)      (++(s)->head)
     #endif
 
-    typedef enum {qTriggerNULL, byTimeElapsed, byQueueExtraction, byAsyncEvent, byQueueReceiver, byQueueFull, byQueueCount, byQueueEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-    
+
+    typedef enum {qTriggerNULL, byTimeElapsed, byNotificationQueued, byNotificationSimple, byQueueReceiver, byQueueFull, byQueueCount, byQueueEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
+    #define byAsyncEvent        byNotificationSimple
+    #define byQueueExtraction   byNotificationQueued
+
     /*BACKWARD COMPATIBILITY: START*/
     #define byRBufferPop        byQueueReceiver
     #define byRBufferFull       byQueueFull
@@ -204,6 +194,8 @@ extern "C" {
     #define qTrigger_RBufferEmpty       byQueueEmpty
     /*BACKWARD COMPATIBILITY: END*/
 
+    #define qTrigger_NotificationSimple byNotificationSimple
+    #define qTrigger_NotificationQueued byNotificationQueued
     #define qTrigger_TimeElapsed        byTimeElapsed
     #define qTrigger_QueueExtraction    byQueueExtraction
     #define qTrigger_AsyncEvent         byAsyncEvent
@@ -275,14 +267,18 @@ extern "C" {
         
         - byTimeElapsed : When the time specified for the task elapsed.
                 
-        - byQueueExtraction: When the scheduler performs extraction of 
-                      task-associated data at the beginning of the 
-                      priority-queue.
+        - byNotificationQueued: When there is a queued notification in the FIFO
+                                priority queue. For this trigger, the dispacher 
+                                performs a dequeue operation automatically. A 
+                                pointer to the extracted event data will be available 
+                                in the <EventData> field.
         
-        - byAsyncEvent: When the execution chain does, according to a 
-                        requirement of asynchronous event prompted by qSendEvent
+        - byNotificationSimple: When the execution chain does, according to a 
+                        requirement of asynchronous notification event prompted 
+                        by qSendEvent. A pointer to the dequeued data will be 
+                        available in the <EventData> field.
         
-        - byQueueReceiver: When there is elements available in the attached qQueue,
+        - byQueueReceiver: When there are elements available in the attached qQueue,
                         the scheduler make a data dequeue (auto-receive) from the
                         front. A pointer to the received data will be 
                         available in the <EventData> field.
@@ -475,10 +471,12 @@ extern "C" {
         qTaskFcn_t Callback; 
         qSM_t *StateMachine; /*pointer to the linked FSM*/
         #ifdef Q_QUEUES
-            qQueue_t *Queue; /*pointer to the linked RBuffer*/
+            qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
         #endif
         volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
-        uint32_t Cycles; 
+        #ifdef Q_TASK_COUNT_CYCLES
+            uint32_t Cycles; 
+        #endif
         qTrigger_t Trigger; 
         qIteration_t Iterations; 
         qPriority_t Priority; 
@@ -563,12 +561,16 @@ extern "C" {
     qBool_t qSchedulerRemoveTask(qTask_t *Task);
     void qSchedulerRun(void);
 
-    typedef qBool_t (*qTaskSendEventMode_t)(qTask_t*, void*);
-    #define QSEND_EVENT_SIMPLE      qTaskSendEvent
-    #define QSEND_EVENT_QUEUED      qTaskQueueEvent
-    qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata);  
-    qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata);
-    qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode);
+    typedef qBool_t (*qTaskNotifyMode_t)(qTask_t*, void*);
+    #define Q_NOTIFY_SIMPLE      qTaskSendNotification
+    #define Q_NOTIFY_QUEUED      qTaskQueueNotification
+    
+    #define qTaskSendEvent	        qTaskSendNotification
+    #define qTaskQueueEvent		    qTaskQueueNotification
+    #define qSchedulerSpreadEvent   qSchedulerSpreadNotification
+    qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata);  
+    qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata);
+    qBool_t qSchedulerSpreadNotification(void *eventdata, qTaskNotifyMode_t mode);
 
     typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qRBLinkMode_t;
     /*backward compatibility*/
@@ -621,8 +623,9 @@ extern "C" {
     void qTaskSetState(qTask_t *Task, const qState_t State);
     void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
-    uint32_t qTaskGetCycles(const qTask_t *Task);
-
+    #ifdef Q_TASK_COUNT_CYCLES
+        uint32_t qTaskGetCycles(const qTask_t *Task);
+    #endif
     
 /*void qTaskSuspend(qTask_t *Task)
 
@@ -671,7 +674,7 @@ Parameters:
     - IDLE_Callback : Callback function to the Idle Task. To disable the 
                       Idle Task functionality, pass NULL as argument.
 
-    - QueueSize : Size of the priority queue. This argument should be an integer
+    - QueueSize : Size of the priority queue for notifications. This argument should be an integer
                   number greater than zero
      */
 
@@ -725,6 +728,9 @@ This statement is only allowed inside a Coroutine segment. qCoroutineYield
 return the CPU control back to the scheduler but saving the execution progress. 
 With the next task activation, the Coroutine will resume the execution after 
 the last 'qCoroutineYield' statement.
+
+Action sequence : [Save progress] then [Yield]
+
 */
         #define qCoroutineYield                         __qCRYield          
         #define qCRYield                                __qCRYield
@@ -748,6 +754,9 @@ qCRRestart
 
 This statement cause the running Coroutine to restart its execution at the 
 place of the qCoroutineBegin statement.
+
+Action sequence : [Reload progress] then [Yield]
+
 */
         #define qCoroutineRestart                       __qCRRestart  
         #define qCRRestart                              __qCRRestart 
@@ -755,6 +764,12 @@ place of the qCoroutineBegin statement.
 qCRWaitUntil(_CONDITION_)
 
 Yields until the logical condition being true
+
+Action sequence : [Save progress] 
+                  IF (Condition == False){
+                     [Yield]      
+                  }   
+
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
         #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
@@ -1051,7 +1066,8 @@ extern qPutChar_t __qDebugOutputFcn;
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
     
     /*On-demand debug/trace macros*/
-    #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)        
+    #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)      
+    #define qDebugCaller()                  __qtrace_func ("",__QTRACE_FUNC, "", "", NULL, 0)   
 
     #define qDebugMessage(Var)              __qtrace_func ("", NULL, "", (char*)(Var), NULL, 0)
     #define qDebugString(Var)               __qtrace_func ("", NULL, #Var "="  , (char*)(Var), NULL, 0)
@@ -1122,6 +1138,7 @@ extern qPutChar_t __qDebugOutputFcn;
     #define qTraceVar(Var, DISP_TYPE_MODE)
     #define qTraceVariable(Var, DISP_TYPE_MODE)
     #define qTraceBool(Var) 
+    #define qTraceqBool(Var) 
     #define qTraceBinary(Var)
     #define qTraceOctal(Var)
     #define qTraceHexadecimal(Var)
@@ -1134,6 +1151,28 @@ extern qPutChar_t __qDebugOutputFcn;
     #define qTraceUnsignedDecimal(Var)
     #define qTraceMemory(Pointer, BlockSize)
     #define qTraceMem(Pointer, BlockSize)
+    #define qTraceVariable(Var, DISP_TYPE_MODE)
+    #define qTraceVar(Var, DISP_TYPE_MODE)
+
+    #define qDebugCaller()               
+    #define qDebugMessage(Var)
+    #define qDebugString(Var)
+    #define qDebugBool(Var)
+    #define qDebugqBool(Var)
+    #define qDebugBinary(Var) 
+    #define qDebugOctal(Var)
+    #define qDebugHexadecimal(Var)
+    #define qDebugDecimal(Var)
+    #define qDebugFloat(Var)
+    #define qDebugFloatPrec(Var, Pc)
+    #define qDebugUnsignedBinary(Var)
+    #define qDebugUnsignedOctal(Var)
+    #define qDebugUnsignedHexadecimal(Var)
+    #define qDebugUnsignedDecimal(Var)
+    #define qDebugMemory(Pointer, BlockSize)
+    #define qDebugMem(Pointer, BlockSize)   
+    #define qDebugVar(Var, DISP_TYPE_MODE)   
+    #define qDebugVariable(Var, DISP_TYPE_MODE)    
 #endif
 
 typedef struct{

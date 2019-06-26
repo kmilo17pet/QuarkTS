@@ -22,7 +22,7 @@ uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
 /*============================================================================*/
 uint32_t PORTA = 0x0A;
 qIOEdgeCheck_t INPUTS;
-qIONode_t buton1, sensor1, buton2, sensor2;
+qIONode_t button1, sensor1, button2, sensor2;
 
 qSM_t statemachine;
 
@@ -73,7 +73,7 @@ qSM_Status_t secondstate(qSMData_t fsm){
     if(fsm->StateFirstEntry){
         qSTimerSet(&tmr, 2.5);
         qTraceMessage( (char*)e->TaskData );
-        qTaskQueueEvent(&Task1, "HELLO");
+        
     }
     
     if (qSTimerExpired(&tmr)){
@@ -98,12 +98,12 @@ void Task1Callback(qEvent_t e){
         qDebugMessage("LastIteration");
     }
     
-    if(e->Trigger == byAsyncEvent){
-        qDebugMessage("TASK1 BY ASYNC EVENT");
+    if(e->Trigger == byNotificationSimple){
+        qDebugMessage("TASK1 BY SIMPLE NOTIFICATION");
     }
 
-    if(e->Trigger == byQueueExtraction){
-        qDebugMessage("TASK1 BY QUEUE EXTRACTION");
+    if(e->Trigger == byNotificationQueued){
+        qDebugMessage("TASK1 BY QUEUED NOTIFICATION");
     }
     
     if(qSTimerFreeRun(&tmr, 0.5)){
@@ -132,36 +132,20 @@ void IdleTaskCallback(qEvent_t e){
     
     return;
     qEdgeCheck_Update(&INPUTS);
-    qTraceVariable( buton2.Status , qBool );
+    qTraceVariable( button2.Status , qBool );
     if(qSTimerFreeRun(&t, 0.5)){
         PORTA = ~PORTA;
     }
 }
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
-    static qSTimer_t tmr;
-    qCRPosition_t state;
-    qCoroutineSemaphore_t mutex;
-    qCoroutineSemaphoreInit(&mutex, 1);
-    static  int count = 0;
     qCoroutineBegin{
-        qDebugMessage("CR:A");
-        qDebugMessage("CR:B");
-        qDebugMessage("CR:C");
-        qCoroutinePositionGet(state);
-        qDebugMessage("CR:D");
-        qDebugMessage("CR:E");
-        qCoroutineDelay(0.1);
-        qTraceVariable(count, Decimal);
-        qDebugMessage("CR:F");
-        qDebugMessage("CR:G");
-        if(++count>10)  qCoroutinePositionRestore(state);
-        qDebugMessage("CR:H");
-        qCoroutineWaitUntil(qSTimerFreeRun(&tmr,2.0));
-        qDebugMessage("CR:I");
-        qDebugMessage("CR:J");
-        qCoroutineYield;
-        qCoroutineRestart;
+        qCoroutineDelay(2.0);
+        puts("hello  1");
+        qCoroutineDelay(2.0);
+        puts("hello 2 ");
+        qTaskQueueNotification(&Task1, "notification 1");
+        qTaskQueueNotification(&Task1, "notification 2");
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -172,9 +156,12 @@ int main(int argc, char** argv) {
 
     int x[]={10,20,30,40,50,60,70,80,90,100};
 
+    qDebugCaller();
+    return EXIT_SUCCESS;
+
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
-    qEdgeCheck_InsertNode(&INPUTS, &buton1, &PORTA, 0);
-    qEdgeCheck_InsertNode(&INPUTS, &buton2, &PORTA, 1);
+    qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);
+    qEdgeCheck_InsertNode(&INPUTS, &button2, &PORTA, 1);
     qEdgeCheck_InsertNode(&INPUTS, &sensor1, &PORTA, 2);
     qEdgeCheck_InsertNode(&INPUTS, &sensor2, &PORTA, 3);
     

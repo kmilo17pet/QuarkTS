@@ -47,6 +47,5 @@ run: $(OUT)
 test: run
 clean:
 	@$(RM) -rf $(OUT) $(OBJ_DIR) $(BIN_DIR)
-
 show:
 	@echo SRC =  $(SRC)

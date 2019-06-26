@@ -1,28 +1,13 @@
-/*******************************************************************************
- *  QuarkTS - A Non-Preemptive RTOS for small embedded systems
- *  Version : 4.8.2
- *  Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
- *
- *  QuarkTS is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License (LGPL)as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  QuarkTS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*******************************************************************************/
-
-/*
-For documentation, read the Wiki
-https://github.com/kmilo17pet/QuarkTS/wiki
-and the available API
-https://github.com/kmilo17pet/QuarkTS/wiki/APIs
-*/
+/*!
+ * *******************************************************************************
+ * @file QuarkTS.c
+ * @author J.Camilo Gomez C.
+ * @version 4.8.3
+ * @date May 09, 2019
+ * @brief A Non-Preemptive RTOS for small embedded systems
+ * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
+ * @license GNU Lesser General Public License (LGPL)
+ * ********************************************************************************/
 
 #include "QuarkTS.h"
 
@@ -254,17 +239,19 @@ Return value:
 
     A unsigned long value containing the number of task activations.
 */
+#ifdef Q_TASK_COUNT_CYCLES
 uint32_t qTaskGetCycles(const qTask_t *Task){
     if (NULL==Task) return 0ul;
     return Task->Cycles;
 }
+#endif
 /*============================================================================*/
-/*void qTaskSendEvent(qTask_t *Task, void* eventdata)
+/*void qTaskSendNotification(qTask_t *Task, void* eventdata)
 
-Sends a simple asynchronous event (QSEND_EVENT_SIMPLE). This method marks the 
-task as 'qReady' for execution, therefore, the planner will launch the task 
+Sends a simple notification generating an asynchronous event (QSEND_EVENT_SIMPLE). 
+This method marks the task as 'qReady' for execution, therefore, the planner will launch the task 
 immediately according to the scheduling rules (even if task is disabled) and 
-setting the Trigger flag to "byAsyncEvent". Specific user-data can be passed 
+setting the Trigger flag to "byNotificationSimple". Specific user-data can be passed 
 through, and will be available in the respective callback inside the <EventData> 
 field.
 
@@ -277,31 +264,31 @@ Return value:
 
     qTrue on success. Otherwise qFalse.
 */ 
-qBool_t qTaskSendEvent(qTask_t *Task, void* eventdata){
+qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata){
     if(NULL==Task) return qFalse;
     Task->Flag[_qIndex_AsyncRun] = qTrue;
     Task->AsyncData = eventdata;
     return qTrue;
 }
 /*============================================================================*/
-/*qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode)
+/*qBool_t qSchedulerSpreadNotification(void *eventdata, qTaskNotifyMode_t mode)
 
-Spread an event among all the tasks in the scheduling scheme
+Spread a notification event among all the tasks in the scheduling scheme
 
 Parameters:
 
     - eventdata : Specific event user-data.
     - mode : the method used to spread the event:
-              QSEND_EVENT_SIMPLE or QSEND_EVENT_QUEUED.
+              Q_NOTIFY_SIMPLE or Q_NOTIFY_QUEUED.
 
 Return value:
 
     qTrue if the event could be spread in all tasks. Otherwise qFalse.              
 */ 
 /*============================================================================*/
-qBool_t qSchedulerSpreadEvent(void *eventdata, qTaskSendEventMode_t mode){
+qBool_t qSchedulerSpreadNotification(void *eventdata, qTaskNotifyMode_t mode){
     qTask_t *Task = NULL;
-    if(QSEND_EVENT_SIMPLE==mode || QSEND_EVENT_QUEUED == mode ){
+    if(Q_NOTIFY_SIMPLE==mode || Q_NOTIFY_QUEUED == mode ){
         for(Task = QUARKTS.Head; Task; Task = Task->Next){
             if(qFalse == mode(Task, eventdata)) return qFalse;
         } 
@@ -420,13 +407,14 @@ void qTaskClearTimeElapsed(qTask_t *Task){
     Task->ClockStart = qSchedulerGetTick();
 }
 /*============================================================================*/
-/*qBool_t qTaskQueueEvent(const qTask_t *Task, void* eventdata)
+/*qBool_t qTaskQueueNotification(const qTask_t *Task, void* eventdata)
 
-Insert an asynchronous event in the FIFO priority queue. The task will be ready
-for execution according to the queue order (determined by priority), even 
-if task is disabled. When extracted, the scheduler will set Trigger flag to 
-"byQueueExtraction". Specific user-data can be passed through, and will be
- available inside the EventData field, only in corresponding launch.
+Insert a notification in the FIFO priority queue. The scheduler get this notification
+as asynchronous event, therefor, the task will be ready for execution according to 
+the queue order (determined by priority), even if task is disabled. When extracted, 
+the scheduler will set Trigger flag to  "byNotificationQueued". Specific user-data 
+can be passed through, and will be available inside the EventData field, only in
+ corresponding launch.
 
 Parameters:
 
@@ -438,7 +426,7 @@ Return value:
     Returns qTrue if the event has been inserted in the queue, or qFalse if an error 
     occurred (The queue exceeds the size).
 */
-qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
+qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata){
     #ifdef Q_PRIORITY_QUEUE
         volatile qQueueStack_t tmp;
         if((NULL==Task) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
@@ -454,8 +442,8 @@ qBool_t qTaskQueueEvent(qTask_t *Task, void* eventdata){
 /*void qSchedulerSetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
 
 Set the hardware-specific code for global interrupt enable/disable. 
-Setting this allows you to push Interrupt-safe data in the priority queue 
-with <qTaskQueueEvent>
+Setting this allows you to comunicate safely from Interrupts using queued notifications
+or qQueues.
 
 Parameters:
 
@@ -572,7 +560,9 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->Flag[_qIndex_QueueEmpty] = qFalse;
     Task->Flag[_qIndex_Enabled] = (qBool_t)(InitialState != qFalse);
     Task->Next = NULL;  
+    #ifdef Q_TASK_COUNT_CYCLES
     Task->Cycles = 0;
+    #endif
     Task->ClockStart = qSchedulerGetTick();
     #ifdef Q_QUEUES
         Task->Queue = NULL;
@@ -819,7 +809,7 @@ void qSchedulerRun(void){
         if(!QUARKTS.Flag.Init) QUARKTS.Head = _qScheduler_RearrangeChain(QUARKTS.Head); /*if initial scheduling conditions changed, sort the chain by priority (init flag internally set)*/
         #endif
         #ifdef Q_PRIORITY_QUEUE
-        if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byQueueExtraction);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
+        if((Task = _qScheduler_PriorityQueueGet())) Task->State = _qScheduler_Dispatch(Task, byNotificationQueued);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/    
         #endif
         if(_qScheduler_ReadyTasksAvailable()){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while((Task = _qScheduler_GetNodeFromChain())) /*Get node by node from the chain until no more available*/
@@ -846,7 +836,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             if( qPeriodic!= Task->Iterations) Task->Iterations--; /*Decrease the iteration value*/
             if( (QUARKTS.EventInfo.LastIteration = (qBool_t)(0 == Task->Iterations)) ) Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/            
             break;
-        case byAsyncEvent:
+        case byNotificationSimple:
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
             Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
             break;
@@ -859,7 +849,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             break;
         #endif
         #ifdef Q_PRIORITY_QUEUE
-        case byQueueExtraction:
+        case byNotificationQueued:
             QUARKTS.EventInfo.EventData = QUARKTS.QueueData; /*get the extracted data from queue*/
             QUARKTS.QueueData = NULL;
             break;
@@ -887,7 +877,9 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     QUARKTS.EventInfo.FirstIteration = qFalse;
     QUARKTS.EventInfo.LastIteration =  qFalse; 
     QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
-    Task->Cycles++; /*increase the task cycles value*/
+    #ifdef Q_TASK_COUNT_CYCLES
+        Task->Cycles++; /*increase the task cycles value*/
+    #endif
     return qSuspended;
 }
 /*============================================================================*/
@@ -919,7 +911,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
         #endif
         if( Task->Flag[_qIndex_AsyncRun]){   /*The last check will be if the task has an async event*/
             Task->State = qReady; /*Put the task in ready state*/
-            Task->Trigger = byAsyncEvent; /*Set the corresponding trigger*/
+            Task->Trigger = byNotificationSimple; /*Set the corresponding trigger*/
             nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/
             continue; /*check the next task*/
         }
@@ -1331,7 +1323,7 @@ Parameters:
     - obj : a pointer to the Queue object
     - DataBlock :  data block or array of data
     - ElementSize : size of one element in the data block
-    - ElementCount : Max number of elements in the Queue
+    - ElementCount : size of one element in the data block
  
 Note: Element_count should be a power of two, or it will only use the next 
       higher power of two
@@ -2413,7 +2405,10 @@ void __qtrace_func(const char *loc, const char* fcn, const char *varname, const 
     }
 }
 #endif
-
+/*============================================================================*/
+qBool_t qReg32_GetBit(uint32_t xReg, qBool_t xBit){
+    return qBitRead(xReg, xBit);
+}
 /*============================================================================*/
 qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
     uint32_t Register = 0;
@@ -2698,7 +2693,7 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
     if (c=='\r'){
        Parser->Input.Ready = qTrue;
        Parser->Input.index=0;
-       if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
+       if( NULL != Parser->Task) qTaskSendNotification(Parser->Task, NULL);
        return qTrue;
     }
     return qFalse;
@@ -2729,7 +2724,7 @@ qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n){
             _qATParser_FixInput( (char*)Parser->Input.Buffer );
             Parser->Input.Ready = qTrue;
             Parser->Input.index=0;
-            if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
+            if( NULL != Parser->Task) qTaskSendNotification(Parser->Task, NULL);
             return qTrue;
         }
     }
@@ -2768,7 +2763,6 @@ Return value:
     qTrue when the Parser accepts the input. If busy, return qFalse
 
 */
-
 qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
 	if( NULL == Parser || NULL == cmd) return qFalse;
 	if( Parser->Input.Ready || strlen(cmd) > (Parser->Input.Size-1)) return qFalse; /*Parser Busy with another command or cmd to long*/
@@ -2777,7 +2771,7 @@ qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
     strncpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
 	_qATParser_FixInput( (char*)Parser->Input.Buffer );
 
-    if( NULL != Parser->Task) qTaskSendEvent(Parser->Task, NULL);
+    if( NULL != Parser->Task) qTaskSendNotification(Parser->Task, NULL);
 	return qTrue;
 }
 /*============================================================================*/
