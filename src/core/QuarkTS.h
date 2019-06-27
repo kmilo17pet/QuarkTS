@@ -1349,6 +1349,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c);
     qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n);
     qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
+    qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd);
     qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
     qBool_t qATParser_Run(qATParser_t *Parser);
 

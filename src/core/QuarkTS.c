@@ -2564,6 +2564,7 @@ static qSize_t qATParser_NumOfArgs(const char *str);
 static char* _qATParser_FixInput(char *s);
 static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval);
 static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params);
+static qATResponse_t _qATParser_ParseInput(qATParser_t *Parser, volatile char *InputBuffer);
 /*============================================================================*/
 static void _qATPutc_Wrapper(const char c){
 	ATOutCharFcn(NULL, c);
@@ -2778,9 +2779,28 @@ qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
     Parser->Input.index = 0;
     strncpy((char*)Parser->Input.Buffer, cmd, Parser->Input.Size);
 	_qATParser_FixInput( (char*)Parser->Input.Buffer );
-
     if( NULL != Parser->Task) qTaskSendNotification(Parser->Task, NULL);
 	return qTrue;
+}
+/*============================================================================*/
+/*qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd)
+
+Try to execute the requested command.
+
+Parameters:
+
+    - Parser : A pointer to the ATParser instance
+    - cmd : The command string, including arguments if required.
+
+Return value:
+
+    The response output for the requested command
+
+*/
+/*============================================================================*/
+qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd){
+    if( NULL == Parser || NULL == cmd ) return QAT_NOTFOUND;
+    return _qATParser_ParseInput(Parser, (volatile char *)cmd);
 }
 /*============================================================================*/
 /*qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority)
@@ -2798,71 +2818,35 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority){
+qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority){    
+    if(NULL == Parser) return qFalse;
     Parser->Task = Task;
     return qSchedulerAdd_Task(Task, qATParser_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, Parser);
 }
 /*============================================================================*/
-static void qATParser_TaskCallback(qEvent_t e){
+static void qATParser_TaskCallback(qEvent_t e){ /*wrapper for the task callback */
     qATParser_Run( (qATParser_t*)e->TaskData );
 }
 /*============================================================================*/
-/*qBool_t qATCommandParser_Run(qATParser_t *Parser)
- 
-Run the AT Command Parser when the input is ready.
-
-Parameters:
-
-    - Parser : A pointer to the ATParser instance
-
-Return value:
-
-    qTrue on success, otherwise return qFalse
-
-*/
-qBool_t qATParser_Run(qATParser_t *Parser){
-    qATResponse_t retval;
-    qATParser_PreCmd_t params;
+static qATResponse_t _qATParser_ParseInput(qATParser_t *Parser, volatile char *InputBuffer){
+    qATResponse_t RetValue = QAT_NOTFOUND;
     qATCommand_t *Command = NULL;
-    qATParserInput_t *Input = &Parser->Input;
-    
-    if( NULL == Parser) return qFalse;
-    
-    ATOutCharFcn = Parser->OutputFcn;
-    if( Input->Ready ){
-        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
-        	_qATParser_HandleCommandResponse(Parser, QAT_OK);
-            goto QEXIT_ATCMD_PARSER;
-        }
-                
-        for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
-            if( strstr( (const char*)Input->Buffer, Command->Text ) == Input->Buffer ){ /*check if the input match the subscribed command starting from the beginning*/
-                retval = qAT_NOTALLOWED;  
-                Parser->Output[0] = '\0';
-                if( _qATParser_PreProcessing(Command, Input->Buffer, &params) ){ /*if success, proceed with the user pos-processing*/
-                    retval = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
-                    if( NULL != Parser->Output ){  /*print the user Output if available*/
-                    	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
-                    }
+    qATParser_PreCmd_t params;
+
+    for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
+        if( strstr( (const char*)InputBuffer, Command->Text ) == InputBuffer ){ /*check if the input match the subscribed command starting from the beginning*/
+            RetValue = qAT_NOTALLOWED;  
+            Parser->Output[0] = '\0';
+            if( _qATParser_PreProcessing(Command, InputBuffer, &params) ){ /*if success, proceed with the user pos-processing*/
+                RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
+                if( NULL != Parser->Output ){  /*print the user Output if available*/
+                  	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
                 }
-                _qATParser_HandleCommandResponse(Parser, retval);    
-                goto QEXIT_ATCMD_PARSER;
             }
+            break;
         }
-        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){ /*the input match the QAT_DEFAULT_ID_COMMAND*/
-        	_qATParser_HandleCommandResponse(Parser, QAT_DEVID);
-            goto QEXIT_ATCMD_PARSER;
-        }
-        if( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH ){ /*if not found, only print the NOTFOUND response  when input has enough chars*/
-        	_qATParser_HandleCommandResponse(Parser, QAT_NOTFOUND);
-        }
-        QEXIT_ATCMD_PARSER: /*clean-up the input*/
-		Input->Ready = qFalse;
-        Input->index = 0;
-        Input->Buffer[0] = 0x00;
-        return qTrue;
     }
-    return qFalse;
+    return RetValue;
 }
 /*============================================================================*/
 static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params){
@@ -2921,6 +2905,51 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
         }
     }
     return qTrue;
+}
+/*============================================================================*/
+/*qBool_t qATCommandParser_Run(qATParser_t *Parser)
+ 
+Run the AT Command Parser when the input is ready.
+
+Parameters:
+
+    - Parser : A pointer to the ATParser instance
+
+Return value:
+
+    qTrue on success, otherwise return qFalse
+
+*/
+qBool_t qATParser_Run(qATParser_t *Parser){
+    qATResponse_t OutputRetval = QAT_NOTFOUND;
+    qATResponse_t ParserRetVal;
+    qATParserInput_t *Input;
+    
+    if( NULL == Parser) return qFalse;
+
+    Input =  &Parser->Input;
+    ATOutCharFcn = Parser->OutputFcn;
+    if( Input->Ready ){
+        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
+            OutputRetval = QAT_OK;
+        }
+        else if( QAT_NOTFOUND != (ParserRetVal = _qATParser_ParseInput(Parser, Input->Buffer)) ){
+            OutputRetval = ParserRetVal;
+        }
+        else if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){
+            OutputRetval = QAT_DEVID;
+        }
+        else if( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH ){ 
+            OutputRetval = QAT_NOTFOUND;
+        }
+        _qATParser_HandleCommandResponse( Parser, OutputRetval );
+        /*clean up the input*/
+		Input->Ready = qFalse;
+        Input->index = 0;
+        Input->Buffer[0] = 0x00;
+        return qTrue;
+    }
+    return qFalse;
 }
 /*============================================================================*/
 static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval){
