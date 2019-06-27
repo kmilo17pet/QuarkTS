@@ -248,7 +248,7 @@ uint32_t qTaskGetCycles(const qTask_t *Task){
 /*============================================================================*/
 /*void qTaskSendNotification(qTask_t *Task, void* eventdata)
 
-Sends a simple notification generating an asynchronous event (QSEND_EVENT_SIMPLE). 
+Sends a simple notification generating an asynchronous event. 
 This method marks the task as 'qReady' for execution, therefore, the planner will launch the task 
 immediately according to the scheduling rules (even if task is disabled) and 
 setting the Trigger flag to "byNotificationSimple". Specific user-data can be passed 
@@ -266,7 +266,7 @@ Return value:
 */ 
 qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata){
     if(NULL==Task) return qFalse;
-    Task->Flag[_qIndex_AsyncRun] = qTrue;
+    Task->Flag[_qIndex_Notification]++;  /* = qTrue */
     Task->AsyncData = eventdata;
     return qTrue;
 }
@@ -552,7 +552,7 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
     Task->TaskData = arg;
     Task->Priority = Priority;
     Task->Iterations = (qPeriodic==nExecutions)? qPeriodic : -nExecutions;    
-    Task->Flag[_qIndex_AsyncRun] = qFalse;
+    Task->Flag[_qIndex_Notification] = qFalse;
     Task->Flag[_qIndex_InitFlag] = qFalse;
     Task->Flag[_qIndex_QueueReceiver] = qFalse; 
     Task->Flag[_qIndex_QueueFull] = qFalse;
@@ -838,7 +838,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
             break;
         case byNotificationSimple:
             QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
-            Task->Flag[_qIndex_AsyncRun] = qFalse; /*Clear the async flag*/            
+            Task->Flag[_qIndex_Notification]--; /* = qFalse */ /*Clear the async flag*/            
             break;
         #ifdef Q_QUEUES    
         case byQueueReceiver:
@@ -909,7 +909,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
             continue; /*check the next task*/
         }
         #endif
-        if( Task->Flag[_qIndex_AsyncRun]){   /*The last check will be if the task has an async event*/
+        if( Task->Flag[_qIndex_Notification]){   /*The last check will be if the task has an async event*/
             Task->State = qReady; /*Put the task in ready state*/
             Task->Trigger = byNotificationSimple; /*Set the corresponding trigger*/
             nTaskReady = qTrue;  /*at least one task in the chain is ready to run*/

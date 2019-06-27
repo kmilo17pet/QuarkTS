@@ -139,6 +139,7 @@ void IdleTaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
+    qBool_t ret1, ret2;
     qCoroutineBegin{
         qCoroutineDelay(2.0);
         puts("hello  1");
@@ -146,6 +147,8 @@ void blinktaskCallback(qEvent_t e){
         puts("hello 2 ");
         qTaskQueueNotification(&Task1, "notification 1");
         qTaskQueueNotification(&Task1, "notification 2");
+        qTaskSendNotification(&Task1, "notification 3");
+        qTaskSendNotification(&Task1, "notification 4");
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -155,9 +158,6 @@ int main(int argc, char** argv) {
     void *memtest;
 
     int x[]={10,20,30,40,50,60,70,80,90,100};
-
-    qDebugCaller();
-    return EXIT_SUCCESS;
 
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);

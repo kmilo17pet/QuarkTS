@@ -465,6 +465,7 @@ extern "C" {
     }qFSM_Attribute_t; 
           
     #define Q_TASK_EXTENDED_DATA
+
     struct _qTask_t{ /*Task node definition*/
         volatile struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
@@ -701,6 +702,7 @@ Parameters:
         #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
         #define __qCRRestart                        __qCRCodeStartBlock{  __qSetPC(qCR_PCInitVal)      ; __qTaskYield }                                            __qCRCodeEndBlock
         #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
+        #define __qCR_wu_preAssert(_pre_ , _cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; _pre_ ;  __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
         #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_(_pos_);}                                  __qCRCodeEndBlock
         #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
         #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( _qScheduler_TimeDeadlineCheck(_qCRTaskState_.crdelay, qTime2Clock(_time_))  ) __qTaskYield } __qCRCodeEndBlock
@@ -768,16 +770,32 @@ Yields until the logical condition being true
 Action sequence : [Save progress] 
                   IF (Condition == False){
                      [Yield]      
-                  }   
+                  }  
 
 */    
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
         #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
+
+/*qCoroutineDoWaitUntil(_JOB_ , _CONDITION_) 
+qCRDoWaitUntil(_JOB_ , _CONDITION_)
+
+Yields until the logical condition being true executing a 
+a job before the condition check
+
+Action sequence : [Save progress]
+                  Run [Job]  
+                  IF (Condition == False){
+                     [Yield]      
+                  }  
+                   
+*/    
+        #define qCoroutineDoWaitUntil( _Job_ , _condition_ )    __qCR_wu_preAssert(_Job_ , _condition_)
+        #define qCRDoWaitUntil( _Job_ , _condition_ )          __qCR_wu_preAssert(_Job_ , _condition_)
 /*qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_) 
 qCRSemInit(_qCRSemaphore_t_, _Value_)
 
 Initializes a semaphore with a value for the counter. Internally, the semaphores
-use an "unsigned int" to represent the counter, and therefore the "count" 
+use an "unsigned int" to represent the counter,  therefore the "count" 
 argument should be within range of an unsigned int.
 
 Parameters:
@@ -801,6 +819,7 @@ Parameters:
 */        
         #define qCoroutineSemaphoreWait(_qCRSemaphore_t_)               __qCRCodeStartBlock{ qCoroutineWaitUntil(__qCRSemCount(_qCRSemaphore_t_) > 0);  __qCRSemLock(_qCRSemaphore_t_); } __qCRCodeEndBlock    
         #define qCRSemWait(_qCRSemaphore_t_)                            qCoroutineSemaphoreWait(_qCRSemaphore_t_)
+
 /*qCoroutineSemaphoreSignal(_qCRSemaphore_t_) 
 qCRSemSignal(_qCRSemaphore_t_)
 
