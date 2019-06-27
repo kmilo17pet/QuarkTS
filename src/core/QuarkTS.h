@@ -319,8 +319,10 @@ extern "C" {
     typedef const _qEvent_t_ *qConst qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
+    #define QMAX_NOTIFICATION_VALUE     0xFFu
+
     #define _qIndex_InitFlag            0
-    #define _qIndex_AsyncRun            1
+    #define _qIndex_Notification        1
     #define _qIndex_Enabled             2
     #define _qIndex_QueueReceiver       3
     #define _qIndex_QueueFull           4

@@ -265,10 +265,15 @@ Return value:
     qTrue on success. Otherwise qFalse.
 */ 
 qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata){
-    if(NULL==Task) return qFalse;
-    Task->Flag[_qIndex_Notification]++;  /* = qTrue */
-    Task->AsyncData = eventdata;
-    return qTrue;
+    qBool_t RetValue = qFalse;
+    if( Task ){
+        if( Task->Flag[_qIndex_Notification] < QMAX_NOTIFICATION_VALUE){
+            Task->Flag[_qIndex_Notification]++;
+            Task->AsyncData = eventdata;
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*qBool_t qSchedulerSpreadNotification(void *eventdata, qTaskNotifyMode_t mode)
@@ -287,14 +292,15 @@ Return value:
 */ 
 /*============================================================================*/
 qBool_t qSchedulerSpreadNotification(void *eventdata, qTaskNotifyMode_t mode){
+    qBool_t RetValue = qFalse;
     qTask_t *Task = NULL;
     if(Q_NOTIFY_SIMPLE==mode || Q_NOTIFY_QUEUED == mode ){
+        RetValue = qTrue;
         for(Task = QUARKTS.Head; Task; Task = Task->Next){
-            if(qFalse == mode(Task, eventdata)) return qFalse;
+            if(qFalse == mode(Task, eventdata)) RetValue = qFalse;
         } 
-        return qTrue;
     }
-    return qFalse;
+    return RetValue;
 }
 /*============================================================================*/
 /*void qTaskSetTime(qTask_t *Task, qTime_t Value)
@@ -428,12 +434,15 @@ Return value:
 */
 qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata){
     #ifdef Q_PRIORITY_QUEUE
+        qBool_t RetValue = qFalse;
         volatile qQueueStack_t tmp;
-        if((NULL==Task) || (QUARKTS.QueueIndex>=QUARKTS.QueueSize-1) ) return qFalse;    /*check if data can be queued*/
-        tmp.QueueData = eventdata;
-        tmp.Task = Task;
-        QUARKTS.QueueStack[++QUARKTS.QueueIndex] = tmp; /*insert task and the corresponding eventdata to the queue*/
-    return qTrue;
+        if( Task && (QUARKTS.QueueIndex<QUARKTS.QueueSize-1) ) {/*check if data can be queued*/
+            tmp.QueueData = eventdata;
+            tmp.Task = Task;
+            QUARKTS.QueueStack[++QUARKTS.QueueIndex] = tmp; /*insert task and the corresponding eventdata to the queue*/
+            RetValue = qTrue;
+        }
+        return RetValue;
     #else
         return qFalse;
     #endif
