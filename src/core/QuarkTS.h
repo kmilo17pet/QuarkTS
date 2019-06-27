@@ -873,18 +873,21 @@ Parameters:
     
         typedef struct{ /*STimer defintion*/
             qConst qClock_t Start, TV; /*The time-epochs registers*/
-            qConst qBool_t SR; /*The SET-RESET flag*/
         }qSTimer_t;
         
+        #define QSTIMER_ARMED           qTrue
+        #define QSTIMER_DISARMED        qFalse
+        #define QSTIMER_DISARM_VALUE    0ul
+
+        #define _qSTimerIsArmed(_pObj_)     (_pObj_->TV)
         qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
         qBool_t qSTimerExpired(const qSTimer_t *obj);
         qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time);
         qClock_t qSTimerElapsed(const qSTimer_t *obj);
         qClock_t qSTimerRemaining(const qSTimer_t *obj);
         void qSTimerDisarm(qSTimer_t *obj);
-        void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time);
         qBool_t qSTimerStatus(const qSTimer_t *obj);
-        #define QSTIMER_INITIALIZER     {0, 0, 0}
+        #define QSTIMER_INITIALIZER     {0ul, 0ul}
      
         
 #ifdef Q_MEMORY_MANAGER

@@ -939,13 +939,13 @@ Parameters:
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qFSM_t pointer as input argument.
-    - SuccessState : State performed after a state finish with return status 
+    - SuccessState : Sub-State performed after a state finish with return status 
                      qSM_EXIT_SUCCESS. This argument is a pointer to a callback
                      function with a qFSM_t pointer as input argument.
-    - FailureState : State performed after a state finish with return status 
+    - FailureState : Sub-State performed after a state finish with return status 
                      qSM_EXIT_FAILURE. This argument is a pointer to a callback
                      function with a qFSM_t pointer as input argument.
-    - UnexpectedState : State performed after a state finish with return status
+    - UnexpectedState : Sub-State performed after a state finish with return status
                         value between -32766 and 32767. This argument is a 
                         pointer to a callback function with a qFSM_t pointer
                         as input argument.
@@ -1082,7 +1082,6 @@ qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
     if(NULL==obj) return qFalse;
     qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time); /*set the STimer time in epochs*/
     qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = qSchedulerGetTick(); /*set the init time of the STimer with the current system epoch value*/
-    qConstField_Set(qBool_t, obj->SR)/*obj->SR*/ = qTrue; /*enable the STimer*/
     return qTrue;
 }
 /*============================================================================*/
@@ -1111,16 +1110,19 @@ Return value:
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
 qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time){
-    if(NULL==obj) return qFalse;
-    if(obj->SR){  /*if the STimer is enabled*/
-        if (qSTimerExpired(obj)){ /*check for expiration*/
-            qSTimerDisarm(obj); /*if expired, disarm the STimer*/
-            return qTrue; 
+    qBool_t RetValue = qFalse;
+    if(obj){ 
+        if(QSTIMER_ARMED == qSTimerStatus(obj) ){ 
+            if (qSTimerExpired(obj)){
+                qSTimerDisarm(obj); 
+                RetValue = qTrue;
+            }
         }
-        else return qFalse;
+        else{
+            qSTimerSet(obj, Time); 
+        }
     }
-    qSTimerSet(obj, Time); /*if STimer not enabled, re-arm the timer*/
-    return qFalse;    
+    return RetValue;   
 }
 /*============================================================================*/
 /*qBool_t qSTimerExpired(qSTimer_t *obj)
@@ -1138,9 +1140,13 @@ Return value:
 
 */
 qBool_t qSTimerExpired(const qSTimer_t *obj){
-    if(NULL==obj) return qFalse;
-    if(!obj->SR) return qFalse; 
-    return (qBool_t)(qSTimerElapsed(obj)>=obj->TV); 
+    qBool_t RetValue = qFalse;
+    if(obj){
+        if( QSTIMER_ARMED == qSTimerStatus(obj) ){
+            RetValue = (qBool_t)( qSTimerElapsed(obj) >= obj->TV ); 
+        }
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*qTime_t qSTimerElapsed(qSTimer_t *obj)
@@ -1156,9 +1162,13 @@ Return value:
     The Elapsed time specified in epochs
 */
 qClock_t qSTimerElapsed(const qSTimer_t *obj){
-    if(NULL==obj) return 0ul;
-    if(!obj->SR) return 0;
-    return (qSchedulerGetTick()- obj->Start);
+    qClock_t RetValue = 0ul;
+    if(obj){
+        if( QSTIMER_ARMED == qSTimerStatus(obj) ) {
+            RetValue = qSchedulerGetTick() - obj->Start;
+        }
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*qClock_t qSTimerRemainingEpochs(qSTimer_t *obj)
@@ -1174,10 +1184,13 @@ Return value:
     The remaining time specified in epochs
 */
 qClock_t qSTimerRemaining(const qSTimer_t *obj){
-    qClock_t elapsed;
-    if(NULL==obj) return 0;
-    elapsed = qSTimerElapsed(obj);
-    return (obj->TV <= 0 || elapsed>obj->TV)? obj->TV : obj->TV-elapsed;
+    qClock_t RetValue = 0xFFFFFFFFul;
+    if(obj){
+        if( QSTIMER_ARMED == qSTimerStatus(obj) ) {
+            RetValue = obj->TV - qSTimerElapsed(obj);
+        }
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*void qSTimerDisarm(qSTimer_t *obj)
@@ -1190,8 +1203,8 @@ Parameters:
 */
 void qSTimerDisarm(qSTimer_t *obj){
     if(NULL==obj) return;
-    qConstField_Set(qBool_t, obj->SR) /*obj->SR*/ = qFalse;
-    qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = 0ul;
+    qConstField_Set(qClock_t, obj->TV) = QSTIMER_DISARM_VALUE;
+    qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = QSTIMER_DISARM_VALUE;
 }
 /*============================================================================*/
 /*qBool_t qSTimerStatus(qSTimer_t *obj)
@@ -1208,21 +1221,7 @@ Return value:
 */
 qBool_t qSTimerStatus(const qSTimer_t *obj){
     if(NULL==obj) return qFalse;
-    return obj->SR;
-}
-/*============================================================================*/
-/*void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time)
-
-Change the time value for the STimer
-
-Parameters:
-
-    - obj : A pointer to the STimer object.  
-    - Time : The new expiration time(Must be specified in seconds).
-*/
-void qSTimerChangeTime(qSTimer_t *obj, const qTime_t Time){
-    if(NULL==obj) return;
-    qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time);
+    return obj->TV != QSTIMER_DISARM_VALUE;
 }
 #ifdef Q_MEMORY_MANAGER
 /*============================================================================*/

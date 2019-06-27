@@ -77,6 +77,7 @@ qSM_Status_t secondstate(qSMData_t fsm){
     }
     
     if (qSTimerExpired(&tmr)){
+        qTraceMessage("timer of 2.5s expired");
         fsm->NextState = firststate;
     }
     return qSM_EXIT_SUCCESS;
@@ -129,12 +130,22 @@ void TaskSameCallback(qEvent_t e){
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
     static qSTimer_t t = QSTIMER_INITIALIZER;
-    
-    return;
+    static qSTimer_t xd = QSTIMER_INITIALIZER;
     qEdgeCheck_Update(&INPUTS);
-    qTraceVariable( button2.Status , qBool );
-    if(qSTimerFreeRun(&t, 0.5)){
+
+    if(e->FirstCall){
+        qSTimerSet(&t, 10.0);
+    }
+
+    if(qSTimerExpired(&t)){
         PORTA = ~PORTA;
+        qTraceMessage("PORTA toggle");
+        qSTimerDisarm(&t);
+    }
+
+    if(qSTimerFreeRun(&xd, 0.5)){
+        qTraceUnsignedDecimal( qSTimerElapsed(&t) );
+        qTraceUnsignedDecimal( qSTimerRemaining(&t) );
     }
 }
 /*============================================================================*/
@@ -176,6 +187,7 @@ int main(int argc, char** argv) {
     qQueueSendToFront(&somequeue, &x[3]);
 
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
+    /*
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
@@ -185,7 +197,7 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-
+*/
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }
