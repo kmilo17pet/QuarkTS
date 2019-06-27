@@ -187,7 +187,6 @@ int main(int argc, char** argv) {
     qQueueSendToFront(&somequeue, &x[3]);
 
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
-    /*
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
@@ -197,7 +196,6 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-*/
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }

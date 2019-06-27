@@ -2839,9 +2839,6 @@ static qATResponse_t _qATParser_ParseInput(qATParser_t *Parser, volatile char *I
             Parser->Output[0] = '\0';
             if( _qATParser_PreProcessing(Command, InputBuffer, &params) ){ /*if success, proceed with the user pos-processing*/
                 RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
-                if( NULL != Parser->Output ){  /*print the user Output if available*/
-                  	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
-                }
             }
             break;
         }
@@ -2935,6 +2932,9 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         }
         else if( QAT_NOTFOUND != (ParserRetVal = _qATParser_ParseInput(Parser, Input->Buffer)) ){
             OutputRetval = ParserRetVal;
+            if( NULL != Parser->Output ){  /*print the user Output if available*/
+              	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
+            }
         }
         else if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){
             OutputRetval = QAT_DEVID;
