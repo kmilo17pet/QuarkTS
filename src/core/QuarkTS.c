@@ -2,7 +2,7 @@
  * *******************************************************************************
  * @file QuarkTS.c
  * @author J.Camilo Gomez C.
- * @version 4.8.3
+ * @version 4.9.1
  * @date May 09, 2019
  * @brief A Non-Preemptive RTOS for small embedded systems
  * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
@@ -1223,90 +1223,6 @@ qBool_t qSTimerStatus(const qSTimer_t *obj){
     if(NULL==obj) return qFalse;
     return obj->TV != QSTIMER_DISARM_VALUE;
 }
-#ifdef Q_MEMORY_MANAGER
-/*============================================================================*/
-/*void* qMemoryAlloc(qMemoryPool_t *obj, uint16_t size)
- 
-Allocate the required memory from the specified memory heap. The allocation 
-is rounded to the memory block size.
- 
-Parameters:
-
-    - obj : a pointer to the memory pool object
-    - size : amount of memory to allocate
- 
-Return value:
-
-    A pointer to allocated memory or null if there is not available memory
- */
-void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size){
-    uint8_t i, j, k, c;
-    uint16_t sum;		
-    uint8_t *offset = obj->Blocks;
-    if(NULL==obj) return NULL;			
-    j = 0;	
-    qEnterCritical();
-    while( j < obj->NumberOfBlocks ) {	/*loop until we find a free memory block*/		
-        sum  = 0;
-        i = j;
-        while( i < obj->NumberOfBlocks ) {		
-            if( *(obj->BlockDescriptors+i) ) {
-                offset += (*(obj->BlockDescriptors+i)) * (obj->BlockSize);
-                i += *(obj->BlockDescriptors+i);				 
-                continue;
-            }
-            break;				
-        }
-        
-        j = i;	/*<j> should be the index of the first free mem block and <offset> is the offset in the buffer*/
-        for(k = 1, i = j; i < obj->NumberOfBlocks; k++, i++) {
-            if( *(obj->BlockDescriptors+i) ) {	 /*We haven't found the required amount of mem blocks. Continue with the next free memory block.*/		
-                j = (uint8_t)(i + *(obj->BlockDescriptors+i)); /*Increment j for the number of used memory blocks*/
-                offset = obj->Blocks;
-                offset += j * (obj->BlockSize);
-                break;
-            }
-            sum += obj->BlockSize;
-            if( sum >= size ) { /*memory area found*/
-                *(obj->BlockDescriptors+j) = k; /*leave the record*/
-                for(c=0;c<size;c++) offset[i] = 0x00u; /*zero-initialized memory block*/ 
-                qExitCritical();
-                return (void*)offset; /*return the pointer to the free memory block*/
-            }						
-        }
-        if( i == obj->NumberOfBlocks ) break;
-    }
-    qExitCritical();
-    return NULL; /*memory not available*/
-}
-/*============================================================================*/
-/*void* qMemoryFree(qMemoryPool_t *obj, void* pmem)
- 
-Free the previously allocated memory by returning it to the specified memory pool.
- 
-Parameters:
-
-    - obj : a pointer to the memory pool object
-    - pmem : pointer to the previously allocated memory
- 
-Note: The memory must be returned to the pool from where was allocated
- */
-void qMemoryFree(qMemoryPool_t *obj, void* pmem){
-    uint8_t i, *p;
-    if(NULL==obj || NULL==pmem) return;
-    qEnterCritical();	
-    p = obj->Blocks;
-    for(i = 0; i < obj->NumberOfBlocks; i++) {
-        if( p == pmem ){
-            *(obj->BlockDescriptors + i) = 0;
-            break;
-	    }
-	    p += obj->BlockSize;
-    }
-    qExitCritical();
-}
-/*============================================================================*/
-#endif
 
 #ifdef Q_QUEUES
 /*============================================================================*/
@@ -1732,7 +1648,7 @@ double qAtoF(const char *s){
     double rez = 0, fact ;
     int point_seen;
     char c;
-    #ifdef QATOF_FULL
+    #ifdef Q_ATOF_FULL
         int power2, powersign = 1;
         double power, efactor;
     #endif
@@ -1753,7 +1669,7 @@ double qAtoF(const char *s){
         else break;
     }
     
-    #ifdef QATOF_FULL
+    #ifdef Q_ATOF_FULL
         if('e'  == *s || 'E' == *s) s++; 
         else return rez * fact;
         
@@ -3121,6 +3037,268 @@ uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n){
 	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
+#ifdef Q_MEMORY_MANAGER
+    static uint8_t DefaultHeap[Q_DEFAULT_HEAP_SIZE] = {0};
+    static qMemoryPool_t DefaultMemPool = {NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE};
+    static qMemoryPool_t *MemPool = &DefaultMemPool;
+
+    static void qHeapInit( void );
+    static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert );
+
+    static const size_t ByteAlignmentMask   = (Q_BYTE_ALIGNMENT-1);
+    static const size_t HeapStructSize	= ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) (Q_BYTE_ALIGNMENT-1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) (Q_BYTE_ALIGNMENT-1) ) );
+    static size_t MinBlockSize;
+
+/*============================================================================*/
+/*qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size)
+
+Initializes a memory pool instance.
+This function should be called once before any heap memory request.
+
+Parameters:
+
+    - mPool : A pointer to the memory pool instance
+    - Area : A pointer to a memory block (uint8_t) statically allocated 
+            to act as Heap of the memory well. The size of this block
+            should match the <size> argument.
+    - size: The size of the memory block pointed by <Area>. 
+
+Return value:
+
+    qTrue on success, otherwise returns qFalse
+
+*/
+qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size){
+    if(NULL == mPool) return qFalse;
+    mPool->Heap = Area;
+    mPool->HeapSize = size;
+    mPool->End = NULL;
+    return qTrue;
+}
+/*============================================================================*/
+/*void qMemoryPool_Select(qMemoryPool_t *mPool)
+
+Select the memory pool to perform heap memory requests with qMalloc and qFree.
+
+Parameters:
+
+    - mPool : A pointer to the memory pool instance
+
+*/
+void qMemoryPool_Select(qMemoryPool_t *mPool){
+    MemPool = mPool;
+}
+/*============================================================================*/
+/*void qFree(void *ptr)
+
+Deallocates the space previously allocated by qMalloc(). Deallocation will 
+be performedin the selected memory pool.
+If ptr is a null pointer, the function does nothing.
+The behavior is undefined if selected memory pool has not been initialized.
+The behavior is undefined if the value of ptr does not equal a value returned 
+earlier by qMalloc.
+The behavior is undefined if the memory area referred to by ptr has already been
+deallocated, that is, qFree() has already been called with ptr as the argument 
+and no calls to qMalloc() resulted in a pointer equal to ptr afterwards.
+The behavior is undefined if after qFree() returns, an access is made through 
+the pointer ptr.
+
+Note: qFree its NOT interrupt-safe. 
+
+Parameters:
+
+    - ptr : Pointer to the memory to deallocate
+
+*/
+void qFree(void *ptr){
+    uint8_t *pToFree;
+    qMemBlockConnect_t *Connect;
+    
+    if(NULL == MemPool){
+        MemPool = &DefaultMemPool;
+    }
+    pToFree = (uint8_t*) ptr;
+    
+    if( NULL != ptr){
+        pToFree -= HeapStructSize;
+        Connect = (void*)pToFree;
+        if( 0 != (Connect->BlockSize & MemPool->BlockAllocatedBit) ){
+            Connect->BlockSize &= ~MemPool->BlockAllocatedBit;
+            MemPool->FreeBytesRemaining += Connect->BlockSize;
+            qInsertBlockIntoFreeList( Connect );
+        }
+    }
+}
+/*============================================================================*/
+static void qHeapInit( void ){
+    qMemBlockConnect_t *FirstFreeBlock;
+    uint8_t *Aligned;
+    qAddress_t Address;
+    size_t TotalHeapSize;
+    
+    if(NULL == MemPool){
+        MemPool = &DefaultMemPool;
+    }
+    
+    if(MemPool == &DefaultMemPool){
+        qMemoryPool_Init(MemPool, DefaultHeap, Q_DEFAULT_HEAP_SIZE);
+    }
+    TotalHeapSize = MemPool->HeapSize;
+    MinBlockSize = (size_t)( HeapStructSize * 2 ); 
+    MemPool->Start.BlockSize = 0;
+    MemPool->Start.Next = NULL;
+    MemPool->FreeBytesRemaining = 0;
+    
+    Address = (qAddress_t)MemPool->Heap;
+    if( ( Address & ByteAlignmentMask ) != 0 ){
+	Address += ( Q_BYTE_ALIGNMENT - 1 );
+	Address &= ~ByteAlignmentMask;
+	TotalHeapSize -= Address - (qAddress_t)MemPool->Heap;
+    }
+    Aligned = (uint8_t*) Address;
+    
+    MemPool->Start.Next = ( void * ) Aligned;
+    MemPool->Start.BlockSize = (size_t)0;
+    Address = ( (qAddress_t) Aligned ) + TotalHeapSize;
+    Address -= HeapStructSize;
+    Address &= ~ByteAlignmentMask;
+    
+    MemPool->End = (void*) Address;
+    MemPool->End->Next = NULL;
+    MemPool->End->BlockSize = 0;
+    FirstFreeBlock = (void*) Aligned;
+    FirstFreeBlock->BlockSize = Address - (qAddress_t)FirstFreeBlock;
+    FirstFreeBlock->Next = MemPool->End;
+
+    MemPool->FreeBytesRemaining = FirstFreeBlock->BlockSize;
+    MemPool->BlockAllocatedBit = ( (size_t)1 ) << ( (sizeof(size_t)*8) - 1 );
+}
+/*============================================================================*/
+static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
+    qMemBlockConnect_t *Iterator;
+    uint8_t *puc;
+    
+    if(NULL == MemPool){
+        MemPool = &DefaultMemPool;
+    }
+    
+    for( Iterator = &MemPool->Start; Iterator->Next < BlockToInsert; Iterator = Iterator->Next ){}
+    
+    puc = ( uint8_t * ) Iterator;
+    if( ( puc + Iterator->BlockSize ) == ( uint8_t * ) BlockToInsert ){
+	Iterator->BlockSize += BlockToInsert->BlockSize;
+	BlockToInsert = Iterator;
+    }
+	
+    puc = ( uint8_t * ) BlockToInsert;
+    if( ( puc + BlockToInsert->BlockSize ) == ( uint8_t * ) Iterator->Next ){
+        if( Iterator->Next != MemPool->End ){
+            BlockToInsert->BlockSize += Iterator->Next->BlockSize;
+            BlockToInsert->Next = Iterator->Next->Next;
+        }
+        else{
+            BlockToInsert->Next = MemPool->End;
+        }
+    }
+    else{
+        BlockToInsert->Next = Iterator->Next;
+    }
+
+    if( Iterator != BlockToInsert ){
+	Iterator->Next = BlockToInsert;
+    }
+}
+/*============================================================================*/
+/*void* qMalloc( size_t size )
+
+Allocate a block of memory that is size bytes large. Allocation will be performed
+in the selected memory pool. If the requested memory can be allocated a pointer 
+is returned to the beginning of the memory block.
+
+The behavior is undefined if selected memory pool has not been initialized.
+
+Note: qFree its NOT interrupt-safe. 
+
+Parameters:
+
+    - size : Size of the memory block in bytes.
+
+Return value:
+
+    If the request is successful then a pointer to the memory block is returned.
+    If the function failed to allocate the requested block of memory, a NULL
+    pointer is returned.
+*/
+void* qMalloc( size_t size ){
+    qMemBlockConnect_t *Block, *PreviousBlock, *NewBlockLink;
+    void *Allocated = NULL;
+    
+    if(NULL == MemPool){
+        MemPool = &DefaultMemPool;
+    }
+    
+    if( NULL == MemPool->End ){
+	    qHeapInit();
+    }
+    if( ( size & MemPool->BlockAllocatedBit ) == 0 ){
+	if( size > 0 ){
+            size += HeapStructSize;
+            if( ( size & ByteAlignmentMask ) != 0x00 ){
+		size += ( Q_BYTE_ALIGNMENT - ( size & ByteAlignmentMask ) );
+            }
+	}
+        if( ( size > 0 ) && ( size <= MemPool->FreeBytesRemaining ) ){
+            PreviousBlock = &MemPool->Start;
+            Block = MemPool->Start.Next;
+            while( ( Block->BlockSize < size ) && ( Block->Next != NULL ) ){
+                PreviousBlock = Block;
+                Block = Block->Next;
+            }
+            if( Block != MemPool->End ){
+                Allocated = ( void * ) ( ( ( uint8_t * ) PreviousBlock->Next ) + HeapStructSize );
+                PreviousBlock->Next = Block->Next;
+                if( ( Block->BlockSize - size ) > MinBlockSize ){
+                    NewBlockLink = ( void * ) ( ( ( uint8_t * ) Block ) + size );
+                    NewBlockLink->BlockSize = Block->BlockSize - size;
+                    Block->BlockSize = size;
+                    qInsertBlockIntoFreeList( ( NewBlockLink ) );
+                }
+
+                MemPool->FreeBytesRemaining -= Block->BlockSize;
+                Block->BlockSize |= MemPool->BlockAllocatedBit;
+                Block->Next = NULL;
+            }
+        }
+    }
+    return Allocated;
+}
+/*============================================================================*/
+/*size_t qHeapGetFreeSize(void)
+
+Returns the total amount of heap space that remains unallocated for the selected
+memory pool.
+
+
+Return value:
+
+    The size of the unallocated heap*
+
+*/
+size_t qHeapGetFreeSize(void){
+    size_t RetValue;
+    
+    if(NULL == MemPool){
+        MemPool = &DefaultMemPool;
+    }
+    RetValue = MemPool->HeapSize;
+    
+    if( MemPool->End ){
+       RetValue =  MemPool->FreeBytesRemaining;
+    }
+    return RetValue;
+}
+/*============================================================================*/
+#endif /*Q_MEMORY_MANAGER */
 
 
 #endif /*Q_ATCOMMAND_PARSER*/

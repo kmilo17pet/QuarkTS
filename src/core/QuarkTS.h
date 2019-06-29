@@ -2,7 +2,7 @@
  * *******************************************************************************
  * @file QuarkTS.h
  * @author J.Camilo Gomez C.
- * @version 4.8.3
+ * @version 4.9.1
  * @date May 09, 2019
  * @brief A Non-Preemptive RTOS for small embedded systems
  * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
@@ -22,6 +22,8 @@ extern "C" {
 
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
+    #define Q_BYTE_ALIGNMENT        8          /*default for 32bit cores*/
+    #define Q_DEFAULT_HEAP_SIZE     2048      /*2Kb*/    
     #define Q_QUEUES                /*remove this line if you will never use the qQueues*/
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue notification events*/
     #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
@@ -32,7 +34,7 @@ extern "C" {
     #define Q_TASK_COUNT_CYCLES     /*remove this line if you will never need the task cycles*/
 
     #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
-    #undef QATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
+    #undef Q_ATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
     /*================================================================================================================================*/   
 
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
@@ -67,7 +69,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION    "4.8.3"
+    #define QUARKTS_VERSION    "4.9.1"
     #define QUARKTS_CAPTION     "QuarkTS " QUARKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -889,81 +891,35 @@ Parameters:
         qBool_t qSTimerStatus(const qSTimer_t *obj);
         #define QSTIMER_INITIALIZER     {0ul, 0ul}
      
-        
-#ifdef Q_MEMORY_MANAGER
-/* This structure is the head of a memory pool. */
-typedef struct {
-    uint8_t *BlockDescriptors;
-    uint8_t *Blocks;
-    qSize_t BlockSize;	
-    uint8_t NumberOfBlocks;
-}qMemoryPool_t;        
-        
-typedef enum {
-    qMB_4B = 4, qMB_8B = 8, qMB_16B = 16, qMB_32B = 32, qMB_64B = 64, qMB_128B = 128,
-    qMB_256B = 256, qMB_512B = 512, qMB_1024B = 1024, qMB_2048B = 2048, qMB_4096B = 4096, qMB_8192B = 8192 
-}qMEM_size_t;
+        typedef volatile char qISR_Byte_t;
+        typedef volatile struct{
+            qISR_Byte_t *pData;
+            qBool_t (*AcceptCheck)(const char);
+            char (*PreChar)(const char);    
+            volatile uint16_t index;
+            uint16_t MaxIndex;
+            volatile qBool_t ReadyFlag;
+            char EndByte;
+        }qISR_ByteBuffer_t;
 
+        #ifdef Q_TASK_DEV_TEST
+        void qSchedulePrintChain(void);
+        #endif
 
+        typedef struct{
+            volatile uint16_t head;
+            volatile uint16_t tail;
+            qSize_t length;
+            volatile uint8_t *buffer;
+        }qBSBuffer_t;
 
-/*qMemoryHeapCreate(NAME, N, ALLOC_SIZE)
-
-This macro creates and initialises a memory heap pool. The parameter alloc size
-should be of type qMEM_size_t.
-
-Parameters:
-
-    - NAME : Name of the memory heap pool 
- 
-    - N : Number of memory blocks
- 
-    - ALLOC_SIZE: Size of each memory block
-*/ 
-#define qMemoryHeapCreate(NAME, N, ALLOC_SIZE)	uint32_t qMEM_AREA_##NAME[(N*ALLOC_SIZE)>>2]={0}; \
-						uint8_t qMEM_BlockDescriptors_##NAME[N]={0}; \
-						qMemoryPool_t NAME; \
-                                                NAME.BlockSize = ALLOC_SIZE; \
-                                                NAME.NumberOfBlocks =  N; \
-                                                NAME.BlockDescriptors = &qMEM_BlockDescriptors_##NAME[0]; \
-                                                NAME.Blocks = (uint8_t*)&qMEM_AREA_##NAME[0] \
-                                                
-
-
-    void* qMemoryAlloc(qMemoryPool_t *obj, const qSize_t size);
-    void qMemoryFree(qMemoryPool_t *obj, void* pmem);
-#endif
-    
-
-
-typedef volatile char qISR_Byte_t;
-typedef volatile struct{
-    qISR_Byte_t *pData;
-    qBool_t (*AcceptCheck)(const char);
-    char (*PreChar)(const char);    
-    volatile uint16_t index;
-    uint16_t MaxIndex;
-    volatile qBool_t ReadyFlag;
-    char EndByte;
-}qISR_ByteBuffer_t;
-
-#ifdef Q_TASK_DEV_TEST
-void qSchedulePrintChain(void);
-#endif
-
-typedef struct{
-    volatile uint16_t head;
-    volatile uint16_t tail;
-    qSize_t length;
-    volatile uint8_t *buffer;
-}qBSBuffer_t;
-
-typedef void (*qPutChar_t)(void*, const char);
-typedef char (*qGetChar_t)(void*);
-void qSwapBytes(void *data, const qSize_t n);
-qBool_t qCheckEndianness(void);
-void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP);
-void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
-void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
+        typedef void (*qPutChar_t)(void*, const char);
+        typedef char (*qGetChar_t)(void*);
+        void qSwapBytes(void *data, const qSize_t n);
+        qBool_t qCheckEndianness(void);
+        void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP);
+        void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
+        void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
 
 /*qPrintString(fcn, pStorage, s)
  
@@ -1358,6 +1314,48 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     int qATParser_GetArgInt(qATParser_PreCmd_t *param, int8_t n);
     float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n);
     uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n);
+
+    #ifdef Q_MEMORY_MANAGER       
+        #ifndef Q_BYTE_ALIGNMENT    
+            #define Q_BYTE_ALIGNMENT    8
+        #endif
+
+        #ifdef __GNUC__
+            #ifdef __x86_64__
+                typedef uint64_t qAddress_t; 
+            #else
+                typedef uint32_t qAddress_t;
+            #endif
+        #else
+            typedef uint32_t qAddress_t;
+        #endif
+
+        /* Linked list structure to connect the free blocks in order of their memory address. */
+        typedef struct qMemBlockConnect_s{
+            struct qMemBlockConnect_s *Next; /*used to point the next free block*/
+            size_t BlockSize;	
+        }qMemBlockConnect_t;
+
+        typedef struct{
+            qMemBlockConnect_t *End;
+            uint8_t *Heap;
+            size_t HeapSize;
+            size_t FreeBytesRemaining;
+            size_t BlockAllocatedBit;
+            qMemBlockConnect_t Start;
+        }qMemoryPool_t;
+        
+        void* qMalloc(size_t size);
+        void qFree(void *pv);
+        size_t qHeapGetFreeSize(void);
+
+        void qMemoryPool_Select(qMemoryPool_t *mPool);
+        qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size);
+
+
+    #endif
+
+
 
 #endif
 

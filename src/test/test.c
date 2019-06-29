@@ -176,9 +176,12 @@ int main(int argc, char** argv) {
     qEdgeCheck_InsertNode(&INPUTS, &sensor2, &PORTA, 3);
     
     pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
-        
-    qMemoryHeapCreate(mtxheap, 16, qMB_4B);
-    memtest = qMemoryAlloc(&mtxheap, 16*sizeof(int));
+
+    qTraceVar( qHeapGetFreeSize() , Decimal);    
+    memtest = qMalloc(16*sizeof(int));
+    qTraceVar( qHeapGetFreeSize() , Decimal);
+    qFree(memtest);
+    qTraceVar( qHeapGetFreeSize() , Decimal);
 
     qQueueCreate(&somequeue, memtest, sizeof(int), 8);
     qQueueSendToBack(&somequeue, &x[0]);
