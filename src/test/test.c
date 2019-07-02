@@ -150,11 +150,19 @@ void IdleTaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
+    int x,y;
+
     qCoroutineBegin{
         qCoroutineDelay(2.0);
         puts("hello  1");
         qCoroutineDelay(2.0);
         puts("hello 2 ");
+
+        qCoroutineDo{
+            x = e->Trigger == byAsyncEvent;
+            y = e->Trigger == byTimeElapsed;
+        }qCoroutineUntil( x && y );
+
         qTaskQueueNotification(&Task1, "notification 1");
         qTaskQueueNotification(&Task1, "notification 2");
         qTaskSendNotification(&Task1, "notification 3");

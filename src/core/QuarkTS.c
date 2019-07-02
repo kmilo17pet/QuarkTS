@@ -2480,7 +2480,6 @@ static qSize_t qATParser_NumOfArgs(const char *str);
 static char* _qATParser_FixInput(char *s);
 static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval);
 static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params);
-static qATResponse_t _qATParser_ParseInput(qATParser_t *Parser, volatile char *InputBuffer);
 /*============================================================================*/
 static void _qATPutc_Wrapper(const char c){
 	ATOutCharFcn(NULL, c);
@@ -2715,8 +2714,23 @@ Return value:
 */
 /*============================================================================*/
 qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd){
-    if( NULL == Parser || NULL == cmd ) return QAT_NOTFOUND;
-    return _qATParser_ParseInput(Parser, (volatile char *)cmd);
+    qATResponse_t RetValue = QAT_NOTFOUND;
+    qATCommand_t *Command = NULL;
+    qATParser_PreCmd_t params;
+
+    if( NULL == Parser && NULL != cmd ){
+        for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
+            if( strstr( (const char*)cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
+                RetValue = qAT_NOTALLOWED;  
+                Parser->Output[0] = '\0'; /*flush the output*/
+                if( _qATParser_PreProcessing(Command, (volatile char*)cmd, &params) ){ /*if success, proceed with the user pos-processing*/
+                    RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
+                }
+                break;
+            }
+        }
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority)
@@ -2742,24 +2756,6 @@ qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority
 /*============================================================================*/
 static void qATParser_TaskCallback(qEvent_t e){ /*wrapper for the task callback */
     qATParser_Run( (qATParser_t*)e->TaskData );
-}
-/*============================================================================*/
-static qATResponse_t _qATParser_ParseInput(qATParser_t *Parser, volatile char *InputBuffer){
-    qATResponse_t RetValue = QAT_NOTFOUND;
-    qATCommand_t *Command = NULL;
-    qATParser_PreCmd_t params;
-
-    for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
-        if( strstr( (const char*)InputBuffer, Command->Text ) == InputBuffer ){ /*check if the input match the subscribed command starting from the beginning*/
-            RetValue = qAT_NOTALLOWED;  
-            Parser->Output[0] = '\0';
-            if( _qATParser_PreProcessing(Command, InputBuffer, &params) ){ /*if success, proceed with the user pos-processing*/
-                RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
-            }
-            break;
-        }
-    }
-    return RetValue;
 }
 /*============================================================================*/
 static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params){
@@ -2820,6 +2816,15 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
     return qTrue;
 }
 /*============================================================================*/
+void qATCommandParser_FlushInput(qATParser_t *Parser){
+	qATParserInput_t *Input;
+
+    Input = &Parser->Input;
+    Input->Ready = qFalse;
+    Input->index = 0;
+    Input->Buffer[0] = 0x00;
+}
+/*============================================================================*/
 /*qBool_t qATCommandParser_Run(qATParser_t *Parser)
  
 Run the AT Command Parser when the input is ready.
@@ -2846,7 +2851,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
         if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
             OutputRetval = QAT_OK;
         }
-        else if( QAT_NOTFOUND != (ParserRetVal = _qATParser_ParseInput(Parser, Input->Buffer)) ){
+        else if( QAT_NOTFOUND != (ParserRetVal = qATParser_Exec(Parser, (const char*)Input->Buffer)) ){
             OutputRetval = ParserRetVal;
             if( NULL != Parser->Output ){  /*print the user Output if available*/
               	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
@@ -2859,10 +2864,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
             OutputRetval = QAT_NOTFOUND;
         }
         _qATParser_HandleCommandResponse( Parser, OutputRetval );
-        /*clean up the input*/
-		Input->Ready = qFalse;
-        Input->index = 0;
-        Input->Buffer[0] = 0x00;
+        qATCommandParser_FlushInput( Parser ); /*clean up the input*/
         return qTrue;
     }
     return qFalse;
@@ -3059,7 +3061,7 @@ Parameters:
 
     - mPool : A pointer to the memory pool instance
     - Area : A pointer to a memory block (uint8_t) statically allocated 
-            to act as Heap of the memory well. The size of this block
+            to act as Heap of the memory pool. The size of this block
             should match the <size> argument.
     - size: The size of the memory block pointed by <Area>. 
 
@@ -3092,7 +3094,7 @@ void qMemoryPool_Select(qMemoryPool_t *mPool){
 /*void qFree(void *ptr)
 
 Deallocates the space previously allocated by qMalloc(). Deallocation will 
-be performedin the selected memory pool.
+be performed in the selected memory pool.
 If ptr is a null pointer, the function does nothing.
 The behavior is undefined if selected memory pool has not been initialized.
 The behavior is undefined if the value of ptr does not equal a value returned 
@@ -3186,8 +3188,8 @@ static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
     
     puc = ( uint8_t * ) Iterator;
     if( ( puc + Iterator->BlockSize ) == ( uint8_t * ) BlockToInsert ){
-	Iterator->BlockSize += BlockToInsert->BlockSize;
-	BlockToInsert = Iterator;
+	    Iterator->BlockSize += BlockToInsert->BlockSize;
+	    BlockToInsert = Iterator;
     }
 	
     puc = ( uint8_t * ) BlockToInsert;
@@ -3244,7 +3246,7 @@ void* qMalloc( size_t size ){
 	if( size > 0 ){
             size += HeapStructSize;
             if( ( size & ByteAlignmentMask ) != 0x00 ){
-		size += ( Q_BYTE_ALIGNMENT - ( size & ByteAlignmentMask ) );
+		        size += ( Q_BYTE_ALIGNMENT - ( size & ByteAlignmentMask ) );
             }
 	}
         if( ( size > 0 ) && ( size <= MemPool->FreeBytesRemaining ) ){
@@ -3255,10 +3257,10 @@ void* qMalloc( size_t size ){
                 Block = Block->Next;
             }
             if( Block != MemPool->End ){
-                Allocated = ( void * ) ( ( ( uint8_t * ) PreviousBlock->Next ) + HeapStructSize );
+                Allocated = (void*) ( ( (uint8_t*)PreviousBlock->Next ) + HeapStructSize );
                 PreviousBlock->Next = Block->Next;
                 if( ( Block->BlockSize - size ) > MinBlockSize ){
-                    NewBlockLink = ( void * ) ( ( ( uint8_t * ) Block ) + size );
+                    NewBlockLink = (void*) ( ( (uint8_t*)Block ) + size );
                     NewBlockLink->BlockSize = Block->BlockSize - size;
                     Block->BlockSize = size;
                     qInsertBlockIntoFreeList( ( NewBlockLink ) );

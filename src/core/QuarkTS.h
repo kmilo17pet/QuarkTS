@@ -706,11 +706,18 @@ Parameters:
         #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
         #define __qCRRestart                        __qCRCodeStartBlock{  __qSetPC(qCR_PCInitVal)      ; __qTaskYield }                                            __qCRCodeEndBlock
         #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
-        #define __qCR_wu_preAssert(_pre_ , _cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; _pre_ ;  __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
+        
+        #define __qCR_do                            __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield;
+        #define __qCR_until( _cond_ )               __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock           
+        
+        #define __qCR_wu_preAssert(_pre_ , _cond_)  __qCR_do{ _pre_; }__qCR_until(_cond_) \
+
+
         #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  _pos_=__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_(_pos_);}                                  __qCRCodeEndBlock
         #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
         #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( _qScheduler_TimeDeadlineCheck(_qCRTaskState_.crdelay, qTime2Clock(_time_))  ) __qTaskYield } __qCRCodeEndBlock
         #define __qCR_PositionReset(_pos_)          _pos_ = qCR_PCInitVal
+
 /*qCoroutineBegin{
   
 }qCoroutineEnd;
@@ -780,21 +787,24 @@ Action sequence : [Save progress]
         #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
         #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
 
-/*qCoroutineDoWaitUntil(_JOB_ , _CONDITION_) 
-qCRDoWaitUntil(_JOB_ , _CONDITION_)
+/*qCoroutineDo 
+qCRDo
 
-Yields until the logical condition being true executing a 
-a job before the condition check
-
-Action sequence : [Save progress]
-                  Run [Job]  
-                  IF (Condition == False){
-                     [Yield]      
-                  }  
-                   
+This statement tart a blocking Job segment. 
+Must be used together with a matching qCoroutineDo statement.   
 */    
-        #define qCoroutineDoWaitUntil( _Job_ , _condition_ )    __qCR_wu_preAssert(_Job_ , _condition_)
-        #define qCRDoWaitUntil( _Job_ , _condition_ )          __qCR_wu_preAssert(_Job_ , _condition_)
+        #define qCoroutineDo                        __qCR_do
+        #define qCRDo                               __qCR_do
+/*qCoroutineUntil( _condition_ )
+qCRUntil( _condition_ )
+
+This statement ends a qCoroutineDo statement for a blocking Job.   
+The conditiion determines if the blocking job ends (if condition is True)
+or continue yielding (if false)
+*/         
+        #define qCoroutineUntil( _condition_ )           __qCR_until( _condition_ )
+        #define qCRUntil( _condition_ )                  __qCR_until( _condition_ )
+
 /*qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_) 
 qCRSemInit(_qCRSemaphore_t_, _Value_)
 
@@ -815,7 +825,7 @@ qCRSemWait(_qCRSemaphore_t_)
 
 Carries out the "wait" operation on the semaphore. The wait operation causes 
 the Co-routine to block while the counter is zero. When the counter reaches a 
-value larger than zero, the protothread will continue.
+value larger than zero, the Co-routine  will continue.
 
 Parameters:
 
@@ -1307,6 +1317,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
     qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd);
     qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
+    void qATCommandParser_FlushInput(qATParser_t *Parser);
     qBool_t qATParser_Run(qATParser_t *Parser);
 
     char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out);
@@ -1337,9 +1348,9 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
         }qMemBlockConnect_t;
 
         typedef struct{
-            qMemBlockConnect_t *End;
+            qMemBlockConnect_t *End; 
             uint8_t *Heap;
-            size_t HeapSize;
+            size_t HeapSize; 
             size_t FreeBytesRemaining;
             size_t BlockAllocatedBit;
             qMemBlockConnect_t Start;
