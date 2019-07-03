@@ -924,6 +924,7 @@ Parameters:
         }qBSBuffer_t;
 
         typedef void (*qPutChar_t)(void*, const char);
+        typedef void (*qPutString_t)(void*, const char*);
         typedef char (*qGetChar_t)(void*);
         void qSwapBytes(void *data, const qSize_t n);
         qBool_t qCheckEndianness(void);
@@ -971,8 +972,10 @@ Parameters:
     - fcn : The basic output byte function
 
 */ 
-#define qSetDebugFcn(fcn)   __qDebugOutputFcn = fcn
+#define qSetDebugFcn(fcn)           __qDebugOutputFcn = fcn
+#define qSetDebugStringFcn(fcn)     __qDebugOutputStringFcn = fcn 
 extern qPutChar_t __qDebugOutputFcn;
+extern qPutString_t __qDebugOutputStringFcn;
 
 # ifndef __QTRACE_FUNC
 #  if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */

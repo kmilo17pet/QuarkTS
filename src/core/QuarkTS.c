@@ -74,6 +74,7 @@ static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t
 
 static char qNibbleToX(uint8_t value);    
 qPutChar_t __qDebugOutputFcn = NULL;
+qPutString_t __qDebugOutputStringFcn = NULL;
 #ifdef Q_TRACE_VARIABLES
     char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
 #endif
@@ -2717,12 +2718,10 @@ qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd){
     qATResponse_t RetValue = QAT_NOTFOUND;
     qATCommand_t *Command = NULL;
     qATParser_PreCmd_t params;
-
-    if( NULL == Parser && NULL != cmd ){
+    if( Parser &&  cmd ){
         for( Command = (qATCommand_t*)Parser->First; NULL != Command; Command = Command->Next){ /*loop over the subscribed commands*/
-            if( strstr( (const char*)cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
-                RetValue = qAT_NOTALLOWED;  
-                Parser->Output[0] = '\0'; /*flush the output*/
+            if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
+            	RetValue = qAT_NOTALLOWED;
                 if( _qATParser_PreProcessing(Command, (volatile char*)cmd, &params) ){ /*if success, proceed with the user pos-processing*/
                     RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
                 }
@@ -2839,35 +2838,33 @@ Return value:
 
 */
 qBool_t qATParser_Run(qATParser_t *Parser){
-    qATResponse_t OutputRetval = QAT_NOTFOUND;
+    qATResponse_t OutputRetval = QAT_NORESPONSE;
     qATResponse_t ParserRetVal;
     qATParserInput_t *Input;
-    
-    if( NULL == Parser) return qFalse;
+    qBool_t RetValue = qFalse;
+    if( NULL != Parser){
+		Input =  &Parser->Input;
+		ATOutCharFcn = Parser->OutputFcn;
 
-    Input =  &Parser->Input;
-    ATOutCharFcn = Parser->OutputFcn;
-    if( Input->Ready ){
-        if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
-            OutputRetval = QAT_OK;
-        }
-        else if( QAT_NOTFOUND != (ParserRetVal = qATParser_Exec(Parser, (const char*)Input->Buffer)) ){
-            OutputRetval = ParserRetVal;
-            if( NULL != Parser->Output ){  /*print the user Output if available*/
-              	if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
-            }
-        }
-        else if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){
-            OutputRetval = QAT_DEVID;
-        }
-        else if( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH ){ 
-            OutputRetval = QAT_NOTFOUND;
-        }
-        _qATParser_HandleCommandResponse( Parser, OutputRetval );
-        qATCommandParser_FlushInput( Parser ); /*clean up the input*/
-        return qTrue;
+		if( Input->Ready ){ /*a new input has arrived*/
+			/*set the value for the response lookup table*/
+			if 		( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) )						OutputRetval = QAT_OK;			/*check if the input its the simple AT command*/
+			else if	( QAT_NOTFOUND != (ParserRetVal = qATParser_Exec(Parser, (const char*)Input->Buffer)) )	OutputRetval = ParserRetVal;	/*check if the input is one of the subscribed commands*/
+			else if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) )						OutputRetval = QAT_DEVID;		/*check if the input its an ID request using the ATID command*/
+			else if	( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH )							OutputRetval = QAT_NOTFOUND;	/*check if it is pertinent to show the error*/
+			else 																							OutputRetval = QAT_NORESPONSE;  /*nothing to do*/
+
+			if( NULL != Parser->Output ){ /*show the user output if available*/
+				if( Parser->Output[0] ) _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
+			}
+			_qATParser_HandleCommandResponse( Parser, OutputRetval ); /*print out the command output*/
+			/*flush buffers*/
+			qATCommandParser_FlushInput( Parser );
+			Parser->Output[0] = '\0';
+			RetValue = qTrue;
+		}
     }
-    return qFalse;
+    return RetValue;
 }
 /*============================================================================*/
 static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval){
