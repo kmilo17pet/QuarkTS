@@ -251,10 +251,9 @@ uint32_t qTaskGetCycles(const qTask_t *Task){
 
 Sends a simple notification generating an asynchronous event. 
 This method marks the task as 'qReady' for execution, therefore, the planner will launch the task 
-immediately according to the scheduling rules (even if task is disabled) and 
-setting the Trigger flag to "byNotificationSimple". Specific user-data can be passed 
-through, and will be available in the respective callback inside the <EventData> 
-field.
+according to the scheduling rules (even if task is disabled) and setting the Trigger flag to
+"byNotificationSimple". Specific user-data can be passed through, and will be available in the
+respective callback inside the <EventData> field.
 
 Parameters:
 
@@ -2379,7 +2378,7 @@ qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterS
 /*============================================================================*/
 /*qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber)
  
-Initialize an I/O Edge-Check instance 
+Insert an I/O Node to the Edge-Check instance.
 
 Parameters:
 
