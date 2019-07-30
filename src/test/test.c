@@ -150,6 +150,7 @@ void IdleTaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
+    qCoroutineSemaphore_t x;
     qCoroutineBegin{
         qCoroutineDelay(2.0);
         puts("hello  1");
@@ -165,8 +166,19 @@ void blinktaskCallback(qEvent_t e){
     }qCoroutineEnd;
 }
 /*============================================================================*/
-int main(int argc, char** argv) {      
+int main(int argc, char** argv) {   
+
+
+
+
     qSetDebugFcn(putcharfcn);
+
+    double xx;
+    xx = qAtoF("-03.14125");
+    qTraceVar( xx, Float) ;
+    return EXIT_SUCCESS;
+    
+    
     qQueue_t somequeue;
     void *memtest;
 

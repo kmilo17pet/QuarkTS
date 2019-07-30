@@ -1743,10 +1743,10 @@ uint32_t qXtoU32(const char *s) {
                 val = (uint32_t)((val << 4u) | (byte & 0xFu));  /*add the corresponding nibble to the output*/                
             }
             else if( isspace(byte) ){
-                continue; /*discard any white-space char. MISRA deviation*/
+                /*discard any white-space char*/
             } 
             else{
-                break;  /*not valid chars break the conversion. MISRA deviation*/       
+                break;  /*not valid chars break the conversion*/       
             }
         }
     }
@@ -1780,7 +1780,7 @@ double qAtoF(const char *s){
     char c;
     #ifdef Q_ATOF_FULL
         int power2, powersign = 1;
-        double power, efactor;
+        double power = 1.0, efactor;
     #endif
    
     for(; isspace(*s); s++); /*discard whitespaces*/
@@ -1792,42 +1792,36 @@ double qAtoF(const char *s){
     for (point_seen = 0; (c=*s); s++){
         if (c == '.'){
             point_seen = 1; 
-            continue; /*MISRA deviation*/
         }
-        if (isdigit(c)){
+        else if (isdigit(c)){
             if (point_seen){
                 fact *= 0.1;
             }
             rez = rez * 10.0 + (c-'0');
         }
         else{
-            break; /*MISRA deviation*/
+            break;
         }
     }
     
     #ifdef Q_ATOF_FULL
-        if('e'  == *s || 'E' == *s){
-            s++;
-        } 
-        else{
-            return rez * fact;
-        }
-        
-        if('-' == *s || '+' == *s){
-            powersign = ('-' == *s)? -1 : 1;
+    if('e'  == *s || 'E' == *s){
+	    s++;
+	    if('-' == *s || '+' == *s){
+		    powersign = ('-' == *s)? -1 : 1;
             s++;    
         } 
         for(power2 = 0; isdigit(*s); s++){
             power2 = power2 * 10 + (*s - '0');
         }
-        if( 0 == power2){
-            return  rez * fact;
-        }
-        efactor = (-1 == powersign)? 0.1 : 10.0;
-        for(power=1; 0 != power2; power2--){
-            power *= efactor;
-        }
-        return power * rez * fact;
+        if( power2 > 0){
+ 		    efactor = (-1 == powersign)? 0.1 : 10.0;
+        	for(power=1; 0 != power2; power2--){
+            	power *= efactor;
+            }	
+	    }
+    }    
+    return power * rez * fact;   
     #else
         return rez * fact;
     #endif      
@@ -1877,7 +1871,7 @@ int qAtoI(const char *s){
     
         for (; *s != 0; ++s){ /*iterate until null char is found*/
             if (*s < '0' || *s > '9'){
-                break; /*MISRA deviation*/
+                break; 
             }
             res = res * 10 + *s - '0'; /*if the char is digit, compute the resulting integer*/
         }
@@ -2617,14 +2611,15 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
                     else{
                         Node->Status = CurrentPinValue; /*if there is no change, let the state of the pin be equal to its own level*/
                     } 
-                    continue; /*jump to the next iter, and bypass the conditional below. MISRA deviation*/
                 }
-                
-                if( QEDGECHECK_UPDATE == Instance->State){ /*update state*/
+                else if( QEDGECHECK_UPDATE == Instance->State){ /*update state*/
                     if(Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
                         Node->Status = (CurrentPinValue)? qRISING : qFALLING; /*set the edge status*/
                     }      
                     Node->PreviousPinValue = CurrentPinValue; /*keep the previous level*/
+                }
+                else{
+                    /*nothing to do*/
                 }
             }       
         
@@ -2873,7 +2868,7 @@ static char* _qATParser_FixInput(char *s){
     for(i=0, j = 0; '\0' != s[i]; i++ ){
         if( '\r' == s[i] ){
             s[i] = '\0';
-            break; /*MISRA deviation */   
+            break;    
         } 
         if( isgraph( s[i]) ){
             s[j++] = tolower(s[i]);
@@ -2940,7 +2935,7 @@ qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd){
                 if( _qATParser_PreProcessing(Command, (volatile char*)cmd, &params) ){ /*if success, proceed with the user pos-processing*/
                     RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
                 }
-                break; /*MISRA deviation*/
+                break;
             }
         }
     }
@@ -3156,7 +3151,7 @@ char* qATParser_GetArgString(qATParser_PreCmd_t *param, int8_t n, char* out){
                 if(argc == n){
                     RetPtr = out;
                     if( argc>n || QAT_DEFAULT_ATSET_DELIM == param->StrData[i] ){
-                        break; /*MISRA deviation*/
+                        break;
                     } 
                     out[j++] = param->StrData[i];
                     out[j] = '\0';
@@ -3209,7 +3204,7 @@ char* qATParser_GetArgPtr(qATParser_PreCmd_t *param, int8_t n){
 		            if( QAT_DEFAULT_ATSET_DELIM == param->StrData[i] ){
 			            if(++argc >= n){
                             RetPtr = param->StrData+i+1;        
-                            break; /*MISRA deviation*/
+                            break;
                         }
 		            }
 	            }
