@@ -2,8 +2,8 @@
  * *******************************************************************************
  * @file QuarkTS.h
  * @author J.Camilo Gomez C.
- * @version 4.9.1
- * @date May 09, 2019
+ * @version 4.9.2
+ * @date July 30, 2019
  * @brief A Non-Preemptive RTOS for small embedded systems
  * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  * @license GNU Lesser General Public License (LGPL)
@@ -22,7 +22,7 @@ extern "C" {
 
     #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
-    #define Q_BYTE_ALIGNMENT        8          /*default for 32bit cores*/
+    #define Q_BYTE_ALIGNMENT        8         /*default for 32bit cores*/
     #define Q_DEFAULT_HEAP_SIZE     2048      /*2Kb*/    
     #define Q_QUEUES                /*remove this line if you will never use the qQueues*/
     #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue notification events*/
@@ -168,7 +168,7 @@ extern "C" {
         #define __qTaskInitState         _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */
         #define __qTaskCheckPCJump(_PC_) switch(_PC_){    
         #define __TagExitCCR             __qCRYield_ExitLabel
-        #define __qExit                  goto __TagExitCCR
+        #define __qExit                  goto __TagExitCCR /*MISRA deviation*/
         #define __qTaskYield             __qExit;
         #define __qCRDispose            __qSetPC(qCR_PCInitVal);} __TagExitCCR:/*__qTaskInitState;} __TagExitCCR:*/
         #define __qRestorator(_VAL_)     case (_qTaskPC_t)_VAL_:            
@@ -799,7 +799,7 @@ Must be used together with a matching qCoroutineDo statement.
 qCRUntil( _condition_ )
 
 This statement ends a qCoroutineDo statement for a blocking Job.   
-The conditiion determines if the blocking job ends (if condition is True)
+The condition determines if the blocking job ends (if condition is True)
 or continue yielding (if false)
 */         
         #define qCoroutineUntil( _condition_ )           __qCR_until( _condition_ )
@@ -973,7 +973,6 @@ Parameters:
 
 */ 
 #define qSetDebugFcn(fcn)           __qDebugOutputFcn = fcn
-#define qSetDebugStringFcn(fcn)     __qDebugOutputStringFcn = fcn 
 extern qPutChar_t __qDebugOutputFcn;
 extern qPutString_t __qDebugOutputStringFcn;
 
@@ -1227,6 +1226,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #define     QAT_DEFAULT_ERROR_RSP_STRING        "ERROR"
     #define     QAT_DEFAULT_OK_RSP_STRING           "OK"
     #define     QAT_DEFAULT_NOTFOUND_RSP_STRING     "UNKNOWN"
+    #define     QAT_DEAFULT_NOTALLOWED_RSP_STRING   ":NOT ALLOWED"
     #define     QAT_DEFAULT_DEVID_STRING            QUARKTS_CAPTION
     #define     QAT_DEFAULT_EOL_STRING              "\r\n"              
 
