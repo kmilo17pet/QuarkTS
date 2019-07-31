@@ -34,7 +34,8 @@ extern "C" {
     #define Q_TASK_COUNT_CYCLES     /*remove this line if you will never need the task cycles*/
 
     #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
-    #undef Q_ATOF_FULL               /*used to enable the extended e notation parsing in qAtoF*/
+    #undef Q_ATOF_FULL              /*used to enable the extended e notation parsing in qAtoF*/
+    #define Q_LISTS                 /*Generic lists APIs */
     /*================================================================================================================================*/   
 
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
@@ -1369,6 +1370,35 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
     #endif
 
+
+    #ifdef Q_LISTS
+        typedef struct node_s{
+            struct node_s *next, *prev;
+        }qNode_t;
+
+        typedef struct{
+            qNode_t *head, *tail;
+            int size;
+        }qList_t;
+        #define qNode_MinimalFields                  void *next, *prev, *data
+        #define qNode_NewType( TypeName, Fields )    typedef struct{ qNode_MinimalFields; Fields ;} TypeName
+
+        typedef void(*qListVisualizer_t)(void*);
+        typedef enum{qList_AtFront =-1 , qList_AtBack = 0xFFFF}qListPosition_t;
+        #define QLIST_ATFRONT             qList_AtFront
+        #define QLIST_ATBACK              qList_AtBack
+
+        void qList_Initialize(qList_t *list);
+        qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position);
+        void* qList_Remove(qList_t *list, void *node, qListPosition_t position);
+        qBool_t qList_IsMember(qList_t *list, void *node);
+        void qList_View(qList_t *list, qListVisualizer_t visualizer);
+        void* qList_GetFront(qList_t *list);
+        void* qList_GetBack(qList_t *list);
+        qBool_t qList_IsEmpty(qList_t *list);
+        int qList_Length(qList_t *list);
+
+    #endif
 
 
 #endif

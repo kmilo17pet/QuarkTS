@@ -150,7 +150,6 @@ void IdleTaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
-    qCoroutineSemaphore_t x;
     qCoroutineBegin{
         qCoroutineDelay(2.0);
         puts("hello  1");

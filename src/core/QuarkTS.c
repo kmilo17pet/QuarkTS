@@ -3276,6 +3276,7 @@ Return value:
 uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n){
 	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
+#endif /*Q_ATCOMMAND_PARSER*/
 /*============================================================================*/
 #ifdef Q_MEMORY_MANAGER
     static uint8_t DefaultHeap[Q_DEFAULT_HEAP_SIZE] = {0};
@@ -3542,8 +3543,304 @@ size_t qHeapGetFreeSize(void){
 /*============================================================================*/
 #endif /*Q_MEMORY_MANAGER */
 
+#ifdef Q_LISTS
 
-#endif /*Q_ATCOMMAND_PARSER*/
+static qNode_t* qList_RemoveFront(qList_t *list);
+static qNode_t* qList_RemoveBack(qList_t *list);
+static void qList_InsertAtFront(qList_t *list, qNode_t *node);
+static void qList_InserAtBack(qList_t *list, qNode_t *node);
+
+/*============================================================================*/
+/*void qList_Initialize(qList_t *list)
+ 
+Must be called before a list is used!  This initialises all the members of the 
+list structure.
+
+Parameters:
+
+    - list : Pointer to the list being initialised.   
+
+*/
+void qList_Initialize(qList_t *list){
+    if( NULL != list){
+        list->head = NULL;
+        list->tail = NULL;
+        list->size = 0;
+    }
+}
+/*=========================================================*/
+static qNode_t* qList_NodeInit(void *node){
+    qNode_t *xnode = (qNode_t*)node;
+    xnode->prev = NULL;
+    xnode->next = NULL;
+    return xnode;
+}
+/*=========================================================*/
+static void qList_InsertAtFront(qList_t *list, qNode_t *node){
+    node->next = list->head;
+    list->head->prev = node;
+    list->head = node;
+}
+/*=========================================================*/
+static void qList_InserAtBack(qList_t *list, qNode_t *node){
+    list->tail->next = node;
+    node->prev = list->tail;
+    list->tail = node;
+}
+/*=========================================================*/
+static qNode_t* qList_RemoveFront(qList_t *list){
+    qNode_t *removed;
+    
+    removed = list->head;
+    list->head = removed->next;
+    if( NULL == list->head){
+        list->tail = list->head;
+    }
+    else{
+        list->head->prev = NULL;    
+    }
+    return removed;
+}
+/*=========================================================*/
+static qNode_t* qList_RemoveBack(qList_t *list){
+    qNode_t *removed;
+    
+    removed = list->tail;
+    list->tail = removed->prev;
+    if( NULL == list->tail){
+        list->head = list->tail;
+    }
+    else{
+        list->tail->next = NULL;    
+    }
+    
+    return removed;
+}
+/*=========================================================*/
+/*qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position)
+ 
+Insert an item into the list.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - node : A pointer to the node to be inserted
+    - position : The position where the node will be inserted
+
+Return value:
+
+    qTrue if the item was successfully added tot he list, othewise returns qFalse   
+
+*/
+qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position){
+    qBool_t RetValue = qFalse;
+    qNode_t *newnode;
+    qNode_t *inode;
+    int iPos;
+ 
+    if( NULL != list && NULL != node && position >= -1){    
+        if( qFalse == qList_IsMember(list, node)){
+            newnode = qList_NodeInit(node);
+            RetValue = qTrue;
+            if(NULL == list->head){ /*list is empty*/
+                list->head = newnode; 
+                list->tail = newnode;
+            }
+            else if( qList_AtFront == position){
+                qList_InsertAtFront(list, node);
+            }
+            else if( qList_AtBack == position || position >= list->size-1){
+                qList_InserAtBack(list, node);
+            }
+            else{ /*insert the new node after the position*/
+                for(inode = list->head, iPos = 0 ; iPos<position && inode->next ; inode = inode->next, iPos++);
+                newnode->next = inode->next;  /*  NEW -> (i+1)NODE */
+                newnode->prev = inode;        /*  iNODE <- NEW */
+                inode->next->prev = newnode;  /*  NEW <- (i+1)NODE  */
+                inode->next = newnode;        /*  iNODE -> NEW */  
+            }                                 /*  result: iNODE <-> NEW <-> (i+1)NODE    */
+            list->size++;
+        }
+    }
+    return RetValue;  
+}
+/*=========================================================*/           
+/*void* qList_Remove(qList_t *list, void *node, qListPosition_t position)
+ 
+Remove an item from the list.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - node : A pointer to the node to be deleted (to ignore pass NULL )
+    - position : The position of the node that will be removed
+
+Return value:
+
+    A pointer to the removed node. NULL if removal can be performed.  
+
+*/ 
+void* qList_Remove(qList_t *list, void *node, qListPosition_t position){
+    qNode_t *removed = NULL;
+    int ipos;
+    qNode_t *inode;
+    qNode_t *toremove;
+    if(NULL != list->head && position >= -1){
+        if ( qList_IsMember(list, node) ){
+            toremove = (qNode_t*)node;
+            if(toremove == list->head){
+                removed = qList_RemoveFront(list);          
+            }
+            else{
+                removed = toremove;
+                removed->prev->next = removed->next;
+                if( removed->next){
+                    removed->next->prev = removed->prev;
+                }
+            }
+            list->size--;
+        }
+        else if( position <= 0){
+            removed = qList_RemoveFront(list);     
+            list->size--;
+        }
+        else if (qList_AtBack == position || position > list->size-1){
+            removed = qList_RemoveBack(list);  
+            list->size--;
+        }
+        else{
+            for(inode = list->head, ipos = 0 ; ipos<(position-1) ; inode = inode->next){ 
+                ipos++;
+            }
+            removed = inode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
+            inode->next = removed->next;
+            if( removed->next){
+                inode->next->prev = inode;
+            }
+            list->size--;
+        }                
+    }
+    return removed;
+}
+/*=========================================================*/
+/*qBool_t qList_IsMember(qList_t *list, void *node)
+ 
+Check if the node is member of the list.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - node : A pointer to the node
+
+Return value:
+
+    qTrue if the node belongs to the list, qFalse if it is not.  
+
+*/ 
+qBool_t qList_IsMember(qList_t *list, void *node){
+    qBool_t RetValue = qFalse;
+    qNode_t *inode;
+    qNode_t *xnode = (qNode_t*)node;
+    
+    if(NULL != node){
+        for(inode=list->head ; inode ; inode = inode->next){
+            if(inode == xnode){
+                RetValue = qTrue;
+                break;
+            }
+        }
+    }
+    return RetValue;
+}
+/*=========================================================*/
+/*void qList_View(qList_t *list, qListVisualizer_t visualizer)
+ 
+List visualization. The application writer should provide the
+function to print out the correcponding node data.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - visualizer : The node data visualization function 
+
+*/ 
+void qList_View(qList_t *list, qListVisualizer_t visualizer){
+    qNode_t *inode;
+    printf("List count : %d\r\n", list->size);
+    for( inode = list->head ; inode ; inode = inode->next){
+        visualizer(inode);
+    }
+}
+/*=========================================================*/
+/*void* qList_GetFront(qList_t *list)
+ 
+Get a pointer to the front item of the list
+
+Parameters:
+
+    - list : Pointer to the list.
+
+Return value:
+
+    A pointer to the front node. NULL if the list is empty  
+
+*/ 
+void* qList_GetFront(qList_t *list){
+    return (void*)list->head;
+}
+/*=========================================================*/
+/*void* qList_GetBack(qList_t *list)
+ 
+Get a pointer to the back item of the list
+
+Parameters:
+
+    - list : Pointer to the list.
+
+Return value:
+
+    A pointer to the back node. NULL if the list is empty  
+
+*/ 
+void* qList_GetBack(qList_t *list){
+    return list->tail;
+}
+/*=========================================================*/
+/*qBool_t qList_IsEmpty(qList_t *list)
+ 
+Check if the list is empty.
+
+Parameters:
+
+    - list : Pointer to the list.
+
+Return value:
+
+    qTrue if the list is empty, qFalse if it is not.  
+
+*/ 
+qBool_t qList_IsEmpty(qList_t *list){
+    return (qBool_t)(NULL == list->head);
+}
+/*=========================================================*/
+/*void* qList_Length(qList_t *list)
+ 
+Get the number of items inside the list
+
+Parameters:
+
+    - list : Pointer to the list.
+
+Return value:
+
+    The number of items of the list. 
+
+*/ 
+int qList_Length(qList_t *list){
+    return list->size;
+}
+/*=========================================================*/
+#endif /*Q_LISTS */
 
 #ifdef Q_TASK_DEV_TEST
 #endif
