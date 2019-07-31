@@ -2458,13 +2458,19 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     uint32_t hash = 0;
     switch(mode){
         case 0: /*D. J. Bernstein */
-            for(hash = 5381; *s;) hash = 33*hash^((uint8_t)*s++);
+            for(hash = 5381; *s;){
+                hash = 33*hash^((uint8_t)*s++);
+            }
             break;
         case 1: /*Fowler/Noll/Vo (FNV) */
-            for(hash = 0x811c9dc5; *s; hash *= 0x01000193) hash ^= ((uint8_t)*s++);
+            for(hash = 0x811c9dc5; *s; hash *= 0x01000193){
+                hash ^= ((uint8_t)*s++);
+            }
             break;
         case 2: /*Jenkins' One-at-a-Time*/
-            for(hash=0; *s; hash ^= (hash >> 6)) hash += (*s++) + (hash << 10);
+            for(hash=0; *s; hash ^= (hash >> 6)){
+                hash += (*s++) + (hash << 10);
+            }
             hash += (hash << 3);
             hash ^= (hash >> 11);
             hash += (hash << 15);
@@ -2595,7 +2601,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
     qBool_t RetValue = qFalse;   
     if(NULL != Instance){
         if( QEDGECHECK_WAIT == Instance->State){ /*de-bounce wait state*/
-            if( (qSchedulerGetTick() - Instance->Start)>=Instance->DebounceTime ){
+            if( (qSchedulerGetTick() - Instance->Start) >= Instance->DebounceTime ){
                 Instance->State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/ 
             }      
             RetValue = qTrue;
@@ -2612,8 +2618,8 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
                         Node->Status = CurrentPinValue; /*if there is no change, let the state of the pin be equal to its own level*/
                     } 
                 }
-                else if( QEDGECHECK_UPDATE == Instance->State){ /*update state*/
-                    if(Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
+                else if( QEDGECHECK_UPDATE == Instance->State ){ /*update state*/
+                    if( Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
                         Node->Status = (CurrentPinValue)? qRISING : qFALLING; /*set the edge status*/
                     }      
                     Node->PreviousPinValue = CurrentPinValue; /*keep the previous level*/
@@ -2623,11 +2629,11 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
                 }
             }       
         
-            if(QEDGECHECK_UPDATE == Instance->State ){ /*reload the instance to a full check*/
+            if( QEDGECHECK_UPDATE == Instance->State ){ /*reload the instance to a full check*/
                 Instance->State = QEDGECHECK_CHECK; /*reload the init state*/
                 Instance->Start = qSchedulerGetTick(); /*reload the time*/
             }
-            if(Instance->State > QEDGECHECK_CHECK){
+            if( Instance->State > QEDGECHECK_CHECK ){
                  Instance->State = QEDGECHECK_WAIT; /*at least one pin change detected, do the de-bounce wait*/
             }
             RetValue = qTrue;  
@@ -3766,7 +3772,6 @@ Parameters:
 */ 
 void qList_View(qList_t *list, qListVisualizer_t visualizer){
     qNode_t *inode;
-    printf("List count : %d\r\n", list->size);
     for( inode = list->head ; inode ; inode = inode->next){
         visualizer(inode);
     }
