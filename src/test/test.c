@@ -166,18 +166,7 @@ void blinktaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 int main(int argc, char** argv) {   
-
-
-
-
     qSetDebugFcn(putcharfcn);
-
-    double xx;
-    xx = qAtoF("-03.14125");
-    qTraceVar( xx, Float) ;
-    return EXIT_SUCCESS;
-    
-    
     qQueue_t somequeue;
     void *memtest;
 

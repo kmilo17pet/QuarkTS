@@ -3,7 +3,7 @@
  * @file QuarkTS.h
  * @author J.Camilo Gomez C.
  * @version 4.9.2
- * @date July 30, 2019
+ * @date August 4, 2019
  * @brief A Non-Preemptive RTOS for small embedded systems
  * @copyright Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc. (kmilo17pet@gmail.com)
  * @license GNU Lesser General Public License (LGPL)
@@ -17,25 +17,25 @@ extern "C" {
 #endif
            
     /*==================================================  CONFIGURATION FLAGS  =======================================================*/
-    #undef Q_SETUP_TIME_CANONICAL   /*Kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
-    #undef Q_SETUP_TICK_IN_HERTZ    /*Use this to define the timming base as frequency(Hz) instead of period(S)*/
+    #define Q_SETUP_TIME_CANONICAL  0       /*If enabled, kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
+    #define Q_SETUP_TICK_IN_HERTZ   0       /*If enabled, the timming base will be taken as frequency(Hz) instead of period(S)*/
 
-    #define Q_BYTE_SIZED_BUFFERS    /*remove this line if you will never use the Byte-sized buffers*/
-    #define Q_MEMORY_MANAGER        /*remove this line if you will never use the Memory Manager*/
-    #define Q_BYTE_ALIGNMENT        8         /*default for 32bit cores*/
-    #define Q_DEFAULT_HEAP_SIZE     2048      /*2Kb*/    
-    #define Q_QUEUES                /*remove this line if you will never use the qQueues*/
-    #define Q_PRIORITY_QUEUE        /*remove this line if you will never queue notification events*/
-    #define Q_AUTO_CHAINREARRANGE   /*remove this line if you will never change the tasks priorities dynamically */ 
-    #define Q_TRACE_VARIABLES       /*remove this line if you will never need to debug variables*/
-    #define Q_DEBUGTRACE_BUFSIZE    36  /*Size for the debug/trace buffer: 36 bytes should be enough*/
-    #define Q_DEBUGTRACE_FULL       /*Full qTrace debug ouput*/
-    #define Q_ATCOMMAND_PARSER      /*Command parser extension*/
-    #define Q_TASK_COUNT_CYCLES     /*remove this line if you will never need the task cycles*/
+    #define Q_BYTE_SIZED_BUFFERS    1       /*Used to enable or disable the Byte-sized buffers*/
+    #define Q_MEMORY_MANAGER        1       /*Used to enable or disable the Memory Manager*/
+    #define Q_BYTE_ALIGNMENT        8       /*Byte alignment used for the memory manager*/
+    #define Q_DEFAULT_HEAP_SIZE     2048    /*The default heap size for the memory manager*/    
+    #define Q_QUEUES                1       /*Used to enable or disable the qQueues*/
+    #define Q_PRIORITY_QUEUE        1       /*Used to enable or disable queued notifications*/
+    #define Q_AUTO_CHAINREARRANGE   1       /*If enabled, the task chain will be rearranged dynamically after run-time priority changes*/ 
+    #define Q_TRACE_VARIABLES       1       /*Used to enable or disable variable tracing and debuggin*/
+    #define Q_DEBUGTRACE_BUFSIZE    36      /*Size for the debug/trace buffer: 36 bytes should be enough*/
+    #define Q_DEBUGTRACE_FULL       1       /*Used to enable or disable a full trace output*/
+    #define Q_ATCOMMAND_PARSER      1       /*Used to enable or disable the AT Command parser module for CLI*/
+    #define Q_TASK_COUNT_CYCLES     1       /*Used to enable or disable the task cycles counter*/
 
-    #define Q_MAX_FTOA_PRECISION    10  /*default qFtoA precision*/
-    #undef Q_ATOF_FULL              /*used to enable the extended e notation parsing in qAtoF*/
-    #define Q_LISTS                 /*Generic lists APIs */
+    #define Q_MAX_FTOA_PRECISION    10      /*default qFtoA precision*/
+    #define Q_ATOF_FULL             0       /*Used to enable or disablethe extended "e" notation parsing in qAtoF*/
+    #define Q_LISTS                 1       /*Used to enable or disable the generic lists APIs */
     /*================================================================================================================================*/   
 
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
@@ -70,7 +70,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION    "4.9.1"
+    #define QUARKTS_VERSION    "4.9.2"
     #define QUARKTS_CAPTION     "QuarkTS " QUARKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -209,7 +209,7 @@ extern "C" {
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
 
-    #ifdef Q_SETUP_TIME_CANONICAL
+    #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef uint32_t qTime_t;
     #else
         typedef float qTime_t;
@@ -344,7 +344,7 @@ extern "C" {
     #define qRunning    2u
     #define qSuspended  3u
 
-    #ifdef Q_QUEUES 
+    #if ( Q_QUEUES == 1)
     typedef struct {
         uint8_t *pHead;			        /*< Points to the beginning of the queue storage area. */
         uint8_t *pTail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
@@ -476,11 +476,11 @@ extern "C" {
         void *TaskData,*AsyncData; /*the storage pointers*/
         qTaskFcn_t Callback; 
         qSM_t *StateMachine; /*pointer to the linked FSM*/
-        #ifdef Q_QUEUES
+        #if ( Q_QUEUES == 1)
             qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
         #endif
         volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
-        #ifdef Q_TASK_COUNT_CYCLES
+        #if ( Q_TASK_COUNT_CYCLES == 1 )
             uint32_t Cycles; 
         #endif
         qTrigger_t Trigger; 
@@ -503,14 +503,14 @@ extern "C" {
    
     typedef qClock_t (*qGetTickFcn_t)(void);
 
-    #ifdef Q_SETUP_TICK_IN_HERTZ
+    #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
             #define qTimingBase_type qClock_t
     #else
             #define qTimingBase_type qTime_t
     #endif 
 
     typedef struct{ /*Main scheduler core data*/
-        #ifdef Q_PRIORITY_QUEUE
+        #if ( Q_PRIORITY_QUEUE == 1 )
             volatile int16_t QueueIndex; /*holds the current queue index*/
             uint8_t QueueSize;
             qQueueStack_t *QueueStack; /*a pointer to the queue stack*/
@@ -518,7 +518,7 @@ extern "C" {
         #endif 
         qTaskFcn_t IDLECallback;    
         qTaskFcn_t ReleaseSchedCallback;
-        #ifndef Q_SETUP_TIME_CANONICAL
+        #if (Q_SETUP_TIME_CANONICAL != 1)
             qTimingBase_type TimmingBase;
         #endif
         qTask_t *Head;
@@ -543,7 +543,7 @@ extern "C" {
     void qSchedulerRelease(void);
     void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
 
-    #ifdef Q_SETUP_TIME_CANONICAL
+    #if (Q_SETUP_TIME_CANONICAL == 1)
         void _qInitScheduler(qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
     #else
         void _qInitScheduler(qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
@@ -590,7 +590,7 @@ extern "C" {
     #define     QUEUE_COUNT     qQUEUE_COUNT
     #define     QUEUE_EMPTY     qQUEUE_EMPTY
     
-    #ifdef Q_QUEUES 
+    #if ( Q_QUEUES == 1) 
         qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg);
 
         qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
@@ -629,7 +629,7 @@ extern "C" {
     void qTaskSetState(qTask_t *Task, const qState_t State);
     void qTaskSetData(qTask_t *Task, void* arg);
     void qTaskClearTimeElapsed(qTask_t *Task);
-    #ifdef Q_TASK_COUNT_CYCLES
+    #if ( Q_TASK_COUNT_CYCLES == 1 )
         uint32_t qTaskGetCycles(const qTask_t *Task);
     #endif
     
@@ -652,7 +652,7 @@ Parameters:
 */
     #define qTaskResume(pTask_)    qTaskSetState(pTask_, qEnabled)
 
-    #ifdef Q_PRIORITY_QUEUE    
+    #if ( Q_PRIORITY_QUEUE == 1 )    
         #define _qQueueStackName                    _qQueueStack
         #define _qQueueStackCreate(QueueSize)       volatile qQueueStack_t _qQueueStackName[QueueSize];
         #define _qQueueLength(QueueSize)            QueueSize
@@ -675,7 +675,7 @@ Parameters:
 
     - TimmingBase : This parameter specifies the ISR background timer base time.
                     This can be the period in seconds(Floating-point format) or frequency 
-                    in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is defined).
+                    in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
 
     - IDLE_Callback : Callback function to the Idle Task. To disable the 
                       Idle Task functionality, pass NULL as argument.
@@ -685,7 +685,7 @@ Parameters:
      */
 
 
-    #ifdef Q_SETUP_TIME_CANONICAL
+    #if (Q_SETUP_TIME_CANONICAL == 1)
         #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)TickProviderFcn, IDLE_Callback, _qQueueStackName, _qQueueLength(QueueSize) )
     #else 
         #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)TickProviderFcn, TimmingBase, IDLE_Callback, _qQueueStackName, _qQueueLength(QueueSize) )
@@ -995,7 +995,7 @@ extern qPutString_t __qDebugOutputStringFcn;
 #define __qSTRINGIFY(x) #x
 #define __qTOSTRING(x) __qSTRINGIFY(x)
 
-#ifdef Q_DEBUGTRACE_FULL
+#if ( Q_DEBUGTRACE_FULL == 1 )
     #ifndef __QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
             #define __QTRACE_FUNC __PRETTY_FUNCTION__
@@ -1054,7 +1054,7 @@ extern qPutString_t __qDebugOutputStringFcn;
         #define UnsignedHexadecimal 
     #endif
 
-#ifdef Q_TRACE_VARIABLES
+#if ( Q_TRACE_VARIABLES == 1 )
     extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
     void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
     
@@ -1181,7 +1181,7 @@ qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t 
 qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qSTimer_t *timeout, qTime_t t);
 qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
 
-#ifdef Q_BYTE_SIZED_BUFFERS
+#if ( Q_BYTE_SIZED_BUFFERS == 1 )
     qSize_t qBSBuffer_Count(qBSBuffer_t const* obj);
     qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
     qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
@@ -1220,7 +1220,7 @@ qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *P
 qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
 qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
 
-#ifdef Q_ATCOMMAND_PARSER
+#if ( Q_ATCOMMAND_PARSER == 1 )
 	#define		QAT_DEFAULT_AT_COMMAND	            "at"
 	#define		QAT_DEFAULT_ID_COMMAND	            "atid"
 	#define		QAT_DEFAULT_ATSET_DELIM	            ','
@@ -1330,7 +1330,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     float qATParser_GetArgFlt(qATParser_PreCmd_t *param, int8_t n);
     uint32_t qATParser_GetArgHex(qATParser_PreCmd_t *param, int8_t n);
 
-    #ifdef Q_MEMORY_MANAGER       
+    #if ( Q_MEMORY_MANAGER  == 1 )     
         #ifndef Q_BYTE_ALIGNMENT    
             #define Q_BYTE_ALIGNMENT    8
         #endif
@@ -1371,7 +1371,7 @@ qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node);
     #endif
 
 
-    #ifdef Q_LISTS
+    #if ( Q_LISTS == 1 )
         typedef struct node_s{
             struct node_s *next, *prev;
         }qNode_t;
