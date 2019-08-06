@@ -113,9 +113,10 @@ void Task1Callback(qEvent_t e){
 }
 /*============================================================================*/
 void Task3Callback(qEvent_t e){
+    int data = -1;
     qTraceMessage( (char*)e->TaskData );
     qTraceMessage( (char*)e->EventData );
-    int data = -1;
+
     if(e->Trigger == byQueueReceiver){
         data = *((int*)e->EventData);
         qDebugMessage("Queue event: byQueueReceiver");
@@ -166,11 +167,11 @@ void blinktaskCallback(qEvent_t e){
 }
 /*============================================================================*/
 int main(int argc, char** argv) {   
-    qSetDebugFcn(putcharfcn);
     qQueue_t somequeue;
     void *memtest;
-
     int x[]={10,20,30,40,50,60,70,80,90,100};
+
+    qSetDebugFcn(putcharfcn);
 
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);
@@ -192,6 +193,7 @@ int main(int argc, char** argv) {
     qQueueSendToBack(&somequeue, &x[2]);
     qQueueSendToFront(&somequeue, &x[3]);
 
+    
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
@@ -202,6 +204,7 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+    
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }
