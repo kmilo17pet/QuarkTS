@@ -62,8 +62,9 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void);
     static void _qTriggerReleaseSchedEvent(void);
 #endif
 static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
-static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
-
+#if ( Q_FSM == 1)
+    static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
+#endif
 #if ( Q_QUEUES == 1)
     static qTrigger_t _qCheckQueueEvents(qTask_t *Task);
     static qSize_t _qQueueValidPowerOfTwo(qSize_t k);
@@ -288,8 +289,8 @@ Return value:
 qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        if( Task->Flag[_qIndex_Notification] < QMAX_NOTIFICATION_VALUE ){
-            Task->Flag[_qIndex_Notification]++;
+        if( Task->Notification < QMAX_NOTIFICATION_VALUE ){
+            Task->Notification++;
             Task->AsyncData = eventdata;
             RetValue = qTrue;
         }
@@ -491,7 +492,7 @@ Parameters:
                  restores interrupts.
     - Disabler : The function with hardware specific code that disables interrupts.
 */ 
-void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void)){
+void qSchedulerSetInterruptsED(qInt_Restorer_t Restorer, qInt_Disabler_t Disabler){
     QUARKTS.I_Restorer = Restorer;
     QUARKTS.I_Disable = Disabler;
 }
@@ -603,7 +604,7 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
         Task->TaskData = arg;
         Task->Priority = Priority;
         Task->Iterations = (qPeriodic==nExecutions)? qPeriodic : -nExecutions;    
-        Task->Flag[_qIndex_Notification] = qFalse;
+        Task->Notification = 0u;
         Task->Flag[_qIndex_InitFlag] = qFalse;
         Task->Flag[_qIndex_QueueReceiver] = qFalse; 
         Task->Flag[_qIndex_QueueFull] = qFalse;
@@ -618,7 +619,9 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
         #if ( Q_QUEUES == 1)
             Task->Queue = NULL;
         #endif
+        #if ( Q_FSM == 1)
         Task->StateMachine = NULL;
+        #endif
         Task->State = qSuspended;
         QUARKTS.Head =  _qScheduler_PriorizedInsert( QUARKTS.Head, Task ); /*put the task on the list according to its priority*/
         RetValue = qTrue;
@@ -652,6 +655,7 @@ qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority
     return qSchedulerAdd_Task(Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg);
 }
 /*============================================================================*/
+#if ( Q_FSM == 1)
 /*qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                          qSM_t *StateMachine, qSM_State_t InitState, 
                          qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState,
@@ -708,6 +712,7 @@ qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTim
     }
     return RetValue;
 }
+#endif
 /*============================================================================*/
 /*qBool_t qSchedulerRemoveTask(qTask_t *Task)
 
@@ -958,7 +963,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
                 break;
             case byNotificationSimple:
                 QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
-                Task->Flag[_qIndex_Notification]--; /* = qFalse */ /*Clear the async flag*/            
+                Task->Notification--; /* = qFalse */ /*Clear the async flag*/            
                 break;
         #if ( Q_QUEUES == 1)    
             case byQueueReceiver:
@@ -980,15 +985,21 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
         /*Fill the event info structure*/
         _qEvent_FillCommonFields(QUARKTS.EventInfo, Event, (qBool_t)(!Task->Flag[_qIndex_InitFlag]), Task->TaskData); /*Fill common fields of EventInfo: Trigger, FirstCall and TaskData*/ 
         QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
-        if ( ( NULL != Task->StateMachine ) && ( __qFSMCallbackMode == Task->Callback ) ){
-            qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
-        }
-        else if ( NULL != Task->Callback ) {
-            Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/ 
-        }       
-        else{
-            /*nothing to do*/
-        }
+        #if ( Q_FSM == 1)
+            if ( ( NULL != Task->StateMachine ) && ( __qFSMCallbackMode == Task->Callback ) ){
+                qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+            }
+            else if ( NULL != Task->Callback ) {
+                Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/ 
+            }       
+            else{
+                /*nothing to do*/
+            }
+        #else
+            if ( NULL != Task->Callback ) {
+                Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/ 
+            }     
+        #endif
         QUARKTS.CurrentRunningTask = NULL;
         #if ( Q_QUEUES == 1) 
             if( byQueueReceiver == Event){
@@ -1035,7 +1046,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
                 }
                 else
                 #endif
-                if( Task->Flag[_qIndex_Notification] ){   /*The last check will be if the task has an async event*/
+                if( Task->Notification ){   /*The last check will be if the task has an async event*/
                     nTaskReady = _qScheduler_TransitionTo(  Task, qReady, byNotificationSimple); /*put the task in ready state with their corresponding trigger */   
                 }
                 else{
@@ -1046,6 +1057,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for t
     }
     return nTaskReady;
 }
+#if (Q_FSM == 1)
 /*============================================================================*/
 /*qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
 
@@ -1185,6 +1197,7 @@ void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s,
             break;
     }
 }
+#endif /* Q_FSM */
 #ifdef __IAR_SYSTEMS_ICC__
 #else
 #endif

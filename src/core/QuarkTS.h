@@ -9,7 +9,6 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-           
     /*==================================================  CONFIGURATION FLAGS  =======================================================*/
     #define Q_SETUP_TIME_CANONICAL      0       /*If enabled, kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
     #define Q_SETUP_TICK_IN_HERTZ       0       /*If enabled, the timming base will be taken as frequency(Hz) instead of period(S)*/
@@ -17,6 +16,7 @@ extern "C" {
     #define Q_BYTE_SIZED_BUFFERS        1       /*Used to enable or disable the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER            1       /*Used to enable or disable the Memory Manager*/
     #define Q_BYTE_ALIGNMENT            8       /*Byte alignment used for the memory manager*/
+    #define Q_FSM                       1       /*Used to enable or disable the Finite State Machine FSM extension */
     #define Q_DEFAULT_HEAP_SIZE         2048    /*The default heap size for the memory manager*/    
     #define Q_QUEUES                    1       /*Used to enable or disable the qQueues*/
     #define Q_PRIORITY_QUEUE            1       /*Used to enable or disable queued notifications*/
@@ -317,22 +317,16 @@ extern "C" {
     typedef const _qEvent_t_ *qConst qEvent_t;
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
+    typedef uint8_t qNotifier_t;
     #define QMAX_NOTIFICATION_VALUE     0xFFu
 
     #define _qIndex_InitFlag            0
-    #define _qIndex_Notification        1
-    #define _qIndex_Enabled             2
-    #define _qIndex_QueueReceiver       3
-    #define _qIndex_QueueFull           4
-    #define _qIndex_QueueCount          5
-    #define _qIndex_QueueEmpty          6
+    #define _qIndex_Enabled             1
+    #define _qIndex_QueueReceiver       2
+    #define _qIndex_QueueFull           3
+    #define _qIndex_QueueCount          4
+    #define _qIndex_QueueEmpty          5
 
-    /*
-    #define _qIndex_RBAutoPop       3
-    #define _qIndex_RBFull          4
-    #define _qIndex_RBCount         5
-    #define _qIndex_RBEmpty         6
-    */
     typedef uint8_t qTaskState_t;
     #define qWaiting    0u
     #define qReady      1u
@@ -406,71 +400,71 @@ extern "C" {
         #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_FRONT)
     #endif
     
-    typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
-    #define qPrivate    _
-    #define _qSMData_t struct _qSM_t * const 
-    #define CurrentState    NextState
-    #define qMins2Time(t)    (((qTime_t)(t))*60.0)
-    #define qHours2Time(t)   (((qTime_t)(t))*3600.0)
-    #define qDays2Time(t)    (((qTime_t)(t))*86400.0)
-    #define qWeeks2Time(t)   (((qTime_t)(t))*604800.0)
+    #if ( Q_FSM == 1)
+        typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
+        #define qPrivate    _
+        #define _qSMData_t struct _qSM_t * const 
+        #define CurrentState    NextState
 
-    typedef struct _qSM_t{ 
-        /* NextState: (Read/Write) 
-        Next state to be performed after this state finish
-        */
-        qSM_Status_t (*NextState)(_qSMData_t);
-        /* PreviousState: (Read Only)
-        Last state seen in the flow chart
-        */
-        qSM_Status_t (* qConst PreviousState)(_qSMData_t);
-        /* LastState: (Read Only) 
-        The last state executed
-        */        
-        qSM_Status_t (* qConst LastState)(_qSMData_t);
-        /* PreviousReturnStatus: (Read Only)
-        The return status of <PreviousState>
-        */
-        qConst qSM_Status_t PreviousReturnStatus;
-        /* StateFirstEntry: [== StateJustChanged] (Read Only)
-        True when  <Previous State> !=  <Current State>
-        */
-        qConst qBool_t StateFirstEntry;
-        /* Data: (Read Only)
-        State-machine associated data.
-        Note: If the FSM is running as a task, the associated event data can be 
-        queried throught the "Data" field. (cast to qEvent_t is mandatory)
-         */
-        void * qConst Data;
-        /*Private members (DO NOT USE THEM)*/
-        struct /**/{
-            void (*qConst __Failure)(_qSMData_t);
-            void (*qConst __Success)(_qSMData_t);
-            void (*qConst __Unexpected)(_qSMData_t);  
-            void (*qConst __BeforeAnyState)(_qSMData_t);/*only used when a task has a SM attached*/
-        }qPrivate;
-    }qSM_t;
-    typedef qSM_t* const qSMData_t;    
-    typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
-    typedef void (*qSM_SubState_t)(qSMData_t); 
-    #define StateJustChanged    StateFirstEntry /*backward compatibility*/
-   
-    typedef enum{ /*FSM Attribute Flags definition*/
-        qSM_RESTART, /*Restart the FSM*/
-        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesn't change*/
-        qSM_FAILURE_STATE, /*Set the Failure State*/
-        qSM_SUCCESS_STATE, /*Set the Success State*/
-        qSM_UNEXPECTED_STATE, /*Set the Unexpected State*/
-        qSM_BEFORE_ANY_STATE /*Set the state executed before any state*/              
-    }qFSM_Attribute_t; 
-          
+        typedef struct _qSM_t{ 
+            /* NextState: (Read/Write) 
+            Next state to be performed after this state finish
+            */
+            qSM_Status_t (*NextState)(_qSMData_t);
+            /* PreviousState: (Read Only)
+            Last state seen in the flow chart
+            */
+            qSM_Status_t (* qConst PreviousState)(_qSMData_t);
+            /* LastState: (Read Only) 
+            The last state executed
+            */        
+            qSM_Status_t (* qConst LastState)(_qSMData_t);
+            /* PreviousReturnStatus: (Read Only)
+            The return status of <PreviousState>
+            */
+            qConst qSM_Status_t PreviousReturnStatus;
+            /* StateFirstEntry: [== StateJustChanged] (Read Only)
+            True when  <Previous State> !=  <Current State>
+            */
+            qConst qBool_t StateFirstEntry;
+            /* Data: (Read Only)
+            State-machine associated data.
+            Note: If the FSM is running as a task, the associated event data can be 
+            queried throught the "Data" field. (cast to qEvent_t is mandatory)
+            */
+            void * qConst Data;
+            /*Private members (DO NOT USE THEM)*/
+            struct /**/{
+                void (*qConst __Failure)(_qSMData_t);
+                void (*qConst __Success)(_qSMData_t);
+                void (*qConst __Unexpected)(_qSMData_t);  
+                void (*qConst __BeforeAnyState)(_qSMData_t);/*only used when a task has a SM attached*/
+            }qPrivate;
+        }qSM_t;
+        typedef qSM_t* const qSMData_t;    
+        typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
+        typedef void (*qSM_SubState_t)(qSMData_t); 
+        #define StateJustChanged    StateFirstEntry /*backward compatibility*/
+    
+        typedef enum{ /*FSM Attribute Flags definition*/
+            qSM_RESTART, /*Restart the FSM*/
+            qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesn't change*/
+            qSM_FAILURE_STATE, /*Set the Failure State*/
+            qSM_SUCCESS_STATE, /*Set the Success State*/
+            qSM_UNEXPECTED_STATE, /*Set the Unexpected State*/
+            qSM_BEFORE_ANY_STATE /*Set the state executed before any state*/              
+        }qFSM_Attribute_t; 
+    #endif
+
     #define Q_TASK_EXTENDED_DATA
 
     struct _qTask_t{ /*Task node definition*/
         volatile struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
         qTaskFcn_t Callback; 
-        qSM_t *StateMachine; /*pointer to the linked FSM*/
+        #if ( Q_FSM == 1)
+            qSM_t *StateMachine; /*pointer to the linked FSM*/
+        #endif
         #if ( Q_QUEUES == 1)
             qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
         #endif
@@ -481,8 +475,9 @@ extern "C" {
         qTrigger_t Trigger; 
         qIteration_t Iterations; 
         qPriority_t Priority; 
-        qTaskState_t State;      
-        volatile qBool_t Flag[7]; /*task related flags*/
+        qTaskState_t State;
+        volatile qNotifier_t Notification;
+        volatile qBool_t Flag[6]; /*task related flags*/
     };
     #define qTask_t volatile struct _qTask_t
     typedef qTask_t** qHeadPointer_t;         
@@ -507,6 +502,9 @@ extern "C" {
             #define qTimingBase_type qTime_t
     #endif 
 
+    typedef void (*qInt_Restorer_t)(uint32_t);
+    typedef uint32_t (*qInt_Disabler_t)(void);
+
     typedef struct{ /*Main scheduler core data*/
         #if ( Q_PRIORITY_QUEUE == 1 )
             volatile int16_t QueueIndex; /*holds the current queue index*/
@@ -522,8 +520,8 @@ extern "C" {
             qTimingBase_type TimmingBase;
         #endif
         qTask_t *Head;
-        uint32_t (*I_Disable)(void);
-        void (*I_Restorer)(uint32_t);
+        qInt_Disabler_t I_Disable;
+        qInt_Restorer_t I_Restorer;
         volatile qTaskCoreFlags_t Flag;
         qTask_t *CurrentRunningTask;
         qGetTickFcn_t GetSysTick;
@@ -549,7 +547,8 @@ extern "C" {
     #else
         void _qInitScheduler(qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
     #endif
-    void qSchedulerSetInterruptsED(void (*Restorer)(uint32_t), uint32_t (*Disabler)(void));
+
+    void qSchedulerSetInterruptsED(qInt_Restorer_t Restorer, qInt_Disabler_t Disabler);
    
     /*only for backward compatibility*/
     /*qSchedulerAddxTask is deprecated, instead use qSchedulerAdd_Task*/
@@ -562,9 +561,12 @@ extern "C" {
     qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
     qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
     qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg);
+
+    #if ( Q_FSM == 1)    
     qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                 qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                                 qState_t InitialTaskState, void *arg);
+    #endif
     qBool_t qSchedulerRemoveTask(qTask_t *Task);
     void qSchedulerRun(void);
 
@@ -690,11 +692,11 @@ extern "C" {
     #endif
     
 
-    
-    qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
-    void qStateMachine_Run(qSM_t *obj, void *Data);
-    void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);
-    
+    #if ( Q_FSM == 1)
+        qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
+        void qStateMachine_Run(qSM_t *obj, void *Data);
+        void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);
+    #endif
 
     typedef struct{
         _qTaskPC_t instr;
@@ -899,6 +901,12 @@ extern "C" {
     qBool_t qSTimerStatus(const qSTimer_t *obj);
     #define QSTIMER_INITIALIZER     {0ul, 0ul}
     
+    #define qMins2Time(t)    (((qTime_t)(t))*60.0)
+    #define qHours2Time(t)   (((qTime_t)(t))*3600.0)
+    #define qDays2Time(t)    (((qTime_t)(t))*86400.0)
+    #define qWeeks2Time(t)   (((qTime_t)(t))*604800.0)
+
+
     typedef volatile char qISR_Byte_t;
     typedef volatile struct{
         qISR_Byte_t *pData;
@@ -956,9 +964,6 @@ extern "C" {
     char* qQBtoA(qBool_t num, char *str);
     qBool_t qIsInf(float f);
     qBool_t qIsNan(float f);
-    #define _qSetfStringTo_0(str)           str[0]='0'; str[1]='.'; str[2]='0'; str[3]='\0';  
-    #define _qSetfStringTo_inf(str)         str[1]='i'; str[2]='n'; str[3]='f'; str[4]='\0';
-    #define _qSetfStringTo_nan(str)         str[0]='n'; str[1]='a'; str[2]='n'; str[3]='\0';
     char* qFtoA(float num, char *str, uint8_t precision);
     uint32_t qStringHash(const char* s, uint8_t mode);
     void qPrintXData(qPutChar_t fcn, void* pStorage, void *data, qSize_t n);
@@ -1124,7 +1129,6 @@ extern "C" {
         #define qDebugVariable(Var, DISP_TYPE_MODE) qDebug##DISP_TYPE_MODE(Var)  
     #else
         #define qTrace()
-        #define qDebugString(s)
         #define qTraceMessage(Var)
         #define qTraceString(Var)
         #define qTraceVar(Var, DISP_TYPE_MODE)
