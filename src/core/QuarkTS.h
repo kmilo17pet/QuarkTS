@@ -2,6 +2,7 @@
     QuarkTS V4.9.3 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     A Non-Preemptive RTOS for small embedded systems
     GNU Lesser General Public License (LGPL)
+    C99 and MISRA-C 2004 Compliant
 */
 #ifndef H_QuarkTS
 #define	H_QuarkTS
@@ -9,6 +10,8 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+    
+  
     /*==================================================  CONFIGURATION FLAGS  =======================================================*/
     #define Q_SETUP_TIME_CANONICAL      0       /*If enabled, kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
     #define Q_SETUP_TICK_IN_HERTZ       0       /*If enabled, the timming base will be taken as frequency(Hz) instead of period(S)*/
@@ -31,8 +34,8 @@ extern "C" {
     #define Q_ATOF_FULL                 0       /*Used to enable or disablethe extended "e" notation parsing in qAtoF*/
     #define Q_LISTS                     1       /*Used to enable or disable the generic lists APIs */
     #define Q_ALLOW_SCHEDULER_RELEASE   1       /*Used to enable or disable the release of the scheduling */
-    /*================================================================================================================================*/   
-
+    /*================================================================================================================================*/    
+  
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
         #define __ORDER_LITTLE_ENDIAN__     1
     #endif
@@ -115,7 +118,8 @@ extern "C" {
         #define qConstField_Set(TYPE, STRUCT_FIELD)    STRUCT_FIELD
     #else
         #define qConst const  
-        #define qConstField_Set(TYPE, STRUCT_FIELD)    *((TYPE*)&(STRUCT_FIELD))
+        /*MISRA deviation rule 19.10 in the definition of  "qConstField_Set", TYPE parameter is not enclosed in parenthesis*/
+        #define qConstField_Set(TYPE, STRUCT_FIELD)    *((TYPE*)&(STRUCT_FIELD)) 
     #endif
     
     #define qBitsSet(Register, Bits)                    (Register) |= (Bits)
@@ -459,7 +463,7 @@ extern "C" {
     #define Q_TASK_EXTENDED_DATA
 
     struct _qTask_t{ /*Task node definition*/
-        volatile struct _qTask_t *Next; /*pointer to the next node*/
+        struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
         qTaskFcn_t Callback; 
         #if ( Q_FSM == 1)
@@ -479,7 +483,7 @@ extern "C" {
         volatile qNotifier_t Notification;
         volatile qBool_t Flag[6]; /*task related flags*/
     };
-    #define qTask_t volatile struct _qTask_t
+    #define qTask_t struct _qTask_t
     typedef qTask_t** qHeadPointer_t;         
     typedef struct{
         qTask_t *Task; /*the pointed task*/
@@ -488,9 +492,10 @@ extern "C" {
 
     typedef struct{ /*Scheduler Core-Flags*/
         volatile uint32_t IntFlags;
-    	volatile uint8_t Init, FCallIdle;
+    	volatile qBool_t Init;
+        qBool_t FCallIdle;
         #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-            volatile uint8_t ReleaseSched, FCallReleased;
+            volatile qBool_t ReleaseSched, FCallReleased;
         #endif
     }qTaskCoreFlags_t;
    
@@ -1287,8 +1292,8 @@ extern "C" {
         #define QATCMDTYPE_SET      QATCMDTYPE_PARA
         #define QATCMDTYPE_CHECK    QATCMDTYPE_ACT
 
-        #define QATCMDMASK_ARG_MAXNUM(opt)   (((opt)>>4)&0x000F)
-        #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000F)
+        #define QATCMDMASK_ARG_MAXNUM(opt)   (((opt)>>4)&0x000Fu)
+        #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000Fu)
 
         typedef enum{
             qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF, /* None of the above */
@@ -1384,7 +1389,6 @@ extern "C" {
             qSize_t size;
         }qList_t;
         #define qNode_MinimalFields                  void *next, *prev, *data
-        #define qNode_NewType( TypeName, Fields )    typedef struct{ qNode_MinimalFields; Fields ;} TypeName
 
         typedef void(*qListVisualizer_t)(void*);
         typedef enum{qList_AtFront =-1 , qList_AtBack = 0xFFFF}qListPosition_t;

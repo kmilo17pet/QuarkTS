@@ -171,8 +171,9 @@ int main(int argc, char** argv) {
     void *memtest;
     int x[]={10,20,30,40,50,60,70,80,90,100};
 
+    
     qSetDebugFcn(putcharfcn);
-
+    qTraceVariable( -3.1416, Float);
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);
     qEdgeCheck_InsertNode(&INPUTS, &button2, &PORTA, 1);
@@ -195,10 +196,11 @@ int main(int argc, char** argv) {
 
     
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
-    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     
+    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
+    
     qTaskAttachQueue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH);
     qSchedulerAdd_EventTask(&Task4, TaskSameCallback, 10, "TASK4");
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
