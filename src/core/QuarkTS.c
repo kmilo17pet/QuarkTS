@@ -468,8 +468,8 @@ qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata){
         volatile qQueueStack_t tmp;
         int16_t QueueMaxIndex;
         int16_t CurrentQueueIndex;
-        QueueMaxIndex = ((int16_t)QUARKTS.QueueSize) - 1;
-        CurrentQueueIndex = QUARKTS.QueueIndex;
+        QueueMaxIndex = ((int16_t)QUARKTS.QueueSize) - 1; /*to avoid side effects */
+        CurrentQueueIndex = QUARKTS.QueueIndex; /*to avoid side effects */
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = eventdata;
             tmp.Task = Task;
@@ -510,9 +510,10 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
     if( QUARKTS.QueueIndex >= 0 ){ /*queue has elements*/
         qEnterCritical(); 
         MaxPriorityValue = QUARKTS.QueueStack[0].Task->Priority;
-        /*walk through the queue to find the task with the highest priority.
-        break if we walk all the items or the tail is reached*/
-        for( i = 1u ; ( i < QUARKTS.QueueSize ) && ( NULL != QUARKTS.QueueStack[i].Task ) ; i++){ 
+        for( i = 1u ; ( i < QUARKTS.QueueSize ) ; i++){  /*walk through the queue to find the task with the highest priority*/
+            if( NULL != QUARKTS.QueueStack[i].Task ){ /* tail is reached */
+                break;
+            }
             if( QUARKTS.QueueStack[i].Task->Priority > MaxPriorityValue ){ /*check if the queued task has the max priority value*/
                 MaxPriorityValue = QUARKTS.QueueStack[i].Task->Priority; /*Reassign the max value*/
                 IndexTaskToExtract = i;  /*save the index*/
@@ -622,7 +623,7 @@ qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Pr
             Task->Queue = NULL;
         #endif
         #if ( Q_FSM == 1)
-        Task->StateMachine = NULL;
+            Task->StateMachine = NULL;
         #endif
         Task->State = qSuspended;
         QUARKTS.Head =  _qScheduler_PriorizedInsert( QUARKTS.Head, Task ); /*put the task on the list according to its priority*/
@@ -814,20 +815,20 @@ Parameters:
                         > qQUEUE_DEQUEUE: The task will be triggered if there are elements 
                           in the Queue. Data will be extracted automatically in 
                           every trigger and will be available in the <EventData> field 
-                          of qEvent_t structure.
+                          of the qEvent_t structure.
      
                         > qQUEUE_FULL: the task will be triggered if the Queue
                           is full. A pointer to the queue will be available in the
-                          <EventData> field of qEvent_t structure.
+                          <EventData> field of the qEvent_t structure.
 
                         > qQUEUE_COUNT: the task will be triggered if the count of 
                           elements in the queue reach the specified value. 
                           A pointer to the queue will be available in the
-                          <EventData> field of qEvent_t structure.
+                          <EventData> field of the qEvent_t structure.
 
                         > qQUEUE_EMPTY: the task will be triggered if the queue
                           is empty. A pointer to the queue will be available in the
-                          <EventData> field of qEvent_t structure.
+                          <EventData> field of the qEvent_t structure.
     - arg: This argument defines if the queue will be attached (qATTACH) or 
            detached (qDETACH) from the task.
            If the qQUEUE_COUNT mode is specified, this value will be used to check
@@ -1069,11 +1070,11 @@ qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td){
 /*============================================================================*/
 static qBool_t _qTaskDeadLineReached(qTask_t *task){
     qBool_t RetValue = qFalse;
-    qBool_t EnabledFlag = task->Flag[_qIndex_Enabled] ;
+    qBool_t EnabledFlag;
     qIteration_t TaskIterations;
     qClock_t TaskInterval;
     qBool_t DeadLineFlag;
-    
+    EnabledFlag = task->Flag[_qIndex_Enabled] ; /*avoid side efects in the next check*/
     if( EnabledFlag ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
         TaskIterations = task->Iterations; /*avoid side efects in the next check*/
         if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
@@ -2714,7 +2715,7 @@ qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber){
 qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
     uint8_t Register = 0u;
     Register = *((uint8_t*)Address);
-    return (Register & (1u << PinNumber));
+    return (Register & (1u << PinNumber))? qFalse : qTrue;
 }
 /*============================================================================*/
 /*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime)
@@ -3241,10 +3242,12 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
 /*============================================================================*/
 void qATCommandParser_FlushInput(qATParser_t *Parser){
 	qATParserInput_t *Input;
-    Input = &Parser->Input;
-    Input->Ready = qFalse;
-    Input->index = 0u;
-    Input->Buffer[0] = 0x00u;
+    if( NULL != Parser ){
+        Input = &Parser->Input;
+        Input->Ready = qFalse;
+        Input->index = 0u;
+        Input->Buffer[0] = 0x00u;
+    }
 }
 /*============================================================================*/
 /*qBool_t qATCommandParser_Run(qATParser_t *Parser)
@@ -3303,7 +3306,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
 }
 /*============================================================================*/
 static void _qATParser_HandleCommandResponse(qATParser_t *Parser, qATResponse_t retval){
-        int32_t ErrorCode;
+    int32_t ErrorCode;
 	if( QAT_NORESPONSE != retval ){
         switch( retval ){ /*handle the command-callback response*/
             case qAT_ERROR:
@@ -3546,7 +3549,9 @@ Parameters:
 
 */
 void qMemoryPool_Select(qMemoryPool_t *mPool){
-    MemPool = mPool;
+    if( NULL != mPool ){
+        MemPool = mPool;
+    }
 }
 /*============================================================================*/
 /*void qFree(void *ptr)

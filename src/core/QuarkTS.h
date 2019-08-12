@@ -33,7 +33,7 @@ extern "C" {
     #define Q_MAX_FTOA_PRECISION        10u     /*default qFtoA precision*/
     #define Q_ATOF_FULL                 0       /*Used to enable or disablethe extended "e" notation parsing in qAtoF*/
     #define Q_LISTS                     1       /*Used to enable or disable the generic lists APIs */
-    #define Q_ALLOW_SCHEDULER_RELEASE   1       /*Used to enable or disable the release of the scheduling */
+    #define Q_ALLOW_SCHEDULER_RELEASE   0       /*Used to enable or disable the release of the scheduling */
     /*================================================================================================================================*/    
   
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
