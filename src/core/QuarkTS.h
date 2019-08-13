@@ -130,7 +130,7 @@ extern "C" {
     #define qBitToggle(Register,Bit)                    ((Register)^= (1<<(Bit)))
     #define qBitWrite(Register, Bit, Value)             ((Value) ? qBitSet((Register),(Bit)) : qBitClear((Register),(Bit)))
     #define qBitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)       (uint8_t)( ((b7)<<7) + ((b6)<<6) + ((b5)<<5) + ((b4)<<4) + ((b3)<<3) + ((b2)<<2) + ((b1)<<1) + ((b0)<<0) )
-    #define qByteMakeFromBits(b7,b6,b5,b4,b3,b2,b1,b0)  qBitMakeByte((b7),(b6),(b5),(b4),(b3),(b2),(b1),(b0)) 
+    #define qByteMakeFromBits(b7,b6,b5,b4,b3,b2,b1,b0)  (qBitMakeByte((b7),(b6),(b5),(b4),(b3),(b2),(b1),(b0)))
     #define qByteHighNibble(Register)                   ((uint8_t)((Register)>>4))
     #define qByteLowNibble(Register)                    ((uint8_t)((Register)&0x0F))
     #define qByteMergeNibbles(H,L)                      ((uint8_t)(((H)<<4)|(0x0F&(L))))    
@@ -210,8 +210,10 @@ extern "C" {
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef uint32_t qTime_t;
+        #define qTimeImmediate       ((qTime_t)(0ul))
     #else
         typedef float qTime_t;
+        #define qTimeImmediate       ((qTime_t)(0.0f))
     #endif
     typedef uint32_t qClock_t;
     typedef uint8_t qPriority_t;
@@ -226,8 +228,10 @@ extern "C" {
     #define qPeriodic            ((qIteration_t)(-32768))
     #define qIndefinite          qPeriodic
     #define qSingleShot          ((qIteration_t)(1))
-    #define qTimeImmediate       ((qTime_t)(0))
-
+    
+    
+  
+    
     #define LOWEST_Priority     qLowest_Priority
     #define MEDIUM_Priority     qMedium_Priority
     #define HIGH_Priority       qHigh_Priority
@@ -324,12 +328,12 @@ extern "C" {
     typedef uint8_t qNotifier_t;
     #define QMAX_NOTIFICATION_VALUE     0xFFu
 
-    #define _qIndex_InitFlag            0
-    #define _qIndex_Enabled             1
-    #define _qIndex_QueueReceiver       2
-    #define _qIndex_QueueFull           3
-    #define _qIndex_QueueCount          4
-    #define _qIndex_QueueEmpty          5
+    #define _qIndex_InitFlag            ( 0 )
+    #define _qIndex_Enabled             ( 1 )
+    #define _qIndex_QueueReceiver       ( 2 )
+    #define _qIndex_QueueFull           ( 3 )
+    #define _qIndex_QueueCount          ( 4 )
+    #define _qIndex_QueueEmpty          ( 5 )
 
     typedef uint8_t qTaskState_t;
     #define qWaiting    0u
@@ -462,7 +466,7 @@ extern "C" {
 
     #define Q_TASK_EXTENDED_DATA
 
-    struct _qTask_t{ /*Task node definition*/
+    typedef struct _qTask_t{ /*Task node definition*/
         struct _qTask_t *Next; /*pointer to the next node*/
         void *TaskData,*AsyncData; /*the storage pointers*/
         qTaskFcn_t Callback; 
@@ -482,8 +486,7 @@ extern "C" {
         qTaskState_t State;
         volatile qNotifier_t Notification;
         volatile qBool_t Flag[6]; /*task related flags*/
-    };
-    #define qTask_t struct _qTask_t
+    }qTask_t;
     typedef qTask_t** qHeadPointer_t;         
     typedef struct{
         qTask_t *Task; /*the pointed task*/
@@ -588,25 +591,25 @@ extern "C" {
 
     typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qRBLinkMode_t;
     /*backward compatibility*/
-    #define     qRB_AUTOPOP	    qQUEUE_RECEIVER
-    #define	    qRB_FULL	    qQUEUE_FULL
-    #define     qRB_COUNT	    qQUEUE_COUNT
-    #define     qRB_EMPTY	    qQUEUE_EMPTY
+    #define     qRB_AUTOPOP	    ( qQUEUE_RECEIVER )
+    #define	qRB_FULL	    ( qQUEUE_FULL )
+    #define     qRB_COUNT	    ( qQUEUE_COUNT )
+    #define     qRB_EMPTY	    ( qQUEUE_EMPTY )
 
-    #define     QUEUE_RECEIVER  qQUEUE_RECEIVER  
-    #define     QUEUE_FULL      qQUEUE_FULL
-    #define     QUEUE_COUNT     qQUEUE_COUNT
-    #define     QUEUE_EMPTY     qQUEUE_EMPTY
+    #define     QUEUE_RECEIVER  ( qQUEUE_RECEIVER )  
+    #define     QUEUE_FULL      ( qQUEUE_FULL )
+    #define     QUEUE_COUNT     ( qQUEUE_COUNT )
+    #define     QUEUE_EMPTY     ( qQUEUE_EMPTY )
     
     #if ( Q_QUEUES == 1) 
         qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg);
 
         qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
         void qQueueReset(qQueue_t *obj);
-        qSize_t qQueueCount(qQueue_t *obj);
-        qBool_t qQueueIsFull(qQueue_t *obj);
-        qBool_t qQueueIsEmpty(qQueue_t *obj);
-        void* qQueuePeek(qQueue_t *obj);
+        qSize_t qQueueCount(const qQueue_t *obj);
+        qBool_t qQueueIsFull(const qQueue_t *obj);
+        qBool_t qQueueIsEmpty(const qQueue_t *obj);
+        void* qQueuePeek(const qQueue_t *obj);
         qBool_t qQueueRemoveFront(qQueue_t *obj);
         qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode);
         qBool_t qQueueReceive(qQueue_t *obj, void *dest);
@@ -892,9 +895,9 @@ extern "C" {
         qConst qClock_t Start, TV; /*The time-epochs registers*/
     }qSTimer_t;
     
-    #define QSTIMER_ARMED           qTrue
-    #define QSTIMER_DISARMED        qFalse
-    #define QSTIMER_DISARM_VALUE    0ul
+    #define QSTIMER_ARMED           ( qTrue )
+    #define QSTIMER_DISARMED        ( qFalse )
+    #define QSTIMER_DISARM_VALUE    ( 0ul )
 
     #define _qSTimerIsArmed(_pObj_)     ( (_pObj_)->TV)
     qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
@@ -1184,9 +1187,8 @@ extern "C" {
         volatile qBool_t ResponseReceived;
         qSTimer_t timeout;
     }qResponseHandler_t; 
-    #define qRespHandler_t  qResponseHandler_t
-    #define QRESPONSE_INITIALIZER   {NULL, 0, 0, qFalse}
-    void qResponseInitialize(qResponseHandler_t *obj, char *xLocBuff, qSize_t n); 
+    #define QRESPONSE_INITIALIZER   {NULL, 0u, 0u, 0u, qFalse, {0u, 0u}}
+    void qResponseInitialize(qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax); 
     void qResponseReset(qResponseHandler_t *obj);
     qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n);
     qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t);
@@ -1209,12 +1211,11 @@ extern "C" {
         qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
     #endif  
     
-    struct _qIONode_t{
+    typedef struct _qIONode_t{
         qBool_t Pin, PreviousPinValue, Status;
         struct _qIONode_t *Next;
         void *Port;
-    };
-    #define qIONode_t struct _qIONode_t
+    }qIONode_t;
 
     typedef qBool_t (*qCoreRegSize_t)(void*, qBool_t);
     typedef struct{
@@ -1255,13 +1256,13 @@ extern "C" {
         }qATResponse_t; 
 
         #define     qAT_ERRORCODE(ecode)     (-(ecode))
-        #define     QAT_ERROR                qAT_ERROR
-        #define     QAT_NORESPONSE           qAT_NORESPONSE
-        #define     QAT_OK                   qAT_OK
-        #define     QAT_ERRORCODE(_num_)     qAT_ERRORCODE(_num_)
-        #define     QAT_DEVID                qAT_DEVID
-        #define     QAT_NOTFOUND             qAT_NOTFOUND    
-        #define     QAT_OUTPUT               qAT_OUTPUT
+        #define     QAT_ERROR                ( qAT_ERROR )
+        #define     QAT_NORESPONSE           ( qAT_NORESPONSE )
+        #define     QAT_OK                   ( qAT_OK )
+        #define     QAT_ERRORCODE(_num_)     ( qAT_ERRORCODE(_num_) )
+        #define     QAT_DEVID                ( qAT_DEVID )
+        #define     QAT_NOTFOUND             ( qAT_NOTFOUND )    
+        #define     QAT_OUTPUT               ( qAT_OUTPUT )
 
         typedef volatile struct{
             volatile uint8_t Ready;
@@ -1292,8 +1293,8 @@ extern "C" {
         #define QATCMDTYPE_READ     ( 0x0400 )
         #define QATCMDTYPE_ACT      ( 0x0800 )
 
-        #define QATCMDTYPE_SET      QATCMDTYPE_PARA
-        #define QATCMDTYPE_CHECK    QATCMDTYPE_ACT
+        #define QATCMDTYPE_SET      ( QATCMDTYPE_PARA )
+        #define QATCMDTYPE_CHECK    ( QATCMDTYPE_ACT )
 
         #define QATCMDMASK_ARG_MAXNUM(opt)   (((opt)>>4)&0x000Fu)
         #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000Fu)
@@ -1316,14 +1317,13 @@ extern "C" {
 
         typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, qATParser_PreCmd_t*);
         
-        struct _qATCommand_t{
+        typedef struct _qATCommand_t{
             char *Text;
             qATCommandCallback_t CommandCallback;
             struct _qATCommand_t *Next;
             uint16_t CmdOpt;
             qSize_t CmdLen;
-        };
-        #define qATCommand_t struct _qATCommand_t
+        }qATCommand_t;
 
         qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL);
         qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt);
@@ -1395,8 +1395,8 @@ extern "C" {
 
         typedef void(*qListVisualizer_t)(void*);
         typedef enum{qList_AtFront =-1 , qList_AtBack = 0xFFFF}qListPosition_t;
-        #define QLIST_ATFRONT             qList_AtFront
-        #define QLIST_ATBACK              qList_AtBack
+        #define QLIST_ATFRONT             ( qList_AtFront )
+        #define QLIST_ATBACK              ( qList_AtBack  )
 
         void qList_Initialize(qList_t *list);
         qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position);

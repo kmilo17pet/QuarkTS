@@ -314,7 +314,7 @@ Return value:
 qBool_t qSchedulerSpreadNotification(void *eventdata, const qTaskNotifyMode_t mode){
     qBool_t RetValue = qFalse;
     qTask_t *Task = NULL;
-    if( ( Q_NOTIFY_SIMPLE==mode ) || ( Q_NOTIFY_QUEUED == mode ) ){
+    if( ( Q_NOTIFY_SIMPLE == mode ) || ( Q_NOTIFY_QUEUED == mode ) ){
         RetValue = qTrue;
         for( Task = QUARKTS.Head ; NULL != Task; Task = Task->Next){
             if( qFalse == mode(Task, eventdata) ){
@@ -1507,7 +1507,7 @@ Return value:
 
     qTrue if the Queue is empty, qFalse if it is not.
  */
-qBool_t qQueueIsEmpty(qQueue_t *obj){
+qBool_t qQueueIsEmpty(const qQueue_t *obj){
     qBool_t RetValue = qTrue;
     if( NULL != obj){
         if( obj->ItemsWaiting == 0u ){
@@ -1532,7 +1532,7 @@ Return value:
 
     The number of elements in the queue
  */
-qSize_t qQueueCount(qQueue_t *obj){
+qSize_t qQueueCount(const qQueue_t *obj){
     qSize_t RetValue = 0u;
     if ( NULL != obj ){
         RetValue = obj->ItemsWaiting;
@@ -1553,7 +1553,7 @@ Return value:
     qTrue if the Queue is full, qFalse if it is not.
  */
 /*============================================================================*/
-qBool_t qQueueIsFull(qQueue_t *obj){
+qBool_t qQueueIsFull(const qQueue_t *obj){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( obj->ItemsWaiting == obj->ItemsCount ){
@@ -1575,7 +1575,7 @@ Return value:
 
     Pointer to the data, or NULL if there is nothing in the queue
  */
-void* qQueuePeek(qQueue_t *obj){
+void* qQueuePeek(const qQueue_t *obj){
     uint8_t *RetValue = NULL;
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
@@ -1862,7 +1862,7 @@ char* qU32toX(uint32_t value, char *str, int8_t n){
     str[n] = '\0';
     for( i = ( n - 1) ; i >= 0 ; i-- ){
         str[i] = qNibbleToX((uint8_t)value);
-        value>>=4;
+        value >>= 4ul;
     }
     return str;
 }
@@ -1889,8 +1889,8 @@ uint32_t qXtoU32(const char *s) {
     uint8_t nparsed = 0u;
     if( NULL != s ){
         while ( ( *s != '\0' ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
-            byte = (uint8_t)toupper(*s++); /*get the hex char, considerate only upper case*/
-            if( isxdigit(byte) ){ /*if is a valid hex digit*/
+            byte = (uint8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/
+            if( isxdigit( (int)byte ) ){ /*if is a valid hex digit*/
                 nparsed++; /*increase the parsed char count*/
                 if ( ( byte >= '0' ) && ( byte <= '9') ){
                     byte = byte - '0'; /*make the conversion in the 0-9 range*/ 
@@ -1903,7 +1903,7 @@ uint32_t qXtoU32(const char *s) {
                 }     
                 val = ((val << 4ul) | ((uint32_t)byte & 0xFul));  /*add the corresponding nibble to the output*/                
             }
-            else if( isspace(byte) ){
+            else if( isspace( (int)byte ) ){
                 /*discard any white-space char*/
             } 
             else{
@@ -1944,7 +1944,7 @@ double qAtoF(const char *s){
         double power = 1.0, efactor;
     #endif
    
-    while( isspace(*s) ){
+    while( isspace( (int)*s) ){
         s++; /*discard whitespaces*/
     }
     fact = ('-' == *s)? -1.0 : 1.0; /*set the sign*/
@@ -1956,11 +1956,11 @@ double qAtoF(const char *s){
         if (c == '.'){
             point_seen = 1; 
         }
-        else if (isdigit(c)){
+        else if ( isdigit( (int)c ) ){
             if ( 1 == point_seen ){
                 fact *= 0.1;
             }
-            rez = rez * 10.0 + (double)( c - '0');
+            rez = rez * 10.0 + ( (double)c ) - ( (double)'0' );
         }
         else{
             break;
@@ -2019,7 +2019,7 @@ int qAtoI(const char *s){
     int RetValue = 0;
 
     if( NULL != s ){
-        while( isspace(*s) ){
+        while( isspace( (int)*s ) ){
             ++s;
         }
 
@@ -2034,11 +2034,11 @@ int qAtoI(const char *s){
             /*nothing to do*/
         }
     
-        while( *s != 0 ){ /*iterate until null char is found*/
+        while( *s != 0u ){ /*iterate until null char is found*/
             if ( ( *s < '0' ) || ( *s > '9' ) ){
                 break; 
             }
-            res = res * 10 + *s - '0'; /*if the char is digit, compute the resulting integer*/
+            res = res * 10 + ((int)*s)- ((int)'0'); /*if the char is digit, compute the resulting integer*/
             ++s;
         }
         RetValue =  sgn * res; /*return the computed integer with sign*/
@@ -2267,7 +2267,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
             str[3]='\0';       
         }
         else if( qTrue == (c = qIsInf(num)) ){ /*handle the infinity*/
-            str[0] = ( 1 == c )? '+' : '-';
+            str[0] = ( 1u == c )? '+' : '-';
             str[1]='i'; 
             str[2]='n'; 
             str[3]='f'; 
@@ -2618,11 +2618,11 @@ Return value:
 qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->ResponseReceived ) && ( 0u == obj->PatternLength ) ){ /*handler no configured yet*/
-        strncpy( obj->Pattern2Match, (const char*)Pattern, (size_t)(obj->MaxStrLength - 1u) ) ; /*set the expected response pattern*/
+        strncpy( obj->Pattern2Match, (const char*)Pattern, (size_t)obj->MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
         obj->PatternLength = (qSize_t)((0u == n)? strlen(Pattern) : n); /*set the number of chars to match*/
         obj->MatchedCount = 0u; /*reinitialize the chars match count*/
         obj->ResponseReceived = qFalse; /*clear the ready flag*/
-        if( t > 0){
+        if( t > qTimeImmediate){
             qSTimerSet( &obj->timeout, t);
         }
     }
@@ -3023,8 +3023,8 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
     qBool_t ReadyInput;
     
     ReadyInput = Parser->Input.Ready;
-    if( ( isgraph(c) ) && ( qFalse == ReadyInput ) ){
-        Parser->Input.Buffer[Parser->Input.index++] = (char)tolower(c);
+    if( ( isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){
+        Parser->Input.Buffer[Parser->Input.index++] = (char)tolower( (int)c );
         Parser->Input.Buffer[Parser->Input.index] = 0x00u;
         if( Parser->Input.index >= (Parser->Input.Size - 1u )){
             Parser->Input.index = 0u;
@@ -3069,8 +3069,8 @@ qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n){
             RetValue = qATParser_ISRHandler(Parser, data[0]);
         }
         else{
-            if( isgraph( data[0] ) ){
-                if( NULL != strchr(data, '\r') ){ 
+            if( isgraph( (int)data[0] ) ){
+                if( NULL != strchr(data, (int)'\r') ){ 
                     strncpy((char*)Parser->Input.Buffer, data, (size_t)n);
                     _qATParser_FixInput( (char*)Parser->Input.Buffer );
                     Parser->Input.Ready = qTrue;
@@ -3097,8 +3097,8 @@ static char* _qATParser_FixInput(char *s){
             s[i] = '\0';
             break;    
         } 
-        if( isgraph( s[i]) ){
-            s[j++] = (char)tolower(s[i]);
+        if( isgraph( (int)s[i]) ){
+            s[j++] = (char)tolower( (int)s[i] );
         }
     }
     s[j] = '\0';
