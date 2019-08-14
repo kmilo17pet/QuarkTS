@@ -3884,7 +3884,7 @@ qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position){
     qNode_t *iNode;
     int iPos;
  
-    if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) ) {    
+    if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position <= qList_AtBack )) {    
         if( qFalse == qList_IsMember(list, node)){
             newnode = qList_NodeInit(node);
             RetValue = qTrue;

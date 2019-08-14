@@ -1,4 +1,13 @@
-#define _POSIX_C_SOURCE	199309L
+/*
+===================================================================================
+
+WARNING:
+
+This its just a test file for x86. Dont use this as reference example in your 
+embedded application
+
+===================================================================================
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>

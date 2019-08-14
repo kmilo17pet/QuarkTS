@@ -153,7 +153,7 @@ extern "C" {
         #define qCRPosition_t static _qTaskPC_t
         typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 
         typedef qCoroutineSemaphore_t qCRSem_t;
-        #define qCR_PCInitVal   -0x7FFE           
+        #define qCR_PCInitVal           ( -1 )            
         #define __qCRKeep
         #define __qCRCodeStartBlock      do
         #define __qCRCodeEndBlock        while(qFalse)
@@ -326,7 +326,7 @@ extern "C" {
     typedef void (*qTaskFcn_t)(qEvent_t);  
 
     typedef uint8_t qNotifier_t;
-    #define QMAX_NOTIFICATION_VALUE     0xFFu
+    #define QMAX_NOTIFICATION_VALUE     ( 0xFFu )
 
     #define _qIndex_InitFlag            ( 0 )
     #define _qIndex_Enabled             ( 1 )
@@ -336,10 +336,10 @@ extern "C" {
     #define _qIndex_QueueEmpty          ( 5 )
 
     typedef uint8_t qTaskState_t;
-    #define qWaiting    0u
-    #define qReady      1u
-    #define qRunning    2u
-    #define qSuspended  3u
+    #define qWaiting    ( 0u )
+    #define qReady      ( 1u )
+    #define qRunning    ( 2u )
+    #define qSuspended  ( 3u )
 
     #if ( Q_QUEUES == 1)
         typedef struct {
@@ -592,7 +592,7 @@ extern "C" {
     typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qRBLinkMode_t;
     /*backward compatibility*/
     #define     qRB_AUTOPOP	    ( qQUEUE_RECEIVER )
-    #define	qRB_FULL	    ( qQUEUE_FULL )
+    #define	    qRB_FULL	    ( qQUEUE_FULL )
     #define     qRB_COUNT	    ( qQUEUE_COUNT )
     #define     qRB_EMPTY	    ( qQUEUE_EMPTY )
 
@@ -669,7 +669,7 @@ extern "C" {
     #else
         #define _qQueueStackName                    NULL           
         #define _qQueueStackCreate(QueueSize)       
-        #define _qQueueLength(QueueSize)            0                             
+        #define _qQueueLength(QueueSize)            ( 0 )                             
     #endif
     
     /*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
@@ -1394,7 +1394,7 @@ extern "C" {
         #define qNode_MinimalFields                  void *next, *prev, *data
 
         typedef void(*qListVisualizer_t)(void*);
-        typedef enum{qList_AtFront =-1 , qList_AtBack = 0xFFFF}qListPosition_t;
+        typedef enum{qList_AtFront =-1 , qList_AtBack = 32766}qListPosition_t;
         #define QLIST_ATFRONT             ( qList_AtFront )
         #define QLIST_ATBACK              ( qList_AtBack  )
 
