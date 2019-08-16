@@ -19,7 +19,7 @@ extern "C" {
     #define Q_BYTE_SIZED_BUFFERS        1       /*Used to enable or disable the Byte-sized buffers*/
     #define Q_MEMORY_MANAGER            1       /*Used to enable or disable the Memory Manager*/
     #define Q_BYTE_ALIGNMENT            8       /*Byte alignment used for the memory manager*/
-    #define Q_FSM                       1       /*Used to enable or disable the Finite State Machine FSM extension */
+    #define Q_FSM                       1       /*Used to enable or disable the Finite State Machine (FSM) module */
     #define Q_DEFAULT_HEAP_SIZE         2048    /*The default heap size for the memory manager*/    
     #define Q_QUEUES                    1       /*Used to enable or disable the qQueues*/
     #define Q_PRIORITY_QUEUE            1       /*Used to enable or disable queued notifications*/
@@ -33,7 +33,7 @@ extern "C" {
     #define Q_MAX_FTOA_PRECISION        10u     /*default qFtoA precision*/
     #define Q_ATOF_FULL                 0       /*Used to enable or disablethe extended "e" notation parsing in qAtoF*/
     #define Q_LISTS                     1       /*Used to enable or disable the generic lists APIs */
-    #define Q_ALLOW_SCHEDULER_RELEASE   0       /*Used to enable or disable the release of the scheduling */
+    #define Q_ALLOW_SCHEDULER_RELEASE   1       /*Used to enable or disable the release of the scheduling */
     /*================================================================================================================================*/    
   
     #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
@@ -68,7 +68,7 @@ extern "C" {
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION    "4.9.3"
+    #define QUARKTS_VERSION     "4.9.3"
     #define QUARKTS_CAPTION     "QuarkTS " QUARKTS_VERSION
     #ifndef NULL
         #define NULL ((void*)0)
@@ -536,27 +536,27 @@ extern "C" {
         _qEvent_t_ EventInfo;
     }QuarkTSCoreData_t;
 
-    void qEnterCritical(void);
-    void qExitCritical(void);
+    void qEnterCritical( void );
+    void qExitCritical( void );
 
-    qTime_t qClock2Time(const qClock_t t);
-    qClock_t qTime2Clock(const qTime_t t);
-    void qSchedulerSysTick(void);
-    qClock_t qSchedulerGetTick(void);
-    qTask_t* qTaskSelf(void);
-    qBool_t qTaskIsEnabled(const qTask_t *Task);
-    void qSchedulerSetIdleTask(qTaskFcn_t Callback);
+    qTime_t qClock2Time( const qClock_t t );
+    qClock_t qTime2Clock( const qTime_t t );
+    void qSchedulerSysTick( void );
+    qClock_t qSchedulerGetTick( void );
+    qTask_t* qTaskSelf( void );
+    qBool_t qTaskIsEnabled( const qTask_t *Task );
+    void qSchedulerSetIdleTask( qTaskFcn_t Callback );
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        void qSchedulerRelease(void);
-        void qSchedulerSetReleaseCallback(qTaskFcn_t Callback);
+        void qSchedulerRelease( void );
+        void qSchedulerSetReleaseCallback( qTaskFcn_t Callback );
     #endif
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        void _qInitScheduler(const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #else
-        void _qInitScheduler(const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack);
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #endif
 
-    void qSchedulerSetInterruptsED(const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler);
+    void qSchedulerSetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler );
    
     /*only for backward compatibility*/
     /*qSchedulerAddxTask is deprecated, instead use qSchedulerAdd_Task*/
@@ -566,17 +566,17 @@ extern "C" {
     /*qSchedulerAddSMTask is deprecated, instead use qSchedulerAdd_StateMachineTask*/
     #define qSchedulerAddSMTask     qSchedulerAdd_StateMachineTask
 
-    qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td);
-    qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg);
-    qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg);
+    qBool_t _qScheduler_TimeDeadlineCheck( qClock_t ti, qClock_t td );
+    qBool_t qSchedulerAdd_Task( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
+    qBool_t qSchedulerAdd_EventTask( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
 
     #if ( Q_FSM == 1)    
-    qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+    qBool_t qSchedulerAdd_StateMachineTask( qTask_t *Task, qPriority_t Priority, qTime_t Time,
                                 qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
-                                qState_t InitialTaskState, void *arg);
+                                qState_t InitialTaskState, void *arg );
     #endif
-    qBool_t qSchedulerRemoveTask(qTask_t *Task);
-    void qSchedulerRun(void);
+    qBool_t qSchedulerRemoveTask( qTask_t *Task );
+    void qSchedulerRun( void) ;
 
     typedef qBool_t (*qTaskNotifyMode_t)(qTask_t*, void*);
     #define Q_NOTIFY_SIMPLE      qTaskSendNotification
@@ -585,12 +585,14 @@ extern "C" {
     #define qTaskSendEvent	        qTaskSendNotification
     #define qTaskQueueEvent		    qTaskQueueNotification
     #define qSchedulerSpreadEvent   qSchedulerSpreadNotification
-    qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata);  
-    qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata);
-    qBool_t qSchedulerSpreadNotification(void *eventdata, const qTaskNotifyMode_t mode);
+    qBool_t qTaskQueueNotification( qTask_t *Task, void* eventdata );  
+    qBool_t qTaskSendNotification( qTask_t *Task, void* eventdata );
+    qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode );
 
-    typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qRBLinkMode_t;
+
+    typedef enum{qQUEUE_RECEIVER=_qIndex_QueueReceiver, qQUEUE_FULL=_qIndex_QueueFull, qQUEUE_COUNT=_qIndex_QueueCount, qQUEUE_EMPTY=_qIndex_QueueEmpty}qQueueLinkMode_t;
     /*backward compatibility*/
+    #define     qRBLinkMode_t   qQueueLinkMode_t
     #define     qRB_AUTOPOP	    ( qQUEUE_RECEIVER )
     #define	    qRB_FULL	    ( qQUEUE_FULL )
     #define     qRB_COUNT	    ( qQUEUE_COUNT )
@@ -602,17 +604,17 @@ extern "C" {
     #define     QUEUE_EMPTY     ( qQUEUE_EMPTY )
     
     #if ( Q_QUEUES == 1) 
-        qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg);
+        qBool_t qTaskAttachQueue( qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg );
 
-        qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
-        void qQueueReset(qQueue_t *obj);
-        qSize_t qQueueCount(const qQueue_t *obj);
-        qBool_t qQueueIsFull(const qQueue_t *obj);
-        qBool_t qQueueIsEmpty(const qQueue_t *obj);
-        void* qQueuePeek(const qQueue_t *obj);
-        qBool_t qQueueRemoveFront(qQueue_t *obj);
-        qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode);
-        qBool_t qQueueReceive(qQueue_t *obj, void *dest);
+        qBool_t qQueueCreate( qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
+        void qQueueReset( qQueue_t *obj );
+        qSize_t qQueueCount( const qQueue_t *obj );
+        qBool_t qQueueIsFull( const qQueue_t *obj );
+        qBool_t qQueueIsEmpty( const qQueue_t *obj );
+        void* qQueuePeek( const qQueue_t *obj );
+        qBool_t qQueueRemoveFront( qQueue_t *obj );
+        qBool_t qQueueGenericSend( qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode );
+        qBool_t qQueueReceive (qQueue_t *obj, void *dest );
 
         /*BACKWARD COMPATIBILITY: Start */
         /*qTaskLinkBuffer is deprecated, instead use qTaskAttachQueue */
@@ -632,15 +634,15 @@ extern "C" {
         /*BACKWARD COMPATIBILITY: End */
     #endif
     
-    void qTaskSetTime(qTask_t *Task, const qTime_t Value);
-    void qTaskSetIterations(qTask_t *Task, const qIteration_t Value);
-    void qTaskSetPriority(qTask_t *Task, const qPriority_t Value);
-    void qTaskSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn);
-    void qTaskSetState(qTask_t *Task, const qState_t State);
-    void qTaskSetData(qTask_t *Task, void* arg);
-    void qTaskClearTimeElapsed(qTask_t *Task);
+    void qTaskSetTime( qTask_t *Task, const qTime_t Value );
+    void qTaskSetIterations( qTask_t *Task, const qIteration_t Value );
+    void qTaskSetPriority( qTask_t *Task, const qPriority_t Value );
+    void qTaskSetCallback( qTask_t *Task, qTaskFcn_t CallbackFcn );
+    void qTaskSetState( qTask_t *Task, const qState_t State );
+    void qTaskSetData( qTask_t *Task, void* arg );
+    void qTaskClearTimeElapsed( qTask_t *Task );
     #if ( Q_TASK_COUNT_CYCLES == 1 )
-        uint32_t qTaskGetCycles(const qTask_t *Task);
+        uint32_t qTaskGetCycles( const qTask_t *Task );
     #endif
     
     /*void qTaskSuspend(qTask_t *Task)
@@ -694,16 +696,17 @@ extern "C" {
                     number greater than zero
         */
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
+        #define qSchedulerSetup( TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize )                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
     #else 
-        #define qSchedulerSetup(TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize)                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (TimmingBase), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
+        #define qSchedulerSetup( TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize )                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (TimmingBase), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
     #endif
     
 
     #if ( Q_FSM == 1)
-        qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
-        void qStateMachine_Run(qSM_t *obj, void *Data);
-        void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs);
+        qBool_t qStateMachine_Init( qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
+        qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine );
+        void qStateMachine_Run( qSM_t *obj, void *Data );
+        void qStateMachine_Attribute( qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
     #endif
 
     typedef struct{
@@ -900,20 +903,21 @@ extern "C" {
     #define QSTIMER_DISARM_VALUE    ( 0ul )
 
     #define _qSTimerIsArmed(_pObj_)     ( (_pObj_)->TV)
-    qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time);
-    qBool_t qSTimerExpired(const qSTimer_t *obj);
-    qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time);
-    qClock_t qSTimerElapsed(const qSTimer_t *obj);
-    qClock_t qSTimerRemaining(const qSTimer_t *obj);
-    void qSTimerDisarm(qSTimer_t *obj);
-    qBool_t qSTimerStatus(const qSTimer_t *obj);
+    qBool_t qSTimerSet( qSTimer_t *obj, const qTime_t Time );
+    qBool_t qSTimerExpired( const qSTimer_t *obj );
+    qBool_t qSTimerFreeRun( qSTimer_t *obj, const qTime_t Time );
+    qClock_t qSTimerElapsed( const qSTimer_t *obj );
+    qClock_t qSTimerRemaining( const qSTimer_t *obj );
+    void qSTimerDisarm( qSTimer_t *obj );
+    qBool_t qSTimerStatus( const qSTimer_t *obj );
     #define QSTIMER_INITIALIZER     {0ul, 0ul}
     
-    #define qMins2Time(t)    (((qTime_t)(t))*60.0)
-    #define qHours2Time(t)   (((qTime_t)(t))*3600.0)
-    #define qDays2Time(t)    (((qTime_t)(t))*86400.0)
-    #define qWeeks2Time(t)   (((qTime_t)(t))*604800.0)
-
+    #if ( Q_SETUP_TIME_CANONICAL == 1 )
+        #define qMins2Time(t)    ( ((qTime_t)(t))*60.0 )    
+        #define qHours2Time(t)   ( ((qTime_t)(t))*3600.0 )
+        #define qDays2Time(t)    ( ((qTime_t)(t))*86400.0 )
+        #define qWeeks2Time(t)   ( ((qTime_t)(t))*604800.0 )
+    #endif 
 
     typedef volatile char qISR_Byte_t;
     typedef volatile struct{
@@ -927,7 +931,7 @@ extern "C" {
     }qISR_ByteBuffer_t;
 
     #ifdef Q_TASK_DEV_TEST
-    void qSchedulePrintChain(void);
+    void qSchedulePrintChain( void );
     #endif
 
     #if ( Q_BYTE_SIZED_BUFFERS == 1 )
@@ -942,11 +946,11 @@ extern "C" {
     typedef void (*qPutChar_t)(void*, const char);
     typedef void (*qPutString_t)(void*, const char*);
     typedef char (*qGetChar_t)(void*);
-    void qSwapBytes(void *data, const qSize_t n);
-    qBool_t qCheckEndianness(void);
-    void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP);
-    void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
-    void qInputRaw(const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP);
+    void qSwapBytes( void *data, const qSize_t n );
+    qBool_t qCheckEndianness( void);
+    void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
+    void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP );
+    void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP );
 
     /*qPrintString(fcn, pStorage, s)
     
@@ -962,19 +966,19 @@ extern "C" {
     #define qPrintRaw(fcn, pStorage, data, n)       qOutputRaw((fcn), (void*)(pStorage), (void*)(data), (n), qFalse) 
 
     /*Some utilities*/
-    char* qU32toX(uint32_t value, char *str, int8_t n);
-    uint32_t qXtoU32(const char *s);
-    double qAtoF(const char *s);
-    int qAtoI(const char *s);
-    char* qUtoA(uint32_t num, char* str, uint8_t base);
-    char* qItoA(int32_t num, char* str, uint8_t base);
-    char* qBtoA(qBool_t num, char *str);
-    char* qQBtoA(qBool_t num, char *str);
-    qBool_t qIsInf(float f);
-    qBool_t qIsNan(float f);
-    char* qFtoA(float num, char *str, uint8_t precision);
-    uint32_t qStringHash(const char* s, uint8_t mode);
-    void qPrintXData(qPutChar_t fcn, void* pStorage, void *data, qSize_t n);
+    char* qU32toX( uint32_t value, char *str, int8_t n );
+    uint32_t qXtoU32( const char *s );
+    double qAtoF( const char *s );
+    int qAtoI( const char *s );
+    char* qUtoA( uint32_t num, char* str, uint8_t base );
+    char* qItoA( int32_t num, char* str, uint8_t base );
+    char* qBtoA( qBool_t num, char *str );
+    char* qQBtoA (qBool_t num, char *str );
+    qBool_t qIsInf( float f );
+    qBool_t qIsNan( float f );
+    char* qFtoA( float num, char *str, uint8_t precision );
+    uint32_t qStringHash( const char* s, uint8_t mode );
+    void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n );
 
     /*qSetDebugFcn(fcn)
 
@@ -1068,7 +1072,7 @@ extern "C" {
 
     #if ( Q_TRACE_VARIABLES == 1 )
         extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
-        void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize);
+        void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize );
         
         /*On-demand debug/trace macros*/
         #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)      
@@ -1188,29 +1192,23 @@ extern "C" {
         qSTimer_t timeout;
     }qResponseHandler_t; 
     #define QRESPONSE_INITIALIZER   {NULL, 0u, 0u, 0u, qFalse, {0u, 0u}}
-    void qResponseInitialize(qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax); 
-    void qResponseReset(qResponseHandler_t *obj);
-    qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n);
-    qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t);
-    qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar);
+    void qResponseInitialize( qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax ); 
+    void qResponseReset( qResponseHandler_t *obj );
+    qBool_t qResponseReceived( qResponseHandler_t *obj, const char *Pattern, qSize_t n );
+    qBool_t qResponseReceivedWithTimeout( qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t );
+    qBool_t qResponseISRHandler( qResponseHandler_t *obj, const char rxchar );
 
     #if ( Q_BYTE_SIZED_BUFFERS == 1 )
-        qSize_t qBSBuffer_Count(qBSBuffer_t const* obj);
-        qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj);
-        qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj);
-        uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj);
-        qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest);
-        qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n);
-        qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data);
-        void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length);
+        qSize_t qBSBuffer_Count( qBSBuffer_t const* obj );
+        qBool_t qBSBuffer_IsFull( qBSBuffer_t const* obj );
+        qBool_t qBSBuffer_Empty( qBSBuffer_t const *obj );
+        uint8_t qBSBuffer_Peek( qBSBuffer_t const *obj );
+        qBool_t qBSBuffer_Get( qBSBuffer_t *obj, uint8_t *dest );
+        qBool_t qBSBuffer_Read( qBSBuffer_t *obj, void *dest, const qSize_t n );
+        qBool_t qBSBuffer_Put( qBSBuffer_t *obj, const uint8_t data );
+        void qBSBuffer_Init( qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length );
     #endif
-    
-    #ifdef Q_ISR_BUFFERS    
-        qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char));
-        qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar);
-        qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest);
-    #endif  
-    
+       
     typedef struct _qIONode_t{
         qBool_t Pin, PreviousPinValue, Status;
         struct _qIONode_t *Next;
@@ -1224,13 +1222,13 @@ extern "C" {
         qCoreRegSize_t Reader;
         qBool_t State;
     }qIOEdgeCheck_t;
-    qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber);
-    qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber);
-    qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber);
-    qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime);
-    qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber);    
-    qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance);
-    qBool_t qEdgeCheck_GetNodeStatus(const qIONode_t *Node);
+    qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber );
+    qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber );
+    qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber );
+    qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime );
+    qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber );    
+    qBool_t qEdgeCheck_Update( qIOEdgeCheck_t *Instance );
+    qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t *Node );
 
     #if ( Q_ATCOMMAND_PARSER == 1 )
         #define		QAT_DEFAULT_AT_COMMAND	            "at"
@@ -1271,6 +1269,9 @@ extern "C" {
             volatile char *Buffer;
         }qATParserInput_t;
 
+        typedef void (*qPutchFcn_t)(const char);
+        typedef void (*qPutsFcn_t)(const char*);
+
         typedef struct{
             void *First;
             char *OK_Response;
@@ -1279,8 +1280,8 @@ extern "C" {
             char *Identifier;
             char *term_EOL;
             qPutChar_t OutputFcn;
-            void (*putch)(const char);
-            void (*puts)(const char*);
+            qPutchFcn_t putch;
+            qPutsFcn_t puts;
             qTask_t *Task;
             char *Output;
             qSize_t SizeOutput;
@@ -1325,21 +1326,21 @@ extern "C" {
             qSize_t CmdLen;
         }qATCommand_t;
 
-        qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL);
-        qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt);
-        qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c);
-        qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n);
-        qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd);
-        qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd);
-        qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority);
-        void qATCommandParser_FlushInput(qATParser_t *Parser);
-        qBool_t qATParser_Run(qATParser_t *Parser);
+        qBool_t qATParser_Setup( qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
+        qBool_t qATParser_CmdSubscribe( qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt );
+        qBool_t qATParser_ISRHandler( qATParser_t *Parser, char c );
+        qBool_t qATParser_ISRHandlerBlock( qATParser_t *Parser, char *data, qSize_t n );
+        qBool_t qATParser_Raise( qATParser_t *Parser, const char *cmd );
+        qATResponse_t qATParser_Exec( qATParser_t *Parser, const char *cmd );
+        qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority );
+        void qATCommandParser_FlushInput( qATParser_t *Parser );
+        qBool_t qATParser_Run( qATParser_t *Parser );
 
-        char* qATParser_GetArgString(const qATParser_PreCmd_t *param, int8_t n, char* out);
-        char* qATParser_GetArgPtr(const qATParser_PreCmd_t *param, int8_t n);
-        int qATParser_GetArgInt(const qATParser_PreCmd_t *param, int8_t n);
-        float qATParser_GetArgFlt(const qATParser_PreCmd_t *param, int8_t n);
-        uint32_t qATParser_GetArgHex(const qATParser_PreCmd_t *param, int8_t n);
+        char* qATParser_GetArgString( const qATParser_PreCmd_t *param, int8_t n, char* out );
+        char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, int8_t n );
+        int qATParser_GetArgInt( const qATParser_PreCmd_t *param, int8_t n );
+        float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n );
+        uint32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, int8_t n );
 
     #endif
 
@@ -1375,10 +1376,10 @@ extern "C" {
         
         void* qMalloc(size_t size);
         void qFree(void *ptr);
-        size_t qHeapGetFreeSize(void);
+        size_t qHeapGetFreeSize( void );
 
-        void qMemoryPool_Select(qMemoryPool_t *mPool);
-        qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size);
+        void qMemoryPool_Select( qMemoryPool_t *mPool );
+        qBool_t qMemoryPool_Init (qMemoryPool_t *mPool, void* Area, size_t size );
     #endif /* MEMORY MANAGER */
 
 
@@ -1398,15 +1399,15 @@ extern "C" {
         #define QLIST_ATFRONT             ( qList_AtFront )
         #define QLIST_ATBACK              ( qList_AtBack  )
 
-        void qList_Initialize(qList_t *list);
-        qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position);
-        void* qList_Remove(qList_t *list, void *node, qListPosition_t position);
-        qBool_t qList_IsMember(const qList_t *list, void *node);
-        void qList_View(const qList_t *list, const qListVisualizer_t visualizer);
-        void* qList_GetFront(const qList_t *list);
-        void* qList_GetBack(const qList_t *list);
-        qBool_t qList_IsEmpty(const qList_t *list);
-        qSize_t qList_Length(const qList_t *list);
+        void qList_Initialize( qList_t *list );
+        qBool_t qList_Insert( qList_t *list, void *node, qListPosition_t position );
+        void* qList_Remove( qList_t *list, void *node, qListPosition_t position );
+        qBool_t qList_IsMember( const qList_t *list, void *node );
+        void qList_View( const qList_t *list, const qListVisualizer_t visualizer );
+        void* qList_GetFront( const qList_t *list );
+        void* qList_GetBack( const qList_t *list );
+        qBool_t qList_IsEmpty( const qList_t *list );
+        qSize_t qList_Length( const qList_t *list );
 
     #endif /* Q_LIST */
 

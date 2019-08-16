@@ -48,48 +48,48 @@
 static QuarkTSCoreData_t QUARKTS;
 static volatile qClock_t _qSysTick_Epochs_ = 0ul;
 /*========================= QuarkTS Private Methods===========================*/
-static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event);
-static qTask_t* _qScheduler_GetNodeFromChain(void);
-static qTask_t* _qScheduler_RearrangeChain(qTask_t *head);
-static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task);
-static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task);
-static qBool_t _qScheduler_TransitionTo(qTask_t *task, qTaskState_t state, qTrigger_t trg);
-static qBool_t _qScheduler_ReadyTasksAvailable(void);
-static qBool_t _qTaskDeadLineReached(qTask_t *task);
+static qTaskState_t _qScheduler_Dispatch( qTask_t *Task, const qTrigger_t Event );
+static qTask_t* _qScheduler_GetNodeFromChain( void );
+static qTask_t* _qScheduler_RearrangeChain( qTask_t *head );
+static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t *Task );
+static void _qScheduler_FindPlace( qTask_t *head, qTask_t *Task );
+static qBool_t _qScheduler_TransitionTo( qTask_t *task, qTaskState_t state, qTrigger_t trg );
+static qBool_t _qScheduler_ReadyTasksAvailable( void );
+static qBool_t _qTaskDeadLineReached( qTask_t *task );
 
 #if ( Q_PRIORITY_QUEUE == 1 ) 
-    static qTask_t* _qScheduler_PriorityQueueGet(void);
+    static qTask_t* _qScheduler_PriorityQueueGet( void );
 #endif
 
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-    static void _qTriggerReleaseSchedEvent(void);
+    static void _qTriggerReleaseSchedEvent( void );
 #endif
-static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base);
+static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base );
 #if ( Q_FSM == 1)
-    static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj);
+    static void qStatemachine_ExecSubStateIfAvailable( qSM_SubState_t substate, qSM_t* obj );
 #endif
 #if ( Q_QUEUES == 1)
-    static qTrigger_t _qCheckQueueEvents(const qTask_t *Task);
-    static qSize_t _qQueueValidPowerOfTwo(qSize_t k);
-    static void qQueueCopyDataToQueue(qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition);
-    static void qQueueMoveReader(qQueue_t *obj);
-    static void qQueueCopyDataFromQueue(qQueue_t *obj, const void *pvBuffer );
+    static qTrigger_t _qCheckQueueEvents( const qTask_t *Task );
+    static qSize_t _qQueueValidPowerOfTwo( qSize_t k);
+    static void qQueueCopyDataToQueue( qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition );
+    static void qQueueMoveReader( qQueue_t *obj );
+    static void qQueueCopyDataFromQueue( qQueue_t *obj, const void *pvBuffer );
 #endif
 
 #if ( Q_LISTS == 1 )
-    static qNode_t* qList_NodeInit(void *node);
-    static void qList_InsertAtFront(qList_t *list, qNode_t *node);
-    static void qList_InserAtBack(qList_t *list, qNode_t *node);
-    static qNode_t* qList_RemoveFront(qList_t *list);
-    static qNode_t* qList_RemoveBack(qList_t *list);
+    static qNode_t* qList_NodeInit( void *node );
+    static void qList_InsertAtFront( qList_t *list, qNode_t *node );
+    static void qList_InserAtBack( qList_t *list, qNode_t *node );
+    static qNode_t* qList_RemoveFront( qList_t *list );
+    static qNode_t* qList_RemoveBack( qList_t *list );
 #endif    
     
-static char qNibbleToX(uint8_t value);    
+static char qNibbleToX( uint8_t value );    
 qPutChar_t __qDebugOutputFcn = NULL;
 #if ( Q_TRACE_VARIABLES == 1 )
     char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
 #endif
-#define _qAbs(x)    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
+#define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&_qSysTick_Epochs_)/*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
@@ -104,8 +104,10 @@ Please see <qSchedulerSetInterruptsED>
 
 */  
 void qEnterCritical(void){
+    qInt_Disabler_t Disabler;
     if( NULL != QUARKTS.I_Disable ){
-        QUARKTS.Flag.IntFlags = QUARKTS.I_Disable();
+        Disabler = QUARKTS.I_Disable;
+        QUARKTS.Flag.IntFlags = Disabler();
     }
 }
 /*============================================================================*/
@@ -115,9 +117,11 @@ Enter a critical section. This function invokes the <Enabler> if available.
 Please see <qSchedulerSetInterruptsED>
 
 */ 
-void qExitCritical(void){
+void qExitCritical( void ){
+    qInt_Restorer_t Restorer;
     if( NULL != QUARKTS.I_Restorer ){
-        QUARKTS.I_Restorer(QUARKTS.Flag.IntFlags);
+        Restorer = QUARKTS.I_Restorer;
+        Restorer( QUARKTS.Flag.IntFlags );
     }
 }
 /*============================================================================*/
@@ -133,7 +137,7 @@ Return value:
 
     time (t) in seconds
 */
-qTime_t qClock2Time(const qClock_t t){
+qTime_t qClock2Time( const qClock_t t ){
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         return (qTime_t)t;
     #else
@@ -157,7 +161,7 @@ Return value:
 
     time (t) in epochs
 */
-qClock_t qTime2Clock(const qTime_t t){
+qClock_t qTime2Clock( const qTime_t t ){
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         return (qClock_t)t;
     #else 
@@ -181,7 +185,7 @@ Return value:
     A pointer to the current running task.
     NULL when the scheduler it's in a busy state or when IDLE Task is running.
 */
-qTask_t* qTaskSelf(void){
+qTask_t* qTaskSelf( void ){
     return QUARKTS.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
@@ -198,9 +202,9 @@ Return value:
 
     True if the task in on Enabled state, otherwise returns false.
 */    
-qBool_t qTaskIsEnabled(const qTask_t *Task){
+qBool_t qTaskIsEnabled( const qTask_t *Task ){
     qBool_t RetValue = qFalse;
-    if( NULL != Task){
+    if( NULL != Task ){
         RetValue = (qBool_t)Task->Flag[_qIndex_Enabled];
     }
     return RetValue;
@@ -215,7 +219,7 @@ Parameters:
     - IDLE_Callback : A pointer to a void callback method with a qEvent_t 
                       parameter as input argument.
 */
-void qSchedulerSetIdleTask(qTaskFcn_t Callback){
+void qSchedulerSetIdleTask( qTaskFcn_t Callback ){
     QUARKTS.IDLECallback = Callback;
 }
 /*============================================================================*/
@@ -225,7 +229,7 @@ Disables the kernel scheduling. The main thread will continue after the
 qSchedule() call.
 */
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-void qSchedulerRelease(void){
+void qSchedulerRelease( void ){
     QUARKTS.Flag.ReleaseSched = qTrue;
 }
 #endif
@@ -239,7 +243,7 @@ Parameters:
                  as input argument.
 */
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-void qSchedulerSetReleaseCallback(qTaskFcn_t Callback){
+void qSchedulerSetReleaseCallback( qTaskFcn_t Callback ){
     QUARKTS.ReleaseSchedCallback = Callback;
 }
 #endif
@@ -257,7 +261,7 @@ Return value:
     A unsigned long value containing the number of task activations.
 */
 #if ( Q_TASK_COUNT_CYCLES == 1 )
-uint32_t qTaskGetCycles(const qTask_t *Task){
+uint32_t qTaskGetCycles( const qTask_t *Task ){
     uint32_t RetValue = 0ul;
     if( NULL != Task ){
         RetValue = Task->Cycles;
@@ -284,7 +288,7 @@ Return value:
 
     qTrue on success. Otherwise qFalse.
 */ 
-qBool_t qTaskSendNotification(qTask_t *Task, void* eventdata){
+qBool_t qTaskSendNotification( qTask_t *Task, void* eventdata){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
         if( Task->Notification < QMAX_NOTIFICATION_VALUE ){
@@ -311,13 +315,13 @@ Return value:
     qTrue if the event could be spread in all tasks. Otherwise qFalse.              
 */ 
 /*============================================================================*/
-qBool_t qSchedulerSpreadNotification(void *eventdata, const qTaskNotifyMode_t mode){
+qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode ){
     qBool_t RetValue = qFalse;
     qTask_t *Task = NULL;
     if( ( Q_NOTIFY_SIMPLE == mode ) || ( Q_NOTIFY_QUEUED == mode ) ){
         RetValue = qTrue;
         for( Task = QUARKTS.Head ; NULL != Task; Task = Task->Next){
-            if( qFalse == mode(Task, eventdata) ){
+            if( qFalse == mode( Task, eventdata ) ){
                 RetValue = qFalse;
             }
         } 
@@ -335,9 +339,9 @@ Parameters:
     - Value : Execution interval defined in seconds (floating-point format). 
               For immediate execution (tValue = qTimeImmediate).
 */
-void qTaskSetTime(qTask_t *Task, const qTime_t Value){
+void qTaskSetTime( qTask_t *Task, const qTime_t Value ){
     if( NULL != Task ){
-        Task->Interval = qTime2Clock(Value);
+        Task->Interval = qTime2Clock( Value );
     }
 }
 /*============================================================================*/
@@ -355,9 +359,9 @@ Parameters:
               another set of iterations, you need to set the number of 
               iterations again and resume.
 */
-void qTaskSetIterations(qTask_t *Task, const qIteration_t Value){
+void qTaskSetIterations( qTask_t *Task, const qIteration_t Value ){
     if( NULL != Task ){
-        Task->Iterations = (qPeriodic==Value)? qPeriodic : -Value;
+        Task->Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
     }      
 }
 /*============================================================================*/
@@ -370,7 +374,7 @@ Parameters:
     - Task : A pointer to the task node.
     - Value : Priority Value. [0(min) - 255(max)]
 */
-void qTaskSetPriority(qTask_t *Task, const qPriority_t Value){
+void qTaskSetPriority( qTask_t *Task, const qPriority_t Value ){
     if( NULL != Task ){
         QUARKTS.Flag.Init = qFalse; 
         Task->Priority = Value; 
@@ -387,7 +391,7 @@ Parameters:
     - Callback : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
-void qTaskSetCallback(qTask_t *Task, qTaskFcn_t CallbackFcn){
+void qTaskSetCallback( qTask_t *Task, qTaskFcn_t CallbackFcn ){
     if( NULL != Task ){
         Task->Callback = CallbackFcn;
     }    
@@ -404,7 +408,7 @@ Parameters:
 */
 void qTaskSetState(qTask_t *Task, const qState_t State){
     if( NULL != Task ){
-        if( State != Task->Flag[_qIndex_Enabled]){ 
+        if( State != Task->Flag[_qIndex_Enabled] ){ 
             Task->Flag[_qIndex_Enabled] = State;
             Task->ClockStart = qSchedulerGetTick();
         }
@@ -423,7 +427,7 @@ Return value:
 
     A void pointer to the task data.
 */
-void qTaskSetData(qTask_t *Task, void* arg){
+void qTaskSetData( qTask_t *Task, void* arg ){
     if( NULL != Task ){
         Task->TaskData = arg;
     }
@@ -437,7 +441,7 @@ Parameters:
 
     - Task : A pointer to the task node.
 */
-void qTaskClearTimeElapsed(qTask_t *Task){
+void qTaskClearTimeElapsed( qTask_t *Task ){
     if( NULL != Task ){
         Task->ClockStart = qSchedulerGetTick();
     }    
@@ -462,13 +466,13 @@ Return value:
     Returns qTrue if the event has been inserted in the queue, or qFalse if an error 
     occurred (The queue exceeds the size).
 */
-qBool_t qTaskQueueNotification(qTask_t *Task, void* eventdata){
+qBool_t qTaskQueueNotification( qTask_t *Task, void* eventdata ){
     #if ( Q_PRIORITY_QUEUE == 1 )
         qBool_t RetValue = qFalse;
         volatile qQueueStack_t tmp;
         int16_t QueueMaxIndex;
         int16_t CurrentQueueIndex;
-        QueueMaxIndex = ((int16_t)QUARKTS.QueueSize) - 1; /*to avoid side effects */
+        QueueMaxIndex = ( (int16_t)QUARKTS.QueueSize ) - 1; /*to avoid side effects */
         CurrentQueueIndex = QUARKTS.QueueIndex; /*to avoid side effects */
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = eventdata;
@@ -494,13 +498,13 @@ Parameters:
                  restores interrupts.
     - Disabler : The function with hardware specific code that disables interrupts.
 */ 
-void qSchedulerSetInterruptsED(const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler){
+void qSchedulerSetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
     QUARKTS.I_Restorer = Restorer;
     QUARKTS.I_Disable = Disabler;
 }
 #if ( Q_PRIORITY_QUEUE == 1 )
 /*============================================================================*/
-static qTask_t* _qScheduler_PriorityQueueGet(void){
+static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qTask_t *xTask = NULL;
     uint8_t i;
     int16_t j;
@@ -534,9 +538,9 @@ static qTask_t* _qScheduler_PriorityQueueGet(void){
 #endif
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    void _qInitScheduler(const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
 #else
-    void _qInitScheduler(const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
 #endif
     #if ( Q_PRIORITY_QUEUE == 1 )  
         uint8_t i;
@@ -598,12 +602,12 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
     */
-qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg){
+qBool_t qSchedulerAdd_Task( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL!=Task ) && ( NULL != CallbackFcn ) ) {
-        qSchedulerRemoveTask(Task); /*Remove the task if was previously added to the chain*/
+        qSchedulerRemoveTask( Task ); /*Remove the task if was previously added to the chain*/
         Task->Callback = CallbackFcn;
-        Task->Interval = qTime2Clock(Time);
+        Task->Interval = qTime2Clock( Time );
         Task->TaskData = arg;
         Task->Priority = Priority;
         Task->Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
@@ -654,8 +658,8 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
      */
-qBool_t qSchedulerAdd_EventTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg){
-    return qSchedulerAdd_Task(Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg);
+qBool_t qSchedulerAdd_EventTask( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
+    return qSchedulerAdd_Task( Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
 /*============================================================================*/
 #if ( Q_FSM == 1)
@@ -702,13 +706,13 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
     */
-qBool_t qSchedulerAdd_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
+qBool_t qSchedulerAdd_StateMachineTask( qTask_t *Task, qPriority_t Priority, qTime_t Time,
                             qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
-                            qState_t InitialTaskState, void *arg){
+                            qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
-        if ( qTrue == qSchedulerAdd_Task(Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg) ){
-            qStateMachine_Init(StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState);
+        if ( qTrue == qSchedulerAdd_Task( Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
+            qStateMachine_Init( StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState );
             Task->StateMachine = StateMachine;
             RetValue = qTrue;
         }
@@ -729,18 +733,18 @@ Return value:
 
     Returns qTrue if success, otherwise returns qFalse.;     
     */
-qBool_t qSchedulerRemoveTask(qTask_t *Task){
+qBool_t qSchedulerRemoveTask( qTask_t *Task ){
     qTask_t *tmp = QUARKTS.Head;
     qTask_t *prev = NULL;
     qBool_t RetValue = qFalse;
 
-    if( NULL != tmp){
+    if( NULL != tmp ){
         while( ( tmp != Task ) && ( NULL != tmp->Next ) ){ /*find the task to remove*/
             prev = tmp; /*keep on track the previous node*/
             tmp = tmp->Next;
         }
         if( tmp == Task ){ /*remove the task if was found on the chain*/
-            if( NULL != prev){
+            if( NULL != prev ){
                 prev->Next = tmp->Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
             }
             else{
@@ -753,11 +757,11 @@ qBool_t qSchedulerRemoveTask(qTask_t *Task){
     return RetValue;
 }
 /*============================================================================*/
-static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task){ /*return the new head if modified*/
+static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t *Task ){ /*return the new head if modified*/
     qTask_t *RetValue = head; /*if no change in the head, keep it*/
     qPriority_t TaskPriority;
     qPriority_t HeadPriority;
-    if( NULL == head){ /*Is the first task in the scheme? */
+    if( NULL == head ){ /*Is the first task in the scheme? */
         Task->Next = head; /*move the head and just add the task node on top*/
         RetValue =  Task; /*this task will be the new head*/
     }
@@ -769,13 +773,13 @@ static qTask_t* _qScheduler_PriorizedInsert(qTask_t *head, qTask_t *Task){ /*ret
             RetValue =  Task; /*this task will be the new head*/
         }
         else{
-            _qScheduler_FindPlace( head, Task);
+            _qScheduler_FindPlace( head, Task );
         }       
     }
     return RetValue; 
 }
 /*============================================================================*/
-static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task){ /*find a new position for the task in the chain, when finded, put the task there*/
+static void _qScheduler_FindPlace( qTask_t *head, qTask_t *Task ){ /*find a new position for the task in the chain, when finded, put the task there*/
     qTask_t *tmp_node = NULL;
     qPriority_t PrioTask;
     PrioTask = Task->Priority; /*to avoid side effects*/
@@ -788,13 +792,13 @@ static void _qScheduler_FindPlace(qTask_t *head, qTask_t *Task){ /*find a new po
 }
 #if ( Q_AUTO_CHAINREARRANGE == 1 )
 /*============================================================================*/
-static qTask_t* _qScheduler_RearrangeChain(qTask_t *head){ /*this method rearrange the chain according the priority of all its nodes*/
+static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearrange the chain according the priority of all its nodes*/
     qTask_t *new_head = NULL, *tmp = head, *tmp1 = NULL;
     qEnterCritical();
     while( NULL != tmp ){ /*start with a new head and re-insert the entire chain*/
         tmp1 = tmp;
         tmp = tmp->Next;
-        new_head = _qScheduler_PriorizedInsert( new_head, tmp1);  
+        new_head = _qScheduler_PriorizedInsert( new_head, tmp1 );  
     }
     QUARKTS.Flag.Init = qTrue; /*set the initialization flag*/
     qExitCritical();
@@ -802,7 +806,7 @@ static qTask_t* _qScheduler_RearrangeChain(qTask_t *head){ /*this method rearran
 }
 #endif
 /*============================================================================*/
-/*qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg)
 
 Attach a Queue to the Task. 
 
@@ -840,7 +844,7 @@ Return value:
     Returns qTrue on success, otherwise returns qFalse;
 */
 #if ( Q_QUEUES == 1)
-qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mode, uint8_t arg){
+qBool_t qTaskAttachQueue( qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) && ( Mode >= qQUEUE_RECEIVER ) && ( Mode <= qQUEUE_EMPTY)  ){
         if( NULL != Queue->pHead ) {
@@ -857,7 +861,7 @@ qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qRBLinkMode_t Mod
     return RetValue;
 }
 /*============================================================================*/
-static qTrigger_t _qCheckQueueEvents(const qTask_t *Task){
+static qTrigger_t _qCheckQueueEvents( const qTask_t *Task ){
     qTrigger_t RetValue = qTriggerNULL;
     uint8_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
     qBool_t IsFull, IsEmpty;
@@ -868,9 +872,9 @@ static qTrigger_t _qCheckQueueEvents(const qTask_t *Task){
             CountFlag = Task->Flag[_qIndex_QueueCount]; /*to avoid side effects*/
             ReceiverFlag = Task->Flag[_qIndex_QueueReceiver]; /*to avoid side effects*/
             EmptyFlag = Task->Flag[_qIndex_QueueEmpty]; /*to avoid side effects*/
-            CurrentQueueCount = qQueueCount(Task->Queue); /*to avoid side effects*/
-            IsFull = qQueueIsFull(Task->Queue); /*to avoid side effects*/
-            IsEmpty = qQueueIsEmpty(Task->Queue); /*to avoid side effects*/
+            CurrentQueueCount = qQueueCount( Task->Queue ); /*to avoid side effects*/
+            IsFull = qQueueIsFull( Task->Queue ); /*to avoid side effects*/
+            IsEmpty = qQueueIsEmpty( Task->Queue ); /*to avoid side effects*/
             /*check the queue events in the corresponding precedence order*/
             if( FullFlag && IsFull ){        
                 RetValue =  byQueueFull;
@@ -894,14 +898,16 @@ static qTrigger_t _qCheckQueueEvents(const qTask_t *Task){
 #endif
 /*============================================================================*/
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-static void _qTriggerReleaseSchedEvent(void){
+static void _qTriggerReleaseSchedEvent( void ){
+    qTaskFcn_t Callback;
     QUARKTS.Flag.Init = qFalse;
     QUARKTS.Flag.ReleaseSched = qFalse;   
-    QUARKTS.EventInfo.FirstCall = (qFalse == QUARKTS.Flag.FCallReleased)? qTrue : qFalse;    
+    QUARKTS.EventInfo.FirstCall = ( qFalse == QUARKTS.Flag.FCallReleased )? qTrue : qFalse;    
     QUARKTS.EventInfo.Trigger = bySchedulingRelease;
     QUARKTS.EventInfo.TaskData = NULL;
     if( NULL != QUARKTS.ReleaseSchedCallback ){
-        QUARKTS.ReleaseSchedCallback((qEvent_t)&QUARKTS.EventInfo);
+        Callback = QUARKTS.ReleaseSchedCallback;
+        Callback( (qEvent_t)&QUARKTS.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
     }
     QUARKTS.Flag.FCallIdle = qTrue;      
 }
@@ -915,8 +921,10 @@ call is mandatory and must be called once inside the dedicated timer interrupt s
 */    
 void qSchedulerSysTick(void){_qSysTick_Epochs_++;}
 /*============================================================================*/
-qClock_t qSchedulerGetTick(void){   
-	return ( NULL != QUARKTS.GetSysTick )? QUARKTS.GetSysTick() : _qSysTick_Epochs_;
+qClock_t qSchedulerGetTick( void ){   
+    qGetTickFcn_t TickProvider;
+    TickProvider = QUARKTS.GetSysTick;
+	return ( NULL != TickProvider )? TickProvider() : _qSysTick_Epochs_; /*some compilers can deal with function pointers inside structs*/
 }
 /*============================================================================*/
 /*void qSchedule(void)
@@ -926,58 +934,60 @@ pool has been defined.
 
   Note : qScheduleRun keeps the application in an endless loop
 */
-void qSchedulerRun(void){
+void qSchedulerRun( void ){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
     QUARKTS.Flag.Init = qTrue; 
     do{
         #if ( Q_AUTO_CHAINREARRANGE == 1 )
         if( qFalse == QUARKTS.Flag.Init){ /*if initial scheduling conditions changed*/
-            QUARKTS.Head = _qScheduler_RearrangeChain(QUARKTS.Head); /*sort the chain by priority (init flag internally set)*/
+            QUARKTS.Head = _qScheduler_RearrangeChain( QUARKTS.Head ); /*sort the chain by priority (init flag internally set)*/
         } 
         #endif
         #if ( Q_PRIORITY_QUEUE == 1 )
         if( NULL != ( Task = _qScheduler_PriorityQueueGet() ) ){ /*extract a task from the front of the priority queue*/
-            Task->State = _qScheduler_Dispatch(Task, byNotificationQueued);  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/
+            Task->State = _qScheduler_Dispatch( Task, byNotificationQueued );  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/
         }     
         #endif
         if( _qScheduler_ReadyTasksAvailable() ){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
-            while( NULL != (Task = _qScheduler_GetNodeFromChain()) ){ /*Get node by node from the chain until no more available*/
-                Task->State = (qTaskState_t) ((qReady == Task->State) ? _qScheduler_Dispatch(Task, Task->Trigger) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
+            while( NULL != ( Task = _qScheduler_GetNodeFromChain() ) ){ /*Get node by node from the chain until no more available*/
+                Task->State = (qTaskState_t) ( ( qReady == Task->State ) ? _qScheduler_Dispatch( Task, Task->Trigger ) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
             }
         }
         else if( ( NULL==Task ) && ( NULL != QUARKTS.IDLECallback) ) {
-             _qScheduler_Dispatch(NULL, byNoReadyTasks); /*no tasks are available for execution, run the idle task*/
+             _qScheduler_Dispatch( NULL, byNoReadyTasks ); /*no tasks are available for execution, run the idle task*/
         }
         else{
             /*nothing to do*/
         }    
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        while(qFalse == QUARKTS.Flag.ReleaseSched); /*scheduling end-point*/ 
+        while( qFalse == QUARKTS.Flag.ReleaseSched ); /*scheduling end-point*/ 
         _qTriggerReleaseSchedEvent(); /*check for scheduling-release request*/
     #else
         while(1);
     #endif
 }
 /*============================================================================*/
-static qTask_t* _qScheduler_GetNodeFromChain(void){ 
+static qTask_t* _qScheduler_GetNodeFromChain( void ){ 
     static qTask_t *ChainIterator = __qChainInitializer; /*used to keep on track the current chain position*/
     qTask_t *Node;  /*used the hold the node*/
     if( __qChainInitializer == ChainIterator ){ /*First call*/
         ChainIterator = QUARKTS.Head; /*start from the head*/
     } 
     Node = ChainIterator; /*obtain the current node from the chain*/
-    ChainIterator = (ChainIterator)? ChainIterator->Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
+    ChainIterator = ( ChainIterator )? ChainIterator->Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
     return Node; /*return the task node at current chain position*/
 }
 /*============================================================================*/
-static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
+static qTaskState_t _qScheduler_Dispatch( qTask_t *Task, const qTrigger_t Event ){
     qIteration_t TaskIteration;
+    qTaskFcn_t TaskActivities = NULL;
     if( byNoReadyTasks == Event){
         QUARKTS.EventInfo.FirstCall = (qFalse == QUARKTS.Flag.FCallIdle)? qTrue : qFalse;
         QUARKTS.EventInfo.Trigger = Event;
         QUARKTS.EventInfo.TaskData = NULL;
-        QUARKTS.IDLECallback( (qEvent_t)&QUARKTS.EventInfo ); /*run the idle callback*/
+        TaskActivities = QUARKTS.IDLECallback; /*some compilers can deal with function pointers inside structs*/
+        TaskActivities( (qEvent_t)&QUARKTS.EventInfo ); /*run the idle callback*/
         QUARKTS.Flag.FCallIdle = qTrue;   
     }
     else{
@@ -1001,7 +1011,7 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
                 break;
         #if ( Q_QUEUES == 1)    
             case byQueueReceiver:
-                QUARKTS.EventInfo.EventData = qQueuePeek(Task->Queue); /*the EventData will point to the RBuffer front-data*/
+                QUARKTS.EventInfo.EventData = qQueuePeek( Task->Queue ); /*the EventData will point to the RBuffer front-data*/
                 break;
             case byQueueFull: case byQueueCount: case byQueueEmpty: 
                 QUARKTS.EventInfo.EventData = (void*)Task->Queue;  /*the EventData will point to the the linked RingBuffer*/
@@ -1022,25 +1032,26 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
         QUARKTS.EventInfo.TaskData = Task->TaskData;
         
         QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
+        TaskActivities = Task->Callback;
         #if ( Q_FSM == 1)
             if ( ( NULL != Task->StateMachine ) && ( __qFSMCallbackMode == Task->Callback ) ){
-                qStateMachine_Run(Task->StateMachine, (void*)&QUARKTS.EventInfo);  /*If the task has a FSM attached, just run it*/  
+                qStateMachine_Run( Task->StateMachine, (void*)&QUARKTS.EventInfo );  /*If the task has a FSM attached, just run it*/  
             }
             else if ( NULL != Task->Callback ) {
-                Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/ 
+                TaskActivities( (qEvent_t)&QUARKTS.EventInfo ); /*else, just launch the callback function*/ 
             }       
             else{
                 /*nothing to do*/
             }
         #else
             if ( NULL != Task->Callback ) {
-                Task->Callback((qEvent_t)&QUARKTS.EventInfo); /*else, just launch the callback function*/ 
+                TaskActivities( (qEvent_t)&QUARKTS.EventInfo ); /*else, just launch the callback function*/ 
             }     
         #endif
         QUARKTS.CurrentRunningTask = NULL;
         #if ( Q_QUEUES == 1) 
             if( byQueueReceiver == Event){
-                qQueueRemoveFront(Task->Queue);  /*remove the data from the Queue, if the event was byQueueDequeue*/
+                qQueueRemoveFront( Task->Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
             } 
         #endif
         Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
@@ -1054,21 +1065,21 @@ static qTaskState_t _qScheduler_Dispatch(qTask_t *Task, const qTrigger_t Event){
     return qSuspended;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_TransitionTo(qTask_t *task, qTaskState_t state, qTrigger_t trg){
+static qBool_t _qScheduler_TransitionTo( qTask_t *task, qTaskState_t state, qTrigger_t trg ){
     task->State = state;
     task->Trigger = trg;
     return qTrue;
 }
 /*============================================================================*/
-qBool_t _qScheduler_TimeDeadlineCheck(qClock_t ti, qClock_t td){
+qBool_t _qScheduler_TimeDeadlineCheck( qClock_t ti, qClock_t td ){
     qBool_t RetValue = qFalse;
-    if( (qSchedulerGetTick() - ti) >= td ){
+    if( ( qSchedulerGetTick() - ti ) >= td ){
         RetValue = qTrue;
     }
     return RetValue; 
 }
 /*============================================================================*/
-static qBool_t _qTaskDeadLineReached(qTask_t *task){
+static qBool_t _qTaskDeadLineReached( qTask_t *task ){
     qBool_t RetValue = qFalse;
     qBool_t EnabledFlag;
     qIteration_t TaskIterations;
@@ -1088,24 +1099,24 @@ static qBool_t _qTaskDeadLineReached(qTask_t *task){
     return RetValue;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_ReadyTasksAvailable(void){ /*this method checks for tasks that fulfill the conditions to get the qReady state*/
+static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for tasks that fulfill the conditions to get the qReady state*/
     qTask_t *Task = NULL;
     #if ( Q_QUEUES == 1) 
     qTrigger_t trg = qTriggerNULL;
     #endif
     qBool_t nTaskReady = qFalse; /*the return is to notify that at least one task gained the qReady state*/
-    for( Task = QUARKTS.Head ; NULL != Task ; Task = Task->Next){ /*loop every task in the chain : only one event will be verified by node*/
-        if( _qTaskDeadLineReached(Task) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
+    for( Task = QUARKTS.Head ; NULL != Task ; Task = Task->Next ){ /*loop every task in the chain : only one event will be verified by node*/
+        if( _qTaskDeadLineReached( Task ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
             Task->ClockStart = qSchedulerGetTick(); /*Restart the task time*/
-            nTaskReady = _qScheduler_TransitionTo( Task, qReady, byTimeElapsed); /*put the task in ready state with their corresponding trigger */                  
+            nTaskReady = _qScheduler_TransitionTo( Task, qReady, byTimeElapsed ); /*put the task in ready state with their corresponding trigger */                  
         }
         #if ( Q_QUEUES == 1)  
-        else if( qTriggerNULL !=  (trg = _qCheckQueueEvents( Task ) ) ){ /*If the deadline has not met, check if there is a queue event available*/
+        else if( qTriggerNULL !=  ( trg = _qCheckQueueEvents( Task ) ) ){ /*If the deadline has not met, check if there is a queue event available*/
             nTaskReady = _qScheduler_TransitionTo( Task, qReady, trg ); /*put the task in ready state with their corresponding trigger */   
         }
         #endif
         else if( Task->Notification ){   /*The last check will be if the task has an async event*/
-            nTaskReady = _qScheduler_TransitionTo( Task, qReady, byNotificationSimple); /*put the task in ready state with their corresponding trigger */   
+            nTaskReady = _qScheduler_TransitionTo( Task, qReady, byNotificationSimple ); /*put the task in ready state with their corresponding trigger */   
         }
         else{
             Task->State = qSuspended; /*If the task has no available events, put it in a suspended state*/        
@@ -1140,27 +1151,53 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState){
+qBool_t qStateMachine_Init( qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
     qBool_t RetValue = qFalse;
-    if( ( NULL != obj ) && ( NULL != InitState) ){
+    if( ( NULL != obj ) && ( NULL != InitState ) ){
         obj->NextState = InitState;
-        qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
-        qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0u;
-        qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_SUCCESS;
-        qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = FailureState;
-        qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = SuccessState;
-        qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = UnexpectedState;
-        qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = BeforeAnyState;
-        qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
+        qConstField_Set( qSM_State_t, obj->PreviousState ) = NULL;
+        qConstField_Set( qBool_t, obj->StateFirstEntry ) = 0u;
+        qConstField_Set( qSM_Status_t, obj->PreviousReturnStatus ) = qSM_EXIT_SUCCESS;
+        qConstField_Set( qSM_SubState_t, obj->qPrivate.__Failure ) = FailureState;
+        qConstField_Set( qSM_SubState_t, obj->qPrivate.__Success ) = SuccessState;
+        qConstField_Set( qSM_SubState_t, obj->qPrivate.__Unexpected ) = UnexpectedState;
+        qConstField_Set( qSM_SubState_t, obj->qPrivate.__BeforeAnyState ) = BeforeAnyState;
+        qConstField_Set( qSM_State_t, obj->LastState ) = NULL;
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-static void qStatemachine_ExecSubStateIfAvailable(qSM_SubState_t substate, qSM_t* obj){
+static void qStatemachine_ExecSubStateIfAvailable( qSM_SubState_t substate, qSM_t* obj ){
     if( NULL != substate ){
-        substate(obj);
+        substate( obj );
     }
+}
+/*============================================================================*/
+/*qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine )
+
+Attach a Finite State Machine(FSM) to the Task. 
+
+Note: Task and state-machine should be previously initialized before the attach procedure.
+
+Parameters:
+
+    - Task : A pointer to the task node.
+    - StateMachine : A pointer to the FSM object.
+
+Return value:
+
+    Returns qTrue on success, otherwise, returns qFalse.
+
+*/
+qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine ){
+    qBool_t RetValue;
+    if( ( NULL != Task ) && ( NULL != StateMachine ) ){
+        Task->Callback = __qFSMCallbackMode;
+        Task->StateMachine = StateMachine;
+        RetValue = qTrue;
+    }    
+    return RetValue;
 }
 /*============================================================================*/
 /*void qStateMachine_Run(qSM_t *obj, void* Data)
@@ -1175,29 +1212,29 @@ Parameters:
              for multiple arguments, create a structure that contains all of 
              the arguments and pass a pointer to that structure.
 */    
-void qStateMachine_Run(qSM_t *obj, void *Data){
+void qStateMachine_Run( qSM_t *obj, void *Data ){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
     if( NULL != obj ){
-        qConstField_Set(void* ,obj->Data)/*obj->Data*/ = Data;   /*pass the data through the fsm*/
+        qConstField_Set( void* ,obj->Data ) = Data;   /*pass the data through the fsm*/
         qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
         if( NULL != obj->NextState ){ /*eval nextState if available*/
-            qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = (obj->LastState != obj->NextState)? qTrue : qFalse;  /*Get the StateFirstEntry flag*/
+            qConstField_Set( qBool_t, obj->StateFirstEntry ) = ( obj->LastState != obj->NextState )? qTrue : qFalse;  /*Get the StateFirstEntry flag*/
             if( obj->StateFirstEntry ){ /*if StateFistEntry is set, update the PreviousState*/
-                qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = obj->LastState ; 
+                qConstField_Set( qSM_State_t, obj->PreviousState ) = obj->LastState ; 
             }
             prev = obj->NextState; /*keep the next state in prev for LastState update*/
-            qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = obj->NextState(obj); /*Eval the current state, and get their return status*/
-            qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = prev; /*update the LastState*/
+            qConstField_Set( qSM_Status_t, obj->PreviousReturnStatus) = prev(obj); /*Eval the current state, and get their return status*/
+            qConstField_Set( qSM_State_t, obj->LastState ) = prev; /*update the LastState*/
         }
         else{
-            qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
+            qConstField_Set( qSM_Status_t, obj->PreviousReturnStatus ) = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
         }
         /*Check return status to eval extra states*/
         if( qSM_EXIT_FAILURE == obj->PreviousReturnStatus ){
-            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Failure, obj); /*Run failure state if available*/
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Failure, obj ); /*Run failure state if available*/
         }
-        else if (qSM_EXIT_SUCCESS == obj->PreviousReturnStatus){
-            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Success, obj); /*Run success state if available*/
+        else if ( qSM_EXIT_SUCCESS == obj->PreviousReturnStatus ){
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Success, obj ); /*Run success state if available*/
         } 
         else{
             qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.__Unexpected, obj ); /*Run unexpected state if available*/
@@ -1224,30 +1261,30 @@ Parameters:
     - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
 */    
-void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs){
+void qStateMachine_Attribute( qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
     switch(Flag){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)s;
-            qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/ = NULL;
-            qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
-            qConstField_Set(qBool_t, obj->StateFirstEntry)/*obj->StateFirstEntry*/ = 0u;
-            qConstField_Set(qSM_Status_t, obj->PreviousReturnStatus)/*obj->PreviousReturnStatus*/ = qSM_EXIT_SUCCESS;            
+            qConstField_Set( qSM_State_t, obj->PreviousState ) = NULL;
+            qConstField_Set( qSM_State_t, obj->LastState ) = NULL;
+            qConstField_Set( qBool_t, obj->StateFirstEntry ) = 0u;
+            qConstField_Set( qSM_Status_t, obj->PreviousReturnStatus ) = qSM_EXIT_SUCCESS;            
             break;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
-            qConstField_Set(qSM_State_t, obj->PreviousState)/*obj->PreviousState*/  = NULL;
-            qConstField_Set(qSM_State_t, obj->LastState)/*obj->LastState*/ = NULL;
+            qConstField_Set( qSM_State_t, obj->PreviousState ) = NULL;
+            qConstField_Set( qSM_State_t, obj->LastState ) = NULL;
             break;
         case qSM_FAILURE_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Failure)/*obj->qPrivate.__Failure*/ = (qSM_SubState_t)subs;
+            qConstField_Set( qSM_SubState_t, obj->qPrivate.__Failure ) = (qSM_SubState_t)subs;
             break;
         case qSM_SUCCESS_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Success)/*obj->qPrivate.__Success*/ = (qSM_SubState_t)subs;
+            qConstField_Set( qSM_SubState_t, obj->qPrivate.__Success ) = (qSM_SubState_t)subs;
             break;    
         case qSM_UNEXPECTED_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__Unexpected)/*obj->qPrivate.__Unexpected*/ = (qSM_SubState_t)subs;
+            qConstField_Set( qSM_SubState_t, obj->qPrivate.__Unexpected ) = (qSM_SubState_t)subs;
             break;   
         case qSM_BEFORE_ANY_STATE:
-            qConstField_Set(qSM_SubState_t, obj->qPrivate.__BeforeAnyState)/*obj->qPrivate.__BeforeAnyState*/ = (qSM_SubState_t)subs;
+            qConstField_Set( qSM_SubState_t, obj->qPrivate.__BeforeAnyState ) = (qSM_SubState_t)subs;
             break;              
         default:
             break;
@@ -1276,11 +1313,11 @@ Return value:
 
     Returns qTrue on success, otherwise, returns qFalse.
 */
-qBool_t qSTimerSet(qSTimer_t *obj, const qTime_t Time){
+qBool_t qSTimerSet( qSTimer_t *obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        qConstField_Set(qClock_t, obj->TV)/*obj->TV*/ = qTime2Clock(Time); /*set the STimer time in epochs*/
-        qConstField_Set(qClock_t, obj->Start)/*obj->Start*/ = qSchedulerGetTick(); /*set the init time of the STimer with the current system epoch value*/
+        qConstField_Set( qClock_t, obj->TV ) = qTime2Clock(Time); /*set the STimer time in epochs*/
+        qConstField_Set( qClock_t, obj->Start ) = qSchedulerGetTick(); /*set the init time of the STimer with the current system epoch value*/
         RetValue = qTrue;
     }
     return RetValue;
@@ -1310,17 +1347,17 @@ Return value:
     > Note 4: A disarmed STimer also returns qFalse.
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
-qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time){
+qBool_t qSTimerFreeRun( qSTimer_t *obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){ 
-        if( QSTIMER_ARMED == qSTimerStatus(obj) ){ 
-            if( qSTimerExpired(obj) ){
-                qSTimerDisarm(obj); 
+        if( QSTIMER_ARMED == qSTimerStatus( obj ) ){ 
+            if( qSTimerExpired( obj ) ){
+                qSTimerDisarm( obj ); 
                 RetValue = qTrue;
             }
         }
         else{
-            qSTimerSet(obj, Time); 
+            qSTimerSet( obj, Time ); 
         }
     }
     return RetValue;   
@@ -1340,11 +1377,11 @@ Return value:
     > Note 1: A disarmed STimer also returns false.
 
 */
-qBool_t qSTimerExpired(const qSTimer_t *obj){
+qBool_t qSTimerExpired( const qSTimer_t *obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus(obj) ){
-            RetValue = ( qSTimerElapsed(obj) >= obj->TV )? qTrue : qFalse; 
+        if( QSTIMER_ARMED == qSTimerStatus( obj ) ){
+            RetValue = ( qSTimerElapsed( obj ) >= obj->TV )? qTrue : qFalse; 
         }
     }
     return RetValue;
@@ -1362,10 +1399,10 @@ Return value:
 
     The Elapsed time specified in epochs
 */
-qClock_t qSTimerElapsed(const qSTimer_t *obj){
+qClock_t qSTimerElapsed( const qSTimer_t *obj ){
     qClock_t RetValue = 0ul;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus(obj) ) {
+        if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
             RetValue = qSchedulerGetTick() - obj->Start;
         }
     }
@@ -1384,11 +1421,11 @@ Return value:
 
     The remaining time specified in epochs
 */
-qClock_t qSTimerRemaining(const qSTimer_t *obj){
+qClock_t qSTimerRemaining( const qSTimer_t *obj ){
     qClock_t RetValue = 0xFFFFFFFFul;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus(obj) ) {
-            RetValue = obj->TV - qSTimerElapsed(obj);
+        if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
+            RetValue = obj->TV - qSTimerElapsed( obj );
         }
     }
     return RetValue;
@@ -1404,8 +1441,8 @@ Parameters:
 */
 void qSTimerDisarm(qSTimer_t *obj){
     if( NULL != obj ){
-        qConstField_Set(qClock_t, obj->TV) = QSTIMER_DISARM_VALUE;
-        qConstField_Set(qClock_t, obj->Start) /*obj->Start*/ = QSTIMER_DISARM_VALUE;
+        qConstField_Set( qClock_t, obj->TV ) = QSTIMER_DISARM_VALUE;
+        qConstField_Set( qClock_t, obj->Start ) = QSTIMER_DISARM_VALUE;
     }
 }
 /*============================================================================*/
@@ -1431,7 +1468,7 @@ qBool_t qSTimerStatus(const qSTimer_t *obj){
 
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-static qSize_t _qQueueValidPowerOfTwo(qSize_t k){
+static qSize_t _qQueueValidPowerOfTwo( qSize_t k ){
     uint16_t i;
     qSize_t r = k;
     if( ((k-1u) & k) != 0u ){
@@ -1441,7 +1478,7 @@ static qSize_t _qQueueValidPowerOfTwo(qSize_t k){
         }
         k = (qSize_t) ((k + 1u) >> 1u);
     }
-    return (k<r)? k*2u : k;
+    return ( k < r )? k*2u : k;
 }
 /*============================================================================*/
 /*qBool_t qQueueCreate(qQueue_t *obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
@@ -1464,14 +1501,14 @@ Note: Element_count should be a power of two, or it will only use the next
     qTrue on success, otherwise returns qFalse.
 
  */
-qBool_t qQueueCreate(qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount ){
+qBool_t qQueueCreate( qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( NULL != DataArea ) && ( ItemSize > 0u ) && ( ItemsCount > 0u) ){
         obj->ItemsCount = ItemsCount;   /* Initialise the queue members*/
         obj->ItemSize = ItemSize;
         obj->pHead = DataArea;
-        obj->pTail = obj->pHead + (obj->ItemsCount * obj->ItemSize); 
-        qQueueReset(obj);
+        obj->pTail = obj->pHead + ( obj->ItemsCount * obj->ItemSize ); 
+        qQueueReset( obj );
         RetValue = qTrue;
     }
     return RetValue;
@@ -1485,8 +1522,8 @@ Parameters:
 
     - obj : a pointer to the Queue object
 */
-void qQueueReset(qQueue_t *obj){
-    if (NULL != obj ){
+void qQueueReset( qQueue_t *obj ){
+    if ( NULL != obj ){
         qEnterCritical();
         obj->ItemsWaiting = 0u;
         obj->pcWriteTo = obj->pHead;
@@ -1507,9 +1544,9 @@ Return value:
 
     qTrue if the Queue is empty, qFalse if it is not.
  */
-qBool_t qQueueIsEmpty(const qQueue_t *obj){
+qBool_t qQueueIsEmpty( const qQueue_t *obj ){
     qBool_t RetValue = qTrue;
-    if( NULL != obj){
+    if( NULL != obj ){
         if( obj->ItemsWaiting == 0u ){
             RetValue = qTrue;
         }
@@ -1532,7 +1569,7 @@ Return value:
 
     The number of elements in the queue
  */
-qSize_t qQueueCount(const qQueue_t *obj){
+qSize_t qQueueCount( const qQueue_t *obj ){
     qSize_t RetValue = 0u;
     if ( NULL != obj ){
         RetValue = obj->ItemsWaiting;
@@ -1553,7 +1590,7 @@ Return value:
     qTrue if the Queue is full, qFalse if it is not.
  */
 /*============================================================================*/
-qBool_t qQueueIsFull(const qQueue_t *obj){
+qBool_t qQueueIsFull( const qQueue_t *obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( obj->ItemsWaiting == obj->ItemsCount ){
@@ -1575,12 +1612,12 @@ Return value:
 
     Pointer to the data, or NULL if there is nothing in the queue
  */
-void* qQueuePeek(const qQueue_t *obj){
+void* qQueuePeek( const qQueue_t *obj ){
     uint8_t *RetValue = NULL;
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
             qEnterCritical();
-            RetValue = (void*)(obj->pcReadFrom + obj->ItemSize);
+            RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );
             if( RetValue >= obj->pTail ){
                 RetValue = obj->pHead;
             }
@@ -1602,12 +1639,12 @@ Return value:
 
     qTrue if data was removed from the Queue, otherwise returns qFalse
  */
-qBool_t qQueueRemoveFront(qQueue_t *obj){
+qBool_t qQueueRemoveFront( qQueue_t *obj ){
     qBool_t RetValue = qFalse;
-    if( NULL != obj){
+    if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
             qEnterCritical();
-            qQueueMoveReader(obj);
+            qQueueMoveReader( obj );
             --( obj->ItemsWaiting ); /* remove the data. */
             qExitCritical();
             RetValue = qTrue;
@@ -1616,7 +1653,7 @@ qBool_t qQueueRemoveFront(qQueue_t *obj){
     return RetValue;
 }
 /*============================================================================*/
-static void qQueueCopyDataToQueue(qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition){
+static void qQueueCopyDataToQueue( qQueue_t *obj, const void *pvItemToQueue, qBool_t xPosition ){
     if( QUEUE_SEND_TO_BACK == xPosition ){
         memcpy( (void*) obj->pcWriteTo, pvItemToQueue, (unsigned)obj->ItemSize );
         obj->pcWriteTo += obj->ItemSize;
@@ -1635,15 +1672,15 @@ static void qQueueCopyDataToQueue(qQueue_t *obj, const void *pvItemToQueue, qBoo
     ++( obj->ItemsWaiting );
 }
 /*==================================================================================*/
-static void qQueueMoveReader(qQueue_t *obj){
+static void qQueueMoveReader( qQueue_t *obj ){
     obj->pcReadFrom += obj->ItemSize;
     if( obj->pcReadFrom >= obj->pTail ){
         obj->pcReadFrom = obj->pHead;
     }
 }
 /*==================================================================================*/
-static void qQueueCopyDataFromQueue(qQueue_t *obj, const void *pvBuffer ){
-    qQueueMoveReader(obj);
+static void qQueueCopyDataFromQueue( qQueue_t *obj, const void *pvBuffer ){
+    qQueueMoveReader( obj );
     memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, (unsigned)obj->ItemSize );
 }
 /*============================================================================*/
@@ -1662,7 +1699,7 @@ Return value:
 
     qTrue if data was retrieved from the Queue, otherwise returns qFalse
 */
-qBool_t qQueueReceive(qQueue_t *obj, void *dest){
+qBool_t qQueueReceive( qQueue_t *obj, void *dest ){
     qBool_t RetValue = qFalse;
     if( obj->ItemsWaiting > 0u ){
         qEnterCritical();
@@ -1693,7 +1730,7 @@ Return value:
 
     qTrue on successful add, qFalse if not added
 */
-qBool_t qQueueGenericSend(qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode){
+qBool_t qQueueGenericSend( qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/
@@ -1717,7 +1754,7 @@ Parameters:
     - n : the number of bytes to swap
 */
 /*============================================================================*/
-void qSwapBytes(void *data, const qSize_t n){
+void qSwapBytes( void *data, const qSize_t n ){
     uint8_t *p = data, tmp;
     qSize_t lo, hi;
     hi = n - 1u;
@@ -1737,7 +1774,7 @@ Return value:
 
     qTrue if Little-Endian, otherwise returns qFalse
 */
-qBool_t qCheckEndianness(void){
+qBool_t qCheckEndianness( void ){
     uint16_t i = 1u;
     return (qBool_t)( *( (uint8_t*)&i ) );
 }
@@ -1754,10 +1791,10 @@ Parameters:
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP){
+void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP ){
     qSize_t i = 0u;
     char *cdata = data;
-    if( qTrue == AIP){
+    if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
             fcn( (char*)pStorage+i , cdata[i] );
         }
@@ -1781,10 +1818,10 @@ Parameters:
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
 */
-void qInputRaw(const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP){
+void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP ){
     qSize_t i = 0u;
     char *cdata = data;
-    if( qTrue == AIP){
+    if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
             cdata[i] = fcn( (char*)pStorage+i );
         }
@@ -1808,37 +1845,37 @@ Parameters:
     - s: The string to be written
     - AIP : Auto-Increment the storage-pointer
 */
-void qOutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP){
+void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP ){
     qSize_t i = 0u;
-    if( qTrue == AIP){
-        while(*s){
+    if( qTrue == AIP ){
+        while( *s ){
             fcn( (char*)pStorage+i ,  *s++ );
             i++;
         }
     }
     else{
-        while(*s){
+        while( *s ){
             fcn( pStorage, *s++ );
         }
     }
 }
 /*============================================================================*/
-static char qNibbleToX(uint8_t value){
+static char qNibbleToX( uint8_t value ){
     char ch;
     ch = (char)(value & 0x0Fu) + '0';
     return (char) ((ch > '9') ? ch + 7u : ch);
 }
 /*============================================================================*/
-void qPrintXData(qPutChar_t fcn, void* pStorage, void *data, qSize_t n){
+void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n ){
     uint8_t *pdat =(uint8_t*)data; 
     qSize_t i;
     for( i = 0u ; i < n ; i++ ){
-        fcn(pStorage, qNibbleToX( pdat[i] >> 4u ) );
-        fcn(pStorage, qNibbleToX( pdat[i] & 0x0Fu ) );
-        fcn(pStorage, ' ');
+        fcn( pStorage, qNibbleToX( pdat[i] >> 4u ) );
+        fcn( pStorage, qNibbleToX( pdat[i] & 0x0Fu ) );
+        fcn( pStorage, ' ');
     }
-    fcn(pStorage, '\r' );
-    fcn(pStorage, '\n' );
+    fcn( pStorage, '\r' );
+    fcn( pStorage, '\n' );
 }
 /*============================================================================*/
 /*void qU32toX(uint32_t value, char *str, int8_t n)
@@ -1857,11 +1894,11 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qU32toX(uint32_t value, char *str, int8_t n){ 
+char* qU32toX( uint32_t value, char *str, int8_t n ){ 
     int8_t i;
     str[n] = '\0';
     for( i = ( n - 1) ; i >= 0 ; i-- ){
-        str[i] = qNibbleToX((uint8_t)value);
+        str[i] = qNibbleToX( (uint8_t)value );
         value >>= 4ul;
     }
     return str;
@@ -1883,7 +1920,7 @@ Return value:
 
   The numeric value uint32_t
 */
-uint32_t qXtoU32(const char *s) {
+uint32_t qXtoU32( const char *s ) {
     uint32_t val = 0ul;
     uint8_t byte;
     uint8_t nparsed = 0u;
@@ -1935,7 +1972,7 @@ Return value:
     If the converted value would be out of the range of representable values by
     a double, it causes undefined behavior
 */
-double qAtoF(const char *s){
+double qAtoF( const char *s ){
     double rez = 0.0, fact ;
     int point_seen;
     char c;
@@ -1944,7 +1981,7 @@ double qAtoF(const char *s){
         double power = 1.0, efactor;
     #endif
    
-    while( isspace( (int)*s) ){
+    while( isspace( (int)*s ) ){
         s++; /*discard whitespaces*/
     }
     fact = ('-' == *s)? -1.0 : 1.0; /*set the sign*/
@@ -1952,7 +1989,7 @@ double qAtoF(const char *s){
         s++; /*move to the next sign*/
     }
 
-    for (point_seen = 0; '\0' != (c=*s); s++){
+    for( point_seen = 0; '\0' != (c=*s); s++ ){
         if (c == '.'){
             point_seen = 1; 
         }
@@ -1974,12 +2011,12 @@ double qAtoF(const char *s){
 		    powersign = ('-' == *s)? -1 : 1;
             s++;    
         } 
-        for(power2 = 0; isdigit(*s); s++){
+        for( power2 = 0; isdigit( *s ); s++ ){
             power2 = power2 * 10 + (*s - '0');
         }
         if( power2 > 0){
- 		    efactor = (-1 == powersign)? 0.1 : 10.0;
-        	for(power=1; 0 != power2; power2--){
+ 		    efactor = ( -1 == powersign )? 0.1 : 10.0;
+        	for( power=1; 0 != power2; power2-- ){
             	power *= efactor;
             }	
 	    }
@@ -2013,7 +2050,7 @@ On success, the function returns the converted integral number as an int value.
 If the converted value would be out of the range of representable values by 
 an int, it causes undefined behavior.
 */
-int qAtoI(const char *s){
+int qAtoI( const char *s ){
 	int res = 0; /*holds the resulting integer*/
     int sgn = 1; /*only to hold the sign*/
     int RetValue = 0;
@@ -2049,7 +2086,7 @@ int qAtoI(const char *s){
 /*this method makes the basic conversion of unsigned integer to ASCII
 NULL Terminator not included
 */
-static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base){
+static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base ){
     uint8_t i = 0u;
     uint32_t rem;
     if( 0ul == num ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
@@ -2058,10 +2095,10 @@ static uint8_t __q_revuta(uint32_t num, char* str, uint8_t base){
     else{
         while( 0ul != num ){ /*Process individual digits*/
             rem = num % (uint32_t)base;
-            str[i++] = (rem > 9ul)? (char)(rem-10ul) + 'A' : (char)rem + '0';
+            str[i++] = ( rem > 9ul )? (char)(rem-10ul) + 'A' : (char)rem + '0';
             num = num/base;
         }
-        qSwapBytes(str, (qSize_t)i);/*Reverse the string*/
+        qSwapBytes( str, (qSize_t)i );/*Reverse the string*/
     }
     return i;       
 }
@@ -2086,10 +2123,10 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qUtoA(uint32_t num, char* str, uint8_t base){
+char* qUtoA( uint32_t num, char* str, uint8_t base ){
     uint8_t i = 0u;
     if( NULL != str ){
-        i = __q_revuta(num, str, base); /*make the unsigned conversion without the null terminator*/
+        i = __q_revuta( num, str, base ); /*make the unsigned conversion without the null terminator*/
         str[i] = '\0'; /*add the null terminator*/
     }
     return str;
@@ -2117,7 +2154,7 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qItoA(int32_t num, char* str, uint8_t base){
+char* qItoA( int32_t num, char* str, uint8_t base ){
     uint8_t i = 0u;
     if( NULL != str ){
         if( num < 0 ){ 
@@ -2126,7 +2163,7 @@ char* qItoA(int32_t num, char* str, uint8_t base){
             } 
             num = -num;
         }
-        i += __q_revuta((uint32_t)num, str+i, base); /*make the unsigned conversion without the null terminator*/   
+        i += __q_revuta( (uint32_t)num, str+i, base ); /*make the unsigned conversion without the null terminator*/   
         str[i] = '\0'; /*Append string terminator*/
     }
     return str;
@@ -2148,7 +2185,7 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qBtoA(qBool_t num, char *str){
+char* qBtoA( qBool_t num, char *str ){
     if( NULL != str ){
         if( qTrue == num ){
             str[0]='t'; str[1]='r'; str[2]='u'; str[3]='e'; str[4]='\0';
@@ -2176,7 +2213,7 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qQBtoA(qBool_t num, char *str){
+char* qQBtoA( qBool_t num, char *str ){
     if( NULL != str ){
         switch( num ){
             case qTrue:
@@ -2232,7 +2269,7 @@ Return value:
  
     qTrue is argument has an infinite value, otherwise qFalse
 */
-qBool_t qIsInf(float f){
+qBool_t qIsInf( float f ){
     uint32_t u;
     void *p;
     p = &f;
@@ -2255,7 +2292,7 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*/
+char* qFtoA( float num, char *str, uint8_t precision ){ /*limited to precision=10*/
     char c;
     uint8_t i = 0u;
     uint32_t intPart;
@@ -2291,7 +2328,7 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
             
             intPart = (uint32_t)num; /*get the integer parts*/
             num -= (float)intPart; /*get the floating-point part subtracting the integer part from the original value*/
-            i += __q_revuta(intPart, str+i, 10u); /*convert the integer part in decimal form*/
+            i += __q_revuta( intPart, str+i, 10u ); /*convert the integer part in decimal form*/
             if( precision > 0u ){ /*decimal part*/
                 str[i++] = '.'; /*place decimal point*/
                 while( precision-- ){ /*convert until precision reached*/
@@ -2306,56 +2343,6 @@ char* qFtoA(float num, char *str, uint8_t precision){ /*limited to precision=10*
     }
     return str;
 }
-#ifdef Q_ISR_BUFFERS 
-/*============================================================================*/
-/*
- * TODO: Describe method
-*/
-qBool_t qISR_ByteBufferInit(qISR_ByteBuffer_t *obj, qISR_Byte_t *pData, qSize_t size, const char EndChar, qBool_t (*AcceptCheck)(const char), char (*PreChar)(const char)){
-    if( (NULL == pData ) || ( size<2 ) ) return qFalse;
-    obj->AcceptCheck = AcceptCheck;
-    obj->PreChar = PreChar;
-    obj->EndByte = EndChar;
-    obj->MaxIndex = (uint16_t)(size - 1);
-    obj->pData = pData;
-    obj->index = 0;
-    return qTrue;
-}
-/*============================================================================*/
-/*
- * TODO: Describe method
- */
-qBool_t qISR_ByteBufferFill(qISR_ByteBuffer_t *obj, const char newChar){
-    if (!obj->ReadyFlag ){
-        if(obj->AcceptCheck){
-            if(!obj->AcceptCheck(newChar)){
-                return qFalse;
-            }
-        }
-        obj->pData[obj->index++] = (qISR_Byte_t)((obj->PreChar)? obj->PreChar(newChar) : newChar);
-        obj->pData[obj->index] = 0x0u;
-        if (obj->index>=(obj->MaxIndex)){
-            obj->index = 0;
-        }
-        if(newChar == obj->EndByte){
-            obj->ReadyFlag = qTrue;
-            obj->index=0;
-            return qTrue;
-        }
-    }
-    return qFalse;
-}
-/*============================================================================*/
-qBool_t qISR_ByteBufferGet(qISR_ByteBuffer_t *obj, void *dest){
-    qBool_t RetValue = qFalse;
-    if( obj->ReadyFlag ){
-        memcpy(dest, (void*)obj->pData, obj->index);
-        obj->ReadyFlag = qFalse;
-        RetValue = qTrue;
-    }
-    return RetValue;
-}
-#endif
 #if ( Q_BYTE_SIZED_BUFFERS == 1 )
 /*============================================================================*/
 /*size_t qBSBuffer_Count(qBSBuffer_t const* obj)
@@ -2370,7 +2357,7 @@ Return value:
 
     Number of elements in the BSBuffer(Byte-sized Buffer)
 */
-qSize_t qBSBuffer_Count(qBSBuffer_t const* obj){
+qSize_t qBSBuffer_Count( qBSBuffer_t const* obj ){
     qSize_t RetValue = 0u;
     if( NULL != obj ){
         RetValue = (qSize_t)( obj->head - obj->tail );
@@ -2391,10 +2378,10 @@ Return value:
 
     qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
 */
-qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj){
+qBool_t qBSBuffer_IsFull( qBSBuffer_t const* obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        RetValue = ( obj->length == qBSBuffer_Count(obj) )? qTrue : qFalse;
+        RetValue = ( obj->length == qBSBuffer_Count( obj ) )? qTrue : qFalse;
     }
     return RetValue;
 }
@@ -2411,10 +2398,10 @@ Return value:
 
     qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
-qBool_t qBSBuffer_Empty(qBSBuffer_t const *obj){
+qBool_t qBSBuffer_Empty( qBSBuffer_t const *obj ){
     qBool_t RetValue = qTrue;
     if( NULL != obj ){
-        RetValue = ( 0u == qBSBuffer_Count(obj) )? qTrue : qFalse;
+        RetValue = ( 0u == qBSBuffer_Count( obj ) )? qTrue : qFalse;
     }
     return RetValue;
 }
@@ -2431,10 +2418,10 @@ Return value:
 
     byte of data, or zero if nothing in the list
 */
-uint8_t qBSBuffer_Peek(qBSBuffer_t const *obj){
+uint8_t qBSBuffer_Peek( qBSBuffer_t const *obj ){
     uint8_t RetValue = 0x0u;
     if( NULL != obj ){
-        RetValue = (uint8_t) (obj->buffer[obj->tail % obj->length]);
+        RetValue = (uint8_t) ( obj->buffer[obj->tail % obj->length] );
     }
     return RetValue;
 }
@@ -2452,9 +2439,9 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
+qBool_t qBSBuffer_Get( qBSBuffer_t *obj, uint8_t *dest ){
     qBool_t RetValue = qFalse;
-    if ( qFalse == qBSBuffer_Empty(obj) ) {
+    if ( qFalse == qBSBuffer_Empty( obj ) ) {
         *dest = obj->buffer[obj->tail % obj->length];
         obj->tail++;
         RetValue = qTrue;
@@ -2462,7 +2449,7 @@ qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, size_t n)
+/*qBool_t qBSBuffer_Read( qBSBuffer_t *obj, void *dest, size_t n )
  
 Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
  
@@ -2475,14 +2462,14 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Read(qBSBuffer_t *obj, void *dest, const qSize_t n){
+qBool_t qBSBuffer_Read( qBSBuffer_t *obj, void *dest, const qSize_t n ){
     qSize_t i;
     uint8_t *data = (uint8_t*)dest;
     qBool_t RetValue = qFalse;
     if( n > 0u ){
         RetValue = qTrue;
-        for( i = 0u ; i < n ; i++){
-            RetValue = qBSBuffer_Get(obj, data+i);
+        for( i = 0u ; i < n ; i++ ){
+            RetValue = qBSBuffer_Get( obj, data+i );
         }
     }
     return RetValue;
@@ -2501,10 +2488,10 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Put(qBSBuffer_t *obj, const uint8_t data){
+qBool_t qBSBuffer_Put( qBSBuffer_t *obj, const uint8_t data ){
     qBool_t status = qFalse;
     if( NULL != obj ){ 
-        if( qFalse == qBSBuffer_IsFull(obj) ) {/* limit the ring to prevent overwriting */
+        if( qFalse == qBSBuffer_IsFull( obj ) ) {/* limit the ring to prevent overwriting */
             obj->buffer[obj->head % obj->length] = data;
             obj->head++;
             status = qTrue;
@@ -2524,13 +2511,13 @@ Parameters:
     - length: The size of the buffer(Must be a power of two)
   
 */
-void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length){
+void qBSBuffer_Init( qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length ){
     if( NULL != obj ){
         obj->head = 0u;
         obj->tail = 0u;
         obj->buffer = buffer;
         #if ( Q_QUEUES == 1 )
-            obj->length = _qQueueValidPowerOfTwo(length);
+            obj->length = _qQueueValidPowerOfTwo( length );
         #else
             obj->length = length;
         #endif      
@@ -2551,8 +2538,8 @@ Parameters:
     - nMax : The size of <xLocBuff>
   
 */
-void qResponseInitialize(qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax){
-    if( NULL != obj){
+void qResponseInitialize( qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax ){
+    if( NULL != obj ){
         obj->Pattern2Match = xLocBuff;
         obj->MaxStrLength = nMax; 
         qResponseReset( obj );
@@ -2568,8 +2555,8 @@ Parameters:
     - obj : A pointer to the Response Handler object
   
 */
-void qResponseReset(qResponseHandler_t *obj){
-    if(obj != NULL){
+void qResponseReset( qResponseHandler_t *obj ){
+    if( obj != NULL ){
         obj->PatternLength = 0u;
         obj->MatchedCount = 0u;
         obj->ResponseReceived = qFalse;
@@ -2592,8 +2579,8 @@ Return value:
 
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
-qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n){
-    return qResponseReceivedWithTimeout(obj, Pattern, n, 0.0f);
+qBool_t qResponseReceived( qResponseHandler_t *obj, const char *Pattern, qSize_t n ){
+    return qResponseReceivedWithTimeout( obj, Pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
 /*qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t)
@@ -2615,23 +2602,23 @@ Return value:
     qTimeoutReached if timeout t expires
     otherwise returns qFalse
 */
-qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t){
+qBool_t qResponseReceivedWithTimeout( qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->ResponseReceived ) && ( 0u == obj->PatternLength ) ){ /*handler no configured yet*/
         strncpy( obj->Pattern2Match, (const char*)Pattern, (size_t)obj->MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
-        obj->PatternLength = (qSize_t)((0u == n)? strlen(Pattern) : n); /*set the number of chars to match*/
+        obj->PatternLength = (qSize_t)((0u == n)? strlen( Pattern ) : n); /*set the number of chars to match*/
         obj->MatchedCount = 0u; /*reinitialize the chars match count*/
         obj->ResponseReceived = qFalse; /*clear the ready flag*/
-        if( t > qTimeImmediate){
+        if( t > qTimeImmediate ){
             qSTimerSet( &obj->timeout, t);
         }
     }
     else if( qSTimerExpired( &obj->timeout) ){
-        qResponseReset(obj); /*re-initialize the response handler*/
+        qResponseReset( obj ); /*re-initialize the response handler*/
         RetValue = qResponseTimeout;
     }        
     else if( obj->ResponseReceived ){ /*if response received from ISR match the expected*/
-        qResponseReset(obj); /*re-initialize the response handler*/
+        qResponseReset( obj ); /*re-initialize the response handler*/
         RetValue = qTrue; /*let it know to the caller that expected response was received*/
     } 
     else{
@@ -2671,17 +2658,17 @@ uint32_t qStringHash(const char* s, uint8_t mode){
     uint32_t hash = 0ul;
     switch( mode ){
         case 0: /*D. J. Bernstein */
-            for(hash = 5381ul; *s; hash = 33ul*hash^((uint8_t)*s) ){
+            for( hash = 5381ul; *s; hash = 33ul*hash^((uint8_t)*s) ){
                 s++;
             }
             break;
         case 1: /*Fowler/Noll/Vo (FNV) */
-            for(hash = 0x811c9dc5u; *s; hash *= 0x01000193u){
+            for( hash = 0x811c9dc5u; *s; hash *= 0x01000193u ){
                 hash ^= ((uint8_t)*s++);
             }
             break;
         case 2: /*Jenkins' One-at-a-Time*/
-            for( hash = 0ul; *s; hash ^= (hash >> 6)){
+            for( hash = 0ul; *s; hash ^= (hash >> 6) ){
                 hash += (*s++) + (hash << 10);
             }
             hash += (hash << 3);
@@ -2699,22 +2686,22 @@ uint32_t qStringHash(const char* s, uint8_t mode){
 }
 /*============================================================================*/
 #if ( Q_TRACE_VARIABLES == 1 )
-void __qtrace_func(const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize){
+void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize ){
     if( NULL != __qDebugOutputFcn ){ /*trace only if the output-function is defined*/
-        qPrintString(__qDebugOutputFcn, NULL, loc); /*print out the line location*/
+        qPrintString( __qDebugOutputFcn, NULL, loc ); /*print out the line location*/
         if( NULL != fcn ){ /*print out the function if available*/
-            __qDebugOutputFcn(NULL, '@');
-            qPrintString(__qDebugOutputFcn, NULL, fcn); 
-            __qDebugOutputFcn(NULL, ' ');
+            __qDebugOutputFcn( NULL, '@' );
+            qPrintString( __qDebugOutputFcn, NULL, fcn ); 
+            __qDebugOutputFcn( NULL, ' ' );
         }
-        qPrintString(__qDebugOutputFcn, NULL, varname);
+        qPrintString( __qDebugOutputFcn, NULL, varname );
         if( NULL == varvalue ){ /*if varvalue is not defined, the call must correspond to memory tracing*/
-            qPrintXData(__qDebugOutputFcn, NULL, Pointer, BlockSize); /*print out the memory in hex format*/
+            qPrintXData( __qDebugOutputFcn, NULL, Pointer, BlockSize ); /*print out the memory in hex format*/
         }
         else{ /*print out the variable value*/
-            qPrintString(__qDebugOutputFcn, NULL, varvalue);
-            __qDebugOutputFcn(NULL, '\r');
-            __qDebugOutputFcn(NULL, '\n');
+            qPrintString( __qDebugOutputFcn, NULL, varvalue );
+            __qDebugOutputFcn( NULL, '\r' );
+            __qDebugOutputFcn( NULL, '\n' );
         }
     }
 }
@@ -2726,18 +2713,18 @@ qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
     return (Register & (1ul << PinNumber))? qFalse : qTrue;
 }
 /*============================================================================*/
-qBool_t __qReg_16Bits(void *Address, qBool_t PinNumber){
+qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber ){
     uint16_t Register = 0u;
     uint16_t Mask;
     Mask = (uint16_t)1u << (uint16_t)PinNumber;
-    Register = *((uint16_t*)Address);
+    Register = *( (uint16_t*)Address );
     return ( Register & Mask )? qFalse : qTrue;
 }
 /*============================================================================*/
-qBool_t __qReg_08Bits(void *Address, qBool_t PinNumber){
+qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber ){
     uint8_t Register = 0u;
     Register = *((uint8_t*)Address);
-    return (Register & (1u << PinNumber))? qFalse : qTrue;
+    return ( Register & (1u << PinNumber) )? qFalse : qTrue;
 }
 /*============================================================================*/
 /*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime)
@@ -2754,12 +2741,12 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime){
+qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime ){
     qBool_t RetValue = qFalse;
     if( NULL != Instance ){
         Instance->Head = NULL;
         Instance->DebounceTime = DebounceTime;
-        Instance->Reader = (NULL==RegisterSize)? QREG_32BIT  : RegisterSize;
+        Instance->Reader = ( NULL==RegisterSize )? QREG_32BIT  : RegisterSize;
         Instance->State = QEDGECHECK_CHECK;
         Instance->Start = qSchedulerGetTick();
         RetValue = qTrue;
@@ -2782,13 +2769,15 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber){
+qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber ){
     qBool_t RetValue = qFalse;
+    qCoreRegSize_t PinReader;
     if( ( NULL != Node ) && ( NULL != Instance ) ){
         Node->Port = PortAddress;
         Node->Pin = PinNumber;
         Node->Next = Instance->Head;
-        Node->PreviousPinValue = Instance->Reader( Node->Port, Node->Pin );
+        PinReader = Instance->Reader;
+        Node->PreviousPinValue = PinReader( Node->Port, Node->Pin ); /*some compilers cant deal with function pointers inside structs*/
         Instance->Head = Node;
         RetValue = qTrue;
     }
@@ -2808,10 +2797,11 @@ Return value:
     qTrue on success, otherwise returns qFalse
 */
 /*============================================================================*/
-qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
+qBool_t qEdgeCheck_Update( qIOEdgeCheck_t *Instance ){
     qIONode_t *Node;
     qBool_t CurrentPinValue;
     qBool_t RetValue = qFalse;   
+    qCoreRegSize_t PinReader;
     if( NULL != Instance ){
         if( QEDGECHECK_WAIT == Instance->State ){ /*de-bounce wait state*/
             if( ( qSchedulerGetTick() - Instance->Start ) >= Instance->DebounceTime ){
@@ -2820,8 +2810,9 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
             RetValue = qTrue;
         }
         else{
+            PinReader = Instance->Reader;
             for( Node = Instance->Head ; NULL != Node ; Node = Node->Next ){ /*iterate through all the input-nodes*/
-                CurrentPinValue = Instance->Reader( Node->Port, Node->Pin ); /*read the pin level*/        
+                CurrentPinValue = PinReader( Node->Port, Node->Pin ); /*read the pin level*/        
                 if( Instance->State >= QEDGECHECK_CHECK ){ /*check state*/
                     if( Node->PreviousPinValue != CurrentPinValue ){ /*check if the input level change since the last inputs-sweep*/
                         Node->Status = qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
@@ -2833,7 +2824,7 @@ qBool_t qEdgeCheck_Update(qIOEdgeCheck_t *Instance){
                 }
                 else if( QEDGECHECK_UPDATE == Instance->State ){ /*update state*/
                     if( Node->PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
-                        Node->Status = (CurrentPinValue)? qRISING : qFALLING; /*set the edge status*/
+                        Node->Status = ( CurrentPinValue )? qRISING : qFALLING; /*set the edge status*/
                     }      
                     Node->PreviousPinValue = CurrentPinValue; /*keep the previous level*/
                 }
@@ -2867,7 +2858,7 @@ Return value:
 
     The status of the input node : qTrue, qFalse, qRising, qFalling or qUnknown
 */
-qBool_t qEdgeCheck_GetNodeStatus(const qIONode_t *Node){
+qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t *Node ){
     return Node->Status;
 }
 
@@ -2875,21 +2866,21 @@ qBool_t qEdgeCheck_GetNodeStatus(const qIONode_t *Node){
 
 static void qATParser_TaskCallback(qEvent_t e);
 static  qPutChar_t ATOutCharFcn = NULL;
-static void _qATPutc_Wrapper(const char c);
-static void _qATPuts_Wrapper(const char *s);
-static qSize_t qATParser_NumOfArgs(const char *str);
+static void _qATPutc_Wrapper( const char c );
+static void _qATPuts_Wrapper( const char *s );
+static qSize_t qATParser_NumOfArgs( const char *str );
 static char* _qATParser_FixInput(char *s);
-static void _qATParser_HandleCommandResponse(const qATParser_t *Parser, qATResponse_t retval);
-static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params);
+static void _qATParser_HandleCommandResponse( const qATParser_t *Parser, qATResponse_t retval );
+static qBool_t _qATParser_PreProcessing( qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params );
 /*============================================================================*/
-static void _qATPutc_Wrapper(const char c){
-	ATOutCharFcn(NULL, c);
+static void _qATPutc_Wrapper( const char c ){
+	ATOutCharFcn( NULL, c );
 }
 /*============================================================================*/
-static void _qATPuts_Wrapper(const char *s){
+static void _qATPuts_Wrapper( const char *s ){
 	uint16_t i = 0u;
 	while( s[i] ){
-        ATOutCharFcn( NULL, s[i++]);
+        ATOutCharFcn( NULL, s[i++] );
     }
 }
 /*============================================================================*/
@@ -2934,8 +2925,8 @@ qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, 
         Parser->ERROR_Response = (char*)ERROR_Response;
         Parser->NOTFOUND_Response = (char*)NOTFOUND_Response;
         Parser->term_EOL = (char*)term_EOL;
-        memset((void*)Parser->Input.Buffer, 0, (size_t)Parser->Input.Size);
-        memset((void*)Parser->Output, 0, (size_t)Parser->SizeOutput);
+        memset( (void*)Parser->Input.Buffer, 0, (size_t)Parser->Input.Size );
+        memset( (void*)Parser->Output, 0, (size_t)Parser->SizeOutput );
         Parser->Output = Output;
         Parser->SizeOutput = SizeOutput;
 
@@ -2985,7 +2976,7 @@ Return value:
 qBool_t qATParser_CmdSubscribe(qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt){
     qBool_t RetValue = qFalse;
     if( ( NULL != Parser ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
-        Command->CmdLen = (qSize_t)strlen(TextCommand);
+        Command->CmdLen = (qSize_t)strlen( TextCommand );
         if( Command->CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
@@ -3026,7 +3017,7 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
     if( ( isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){
         Parser->Input.Buffer[Parser->Input.index++] = (char)tolower( (int)c );
         Parser->Input.Buffer[Parser->Input.index] = 0x00u;
-        if( Parser->Input.index >= (Parser->Input.Size - 1u )){
+        if( Parser->Input.index >= ( Parser->Input.Size - 1u )){
             Parser->Input.index = 0u;
         }
     }
@@ -3034,7 +3025,7 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
         Parser->Input.Ready = qTrue;
         Parser->Input.index = 0u;
         if( NULL != Parser->Task ){
-            qTaskSendNotification(Parser->Task, NULL);
+            qTaskSendNotification( Parser->Task, NULL );
         }
         RetValue = qTrue;
     }
@@ -3066,17 +3057,17 @@ qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n){
     CurrentInputIndex = Parser->Input.Size-1u;
     if( ( n > 0u ) && ( n < CurrentInputIndex ) &&  ( qFalse == ReadyInput ) ) {
         if( 1u == n ){
-            RetValue = qATParser_ISRHandler(Parser, data[0]);
+            RetValue = qATParser_ISRHandler( Parser, data[0] );
         }
         else{
             if( isgraph( (int)data[0] ) ){
-                if( NULL != strchr(data, (int)'\r') ){ 
-                    strncpy((char*)Parser->Input.Buffer, data, (size_t)n);
+                if( NULL != strchr( data, (int)'\r' ) ){ 
+                    strncpy( (char*)Parser->Input.Buffer, data, (size_t)n);
                     _qATParser_FixInput( (char*)Parser->Input.Buffer );
                     Parser->Input.Ready = qTrue;
                     Parser->Input.index = 0u;
                     if( NULL != Parser->Task ){
-                        qTaskSendNotification(Parser->Task, NULL);
+                        qTaskSendNotification( Parser->Task, NULL );
                     } 
                     RetValue = qTrue;
                 }
@@ -3128,14 +3119,14 @@ qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
         ReadyInput = Parser->Input.Ready;        
         CurrentInputIndex = Parser->Input.Size - 1u;
-        CmdLen = strlen(cmd);
+        CmdLen = strlen( cmd );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= CurrentInputIndex ) ){ 
             Parser->Input.Ready = qTrue;
             Parser->Input.index = 0u;
-            strncpy((char*)Parser->Input.Buffer, cmd, (size_t)Parser->Input.Size );
+            strncpy( (char*)Parser->Input.Buffer, cmd, (size_t)Parser->Input.Size );
             _qATParser_FixInput( (char*)Parser->Input.Buffer );
             if( NULL != Parser->Task ){
-                qTaskSendNotification(Parser->Task, NULL);
+                qTaskSendNotification( Parser->Task, NULL );
             }
             RetValue =  qTrue;
         }
@@ -3162,12 +3153,14 @@ qATResponse_t qATParser_Exec(qATParser_t *Parser, const char *cmd){
     qATResponse_t RetValue = QAT_NOTFOUND;
     qATCommand_t *Command = NULL;
     qATParser_PreCmd_t params;
+    qATCommandCallback_t CmdCallback;
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
         for( Command = (qATCommand_t*)Parser->First ; NULL != Command ; Command = Command->Next ){ /*loop over the subscribed commands*/
             if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
             	RetValue = qAT_NOTALLOWED;
-                if( _qATParser_PreProcessing(Command, (volatile char*)cmd, &params) ){ /*if success, proceed with the user pos-processing*/
-                    RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : Command->CommandCallback(Parser, &params); /*invoke the callback*/
+                if( _qATParser_PreProcessing( Command, (volatile char*)cmd, &params ) ){ /*if success, proceed with the user pos-processing*/
+                    CmdCallback = Command->CommandCallback;
+                    RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : CmdCallback( Parser, &params ); /*invoke the callback*/
                 }
                 break;
             }
@@ -3195,7 +3188,7 @@ qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority
     qBool_t RetValue = qFalse;
     if( NULL != Parser ){
         Parser->Task = Task;
-        RetValue =  qSchedulerAdd_Task(Task, qATParser_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, Parser);
+        RetValue =  qSchedulerAdd_Task( Task, qATParser_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, Parser );
     }
     return RetValue;
 }
@@ -3208,7 +3201,7 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
     qBool_t RetValue = qFalse;
     params->Type = qATCMDTYPE_UNDEF;
     params->Command = Command;
-    params->StrLen = (qSize_t)strlen((const char*)InputBuffer) - Command->CmdLen;
+    params->StrLen = (qSize_t)strlen( (const char*)InputBuffer ) - Command->CmdLen;
     params->StrData = (char*)(InputBuffer+Command->CmdLen);
     params->NumArgs = 0u;
 
@@ -3218,7 +3211,7 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
             RetValue = qTrue;
         }
     } 
-    else if ( params->StrLen > 0u){
+    else if ( params->StrLen > 0u ){
         if( '?' == params->StrData[0] ){ /*command should be READ command */
             if( Command->CmdOpt & (uint16_t)qATCMDTYPE_READ ){ /*check if is allowed*/
                 params->Type = qATCMDTYPE_READ; /*set the type to READ*/
@@ -3230,8 +3223,8 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
         else if( params->StrLen >= 2u ){ /*can be at+xx=? or at+xx=...*/
             if( '=' == params->StrData[0] ){ /*could be a TEST or PARA command*/
                 if( '?' == params->StrData[1] ){ 
-                    if(2u == params->StrLen){ /*command should be a TEST Command*/
-                        if(Command->CmdOpt & (uint16_t)qATCMDTYPE_TEST){ /*check if is allowed*/
+                    if( 2u == params->StrLen ){ /*command should be a TEST Command*/
+                        if( Command->CmdOpt & (uint16_t)qATCMDTYPE_TEST ){ /*check if is allowed*/
                             params->Type = qATCMDTYPE_TEST; /*set the type to TEXT*/
                             params->StrData+=2; /*move string two positions ahead*/
                             params->StrLen-=2u;  /*decrease the len*/
@@ -3241,8 +3234,8 @@ static qBool_t _qATParser_PreProcessing(qATCommand_t *Command, volatile char *In
                 }
                 else{ /*definitely is a PARA command*/
                     if( Command->CmdOpt & (uint16_t)qATCMDTYPE_PARA ){ /*check if is allowed*/
-                        params->NumArgs = qATParser_NumOfArgs(params->StrData); /*get the args count using the default delimiter*/
-                        if( ( params->NumArgs >= QATCMDMASK_ARG_MINNUM(Command->CmdOpt) ) && ( params->NumArgs <= QATCMDMASK_ARG_MAXNUM(Command->CmdOpt) ) ){
+                        params->NumArgs = qATParser_NumOfArgs( params->StrData ); /*get the args count using the default delimiter*/
+                        if( ( params->NumArgs >= QATCMDMASK_ARG_MINNUM( Command->CmdOpt ) ) && ( params->NumArgs <= QATCMDMASK_ARG_MAXNUM( Command->CmdOpt ) ) ){
                             params->Type = qATCMDTYPE_PARA; /*set the type to PARA*/
                             params->StrData++; /*move string pointer once*/
                             params->StrLen--; /*decrease the len one*/
@@ -3296,16 +3289,16 @@ qBool_t qATParser_Run(qATParser_t *Parser){
 
 		if( Input->Ready ){ /*a new input has arrived*/
 			/*Validation : set the value for the response lookup table*/
-			if 	( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND) ){
+			if 	( 0 == strcmp( (const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND ) ){
             	OutputRetval = QAT_OK;			/*check if the input its the simple AT command*/
             }
-			else if	( QAT_NOTFOUND != (ParserRetVal = qATParser_Exec(Parser, (const char*)Input->Buffer)) ){
+			else if	( QAT_NOTFOUND != (ParserRetVal = qATParser_Exec( Parser, (const char*)Input->Buffer ) ) ){
                 OutputRetval = ParserRetVal;	/*check if the input is one of the subscribed commands*/
             }
-			else if ( 0 == strcmp((const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND) ){
+			else if ( 0 == strcmp( (const char*)Input->Buffer, QAT_DEFAULT_ID_COMMAND ) ){
                 OutputRetval = QAT_DEVID;		/*check if the input its an ID request using the ATID command*/
             }
-			else if	( strlen((const char*)Input->Buffer) >= QAT_MIN_INPUT_LENGTH ){
+			else if	( strlen( (const char*)Input->Buffer ) >= QAT_MIN_INPUT_LENGTH ){
                 OutputRetval = QAT_NOTFOUND;	/*check if it is pertinent to show the error*/
             }
 			else{
@@ -3314,7 +3307,7 @@ qBool_t qATParser_Run(qATParser_t *Parser){
 
 			if( NULL != Parser->Output ){ /*show the user output if available*/
 				if( Parser->Output[0] ){
-                    _qATParser_HandleCommandResponse(Parser, QAT_OUTPUT);
+                    _qATParser_HandleCommandResponse( Parser, QAT_OUTPUT );
                 }
 			}
 			_qATParser_HandleCommandResponse( Parser, OutputRetval ); /*print out the command output*/
@@ -3329,39 +3322,45 @@ qBool_t qATParser_Run(qATParser_t *Parser){
 /*============================================================================*/
 static void _qATParser_HandleCommandResponse(const qATParser_t *Parser, qATResponse_t retval){
     int32_t ErrorCode;
+    qPutchFcn_t PutChar;
+    qPutsFcn_t PutString;
+
+    PutChar = Parser->putch;
+    PutString = Parser->puts;
+    
 	if( QAT_NORESPONSE != retval ){
         switch( retval ){ /*handle the command-callback response*/
             case qAT_ERROR:
-                Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                PutString( ( Parser->ERROR_Response )? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
                 break;
             case qAT_OK:
-                Parser->puts( (Parser->OK_Response)? Parser->OK_Response: QAT_DEFAULT_OK_RSP_STRING );
+                PutString( ( Parser->OK_Response )? Parser->OK_Response: QAT_DEFAULT_OK_RSP_STRING );
                 break;
             case qAT_NOTALLOWED:   
-                Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
-                Parser->puts(QAT_DEAFULT_NOTALLOWED_RSP_STRING);
+                PutString( ( Parser->ERROR_Response )? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                PutString(QAT_DEAFULT_NOTALLOWED_RSP_STRING);
                 break; 
             case qAT_DEVID:
-                Parser->puts( (Parser->Identifier)? Parser->Identifier: QAT_DEFAULT_DEVID_STRING );
+                PutString( ( Parser->Identifier )? Parser->Identifier: QAT_DEFAULT_DEVID_STRING );
                 break;
             case qAT_NOTFOUND:
-                Parser->puts( (Parser->NOTFOUND_Response)? Parser->NOTFOUND_Response: QAT_DEFAULT_NOTFOUND_RSP_STRING );
+                PutString( ( Parser->NOTFOUND_Response )? Parser->NOTFOUND_Response: QAT_DEFAULT_NOTFOUND_RSP_STRING );
                 break;        
             case qAT_OUTPUT:
-                Parser->puts( Parser->Output );
+                PutString( Parser->Output );
                 break;
             default: /*AT_ERRORCODE(#) */
                 if( retval < 0 ){
                     ErrorCode = QAT_ERRORCODE( (int32_t)retval );
                     qItoA(ErrorCode, Parser->Output, 10u);
-                    Parser->puts( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
-                    Parser->putch(':');
-                    Parser->puts(Parser->Output);
+                    PutString( (Parser->ERROR_Response)? Parser->ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                    PutChar(':');
+                    PutString(Parser->Output);
                     Parser->Output[0] = '\0';
                 }                            
                 break;
         }
-        Parser->puts( (Parser->term_EOL)? Parser->term_EOL : QAT_DEFAULT_EOL_STRING );
+        PutString( ( Parser->term_EOL )? Parser->term_EOL : QAT_DEFAULT_EOL_STRING );
     }
 }
 /*============================================================================*/
@@ -3436,7 +3435,7 @@ char* qATParser_GetArgPtr(const qATParser_PreCmd_t *param, int8_t n){
 	int16_t i, argc = 0;
     char *RetPtr = NULL;
 	if( ( NULL != param ) && ( n > 0 ) ) {
-        if( QATCMDTYPE_SET == param->Type) {
+        if( QATCMDTYPE_SET == param->Type ) {
             if( 1 == n ){
                 RetPtr = param->StrData;
             } 
@@ -3837,7 +3836,7 @@ static qNode_t* qList_RemoveFront(qList_t *list){
     
     removed = list->head;
     list->head = removed->next;
-    if( NULL == list->head){
+    if( NULL == list->head ){
         list->tail = list->head;
     }
     else{
@@ -3851,7 +3850,7 @@ static qNode_t* qList_RemoveBack(qList_t *list){
     
     removed = list->tail;
     list->tail = removed->prev;
-    if( NULL == list->tail){
+    if( NULL == list->tail ){
         list->head = list->tail;
     }
     else{
@@ -3885,18 +3884,18 @@ qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position){
     int iPos;
  
     if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position < qList_AtBack )) {    
-        if( qFalse == qList_IsMember(list, node)){
-            newnode = qList_NodeInit(node);
+        if( qFalse == qList_IsMember( list, node )){
+            newnode = qList_NodeInit( node );
             RetValue = qTrue;
             if( NULL == list->head ){ /*list is empty*/
                 list->head = newnode; 
                 list->tail = newnode;
             }
             else if( qList_AtFront == position){
-                qList_InsertAtFront(list, node);
+                qList_InsertAtFront( list, node );
             }
             else if( ( qList_AtBack == position ) || ( position >= ( (qListPosition_t)list->size - 1 ) ) ){
-                qList_InserAtBack(list, node);
+                qList_InserAtBack( list, node );
             }
             else{ /*insert the new node after the position*/
                 iPos = 0;
@@ -3936,26 +3935,26 @@ void* qList_Remove(qList_t *list, void *node, qListPosition_t position){
     qNode_t *iNode;
     qNode_t *toRemove;
     if( ( NULL != list->head ) && ( position >= -1 ) ){
-        if ( qList_IsMember(list, node) ){
+        if ( qList_IsMember( list, node ) ){
             toRemove = (qNode_t*)node;
             if( toRemove == list->head ){
-                removed = qList_RemoveFront(list);          
+                removed = qList_RemoveFront( list );          
             }
             else{
                 removed = toRemove;
                 removed->prev->next = removed->next;
-                if( NULL != removed->next){
+                if( NULL != removed->next ){
                     removed->next->prev = removed->prev;
                 }
             }
             list->size--;
         }
         else if( position <= 0 ){
-            removed = qList_RemoveFront(list);     
+            removed = qList_RemoveFront( list );     
             list->size--;
         }
         else if( ( qList_AtBack == position ) || ( position > ( (qListPosition_t)list->size - 1 ) ) ){
-            removed = qList_RemoveBack(list);  
+            removed = qList_RemoveBack( list );  
             list->size--;
         }
         else{
@@ -4017,7 +4016,7 @@ Parameters:
 void qList_View(const qList_t *list, const qListVisualizer_t visualizer){
     qNode_t *iNode;
     for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
-        visualizer(iNode);
+        visualizer( iNode );
     }
 }
 /*=========================================================*/
