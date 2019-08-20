@@ -23,7 +23,7 @@ OBJ_EXT ?= .o
 #####################################
 ### Do NOT touch the lines below  ###
 #####################################
-INC 	:= 	-I. $(addprefix -I./,$(dir $(wildcard src/**/*.h)))
+INC 	:= 	-I. $(addprefix -I./,$(dir $(wildcard src/**/*.h))) -I ./src/os/include
 SRC 	:= 	$(wildcard src/**/*.c)
 OBJ 	:= 	$(addprefix $(OBJ_DIR)/,$(SRC:.c=$(OBJ_EXT)))
 OUT 	= 	$(BIN_DIR)/$(notdir $(CURDIR))
