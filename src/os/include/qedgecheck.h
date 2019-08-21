@@ -4,7 +4,6 @@
     #include "qtypes.h"
     #include "qclock.h"
 
-    
     #define QREG_8BIT               __qReg_08Bits
     #define QREG_16BIT              __qReg_16Bits
     #define QREG_32BIT              __qReg_32Bits
@@ -12,7 +11,6 @@
     #define QEDGECHECK_WAIT         ( 0u )
     #define QEDGECHECK_UPDATE       ( 1u )
     #define QEDGECHECK_CHECK        ( 2u )
-
 
     typedef struct _qIONode_t{
         qBool_t Pin, PreviousPinValue, Status;

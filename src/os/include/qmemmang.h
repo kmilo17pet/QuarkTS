@@ -35,7 +35,6 @@
     void* qMalloc(size_t size);
     void qFree(void *ptr);
     size_t qHeapGetFreeSize( void );
-
     void qMemoryPool_Select( qMemoryPool_t *mPool );
     qBool_t qMemoryPool_Init (qMemoryPool_t *mPool, void* Area, size_t size );
 

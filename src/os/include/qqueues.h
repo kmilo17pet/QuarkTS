@@ -16,8 +16,6 @@
         qSize_t ItemSize;		        /*< The size of each items that the queue will hold. */
     }qQueue_t;
 
-    /*qRBuffer_t is deprecated, insted use qQueue_t*/
-    #define qRBuffer_t qQueue_t  /*Backward compatibility*/
     #define QUEUE_SEND_TO_BACK     ( 0u )
     #define QUEUE_SEND_TO_FRONT    ( 1u )
     /*qBool_t qQueueSendToBack(qQueue_t *obj, void *ItemToQueue)
@@ -82,22 +80,5 @@
     qBool_t qQueueRemoveFront( qQueue_t *obj );
     qBool_t qQueueGenericSend( qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode );
     qBool_t qQueueReceive (qQueue_t *obj, void *dest );
-
-    /*BACKWARD COMPATIBILITY: Start */
-    /*qTaskLinkBuffer is deprecated, instead use qTaskAttachQueue */
-    #define qTaskLinkRBuffer		qTaskAttachQueue
-    /*qRBufferInit is deprecated, instead use qQueueCreate */
-    #define qRBufferInit		    qQueueCreate
-    /*qRBufferEmpty is deprecated, instead use qQueueIsEmpty */
-    #define	qRBufferEmpty		    qQueueIsEmpty
-    /*qRBufferGetFront is deprecated, instead use qQueuePeek */
-    #define qRBufferGetFront	    qQueuePeek
-    /*qRBufferRemoveFront is deprecated, instead use qQueueRemoveFront */
-    #define qRBufferRemoveFront 	qQueueRemoveFront
-    /*qRBufferPopFront is deprecated, instead use qQueueReceive */
-    #define qRBufferPopFront	    qQueueReceive
-    /*qRBufferPush is deprecated, instead use qQueueSendToBack */
-    #define qRBufferPush		    qQueueSendToBack
-    /*BACKWARD COMPATIBILITY: End */
 
 #endif 

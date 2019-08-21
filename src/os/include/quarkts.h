@@ -45,11 +45,4 @@
 
     #include "qbitmacros.h"
 
-    #ifndef __ORDER_LITTLE_ENDIAN__  /*default endianess: little-endian*/
-        #define __ORDER_LITTLE_ENDIAN__     1
-    #endif
-    #ifndef __BYTE_ORDER__
-        #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
-    #endif
-
 #endif

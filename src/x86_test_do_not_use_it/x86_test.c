@@ -215,7 +215,6 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-    
     qSchedulerRun();
     return (EXIT_SUCCESS);
 }

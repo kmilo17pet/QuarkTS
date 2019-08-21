@@ -45,7 +45,6 @@
     typedef qSM_t* const qSMData_t;    
     typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
     typedef void (*qSM_SubState_t)(qSMData_t); 
-    #define StateJustChanged    StateFirstEntry /*backward compatibility*/
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART, /*Restart the FSM*/

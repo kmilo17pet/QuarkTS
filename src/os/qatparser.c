@@ -10,8 +10,9 @@ static char* _qATParser_FixInput(char *s);
 static void _qATParser_HandleCommandResponse( const qATParser_t *Parser, qATResponse_t retval );
 static qBool_t _qATParser_PreProcessing( qATCommand_t *Command, volatile char *InputBuffer, qATParser_PreCmd_t *params );
 
-static void qATParser_TaskCallback(qEvent_t e);
-
+#if ( QAT_PARSER_TASK_LINK == 1)
+    static void qATParser_TaskCallback(qEvent_t e);
+#endif 
 /*============================================================================*/
 static void _qATPutc_Wrapper( const char c ){
 	ATOutCharFcn( NULL, c );
@@ -74,7 +75,9 @@ qBool_t qATParser_Setup(qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, 
         Parser->Input.Size = SizeInput;
         Parser->Input.Ready = qFalse;
         Parser->Input.index = 0u;
-        Parser->Task = NULL;
+        #if ( QAT_PARSER_TASK_LINK == 1 )
+            Parser->Task = NULL;
+        #endif
         RetValue = qTrue;
     }
     return RetValue;
@@ -164,9 +167,11 @@ qBool_t qATParser_ISRHandler(qATParser_t *Parser, char c){
     if ( c == '\r' ){
         Parser->Input.Ready = qTrue;
         Parser->Input.index = 0u;
-        if( NULL != Parser->Task ){
-            qTaskSendNotification( Parser->Task, NULL );
-        }
+        #if ( QAT_PARSER_TASK_LINK == 1 )
+            if( NULL != Parser->Task ){
+                qTaskSendNotification( Parser->Task, NULL );
+            }
+        #endif
         RetValue = qTrue;
     }
     return RetValue;
@@ -206,9 +211,11 @@ qBool_t qATParser_ISRHandlerBlock(qATParser_t *Parser, char *data, qSize_t n){
                     _qATParser_FixInput( (char*)Parser->Input.Buffer );
                     Parser->Input.Ready = qTrue;
                     Parser->Input.index = 0u;
-                    if( NULL != Parser->Task ){
-                        qTaskSendNotification( Parser->Task, NULL );
-                    } 
+                    #if ( QAT_PARSER_TASK_LINK == 1 )
+                        if( NULL != Parser->Task ){
+                            qTaskSendNotification( Parser->Task, NULL );
+                        } 
+                    #endif 
                     RetValue = qTrue;
                 }
             }
@@ -265,9 +272,11 @@ qBool_t qATParser_Raise(qATParser_t *Parser, const char *cmd){
             Parser->Input.index = 0u;
             strncpy( (char*)Parser->Input.Buffer, cmd, (size_t)Parser->Input.Size );
             _qATParser_FixInput( (char*)Parser->Input.Buffer );
-            if( NULL != Parser->Task ){
-                qTaskSendNotification( Parser->Task, NULL );
-            }
+            #if ( QAT_PARSER_TASK_LINK == 1 )
+                if( NULL != Parser->Task ){
+                    qTaskSendNotification( Parser->Task, NULL );
+                }
+            #endif
             RetValue =  qTrue;
         }
     } 
@@ -630,7 +639,7 @@ uint32_t qATParser_GetArgHex(const qATParser_PreCmd_t *param, int8_t n){
 	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
-/*============================================================================*/
+#if ( QAT_PARSER_TASK_LINK == 1 )
 /*qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority_t Priority)
 
 Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
@@ -658,5 +667,6 @@ qBool_t qSchedulerAdd_ATParserTask(qTask_t *Task, qATParser_t *Parser, qPriority
 static void qATParser_TaskCallback(qEvent_t e){ /*wrapper for the task callback */
     qATParser_Run( (qATParser_t*)e->TaskData );
 }
+#endif /* #if ( QAT_PARSER_TASK_LINK == 1 ) */
 
 #endif /* #if ( Q_ATCOMMAND_PARSER == 1) */

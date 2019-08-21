@@ -1,10 +1,15 @@
 #ifndef QATPARSER_H
     #define QATPARSER_H 
 
+    #define     QAT_PARSER_TASK_LINK                1   /*enable or disable the task attachment functionality to this module*/
+    
     #include "qtypes.h"  
-    #include "qkernel.h"
+    #if ( QAT_PARSER_TASK_LINK == 1)
+        #include "qkernel.h"
+    #endif 
     #include "qioutils.h"  
 
+    
     #define		QAT_DEFAULT_AT_COMMAND	            "at"
     #define		QAT_DEFAULT_ID_COMMAND	            "atid"
     #define		QAT_DEFAULT_ATSET_DELIM	            ','
@@ -55,7 +60,9 @@
         qPutChar_t OutputFcn;
         qPutchFcn_t putch;
         qPutsFcn_t puts;
-        qTask_t *Task;
+        #if ( QAT_PARSER_TASK_LINK == 1 )
+            qTask_t *Task;
+        #endif
         char *Output;
         qSize_t SizeOutput;
         qATParserInput_t Input;
@@ -114,6 +121,8 @@
     float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n );
     uint32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, int8_t n );
 
-    qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority );
+    #if ( QAT_PARSER_TASK_LINK == 1 )
+        qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority );
+    #endif
 
 #endif

@@ -12,25 +12,10 @@
     #endif
 
     typedef enum {qTriggerNULL, byTimeElapsed, byNotificationQueued, byNotificationSimple, byQueueReceiver, byQueueFull, byQueueCount, byQueueEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-    #define byAsyncEvent                byNotificationSimple
-    #define byQueueExtraction           byNotificationQueued
-
-    /*BACKWARD COMPATIBILITY: START*/
-    #define byRBufferPop                byQueueReceiver
-    #define byRBufferFull               byQueueFull
-    #define byRBufferCount              byQueueCount
-    #define byRBufferEmpty              byQueueEmpty
-    #define qTrigger_RBufferPop         byQueueReceiver
-    #define qTrigger_RBufferFull        byQueueFull
-    #define qTrigger_RBufferCount       byQueueCount
-    #define qTrigger_RBufferEmpty       byQueueEmpty
-    /*BACKWARD COMPATIBILITY: END*/
 
     #define qTrigger_NotificationSimple byNotificationSimple
     #define qTrigger_NotificationQueued byNotificationQueued
     #define qTrigger_TimeElapsed        byTimeElapsed
-    #define qTrigger_QueueExtraction    byQueueExtraction
-    #define qTrigger_AsyncEvent         byAsyncEvent
     #define qTrigger_QueueReceiver      byQueueReceiver
     #define qTrigger_QueueFull          byQueueFull
     #define qTrigger_QueueCount         byQueueCount
@@ -285,12 +270,6 @@ typedef void (*qTaskFcn_t)(qEvent_t);
             qQUEUE_COUNT    =   _qIndex_QueueCount, 
             qQUEUE_EMPTY    =   _qIndex_QueueEmpty
         }qQueueLinkMode_t;
-        /*backward compatibility*/
-        #define qRBLinkMode_t           qQueueLinkMode_t
-        #define qRB_AUTOPOP	            ( qQUEUE_RECEIVER )
-        #define qRB_FULL	            ( qQUEUE_FULL )
-        #define qRB_COUNT	            ( qQUEUE_COUNT )
-        #define qRB_EMPTY	            ( qQUEUE_EMPTY )
 
         #define QUEUE_RECEIVER          ( qQUEUE_RECEIVER )  
         #define QUEUE_FULL              ( qQUEUE_FULL )

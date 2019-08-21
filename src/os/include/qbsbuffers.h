@@ -1,5 +1,5 @@
 #ifndef QBSBUFFERS_H
-#define QBSBUFFERS_H
+    #define QBSBUFFERS_H
 
     #include "qtypes.h"
 

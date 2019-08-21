@@ -3,20 +3,7 @@
 
     #include "qtypes.h"
     #include "qioutils.h"
-
-    /*qSetDebugFcn(fcn)
-
-    This macro set the output method for debug/trace messages.
-
-    Parameters:
-
-        - fcn : The basic output byte function
-
-    */ 
-    #define qSetDebugFcn(fcn)           __qDebugOutputFcn = (fcn)
-    
-    extern qPutChar_t __qDebugOutputFcn;
-
+   
     #ifndef __QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
             #if  __GNUC__ >= 2
@@ -96,7 +83,8 @@
     #if ( Q_TRACE_VARIABLES == 1 )
         extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
         void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize );
-        
+        void qSetDebugFcn(qPutChar_t fcn);
+
         /*On-demand debug/trace macros*/
         #define qTrace()                        __qtrace_func (__qAT(), __QTRACE_FUNC, "", "", NULL, 0)      
         #define qDebugCaller()                  __qtrace_func ("",__QTRACE_FUNC, "", "", NULL, 0)   

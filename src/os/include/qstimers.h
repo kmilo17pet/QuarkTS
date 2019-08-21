@@ -7,7 +7,8 @@
     typedef struct{ /*STimer defintion*/
         qConst qClock_t Start, TV; /*The time-epochs registers*/
     }qSTimer_t;
-    
+
+    #define QSTIMER_INITIALIZER     {0ul, 0ul} 
     #define QSTIMER_ARMED           ( qTrue )
     #define QSTIMER_DISARMED        ( qFalse )
     #define QSTIMER_DISARM_VALUE    ( 0ul )
@@ -19,8 +20,7 @@
     qClock_t qSTimerRemaining( const qSTimer_t *obj );
     void qSTimerDisarm( qSTimer_t *obj );
     qBool_t qSTimerStatus( const qSTimer_t *obj );
-    #define QSTIMER_INITIALIZER     {0ul, 0ul}
-    
+
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         #define qMins2Time(t)    ( ((qTime_t)(t))*60.0 )    
         #define qHours2Time(t)   ( ((qTime_t)(t))*3600.0 )

@@ -21,7 +21,6 @@
     #define qDWordHighWord(Register)                    ((uint16_t)((Register) >> 16))
     #define qDWordLowWord(Register)                     ((uint16_t)((Register) & 0xFFFF))
     #define qDWordMergeWords(H,L)                       ((uint32_t)(((uint32_t)(H) << 16 ) | (L) ) )
-
     #define qClip(X, Max, Min)                          (((X) < (Min)) ? (Min) : (((X) > (Max)) ? (Max) : (X)))
     #define qClipUpper(X, Max)                          (((X) > (Max)) ? (Max) : (X))
     #define qClipLower(X, Min)                          (((X) < (Min)) ? (Min) : (X))
