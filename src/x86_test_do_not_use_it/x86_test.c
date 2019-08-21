@@ -21,7 +21,7 @@ embedded application
 #include <assert.h>
 #include <float.h>
 
-#include "quarkts.h"
+#include "QuarkTS.h"
 
 uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
