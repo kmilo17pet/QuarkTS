@@ -1,7 +1,7 @@
 #include "qioutils.h"
 
 static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base );
-
+static char qNibbleToX( uint8_t value );
 /*============================================================================*/
 /*void qSwapBytes(void *data, size_t n)
  

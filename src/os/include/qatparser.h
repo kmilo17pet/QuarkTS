@@ -106,14 +106,14 @@
         qSize_t CmdLen;
     }qATCommand_t;
 
-    qBool_t qATParser_Setup( qATParser_t *Parser, qPutChar_t OutputFcn, char *Input, qSize_t SizeInput, char *Output, qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
-    qBool_t qATParser_CmdSubscribe( qATParser_t *Parser, qATCommand_t *Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt );
-    qBool_t qATParser_ISRHandler( qATParser_t *Parser, char c );
-    qBool_t qATParser_ISRHandlerBlock( qATParser_t *Parser, char *data, qSize_t n );
-    qBool_t qATParser_Raise( qATParser_t *Parser, const char *cmd );
-    qATResponse_t qATParser_Exec( qATParser_t *Parser, const char *cmd );
-    void qATCommandParser_FlushInput( qATParser_t *Parser );
-    qBool_t qATParser_Run( qATParser_t *Parser );
+    qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
+    qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt );
+    qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c );
+    qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const qSize_t n );
+    qBool_t qATParser_Raise( qATParser_t * const Parser, const char *cmd );
+    qATResponse_t qATParser_Exec( qATParser_t * const Parser, const char *cmd );
+    void qATCommandParser_FlushInput( qATParser_t * const Parser );
+    qBool_t qATParser_Run( qATParser_t * const Parser );
 
     char* qATParser_GetArgString( const qATParser_PreCmd_t *param, int8_t n, char* out );
     char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, int8_t n );

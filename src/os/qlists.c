@@ -2,10 +2,14 @@
 
 #if ( Q_LISTS == 1)
 
-static qNode_t* qList_RemoveFront(qList_t *list);
-static qNode_t* qList_RemoveBack(qList_t *list);
-static void qList_InsertAtFront(qList_t *list, qNode_t *node);
-static void qList_InserAtBack(qList_t *list, qNode_t *node);
+static qNode_t* qList_NodeInit( void * const node );
+static void qList_InsertAtFront( qList_t * const list, qNode_t * const node );
+static void qList_InserAtBack( qList_t * const list, qNode_t * const node );
+
+static qNode_t* qList_RemoveFront( qList_t * const list );
+static qNode_t* qList_RemoveBack( qList_t * const list );
+
+
 
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
@@ -18,7 +22,7 @@ Parameters:
     - list : Pointer to the list being initialised.   
 
 */
-void qList_Initialize(qList_t *list){
+void qList_Initialize( qList_t * const list ){
     if( NULL != list ){
         list->head = NULL;
         list->tail = NULL;
@@ -26,26 +30,26 @@ void qList_Initialize(qList_t *list){
     }
 }
 /*=========================================================*/
-static qNode_t* qList_NodeInit(void *node){
+static qNode_t* qList_NodeInit( void * const node ){
     qNode_t *xNode = (qNode_t*)node;
     xNode->prev = NULL;
     xNode->next = NULL;
     return xNode;
 }
 /*=========================================================*/
-static void qList_InsertAtFront(qList_t *list, qNode_t *node){
+static void qList_InsertAtFront( qList_t * const list, qNode_t * const node ){
     node->next = list->head;
     list->head->prev = node;
     list->head = node;
 }
 /*=========================================================*/
-static void qList_InserAtBack(qList_t *list, qNode_t *node){
+static void qList_InserAtBack( qList_t * const list, qNode_t * const node ){
     list->tail->next = node;
     node->prev = list->tail;
     list->tail = node;
 }
 /*=========================================================*/
-static qNode_t* qList_RemoveFront(qList_t *list){
+static qNode_t* qList_RemoveFront( qList_t * const list ){
     qNode_t *removed;
     
     removed = list->head;
@@ -59,7 +63,7 @@ static qNode_t* qList_RemoveFront(qList_t *list){
     return removed;
 }
 /*=========================================================*/
-static qNode_t* qList_RemoveBack(qList_t *list){
+static qNode_t* qList_RemoveBack( qList_t * const list ){
     qNode_t *removed;
     
     removed = list->tail;
@@ -74,7 +78,7 @@ static qNode_t* qList_RemoveBack(qList_t *list){
     return removed;
 }
 /*=========================================================*/
-/*qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position)
+/*qBool_t qList_Insert(qList_t * const list, const void * const node, const qListPosition_t position)
  
 Insert an item into the list.
 
@@ -91,7 +95,7 @@ Return value:
     qTrue if the item was successfully added tot he list, othewise returns qFalse   
 
 */
-qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position){
+qBool_t qList_Insert( qList_t *const list, void * const node, const qListPosition_t position ){
     qBool_t RetValue = qFalse;
     qNode_t *newnode;
     qNode_t *iNode;
@@ -127,7 +131,7 @@ qBool_t qList_Insert(qList_t *list, void *node, qListPosition_t position){
     return RetValue;  
 }
 /*=========================================================*/           
-/*void* qList_Remove(qList_t *list, void *node, qListPosition_t position)
+/*void* qList_Remove(qList_t * const list, void * const node, const qListPosition_t position)
  
 Remove an item from the list.
 
@@ -143,7 +147,7 @@ Return value:
     A pointer to the removed node. NULL if removal can be performed.  
 
 */ 
-void* qList_Remove(qList_t *list, void *node, qListPosition_t position){
+void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
     qNode_t *removed = NULL;
     int iPos = 0;
     qNode_t *iNode;
@@ -186,7 +190,7 @@ void* qList_Remove(qList_t *list, void *node, qListPosition_t position){
     return removed;
 }
 /*=========================================================*/
-/*qBool_t qList_IsMember(qList_t *list, void *node)
+/*qBool_t qList_IsMember(const qList_t * const list, const void * const node)
  
 Check if the node is member of the list.
 
@@ -200,7 +204,7 @@ Return value:
     qTrue if the node belongs to the list, qFalse if it is not.  
 
 */ 
-qBool_t qList_IsMember(const qList_t *list, void *node){
+qBool_t qList_IsMember( const qList_t * const list, const void * const node ){
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
     qNode_t *xNode = (qNode_t*)node;
@@ -216,7 +220,7 @@ qBool_t qList_IsMember(const qList_t *list, void *node){
     return RetValue;
 }
 /*=========================================================*/
-/*void qList_View(qList_t *list, qListVisualizer_t visualizer)
+/*void qList_View(const qList_t * const list, const qListVisualizer_t visualizer)
  
 List visualization. The application writer should provide the
 function to print out the corresponding node data.
@@ -227,14 +231,14 @@ Parameters:
     - visualizer : The function for node data visualization.
 
 */ 
-void qList_View(const qList_t *list, const qListVisualizer_t visualizer){
+void qList_View( const qList_t *const list, const qListVisualizer_t visualizer ){
     qNode_t *iNode;
     for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
         visualizer( iNode );
     }
 }
 /*=========================================================*/
-/*void* qList_GetFront(qList_t *list)
+/*void* qList_GetFront(const qList_t * const list)
  
 Get a pointer to the front item of the list
 
@@ -247,7 +251,7 @@ Return value:
     A pointer to the front node. NULL if the list is empty  
 
 */ 
-void* qList_GetFront(const qList_t *list){
+void* qList_GetFront( const qList_t *const list ){
     void *RetValue = NULL;
     if( NULL != list ){
         RetValue = (void*)list->head;
@@ -255,7 +259,7 @@ void* qList_GetFront(const qList_t *list){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_GetBack(qList_t *list)
+/*void* qList_GetBack(const qList_t * const list)
  
 Get a pointer to the back item of the list
 
@@ -268,7 +272,7 @@ Return value:
     A pointer to the back node. NULL if the list is empty  
 
 */ 
-void* qList_GetBack(const qList_t *list){
+void* qList_GetBack( const qList_t *const list ){
     void *RetValue = NULL;
     if( NULL != list ){
         RetValue = (void*)list->tail;
@@ -276,7 +280,7 @@ void* qList_GetBack(const qList_t *list){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IsEmpty(qList_t *list)
+/*qBool_t qList_IsEmpty(const qList_t * const list)
  
 Check if the list is empty.
 
@@ -289,7 +293,7 @@ Return value:
     qTrue if the list is empty, qFalse if it is not.  
 
 */ 
-qBool_t qList_IsEmpty(const qList_t *list){
+qBool_t qList_IsEmpty( const qList_t * const list ){
     qBool_t RetValue = qTrue;
     if( NULL != list ){
         RetValue = (NULL == list->head)? qTrue : qFalse;
@@ -297,7 +301,7 @@ qBool_t qList_IsEmpty(const qList_t *list){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_Length(qList_t *list)
+/*void* qList_Length(const qList_t * const list)
  
 Get the number of items inside the list
 
@@ -310,7 +314,7 @@ Return value:
     The number of items of the list. 
 
 */ 
-qSize_t qList_Length(const qList_t *list){
+qSize_t qList_Length( const qList_t * const list ){
     qSize_t RetValue = 0u;
     if( NULL != list ){
         RetValue = list->size;

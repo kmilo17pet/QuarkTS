@@ -1,7 +1,7 @@
 #include "qstimers.h"
 
 /*============================================================================*/
-/*qBool_t qSTimerSet(qSTimer_t obj, const qTime_t Time)
+/*qBool_t qSTimerSet(qSTimer_t * const obj, const qTime_t Time)
  
 Set the expiration time for a STimer. On success, the STimer gets
 armed immediately
@@ -19,7 +19,7 @@ Return value:
 
     Returns qTrue on success, otherwise, returns qFalse.
 */
-qBool_t qSTimerSet( qSTimer_t *obj, const qTime_t Time ){
+qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         qConstField_Set( qClock_t, obj->TV ) = qTime2Clock(Time); /*set the STimer time in epochs*/
@@ -29,7 +29,7 @@ qBool_t qSTimerSet( qSTimer_t *obj, const qTime_t Time ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qSTimerFreeRun(qSTimer_t *obj, const qTime_t Time)
+/*qBool_t qSTimerFreeRun(qSTimer_t * const obj, const qTime_t Time)
 
 Non-Blocking STimer check with automatic arming. 
 Behavior:
@@ -53,7 +53,7 @@ Return value:
     > Note 4: A disarmed STimer also returns qFalse.
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
-qBool_t qSTimerFreeRun( qSTimer_t *obj, const qTime_t Time ){
+qBool_t qSTimerFreeRun( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){ 
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ){ 
@@ -69,7 +69,7 @@ qBool_t qSTimerFreeRun( qSTimer_t *obj, const qTime_t Time ){
     return RetValue;   
 }
 /*============================================================================*/
-/*qBool_t qSTimerExpired(qSTimer_t *obj)
+/*qBool_t qSTimerExpired(const qSTimer_t * const obj)
 
 Non-Blocking STimer check
 
@@ -83,7 +83,7 @@ Return value:
     > Note 1: A disarmed STimer also returns false.
 
 */
-qBool_t qSTimerExpired( const qSTimer_t *obj ){
+qBool_t qSTimerExpired( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ){
@@ -93,7 +93,7 @@ qBool_t qSTimerExpired( const qSTimer_t *obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qTime_t qSTimerElapsed(qSTimer_t *obj)
+/*qTime_t qSTimerElapsed(const qSTimer_t * const obj)
 
 Query the elapsed time
 
@@ -105,7 +105,7 @@ Return value:
 
     The Elapsed time specified in epochs
 */
-qClock_t qSTimerElapsed( const qSTimer_t *obj ){
+qClock_t qSTimerElapsed( const qSTimer_t * const obj ){
     qClock_t RetValue = 0ul;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
@@ -115,7 +115,7 @@ qClock_t qSTimerElapsed( const qSTimer_t *obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qClock_t qSTimerRemainingEpochs(qSTimer_t *obj)
+/*qClock_t qSTimerRemainingEpochs(const qSTimer_t * const obj)
 
 Query the remaining epochs
 
@@ -127,7 +127,7 @@ Return value:
 
     The remaining time specified in epochs
 */
-qClock_t qSTimerRemaining( const qSTimer_t *obj ){
+qClock_t qSTimerRemaining( const qSTimer_t * const obj ){
     qClock_t RetValue = 0xFFFFFFFFul;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
@@ -137,7 +137,7 @@ qClock_t qSTimerRemaining( const qSTimer_t *obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*void qSTimerDisarm(qSTimer_t *obj)
+/*void qSTimerDisarm(const qSTimer_t * const obj)
 
 Disarms the STimer
 
@@ -145,14 +145,14 @@ Parameters:
 
     - obj : A pointer to the STimer object.  
 */
-void qSTimerDisarm(qSTimer_t *obj){
+void qSTimerDisarm(qSTimer_t * const obj){
     if( NULL != obj ){
         qConstField_Set( qClock_t, obj->TV ) = QSTIMER_DISARM_VALUE;
         qConstField_Set( qClock_t, obj->Start ) = QSTIMER_DISARM_VALUE;
     }
 }
 /*============================================================================*/
-/*qBool_t qSTimerStatus(qSTimer_t *obj)
+/*qBool_t qSTimerStatus(const qSTimer_t * const obj)
 
 Get the current status of the STimer (Armed or Disarmed)
 
@@ -164,7 +164,7 @@ Return value:
 
     qTrue when armed, otherwise qFalse when disarmed
 */
-qBool_t qSTimerStatus(const qSTimer_t *obj){
+qBool_t qSTimerStatus(const qSTimer_t * const obj){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         RetValue =  ( obj->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;

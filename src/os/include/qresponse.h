@@ -16,10 +16,11 @@
     }qResponseHandler_t; 
 
     #define QRESPONSE_INITIALIZER   {NULL, 0u, 0u, 0u, qFalse, QSTIMER_INITIALIZER }
-    void qResponseInitialize( qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax ); 
-    void qResponseReset( qResponseHandler_t *obj );
-    qBool_t qResponseReceived( qResponseHandler_t *obj, const char *Pattern, qSize_t n );
-    qBool_t qResponseReceivedWithTimeout( qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t );
-    qBool_t qResponseISRHandler( qResponseHandler_t *obj, const char rxchar );
+
+    void qResponseInitialize( qResponseHandler_t * const obj, char *xLocBuff, qSize_t nMax ); 
+    void qResponseReset( qResponseHandler_t * const obj );
+    qBool_t qResponseReceived( qResponseHandler_t * const obj, const char *Pattern, qSize_t n );
+    qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t );
+    qBool_t qResponseISRHandler( qResponseHandler_t * const obj, const char rxchar );
 
 #endif

@@ -3,14 +3,14 @@
 /*=========================== QuarkTS Private Data ===========================*/
 static QuarkTSCoreData_t QUARKTS;
 /*========================= QuarkTS Private Methods===========================*/
-static qTaskState_t _qScheduler_Dispatch( qTask_t *Task, const qTrigger_t Event );
+static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t Event );
 static qTask_t* _qScheduler_GetNodeFromChain( void );
 static qTask_t* _qScheduler_RearrangeChain( qTask_t *head );
-static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t *Task );
-static void _qScheduler_FindPlace( qTask_t *head, qTask_t *Task );
-static qBool_t _qScheduler_TransitionTo( qTask_t *task, qTaskState_t state, qTrigger_t trg );
+static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t * const Task );
+static void _qScheduler_FindPlace( qTask_t * const head, qTask_t * const Task );
+static qBool_t _qScheduler_TransitionTo( qTask_t * const task, const qTaskState_t state, const qTrigger_t trg );
 static qBool_t _qScheduler_ReadyTasksAvailable( void );
-static qBool_t _qTaskDeadLineReached( qTask_t *task );
+static qBool_t _qTaskDeadLineReached( qTask_t * const task );
 
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 
@@ -208,7 +208,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qSchedulerAdd_Task( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
+qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL!=Task ) && ( NULL != CallbackFcn ) ) {
         qSchedulerRemoveTask( Task ); /*Remove the task if was previously added to the chain*/
@@ -264,7 +264,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
      */
-qBool_t qSchedulerAdd_EventTask( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
+qBool_t qSchedulerAdd_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
     return qSchedulerAdd_Task( Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
 /*============================================================================*/
@@ -312,8 +312,8 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qSchedulerAdd_StateMachineTask( qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                            qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
+qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
+                            qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
@@ -339,7 +339,7 @@ Return value:
 
     Returns qTrue if success, otherwise returns qFalse.;     
     */
-qBool_t qSchedulerRemoveTask( qTask_t *Task ){
+qBool_t qSchedulerRemoveTask( qTask_t * const Task ){
     qTask_t *tmp = QUARKTS.Head;
     qTask_t *prev = NULL;
     qBool_t RetValue = qFalse;
@@ -363,7 +363,7 @@ qBool_t qSchedulerRemoveTask( qTask_t *Task ){
     return RetValue;
 }
 /*============================================================================*/
-static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t *Task ){ /*return the new head if modified*/
+static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t * const Task ){ /*return the new head if modified*/
     qTask_t *RetValue = head; /*if no change in the head, keep it*/
     qPriority_t TaskPriority;
     qPriority_t HeadPriority;
@@ -385,7 +385,7 @@ static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t *Task ){ /*r
     return RetValue; 
 }
 /*============================================================================*/
-static void _qScheduler_FindPlace( qTask_t *head, qTask_t *Task ){ /*find a new position for the task in the chain, when finded, put the task there*/
+static void _qScheduler_FindPlace( qTask_t * const head, qTask_t * const Task ){ /*find a new position for the task in the chain, when finded, put the task there*/
     qTask_t *tmp_node = NULL;
     qPriority_t PrioTask;
     PrioTask = Task->Priority; /*to avoid side effects*/
@@ -413,7 +413,7 @@ static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearr
 #endif
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-static qTrigger_t _qCheckQueueEvents( const qTask_t *Task ){
+static qTrigger_t _qCheckQueueEvents( const qTask_t * const Task ){
     qTrigger_t RetValue = qTriggerNULL;
     uint8_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
     qBool_t IsFull, IsEmpty;
@@ -517,7 +517,7 @@ static qTask_t* _qScheduler_GetNodeFromChain( void ){
     return Node; /*return the task node at current chain position*/
 }
 /*============================================================================*/
-static qTaskState_t _qScheduler_Dispatch( qTask_t *Task, const qTrigger_t Event ){
+static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t Event ){
     qIteration_t TaskIteration;
     qTaskFcn_t TaskActivities = NULL;
     if( byNoReadyTasks == Event){
@@ -603,13 +603,13 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t *Task, const qTrigger_t Event 
     return qSuspended;
 }
 /*============================================================================*/
-static qBool_t _qScheduler_TransitionTo( qTask_t *task, qTaskState_t state, qTrigger_t trg ){
+static qBool_t _qScheduler_TransitionTo( qTask_t * const task, const qTaskState_t state, const qTrigger_t trg ){
     task->State = state;
     task->Trigger = trg;
     return qTrue;
 }
 /*============================================================================*/
-static qBool_t _qTaskDeadLineReached( qTask_t *task ){
+static qBool_t _qTaskDeadLineReached( qTask_t * const task){
     qBool_t RetValue = qFalse;
     qBool_t EnabledFlag;
     qIteration_t TaskIterations;
@@ -655,7 +655,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
     return nTaskReady;
 }
 /*============================================================================*/
-/*void qTaskSendNotification(qTask_t *Task, void* eventdata)
+/*void qTaskSendNotification(qTask_t * const Task, void* eventdata)
 
 Sends a simple notification generating an asynchronous event. 
 This method marks the task as 'qReady' for execution, therefore, the planner will launch the task 
@@ -673,7 +673,7 @@ Return value:
 
     qTrue on success. Otherwise qFalse.
 */ 
-qBool_t qTaskSendNotification( qTask_t *Task, void* eventdata){
+qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
         if( Task->Notification < QMAX_NOTIFICATION_VALUE ){
@@ -685,7 +685,7 @@ qBool_t qTaskSendNotification( qTask_t *Task, void* eventdata){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qTaskQueueNotification(const qTask_t *Task, void* eventdata)
+/*qBool_t qTaskQueueNotification(const qTask_t * const Task, void* eventdata)
 
 Insert a notification in the FIFO priority queue. The scheduler get this notification
 as asynchronous event, therefor, the task will be ready for execution according to 
@@ -704,7 +704,7 @@ Return value:
     Returns qTrue if the event has been inserted in the queue, or qFalse if an error 
     occurred (The queue exceeds the size).
 */
-qBool_t qTaskQueueNotification( qTask_t *Task, void* eventdata ){
+qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
     #if ( Q_PRIORITY_QUEUE == 1 )
         qBool_t RetValue = qFalse;
         volatile qQueueStack_t tmp;
@@ -737,7 +737,7 @@ Return value:
 
     True if the task in on Enabled state, otherwise returns false.
 */    
-qBool_t qTaskIsEnabled( const qTask_t *Task ){
+qBool_t qTaskIsEnabled( const qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
         RetValue = (qBool_t)Task->Flag[_qIndex_Enabled];
@@ -758,7 +758,7 @@ Return value:
 
     A unsigned long value containing the number of task activations.
 */
-uint32_t qTaskGetCycles( const qTask_t *Task ){
+uint32_t qTaskGetCycles( const qTask_t * const Task ){
     uint32_t RetValue = 0ul;
     if( NULL != Task ){
         RetValue = Task->Cycles;
@@ -767,7 +767,7 @@ uint32_t qTaskGetCycles( const qTask_t *Task ){
 }
 #endif
 /*============================================================================*/
-/*void qTaskSetTime(qTask_t *Task, qTime_t Value)
+/*void qTaskSetTime(qTask_t * const Task, const qTime_t Value)
 
 Set/Change the Task execution interval
 
@@ -777,13 +777,13 @@ Parameters:
     - Value : Execution interval defined in seconds (floating-point format). 
               For immediate execution (tValue = qTimeImmediate).
 */
-void qTaskSetTime( qTask_t *Task, const qTime_t Value ){
+void qTaskSetTime( qTask_t * const Task, const qTime_t Value ){
     if( NULL != Task ){
         Task->Interval = qTime2Clock( Value );
     }
 }
 /*============================================================================*/
-/*void qTaskSetIterations(qTask_t *Task, qIteration_t Value)
+/*void qTaskSetIterations(qTask_t * const Task, qIteration_t Value)
 
 Set/Change the number of task iterations
 
@@ -797,13 +797,13 @@ Parameters:
               another set of iterations, you need to set the number of 
               iterations again and resume.
 */
-void qTaskSetIterations( qTask_t *Task, const qIteration_t Value ){
+void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value ){
     if( NULL != Task ){
         Task->Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
     }      
 }
 /*============================================================================*/
-/*void qTaskSetPriority(qTask_t *Task, qPriority_t Value)
+/*void qTaskSetPriority(qTask_t * const Task, const qPriority_t Value)
 
 Set/Change the task priority value
 
@@ -812,14 +812,14 @@ Parameters:
     - Task : A pointer to the task node.
     - Value : Priority Value. [0(min) - 255(max)]
 */
-void qTaskSetPriority( qTask_t *Task, const qPriority_t Value ){
+void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
     if( NULL != Task ){
         QUARKTS.Flag.Init = qFalse; 
         Task->Priority = Value; 
     }
 }
 /*============================================================================*/
-/*void qTaskSetCallback(qTask_t *Task, qTaskFcn_t Callback)
+/*void qTaskSetCallback(qTask_t * const Task, const qTaskFcn_t Callback)
 
 Set/Change the task callback function
 
@@ -829,13 +829,13 @@ Parameters:
     - Callback : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
-void qTaskSetCallback( qTask_t *Task, qTaskFcn_t CallbackFcn ){
+void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     if( NULL != Task ){
         Task->Callback = CallbackFcn;
     }    
 }
 /*============================================================================*/
-/*void qTaskSetState(qTask_t *Task, qState_t State)
+/*void qTaskSetState(qTask_t * const Task, const qState_t State)
 
 Set the task state (Enabled or Disabled)
 
@@ -844,7 +844,7 @@ Parameters:
     - Task : A pointer to the task node.
     - State : qEnabled or qDisabled 
 */
-void qTaskSetState(qTask_t *Task, const qState_t State){
+void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
         if( State != Task->Flag[_qIndex_Enabled] ){ 
             Task->Flag[_qIndex_Enabled] = State;
@@ -853,7 +853,7 @@ void qTaskSetState(qTask_t *Task, const qState_t State){
     }
 }
 /*============================================================================*/
-/*void qTaskSetData(qTask_t *Task, void* UserData)
+/*void qTaskSetData(qTask_t * const Task, void* UserData)
 
 Set the task data
 
@@ -865,7 +865,7 @@ Return value:
 
     A void pointer to the task data.
 */
-void qTaskSetData( qTask_t *Task, void* arg ){
+void qTaskSetData( qTask_t * const Task, void* arg ){
     if( NULL != Task ){
         Task->TaskData = arg;
     }
@@ -879,14 +879,14 @@ Parameters:
 
     - Task : A pointer to the task node.
 */
-void qTaskClearTimeElapsed( qTask_t *Task ){
+void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
         Task->ClockStart = qSchedulerGetTick();
     }    
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-/*qBool_t qTaskAttachQueue(qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, uint8_t arg)
 
 Attach a Queue to the Task. 
 
@@ -923,7 +923,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qTaskAttachQueue( qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg ){
+qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const uint8_t arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) && ( Mode >= qQUEUE_RECEIVER ) && ( Mode <= qQUEUE_EMPTY)  ){
         if( NULL != Queue->pHead ) {
@@ -942,7 +942,7 @@ qBool_t qTaskAttachQueue( qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t
 #endif /* #if ( Q_QUEUES == 1) */
 #if ( Q_FSM == 1)
 /*============================================================================*/
-/*qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine )
+/*qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine )
 
 Attach a Finite State Machine(FSM) to the Task. 
 
@@ -958,7 +958,7 @@ Return value:
     Returns qTrue on success, otherwise, returns qFalse.
 
 */
-qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine ){
+qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
     qBool_t RetValue;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
         Task->Callback = __qFSMCallbackMode;

@@ -18,7 +18,7 @@ static qSize_t _qQueueValidPowerOfTwo( qSize_t k ){
     return ( k < r )? k*2u : k;
 }
 /*============================================================================*/
-/*size_t qBSBuffer_Count(qBSBuffer_t const* obj)
+/*size_t qBSBuffer_Count(const qBSBuffer_t * const obj)
  
 Query the number of elements in the BSBuffer(Byte-sized Buffer)
  
@@ -30,7 +30,7 @@ Return value:
 
     Number of elements in the BSBuffer(Byte-sized Buffer)
 */
-qSize_t qBSBuffer_Count( qBSBuffer_t const* obj ){
+qSize_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     qSize_t RetValue = 0u;
     if( NULL != obj ){
         RetValue = (qSize_t)( obj->head - obj->tail );
@@ -39,7 +39,7 @@ qSize_t qBSBuffer_Count( qBSBuffer_t const* obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_IsFull(qBSBuffer_t const* obj)
+/*qBool_t qBSBuffer_IsFull(const qBSBuffer_t * const obj)
  
 Query the the full status of the BSBuffer(Byte-sized Buffer)
  
@@ -51,7 +51,7 @@ Return value:
 
     qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
 */
-qBool_t qBSBuffer_IsFull( qBSBuffer_t const* obj ){
+qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         RetValue = ( obj->length == qBSBuffer_Count( obj ) )? qTrue : qFalse;
@@ -59,7 +59,7 @@ qBool_t qBSBuffer_IsFull( qBSBuffer_t const* obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Empty(qBSBuffer_t const* obj)
+/*qBool_t qBSBuffer_Empty(const qBSBuffer_t * const obj)
  
 Query the the empty status of the BSBuffer(Byte-sized Buffer)
  
@@ -71,7 +71,7 @@ Return value:
 
     qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
 */
-qBool_t qBSBuffer_Empty( qBSBuffer_t const *obj ){
+qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qTrue;
     if( NULL != obj ){
         RetValue = ( 0u == qBSBuffer_Count( obj ) )? qTrue : qFalse;
@@ -79,7 +79,7 @@ qBool_t qBSBuffer_Empty( qBSBuffer_t const *obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*uint8_t qBSBuffer_Peek(qBSBuffer_t const* obj)
+/*uint8_t qBSBuffer_Peek(const qBSBuffer_t * const obj)
  
 Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it
  
@@ -91,7 +91,7 @@ Return value:
 
     byte of data, or zero if nothing in the list
 */
-uint8_t qBSBuffer_Peek( qBSBuffer_t const *obj ){
+uint8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     uint8_t RetValue = 0x0u;
     if( NULL != obj ){
         RetValue = (uint8_t) ( obj->buffer[obj->tail % obj->length] );
@@ -99,7 +99,7 @@ uint8_t qBSBuffer_Peek( qBSBuffer_t const *obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Get(qBSBuffer_t *obj, uint8_t *dest)
+/*qBool_t qBSBuffer_Get(qBSBuffer_t * const obj, uint8_t *dest)
  
 Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
  
@@ -112,7 +112,7 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Get( qBSBuffer_t *obj, uint8_t *dest ){
+qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, uint8_t *dest ){
     qBool_t RetValue = qFalse;
     if ( qFalse == qBSBuffer_Empty( obj ) ) {
         *dest = obj->buffer[obj->tail % obj->length];
@@ -122,7 +122,7 @@ qBool_t qBSBuffer_Get( qBSBuffer_t *obj, uint8_t *dest ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Read( qBSBuffer_t *obj, void *dest, size_t n )
+/*qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n )
  
 Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
  
@@ -135,7 +135,7 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Read( qBSBuffer_t *obj, void *dest, const qSize_t n ){
+qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const qSize_t n ){
     qSize_t i;
     uint8_t *data = (uint8_t*)dest;
     qBool_t RetValue = qFalse;
@@ -161,7 +161,7 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Put( qBSBuffer_t *obj, const uint8_t data ){
+qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const uint8_t data ){
     qBool_t status = qFalse;
     if( NULL != obj ){ 
         if( qFalse == qBSBuffer_IsFull( obj ) ) {/* limit the ring to prevent overwriting */
@@ -184,7 +184,7 @@ Parameters:
     - length: The size of the buffer(Must be a power of two)
   
 */
-void qBSBuffer_Init( qBSBuffer_t *obj, volatile uint8_t *buffer, const qSize_t length ){
+void qBSBuffer_Init( qBSBuffer_t * const obj, volatile uint8_t *buffer, const qSize_t length ){
     if( NULL != obj ){
         obj->head = 0u;
         obj->tail = 0u;

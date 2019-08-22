@@ -71,14 +71,16 @@
     #define qQueueSendToFront(_qQueue_t_, _ItemToQueue_)    qQueueGenericSend((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_FRONT)
 
 
-    qBool_t qQueueCreate( qQueue_t *obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
-    void qQueueReset( qQueue_t *obj );
-    qSize_t qQueueCount( const qQueue_t *obj );
-    qBool_t qQueueIsFull( const qQueue_t *obj );
-    qBool_t qQueueIsEmpty( const qQueue_t *obj );
-    void* qQueuePeek( const qQueue_t *obj );
-    qBool_t qQueueRemoveFront( qQueue_t *obj );
-    qBool_t qQueueGenericSend( qQueue_t *obj, void *ItemToQueue, uint8_t InsertMode );
-    qBool_t qQueueReceive (qQueue_t *obj, void *dest );
+    qBool_t qQueueCreate( qQueue_t * const obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount );
+    void qQueueReset( qQueue_t * const obj );
+    qBool_t qQueueIsEmpty( const qQueue_t * const obj );
+    qSize_t qQueueCount( const qQueue_t * const obj );
+    qBool_t qQueueIsFull( const qQueue_t * const obj );
+    
+    void* qQueuePeek( const qQueue_t * const obj );
+    qBool_t qQueueRemoveFront( qQueue_t * const obj );
+    qBool_t qQueueReceive (qQueue_t * const obj, void *dest );
+    qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, uint8_t InsertMode );
+    
 
 #endif 

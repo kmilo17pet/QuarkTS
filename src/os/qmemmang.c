@@ -13,7 +13,7 @@ static const size_t ByteAlignmentMask   = ((size_t)Q_BYTE_ALIGNMENT - (size_t)1)
 static const size_t HeapStructSize	= ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
 static const size_t MinBlockSize	= ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) )*(size_t)2;
 /*============================================================================*/
-/*qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size)
+/*qBool_t qMemoryPool_Init(qMemoryPool_t * const mPool, void* Area, size_t size)
 
 Initializes a memory pool instance.
 This function should be called once before any heap memory request.
@@ -31,7 +31,7 @@ Return value:
     qTrue on success, otherwise returns qFalse
 
 */
-qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size){
+qBool_t qMemoryPool_Init(qMemoryPool_t * const mPool, void* Area, size_t size){
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
         mPool->Heap = Area;
@@ -42,7 +42,7 @@ qBool_t qMemoryPool_Init(qMemoryPool_t *mPool, void* Area, size_t size){
     return RetValue;
 }
 /*============================================================================*/
-/*void qMemoryPool_Select(qMemoryPool_t *mPool)
+/*void qMemoryPool_Select(qMemoryPool_t * const mPool)
 
 Select the memory pool to perform heap memory requests with qMalloc and qFree.
 
@@ -51,7 +51,7 @@ Parameters:
     - mPool : A pointer to the memory pool instance
 
 */
-void qMemoryPool_Select(qMemoryPool_t *mPool){
+void qMemoryPool_Select(qMemoryPool_t * const mPool){
     if( NULL != mPool ){
         MemPool = mPool;
     }
@@ -252,7 +252,7 @@ Return value:
     The size of the unallocated heap*
 
 */
-size_t qHeapGetFreeSize(void){
+size_t qHeapGetFreeSize( void ){
     size_t RetValue = (size_t)0;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/

@@ -3,7 +3,7 @@
 #if ( Q_RESPONSE_HANDLER == 1 )
 
 /*============================================================================*/
-/*void qResponseInitialize(qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax)
+/*void qResponseInitialize(qResponseHandler_t * const obj, char *xLocBuff, qSize_t nMax)
 
 Initialize the instance of the response handler object
 
@@ -15,7 +15,7 @@ Parameters:
     - nMax : The size of <xLocBuff>
   
 */
-void qResponseInitialize( qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax ){
+void qResponseInitialize( qResponseHandler_t * const obj, char *xLocBuff, qSize_t nMax ){
     if( NULL != obj ){
         obj->Pattern2Match = xLocBuff;
         obj->MaxStrLength = nMax; 
@@ -23,7 +23,7 @@ void qResponseInitialize( qResponseHandler_t *obj, char *xLocBuff, qSize_t nMax 
     }
 }   
 /*============================================================================*/
-/*void qResponseInitialize(qResponseHandler_t *obj)
+/*void qResponseInitialize(qResponseHandler_t * const obj)
 
 Reset the Response Handler
 
@@ -32,7 +32,7 @@ Parameters:
     - obj : A pointer to the Response Handler object
   
 */
-void qResponseReset( qResponseHandler_t *obj ){
+void qResponseReset( qResponseHandler_t * const obj ){
     if( obj != NULL ){
         obj->PatternLength = 0u;
         obj->MatchedCount = 0u;
@@ -41,7 +41,7 @@ void qResponseReset( qResponseHandler_t *obj ){
     }
 }
 /*============================================================================*/
-/*qBool_t qResponseReceived(qResponseHandler_t *obj, const char *Pattern, qSize_t n)
+/*qBool_t qResponseReceived(qResponseHandler_t * const obj, const char *Pattern, qSize_t n)
  
 Non-Blocking Response check
 
@@ -56,11 +56,11 @@ Return value:
 
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
-qBool_t qResponseReceived( qResponseHandler_t *obj, const char *Pattern, qSize_t n ){
+qBool_t qResponseReceived( qResponseHandler_t * const obj, const char *Pattern, qSize_t n ){
     return qResponseReceivedWithTimeout( obj, Pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
-/*qBool_t qResponseReceivedWithTimeout(qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t)
+/*qBool_t qResponseReceivedWithTimeout(qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t)
  
 Non-Blocking Response check with timeout
 
@@ -79,7 +79,7 @@ Return value:
     qTimeoutReached if timeout t expires
     otherwise returns qFalse
 */
-qBool_t qResponseReceivedWithTimeout( qResponseHandler_t *obj, const char *Pattern, qSize_t n, qTime_t t ){
+qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->ResponseReceived ) && ( 0u == obj->PatternLength ) ){ /*handler no configured yet*/
         strncpy( obj->Pattern2Match, (const char*)Pattern, (size_t)obj->MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
@@ -104,7 +104,7 @@ qBool_t qResponseReceivedWithTimeout( qResponseHandler_t *obj, const char *Patte
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar)
+/*qBool_t qResponseISRHandler(qResponseHandler_t * const obj, const char rxchar)
 
 ISR receiver for the response handler
 
@@ -117,7 +117,7 @@ Return value:
 
     qTrue when the Response handler match the request from "qResponseReceived"
 */
-qBool_t qResponseISRHandler(qResponseHandler_t *obj, const char rxchar){
+qBool_t qResponseISRHandler(qResponseHandler_t * const obj, const char rxchar){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->ResponseReceived ) && ( obj->PatternLength > 0u ) ) {
         if( obj->Pattern2Match[obj->MatchedCount] == rxchar ){ /*if the received char match with the expected*/

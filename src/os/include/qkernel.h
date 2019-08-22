@@ -224,11 +224,11 @@ typedef void (*qTaskFcn_t)(qEvent_t);
     #endif    
     qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode );
     
-    qBool_t qSchedulerAdd_Task( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
-    qBool_t qSchedulerAdd_EventTask( qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
+    qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
+    qBool_t qSchedulerAdd_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
     #if ( Q_FSM == 1)
-        qBool_t qSchedulerAdd_StateMachineTask( qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                            qSM_t *StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
+        qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
+                            qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg );
     #endif
 
@@ -275,26 +275,26 @@ typedef void (*qTaskFcn_t)(qEvent_t);
         #define QUEUE_FULL              ( qQUEUE_FULL )
         #define QUEUE_COUNT             ( qQUEUE_COUNT )
         #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
-        qBool_t qTaskAttachQueue( qTask_t *Task, qQueue_t *Queue, const qQueueLinkMode_t Mode, uint8_t arg );
+        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const uint8_t arg );
     #endif
+
+    qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
+    qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );
+    qBool_t qTaskIsEnabled( const qTask_t *const Task );
+    #if ( Q_TASK_COUNT_CYCLES == 1 )
+        uint32_t qTaskGetCycles( const qTask_t * const Task );   
+    #endif
+    void qTaskSetTime( qTask_t * const Task, const qTime_t Value );
+    void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value );
+    void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value );
+    void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
+    void qTaskSetState(qTask_t * const Task, const qState_t State);
+    void qTaskSetData( qTask_t * const Task, void* arg );
+    void qTaskClearTimeElapsed( qTask_t * const Task );
 
     #if ( Q_FSM == 1 ) 
-        qBool_t qTaskAttachStateMachine( qTask_t *Task, qSM_t *StateMachine );
+        qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine );
     #endif
-
-    qBool_t qTaskSendNotification( qTask_t *Task, void* eventdata);
-    qBool_t qTaskQueueNotification( qTask_t *Task, void* eventdata );
-    qBool_t qTaskIsEnabled( const qTask_t *Task );
-    #if ( Q_TASK_COUNT_CYCLES == 1 )
-        uint32_t qTaskGetCycles( const qTask_t *Task );   
-    #endif
-    void qTaskSetTime( qTask_t *Task, const qTime_t Value );
-    void qTaskSetIterations( qTask_t *Task, const qIteration_t Value );
-    void qTaskSetPriority( qTask_t *Task, const qPriority_t Value );
-    void qTaskSetCallback( qTask_t *Task, qTaskFcn_t CallbackFcn );
-    void qTaskSetState(qTask_t *Task, const qState_t State);
-    void qTaskSetData( qTask_t *Task, void* arg );
-    void qTaskClearTimeElapsed( qTask_t *Task );
 
     /*void qTaskSuspend(qTask_t *Task)
 

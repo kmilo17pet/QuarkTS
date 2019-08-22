@@ -3,7 +3,7 @@
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
 /*============================================================================*/
-qBool_t __qReg_32Bits(void *Address, qBool_t PinNumber){
+qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber ){
     uint32_t Register = 0ul;
     Register = *((uint32_t*)Address);    
     return (Register & (1ul << PinNumber))? qFalse : qTrue;
@@ -23,7 +23,7 @@ qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber ){
     return ( Register & (1u << PinNumber) )? qFalse : qTrue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t *Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime)
+/*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t * const Instance, qCoreRegSize_t RegisterSize, qClock_t DebounceTime)
  
 Initialize a I/O Edge-Check instance 
 
@@ -37,7 +37,7 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime ){
+qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime ){
     qBool_t RetValue = qFalse;
     if( NULL != Instance ){
         Instance->Head = NULL;
@@ -50,7 +50,7 @@ qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t *Instance, const qCoreRegSize_t Re
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber)
+/*qBool_t qEdgeCheck_InsertNode(qIOEdgeCheck_t * const Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber)
  
 Initialize an I/O Edge-Check instance 
 
@@ -65,7 +65,7 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber ){
+qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t * const Instance, qIONode_t * const Node, void *PortAddress, const qBool_t PinNumber ){
     qBool_t RetValue = qFalse;
     qCoreRegSize_t PinReader;
     if( ( NULL != Node ) && ( NULL != Instance ) ){
@@ -93,7 +93,7 @@ Return value:
     qTrue on success, otherwise returns qFalse
 */
 /*============================================================================*/
-qBool_t qEdgeCheck_Update( qIOEdgeCheck_t *Instance ){
+qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance ){
     qIONode_t *Node;
     qBool_t CurrentPinValue;
     qBool_t RetValue = qFalse;   
@@ -142,7 +142,7 @@ qBool_t qEdgeCheck_Update( qIOEdgeCheck_t *Instance ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_GetNodeStatus(qIONode_t *Node)
+/*qBool_t qEdgeCheck_GetNodeStatus(qIONode_t * const Node)
  
 Query the status of the specified input-node.
 
@@ -154,7 +154,7 @@ Return value:
 
     The status of the input node : qTrue, qFalse, qRising, qFalling or qUnknown
 */
-qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t *Node ){
+qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t * const Node ){
     return Node->Status;
 }
 /*============================================================================*/

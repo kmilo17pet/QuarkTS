@@ -8,7 +8,7 @@ static qGetTickFcn_t GetSysTick = NULL;
 static qTimingBase_type TimmingBase;
 
 /*============================================================================*/
-void qClock_SetTimeBase( qTimingBase_type tb ){
+void qClock_SetTimeBase( const qTimingBase_type tb ){
     TimmingBase = tb;
 } 
 #endif
@@ -95,7 +95,7 @@ qClock_t qSchedulerGetTick( void ){
 	return ( NULL != TickProvider )? TickProvider() : _qSysTick_Epochs_; /*some compilers can deal with function pointers inside structs*/
 }
 /*============================================================================*/
-qBool_t qClock_TimeDeadlineCheck( qClock_t ti, qClock_t td ){
+qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td ){
     qBool_t RetValue = qFalse;
     if( ( qSchedulerGetTick() - ti ) >= td ){
         RetValue = qTrue;

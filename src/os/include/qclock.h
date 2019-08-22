@@ -21,12 +21,12 @@
     typedef uint32_t qClock_t;
     typedef qClock_t (*qGetTickFcn_t)(void);
 
-    void qClock_SetTimeBase( qTimingBase_type tb );
+    void qClock_SetTimeBase( const qTimingBase_type tb );
     void qClock_SetTickProvider( qGetTickFcn_t provider );
     qTime_t qClock2Time( const qClock_t t );
     qClock_t qTime2Clock( const qTime_t t );
     void qSchedulerSysTick( void );
     qClock_t qSchedulerGetTick( void );
-    qBool_t qClock_TimeDeadlineCheck( qClock_t ti, qClock_t td );
+    qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
 
 #endif 

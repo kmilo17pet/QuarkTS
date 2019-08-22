@@ -2,10 +2,10 @@
 
 #if ( Q_FSM == 1 )
 
-static void qStatemachine_ExecSubStateIfAvailable( qSM_SubState_t substate, qSM_t* obj );
+static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_t * const obj );
 
 /*============================================================================*/
-/*qBool_t qStateMachine_Init(qSM_t *obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
+/*qBool_t qStateMachine_Init(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
 
 Initializes a finite state machine (FSM).
 
@@ -30,7 +30,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qStateMachine_Init( qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
+qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( NULL != InitState ) ){
         obj->NextState = InitState;
@@ -47,13 +47,13 @@ qBool_t qStateMachine_Init( qSM_t *obj, qSM_State_t InitState, qSM_SubState_t Su
     return RetValue;
 }
 /*============================================================================*/
-static void qStatemachine_ExecSubStateIfAvailable( qSM_SubState_t substate, qSM_t* obj ){
+static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_t * const obj ){
     if( NULL != substate ){
         substate( obj );
     }
 }
 /*============================================================================*/
-/*void qStateMachine_Run(qSM_t *obj, void* Data)
+/*void qStateMachine_Run(qSM_t * const obj, void* Data)
 
 Execute the Finite State Machine (FSM).
 
@@ -65,7 +65,7 @@ Parameters:
              for multiple arguments, create a structure that contains all of 
              the arguments and pass a pointer to that structure.
 */    
-void qStateMachine_Run( qSM_t *obj, void *Data ){
+void qStateMachine_Run( qSM_t * const obj, void *Data ){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
     if( NULL != obj ){
         qConstField_Set( void* ,obj->Data ) = Data;   /*pass the data through the fsm*/
@@ -95,7 +95,7 @@ void qStateMachine_Run( qSM_t *obj, void *Data ){
     }
  }
 /*============================================================================*/
-/*void qStateMachine_Attribute(qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs)
+/*void qStateMachine_Attribute(qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs)
 
 Change attributes or set actions to the Finite State Machine (FSM).
 
@@ -114,7 +114,7 @@ Parameters:
     - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
 */    
-void qStateMachine_Attribute( qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
+void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
     switch(Flag){
         case qSM_RESTART:
             obj->NextState = (qSM_State_t)s;

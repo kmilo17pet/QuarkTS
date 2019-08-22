@@ -13,13 +13,13 @@
     #define QSTIMER_DISARMED        ( qFalse )
     #define QSTIMER_DISARM_VALUE    ( 0ul )
 
-    qBool_t qSTimerSet( qSTimer_t *obj, const qTime_t Time );
-    qBool_t qSTimerExpired( const qSTimer_t *obj );
-    qBool_t qSTimerFreeRun( qSTimer_t *obj, const qTime_t Time );
-    qClock_t qSTimerElapsed( const qSTimer_t *obj );
-    qClock_t qSTimerRemaining( const qSTimer_t *obj );
-    void qSTimerDisarm( qSTimer_t *obj );
-    qBool_t qSTimerStatus( const qSTimer_t *obj );
+    qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time );
+    qBool_t qSTimerExpired( const qSTimer_t * const obj );
+    qBool_t qSTimerFreeRun( qSTimer_t * const obj, const qTime_t Time );
+    qClock_t qSTimerElapsed( const qSTimer_t * const obj );
+    qClock_t qSTimerRemaining( const qSTimer_t * const obj );
+    void qSTimerDisarm( qSTimer_t * const obj );
+    qBool_t qSTimerStatus( const qSTimer_t * const obj );
 
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         #define qMins2Time(t)    ( ((qTime_t)(t))*60.0 )    

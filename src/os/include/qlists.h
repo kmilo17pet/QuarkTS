@@ -18,15 +18,15 @@
     #define QLIST_ATFRONT             ( qList_AtFront )
     #define QLIST_ATBACK              ( qList_AtBack  )
 
-    void qList_Initialize( qList_t *list );
-    qBool_t qList_Insert( qList_t *list, void *node, qListPosition_t position );
-    void* qList_Remove( qList_t *list, void *node, qListPosition_t position );
-    qBool_t qList_IsMember( const qList_t *list, void *node );
-    void qList_View( const qList_t *list, const qListVisualizer_t visualizer );
-    void* qList_GetFront( const qList_t *list );
-    void* qList_GetBack( const qList_t *list );
-    qBool_t qList_IsEmpty( const qList_t *list );
-    qSize_t qList_Length( const qList_t *list );
+    void qList_Initialize( qList_t * const list );
+    qBool_t qList_Insert( qList_t * const list, void * const node, const qListPosition_t position );
+    void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position );
+    qBool_t qList_IsMember( const qList_t * const list, const void * const node );
+    void qList_View( const qList_t * const list, const qListVisualizer_t visualizer );
+    void* qList_GetFront( const qList_t * const list );
+    void* qList_GetBack( const qList_t * const list );
+    qBool_t qList_IsEmpty( const qList_t * const list );
+    qSize_t qList_Length( const qList_t * const list );
 
 
 #endif 

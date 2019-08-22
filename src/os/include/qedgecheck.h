@@ -28,9 +28,9 @@
     qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber );
     qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber );
     qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber );
-    qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t *Instance, const qCoreRegSize_t RegisterSize, qClock_t DebounceTime );
-    qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t *Instance, qIONode_t *Node, void *PortAddress, qBool_t PinNumber );    
-    qBool_t qEdgeCheck_Update( qIOEdgeCheck_t *Instance );
-    qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t *Node );
+    qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime );
+    qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t * const Instance, qIONode_t * const Node, void *PortAddress, const qBool_t PinNumber );    
+    qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance );
+    qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t * const Node );
 
 #endif 

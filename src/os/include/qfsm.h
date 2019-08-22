@@ -55,8 +55,8 @@
         qSM_BEFORE_ANY_STATE /*Set the state executed before any state*/              
     }qFSM_Attribute_t; 
 
-    qBool_t qStateMachine_Init( qSM_t *obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
-    void qStateMachine_Run( qSM_t *obj, void *Data );
-    void qStateMachine_Attribute( qSM_t *obj, qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
+    qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
+    void qStateMachine_Run( qSM_t * const obj, void *Data );
+    void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
 
 #endif 
