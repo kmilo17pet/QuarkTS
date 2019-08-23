@@ -232,7 +232,7 @@ typedef void (*qTaskFcn_t)(qEvent_t);
                             qState_t InitialTaskState, void *arg );
     #endif
 
-    qBool_t qSchedulerRemoveTask( qTask_t *Task );
+    qBool_t qSchedulerRemoveTask( qTask_t * const Task );
     void qSchedulerRun( void );
 
     /*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)

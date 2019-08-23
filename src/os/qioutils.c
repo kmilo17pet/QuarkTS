@@ -348,7 +348,7 @@ NULL Terminator not included
 static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base ){
     uint8_t i = 0u;
     uint32_t rem;
-    if( 0ul == num ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
+    if( ( 0ul == num ) || ( 0u == base ) ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
         str[i++] = '0';        
     }
     else{

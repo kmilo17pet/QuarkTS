@@ -32,7 +32,7 @@
         qMemBlockConnect_t Start;
     }qMemoryPool_t;
     
-    qBool_t qMemoryPool_Init (qMemoryPool_t *mPool, void* Area, size_t size );
+    qBool_t qMemoryPool_Init (qMemoryPool_t * const mPool, void* Area, size_t size );
     void qMemoryPool_Select( qMemoryPool_t * const mPool );
 
     void* qMalloc(size_t size);

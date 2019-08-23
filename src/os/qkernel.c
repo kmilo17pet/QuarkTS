@@ -23,7 +23,7 @@ static qBool_t _qTaskDeadLineReached( qTask_t * const task );
 #endif
 
 #if ( Q_QUEUES == 1)
-    static qTrigger_t _qCheckQueueEvents( const qTask_t *Task );
+    static qTrigger_t _qCheckQueueEvents( const qTask_t * const Task );
 #endif
 
 /*========================== QuarkTS Private Macros ==========================*/
@@ -959,7 +959,7 @@ Return value:
 
 */
 qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
-    qBool_t RetValue;
+    qBool_t RetValue = qFalse;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
         Task->Callback = __qFSMCallbackMode;
         Task->StateMachine = StateMachine;

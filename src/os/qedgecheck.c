@@ -42,7 +42,7 @@ qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSi
     if( NULL != Instance ){
         Instance->Head = NULL;
         Instance->DebounceTime = DebounceTime;
-        Instance->Reader = ( NULL==RegisterSize )? QREG_32BIT  : RegisterSize;
+        Instance->Reader = ( NULL == RegisterSize )? QREG_32BIT  : RegisterSize;
         Instance->State = QEDGECHECK_CHECK;
         Instance->Start = qSchedulerGetTick();
         RetValue = qTrue;
