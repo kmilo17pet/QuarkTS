@@ -47,25 +47,27 @@
         volatile char *Buffer;
     }qATParserInput_t;
 
-    typedef void (*qPutchFcn_t)(const char);
-    typedef void (*qPutsFcn_t)(const char*);
+    typedef void (*qPutchFcn_t)(const char arg);
+    typedef void (*qPutsFcn_t)(const char* arg);
 
     typedef struct{
-        void *First;
-        char *OK_Response;
-        char *ERROR_Response;
-        char *NOTFOUND_Response;
-        char *Identifier;
-        char *term_EOL;
-        qPutChar_t OutputFcn;
         qPutchFcn_t putch;
         qPutsFcn_t puts;
-        #if ( QAT_PARSER_TASK_LINK == 1 )
-            qTask_t *Task;
-        #endif
         char *Output;
-        qSize_t SizeOutput;
-        qATParserInput_t Input;
+        private_start{
+            void *First;
+            const char *OK_Response;
+            const char *ERROR_Response;
+            const char *NOTFOUND_Response;
+            const char *Identifier;
+            const char *term_EOL;
+            qPutChar_t OutputFcn;
+            #if ( QAT_PARSER_TASK_LINK == 1 )
+                qTask_t *Task;
+            #endif
+            qSize_t SizeOutput;
+            qATParserInput_t Input;
+        }private_end;
     }qATParser_t;   
     
     #define QATCMDTYPE_UNDEF    ( 0x0000 )
@@ -96,14 +98,16 @@
         qSize_t NumArgs; /*Number of arguments, only available if Type = QATCMDTYPE_SET*/
     }qATParser_PreCmd_t;
 
-    typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*, qATParser_PreCmd_t*);
+    typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*arg1, qATParser_PreCmd_t* arg2);
     
     typedef struct _qATCommand_t{
-        char *Text;
-        qATCommandCallback_t CommandCallback;
-        struct _qATCommand_t *Next;
-        uint16_t CmdOpt;
-        qSize_t CmdLen;
+        private_start{
+            char *Text;
+            qATCommandCallback_t CommandCallback;
+            struct _qATCommand_t *Next;
+            uint16_t CmdOpt;
+            qSize_t CmdLen;
+        }private_end;
     }qATCommand_t;
 
     qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );

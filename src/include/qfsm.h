@@ -11,40 +11,40 @@
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
         */
-        qSM_Status_t (*NextState)(_qSMData_t);
+        qSM_Status_t (*NextState)(_qSMData_t arg);
         /* PreviousState: (Read Only)
         Last state seen in the flow chart
         */
-        qSM_Status_t (* qConst PreviousState)(_qSMData_t);
+        qSM_Status_t (* PreviousState)(_qSMData_t arg);
         /* LastState: (Read Only) 
         The last state executed
         */        
-        qSM_Status_t (* qConst LastState)(_qSMData_t);
+        qSM_Status_t (* LastState)(_qSMData_t arg);
         /* PreviousReturnStatus: (Read Only)
         The return status of <PreviousState>
         */
-        qConst qSM_Status_t PreviousReturnStatus;
+        qSM_Status_t PreviousReturnStatus;
         /* StateFirstEntry: [== StateJustChanged] (Read Only)
         True when  <Previous State> !=  <Current State>
         */
-        qConst qBool_t StateFirstEntry;
+        qBool_t StateFirstEntry;
         /* Data: (Read Only)
         State-machine associated data.
         Note: If the FSM is running as a task, the associated event data can be 
         queried throught the "Data" field. (cast to qEvent_t is mandatory)
         */
-        void * qConst Data;
+        void * Data;
         /*Private members (DO NOT USE THEM)*/
-        struct /**/{
-            void (*qConst __Failure)(_qSMData_t);
-            void (*qConst __Success)(_qSMData_t);
-            void (*qConst __Unexpected)(_qSMData_t);  
-            void (*qConst __BeforeAnyState)(_qSMData_t);/*only used when a task has a SM attached*/
-        }qPrivate;
+        private_start{
+            void (*Failure)(_qSMData_t arg);
+            void (*Success)(_qSMData_t arg);
+            void (*Unexpected)(_qSMData_t arg);  
+            void (*BeforeAnyState)(_qSMData_t arg);/*only used when a task has a SM attached*/
+        }private_end;
     }qSM_t;
     typedef qSM_t* const qSMData_t;    
-    typedef qSM_Status_t (*qSM_State_t)(qSMData_t); 
-    typedef void (*qSM_SubState_t)(qSMData_t); 
+    typedef qSM_Status_t (*qSM_State_t)(qSMData_t arg); 
+    typedef void (*qSM_SubState_t)(qSMData_t arg); 
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART, /*Restart the FSM*/

@@ -5,13 +5,12 @@
     #include "qconfig.h"
     #include "qedgecheck.h"
     
-    #include <stdio.h>
     #include <string.h>
     #include <ctype.h>
 
-    typedef void (*qPutChar_t)(void*, const char);
-    typedef void (*qPutString_t)(void*, const char*);
-    typedef char (*qGetChar_t)(void*);
+    typedef void (*qPutChar_t)(void* arg1, const char arg2);
+    typedef void (*qPutString_t)(void* arg1, const char* arg2);
+    typedef char (*qGetChar_t)(void* arg1);
 
     void qSwapBytes( void *data, const qSize_t n );
     qBool_t qCheckEndianness( void);

@@ -3,7 +3,7 @@
 
     #include "qtypes.h"
 
-    typedef void (*qInt_Restorer_t)(uint32_t);
+    typedef void (*qInt_Restorer_t)(uint32_t arg1);
     typedef uint32_t (*qInt_Disabler_t)(void);
 
     typedef struct{

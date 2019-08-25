@@ -109,9 +109,9 @@
         */
         qBool_t LastIteration;
     }_qEvent_t_/*, *const qEvent_t*/;  
-    typedef const _qEvent_t_ *qConst qEvent_t;
+    typedef const _qEvent_t_ *qEvent_t;
 
-typedef void (*qTaskFcn_t)(qEvent_t);  
+typedef void (*qTaskFcn_t)(qEvent_t arg);  
 
     typedef uint8_t qNotifier_t;
     #define QMAX_NOTIFICATION_VALUE     ( 0xFFu )
@@ -123,25 +123,27 @@ typedef void (*qTaskFcn_t)(qEvent_t);
     #define qSuspended  ( 3u )
 
     typedef struct _qTask_t{ /*Task node definition*/
-        struct _qTask_t *Next; /*pointer to the next node*/
-        void *TaskData,*AsyncData; /*the storage pointers*/
-        qTaskFcn_t Callback; 
-        #if ( Q_FSM == 1)
-            qSM_t *StateMachine; /*pointer to the linked FSM*/
-        #endif
-        #if ( Q_QUEUES == 1)
-            qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
-        #endif
-        volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
-        #if ( Q_TASK_COUNT_CYCLES == 1 )
-            uint32_t Cycles; 
-        #endif
-        qTrigger_t Trigger; 
-        qIteration_t Iterations; 
-        qPriority_t Priority; 
-        qTaskState_t State;
-        volatile qNotifier_t Notification;
-        volatile qBool_t Flag[6]; /*task related flags*/
+        private_start{
+            struct _qTask_t *Next; /*pointer to the next node*/
+            void *TaskData,*AsyncData; /*the storage pointers*/
+            qTaskFcn_t Callback; 
+            #if ( Q_FSM == 1)
+                qSM_t *StateMachine; /*pointer to the linked FSM*/
+            #endif
+            #if ( Q_QUEUES == 1)
+                qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
+            #endif
+            volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
+            #if ( Q_TASK_COUNT_CYCLES == 1 )
+                uint32_t Cycles; 
+            #endif
+            qTrigger_t Trigger; 
+            qIteration_t Iterations; 
+            qPriority_t Priority; 
+            qTaskState_t State;
+            volatile qNotifier_t Notification;
+            volatile qBool_t Flag[6]; /*task related flags*/            
+        }private_end;
     }qTask_t;
 
     typedef struct{
@@ -197,7 +199,7 @@ typedef void (*qTaskFcn_t)(qEvent_t);
 
     #if ( Q_PRIORITY_QUEUE == 1 )    
         #define _qQueueStackName                    _qQueueStack
-        #define _qQueueStackCreate(QueueSize)       volatile qQueueStack_t _qQueueStackName[(QueueSize)];
+        #define _qQueueStackCreate(QueueSize)       qQueueStack_t _qQueueStackName[(QueueSize)];
         #define _qQueueLength(QueueSize)            (QueueSize)
     #else
         #define _qQueueStackName                    NULL           
@@ -205,14 +207,14 @@ typedef void (*qTaskFcn_t)(qEvent_t);
         #define _qQueueLength(QueueSize)            ( 0 )                             
     #endif
 
-    typedef qBool_t (*qTaskNotifyMode_t)(qTask_t*, void*);
+    typedef qBool_t (*qTaskNotifyMode_t)(qTask_t* arg1, void* arg2);
     #define Q_NOTIFY_SIMPLE      qTaskSendNotification
     #define Q_NOTIFY_QUEUED      qTaskQueueNotification
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #else
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #endif
 
     qTask_t* qTaskSelf( void );

@@ -4,11 +4,13 @@
     #include "qtypes.h"
     #include "qclock.h"
 
-    typedef struct{ /*STimer defintion*/
-        qConst qClock_t Start, TV; /*The time-epochs registers*/
+    typedef struct{ 
+        private_start{
+            qClock_t Start, TV;
+        }private_end;
     }qSTimer_t;
 
-    #define QSTIMER_INITIALIZER     {0ul, 0ul} 
+    #define QSTIMER_INITIALIZER     {{0ul, 0ul}}
     #define QSTIMER_ARMED           ( qTrue )
     #define QSTIMER_DISARMED        ( qFalse )
     #define QSTIMER_DISARM_VALUE    ( 0ul )
@@ -21,7 +23,7 @@
     void qSTimerDisarm( qSTimer_t * const obj );
     qBool_t qSTimerStatus( const qSTimer_t * const obj );
 
-    #if ( Q_SETUP_TIME_CANONICAL == 1 )
+    #if ( Q_SETUP_TIME_CANONICAL == 0 )
         #define qMins2Time(t)    ( ((qTime_t)(t))*60.0 )    
         #define qHours2Time(t)   ( ((qTime_t)(t))*3600.0 )
         #define qDays2Time(t)    ( ((qTime_t)(t))*86400.0 )

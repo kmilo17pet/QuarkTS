@@ -1,5 +1,5 @@
 /*
-    QuarkTS V5.0.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V5.0.2 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     A Non-Preemptive RTOS for small embedded systems
     GNU Lesser General Public License (LGPL)
     C99 and MISRA-C 2004 Compliant

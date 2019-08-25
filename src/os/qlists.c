@@ -9,8 +9,6 @@ static void qList_InserAtBack( qList_t * const list, qNode_t * const node );
 static qNode_t* qList_RemoveFront( qList_t * const list );
 static qNode_t* qList_RemoveBack( qList_t * const list );
 
-
-
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
  
@@ -150,6 +148,7 @@ Return value:
 void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
     qNode_t *removed = NULL;
     int iPos = 0;
+    int LastIndex;
     qNode_t *iNode;
     qNode_t *toRemove;
     if( ( NULL != list->head ) && ( position >= -1 ) ){
@@ -176,7 +175,8 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
             list->size--;
         }
         else{
-            for( iNode = list->head ; iPos < ( position - 1 ) ; iNode = iNode->next ){ 
+            LastIndex = ( (int)position - 1 );
+            for( iNode = list->head ; iPos < LastIndex ; iNode = iNode->next ){ 
                 iPos++;
             }
             removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
@@ -207,7 +207,7 @@ Return value:
 qBool_t qList_IsMember( const qList_t * const list, const void * const node ){
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
-    qNode_t *xNode = (qNode_t*)node;
+    const qNode_t * const xNode = (qNode_t const*)node;
     
     if( NULL != node ){
         for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){

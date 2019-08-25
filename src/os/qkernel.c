@@ -29,15 +29,11 @@ static qBool_t _qTaskDeadLineReached( qTask_t * const task );
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&QUARKTS)/*point to something that is not some task in the chain */
 #define __qFSMCallbackMode      ((qTaskFcn_t)1)
-#define _qTaskDeadlineReached(_TASK_)            ( ( 0ul == (_TASK_)->Interval ) || ( qClock_TimeDeadlineCheck( (_TASK_)->ClockStart, (_TASK_)->Interval ) )  )
-#define _qTaskHasPendingIterations(_TASK_)       ( (_qAbs((_TASK_)->Iterations)>0 ) || ( qPeriodic == (_TASK_)->Iterations) )
-/*============================================================================*/
-
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
 #else
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, volatile qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
 #endif
     #if ( Q_PRIORITY_QUEUE == 1 )  
         uint8_t i;
@@ -135,7 +131,7 @@ qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t m
     qTask_t *Task = NULL;
     if( ( Q_NOTIFY_SIMPLE == mode ) || ( Q_NOTIFY_QUEUED == mode ) ){
         RetValue = qTrue;
-        for( Task = QUARKTS.Head ; NULL != Task; Task = Task->Next){
+        for( Task = QUARKTS.Head ; NULL != Task; Task = Task->private.Next){
             if( qFalse == mode( Task, eventdata ) ){
                 RetValue = qFalse;
             }
@@ -154,19 +150,19 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
     
     if( QUARKTS.QueueIndex >= 0 ){ /*queue has elements*/
         qEnterCritical(); 
-        MaxPriorityValue = QUARKTS.QueueStack[0].Task->Priority;
+        MaxPriorityValue = QUARKTS.QueueStack[0].Task->private.Priority;
         for( i = 1u ; ( i < QUARKTS.QueueSize ) ; i++){  /*walk through the queue to find the task with the highest priority*/
             if( NULL != QUARKTS.QueueStack[i].Task ){ /* tail is reached */
                 break;
             }
-            if( QUARKTS.QueueStack[i].Task->Priority > MaxPriorityValue ){ /*check if the queued task has the max priority value*/
-                MaxPriorityValue = QUARKTS.QueueStack[i].Task->Priority; /*Reassign the max value*/
+            if( QUARKTS.QueueStack[i].Task->private.Priority > MaxPriorityValue ){ /*check if the queued task has the max priority value*/
+                MaxPriorityValue = QUARKTS.QueueStack[i].Task->private.Priority; /*Reassign the max value*/
                 IndexTaskToExtract = i;  /*save the index*/
             }
         }   
         QUARKTS.QueueData = QUARKTS.QueueStack[IndexTaskToExtract].QueueData; /*get the data from the queue*/
         xTask = QUARKTS.QueueStack[IndexTaskToExtract].Task; /*assign the task to the output*/
-        xTask->State = qReady; /*set the task as ready*/
+        xTask->private.State = qReady; /*set the task as ready*/
         QUARKTS.QueueStack[IndexTaskToExtract].Task = NULL; /*set the position in the queue as empty*/  
         for( j = (int16_t)IndexTaskToExtract ; j < QUARKTS.QueueIndex ; j++){ 
             QUARKTS.QueueStack[j] = QUARKTS.QueueStack[j+1]; /*shift the remaining items of the queue*/
@@ -212,30 +208,30 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
     qBool_t RetValue = qFalse;
     if( ( NULL!=Task ) && ( NULL != CallbackFcn ) ) {
         qSchedulerRemoveTask( Task ); /*Remove the task if was previously added to the chain*/
-        Task->Callback = CallbackFcn;
-        Task->Interval = qTime2Clock( Time );
-        Task->TaskData = arg;
-        Task->Priority = Priority;
-        Task->Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
-        Task->Notification = 0u;
-        Task->Flag[_qIndex_InitFlag] = qFalse;
-        Task->Flag[_qIndex_QueueReceiver] = qFalse; 
-        Task->Flag[_qIndex_QueueFull] = qFalse;
-        Task->Flag[_qIndex_QueueCount] = qFalse;
-        Task->Flag[_qIndex_QueueEmpty] = qFalse;
-        Task->Flag[_qIndex_Enabled] = InitialState;
-        Task->Next = NULL;  
+        Task->private.Callback = CallbackFcn;
+        Task->private.Interval = qTime2Clock( Time );
+        Task->private.TaskData = arg;
+        Task->private.Priority = Priority;
+        Task->private.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
+        Task->private.Notification = 0u;
+        Task->private.Flag[_qIndex_InitFlag] = qFalse;
+        Task->private.Flag[_qIndex_QueueReceiver] = qFalse; 
+        Task->private.Flag[_qIndex_QueueFull] = qFalse;
+        Task->private.Flag[_qIndex_QueueCount] = qFalse;
+        Task->private.Flag[_qIndex_QueueEmpty] = qFalse;
+        Task->private.Flag[_qIndex_Enabled] = InitialState;
+        Task->private.Next = NULL;  
         #if ( Q_TASK_COUNT_CYCLES == 1 )
-            Task->Cycles = 0ul;
+            Task->private.Cycles = 0ul;
         #endif
-        Task->ClockStart = qSchedulerGetTick();
+        Task->private.ClockStart = qSchedulerGetTick();
         #if ( Q_QUEUES == 1)
-            Task->Queue = NULL;
+            Task->private.Queue = NULL;
         #endif
         #if ( Q_FSM == 1)
-            Task->StateMachine = NULL;
+            Task->private.StateMachine = NULL;
         #endif
-        Task->State = qSuspended;
+        Task->private.State = qSuspended;
         QUARKTS.Head =  _qScheduler_PriorizedInsert( QUARKTS.Head, Task ); /*put the task on the list according to its priority*/
         RetValue = qTrue;
     }
@@ -319,7 +315,7 @@ qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priori
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
         if ( qTrue == qSchedulerAdd_Task( Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
             qStateMachine_Init( StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState );
-            Task->StateMachine = StateMachine;
+            Task->private.StateMachine = StateMachine;
             RetValue = qTrue;
         }
     }
@@ -345,18 +341,18 @@ qBool_t qSchedulerRemoveTask( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
 
     if( NULL != tmp ){
-        while( ( tmp != Task ) && ( NULL != tmp->Next ) ){ /*find the task to remove*/
+        while( ( tmp != Task ) && ( NULL != tmp->private.Next ) ){ /*find the task to remove*/
             prev = tmp; /*keep on track the previous node*/
-            tmp = tmp->Next;
+            tmp = tmp->private.Next;
         }
         if( tmp == Task ){ /*remove the task if was found on the chain*/
             if( NULL != prev ){
-                prev->Next = tmp->Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
+                prev->private.Next = tmp->private.Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
             }
             else{
-                QUARKTS.Head = tmp->Next; /*if the task is the head of the chain, move the head to the next node*/
+                QUARKTS.Head = tmp->private.Next; /*if the task is the head of the chain, move the head to the next node*/
             }
-            Task->Next = NULL; /*Just in case the deleted task needs to be added later to the scheduling scheme, otherwise, this would fuck the whole chain*/
+            Task->private.Next = NULL; /*Just in case the deleted task needs to be added later to the scheduling scheme, otherwise, this would fuck the whole chain*/
             RetValue =  qTrue;
         }
     }
@@ -368,14 +364,14 @@ static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t * const Task
     qPriority_t TaskPriority;
     qPriority_t HeadPriority;
     if( NULL == head ){ /*Is the first task in the scheme? */
-        Task->Next = head; /*move the head and just add the task node on top*/
+        Task->private.Next = head; /*move the head and just add the task node on top*/
         RetValue =  Task; /*this task will be the new head*/
     }
     else{
-        TaskPriority = Task->Priority; /*to avoid side effects*/
-        HeadPriority = head->Priority; /*to avoid side effects*/
+        TaskPriority = Task->private.Priority; /*to avoid side effects*/
+        HeadPriority = head->private.Priority; /*to avoid side effects*/
         if( TaskPriority > HeadPriority ){ /* the task has the highest priority over all */
-            Task->Next = head; /*move the head and just add the task node on top*/
+            Task->private.Next = head; /*move the head and just add the task node on top*/
             RetValue =  Task; /*this task will be the new head*/
         }
         else{
@@ -388,13 +384,13 @@ static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t * const Task
 static void _qScheduler_FindPlace( qTask_t * const head, qTask_t * const Task ){ /*find a new position for the task in the chain, when finded, put the task there*/
     qTask_t *tmp_node = NULL;
     qPriority_t PrioTask;
-    PrioTask = Task->Priority; /*to avoid side effects*/
+    PrioTask = Task->private.Priority; /*to avoid side effects*/
     tmp_node = head; /*start the head with the highest priority task*/
-    while( ( NULL != tmp_node->Next ) && ( PrioTask <= tmp_node->Next->Priority ) ) { 
-        tmp_node = tmp_node->Next; /*find the right place for this task according its priority*/
+    while( ( NULL != tmp_node->private.Next ) && ( PrioTask <= tmp_node->private.Next->private.Priority ) ) { 
+        tmp_node = tmp_node->private.Next; /*find the right place for this task according its priority*/
     }
-    Task->Next = tmp_node->Next; /*the the new task  will be placed just after tmp*/
-    tmp_node->Next = Task; /*assign the task*/    
+    Task->private.Next = tmp_node->private.Next; /*the the new task  will be placed just after tmp*/
+    tmp_node->private.Next = Task; /*assign the task*/    
 }
 #if ( Q_AUTO_CHAINREARRANGE == 1 )
 /*============================================================================*/
@@ -403,7 +399,7 @@ static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearr
     qEnterCritical();
     while( NULL != tmp ){ /*start with a new head and re-insert the entire chain*/
         tmp1 = tmp;
-        tmp = tmp->Next;
+        tmp = tmp->private.Next;
         new_head = _qScheduler_PriorizedInsert( new_head, tmp1 );  
     }
     QUARKTS.Flag.Init = qTrue; /*set the initialization flag*/
@@ -419,14 +415,14 @@ static qTrigger_t _qCheckQueueEvents( const qTask_t * const Task ){
     qBool_t IsFull, IsEmpty;
     qSize_t CurrentQueueCount;
     if( NULL != Task ){
-        if( NULL != Task->Queue){
-            FullFlag = Task->Flag[_qIndex_QueueFull]; /*to avoid side effects*/
-            CountFlag = Task->Flag[_qIndex_QueueCount]; /*to avoid side effects*/
-            ReceiverFlag = Task->Flag[_qIndex_QueueReceiver]; /*to avoid side effects*/
-            EmptyFlag = Task->Flag[_qIndex_QueueEmpty]; /*to avoid side effects*/
-            CurrentQueueCount = qQueueCount( Task->Queue ); /*to avoid side effects*/
-            IsFull = qQueueIsFull( Task->Queue ); /*to avoid side effects*/
-            IsEmpty = qQueueIsEmpty( Task->Queue ); /*to avoid side effects*/
+        if( NULL != Task->private.Queue){
+            FullFlag = Task->private.Flag[_qIndex_QueueFull]; /*to avoid side effects*/
+            CountFlag = Task->private.Flag[_qIndex_QueueCount]; /*to avoid side effects*/
+            ReceiverFlag = Task->private.Flag[_qIndex_QueueReceiver]; /*to avoid side effects*/
+            EmptyFlag = Task->private.Flag[_qIndex_QueueEmpty]; /*to avoid side effects*/
+            CurrentQueueCount = qQueueCount( Task->private.Queue ); /*to avoid side effects*/
+            IsFull = qQueueIsFull( Task->private.Queue ); /*to avoid side effects*/
+            IsEmpty = qQueueIsEmpty( Task->private.Queue ); /*to avoid side effects*/
             /*check the queue events in the corresponding precedence order*/
             if( FullFlag && IsFull ){        
                 RetValue =  byQueueFull;
@@ -483,12 +479,12 @@ void qSchedulerRun( void ){
         #endif
         #if ( Q_PRIORITY_QUEUE == 1 )
         if( NULL != ( Task = _qScheduler_PriorityQueueGet() ) ){ /*extract a task from the front of the priority queue*/
-            Task->State = _qScheduler_Dispatch( Task, byNotificationQueued );  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/
+            Task->private.State = _qScheduler_Dispatch( Task, byNotificationQueued );  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/
         }     
         #endif
         if( _qScheduler_ReadyTasksAvailable() ){  /*Check if all the tasks from the chain fulfill the conditions to get the qReady state, if at least one gained it,  enter here*/
             while( NULL != ( Task = _qScheduler_GetNodeFromChain() ) ){ /*Get node by node from the chain until no more available*/
-                Task->State = (qTaskState_t) ( ( qReady == Task->State ) ? _qScheduler_Dispatch( Task, Task->Trigger ) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
+                Task->private.State = (qTaskState_t) ( ( qReady == Task->private.State ) ? _qScheduler_Dispatch( Task, Task->private.Trigger ) : qWaiting);  /*Dispatch the qReady tasks, otherwise put it in qWaiting State*/
             }
         }
         else if( ( NULL==Task ) && ( NULL != QUARKTS.IDLECallback) ) {
@@ -513,7 +509,7 @@ static qTask_t* _qScheduler_GetNodeFromChain( void ){
         ChainIterator = QUARKTS.Head; /*start from the head*/
     } 
     Node = ChainIterator; /*obtain the current node from the chain*/
-    ChainIterator = ( ChainIterator )? ChainIterator->Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
+    ChainIterator = ( ChainIterator )? ChainIterator->private.Next : QUARKTS.Head; /*Tail reached, reset the iterator to the head*/
     return Node; /*return the task node at current chain position*/
 }
 /*============================================================================*/
@@ -532,27 +528,27 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
         switch(Event){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
             case byTimeElapsed:
                 /*handle the iteration value and the FirstIteration flag*/
-                TaskIteration = Task->Iterations;
+                TaskIteration = Task->private.Iterations;
                 QUARKTS.EventInfo.FirstIteration = ( ( TaskIteration != qPeriodic ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
-                Task->Iterations = ( QUARKTS.EventInfo.FirstIteration )? -Task->Iterations : Task->Iterations;
-                if( qPeriodic != Task->Iterations){
-                    Task->Iterations--; /*Decrease the iteration value*/
+                Task->private.Iterations = ( QUARKTS.EventInfo.FirstIteration )? -Task->private.Iterations : Task->private.Iterations;
+                if( qPeriodic != Task->private.Iterations){
+                    Task->private.Iterations--; /*Decrease the iteration value*/
                 }
-                QUARKTS.EventInfo.LastIteration = (0 == Task->Iterations )? qTrue : qFalse; 
+                QUARKTS.EventInfo.LastIteration = (0 == Task->private.Iterations )? qTrue : qFalse; 
                 if( QUARKTS.EventInfo.LastIteration ) {
-                    Task->Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/ 
+                    Task->private.Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/ 
                 }           
                 break;
             case byNotificationSimple:
-                QUARKTS.EventInfo.EventData = Task->AsyncData; /*Transfer async-data to the eventinfo structure*/
-                Task->Notification--; /* = qFalse */ /*Clear the async flag*/            
+                QUARKTS.EventInfo.EventData = Task->private.AsyncData; /*Transfer async-data to the eventinfo structure*/
+                Task->private.Notification--; /* = qFalse */ /*Clear the async flag*/            
                 break;
         #if ( Q_QUEUES == 1)    
             case byQueueReceiver:
-                QUARKTS.EventInfo.EventData = qQueuePeek( Task->Queue ); /*the EventData will point to the RBuffer front-data*/
+                QUARKTS.EventInfo.EventData = qQueuePeek( Task->private.Queue ); /*the EventData will point to the RBuffer front-data*/
                 break;
             case byQueueFull: case byQueueCount: case byQueueEmpty: 
-                QUARKTS.EventInfo.EventData = (void*)Task->Queue;  /*the EventData will point to the the linked RingBuffer*/
+                QUARKTS.EventInfo.EventData = (void*)Task->private.Queue;  /*the EventData will point to the the linked RingBuffer*/
                 break;
         #endif
         #if ( Q_PRIORITY_QUEUE == 1 )
@@ -563,19 +559,19 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
         #endif
             default: break;
         }
-        Task->State = qRunning; /*put the task in running state*/
+        Task->private.State = qRunning; /*put the task in running state*/
         /*Fill the event info structure: Trigger, FirstCall and TaskData */       
         QUARKTS.EventInfo.Trigger = Event;
-        QUARKTS.EventInfo.FirstCall = ( qFalse == Task->Flag[_qIndex_InitFlag] )? qTrue : qFalse;
-        QUARKTS.EventInfo.TaskData = Task->TaskData;
+        QUARKTS.EventInfo.FirstCall = ( qFalse == Task->private.Flag[_qIndex_InitFlag] )? qTrue : qFalse;
+        QUARKTS.EventInfo.TaskData = Task->private.TaskData;
         
         QUARKTS.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
-        TaskActivities = Task->Callback;
+        TaskActivities = Task->private.Callback;
         #if ( Q_FSM == 1)
-            if ( ( NULL != Task->StateMachine ) && ( __qFSMCallbackMode == Task->Callback ) ){
-                qStateMachine_Run( Task->StateMachine, (void*)&QUARKTS.EventInfo );  /*If the task has a FSM attached, just run it*/  
+            if ( ( NULL != Task->private.StateMachine ) && ( __qFSMCallbackMode == Task->private.Callback ) ){
+                qStateMachine_Run( Task->private.StateMachine, (void*)&QUARKTS.EventInfo );  /*If the task has a FSM attached, just run it*/  
             }
-            else if ( NULL != Task->Callback ) {
+            else if ( NULL != Task->private.Callback ) {
                 TaskActivities( (qEvent_t)&QUARKTS.EventInfo ); /*else, just launch the callback function*/ 
             }       
             else{
@@ -589,23 +585,23 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
         QUARKTS.CurrentRunningTask = NULL;
         #if ( Q_QUEUES == 1) 
             if( byQueueReceiver == Event){
-                qQueueRemoveFront( Task->Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
+                qQueueRemoveFront( Task->private.Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
             } 
         #endif
-        Task->Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
+        Task->private.Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
         QUARKTS.EventInfo.FirstIteration = qFalse;
         QUARKTS.EventInfo.LastIteration =  qFalse; 
         QUARKTS.EventInfo.EventData = NULL; /*clear the eventdata*/
         #if ( Q_TASK_COUNT_CYCLES == 1 )
-            Task->Cycles++; /*increase the task cycles value*/
+            Task->private.Cycles++; /*increase the task cycles value*/
         #endif
     }
     return qSuspended;
 }
 /*============================================================================*/
 static qBool_t _qScheduler_TransitionTo( qTask_t * const task, const qTaskState_t state, const qTrigger_t trg ){
-    task->State = state;
-    task->Trigger = trg;
+    task->private.State = state;
+    task->private.Trigger = trg;
     return qTrue;
 }
 /*============================================================================*/
@@ -615,12 +611,12 @@ static qBool_t _qTaskDeadLineReached( qTask_t * const task){
     qIteration_t TaskIterations;
     qClock_t TaskInterval;
     qBool_t DeadLineFlag;
-    EnabledFlag = task->Flag[_qIndex_Enabled] ; /*avoid side efects in the next check*/
+    EnabledFlag = task->private.Flag[_qIndex_Enabled] ; /*avoid side efects in the next check*/
     if( EnabledFlag ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
-        TaskIterations = task->Iterations; /*avoid side efects in the next check*/
+        TaskIterations = task->private.Iterations; /*avoid side efects in the next check*/
         if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
-            TaskInterval = task->Interval; /*avoid side efects in the next check*/
-            DeadLineFlag = qClock_TimeDeadlineCheck( task->ClockStart, TaskInterval );
+            TaskInterval = task->private.Interval; /*avoid side efects in the next check*/
+            DeadLineFlag = qClock_TimeDeadlineCheck( task->private.ClockStart, TaskInterval );
             if( ( 0ul == TaskInterval ) || ( DeadLineFlag ) ){ /*finally, check the time deadline*/
                 RetValue = qTrue;                
             }
@@ -635,9 +631,9 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
     qTrigger_t trg = qTriggerNULL;
     #endif
     qBool_t nTaskReady = qFalse; /*the return is to notify that at least one task gained the qReady state*/
-    for( Task = QUARKTS.Head ; NULL != Task ; Task = Task->Next ){ /*loop every task in the chain : only one event will be verified by node*/
+    for( Task = QUARKTS.Head ; NULL != Task ; Task = Task->private.Next ){ /*loop every task in the chain : only one event will be verified by node*/
         if( _qTaskDeadLineReached( Task ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
-            Task->ClockStart = qSchedulerGetTick(); /*Restart the task time*/
+            Task->private.ClockStart = qSchedulerGetTick(); /*Restart the task time*/
             nTaskReady = _qScheduler_TransitionTo( Task, qReady, byTimeElapsed ); /*put the task in ready state with their corresponding trigger */                  
         }
         #if ( Q_QUEUES == 1)  
@@ -645,11 +641,11 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
             nTaskReady = _qScheduler_TransitionTo( Task, qReady, trg ); /*put the task in ready state with their corresponding trigger */   
         }
         #endif
-        else if( Task->Notification ){   /*The last check will be if the task has an async event*/
+        else if( Task->private.Notification ){   /*The last check will be if the task has an async event*/
             nTaskReady = _qScheduler_TransitionTo( Task, qReady, byNotificationSimple ); /*put the task in ready state with their corresponding trigger */   
         }
         else{
-            Task->State = qSuspended; /*If the task has no available events, put it in a suspended state*/        
+            Task->private.State = qSuspended; /*If the task has no available events, put it in a suspended state*/        
         }
     }
     return nTaskReady;
@@ -676,9 +672,9 @@ Return value:
 qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        if( Task->Notification < QMAX_NOTIFICATION_VALUE ){
-            Task->Notification++;
-            Task->AsyncData = eventdata;
+        if( Task->private.Notification < QMAX_NOTIFICATION_VALUE ){
+            Task->private.Notification++;
+            Task->private.AsyncData = eventdata;
             RetValue = qTrue;
         }
     }
@@ -707,7 +703,7 @@ Return value:
 qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
     #if ( Q_PRIORITY_QUEUE == 1 )
         qBool_t RetValue = qFalse;
-        volatile qQueueStack_t tmp;
+        qQueueStack_t tmp;
         int16_t QueueMaxIndex;
         int16_t CurrentQueueIndex;
         QueueMaxIndex = ( (int16_t)QUARKTS.QueueSize ) - 1; /*to avoid side effects */
@@ -715,7 +711,7 @@ qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = eventdata;
             tmp.Task = Task;
-            QUARKTS.QueueStack[++QUARKTS.QueueIndex] = tmp; /*insert task and the corresponding eventdata to the queue*/
+            QUARKTS.QueueStack[ ++QUARKTS.QueueIndex ] = tmp; /*insert task and the corresponding eventdata to the queue*/
             RetValue = qTrue;
         }
         return RetValue;
@@ -740,7 +736,7 @@ Return value:
 qBool_t qTaskIsEnabled( const qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        RetValue = (qBool_t)Task->Flag[_qIndex_Enabled];
+        RetValue = (qBool_t)Task->private.Flag[_qIndex_Enabled];
     }
     return RetValue;
 }
@@ -761,7 +757,7 @@ Return value:
 uint32_t qTaskGetCycles( const qTask_t * const Task ){
     uint32_t RetValue = 0ul;
     if( NULL != Task ){
-        RetValue = Task->Cycles;
+        RetValue = Task->private.Cycles;
     }
     return RetValue;
 }
@@ -779,7 +775,7 @@ Parameters:
 */
 void qTaskSetTime( qTask_t * const Task, const qTime_t Value ){
     if( NULL != Task ){
-        Task->Interval = qTime2Clock( Value );
+        Task->private.Interval = qTime2Clock( Value );
     }
 }
 /*============================================================================*/
@@ -799,7 +795,7 @@ Parameters:
 */
 void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value ){
     if( NULL != Task ){
-        Task->Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
+        Task->private.Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
     }      
 }
 /*============================================================================*/
@@ -815,7 +811,7 @@ Parameters:
 void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
     if( NULL != Task ){
         QUARKTS.Flag.Init = qFalse; 
-        Task->Priority = Value; 
+        Task->private.Priority = Value; 
     }
 }
 /*============================================================================*/
@@ -831,7 +827,7 @@ Parameters:
 */
 void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     if( NULL != Task ){
-        Task->Callback = CallbackFcn;
+        Task->private.Callback = CallbackFcn;
     }    
 }
 /*============================================================================*/
@@ -846,9 +842,9 @@ Parameters:
 */
 void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
-        if( State != Task->Flag[_qIndex_Enabled] ){ 
-            Task->Flag[_qIndex_Enabled] = State;
-            Task->ClockStart = qSchedulerGetTick();
+        if( State != Task->private.Flag[_qIndex_Enabled] ){ 
+            Task->private.Flag[_qIndex_Enabled] = State;
+            Task->private.ClockStart = qSchedulerGetTick();
         }
     }
 }
@@ -867,7 +863,7 @@ Return value:
 */
 void qTaskSetData( qTask_t * const Task, void* arg ){
     if( NULL != Task ){
-        Task->TaskData = arg;
+        Task->private.TaskData = arg;
     }
 }
 /*============================================================================*/
@@ -881,7 +877,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
-        Task->ClockStart = qSchedulerGetTick();
+        Task->private.ClockStart = qSchedulerGetTick();
     }    
 }
 #if ( Q_QUEUES == 1)
@@ -928,12 +924,12 @@ qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQ
     if( ( NULL != Queue ) && ( NULL != Task ) && ( Mode >= qQUEUE_RECEIVER ) && ( Mode <= qQUEUE_EMPTY)  ){
         if( NULL != Queue->pHead ) {
             if( Mode == qQUEUE_COUNT ){
-                Task->Flag[Mode] = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
+                Task->private.Flag[Mode] = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
             else{
-                Task->Flag[Mode] = ( arg != qFalse )? qATTACH :qDETACH ; 
+                Task->private.Flag[Mode] = ( arg != qFalse )? qATTACH :qDETACH ; 
             }
-            Task->Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
+            Task->private.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
             RetValue = qTrue;
         }
     }
@@ -961,8 +957,8 @@ Return value:
 qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
-        Task->Callback = __qFSMCallbackMode;
-        Task->StateMachine = StateMachine;
+        Task->private.Callback = __qFSMCallbackMode;
+        Task->private.StateMachine = StateMachine;
         RetValue = qTrue;
     }    
     return RetValue;

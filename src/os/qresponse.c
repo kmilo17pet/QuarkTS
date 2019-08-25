@@ -17,8 +17,8 @@ Parameters:
 */
 void qResponseInitialize( qResponseHandler_t * const obj, char *xLocBuff, qSize_t nMax ){
     if( NULL != obj ){
-        obj->Pattern2Match = xLocBuff;
-        obj->MaxStrLength = nMax; 
+        obj->private.Pattern2Match = xLocBuff;
+        obj->private.MaxStrLength = nMax; 
         qResponseReset( obj );
     }
 }   
@@ -34,10 +34,10 @@ Parameters:
 */
 void qResponseReset( qResponseHandler_t * const obj ){
     if( obj != NULL ){
-        obj->PatternLength = 0u;
-        obj->MatchedCount = 0u;
-        obj->ResponseReceived = qFalse;
-        qSTimerDisarm( &obj->timeout );
+        obj->private.PatternLength = 0u;
+        obj->private.MatchedCount = 0u;
+        obj->private.ResponseReceived = qFalse;
+        qSTimerDisarm( &obj->private.timeout );
     }
 }
 /*============================================================================*/
@@ -81,20 +81,20 @@ Return value:
 */
 qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
-    if( ( qFalse == obj->ResponseReceived ) && ( 0u == obj->PatternLength ) ){ /*handler no configured yet*/
-        strncpy( obj->Pattern2Match, (const char*)Pattern, (size_t)obj->MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
-        obj->PatternLength = (qSize_t)((0u == n)? strlen( Pattern ) : n); /*set the number of chars to match*/
-        obj->MatchedCount = 0u; /*reinitialize the chars match count*/
-        obj->ResponseReceived = qFalse; /*clear the ready flag*/
+    if( ( qFalse == obj->private.ResponseReceived ) && ( 0u == obj->private.PatternLength ) ){ /*handler no configured yet*/
+        strncpy( obj->private.Pattern2Match, (const char*)Pattern, (size_t)obj->private.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
+        obj->private.PatternLength = (qSize_t)((0u == n)? strlen( Pattern ) : n); /*set the number of chars to match*/
+        obj->private.MatchedCount = 0u; /*reinitialize the chars match count*/
+        obj->private.ResponseReceived = qFalse; /*clear the ready flag*/
         if( t > qTimeImmediate ){
-            qSTimerSet( &obj->timeout, t);
+            qSTimerSet( &obj->private.timeout, t);
         }
     }
-    else if( qSTimerExpired( &obj->timeout) ){
+    else if( qSTimerExpired( &obj->private.timeout) ){
         qResponseReset( obj ); /*re-initialize the response handler*/
         RetValue = qResponseTimeout;
     }        
-    else if( obj->ResponseReceived ){ /*if response received from ISR match the expected*/
+    else if( obj->private.ResponseReceived ){ /*if response received from ISR match the expected*/
         qResponseReset( obj ); /*re-initialize the response handler*/
         RetValue = qTrue; /*let it know to the caller that expected response was received*/
     } 
@@ -119,12 +119,12 @@ Return value:
 */
 qBool_t qResponseISRHandler(qResponseHandler_t * const obj, const char rxchar){
     qBool_t RetValue = qFalse;
-    if( ( qFalse == obj->ResponseReceived ) && ( obj->PatternLength > 0u ) ) {
-        if( obj->Pattern2Match[obj->MatchedCount] == rxchar ){ /*if the received char match with the expected*/
-            obj->MatchedCount++; /*move to the next char in the expected buffer*/
-            if( obj->MatchedCount == obj->PatternLength ){
-                obj->ResponseReceived = qTrue; /*if all the requested chars match, set the ready flag */
-                RetValue = obj->ResponseReceived;
+    if( ( qFalse == obj->private.ResponseReceived ) && ( obj->private.PatternLength > 0u ) ) {
+        if( obj->private.Pattern2Match[obj->private.MatchedCount] == rxchar ){ /*if the received char match with the expected*/
+            obj->private.MatchedCount++; /*move to the next char in the expected buffer*/
+            if( obj->private.MatchedCount == obj->private.PatternLength ){
+                obj->private.ResponseReceived = qTrue; /*if all the requested chars match, set the ready flag */
+                RetValue = obj->private.ResponseReceived;
             }
         }
     }

@@ -32,8 +32,11 @@ Return value:
 */
 qSize_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     qSize_t RetValue = 0u;
+    uint16_t head, tail;
     if( NULL != obj ){
-        RetValue = (qSize_t)( obj->head - obj->tail );
+        head = obj->head;
+        tail = obj->tail;
+        RetValue = (qSize_t)( head - tail );
     }
 
     return RetValue;
@@ -148,7 +151,7 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const qSize_t n ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Put(qBSBuffer_t *obj, uint8_t data){
+/*qBool_t qBSBuffer_Put(qBSBuffer_t * const obj, const uint8_t data){
  
 Adds an element of data to the BSBuffer(Byte-sized Buffer)
 
@@ -173,7 +176,7 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const uint8_t data ){
     return status;
 }
 /*============================================================================*/
-/*void qBSBuffer_Init(qBSBuffer_t *obj, volatile uint8_t *buffer, size_t length){
+/*void qBSBuffer_Init(qBSBuffer_t *const obj, volatile uint8_t *buffer, const size_t length){
  
 Initialize the BSBuffer(Byte-sized Buffer)
  

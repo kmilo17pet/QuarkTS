@@ -7,12 +7,14 @@
     #include <string.h>
 
     typedef struct{
+        private_start{
         char *Pattern2Match;
-        qSize_t MaxStrLength;
-        qSize_t PatternLength;
-        volatile qSize_t MatchedCount;
-        volatile qBool_t ResponseReceived;
-        qSTimer_t timeout;
+            qSize_t MaxStrLength;
+            qSize_t PatternLength;
+            volatile qSize_t MatchedCount;
+            volatile qBool_t ResponseReceived;
+            qSTimer_t timeout;
+        }private_end;
     }qResponseHandler_t; 
 
     #define QRESPONSE_INITIALIZER   {NULL, 0u, 0u, 0u, qFalse, QSTIMER_INITIALIZER }

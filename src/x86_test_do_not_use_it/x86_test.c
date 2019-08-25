@@ -203,7 +203,6 @@ int main(int argc, char** argv) {
     qQueueSendToBack(&somequeue, &x[2]);
     qQueueSendToFront(&somequeue, &x[3]);
 
-    
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");

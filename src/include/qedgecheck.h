@@ -13,17 +13,23 @@
     #define QEDGECHECK_CHECK        ( 2u )
 
     typedef struct _qIONode_t{
-        qBool_t Pin, PreviousPinValue, Status;
-        struct _qIONode_t *Next;
-        void *Port;
+        qBool_t Status;
+        qBool_t Pin;
+        private_start{
+            qBool_t PreviousPinValue;
+            struct _qIONode_t *Next;
+            void *Port;
+        }private_end;
     }qIONode_t;
 
-    typedef qBool_t (*qCoreRegSize_t)(void*, qBool_t);
+    typedef qBool_t (*qCoreRegSize_t)(void* arg1, qBool_t arg2);
     typedef struct{
-        qIONode_t *Head;
-        qClock_t Start, DebounceTime;
-        qCoreRegSize_t Reader;
-        qBool_t State;
+        private_start{
+            qIONode_t *Head;
+            qClock_t Start, DebounceTime;
+            qCoreRegSize_t Reader;
+            qBool_t State;
+        }private_end;
     }qIOEdgeCheck_t;
     qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber );
     qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber );
