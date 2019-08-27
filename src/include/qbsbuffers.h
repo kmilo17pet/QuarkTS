@@ -4,10 +4,10 @@
     #include "qtypes.h"
 
     typedef struct{
-        volatile uint16_t head;
-        volatile uint16_t tail;
-        qSize_t length;
-        volatile uint8_t *buffer;
+        volatile uint16_t head;     /*< Used to hold the index of the head. */
+        volatile uint16_t tail;     /*< Used to hold the index of the tail. */
+        qSize_t length;             /*< The length of the buffer(a valid power of two). */ 
+        volatile uint8_t *buffer;   /*< Points to the begining of the buffer storage area. */
     }qBSBuffer_t;
 
     qSize_t qBSBuffer_Count( const qBSBuffer_t * const obj );

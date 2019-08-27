@@ -124,25 +124,25 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
 
     typedef struct _qTask_t{ /*Task node definition*/
         private_start{
-            struct _qTask_t *Next; /*pointer to the next node*/
-            void *TaskData,*AsyncData; /*the storage pointers*/
-            qTaskFcn_t Callback; 
+            struct _qTask_t *Next;                  /*< Points to the next node of the task list. */
+            void *TaskData,*AsyncData;              /*< The task Storate pointers. */
+            qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
             #if ( Q_FSM == 1)
-                qSM_t *StateMachine; /*pointer to the linked FSM*/
+                qSM_t *StateMachine;                /*< The pointer to the attached state-machine. */
             #endif
             #if ( Q_QUEUES == 1)
-                qQueue_t *Queue; /*pointer to the attached queue RBuffer*/
+                qQueue_t *Queue;                    /*< The pointer to the attached queue. */
             #endif
-            volatile qClock_t Interval, ClockStart; /*time-epochs registers*/
+            volatile qClock_t Interval, ClockStart; /*< The timestamps of the task in epochs. */
             #if ( Q_TASK_COUNT_CYCLES == 1 )
-                uint32_t Cycles; 
+                uint32_t Cycles;                    /*< The current number of executions performed by the task. */
             #endif
-            qTrigger_t Trigger; 
-            qIteration_t Iterations; 
-            qPriority_t Priority; 
-            qTaskState_t State;
-            volatile qNotifier_t Notification;
-            volatile qBool_t Flag[6]; /*task related flags*/            
+            qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
+            qIteration_t Iterations;                /*< Holds the number of iterations. */
+            qPriority_t Priority;                   /*< The task priority. */
+            qTaskState_t State;                     /*< The task state (set by the scheduler). */
+            volatile qNotifier_t Notification;      /*< The notification value. */
+            volatile qBool_t Flag[6];               /*< Task related flags (used by the scheduler). */            
         }private_end;
     }qTask_t;
 

@@ -7,9 +7,9 @@
     typedef uint32_t (*qInt_Disabler_t)(void);
 
     typedef struct{
-        qInt_Disabler_t I_Disable;
-        qInt_Restorer_t I_Restorer;
-        volatile uint32_t IntFlags;
+        qInt_Disabler_t I_Disable;  /*< Point to the user-supplied function used to disable the hardware interrupts. */
+        qInt_Restorer_t I_Restorer; /*< Point to the user-supplied function used to restore the hardware interrupts. */
+        volatile uint32_t IntFlags; /*< To save the current intterrupt flags before the disable action is performed. */
     }qCriticalHandler_t;
 
     void qEnterCritical( void );

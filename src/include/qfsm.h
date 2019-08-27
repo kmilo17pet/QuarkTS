@@ -47,12 +47,12 @@
     typedef void (*qSM_SubState_t)(qSMData_t arg); 
 
     typedef enum{ /*FSM Attribute Flags definition*/
-        qSM_RESTART, /*Restart the FSM*/
-        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG, /*Clear the entry flag for the current state if the NextState field doesn't change*/
-        qSM_FAILURE_STATE, /*Set the Failure State*/
-        qSM_SUCCESS_STATE, /*Set the Success State*/
-        qSM_UNEXPECTED_STATE, /*Set the Unexpected State*/
-        qSM_BEFORE_ANY_STATE /*Set the state executed before any state*/              
+        qSM_RESTART,                        /*< Restart the FSM. */
+        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,   /*< Clear the entry flag for the current state if the NextState field doesn't change. */
+        qSM_FAILURE_STATE,                  /*< Set the Failure State. */
+        qSM_SUCCESS_STATE,                  /*< Set the Success State. */
+        qSM_UNEXPECTED_STATE,               /*< Set the Unexpected State. */
+        qSM_BEFORE_ANY_STATE                /*< Set the state executed before any state. */              
     }qFSM_Attribute_t; 
 
     qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );

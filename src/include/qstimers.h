@@ -6,7 +6,8 @@
 
     typedef struct{ 
         private_start{
-            qClock_t Start, TV;
+            qClock_t Start; /*< The time(epochs) taken at the arming momment. */
+            qClock_t TV;    /*< The required time in epochs. */
         }private_end;
     }qSTimer_t;
 

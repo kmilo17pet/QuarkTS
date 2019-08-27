@@ -8,8 +8,8 @@
     #define qCRPosition_t static _qTaskPC_t
     
     typedef struct{
-        _qTaskPC_t instr;
-        qClock_t crdelay;
+        _qTaskPC_t instr;   /*< Used to the instruction where the coroutine yields. */
+        qClock_t crdelay;   /*< Used to hold the required delay(epochs) for qCoroutineDelay. */
     }qCoroutineInstance_t;
 
     typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 

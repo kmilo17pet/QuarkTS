@@ -13,12 +13,12 @@
     #define QEDGECHECK_CHECK        ( 2u )
 
     typedef struct _qIONode_t{
-        qBool_t Status;
-        qBool_t Pin;
-        private_start{
-            qBool_t PreviousPinValue;
-            struct _qIONode_t *Next;
-            void *Port;
+        qBool_t Status;                     /*< The status of the pin. */
+        qBool_t Pin;                        /*< The specific pin to read. */
+        private_start{                  
+            qBool_t PreviousPinValue;       /*< The previous value of "Pin". */
+            struct _qIONode_t *Next;        /*< Point to the next node of the IO list. */    
+            void *Port;                     /*< Point to the address of the hardware PORT/IO register. */
         }private_end;
     }qIONode_t;
 

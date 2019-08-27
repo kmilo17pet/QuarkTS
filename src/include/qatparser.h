@@ -41,32 +41,32 @@
     #define     QAT_OUTPUT               ( qAT_OUTPUT )
 
     typedef volatile struct{
-        volatile uint8_t Ready;
-        volatile uint16_t index;
-        qSize_t Size;
-        volatile char *Buffer;
+        volatile uint8_t Ready;                 /*< A flag that indicates when the input is ready to parse. */
+        volatile uint16_t index;                /*< Used to hold the index of the current input-buffer. */
+        qSize_t Size;                           /*< The size of the input buffer. */
+        volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
     }qATParserInput_t;
 
     typedef void (*qPutchFcn_t)(const char arg);
     typedef void (*qPutsFcn_t)(const char* arg);
 
     typedef struct{
-        qPutchFcn_t putch;
-        qPutsFcn_t puts;
-        char *Output;
+        qPutchFcn_t putch;                      /*< Points to a function that writes a single char to the output. */
+        qPutsFcn_t puts;                        /*< Points to a function that writes a string to the output. */
+        char *Output;                           /*< Points to the output buffer storage area. */
         private_start{
-            void *First;
-            const char *OK_Response;
-            const char *ERROR_Response;
-            const char *NOTFOUND_Response;
-            const char *Identifier;
-            const char *term_EOL;
-            qPutChar_t OutputFcn;
+            void *First;                        /*< The response printed when OK is needed. */
+            const char *OK_Response;            /*< The response printed when OK is needed. */
+            const char *ERROR_Response;         /*< The response printed when ERROR is needed. */
+            const char *NOTFOUND_Response;      /*< The response printed when NOTFOUND is needed. */
+            const char *Identifier;             /*< The response printed when the ATID command has been entered. */
+            const char *term_EOL;               /*< The End Of Line string after a command response */
+            qPutChar_t OutputFcn;               /*< Points to the user-supplied function to write a single byte to the output. */
             #if ( QAT_PARSER_TASK_LINK == 1 )
-                qTask_t *Task;
+                qTask_t *Task;                  /*< A pointer to the task node that owns this parser. */
             #endif
-            qSize_t SizeOutput;
-            qATParserInput_t Input;
+            qSize_t SizeOutput;                 /*< The sise of Output. */
+            qATParserInput_t Input;             /*< The input of the parser. */
         }private_end;
     }qATParser_t;   
     
@@ -91,22 +91,22 @@
     }qATCommandType_t;
 
     typedef struct{
-        void *Command; /*a pointer to the calling AT Command object*/
-        char *StrData; /*the string data*/
-        qATCommandType_t Type; /*The command type*/
-        qSize_t StrLen; /*the length of StrData*/
-        qSize_t NumArgs; /*Number of arguments, only available if Type = QATCMDTYPE_SET*/
+        void *Command;          /*< A pointer to the calling AT Command object. */
+        char *StrData;          /*< The string data. */
+        qATCommandType_t Type;  /*< The command type. */
+        qSize_t StrLen;         /*< The length of StrData. */
+        qSize_t NumArgs;        /*< Number of arguments, only available if Type = QATCMDTYPE_SET. */
     }qATParser_PreCmd_t;
 
     typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*arg1, qATParser_PreCmd_t* arg2);
     
     typedef struct _qATCommand_t{
         private_start{
-            char *Text;
-            qATCommandCallback_t CommandCallback;
-            struct _qATCommand_t *Next;
-            uint16_t CmdOpt;
-            qSize_t CmdLen;
+            char *Text;                             /*< The command string. Used to match to the input< */
+            qATCommandCallback_t CommandCallback;   /*< The command callback. */
+            struct _qATCommand_t *Next;             /*< Points to the next command in the list. */
+            uint16_t CmdOpt;                        /*< The command options. */
+            qSize_t CmdLen;                         /*< The command length. */
         }private_end;
     }qATCommand_t;
 

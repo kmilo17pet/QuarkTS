@@ -8,8 +8,8 @@
     }qNode_t;
 
     typedef struct{
-        qNode_t *head, *tail;
-        qSize_t size;
+        qNode_t *head, *tail;   /*< Pointers to the beginning of and the end of the list. */
+        qSize_t size;           /*< Used to hold the current size of the list. */
     }qList_t;
     #define qNode_MinimalFields                  void *next, *prev, *data
 
