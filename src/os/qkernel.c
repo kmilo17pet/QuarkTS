@@ -149,7 +149,7 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qPriority_t MaxPriorityValue;
     
     if( QUARKTS.QueueIndex >= 0 ){ /*queue has elements*/
-        qEnterCritical(); 
+        qCritical_Enter(); 
         MaxPriorityValue = QUARKTS.QueueStack[0].Task->private.Priority;
         for( i = 1u ; ( i < QUARKTS.QueueSize ) ; i++){  /*walk through the queue to find the task with the highest priority*/
             if( NULL != QUARKTS.QueueStack[i].Task ){ /* tail is reached */
@@ -168,7 +168,7 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
             QUARKTS.QueueStack[j] = QUARKTS.QueueStack[j+1]; /*shift the remaining items of the queue*/
         }
         QUARKTS.QueueIndex--;    /*decrease the index*/
-        qExitCritical();
+        qCritical_Exit();
     }
     return xTask;
 }
@@ -224,7 +224,7 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
         #if ( Q_TASK_COUNT_CYCLES == 1 )
             Task->private.Cycles = 0ul;
         #endif
-        Task->private.ClockStart = qSchedulerGetTick();
+        Task->private.ClockStart = qClock_GetTick();
         #if ( Q_QUEUES == 1)
             Task->private.Queue = NULL;
         #endif
@@ -396,14 +396,14 @@ static void _qScheduler_FindPlace( qTask_t * const head, qTask_t * const Task ){
 /*============================================================================*/
 static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearrange the chain according the priority of all its nodes*/
     qTask_t *new_head = NULL, *tmp = head, *tmp1 = NULL;
-    qEnterCritical();
+    qCritical_Enter();
     while( NULL != tmp ){ /*start with a new head and re-insert the entire chain*/
         tmp1 = tmp;
         tmp = tmp->private.Next;
         new_head = _qScheduler_PriorizedInsert( new_head, tmp1 );  
     }
     QUARKTS.Flag.Init = qTrue; /*set the initialization flag*/
-    qExitCritical();
+    qCritical_Exit();
     return new_head; /*return the new head*/
 }
 #endif
@@ -633,7 +633,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
     qBool_t nTaskReady = qFalse; /*the return is to notify that at least one task gained the qReady state*/
     for( Task = QUARKTS.Head ; NULL != Task ; Task = Task->private.Next ){ /*loop every task in the chain : only one event will be verified by node*/
         if( _qTaskDeadLineReached( Task ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
-            Task->private.ClockStart = qSchedulerGetTick(); /*Restart the task time*/
+            Task->private.ClockStart = qClock_GetTick(); /*Restart the task time*/
             nTaskReady = _qScheduler_TransitionTo( Task, qReady, byTimeElapsed ); /*put the task in ready state with their corresponding trigger */                  
         }
         #if ( Q_QUEUES == 1)  
@@ -844,7 +844,7 @@ void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
         if( State != Task->private.Flag[_qIndex_Enabled] ){ 
             Task->private.Flag[_qIndex_Enabled] = State;
-            Task->private.ClockStart = qSchedulerGetTick();
+            Task->private.ClockStart = qClock_GetTick();
         }
     }
 }
@@ -877,7 +877,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
-        Task->private.ClockStart = qSchedulerGetTick();
+        Task->private.ClockStart = qClock_GetTick();
     }    
 }
 #if ( Q_QUEUES == 1)

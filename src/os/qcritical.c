@@ -9,7 +9,7 @@ Enter a critical section. This function invokes the <Disabler> if available.
 Please see <qSchedulerSetInterruptsED>
 
 */  
-void qEnterCritical(void){
+void qCritical_Enter(void){
     qInt_Disabler_t Disabler;
     if( NULL != Critical.I_Disable ){
         Disabler = Critical.I_Disable;
@@ -23,7 +23,7 @@ Enter a critical section. This function invokes the <Enabler> if available.
 Please see <qSchedulerSetInterruptsED>
 
 */ 
-void qExitCritical( void ){
+void qCritical_Exit( void ){
     qInt_Restorer_t Restorer;
     if( NULL != Critical.I_Restorer ){
         Restorer = Critical.I_Restorer;
@@ -43,7 +43,7 @@ Parameters:
                  restores interrupts.
     - Disabler : The function with hardware specific code that disables interrupts.
 */ 
-void qSchedulerSetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
+void qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
     Critical.I_Restorer = Restorer;
     Critical.I_Disable = Disabler;
 }

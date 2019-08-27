@@ -44,7 +44,7 @@ qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSi
         Instance->private.DebounceTime = DebounceTime;
         Instance->private.Reader = ( NULL == RegisterSize )? QREG_32BIT  : RegisterSize;
         Instance->private.State = QEDGECHECK_CHECK;
-        Instance->private.Start = qSchedulerGetTick();
+        Instance->private.Start = qClock_GetTick();
         RetValue = qTrue;
     }
     return RetValue;
@@ -100,7 +100,7 @@ qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance ){
     qCoreRegSize_t PinReader;
     if( NULL != Instance ){
         if( QEDGECHECK_WAIT == Instance->private.State ){ /*de-bounce wait state*/
-            if( ( qSchedulerGetTick() - Instance->private.Start ) >= Instance->private.DebounceTime ){
+            if( ( qClock_GetTick() - Instance->private.Start ) >= Instance->private.DebounceTime ){
                 Instance->private.State = QEDGECHECK_UPDATE; /*debounce time reached, update the inputlevel*/ 
             }      
             RetValue = qTrue;
@@ -131,7 +131,7 @@ qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance ){
         
             if( QEDGECHECK_UPDATE == Instance->private.State ){ /*reload the instance to a full check*/
                 Instance->private.State = QEDGECHECK_CHECK; /*reload the init state*/
-                Instance->private.Start = qSchedulerGetTick(); /*reload the time*/
+                Instance->private.Start = qClock_GetTick(); /*reload the time*/
             }
             if( Instance->private.State > QEDGECHECK_CHECK ){
                 Instance->private.State = QEDGECHECK_WAIT; /*at least one pin change detected, do the de-bounce wait*/

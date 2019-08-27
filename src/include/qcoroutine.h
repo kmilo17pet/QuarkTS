@@ -24,7 +24,7 @@
     #define __qAssert(_COND_)        if(!(_COND_))
     #define __qTaskPCVar             _qCRTaskState_.instr /*_qCRTaskState_*/
     #define __qCRDelayVar            _qCRTaskState_.crdelay           
-    #define __qCRDelayPrepare        __qCRDelayVar = qSchedulerGetTick()
+    #define __qCRDelayPrepare        __qCRDelayVar = qClock_GetTick()
     #define __qSetPC(_VAL_)          __qTaskPCVar = (_VAL_)
     #define __qTaskSaveState         __qSetPC(__qTaskProgress) 
     #define __qTaskInitState         _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */

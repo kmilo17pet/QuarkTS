@@ -59,13 +59,13 @@
             const char *OK_Response;            /*< The response printed when OK is needed. */
             const char *ERROR_Response;         /*< The response printed when ERROR is needed. */
             const char *NOTFOUND_Response;      /*< The response printed when NOTFOUND is needed. */
-            const char *Identifier;             /*< The response printed when the ATID command has been entered. */
+            const char *Identifier;             /*< The response printed when the "ATID" command has been entered. */
             const char *term_EOL;               /*< The End Of Line string after a command response */
             qPutChar_t OutputFcn;               /*< Points to the user-supplied function to write a single byte to the output. */
             #if ( QAT_PARSER_TASK_LINK == 1 )
                 qTask_t *Task;                  /*< A pointer to the task node that owns this parser. */
             #endif
-            qSize_t SizeOutput;                 /*< The sise of Output. */
+            qSize_t SizeOutput;                 /*< The size of Output. */
             qATParserInput_t Input;             /*< The input of the parser. */
         }private_end;
     }qATParser_t;   
@@ -83,11 +83,11 @@
     #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000Fu)
 
     typedef enum{
-        qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF, /* None of the above */
-        qATCMDTYPE_PARA     = QATCMDTYPE_PARA,  /* AT+cmd=x,y */
-        qATCMDTYPE_TEST     = QATCMDTYPE_TEST,  /* AT+cmd=? */
-        qATCMDTYPE_READ     = QATCMDTYPE_READ,  /* AT+cmd? */
-        qATCMDTYPE_ACT      = QATCMDTYPE_ACT    /* AT+cmd */     
+        qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF, /*< None of the above */
+        qATCMDTYPE_PARA     = QATCMDTYPE_PARA,  /*< AT+cmd=x,y */
+        qATCMDTYPE_TEST     = QATCMDTYPE_TEST,  /*< AT+cmd=? */
+        qATCMDTYPE_READ     = QATCMDTYPE_READ,  /*< AT+cmd? */
+        qATCMDTYPE_ACT      = QATCMDTYPE_ACT    /*< AT+cmd */     
     }qATCommandType_t;
 
     typedef struct{

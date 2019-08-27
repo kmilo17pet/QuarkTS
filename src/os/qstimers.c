@@ -23,7 +23,7 @@ qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         obj->private.TV  = qTime2Clock(Time); /*set the STimer time in epochs*/
-        obj->private.Start  = qSchedulerGetTick(); /*set the init time of the STimer with the current system epoch value*/
+        obj->private.Start  = qClock_GetTick(); /*set the init time of the STimer with the current system epoch value*/
         RetValue = qTrue;
     }
     return RetValue;
@@ -109,7 +109,7 @@ qClock_t qSTimerElapsed( const qSTimer_t * const obj ){
     qClock_t RetValue = 0ul;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
-            RetValue = qSchedulerGetTick() - obj->private.Start;
+            RetValue = qClock_GetTick() - obj->private.Start;
         }
     }
     return RetValue;

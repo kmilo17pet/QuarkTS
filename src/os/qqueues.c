@@ -50,11 +50,11 @@ Parameters:
 */
 void qQueueReset( qQueue_t * const obj ){
     if ( NULL != obj ){
-        qEnterCritical();
+        qCritical_Enter();
         obj->ItemsWaiting = 0u;
         obj->pcWriteTo = obj->pHead;
         obj->pcReadFrom = obj->pHead + ( ( obj->ItemsCount - 1u ) * obj->ItemSize );
-        qExitCritical();
+        qCritical_Exit();
     }
 }
 /*============================================================================*/
@@ -142,12 +142,12 @@ void* qQueuePeek( const qQueue_t * const obj ){
     uint8_t *RetValue = NULL;
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
-            qEnterCritical();
+            qCritical_Enter();
             RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );
             if( RetValue >= obj->pTail ){
                 RetValue = obj->pHead;
             }
-            qExitCritical();
+            qCritical_Exit();
         }
     }
     return (void*)RetValue;
@@ -169,10 +169,10 @@ qBool_t qQueueRemoveFront( qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
-            qEnterCritical();
+            qCritical_Enter();
             qQueueMoveReader( obj );
             --( obj->ItemsWaiting ); /* remove the data. */
-            qExitCritical();
+            qCritical_Exit();
             RetValue = qTrue;
         }
     }
@@ -228,10 +228,10 @@ Return value:
 qBool_t qQueueReceive( qQueue_t * const obj, void *dest ){
     qBool_t RetValue = qFalse;
     if( obj->ItemsWaiting > 0u ){
-        qEnterCritical();
+        qCritical_Enter();
         qQueueCopyDataFromQueue( obj, dest );
         --( obj->ItemsWaiting ); /* remove the data. */
-        qExitCritical();
+        qCritical_Exit();
         RetValue = qTrue;
     }
     return RetValue;
@@ -260,9 +260,9 @@ qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, uint8_t Inse
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/
-            qEnterCritical();
+            qCritical_Enter();
             qQueueCopyDataToQueue( obj, ItemToQueue, InsertMode );
-            qExitCritical();
+            qCritical_Exit();
             RetValue = qTrue;
         }
     }

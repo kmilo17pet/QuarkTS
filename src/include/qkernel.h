@@ -22,24 +22,6 @@
     #define qTrigger_QueueEmpty         byQueueEmpty
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
-    
-    /*backward compatibility*/
-    #ifndef PERIODIC 
-        #define PERIODIC            qPeriodic
-    #endif
-    
-    #ifndef INDEFINITE
-        #define INDEFINITE          qIndefinite
-    #endif
-    
-    #ifndef SINGLESHOT
-        #define SINGLESHOT          qSingleShot
-    #endif
-    
-    #ifndef TIME_IMMEDIATE
-        #define TIME_IMMEDIATE      qTimeImmediate
-    #endif 
-
 
     typedef struct{
         /* TaskData (Storage-Pointer):
@@ -113,7 +95,7 @@
 
 typedef void (*qTaskFcn_t)(qEvent_t arg);  
 
-    typedef uint8_t qNotifier_t;
+    typedef uint8_t qNotifier_t;        
     #define QMAX_NOTIFICATION_VALUE     ( 0xFFu )
 
     typedef uint8_t qTaskState_t;
@@ -173,28 +155,28 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
     typedef qTask_t** qHeadPointer_t;         
 
     typedef struct{ /*Scheduler Core-Flags*/
-    	volatile qBool_t Init;
-        qBool_t FCallIdle;
-        #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-            volatile qBool_t ReleaseSched, FCallReleased;
-        #endif
+    	volatile qBool_t Init;                              /*< The scheduler initialization flag. */
+        qBool_t FCallIdle;                                  /*< The idle first-call flag. */
+        #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )              
+            volatile qBool_t ReleaseSched, FCallReleased;   /*< The scheduler release flags*/
+        #endif  
     }qTaskCoreFlags_t;
 
     typedef struct{ /*Main scheduler core data*/
         #if ( Q_PRIORITY_QUEUE == 1 )
-            volatile int16_t QueueIndex; /*holds the current queue index*/
-            uint8_t QueueSize;
-            qQueueStack_t *QueueStack; /*a pointer to the queue stack*/
-            void *QueueData;                 
+            volatile int16_t QueueIndex;                    /*< The current index of the FIFO priority queue. */
+            uint8_t QueueSize;                              /*< The size of the FIFO priority queue. */
+            qQueueStack_t *QueueStack;                      /*< Points to the storage area of the FIFO priority queue. */
+            void *QueueData;                                /*< The FIFO priority queue item-data. */
         #endif 
-            qTaskFcn_t IDLECallback;    
+            qTaskFcn_t IDLECallback;                        /*< The callback function that represents the idle-task activities. */
         #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-            qTaskFcn_t ReleaseSchedCallback;
+            qTaskFcn_t ReleaseSchedCallback;                /*< The callback function for the scheduler release action. */
         #endif
-        qTask_t *Head;
-        volatile qTaskCoreFlags_t Flag;
-        qTask_t *CurrentRunningTask;
-        _qEvent_t_ EventInfo;
+        qTask_t *Head;                                      /*< Points to the first task of the list. */
+        volatile qTaskCoreFlags_t Flag;                     /*< The scheduler Core-Flags. */
+        qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */
+        _qEvent_t_ EventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
     }QuarkTSCoreData_t;
 
     #if ( Q_PRIORITY_QUEUE == 1 )    
@@ -245,7 +227,7 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
     Parameters:
 
         - TickProviderFcn :  The function that provides the tick value. If the user application 
-                            uses the qSchedulerSysTick from the ISR, this parameter can be NULL.
+                            uses the qClock_SysTick() from the ISR, this parameter can be NULL.
                             Note: Function should take void and return a 32bit value. 
 
         - TimmingBase : This parameter specifies the ISR background timer base time.

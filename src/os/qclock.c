@@ -8,11 +8,31 @@ static qGetTickFcn_t GetSysTick = NULL;
 static qTimingBase_type TimmingBase;
 
 /*============================================================================*/
+/*void qClock_SetTimeBase( const qTimingBase_type tb )
+
+Set the system time-base for time conversions
+
+Parameters:
+
+    - tb : Time base 
+
+*/
 void qClock_SetTimeBase( const qTimingBase_type tb ){
     TimmingBase = tb;
 } 
 #endif
 /*============================================================================*/
+/*void qClock_SetTickProvider( qGetTickFcn_t provider )
+
+Set the clock tick provider function.
+
+Parameters:
+
+    - provider : A pointer to the tick provider function  
+                 qClock_t fcn(void)
+                 uint32_t fcn(void)
+
+*/
 void qClock_SetTickProvider( qGetTickFcn_t provider ){
     GetSysTick = provider;
 }
@@ -68,12 +88,12 @@ qClock_t qTime2Clock( const qTime_t t ){
 }
 /*============================================================================*/
 /*
-void qSchedulerSysTick(void)
+void qClock_SysTick(void)
 
-Feed the scheduler system tick. If TickProviderFcn is not provided in qSchedulerSetup, this 
-call is mandatory and must be called once inside the dedicated timer interrupt service routine (ISR). 
+Feed the system tick. This call is mandatory and must be called once inside the 
+dedicated timer interrupt service routine (ISR). 
 */    
-void qSchedulerSysTick( void ){ 
+void qClock_SysTick( void ){ 
     _qSysTick_Epochs_++; 
 }
 /*============================================================================*/
@@ -89,15 +109,31 @@ Return value:
 
     time (t) in seconds
 */
-qClock_t qSchedulerGetTick( void ){   
+qClock_t qClock_GetTick( void ){   
     qGetTickFcn_t TickProvider;
     TickProvider = GetSysTick;
 	return ( NULL != TickProvider )? TickProvider() : _qSysTick_Epochs_; /*some compilers can deal with function pointers inside structs*/
 }
 /*============================================================================*/
+/*qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )( void )
+
+Perform a timestamp check. Computes the amount of time elapsed between the current
+instant and the init timestamp <ti> and checks if the result is greather than <td>. 
+
+Parameters:
+
+    - ti : Init timestamp
+    - td : Elapsed time to check  
+
+Return value:
+
+    qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
+    returns qFalse
+*/
+/*============================================================================*/
 qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td ){
     qBool_t RetValue = qFalse;
-    if( ( qSchedulerGetTick() - ti ) >= td ){
+    if( ( qClock_GetTick() - ti ) >= td ){
         RetValue = qTrue;
     }
     return RetValue; 

@@ -25,8 +25,8 @@
     void qClock_SetTickProvider( qGetTickFcn_t provider );
     qTime_t qClock2Time( const qClock_t t );
     qClock_t qTime2Clock( const qTime_t t );
-    void qSchedulerSysTick( void );
-    qClock_t qSchedulerGetTick( void );
+    void qClock_SysTick( void );
+    qClock_t qClock_GetTick( void );
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
 
 #endif 

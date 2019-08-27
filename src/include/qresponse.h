@@ -8,12 +8,12 @@
 
     typedef struct{
         private_start{
-        char *Pattern2Match;
-            qSize_t MaxStrLength;
-            qSize_t PatternLength;
-            volatile qSize_t MatchedCount;
-            volatile qBool_t ResponseReceived;
-            qSTimer_t timeout;
+            char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
+            qSize_t MaxStrLength;               /*< The size of the storage area. */
+            qSize_t PatternLength;              /*< The length of the current response request.*/
+            volatile qSize_t MatchedCount;      /*< To hold the current number of response matches. */
+            volatile qBool_t ResponseReceived;  /*< A flag that indicates when the response matches the request. */
+            qSTimer_t timeout;                  /*< The timeout used to wait the requested response. */
         }private_end;
     }qResponseHandler_t; 
 
