@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QBSBUFFERS_H
     #define QBSBUFFERS_H
 

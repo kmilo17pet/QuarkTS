@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef  QEDGECHECK_H
     #define QEDGECHECK_H
 

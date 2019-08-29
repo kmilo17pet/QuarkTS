@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QRESPONSE_H
     #define QRESPONSE_H
 

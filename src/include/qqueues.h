@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QQUEUES_H
     #define QQUEUES_H
 

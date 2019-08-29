@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QSTIMERS_H
     #define QSTIMERS_H
 

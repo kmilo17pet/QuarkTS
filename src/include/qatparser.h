@@ -1,14 +1,9 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QATPARSER_H
     #define QATPARSER_H 
 
-    #define     QAT_PARSER_TASK_LINK                1   /*enable or disable the task attachment functionality to this module*/
-    
     #include "qtypes.h"  
-    #if ( QAT_PARSER_TASK_LINK == 1)
-        #include "qkernel.h"
-    #endif 
     #include "qioutils.h"  
-
     
     #define		QAT_DEFAULT_AT_COMMAND	            "at"
     #define		QAT_DEFAULT_ID_COMMAND	            "atid"
@@ -50,10 +45,11 @@
     typedef void (*qPutchFcn_t)(const char arg);
     typedef void (*qPutsFcn_t)(const char* arg);
 
-    typedef struct{
+    typedef struct _qATParser_s{
         qPutchFcn_t putch;                      /*< Points to a function that writes a single char to the output. */
         qPutsFcn_t puts;                        /*< Points to a function that writes a string to the output. */
         char *Output;                           /*< Points to the output buffer storage area. */
+        void *UserData;
         private_start{
             void *First;                        /*< The response printed when OK is needed. */
             const char *OK_Response;            /*< The response printed when OK is needed. */
@@ -62,9 +58,9 @@
             const char *Identifier;             /*< The response printed when the "ATID" command has been entered. */
             const char *term_EOL;               /*< The End Of Line string after a command response */
             qPutChar_t OutputFcn;               /*< Points to the user-supplied function to write a single byte to the output. */
-            #if ( QAT_PARSER_TASK_LINK == 1 )
-                qTask_t *Task;                  /*< A pointer to the task node that owns this parser. */
-            #endif
+
+            void (*xNotifyFcn)(struct _qATParser_s * const arg);
+            
             qSize_t SizeOutput;                 /*< The size of Output. */
             qATParserInput_t Input;             /*< The input of the parser. */
         }private_end;
@@ -124,9 +120,4 @@
     int qATParser_GetArgInt( const qATParser_PreCmd_t *param, int8_t n );
     float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n );
     uint32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, int8_t n );
-
-    #if ( QAT_PARSER_TASK_LINK == 1 )
-        qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority );
-    #endif
-
 #endif

@@ -1,5 +1,11 @@
 /*
-    QuarkTS V5.1.0 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V5.1.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    All rights reserved
+    
+    This file is part of the QuarkTS distribution.
+    
+    VISIT https://github.com/TECREA/QuarkTS TO ENSURE YOU ARE USING THE LATEST VERSION.
+    
     A Non-Preemptive RTOS for small embedded systems
     GNU Lesser General Public License (LGPL)
     C99 and MISRA-C 2004 Compliant
@@ -10,14 +16,11 @@
 
     #include "qtypes.h"
     #include "qkernel.h"
+    #include "qtasks.h"    
     #include "qstimers.h"
     #include "qcoroutine.h"
     
     #include "qioutils.h"
-
-    #if ( Q_ATCOMMAND_PARSER == 1)
-        #include "qatparser.h"
-    #endif
 
     #if ( Q_TRACE_VARIABLES ==1 )
         #include "qtrace.h"
@@ -44,5 +47,18 @@
     #endif
 
     #include "qbitmacros.h"
+
+
+    #if ( Q_DEFAULT_HEAP_SIZE < 64 )
+        #error Q_DEFAULT_HEAP_SIZE it is too small. Min(64).
+    #endif
+
+    #if ( Q_BYTE_ALIGNMENT != 1 && Q_BYTE_ALIGNMENT != 2 && Q_BYTE_ALIGNMENT != 4 && Q_BYTE_ALIGNMENT != 8 )
+        #error Q_BYTE_ALIGNMENT value not allowed, use only 1,2,4 or 8(default).
+    #endif
+
+    #if ( Q_DEBUGTRACE_BUFSIZE < 36 )
+        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greather o equal to 36.
+    #endif
 
 #endif

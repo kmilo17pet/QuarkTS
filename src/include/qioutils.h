@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QIOUTILS_H
     #define QIOUTILS_H
 

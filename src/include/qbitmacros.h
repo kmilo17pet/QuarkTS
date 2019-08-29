@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QBITMACROS_H
     #define QBITMACROS_H
 

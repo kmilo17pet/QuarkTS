@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QCOROUTINE_H
     #define QCOROUTINE_H
 

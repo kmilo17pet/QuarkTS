@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QTYPES_H
     #define QTYPES_H
 
@@ -29,7 +30,7 @@
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.1.0"
+    #define QUARKTS_VERSION         "5.1.1"
     #define QUARKTS_CAPTION         "QuarkTS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)
@@ -65,8 +66,8 @@
 
     #ifndef STRUCT_PRIVATE_MEMBERS
         #define STRUCT_PRIVATE_MEMBERS
-        #define ___private_join( symbol1, symbol2 )     ___private_dojoin( symbol1, symbol2 )
-        #define ___private_dojoin( symbol1, symbol2 )   symbol1##symbol2
+        #define ___private_join( symbol1, symbol2 )     ___private_do_join( symbol1, symbol2 )
+        #define ___private_do_join( symbol1, symbol2 )   symbol1##symbol2
         #define private_start                           struct ___private_join( private_, __LINE__ )
         #define private_end                             private
     #endif

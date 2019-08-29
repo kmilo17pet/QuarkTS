@@ -1,136 +1,15 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QKERNEL_H
     #define QKERNEL_H
 
     #include "qtypes.h"
     #include "qcritical.h"
-    #include "qclock.h"
-    #if (Q_QUEUES == 1)
-        #include "qqueues.h"
-    #endif
-    #if ( Q_FSM == 1)
-        #include "qfsm.h"
-    #endif
-
-    typedef enum {qTriggerNULL, byTimeElapsed, byNotificationQueued, byNotificationSimple, byQueueReceiver, byQueueFull, byQueueCount, byQueueEmpty, bySchedulingRelease, byNoReadyTasks} qTrigger_t;
-
-    #define qTrigger_NotificationSimple byNotificationSimple
-    #define qTrigger_NotificationQueued byNotificationQueued
-    #define qTrigger_TimeElapsed        byTimeElapsed
-    #define qTrigger_QueueReceiver      byQueueReceiver
-    #define qTrigger_QueueFull          byQueueFull
-    #define qTrigger_QueueCount         byQueueCount
-    #define qTrigger_QueueEmpty         byQueueEmpty
-    #define qTrigger_SchedulingRelease  bySchedulingRelease
-    #define qTrigger_NoReadyTasks       byNoReadyTasks
-
+    #include "qtasks.h"
+   
+    /*an item of the priority-queue*/
     typedef struct{
-        /* TaskData (Storage-Pointer):
-        Task arguments defined at the time of its creation.
-        */
-        void *TaskData;
-        /* EventData:
-        Associated data of the event. Specific data will reside here according
-        to the event source. This field will only have a NULL value when the 
-        trigger is <byTimeElapsed> or <byPriority>.
-         */
-        void *EventData;
-        /* Trigger:
-        This flag indicates the event source that triggers the task execution.
-        
-         
-        This flag can only have the following values:        
-        
-        - byTimeElapsed : When the time specified for the task elapsed.
-                
-        - byNotificationQueued: When there is a queued notification in the FIFO
-                                priority queue. For this trigger, the dispacher 
-                                performs a dequeue operation automatically. A 
-                                pointer to the extracted event data will be available 
-                                in the <EventData> field.
-        
-        - byNotificationSimple: When the execution chain does, according to a 
-                        requirement of asynchronous notification event prompted 
-                        by qSendEvent. A pointer to the dequeued data will be 
-                        available in the <EventData> field.
-        
-        - byQueueReceiver: When there are elements available in the attached qQueue,
-                        the scheduler make a data dequeue (auto-receive) from the
-                        front. A pointer to the received data will be 
-                        available in the <EventData> field.
-        
-        - byQueueFull: When the  attached qQueue is full. A pointer to the 
-                         queue will be available in the <EventData> field.
-         
-        - byQueueCount: When the element-count of the  attached qQueue reaches
-                         the specified value. A pointer to the queue will 
-                         be available in the <EventData> field.
-        
-        - byQueueEmpty: When the  attached qQueue is empty.  A pointer to the 
-                        queue will be available in the <EventData> field.
-        
-        - byNoReadyTasks: Only when the Idle Task is triggered.
-        */
-        qTrigger_t Trigger;
-        /* FirstCall:
-        This flag indicates that a task is running for the first time. 
-        This flag can be used for data initialization purposes.
-        */
-        qBool_t FirstCall;
-        /* FirstIteration:
-        Indicates whether current pass is the first iteration of the task. 
-        This flag will be only set when time-elapsed events occurs and the
-        Iteration counter has been parameterized. Asynchronous events never change
-        the task iteration counter, consequently doesn't have effect in this flag 
-        */
-        qBool_t FirstIteration;
-        /* LastIteration:
-        Indicates whether current pass is the last iteration of the task. 
-        This flag will be only set when time-elapsed events occurs and the
-        Iteration counter has been parameterized. Asynchronous events never change
-        the task iteration counter, consequently doesn't have effect in this flag 
-        */
-        qBool_t LastIteration;
-    }_qEvent_t_/*, *const qEvent_t*/;  
-    typedef const _qEvent_t_ *qEvent_t;
-
-typedef void (*qTaskFcn_t)(qEvent_t arg);  
-
-    typedef uint8_t qNotifier_t;        
-    #define QMAX_NOTIFICATION_VALUE     ( 0xFFu )
-
-    typedef uint8_t qTaskState_t;
-    #define qWaiting    ( 0u )
-    #define qReady      ( 1u )
-    #define qRunning    ( 2u )
-    #define qSuspended  ( 3u )
-
-    typedef struct _qTask_t{ /*Task node definition*/
-        private_start{
-            struct _qTask_t *Next;                  /*< Points to the next node of the task list. */
-            void *TaskData,*AsyncData;              /*< The task Storate pointers. */
-            qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
-            #if ( Q_FSM == 1)
-                qSM_t *StateMachine;                /*< The pointer to the attached state-machine. */
-            #endif
-            #if ( Q_QUEUES == 1)
-                qQueue_t *Queue;                    /*< The pointer to the attached queue. */
-            #endif
-            volatile qClock_t Interval, ClockStart; /*< The timestamps of the task in epochs. */
-            #if ( Q_TASK_COUNT_CYCLES == 1 )
-                uint32_t Cycles;                    /*< The current number of executions performed by the task. */
-            #endif
-            qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
-            qIteration_t Iterations;                /*< Holds the number of iterations. */
-            qPriority_t Priority;                   /*< The task priority. */
-            qTaskState_t State;                     /*< The task state (set by the scheduler). */
-            volatile qNotifier_t Notification;      /*< The notification value. */
-            volatile qBool_t Flag[6];               /*< Task related flags (used by the scheduler). */            
-        }private_end;
-    }qTask_t;
-
-    typedef struct{
-        qTask_t *Task; /*the pointed task*/
-        void *QueueData; 
+        qTask_t *Task;      /*< A pointer to the task. */
+        void *QueueData;    /*< The data to queue. */
     }qQueueStack_t;  
 
     #define qLowest_Priority        ((qPriority_t)(0x00u))
@@ -144,41 +23,6 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
     #define MEDIUM_Priority         qMedium_Priority
     #define HIGH_Priority           qHigh_Priority
 
-    #define _qIndex_InitFlag        ( 0 )
-    #define _qIndex_Enabled         ( 1 )
-    #define _qIndex_QueueReceiver   ( 2 )
-    #define _qIndex_QueueFull       ( 3 )
-    #define _qIndex_QueueCount      ( 4 )
-    #define _qIndex_QueueEmpty      ( 5 )
-
-
-    typedef qTask_t** qHeadPointer_t;         
-
-    typedef struct{ /*Scheduler Core-Flags*/
-    	volatile qBool_t Init;                              /*< The scheduler initialization flag. */
-        qBool_t FCallIdle;                                  /*< The idle first-call flag. */
-        #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )              
-            volatile qBool_t ReleaseSched, FCallReleased;   /*< The scheduler release flags*/
-        #endif  
-    }qTaskCoreFlags_t;
-
-    typedef struct{ /*Main scheduler core data*/
-        #if ( Q_PRIORITY_QUEUE == 1 )
-            volatile int16_t QueueIndex;                    /*< The current index of the FIFO priority queue. */
-            uint8_t QueueSize;                              /*< The size of the FIFO priority queue. */
-            qQueueStack_t *QueueStack;                      /*< Points to the storage area of the FIFO priority queue. */
-            void *QueueData;                                /*< The FIFO priority queue item-data. */
-        #endif 
-            qTaskFcn_t IDLECallback;                        /*< The callback function that represents the idle-task activities. */
-        #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-            qTaskFcn_t ReleaseSchedCallback;                /*< The callback function for the scheduler release action. */
-        #endif
-        qTask_t *Head;                                      /*< Points to the first task of the list. */
-        volatile qTaskCoreFlags_t Flag;                     /*< The scheduler Core-Flags. */
-        qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */
-        _qEvent_t_ EventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
-    }QuarkTSCoreData_t;
-
     #if ( Q_PRIORITY_QUEUE == 1 )    
         #define _qQueueStackName                    _qQueueStack
         #define _qQueueStackCreate(QueueSize)       qQueueStack_t _qQueueStackName[(QueueSize)];
@@ -189,31 +33,33 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
         #define _qQueueLength(QueueSize)            ( 0 )                             
     #endif
 
-    typedef qBool_t (*qTaskNotifyMode_t)(qTask_t* arg1, void* arg2);
-    #define Q_NOTIFY_SIMPLE      qTaskSendNotification
-    #define Q_NOTIFY_QUEUED      qTaskQueueNotification
-
     #if (Q_SETUP_TIME_CANONICAL == 1)
         void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #else
         void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
     #endif
 
-    qTask_t* qTaskSelf( void );
-
+    qTask_t* _qScheduler_GetTaskRunning( void );
     void qSchedulerSetIdleTask( qTaskFcn_t Callback );
+
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         void qSchedulerRelease( void );
         void qSchedulerSetReleaseCallback( qTaskFcn_t Callback );
     #endif    
+
+    typedef qBool_t (*qTaskNotifyMode_t)(qTask_t* arg1, void* arg2);
+
     qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode );
-    
     qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
     qBool_t qSchedulerAdd_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
     #if ( Q_FSM == 1)
         qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
                             qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg );
+    #endif
+
+    #if ( Q_ATCOMMAND_PARSER == 1)
+        qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority );
     #endif
 
     qBool_t qSchedulerRemoveTask( qTask_t * const Task );
@@ -246,59 +92,9 @@ typedef void (*qTaskFcn_t)(qEvent_t arg);
         #define qSchedulerSetup( TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize )                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (TimmingBase), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
     #endif
 
+    qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data);
+    void _qScheduler_ReloadScheme(void);
 
-    #if ( Q_QUEUES == 1 )
-        typedef enum{
-            qQUEUE_RECEIVER =   _qIndex_QueueReceiver, 
-            qQUEUE_FULL     =   _qIndex_QueueFull, 
-            qQUEUE_COUNT    =   _qIndex_QueueCount, 
-            qQUEUE_EMPTY    =   _qIndex_QueueEmpty
-        }qQueueLinkMode_t;
-
-        #define QUEUE_RECEIVER          ( qQUEUE_RECEIVER )  
-        #define QUEUE_FULL              ( qQUEUE_FULL )
-        #define QUEUE_COUNT             ( qQUEUE_COUNT )
-        #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
-        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const uint8_t arg );
-    #endif
-
-    qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
-    qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );
-    qBool_t qTaskIsEnabled( const qTask_t *const Task );
-    #if ( Q_TASK_COUNT_CYCLES == 1 )
-        uint32_t qTaskGetCycles( const qTask_t * const Task );   
-    #endif
-    void qTaskSetTime( qTask_t * const Task, const qTime_t Value );
-    void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value );
-    void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value );
-    void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
-    void qTaskSetState(qTask_t * const Task, const qState_t State);
-    void qTaskSetData( qTask_t * const Task, void* arg );
-    void qTaskClearTimeElapsed( qTask_t * const Task );
-
-    #if ( Q_FSM == 1 ) 
-        qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine );
-    #endif
-
-    /*void qTaskSuspend(qTask_t *Task)
-
-    Put the task into a disabled state.    
-
-    Parameters:
-
-        - Task : A pointer to the task node.
-    */
-    #define qTaskSuspend(pTask_)    qTaskSetState((pTask_), qDisabled)
-    /*void qTaskResume(qTask_t *Task)
-
-    Put the task into a enabled state.    
-
-    Parameters:
-
-    - Task : A pointer to the task node.
-    */
-    #define qTaskResume(pTask_)    qTaskSetState((pTask_), qEnabled)
-
-
+    #define __qFSMCallbackMode      ((qTaskFcn_t)1)
 
 #endif /*QKERNEL_H*/

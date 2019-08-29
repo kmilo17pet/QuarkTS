@@ -166,7 +166,7 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineDelay(2.0);
         puts("hello 2 ");
 
-
+        qTaskSendNotification( qTaskSelf(), NULL );
         qTaskQueueNotification(&Task1, "notification 1");
         qTaskQueueNotification(&Task1, "notification 2");
         qTaskSendNotification(&Task1, "notification 3");

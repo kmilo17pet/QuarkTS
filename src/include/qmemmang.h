@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QMEMMANG_H  
     #define  QMEMMANG_H
 

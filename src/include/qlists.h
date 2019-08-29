@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef  QLISTS_H
     #define QLISTS_H
 

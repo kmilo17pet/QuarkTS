@@ -1,3 +1,4 @@
+/*This file is part of the QuarkTS distribution.*/
 #ifndef QCRITICAL_H  
     #define QCRITICAL_H
 
