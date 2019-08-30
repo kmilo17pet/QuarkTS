@@ -9,11 +9,16 @@ static qSize_t qATParser_NumOfArgs( const char *str );
 static char* _qATParser_FixInput( char *s );
 static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, const qATResponse_t retval );
 static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile char *InputBuffer, qATParser_PreCmd_t *params );
-static void DummyNotifyFcn(struct _qATParser_s * const arg);
+static qBool_t _aATParser_Notify(qATParser_t * const Parser);
 
 /*============================================================================*/
-static void DummyNotifyFcn(struct _qATParser_s * const arg){
-    
+static qBool_t _aATParser_Notify(qATParser_t * const Parser){
+    Parser->private.Input.Ready = qTrue;
+    Parser->private.Input.index = 0u;
+    if( NULL != Parser->private.xNotifyFcn ){
+        Parser->private.xNotifyFcn( Parser );
+    }
+    return qTrue;
 }
 /*============================================================================*/
 static void _qATPutc_Wrapper( const char c ){
@@ -77,7 +82,7 @@ qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn,
         Parser->private.Input.Size = SizeInput;
         Parser->private.Input.Ready = qFalse;
         Parser->private.Input.index = 0u;
-        Parser->private.xNotifyFcn = DummyNotifyFcn;
+        Parser->private.xNotifyFcn = NULL;
         RetValue = qTrue;
     }
     return RetValue;
@@ -165,12 +170,7 @@ qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c ){
         }
     }
     if ( c == '\r' ){
-        Parser->private.Input.Ready = qTrue;
-        Parser->private.Input.index = 0u;
-        if( DummyNotifyFcn != Parser->private.xNotifyFcn ){
-            Parser->private.xNotifyFcn( Parser );
-        }
-        RetValue = qTrue;
+        RetValue = _aATParser_Notify( Parser );
     }
     return RetValue;
 }
@@ -207,12 +207,7 @@ qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const
                 if( NULL != strchr( data, (int)'\r' ) ){ 
                     strncpy( (char*)Parser->private.Input.Buffer, data, (size_t)n);
                     _qATParser_FixInput( (char*)Parser->private.Input.Buffer );
-                    Parser->private.Input.Ready = qTrue;
-                    Parser->private.Input.index = 0u;
-                    if( DummyNotifyFcn != Parser->private.xNotifyFcn ){
-                        Parser->private.xNotifyFcn( Parser );
-                    } 
-                    RetValue = qTrue;
+                    RetValue = _aATParser_Notify( Parser );
                 }
             }
         }
@@ -264,14 +259,9 @@ qBool_t qATParser_Raise( qATParser_t * const Parser, const char *cmd ){
         CurrentInputIndex = Parser->private.Input.Size - 1u;
         CmdLen = strlen( cmd );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= CurrentInputIndex ) ){ 
-            Parser->private.Input.Ready = qTrue;
-            Parser->private.Input.index = 0u;
             strncpy( (char*)Parser->private.Input.Buffer, cmd, (size_t)Parser->private.Input.Size );
             _qATParser_FixInput( (char*)Parser->private.Input.Buffer );
-            if( DummyNotifyFcn != Parser->private.xNotifyFcn ){
-                Parser->private.xNotifyFcn( Parser );
-            }
-            RetValue =  qTrue;
+            RetValue = _aATParser_Notify( Parser );
         }
     } 
     return RetValue;

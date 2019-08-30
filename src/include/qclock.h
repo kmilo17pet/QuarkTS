@@ -1,6 +1,5 @@
 /*This file is part of the QuarkTS distribution.*/
 #ifndef QCLOCK_H
-
     #define QCLOCK_H
 
     #include "qtypes.h"

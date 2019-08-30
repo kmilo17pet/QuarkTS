@@ -128,7 +128,7 @@ Return value:
     The remaining time specified in epochs
 */
 qClock_t qSTimerRemaining( const qSTimer_t * const obj ){
-    qClock_t RetValue = 0xFFFFFFFFul;
+    qClock_t RetValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
             RetValue = obj->private.TV - qSTimerElapsed( obj );
