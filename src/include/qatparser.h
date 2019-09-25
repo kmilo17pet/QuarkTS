@@ -36,10 +36,11 @@
     #define     QAT_OUTPUT               ( qAT_OUTPUT )
 
     typedef volatile struct{
+        volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
         volatile uint8_t Ready;                 /*< A flag that indicates when the input is ready to parse. */
         volatile uint16_t index;                /*< Used to hold the index of the current input-buffer. */
-        qSize_t Size;                           /*< The size of the input buffer. */
-        volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
+        uint16_t MaxIndex;                      /*< Max index  = (Size - 1) */
+        qSize_t Size;                           /*< The size of the input buffer. */       
     }qATParserInput_t;
 
     typedef void (*qPutchFcn_t)(const char arg);

@@ -4,7 +4,7 @@
 
     #ifdef __IAR_SYSTEMS_ICC__ /*stdint.h missing for some stupid reason*/
         #if defined( __ICC8051__ ) || defined ( __ICCARM__)
-            #ifndef STDINT_H
+            #if !defined( STDINT_H ) && !defined( _STDINT )  /*_STDINT only in IAR */
                 #define STDINT_H
                 typedef unsigned char uint8_t;
                 typedef unsigned short uint16_t;

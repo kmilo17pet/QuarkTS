@@ -22,5 +22,9 @@
         "putch",
         "quarkts",
         "rtos"
-    ]
+    ],
+    "files.associations": {
+        "qqueues.h": "c",
+        "qtypes.h": "c"
+    }
 }

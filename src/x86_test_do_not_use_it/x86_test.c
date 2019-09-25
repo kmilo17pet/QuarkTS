@@ -197,12 +197,24 @@ int main(int argc, char** argv) {
     qFree(memtest);
     qTraceVar( qHeapGetFreeSize() , Decimal);
 
-    qQueueCreate(&somequeue, memtest, sizeof(int), 8);
-    qQueueSendToBack(&somequeue, &x[0]);
-    qQueueSendToFront(&somequeue, &x[1]);
-    qQueueSendToBack(&somequeue, &x[2]);
-    qQueueSendToFront(&somequeue, &x[3]);
+    qQueueCreate( &somequeue, memtest, sizeof(int), 8);
+    qQueueSendToBack( &somequeue, &x[0]);
+    qQueueSendToFront( &somequeue, &x[1]);
+    qQueueSendToBack( &somequeue, &x[2]);
+    qQueueSendToFront( &somequeue, &x[3]);
 
+    int b;
+
+    qQueueReceive( &somequeue, &b);
+    
+    printf("queue received = %d \r\n", b);
+    qQueueReceive( &somequeue, &b);
+    printf("queue received = %d \r\n", b);
+    qQueueReceive( &somequeue, &b);
+    printf("queue received = %d \r\n", b);
+
+
+    /*return EXIT_SUCCESS;*/
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
