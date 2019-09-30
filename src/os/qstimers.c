@@ -87,7 +87,7 @@ qBool_t qSTimerExpired( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ){
-            RetValue = ( qSTimerElapsed( obj ) >= obj->private.TV )? qTrue : qFalse; 
+            RetValue = qClock_TimeDeadlineCheck( obj->private.Start, obj->private.TV );
         }
     }
     return RetValue;

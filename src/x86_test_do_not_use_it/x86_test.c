@@ -217,7 +217,7 @@ int main(int argc, char** argv) {
     /*return EXIT_SUCCESS;*/
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     
-    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.05, qPeriodic, qEnabled, "blink");
+    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");    
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
     

@@ -81,7 +81,7 @@ qClock_t qTime2Clock( const qTime_t t ){
             return (qClock_t)(t*QUARKTS.TimmingBase);
         #else
             qTime_t epochs;
-            epochs = t/TimmingBase;
+            epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;
             return (qClock_t)epochs;
         #endif    
     #endif

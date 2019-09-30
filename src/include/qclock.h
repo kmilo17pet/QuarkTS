@@ -10,6 +10,7 @@
     #else
         typedef float qTime_t;
         #define qTimeImmediate       ((qTime_t)(0.0f))
+        #define QFLT_TIME_FIX_VALUE  ( 0.00001f )
     #endif
 
     #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
@@ -20,6 +21,7 @@
 
     typedef uint32_t qClock_t;
     typedef qClock_t (*qGetTickFcn_t)(void);
+
 
     void qClock_SetTimeBase( const qTimingBase_type tb );
     void qClock_SetTickProvider( qGetTickFcn_t provider );

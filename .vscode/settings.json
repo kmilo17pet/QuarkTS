@@ -25,6 +25,7 @@
     ],
     "files.associations": {
         "qqueues.h": "c",
-        "qtypes.h": "c"
+        "qtypes.h": "c",
+        "qclock.h": "c"
     }
 }
