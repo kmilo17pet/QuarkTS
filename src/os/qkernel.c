@@ -234,7 +234,7 @@ Return value:
 */
 qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
     qBool_t RetValue = qFalse;
-    if( ( NULL!=Task ) && ( NULL != CallbackFcn ) ) {
+    if( ( NULL!=Task ) ) {
         qSchedulerRemoveTask( Task ); /*Remove the task if was previously added to the chain*/
         Task->private.Callback = CallbackFcn;
         Task->private.Interval = qTime2Clock( Time );
@@ -401,22 +401,15 @@ Return value:
     Returns qTrue if success, otherwise returns qFalse.;     
     */
 qBool_t qSchedulerRemoveTask( qTask_t * const Task ){
-    qTask_t *tmp = kernel.Head;
-    qTask_t *prev = NULL;
+    qTask_t **ptonext = &kernel.Head; /*points to the list "next" pointer*/
     qBool_t RetValue = qFalse;
 
-    if( NULL != tmp ){
-        while( ( tmp != Task ) && ( NULL != tmp->private.Next ) ){ /*find the task to remove*/
-            prev = tmp; /*keep on track the previous node*/
-            tmp = tmp->private.Next;
+    if( NULL != kernel.Head ){ /*try the removal if we got tasks in the scheme*/
+        while( ( *ptonext != Task ) && ( NULL != *ptonext ) ){ /*walk the tasks list, looking for the next-pointer that points to the target task*/
+            ptonext = &(*ptonext)->private.Next;
         }
-        if( tmp == Task ){ /*remove the task if was found on the chain*/
-            if( NULL != prev ){
-                prev->private.Next = tmp->private.Next; /*make link between adjacent nodes, this cause that the task being removed from the chain*/
-            }
-            else{
-                kernel.Head = tmp->private.Next; /*if the task is the head of the chain, move the head to the next node*/
-            }
+        if( *ptonext == Task ){ /*remove the task if was found on the chain*/
+            *ptonext = Task->private.Next; /*remove the task*/
             Task->private.Next = NULL; /*Just in case the deleted task needs to be added later to the scheduling scheme, otherwise, this would fuck the whole chain*/
             RetValue =  qTrue;
         }
@@ -636,14 +629,14 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
             if ( ( NULL != Task->private.StateMachine ) && ( __qFSMCallbackMode == Task->private.Callback ) ){
                 qStateMachine_Run( Task->private.StateMachine, (void*)&kernel.EventInfo );  /*If the task has a FSM attached, just run it*/  
             }
-            else if ( NULL != Task->private.Callback ) {
+            else if ( NULL != TaskActivities ) {
                 TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/ 
             }       
             else{
                 /*nothing to do*/
             }
         #else
-            if ( NULL != Task->Callback ) {
+            if ( NULL != TaskActivities ) {
                 TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/ 
             }     
         #endif

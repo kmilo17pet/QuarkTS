@@ -23,6 +23,7 @@ embedded application
 
 #include "QuarkTS.h"
 
+/*============================================================================*/
 uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -218,7 +219,9 @@ int main(int argc, char** argv) {
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback, 10);           
     
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");    
+    puts("added blink");
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
+    puts("added task1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
     
     qTaskAttachQueue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH);
