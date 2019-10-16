@@ -369,7 +369,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qSchedulerAdd_ATParserTask( qTask_t *Task, qATParser_t *Parser, qPriority_t Priority ){    
+qBool_t qSchedulerAdd_ATParserTask( qTask_t * const Task, qATParser_t *Parser, qPriority_t Priority ){    
     qBool_t RetValue = qFalse;
     if( NULL != Parser ){
         Parser->UserData = Task;
