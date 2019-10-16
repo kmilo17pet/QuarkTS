@@ -139,7 +139,7 @@ Return value:
     Pointer to the data, or NULL if there is nothing in the queue
  */
 void* qQueuePeek( const qQueue_t * const obj ){
-    uint8_t *RetValue = NULL;
+    qUINT8_t *RetValue = NULL;
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
             qCritical_Enter();
@@ -256,7 +256,7 @@ Return value:
 
     qTrue on successful add, qFalse if not added
 */
-qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, uint8_t InsertMode ){
+qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueueMode_t InsertMode ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/

@@ -34,9 +34,9 @@
     #endif
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack );
     #else
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack );
+        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack );
     #endif
 
     qTask_t* _qScheduler_GetTaskRunning( void );

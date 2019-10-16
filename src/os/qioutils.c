@@ -1,9 +1,9 @@
 #include "qioutils.h"
 
-static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base );
-static char qNibbleToX( uint8_t value );
+static qUINT8_t __q_revuta( qUINT32_t num, char* str, qUINT8_t base );
+static char qNibbleToX( qUINT8_t value );
 /*============================================================================*/
-/*void qSwapBytes(void *data, size_t n)
+/*void qSwapBytes(void *data, qSize_t n)
  
 Invert the endianess for n bytes of the specified memory location
  
@@ -14,7 +14,7 @@ Parameters:
 */
 /*============================================================================*/
 void qSwapBytes( void *data, const qSize_t n ){
-    uint8_t *p = data, tmp;
+    qUINT8_t *p = data, tmp;
     qSize_t lo, hi;
     hi = n - 1u;
     for( lo = 0u ; hi > lo ; lo++ ){
@@ -34,11 +34,11 @@ Return value:
     qTrue if Little-Endian, otherwise returns qFalse
 */
 qBool_t qCheckEndianness( void ){
-    uint16_t i = 1u;
-    return (qBool_t)( *( (uint8_t*)&i ) );
+    qUINT16_t i = 1u;
+    return (qBool_t)( *( (qUINT16_t*)&i ) );
 }
 /*============================================================================*/
-/*void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, size_t n, qBool_t AIP)
+/*void qOutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP)
  
 Wrapper method to write n RAW data through fcn
   
@@ -65,7 +65,7 @@ void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qB
     }
 }
 /*============================================================================*/
-/*void qInputRaw(qGetChar_t fcn, void* pStorage, void *data, size_t n, qBool_t AIP)
+/*void qInputRaw(const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP)
 
 Wrapper method to get n RAW data through fcn
   
@@ -119,14 +119,14 @@ void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP )
     }
 }
 /*============================================================================*/
-static char qNibbleToX( uint8_t value ){
+static char qNibbleToX( qUINT8_t value ){
     char ch;
     ch = (char)(value & 0x0Fu) + '0';
     return (char) ((ch > '9') ? ch + 7u : ch);
 }
 /*============================================================================*/
 void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n ){
-    uint8_t *pdat =(uint8_t*)data; 
+    qUINT8_t *pdat =(qUINT8_t*)data; 
     qSize_t i;
     for( i = 0u ; i < n ; i++ ){
         fcn( pStorage, qNibbleToX( pdat[i] >> 4u ) );
@@ -137,7 +137,7 @@ void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n ){
     fcn( pStorage, '\n' );
 }
 /*============================================================================*/
-/*void qU32toX(uint32_t value, char *str, int8_t n)
+/*void qU32toX(qUINT32_t value, char *str, qINT8_t n)
  
 Converts an unsigned integer value to a null-terminated string using the 16 base
 and stores the result in the array given by str parameter.
@@ -153,11 +153,11 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qU32toX( uint32_t value, char *str, int8_t n ){ 
-    int8_t i;
+char* qU32toX( qUINT32_t value, char *str, qINT8_t n ){ 
+    qINT8_t i;
     str[n] = '\0';
     for( i = ( n - 1) ; i >= 0 ; i-- ){
-        str[i] = qNibbleToX( (uint8_t)value );
+        str[i] = qNibbleToX( (qUINT8_t)value );
         value >>= 4ul;
     }
     return str;
@@ -179,13 +179,13 @@ Return value:
 
   The numeric value uint32_t
 */
-uint32_t qXtoU32( const char *s ) {
-    uint32_t val = 0ul;
-    uint8_t byte;
-    uint8_t nparsed = 0u;
+qUINT32_t qXtoU32( const char *s ) {
+    qUINT32_t val = 0ul;
+    qUINT8_t byte;
+    qUINT8_t nparsed = 0u;
     if( NULL != s ){
         while ( ( *s != '\0' ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
-            byte = (uint8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/
+            byte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/
             if( isxdigit( (int)byte ) ){ /*if is a valid hex digit*/
                 nparsed++; /*increase the parsed char count*/
                 if ( ( byte >= '0' ) && ( byte <= '9') ){
@@ -197,7 +197,7 @@ uint32_t qXtoU32( const char *s ) {
                 else{
                     /*nothing to do */
                 }     
-                val = ((val << 4ul) | ((uint32_t)byte & 0xFul));  /*add the corresponding nibble to the output*/                
+                val = ((val << 4ul) | ((qUINT32_t)byte & 0xFul));  /*add the corresponding nibble to the output*/                
             }
             else if( isspace( (int)byte ) ){
                 /*discard any white-space char*/
@@ -210,14 +210,15 @@ uint32_t qXtoU32( const char *s ) {
     return val;
 }
 /*============================================================================*/
-/* double qAtoF(const char *s)
+/* qFloat64_t qAtoF(const char *s)
 Parses the C string s, interpreting its content as a floating point number and 
-returns its value as a double. The function first discards as many whitespace 
-characters (as in isspace) as necessary until the first non-whitespace character
-is found. Then, starting from this character, takes as many characters as possible 
-that are valid following a syntax resembling that of floating point literals, and 
-interprets them as a numerical value. The rest of the string after the last valid 
-character is ignored and has no effect on the behavior of this function.
+returns its value as a double(qFloat64_t). The function first discards as many 
+whitespace characters (as in isspace) as necessary until the first non-whitespace 
+character is found. Then, starting from this character, takes as many characters 
+as possible that are valid following a syntax resembling that of floating point 
+literals, and interprets them as a numerical value. The rest of the string after
+the last valid character is ignored and has no effect on the behavior of this 
+function.
  
 Parameters:
 
@@ -226,14 +227,14 @@ Parameters:
 Return value:
 
     On success, the function returns the converted floating point number as 
-    a double value.
+    a double(qFloat64_t) value.
     If no valid conversion could be performed, the function returns zero (0.0).
     If the converted value would be out of the range of representable values by
-    a double, it causes undefined behavior
+    a double(qFloat64_t), it causes undefined behavior
 */
-double qAtoF( const char *s ){
-    double rez = 0.0, fact ;
-    int point_seen;
+qFloat64_t qAtoF( const char *s ){
+    qFloat64_t rez = 0.0, fact ;
+    qBool_t point_seen;
     char c;
     #if ( Q_ATOF_FULL == 1 )
         int power2, powersign = 1;
@@ -248,12 +249,12 @@ double qAtoF( const char *s ){
         s++; /*move to the next sign*/
     }
 
-    for( point_seen = 0; '\0' != (c=*s); s++ ){
+    for( point_seen = qFalse; '\0' != (c=*s); s++ ){
         if (c == '.'){
-            point_seen = 1; 
+            point_seen = qTrue; 
         }
         else if ( isdigit( (int)c ) ){
-            if ( 1 == point_seen ){
+            if ( qTrue == point_seen ){
                 fact *= 0.1;
             }
             rez = rez * 10.0 + ( (double)c ) - ( (double)'0' );
@@ -345,15 +346,15 @@ int qAtoI( const char *s ){
 /*this method makes the basic conversion of unsigned integer to ASCII
 NULL Terminator not included
 */
-static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base ){
-    uint8_t i = 0u;
-    uint32_t rem;
+static qUINT8_t __q_revuta( qUINT32_t num, char* str, qUINT8_t base ){
+    qUINT8_t i = 0u;
+    qUINT32_t rem;
     if( ( 0ul == num ) || ( 0u == base ) ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
         str[i++] = '0';        
     }
     else{
         while( 0ul != num ){ /*Process individual digits*/
-            rem = num % (uint32_t)base;
+            rem = num % (qUINT32_t)base;
             str[i++] = ( rem > 9ul )? (char)(rem-10ul) + 'A' : (char)rem + '0';
             num = num/base;
         }
@@ -362,7 +363,7 @@ static uint8_t __q_revuta( uint32_t num, char* str, uint8_t base ){
     return i;       
 }
 /*============================================================================*/
-/* char* qUtoA(int num, char* str, uint8_t base)
+/* char* qUtoA(qUINT32_t num, char* str, qUINT8_t base)
 
 Converts an unsigned value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. 
@@ -382,8 +383,8 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qUtoA( uint32_t num, char* str, uint8_t base ){
-    uint8_t i = 0u;
+char* qUtoA( qUINT32_t num, char* str, qUINT8_t base ){
+    qUINT8_t i = 0u;
     if( NULL != str ){
         i = __q_revuta( num, str, base ); /*make the unsigned conversion without the null terminator*/
         str[i] = '\0'; /*add the null terminator*/
@@ -391,7 +392,7 @@ char* qUtoA( uint32_t num, char* str, uint8_t base ){
     return str;
 }
 /*============================================================================*/
-/* char* qItoA(int num, char* str, uint8_t base)
+/* char* qItoA(qINT32_t num, char* str, qUINT8_t base)
 
 Converts an integer value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. If base is 10 and 
@@ -413,8 +414,8 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qItoA( int32_t num, char* str, uint8_t base ){
-    uint8_t i = 0u;
+char* qItoA( qINT32_t num, char* str, qUINT8_t base ){
+    qUINT8_t i = 0u;
     if( NULL != str ){
         if( num < 0 ){ 
             if( 10u == base ){ /*handle negative numbers only with 10-base*/
@@ -422,7 +423,7 @@ char* qItoA( int32_t num, char* str, uint8_t base ){
             } 
             num = -num;
         }
-        i += __q_revuta( (uint32_t)num, str+i, base ); /*make the unsigned conversion without the null terminator*/   
+        i += __q_revuta( (qUINT32_t)num, str+i, base ); /*make the unsigned conversion without the null terminator*/   
         str[i] = '\0'; /*Append string terminator*/
     }
     return str;
@@ -498,7 +499,7 @@ char* qQBtoA( qBool_t num, char *str ){
     return str;
 }
 /*============================================================================*/
-/*qBool_t qIsNan(float f)
+/*qBool_t qIsNan(qFloat32_t f)
 Determines if the given floating point number arg is a not-a-number (NaN) value. 
 
 Parameters:
@@ -509,15 +510,15 @@ Return value:
 
     qTrue is argument is NaN, otherwise qFalse
 */
-qBool_t qIsNan( float f ){
-    uint32_t u;
+qBool_t qIsNan( qFloat32_t f ){
+    qUINT32_t u;
     void *p;
     p = &f;
-    u = *(uint32_t*)p;
+    u = *(qUINT32_t*)p;
     return ( ( ( u & 0x7F800000ul ) ==  0x7F800000ul ) && ( u & 0x7FFFFFul ) )? qTrue : qFalse;
 }
 /*============================================================================*/
-/*qBool_t qIsInf(float f)
+/*qBool_t qIsInf(qFloat32_t f)
 Determines if the given floating point number arg is positive or negative infinity
 
 Parameters:
@@ -528,15 +529,15 @@ Return value:
  
     qTrue is argument has an infinite value, otherwise qFalse
 */
-qBool_t qIsInf( float f ){
-    uint32_t u;
+qBool_t qIsInf( qFloat32_t f ){
+    qUINT32_t u;
     void *p;
     p = &f;
-    u = *(uint32_t*)p;
+    u = *(qUINT32_t*)p;
     return ( ( 0x7f800000ul == u ) || ( 0xff800000ul == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
-/* char* qFtoA(float f, char *str, uint8_t precision)
+/* char* qFtoA(qFloat32_t f, char *str, qUINT8_t precision)
 
 Converts a float value to a formatted string.
 
@@ -551,10 +552,10 @@ Return value:
 
   A pointer to the resulting null-terminated string, same as parameter str
 */
-char* qFtoA( float num, char *str, uint8_t precision ){ /*limited to precision=10*/
+char* qFtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited to precision=10*/
     char c;
-    uint8_t i = 0u;
-    uint32_t intPart;
+    qUINT8_t i = 0u;
+    qUINT32_t intPart;
     if( NULL != str ){
         if( ( num >= 0.0f ) && ( num < 1.0E-38 ) ){ /*handle the 0.0f*/
             str[0]='0';
@@ -585,8 +586,8 @@ char* qFtoA( float num, char *str, uint8_t precision ){ /*limited to precision=1
                 str[i++] = '-'; /*add the negative sign*/
             }
             
-            intPart = (uint32_t)num; /*get the integer parts*/
-            num -= (float)intPart; /*get the floating-point part subtracting the integer part from the original value*/
+            intPart = (qUINT32_t)num; /*get the integer parts*/
+            num -= (qFloat32_t)intPart; /*get the floating-point part subtracting the integer part from the original value*/
             i += __q_revuta( intPart, str+i, 10u ); /*convert the integer part in decimal form*/
             if( precision > 0u ){ /*decimal part*/
                 str[i++] = '.'; /*place decimal point*/
@@ -594,7 +595,7 @@ char* qFtoA( float num, char *str, uint8_t precision ){ /*limited to precision=1
                     num *= 10.0f;  /*start moving the floating-point part one by one multiplying by 10*/
                     c = (char)num; /*get the bcd byte*/
                     str[i++] = c + '0'; /*convert to ASCII and put it inside the buffer*/
-                    num -= (float)c; /*Subtract the processed floating-point digit*/
+                    num -= (qFloat32_t)c; /*Subtract the processed floating-point digit*/
                 }
             }
             str[i] = '\0'; /*put the null char*/

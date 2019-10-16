@@ -5,7 +5,7 @@
     #include "qtypes.h"
     #include "qclock.h"
 
-    typedef int32_t _qTaskPC_t;
+    typedef qINT32_t _qTaskPC_t;
     #define qCRPosition_t static _qTaskPC_t
     
     typedef struct{
@@ -13,7 +13,7 @@
         qClock_t crdelay;   /*< Used to hold the required delay(epochs) for qCoroutineDelay. */
     }qCoroutineInstance_t;
 
-    typedef struct {uint16_t head, tail;} qCoroutineSemaphore_t; 
+    typedef struct {qUINT16_t head, tail;} qCoroutineSemaphore_t; 
     typedef qCoroutineSemaphore_t qCRSem_t;
 
     #define qCR_PCInitVal           ( -1 )            

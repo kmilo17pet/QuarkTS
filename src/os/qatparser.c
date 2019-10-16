@@ -26,7 +26,7 @@ static void _qATPutc_Wrapper( const char c ){
 }
 /*============================================================================*/
 static void _qATPuts_Wrapper( const char *s ){
-	uint16_t i = 0u;
+	qUIndex_t i = 0u;
 	while( s[i] ){
         ATOutCharFcn( NULL, s[i++] );
     }
@@ -89,7 +89,7 @@ qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn,
     return RetValue;
 }
 /*============================================================================*/
-/*void qATParser_CmdSubscribe(qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt)
+/*void qATParser_CmdSubscribe(qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt)
  
 This function subscribes the parser to a specific command with an associated callback function,
 so that next time the required command is sent to the parser input, the callback function will be
@@ -122,7 +122,7 @@ Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt){
+qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt){
     qBool_t RetValue = qFalse;
     if( ( NULL != Parser ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
         Command->private.CmdLen = (qSize_t)strlen( TextCommand );
@@ -161,7 +161,7 @@ Return value:
 qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;
-    uint16_t CurrentIndex;
+    qUIndex_t CurrentIndex;
     ReadyInput = Parser->private.Input.Ready;
     if( ( isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){
         CurrentIndex = Parser->private.Input.index; /*to avoid undefined order of volatile accesses*/
@@ -316,14 +316,14 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
     params->NumArgs = 0u;
 
     if( 0u == params->StrLen ){ /*command should be an ACT command */
-        if( Command->private.CmdOpt & (uint16_t)qATCMDTYPE_ACT ){ /*check if is allowed*/
+        if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_ACT ){ /*check if is allowed*/
             params->Type = qATCMDTYPE_ACT;  /*set the type to ACT*/
             RetValue = qTrue;
         }
     } 
     else if ( params->StrLen > 0u ){
         if( '?' == params->StrData[0] ){ /*command should be READ command */
-            if( Command->private.CmdOpt & (uint16_t)qATCMDTYPE_READ ){ /*check if is allowed*/
+            if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_READ ){ /*check if is allowed*/
                 params->Type = qATCMDTYPE_READ; /*set the type to READ*/
                 params->StrData++; /*move string pointer once*/
                 params->StrLen--;  /*decrease the len one*/
@@ -334,7 +334,7 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
             if( '=' == params->StrData[0] ){ /*could be a TEST or PARA command*/
                 if( '?' == params->StrData[1] ){ 
                     if( 2u == params->StrLen ){ /*command should be a TEST Command*/
-                        if( Command->private.CmdOpt & (uint16_t)qATCMDTYPE_TEST ){ /*check if is allowed*/
+                        if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_TEST ){ /*check if is allowed*/
                             params->Type = qATCMDTYPE_TEST; /*set the type to TEXT*/
                             params->StrData+=2; /*move string two positions ahead*/
                             params->StrLen-=2u;  /*decrease the len*/
@@ -343,7 +343,7 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
                     }
                 }
                 else{ /*definitely is a PARA command*/
-                    if( Command->private.CmdOpt & (uint16_t)qATCMDTYPE_PARA ){ /*check if is allowed*/
+                    if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_PARA ){ /*check if is allowed*/
                         params->NumArgs = qATParser_NumOfArgs( params->StrData ); /*get the args count using the default delimiter*/
                         if( ( params->NumArgs >= QATCMDMASK_ARG_MINNUM( Command->private.CmdOpt ) ) && ( params->NumArgs <= QATCMDMASK_ARG_MAXNUM( Command->private.CmdOpt ) ) ){
                             params->Type = qATCMDTYPE_PARA; /*set the type to PARA*/
@@ -431,7 +431,7 @@ qBool_t qATParser_Run( qATParser_t * const Parser ){
 }
 /*============================================================================*/
 static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, const qATResponse_t retval ){
-    int32_t ErrorCode;
+    qINT32_t ErrorCode;
     qPutchFcn_t PutChar;
     qPutsFcn_t PutString;
 
@@ -461,7 +461,7 @@ static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, 
                 break;
             default: /*AT_ERRORCODE(#) */
                 if( retval < 0 ){
-                    ErrorCode = QAT_ERRORCODE( (int32_t)retval );
+                    ErrorCode = QAT_ERRORCODE( (qINT32_t)retval );
                     qItoA(ErrorCode, Parser->Output, 10u);
                     PutString( (Parser->private.ERROR_Response)? Parser->private.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
                     PutChar(':');
@@ -474,7 +474,7 @@ static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, 
     }
 }
 /*============================================================================*/
-/*char* qATParser_GetArgString( const qATParser_PreCmd_t *param, int8_t n, char* out)
+/*char* qATParser_GetArgString( const qATParser_PreCmd_t *param, qINT8_t n, char* out)
 
 This function get the <n> argument parsed as <String> from the incoming AT command.
 This function should be only invoked from the callback context of the  recognized command.
@@ -490,8 +490,8 @@ Return value:
 
     Same as <out>  on success, otherwise returns NULL.
 */
-char* qATParser_GetArgString( const qATParser_PreCmd_t *param, int8_t n, char* out ){
-	int8_t i,j, argc = 0;
+char* qATParser_GetArgString( const qATParser_PreCmd_t *param, qINT8_t n, char* out ){
+	qINT8_t i,j, argc = 0;
 	char *RetPtr = NULL;
 
     if( ( NULL != param ) && ( NULL != out ) && ( n > 0 ) ){
@@ -526,7 +526,7 @@ static qSize_t qATParser_NumOfArgs( const char *str ){
 	return ( count + 1u );
 }
 /*============================================================================*/
-/*char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, int8_t n)
+/*char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, qINT8_t n)
 
 Get the pointer where the desired argument starts.
 This function should be only invoked from the callback context of the  recognized command.
@@ -541,8 +541,8 @@ Return value:
 
     A pointer to the desired argument. NULL  pointer if the argument is not present.
 */
-char* qATParser_GetArgPtr(const qATParser_PreCmd_t *param, int8_t n){
-	int16_t i, argc = 0;
+char* qATParser_GetArgPtr(const qATParser_PreCmd_t *param, qINT8_t n){
+	qIndex_t i, argc = 0;
     char *RetPtr = NULL;
 	if( ( NULL != param ) && ( n > 0 ) ) {
         if( QATCMDTYPE_SET == param->Type ) {
@@ -566,7 +566,7 @@ char* qATParser_GetArgPtr(const qATParser_PreCmd_t *param, int8_t n){
 }
 
 /*============================================================================*/
-/*int qATParser_GetArgInt(const qATParser_PreCmd_t *param, int8_t n)
+/*int qATParser_GetArgInt(const qATParser_PreCmd_t *param, qINT8_t n)
 
 This function get the <n> argument parsed as <Integer> from the incoming AT command.
 This function should be only invoked from the callback context of the recognized command.
@@ -583,11 +583,11 @@ Return value:
 
     The argument parsed as integer. Same behavior of qAtoI. If argument not found returns 0
 */
-int qATParser_GetArgInt(const qATParser_PreCmd_t *param, int8_t n){
+int qATParser_GetArgInt(const qATParser_PreCmd_t *param, qINT8_t n){
 	return (int) qAtoI( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
-/*float qATParser_GetArgFlt(const qATParser_PreCmd_t *param, int8_t n)
+/*float qATParser_GetArgFlt(const qATParser_PreCmd_t *param, qINT8_t n)
 
 This function get the <n> argument parsed as <Float> from the incoming AT command.
 This function should be only invoked from the callback context of the  recognized command.
@@ -603,13 +603,13 @@ Return value:
 
     The argument parsed as Float. Same behavior of qAtoF. If argument not found returns 0
 */
-float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n ){
-	return (float) qAtoF( qATParser_GetArgPtr(param, n) );
+qFloat32_t qATParser_GetArgFlt( const qATParser_PreCmd_t *param, qINT8_t n ){
+	return (qFloat32_t) qAtoF( qATParser_GetArgPtr(param, n) );
 }
 /*============================================================================*/
-/*float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n)
+/*qUINT32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, qINT8_t n)
 
-This function get the <n> HEX argument parsed <uint32_t> from the
+This function get the <n> HEX argument parsed <qUINT32_t> from the
 incoming AT command.
 This function should be only invoked from the callback context of the recognized command.
 Note: see qXtoU32
@@ -622,10 +622,10 @@ Parameters:
 
 Return value:
 
-    The HEX argument parsed as uint32_t. Same behavior of qXtoU32. If argument not found returns 0
+    The HEX argument parsed as qUINT32_t. Same behavior of qXtoU32. If argument not found returns 0
 */
-uint32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, int8_t n ){
-	return (uint32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
+qUINT32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, qINT8_t n ){
+	return (qUINT32_t) qXtoU32( qATParser_GetArgPtr(param, n) );
 }
 /*=============================================================================*/
 #endif /* #if ( Q_ATCOMMAND_PARSER == 1) */

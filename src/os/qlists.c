@@ -97,7 +97,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qBool_t RetValue = qFalse;
     qNode_t *newnode;
     qNode_t *iNode;
-    int iPos;
+    qBase_t iPos;
  
     if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position < qList_AtBack )) {    
         if( qFalse == qList_IsMember( list, node )){
@@ -147,8 +147,8 @@ Return value:
 */ 
 void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
     qNode_t *removed = NULL;
-    int iPos = 0;
-    int LastIndex;
+    qBase_t iPos = 0;
+    qBase_t LastIndex;
     qNode_t *iNode;
     qNode_t *toRemove;
     if( ( NULL != list->head ) && ( position >= -1 ) ){

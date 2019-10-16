@@ -2,7 +2,7 @@
 
 #if ( Q_MEMORY_MANAGER == 1)
 
-static uint8_t DefaultHeap[Q_DEFAULT_HEAP_SIZE] = {0};
+static qUINT8_t DefaultHeap[Q_DEFAULT_HEAP_SIZE] = {0};
 static qMemoryPool_t DefaultMemPool = {NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}};
 static qMemoryPool_t *MemPool = &DefaultMemPool;
 
@@ -79,13 +79,13 @@ Parameters:
 
 */
 void qFree(void *ptr){
-    uint8_t *pToFree;
+    qUINT8_t *pToFree;
     qMemBlockConnect_t *Connect;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
-    pToFree = (uint8_t*) ptr;
+    pToFree = (qUINT8_t*)ptr;
     
     if( NULL != ptr){
         pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */
@@ -100,7 +100,7 @@ void qFree(void *ptr){
 /*============================================================================*/
 static void qHeapInit( void ){
     qMemBlockConnect_t *FirstFreeBlock;
-    uint8_t *Aligned;
+    qUINT8_t *Aligned;
     qAddress_t Address;
     size_t TotalHeapSize;
     
@@ -123,7 +123,7 @@ static void qHeapInit( void ){
         Address &= ~ByteAlignmentMask;
         TotalHeapSize -= Address - (qAddress_t)MemPool->Heap;
     }
-    Aligned = (uint8_t*) Address;
+    Aligned = (qUINT8_t*) Address;
     
     MemPool->Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/
     MemPool->Start.BlockSize = (size_t)0;
@@ -144,7 +144,7 @@ static void qHeapInit( void ){
 /*============================================================================*/
 static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
     qMemBlockConnect_t *Iterator;
-    uint8_t *ptr;
+    qUINT8_t *ptr;
     
     if( NULL == MemPool ){  /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
@@ -152,14 +152,14 @@ static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
     /* Iterate through the list until a block is found that has a higher address than the block being inserted. */
     for( Iterator = &MemPool->Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
     
-    ptr = ( uint8_t * ) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
-    if( ( ptr + Iterator->BlockSize ) == ( uint8_t * ) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/
+    ptr = (qUINT8_t*) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
+    if( ( ptr + Iterator->BlockSize ) == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/
 	    Iterator->BlockSize += BlockToInsert->BlockSize;
 	    BlockToInsert = Iterator;
     }
 	
-    ptr = ( uint8_t * ) BlockToInsert;
-    if( ( ptr + BlockToInsert->BlockSize ) == ( uint8_t * ) Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */
+    ptr = (qUINT8_t*) BlockToInsert;
+    if( ( ptr + BlockToInsert->BlockSize ) == (qUINT8_t*) Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */
         if( Iterator->Next != MemPool->End ){ 
             BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */
             BlockToInsert->Next = Iterator->Next->Next;
@@ -224,10 +224,10 @@ void* qMalloc( size_t size ){
             }
             if( Block != MemPool->End ){ /* If the end marker was reached then a block of adequate size was	not found. */
                 /* Return the memory space pointed to - jumping over the qMemBlockConnect_t node at its start. */
-                Allocated = (void*) ( ( (uint8_t*)PreviousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */
+                Allocated = (void*) ( ( (qUINT8_t*)PreviousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */
                 PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
                 if( ( Block->BlockSize - size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
-                    NewBlockLink = (void*) ( ( (uint8_t*)Block ) + size ); /* Create a new block following the number of bytes requested. */
+                    NewBlockLink = (void*) ( ( (qUINT8_t*)Block ) + size ); /* Create a new block following the number of bytes requested. */
                     NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                     Block->BlockSize = size;
                     qInsertBlockIntoFreeList( ( NewBlockLink ) ); /* Insert the new block into the list of free blocks. */

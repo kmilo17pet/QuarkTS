@@ -4,22 +4,22 @@
 
 /*============================================================================*/
 qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber ){
-    uint32_t Register = 0ul;
-    Register = *((uint32_t*)Address);    
+    qUINT32_t Register = 0ul;
+    Register = *((qUINT32_t*)Address);    
     return (Register & (1ul << PinNumber))? qFalse : qTrue;
 }
 /*============================================================================*/
 qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber ){
-    uint16_t Register = 0u;
-    uint16_t Mask;
-    Mask = (uint16_t)1u << (uint16_t)PinNumber;
-    Register = *( (uint16_t*)Address );
+    qUINT16_t Register = 0u;
+    qUINT16_t Mask;
+    Mask = (qUINT16_t)1u << (qUINT16_t)PinNumber;
+    Register = *( (qUINT16_t*)Address );
     return ( Register & Mask )? qFalse : qTrue;
 }
 /*============================================================================*/
 qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber ){
-    uint8_t Register = 0u;
-    Register = *((uint8_t*)Address);
+    qUINT8_t Register = 0u;
+    Register = *((qUINT8_t*)Address);
     return ( Register & (1u << PinNumber) )? qFalse : qTrue;
 }
 /*============================================================================*/
@@ -112,7 +112,7 @@ qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance ){
                 if( Instance->private.State >= QEDGECHECK_CHECK ){ /*check state*/
                     if( Node->private.PreviousPinValue != CurrentPinValue ){ /*check if the input level change since the last inputs-sweep*/
                         Node->Status = qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
-                        Instance->private.State++; /* just to know that at least one node changed its state(count of nodes subject to the range of uint8_t)*/
+                        Instance->private.State++; /* just to know that at least one node changed its state(count of nodes subject to the range of qUINT8_t)*/
                     }
                     else{
                         Node->Status = CurrentPinValue; /*if there is no change, let the state of the pin be equal to its own level*/

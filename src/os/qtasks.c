@@ -70,13 +70,13 @@ Return value:
 qBool_t qTaskIsEnabled( const qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        RetValue = (qBool_t)Task->private.Flag[_qIndex_Enabled];
+        RetValue = qTaskTCBGetFlag( Task, qTaskFlag_Enabled );
     }
     return RetValue;
 }
 /*============================================================================*/
 #if ( Q_TASK_COUNT_CYCLES == 1 )
-/*uint32_t qTaskGetCycles(const qTask_t *Task)
+/*qCycles_t qTaskGetCycles(const qTask_t *Task)
 
 Retrieve the number of task activations.
 
@@ -88,8 +88,8 @@ Return value:
 
     A unsigned long value containing the number of task activations.
 */
-uint32_t qTaskGetCycles( const qTask_t * const Task ){
-    uint32_t RetValue = 0ul;
+qCycles_t qTaskGetCycles( const qTask_t * const Task ){
+    qCycles_t RetValue = 0ul;
     if( NULL != Task ){
         RetValue = Task->private.Cycles;
     }
@@ -176,8 +176,8 @@ Parameters:
 */
 void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
-        if( State != Task->private.Flag[_qIndex_Enabled] ){ 
-            Task->private.Flag[_qIndex_Enabled] = State;
+        if( State != qTaskTCBGetFlag( Task, qTaskFlag_Enabled ) ){ 
+            qTaskTCBSetFlag( Task, qTaskFlag_Enabled, State );
             Task->private.ClockStart = qClock_GetTick();
         }
     }
@@ -216,7 +216,7 @@ void qTaskClearTimeElapsed( qTask_t * const Task ){
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, uint8_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, qUINT8_t arg)
 
 Attach a Queue to the Task. 
 
@@ -253,15 +253,15 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const uint8_t arg ){
+qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT8_t arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) && ( Mode >= qQUEUE_RECEIVER ) && ( Mode <= qQUEUE_EMPTY)  ){
         if( NULL != Queue->pHead ) {
             if( Mode == qQUEUE_COUNT ){
-                Task->private.Flag[Mode] = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
+                qTaskTCBSetFlag( Task, Mode, arg); /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
             else{
-                Task->private.Flag[Mode] = ( arg != qFalse )? qATTACH :qDETACH ; 
+                qTaskTCBSetFlag( Task, Mode, (( arg != qFalse )? qATTACH :qDETACH) ); 
             }
             Task->private.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
             RetValue = qTrue;
@@ -297,5 +297,15 @@ qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachin
     }    
     return RetValue;
 }
-
+/*============================================================================*/
+/* This function is not intended for user usage. */
+qBool_t qTaskTCBGetFlag( const qTask_t * const Task, const qBase_t flagno ){
+    return Task->private.Flag[ flagno ];
+}
+/*============================================================================*/
+/* This function is not intended for user usage. */
+void qTaskTCBSetFlag( qTask_t * const Task, const qBase_t flagno, const qBool_t Value ){
+    Task->private.Flag[ flagno ] = Value;
+}
+/*============================================================================*/
 #endif /* #if ( Q_FSM == 1) */

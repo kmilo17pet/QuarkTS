@@ -30,7 +30,7 @@ Parameters:
 
     - provider : A pointer to the tick provider function  
                  qClock_t fcn(void)
-                 uint32_t fcn(void)
+                 qUINT32_t fcn(void)
 
 */
 void qClock_SetTickProvider( qGetTickFcn_t provider ){

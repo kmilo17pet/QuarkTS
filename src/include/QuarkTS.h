@@ -1,8 +1,8 @@
 /*
-    QuarkTS V5.1.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V5.1.2 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
-    This file is part of the QuarkTS distribution.
+    This file is part of the QuarkTS OS distribution.
     
     VISIT https://github.com/TECREA/QuarkTS TO ENSURE YOU ARE USING THE LATEST VERSION.
     
@@ -34,7 +34,7 @@
         #include "qedgecheck.h"
     #endif
 
-    #if ( Q_LISTS == 1)
+    #if ( Q_LISTS == 1 )
         #include "qlists.h"
     #endif
 

@@ -10,8 +10,8 @@ typedef struct{ /*Scheduler Core-Flags*/
 
 typedef struct{ /*KCB(Kernel Control Block) definition*/
     #if ( Q_PRIORITY_QUEUE == 1 )
-        volatile int16_t QueueIndex;                    /*< The current index of the FIFO priority queue. */
-        uint8_t QueueSize;                              /*< The size of the FIFO priority queue. */
+        volatile qIndex_t QueueIndex;                   /*< The current index of the FIFO priority queue. */
+        qSize_t QueueSize;                              /*< The size of the FIFO priority queue. */
         qQueueStack_t *QueueStack;                      /*< Points to the storage area of the FIFO priority queue. */
         void *QueueData;                                /*< The FIFO priority queue item-data. */
     #endif 
@@ -59,12 +59,12 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
 #define __qChainInitializer     ((qTask_t*)&kernel)/*point to something that is not some task in the chain */
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack ){
 #else
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const uint8_t Size_Q_Stack ){
+    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack ){
 #endif
     #if ( Q_PRIORITY_QUEUE == 1 )  
-        uint8_t i;
+        qUIndex_t i;
     #endif
     kernel.Head = NULL;
     #if ( Q_SETUP_TIME_CANONICAL != 1 )
@@ -171,9 +171,9 @@ qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t m
 /*============================================================================*/
 static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qTask_t *xTask = NULL;
-    uint8_t i;
-    int16_t j;
-    uint8_t IndexTaskToExtract = 0u;
+    qUIndex_t i;
+    qIndex_t j;
+    qUIndex_t IndexTaskToExtract = 0u;
     qPriority_t MaxPriorityValue;
     
     if( kernel.QueueIndex >= 0 ){ /*queue has elements*/
@@ -192,7 +192,7 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
         xTask = kernel.QueueStack[IndexTaskToExtract].Task; /*assign the task to the output*/
         xTask->private.State = qReady; /*set the task as ready*/
         kernel.QueueStack[IndexTaskToExtract].Task = NULL; /*set the position in the queue as empty*/  
-        for( j = (int16_t)IndexTaskToExtract ; j < kernel.QueueIndex ; j++){ 
+        for( j = (qIndex_t)IndexTaskToExtract ; j < kernel.QueueIndex ; j++){ 
             kernel.QueueStack[j] = kernel.QueueStack[j+1]; /*shift the remaining items of the queue*/
         }
         kernel.QueueIndex--;    /*decrease the index*/
@@ -242,12 +242,14 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
         Task->private.Priority = Priority;
         Task->private.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
         Task->private.Notification = 0u;
-        Task->private.Flag[_qIndex_InitFlag] = qFalse;
-        Task->private.Flag[_qIndex_QueueReceiver] = qFalse; 
-        Task->private.Flag[_qIndex_QueueFull] = qFalse;
-        Task->private.Flag[_qIndex_QueueCount] = qFalse;
-        Task->private.Flag[_qIndex_QueueEmpty] = qFalse;
-        Task->private.Flag[_qIndex_Enabled] = InitialState;
+
+        qTaskTCBSetFlag( Task, qTaskFlag_InitFlag, qFalse );
+        qTaskTCBSetFlag( Task, qTaskFlag_QueueReceiver, qFalse );
+        qTaskTCBSetFlag( Task, qTaskFlag_QueueFull, qFalse );
+        qTaskTCBSetFlag( Task, qTaskFlag_QueueCount, qFalse );
+        qTaskTCBSetFlag( Task, qTaskFlag_QueueEmpty, qFalse );
+        qTaskTCBSetFlag( Task, qTaskFlag_Enabled, InitialState );
+
         Task->private.Next = NULL;  
         #if ( Q_TASK_COUNT_CYCLES == 1 )
             Task->private.Cycles = 0ul;
@@ -469,15 +471,16 @@ static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearr
 /*============================================================================*/
 static qTrigger_t _qScheduler_CheckQueueEvents( const qTask_t * const Task ){
     qTrigger_t RetValue = qTriggerNULL;
-    uint8_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
+    qBool_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
     qBool_t IsFull, IsEmpty;
     qSize_t CurrentQueueCount;
     if( NULL != Task ){
         if( NULL != Task->private.Queue){
-            FullFlag = Task->private.Flag[_qIndex_QueueFull]; /*to avoid side effects*/
-            CountFlag = Task->private.Flag[_qIndex_QueueCount]; /*to avoid side effects*/
-            ReceiverFlag = Task->private.Flag[_qIndex_QueueReceiver]; /*to avoid side effects*/
-            EmptyFlag = Task->private.Flag[_qIndex_QueueEmpty]; /*to avoid side effects*/
+            FullFlag = qTaskTCBGetFlag( Task, qTaskFlag_QueueFull ); /*to avoid side effects*/
+            CountFlag = qTaskTCBGetFlag( Task, qTaskFlag_QueueCount ); /*to avoid side effects*/
+            ReceiverFlag = qTaskTCBGetFlag( Task, qTaskFlag_QueueReceiver ); /*to avoid side effects*/
+            EmptyFlag = qTaskTCBGetFlag( Task, qTaskFlag_QueueEmpty ); /*to avoid side effects*/
+
             CurrentQueueCount = qQueueCount( Task->private.Queue ); /*to avoid side effects*/
             IsFull = qQueueIsFull( Task->private.Queue ); /*to avoid side effects*/
             IsEmpty = qQueueIsEmpty( Task->private.Queue ); /*to avoid side effects*/
@@ -594,7 +597,7 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
                 }
                 kernel.EventInfo.LastIteration = (0 == Task->private.Iterations )? qTrue : qFalse; 
                 if( kernel.EventInfo.LastIteration ) {
-                    Task->private.Flag[_qIndex_Enabled] = qFalse; /*When the iteration value is reached, the task will be disabled*/ 
+                    qTaskTCBSetFlag( Task, qTaskFlag_Enabled, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
                 }           
                 break;
             case byNotificationSimple:
@@ -620,7 +623,7 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
         Task->private.State = qRunning; /*put the task in running state*/
         /*Fill the event info structure: Trigger, FirstCall and TaskData */       
         kernel.EventInfo.Trigger = Event;
-        kernel.EventInfo.FirstCall = ( qFalse == Task->private.Flag[_qIndex_InitFlag] )? qTrue : qFalse;
+        kernel.EventInfo.FirstCall = ( qFalse == qTaskTCBGetFlag( Task, qTaskFlag_InitFlag) )? qTrue : qFalse;
         kernel.EventInfo.TaskData = Task->private.TaskData;
         
         kernel.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
@@ -646,7 +649,7 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
                 qQueueRemoveFront( Task->private.Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
             } 
         #endif
-        Task->private.Flag[_qIndex_InitFlag] = qTrue; /*clear the init flag*/
+        qTaskTCBSetFlag( Task, qTaskFlag_InitFlag, qTrue ); /*clear the init flag*/
         kernel.EventInfo.FirstIteration = qFalse;
         kernel.EventInfo.LastIteration =  qFalse; 
         kernel.EventInfo.EventData = NULL; /*clear the eventdata*/
@@ -665,12 +668,11 @@ static qBool_t _qScheduler_TransitionTo( qTask_t * const task, const qTaskState_
 /*============================================================================*/
 static qBool_t _qScheduler_TaskDeadLineReached( qTask_t * const task){
     qBool_t RetValue = qFalse;
-    qBool_t EnabledFlag;
     qIteration_t TaskIterations;
     qClock_t TaskInterval;
     qBool_t DeadLineFlag;
-    EnabledFlag = task->private.Flag[_qIndex_Enabled] ; /*avoid side efects in the next check*/
-    if( EnabledFlag ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
+
+    if( qTaskTCBGetFlag( task, qTaskFlag_Enabled ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
         TaskIterations = task->private.Iterations; /*avoid side efects in the next check*/
         if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
             TaskInterval = task->private.Interval; /*avoid side efects in the next check*/
@@ -713,9 +715,9 @@ qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data){
     #if ( Q_PRIORITY_QUEUE == 1 )
         qBool_t RetValue = qFalse;
         qQueueStack_t tmp;
-        int16_t QueueMaxIndex;
-        int16_t CurrentQueueIndex;
-        QueueMaxIndex = ( (int16_t)kernel.QueueSize ) - 1; /*to avoid side effects */
+        qIndex_t QueueMaxIndex;
+        qIndex_t CurrentQueueIndex;
+        QueueMaxIndex = ( (qIndex_t)kernel.QueueSize ) - 1; /*to avoid side effects */
         CurrentQueueIndex = kernel.QueueIndex; /*to avoid side effects */
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = data;

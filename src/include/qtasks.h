@@ -29,10 +29,10 @@
     #define qTrigger_SchedulingRelease  bySchedulingRelease
     #define qTrigger_NoReadyTasks       byNoReadyTasks
 
-    typedef uint8_t qNotifier_t;        
+    typedef qUINT8_t qNotifier_t;        
     #define QMAX_NOTIFICATION_VALUE     ( 0xFFu )
 
-    typedef uint8_t qTaskState_t;
+    typedef qUINT8_t qTaskState_t;
     #define qWaiting    ( 0u )
     #define qReady      ( 1u )
     #define qRunning    ( 2u )
@@ -113,7 +113,7 @@
     typedef struct _qTask_t{ /*Task node definition*/
         private_start{
             struct _qTask_t *Next;                  /*< Points to the next node of the task list. */
-            void *TaskData,*AsyncData;              /*< The task Storate pointers. */
+            void *TaskData,*AsyncData;              /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
             #if ( Q_FSM == 1)
                 qSM_t *StateMachine;                /*< The pointer to the attached state-machine. */
@@ -123,7 +123,7 @@
             #endif
             volatile qClock_t Interval, ClockStart; /*< The timestamps of the task in epochs. */
             #if ( Q_TASK_COUNT_CYCLES == 1 )
-                uint32_t Cycles;                    /*< The current number of executions performed by the task. */
+                qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
             qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
             qIteration_t Iterations;                /*< Holds the number of iterations. */
@@ -140,6 +140,17 @@
     #define _qIndex_QueueFull       ( 3 )
     #define _qIndex_QueueCount      ( 4 )
     #define _qIndex_QueueEmpty      ( 5 )
+    
+    #define _qIndex_MINFLAG         ( 0 )
+    #define _qIndex_MAXFLAG         ( 5 )
+
+
+    #define qTaskFlag_InitFlag      ( _qIndex_InitFlag )
+    #define qTaskFlag_Enabled       ( _qIndex_Enabled )
+    #define qTaskFlag_QueueReceiver ( _qIndex_QueueReceiver )
+    #define qTaskFlag_QueueFull     ( _qIndex_QueueFull )
+    #define qTaskFlag_QueueCount    ( _qIndex_QueueCount )
+    #define qTaskFlag_QueueEmpty    ( _qIndex_QueueEmpty )
 
     #if ( Q_QUEUES == 1 )
         typedef enum{
@@ -163,13 +174,13 @@
     
     qBool_t qTaskIsEnabled( const qTask_t *const Task );
     #if ( Q_TASK_COUNT_CYCLES == 1 )
-        uint32_t qTaskGetCycles( const qTask_t * const Task );   
+        qCycles_t qTaskGetCycles( const qTask_t * const Task );   
     #endif
     void qTaskSetTime( qTask_t * const Task, const qTime_t Value );
     void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value );
     void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value );
     void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
-    void qTaskSetState(qTask_t * const Task, const qState_t State);
+    void qTaskSetState(qTask_t * const Task, const qState_t State );
     void qTaskSetData( qTask_t * const Task, void* arg );
     void qTaskClearTimeElapsed( qTask_t * const Task );
 
@@ -203,12 +214,14 @@
     #define qTaskSelf               _qScheduler_GetTaskRunning
 
     #if ( Q_QUEUES == 1 )
-        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const uint8_t arg );
+        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT8_t arg );
     #endif 
 
     #if ( Q_FSM == 1 ) 
         qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine );
     #endif
 
+    qBool_t qTaskTCBGetFlag( const qTask_t * const Task, const qBase_t flagno );
+    void qTaskTCBSetFlag( qTask_t * const Task, const qBase_t flagno, const qBool_t Value );
 
 #endif /* QTASKS_H */

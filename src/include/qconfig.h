@@ -1,4 +1,4 @@
-/*This file is part of the QuarkTS distribution.*/
+/*This file is part of the QuarkTS OS distribution.*/
 #ifndef QCONFIG_H
     #define QCONFIG_H
 

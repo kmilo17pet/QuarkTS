@@ -13,24 +13,24 @@ embedded application
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
-#include <sys/time.h>
+/*#include <sys/time.h>*/
 #include <signal.h>
 #include <ctype.h>
 #include <termios.h>
 #include <math.h>
 #include <assert.h>
-#include <float.h>
 
 #include "QuarkTS.h"
 
 /*============================================================================*/
-uint32_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (uint32_t)(ts.tv_nsec / 1000000) + ((uint32_t)ts.tv_sec * 1000ul);
+    return (qClock_t)(ts.tv_nsec / 1000000) + ((qClock_t)ts.tv_sec * 1000ul);
 }
+
 /*============================================================================*/
-uint32_t PORTA = 0x0A;
+qUINT32_t PORTA = 0x0A;
 qIOEdgeCheck_t INPUTS;
 qIONode_t button1, sensor1, button2, sensor2;
 

@@ -5,10 +5,10 @@
     #include "qtypes.h"
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        typedef uint32_t qTime_t;
+        typedef qUINT32_t qTime_t;
         #define qTimeImmediate       ((qTime_t)(0ul))
     #else
-        typedef float qTime_t;
+        typedef qFloat32_t qTime_t;
         #define qTimeImmediate       ((qTime_t)(0.0f))
         #define QFLT_TIME_FIX_VALUE  ( 0.00001f )
     #endif
@@ -19,7 +19,7 @@
         #define qTimingBase_type    qTime_t
     #endif 
 
-    typedef uint32_t qClock_t;
+    typedef qUINT32_t qClock_t;
     typedef qClock_t (*qGetTickFcn_t)(void);
 
 

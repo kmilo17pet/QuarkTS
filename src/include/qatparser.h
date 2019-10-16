@@ -37,9 +37,9 @@
 
     typedef volatile struct{
         volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
-        volatile uint8_t Ready;                 /*< A flag that indicates when the input is ready to parse. */
-        volatile uint16_t index;                /*< Used to hold the index of the current input-buffer. */
-        uint16_t MaxIndex;                      /*< Max index  = (Size - 1) */
+        volatile qBool_t Ready;                 /*< A flag that indicates when the input is ready to parse. */
+        volatile qUIndex_t index;               /*< Used to hold the index of the current input-buffer. */
+        qUIndex_t MaxIndex;                     /*< Max index  = (Size - 1) */
         qSize_t Size;                           /*< The size of the input buffer. */       
     }qATParserInput_t;
 
@@ -96,19 +96,20 @@
     }qATParser_PreCmd_t;
 
     typedef qATResponse_t (*qATCommandCallback_t)(qATParser_t*arg1, qATParser_PreCmd_t* arg2);
-    
+    typedef qUINT16_t qATParserOptions_t;
+
     typedef struct _qATCommand_t{
         private_start{
             char *Text;                             /*< The command string. Used to match to the input< */
             qATCommandCallback_t CommandCallback;   /*< The command callback. */
             struct _qATCommand_t *Next;             /*< Points to the next command in the list. */
-            uint16_t CmdOpt;                        /*< The command options. */
+            qATParserOptions_t CmdOpt;                        /*< The command options. */
             qSize_t CmdLen;                         /*< The command length. */
         }private_end;
     }qATCommand_t;
 
     qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
-    qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, uint16_t CmdOpt );
+    qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt );
     qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c );
     qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const qSize_t n );
     qBool_t qATParser_Raise( qATParser_t * const Parser, const char *cmd );
@@ -116,9 +117,9 @@
     void qATCommandParser_FlushInput( qATParser_t * const Parser );
     qBool_t qATParser_Run( qATParser_t * const Parser );
 
-    char* qATParser_GetArgString( const qATParser_PreCmd_t *param, int8_t n, char* out );
-    char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, int8_t n );
-    int qATParser_GetArgInt( const qATParser_PreCmd_t *param, int8_t n );
-    float qATParser_GetArgFlt( const qATParser_PreCmd_t *param, int8_t n );
-    uint32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, int8_t n );
+    char* qATParser_GetArgString( const qATParser_PreCmd_t *param, qINT8_t n, char* out );
+    char* qATParser_GetArgPtr( const qATParser_PreCmd_t *param, qINT8_t n );
+    int qATParser_GetArgInt( const qATParser_PreCmd_t *param, qINT8_t n );
+    qFloat32_t qATParser_GetArgFlt( const qATParser_PreCmd_t *param, qINT8_t n );
+    qUINT32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, qINT8_t n );
 #endif
