@@ -13,7 +13,7 @@ CC = gcc
 # The linker
 LD = gcc
 # Flags to pass to the compiler for release builds
-CFLAGS ?= -std=c89 -Wall -Os
+CFLAGS ?= -Wall -Os -std=c89
 # Flags to pass to the linker
 LFLAGS ?= -lm -lpthread
 # Output directories

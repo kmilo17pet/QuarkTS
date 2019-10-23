@@ -1,5 +1,14 @@
 /*
-    QuarkTS V5.1.2 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+        _    _         _____  _  __           _______ _____   
+       | |  | |  /\   |  __ \| |/ /          |__   __/ ____|  
+   __ _| |  | | /  \  | |__) | ' /   ______     | | | (___    
+  / _` | |  | |/ /\ \ |  _  /|  <   |______|    | |  \___ \   
+ | (_| | |__| / ____ \| | \ \| . \              | |  ____) |  
+  \__, |\____/_/    \_\_|  \_\_|\_\             |_| |_____/   
+     | |                                                      
+     |_|  
+     
+    QuarkTS V5.2.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
     This file is part of the QuarkTS OS distribution.

@@ -9,15 +9,28 @@
         #define NULL ((void*)0)
     #endif
 
-    /*Unsigned types*/
-    typedef unsigned char qUINT8_t;
+    #if ( Q_USE_STDINT_H  == 1 )
+        #include <stdint.h>
+        /*Unsigned types*/
+        typedef uint8_t qUINT8_t;
+        typedef uint16_t qUINT16_t;
+        typedef uint32_t qUINT32_t;
+        /*Signed types*/
+        typedef int8_t qINT8_t;
+        typedef int16_t qINT16_t;
+        typedef int32_t qINT32_t;          
+    #else
+        /*Unsigned types*/
+        typedef unsigned char qUINT8_t;
+        typedef unsigned short qUINT16_t;
+        typedef unsigned long qUINT32_t;
+        /*Signed types*/
+        typedef signed char qINT8_t;
+        typedef short qINT16_t;
+        typedef long qINT32_t;  
+    #endif
+
     typedef qUINT8_t qByte_t;
-    typedef unsigned short qUINT16_t;
-    typedef unsigned long qUINT32_t;
-    /*Signed types*/
-    typedef signed char qINT8_t;
-    typedef short qINT16_t;
-    typedef long qINT32_t;
     typedef int qBase_t;
     /*Floating-point types*/
     typedef float qFloat32_t;
@@ -26,7 +39,7 @@
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.1.2"
+    #define QUARKTS_VERSION         "5.2.1"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)
@@ -35,9 +48,11 @@
     #define qTrue                   ( 0x01u )
     #define qEnabled                ( qTrue )
     #define qDisabled               ( qFalse )
+    #define qAwake                  ( 2u )
+    #define qAsleep                 ( 3u )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )  
-    #define qLink                   ( qTrue )
+    #define qLink                   ( sqTrue )
     #define qATTACH                 ( qTrue )
     #define qDETACH                 ( qFalse )
     #define qAttach                 ( qTrue )
@@ -71,6 +86,7 @@
     typedef qUINT8_t qPriority_t;
     typedef qINT16_t qIteration_t;
     typedef qUINT8_t qState_t;
+    typedef qUINT8_t qOperation_t;
     typedef qUINT8_t qBool_t;
     typedef qUINT16_t qSize_t;
     typedef qUINT16_t qUIndex_t;

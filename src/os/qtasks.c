@@ -35,10 +35,12 @@ qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata){
 
 Insert a notification in the FIFO priority queue. The scheduler get this notification
 as asynchronous event, therefor, the task will be ready for execution according to 
-the queue order (determined by priority), even if task is disabled. When extracted, 
-the scheduler will set Trigger flag to  "byNotificationQueued". Specific user-data 
-can be passed through, and will be available inside the EventData field, only in
-corresponding launch.
+the queue order (determined by priority), even if task is in a disabled or sleep 
+operational state. When extracted, the scheduler will set Trigger flag to  
+"byNotificationQueued". Specific user-data can be passed through, and will be 
+available inside the EventData field, only in corresponding launch.
+If the task is in a qSleep operation state, the scheduler will change the operational 
+state to qAwaken setting the SHUTDOWN bit.
 
 Parameters:
 
@@ -55,9 +57,9 @@ qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
 }
 /*============================================================================*/
 /*
-qBool_t qTaskIsEnabled(const qTask_t *Task)
+qState_t qTaskGetState( const qTask_t * const Task)
 
-Retrieve the enabled/disabled state
+Retrieve the task operational state.
 
 Parameters:
 
@@ -65,12 +67,16 @@ Parameters:
 
 Return value:
 
-    True if the task in on Enabled state, otherwise returns false.
+    qEnabled or qDisabled if the task is qAwaken. qAsleep if the task is 
+    in a Sleep operational state.
 */    
-qBool_t qTaskIsEnabled( const qTask_t * const Task ){
-    qBool_t RetValue = qFalse;
+qState_t qTaskGetState( const qTask_t * const Task){
+    qState_t RetValue = qAsleep;
     if( NULL != Task ){
-        RetValue = qTaskTCBGetFlag( Task, qTaskFlag_Enabled );
+        RetValue = __qPrivate_TaskGetFlag( Task, __QTASK_BIT_SHUTDOWN ); 
+        if( qTrue == RetValue ){ /*Task is awaken*/
+            RetValue = __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED );
+        }
     }
     return RetValue;
 }
@@ -160,8 +166,11 @@ Parameters:
                  as input argument.
 */
 void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
-    if( NULL != Task ){
+    if( NULL != Task ){ 
         Task->private.Callback = CallbackFcn;
+        #if ( Q_FSM == 1)
+            Task->private.StateMachine = NULL;    
+        #endif  
     }    
 }
 /*============================================================================*/
@@ -172,13 +181,32 @@ Set the task state (Enabled or Disabled)
 Parameters:
 
     - Task : A pointer to the task node.
-    - State : qEnabled or qDisabled 
+    - State : Use one of the following values:
+            qEnabled : Task will be able to catch all the events. (ENABLE Bit = 1 )
+            qDisabled : Time events will be discarded. The task can catch asynchronous events.
+                        (ENABLE Bit = 0)
+            qAsleep : Put the task into a qSLEEP operability state. The task can't be triggered
+                      by the lower precedence events. ( SHUTDOWN Bit = 0)
+            qAwake : Put the task into the previous state before it was put in the sleep state.
+                    ( SHUTDOWN Bit = 1 )
 */
 void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
-        if( State != qTaskTCBGetFlag( Task, qTaskFlag_Enabled ) ){ 
-            qTaskTCBSetFlag( Task, qTaskFlag_Enabled, State );
-            Task->private.ClockStart = qClock_GetTick();
+        switch( State ){
+            case qDisabled: case qEnabled:
+                if( State != __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED ) ){ 
+                    __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_ENABLED, State );
+                    Task->private.ClockStart = qClock_GetTick();
+                }
+                break;
+            case qAsleep:
+                __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_SHUTDOWN, qFalse );
+                break;
+            case qAwake:
+                __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_SHUTDOWN, qTrue );
+                break;
+            default:
+                break;
         }
     }
 }
@@ -246,8 +274,7 @@ Parameters:
     - arg: This argument defines if the queue will be attached (qATTACH) or 
            detached (qDETACH) from the task.
            If the qQUEUE_COUNT mode is specified, this value will be used to check
-           the element count of the queue. A zero value will act as 
-           an qDETACH action. 
+           the element count of the queue. A zero value will act as a qDETACH action. 
 
 Return value:
 
@@ -255,13 +282,11 @@ Return value:
 */
 qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT8_t arg ){
     qBool_t RetValue = qFalse;
-    if( ( NULL != Queue ) && ( NULL != Task ) && ( Mode >= qQUEUE_RECEIVER ) && ( Mode <= qQUEUE_EMPTY)  ){
+    if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->pHead ) {
+            __qPrivate_TaskModifyFlags( Task, Mode & __QTASK_QUEUEFLAGS_MASK, (( arg != qFalse )? qATTACH :qDETACH) );
             if( Mode == qQUEUE_COUNT ){
-                qTaskTCBSetFlag( Task, Mode, arg); /*if mode is qQUEUE_COUNT, use their arg value as count*/
-            }
-            else{
-                qTaskTCBSetFlag( Task, Mode, (( arg != qFalse )? qATTACH :qDETACH) ); 
+                Task->private.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
             Task->private.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
             RetValue = qTrue;
@@ -277,6 +302,7 @@ qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQ
 Attach a Finite State Machine(FSM) to the Task. 
 
 Note: Task and state-machine should be previously initialized before the attach procedure.
+Note: To perform a state-machine detach, use the qTaskSetCallback API. 
 
 Parameters:
 
@@ -298,14 +324,119 @@ qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachin
     return RetValue;
 }
 /*============================================================================*/
-/* This function is not intended for user usage. */
-qBool_t qTaskTCBGetFlag( const qTask_t * const Task, const qBase_t flagno ){
-    return Task->private.Flag[ flagno ];
+/*void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action )
+
+Modify the EventFlags of the task. 
+
+Parameters:
+
+    - Task : A pointer to the task node.
+    - flags : The flags to modify. Can be combined with a bitwise ‘OR’ (‘|’).
+              QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20      
+    - action : QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
+
+*/
+void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action ){
+    qTaskFlag_t FlagsToSet;
+    if( NULL != Task ){
+        FlagsToSet = flags & QTASK_EVENTFLAGS_RMASK;
+        __qPrivate_TaskModifyFlags( Task, FlagsToSet, action );
+    }
 }
 /*============================================================================*/
-/* This function is not intended for user usage. */
-void qTaskTCBSetFlag( qTask_t * const Task, const qBase_t flagno, const qBool_t Value ){
-    Task->private.Flag[ flagno ] = Value;
+/*qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task )
+
+Returns the current value of the task's EventFlags.
+Note: Any EventFlag set will cause a task activation
+
+Parameters:
+
+    - Task : A pointer to the task node.
+
+Return value:
+
+    The EventFlag value of the task.
+
+*/
+qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task ){
+    qTaskFlag_t RetValue = 0x00000000;
+    if( NULL != Task ){
+        RetValue = Task->private.Flags & QTASK_EVENTFLAGS_RMASK;
+    }    
+    return RetValue;
 }
 /*============================================================================*/
+/*qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll )
+
+Check for flags set to qTrue inside the task Event Flags.
+
+Parameters:
+
+    - Task : A pointer to the task node.
+    - FlagsToCheck : A bitwise value that indicates the flags to test inside the EventFlags.
+                    Can be combined with a bitwise ‘OR’ (‘|’).
+                    QBITFLAG_01 | QBITFLAG_02 | QBITFLAG_03 | ... | QBITFLAG_20     
+    - ClearOnExit : If is set to <qTrue> then any flags set in the value passed as the
+                   <FlagsToCheck> parameter will be cleared in the event group before
+                   this function returns only when the condition is meet.
+    - CheckForAll : Used to create either a logical AND test (where all flags must be set)
+                    or a logical OR test (where one or more flags must be set) as follows:
+                    If is set to qTrue this API will return qTrue when either all the flags 
+                    set in  the value passed as the <FlagsToCheck> parameter are set in 
+                    the task's EventFlags.
+                    If is set to qFalse this API will return qTrue when any of the flags set in 
+                    the value passed as the <FlagsToCheck> parameter are set in the task's
+                    EventFlags.
+
+Return value:
+
+    qTrue if the condition is meet, otherwise return qFalse.
+
+*/
+qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll ){
+    qBool_t RetValue = qFalse;
+    qTaskFlag_t CurrentEventBits;
+    if( NULL != Task){
+        FlagsToCheck &= QTASK_EVENTFLAGS_RMASK;
+        CurrentEventBits = Task->private.Flags & QTASK_EVENTFLAGS_RMASK;
+        if( qFalse == CheckForAll ){
+            if( (CurrentEventBits & FlagsToCheck) != (qTaskFlag_t)0 ){
+                RetValue = qTrue;
+            }
+        }
+        else{
+            if( (CurrentEventBits & FlagsToCheck) == FlagsToCheck ){
+                RetValue = qTrue;
+            }        
+        }
+        if( ( qTrue == RetValue )  && ( qTrue == ClearOnExit ) ){
+            Task->private.Flags &= ~FlagsToCheck;
+        }
+    }
+    return RetValue;
+}
+/*============================================================================*/
+/******************************************************************************
+
+
+   PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE
+   
+
+*******************************************************************************/
+/*____________________________________________________________________________*/
+qBool_t __qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){
+	qUINT32_t bit;
+	bit = Task->private.Flags & flag;
+	return (( bit )? qTrue : qFalse);
+}
+/*____________________________________________________________________________*/
+void __qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){
+    if( qTrue == value ){
+        Task->private.Flags |= flags; /*Set bits*/
+    }
+    else{
+        Task->private.Flags &= ~flags; /*Clear bits*/
+    }
+}
+/*____________________________________________________________________________*/
 #endif /* #if ( Q_FSM == 1) */

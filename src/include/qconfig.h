@@ -26,7 +26,7 @@
     #define Q_RESPONSE_HANDLER          1       /*< Used to enable or disable the response handler*/
     #define Q_EDGE_CHECK_IOGROUPS       1       /*< Used to enable or disable the edge check for I/O groups*/
 
-
+    #define Q_USE_STDINT_H              0       /*< Use the stdint.h header to define kernel data-types */
     /*================================================================================================================================*/  
 
 #endif
