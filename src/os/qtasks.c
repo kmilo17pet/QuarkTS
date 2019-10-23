@@ -157,7 +157,8 @@ void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
 /*============================================================================*/
 /*void qTaskSetCallback(qTask_t * const Task, const qTaskFcn_t Callback)
 
-Set/Change the task callback function
+Set/Change the task callback function.
+Note: This function can be used to detach a state-machine from a task
 
 Parameters:
 
@@ -327,6 +328,7 @@ qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachin
 /*void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action )
 
 Modify the EventFlags of the task. 
+Note: Any EventFlag set will cause a task activation
 
 Parameters:
 
@@ -347,7 +349,6 @@ void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t act
 /*qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task )
 
 Returns the current value of the task's EventFlags.
-Note: Any EventFlag set will cause a task activation
 
 Parameters:
 
