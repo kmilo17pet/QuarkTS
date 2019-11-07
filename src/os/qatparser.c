@@ -2,7 +2,8 @@
 
 #if ( Q_ATCOMMAND_PARSER == 1)
 
-static  qPutChar_t ATOutCharFcn = NULL;
+static qPutChar_t ATOutCharFcn = NULL;
+static qATParser_t *Current = NULL;
 static void _qATPutc_Wrapper( const char c );
 static void _qATPuts_Wrapper( const char *s );
 static qSize_t qATParser_NumOfArgs( const char *str );
@@ -11,6 +12,51 @@ static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, 
 static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile char *InputBuffer, qATParser_PreCmd_t *params );
 static qBool_t _aATParser_Notify(qATParser_t * const Parser);
 
+static char* GetArgPtr( qArgNum_t n );
+static int GetArgInt( qArgNum_t n );
+static qFloat32_t GetArgFlt( qArgNum_t n );
+static qUINT32_t GetArgHex( qArgNum_t n );
+static char* GetArgString( qArgNum_t n, char* out );
+/*============================================================================*/
+static char* GetArgPtr( qArgNum_t n ){
+    char *RetValue = NULL;
+    if( NULL != Current){
+        RetValue = qATParser_GetArgPtr( &Current->private.Params, n );
+    }
+    return RetValue;
+}
+/*============================================================================*/
+static int GetArgInt( qArgNum_t n ){
+    int RetValue = 0;
+    if( NULL != Current){
+        RetValue = qATParser_GetArgInt( &Current->private.Params, n );
+    }
+    return RetValue;    
+}
+/*============================================================================*/
+static qFloat32_t GetArgFlt( qArgNum_t n ){
+    qFloat32_t RetValue = 0.0f;
+    if( NULL != Current){
+        RetValue = qATParser_GetArgFlt( &Current->private.Params, n );
+    }
+    return RetValue;  
+}
+/*============================================================================*/
+static qUINT32_t GetArgHex( qArgNum_t n ){
+    qUINT32_t RetValue = 0ul;
+    if( NULL != Current){
+        RetValue = qATParser_GetArgHex( &Current->private.Params, n );
+    }
+    return RetValue;  
+}
+/*============================================================================*/
+static char* GetArgString( qArgNum_t n, char* out ){
+    char* RetValue = NULL;
+    if( NULL != Current){
+        RetValue = qATParser_GetArgString( &Current->private.Params, n, out );
+    }
+    return RetValue;
+}
 /*============================================================================*/
 static qBool_t _aATParser_Notify(qATParser_t * const Parser){
     Parser->private.Input.Ready = qTrue;
@@ -81,6 +127,11 @@ qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn,
         Parser->Output = Output;
         Parser->putch = _qATPutc_Wrapper;
         Parser->puts = _qATPuts_Wrapper;
+        Parser->private.Params.GetArgPtr = GetArgPtr;
+        Parser->private.Params.GetArgInt = GetArgInt;
+        Parser->private.Params.GetArgFlt = GetArgFlt;
+        Parser->private.Params.GetArgHex = GetArgHex;
+        Parser->private.Params.GetArgString = GetArgString;
         /*Flush input and output buffers*/
         memset( (void*)Parser->private.Input.Buffer, 0, SizeInput );
         memset( (void*)Parser->Output, 0, SizeOutput );
@@ -89,7 +140,7 @@ qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn,
     return RetValue;
 }
 /*============================================================================*/
-/*void qATParser_CmdSubscribe(qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt)
+/*void qATParser_CmdSubscribe(qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt, void *param )
  
 This function subscribes the parser to a specific command with an associated callback function,
 so that next time the required command is sent to the parser input, the callback function will be
@@ -117,21 +168,22 @@ Parameters:
                 > QATCMDTYPE_TEST  : "AT+cmd=?" is allowed. 
                 > QATCMDTYPE_READ  : "AT+cmd?" is allowed.  
                 > QATCMDTYPE_ACT   : "AT+cmd" is allowed.   
-
+    - param : User storage pointer.
 Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt){
+qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt, void *param ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Parser ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
         Command->private.CmdLen = (qSize_t)strlen( TextCommand );
         if( Command->private.CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
-                Command->private.Text = (char*)TextCommand;
+                Command->Text = (char*)TextCommand;
                 Command->private.CommandCallback = Callback;
                 Command->private.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
                 Command->private.Next = Parser->private.First;
+                Command->param = param;
                 Parser->private.First = Command;
                 RetValue = qTrue;  
             }
@@ -139,6 +191,36 @@ qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const
     } 
     return RetValue;
 }
+/*============================================================================*/
+/*qATCommand_t* qATParser_CmdIterate( qATParser_t * const Parser, qBool_t reload )
+
+Iterate between the commands available inside the parser.
+
+Parameters:
+
+    - Parser : A pointer to the ATParser instance
+    - reload : If qTrue, the iterator will set their position at the beginning 
+
+Return value:
+
+    The current iterated command. NULL when no more commands are available
+
+*/
+qATCommand_t* qATParser_CmdIterate( qATParser_t * const Parser, qBool_t reload ){
+    static qATCommand_t *Iterator = NULL;
+    qATCommand_t *Cmd = NULL;
+      
+    if(NULL != Parser){
+      if( qTrue == reload ){
+          Iterator = Parser->private.First;
+      } 
+      else{
+        Cmd = Iterator;
+        Iterator = Iterator->private.Next; 
+      }
+    }
+    return Cmd;
+} 
 /*============================================================================*/
 /*void qATCommandParser_ISRHandler(qATParser_t * const Parser, char c)
  
@@ -290,15 +372,14 @@ Return value:
 qATResponse_t qATParser_Exec( qATParser_t * const Parser, const char *cmd ){
     qATResponse_t RetValue = QAT_NOTFOUND;
     qATCommand_t *Command = NULL;
-    qATParser_PreCmd_t params;
     qATCommandCallback_t CmdCallback;
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
         for( Command = (qATCommand_t*)Parser->private.First ; NULL != Command ; Command = Command->private.Next ){ /*loop over the subscribed commands*/
-            if( strstr( cmd, Command->private.Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
+            if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
             	RetValue = qAT_NOTALLOWED;
-                if( _qATParser_PreProcessing( Command, (volatile char*)cmd, &params ) ){ /*if success, proceed with the user pos-processing*/
+                if( _qATParser_PreProcessing( Command, (volatile char*)cmd, &Parser->private.Params ) ){ /*if success, proceed with the user pos-processing*/
                     CmdCallback = Command->private.CommandCallback;
-                    RetValue = (qATCMDTYPE_UNDEF == params.Type )? QAT_ERROR : CmdCallback( Parser, &params ); /*invoke the callback*/
+                    RetValue = (qATCMDTYPE_UNDEF == Parser->private.Params.Type )? QAT_ERROR : CmdCallback( Parser, &Parser->private.Params  ); /*invoke the callback*/
                 }
                 break;
             }
@@ -394,9 +475,10 @@ qBool_t qATParser_Run( qATParser_t * const Parser ){
     qATParserInput_t *Input;
     qBool_t RetValue = qFalse;
     if( NULL != Parser){
-		Input =  &Parser->private.Input;
+		Current = Parser;
+        Input =  &Parser->private.Input;
 		ATOutCharFcn = Parser->private.OutputFcn;
-
+        
 		if( Input->Ready ){ /*a new input has arrived*/
 			/*Validation : set the value for the response lookup table*/
 			if 	( 0 == strcmp( (const char*)Input->Buffer, QAT_DEFAULT_AT_COMMAND ) ){
