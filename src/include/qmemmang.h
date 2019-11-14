@@ -4,6 +4,10 @@
 
     #include "qtypes.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     #ifndef Q_BYTE_ALIGNMENT    
         #define Q_BYTE_ALIGNMENT    ( 8 )
     #endif
@@ -39,5 +43,9 @@
     void* qMalloc(size_t size);
     void qFree(void *ptr);
     size_t qHeapGetFreeSize( void );    
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

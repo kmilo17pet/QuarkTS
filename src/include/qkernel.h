@@ -6,6 +6,10 @@
     #include "qcritical.h"
     #include "qtasks.h"
    
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     /*an item of the priority-queue*/
     typedef struct{
         qTask_t *Task;      /*< A pointer to the task. */
@@ -96,5 +100,9 @@
     void _qScheduler_ReloadScheme(void);
 
     #define __qFSMCallbackMode      ((qTaskFcn_t)1)
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif /*QKERNEL_H*/

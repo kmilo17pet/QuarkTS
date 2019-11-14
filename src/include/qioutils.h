@@ -9,6 +9,10 @@
     #include <string.h>
     #include <ctype.h>
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef void (*qPutChar_t)(void* arg1, const char arg2);
     typedef void (*qPutString_t)(void* arg1, const char* arg2);
     typedef char (*qGetChar_t)(void* arg1);
@@ -48,4 +52,8 @@
     qUINT32_t qStringHash( const char* s, qUINT8_t mode );
     void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n );
     
+    #ifdef __cplusplus
+    }
+    #endif
+
 #endif

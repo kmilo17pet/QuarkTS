@@ -7,6 +7,10 @@
     
     #include <string.h>
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+    
     typedef struct {
         qUINT8_t *pHead;			        /*< Points to the beginning of the queue storage area. */
         qUINT8_t *pTail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
@@ -85,5 +89,8 @@
     qBool_t qQueueReceive (qQueue_t * const obj, void *dest );
     qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueueMode_t InsertMode );
     
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

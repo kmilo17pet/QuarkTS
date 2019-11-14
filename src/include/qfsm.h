@@ -4,6 +4,10 @@
 
     #include "qtypes.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define _qSMData_t struct _qSM_t * const 
     #define CurrentState    NextState
@@ -59,5 +63,9 @@
     qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
     void qStateMachine_Run( qSM_t * const obj, void *Data );
     void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

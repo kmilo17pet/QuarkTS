@@ -4,6 +4,10 @@
 
     #include "qtypes.h"    
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     #define qBitsSet(Register, Bits)                    (Register) |= (Bits)
     #define qBitsClear(Register, Bits)                  (Register) &= ~(Bits)
     #define qBitSet(Register, Bit)                      (Register) |= (1 << (Bit))
@@ -28,5 +32,9 @@
     #define qIsBetween(X, Low, High)                    ((qBool_t)((X) >= (Low) && (X) <= (High)))
     #define qMin(a,b)                                   (((a)<(b))?(a):(b))
     #define qMax(a,b)                                   (((a)>(b))?(a):(b))
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

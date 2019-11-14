@@ -5,6 +5,10 @@
     #include "qtypes.h"
     #include "qioutils.h"
    
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     #ifndef __QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
             #if  __GNUC__ >= 2
@@ -193,6 +197,10 @@
         #define qDebugMem(Pointer, BlockSize)   
         #define qDebugVar(Var, DISP_TYPE_MODE)   
         #define qDebugVariable(Var, DISP_TYPE_MODE)    
+    #endif
+
+    #ifdef __cplusplus
+    }
     #endif
 
 #endif

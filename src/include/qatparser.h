@@ -4,7 +4,12 @@
 
     #include "qtypes.h"  
     #include "qioutils.h"  
-    
+
+
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     #define		QAT_DEFAULT_AT_COMMAND	            "at"
     #define		QAT_DEFAULT_ID_COMMAND	            "atid"
     #define		QAT_DEFAULT_ATSET_DELIM	            ','
@@ -133,4 +138,9 @@
     int qATParser_GetArgInt( const qATParser_PreCmd_t *param, qINT8_t n );
     qFloat32_t qATParser_GetArgFlt( const qATParser_PreCmd_t *param, qINT8_t n );
     qUINT32_t qATParser_GetArgHex( const qATParser_PreCmd_t *param, qINT8_t n );
+
+    #ifdef __cplusplus
+    }
+    #endif
+
 #endif

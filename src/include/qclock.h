@@ -4,6 +4,10 @@
 
     #include "qtypes.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef qUINT32_t qTime_t;
         #define qTimeImmediate       ((qTime_t)(0ul))
@@ -30,5 +34,9 @@
     void qClock_SysTick( void );
     qClock_t qClock_GetTick( void );
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

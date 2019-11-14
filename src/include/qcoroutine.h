@@ -5,6 +5,10 @@
     #include "qtypes.h"
     #include "qclock.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef qINT32_t _qTaskPC_t;
     #define qCRPosition_t static _qTaskPC_t
     
@@ -220,5 +224,9 @@
     */        
     #define qCoroutineDelay(_qTime_t_)                              __qCR_Delay(_qTime_t_)
     #define qCRDelay(_qTime_t_)                                     __qCR_Delay(_qTime_t_)
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

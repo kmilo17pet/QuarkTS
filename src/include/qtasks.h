@@ -17,6 +17,10 @@
         #include "qatparser.h"
     #endif
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef enum {  qTriggerNULL, 
                     byTimeElapsed, 
                     byNotificationQueued, 
@@ -323,5 +327,8 @@
     void __qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value);
     /*============================================================================*/
     
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif /* QTASKS_H */

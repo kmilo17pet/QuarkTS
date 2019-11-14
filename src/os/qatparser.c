@@ -21,7 +21,7 @@ static char* GetArgString( qArgNum_t n, char* out );
 static char* GetArgPtr( qArgNum_t n ){
     char *RetValue = NULL;
     if( NULL != Current){
-        RetValue = qATParser_GetArgPtr( &Current->private.Params, n );
+        RetValue = qATParser_GetArgPtr( &Current->qPrivate.Params, n );
     }
     return RetValue;
 }
@@ -29,7 +29,7 @@ static char* GetArgPtr( qArgNum_t n ){
 static int GetArgInt( qArgNum_t n ){
     int RetValue = 0;
     if( NULL != Current){
-        RetValue = qATParser_GetArgInt( &Current->private.Params, n );
+        RetValue = qATParser_GetArgInt( &Current->qPrivate.Params, n );
     }
     return RetValue;    
 }
@@ -37,7 +37,7 @@ static int GetArgInt( qArgNum_t n ){
 static qFloat32_t GetArgFlt( qArgNum_t n ){
     qFloat32_t RetValue = 0.0f;
     if( NULL != Current){
-        RetValue = qATParser_GetArgFlt( &Current->private.Params, n );
+        RetValue = qATParser_GetArgFlt( &Current->qPrivate.Params, n );
     }
     return RetValue;  
 }
@@ -45,7 +45,7 @@ static qFloat32_t GetArgFlt( qArgNum_t n ){
 static qUINT32_t GetArgHex( qArgNum_t n ){
     qUINT32_t RetValue = 0ul;
     if( NULL != Current){
-        RetValue = qATParser_GetArgHex( &Current->private.Params, n );
+        RetValue = qATParser_GetArgHex( &Current->qPrivate.Params, n );
     }
     return RetValue;  
 }
@@ -53,16 +53,16 @@ static qUINT32_t GetArgHex( qArgNum_t n ){
 static char* GetArgString( qArgNum_t n, char* out ){
     char* RetValue = NULL;
     if( NULL != Current){
-        RetValue = qATParser_GetArgString( &Current->private.Params, n, out );
+        RetValue = qATParser_GetArgString( &Current->qPrivate.Params, n, out );
     }
     return RetValue;
 }
 /*============================================================================*/
 static qBool_t _aATParser_Notify(qATParser_t * const Parser){
-    Parser->private.Input.Ready = qTrue;
-    Parser->private.Input.index = 0u;
-    if( NULL != Parser->private.xNotifyFcn ){
-        Parser->private.xNotifyFcn( Parser );
+    Parser->qPrivate.Input.Ready = qTrue;
+    Parser->qPrivate.Input.index = 0u;
+    if( NULL != Parser->qPrivate.xNotifyFcn ){
+        Parser->qPrivate.xNotifyFcn( Parser );
     }
     return qTrue;
 }
@@ -110,30 +110,30 @@ Return value:
 qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL ){
     qBool_t RetValue = qFalse;
     if(  ( NULL != Parser ) && ( NULL != OutputFcn) ) {
-        Parser->private.First  = NULL;
-        Parser->private.OutputFcn = OutputFcn;
-        Parser->private.Identifier = Identifier;
-        Parser->private.OK_Response = OK_Response;
-        Parser->private.ERROR_Response = ERROR_Response;
-        Parser->private.NOTFOUND_Response = NOTFOUND_Response;
-        Parser->private.term_EOL = term_EOL;
-        Parser->private.SizeOutput = SizeOutput;
-        Parser->private.Input.Buffer = (volatile char*)Input;
-        Parser->private.Input.Size = SizeInput;
-        Parser->private.Input.MaxIndex =  SizeInput - 1u;
-        Parser->private.Input.Ready = qFalse;
-        Parser->private.Input.index = 0u;
-        Parser->private.xNotifyFcn = NULL;
+        Parser->qPrivate.First  = NULL;
+        Parser->qPrivate.OutputFcn = OutputFcn;
+        Parser->qPrivate.Identifier = Identifier;
+        Parser->qPrivate.OK_Response = OK_Response;
+        Parser->qPrivate.ERROR_Response = ERROR_Response;
+        Parser->qPrivate.NOTFOUND_Response = NOTFOUND_Response;
+        Parser->qPrivate.term_EOL = term_EOL;
+        Parser->qPrivate.SizeOutput = SizeOutput;
+        Parser->qPrivate.Input.Buffer = (volatile char*)Input;
+        Parser->qPrivate.Input.Size = SizeInput;
+        Parser->qPrivate.Input.MaxIndex =  SizeInput - 1u;
+        Parser->qPrivate.Input.Ready = qFalse;
+        Parser->qPrivate.Input.index = 0u;
+        Parser->qPrivate.xNotifyFcn = NULL;
         Parser->Output = Output;
         Parser->putch = _qATPutc_Wrapper;
         Parser->puts = _qATPuts_Wrapper;
-        Parser->private.Params.GetArgPtr = GetArgPtr;
-        Parser->private.Params.GetArgInt = GetArgInt;
-        Parser->private.Params.GetArgFlt = GetArgFlt;
-        Parser->private.Params.GetArgHex = GetArgHex;
-        Parser->private.Params.GetArgString = GetArgString;
+        Parser->qPrivate.Params.GetArgPtr = GetArgPtr;
+        Parser->qPrivate.Params.GetArgInt = GetArgInt;
+        Parser->qPrivate.Params.GetArgFlt = GetArgFlt;
+        Parser->qPrivate.Params.GetArgHex = GetArgHex;
+        Parser->qPrivate.Params.GetArgString = GetArgString;
         /*Flush input and output buffers*/
-        memset( (void*)Parser->private.Input.Buffer, 0, SizeInput );
+        memset( (void*)Parser->qPrivate.Input.Buffer, 0, SizeInput );
         memset( (void*)Parser->Output, 0, SizeOutput );
         RetValue = qTrue;
     }
@@ -176,15 +176,15 @@ Return value:
 qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt, void *param ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Parser ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
-        Command->private.CmdLen = (qSize_t)strlen( TextCommand );
-        if( Command->private.CmdLen >= 2u ){
+        Command->qPrivate.CmdLen = (qSize_t)strlen( TextCommand );
+        if( Command->qPrivate.CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
-                Command->private.CommandCallback = Callback;
-                Command->private.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
-                Command->private.Next = Parser->private.First;
+                Command->qPrivate.CommandCallback = Callback;
+                Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
+                Command->qPrivate.Next = Parser->qPrivate.First;
                 Command->param = param;
-                Parser->private.First = Command;
+                Parser->qPrivate.First = Command;
                 RetValue = qTrue;  
             }
         }
@@ -212,11 +212,11 @@ qATCommand_t* qATParser_CmdIterate( qATParser_t * const Parser, qBool_t reload )
       
     if(NULL != Parser){
       if( qTrue == reload ){
-          Iterator = Parser->private.First;
+          Iterator = Parser->qPrivate.First;
       } 
       else{
         Cmd = Iterator;
-        Iterator = Iterator->private.Next; 
+        Iterator = Iterator->qPrivate.Next; 
       }
     }
     return Cmd;
@@ -244,15 +244,15 @@ qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;
     qUIndex_t CurrentIndex;
-    ReadyInput = Parser->private.Input.Ready;
+    ReadyInput = Parser->qPrivate.Input.Ready;
     if( ( isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){
-        CurrentIndex = Parser->private.Input.index; /*to avoid undefined order of volatile accesses*/
-        Parser->private.Input.Buffer[ CurrentIndex++ ] = (char)tolower( (int)c );
-        Parser->private.Input.Buffer[ CurrentIndex   ] = 0x00u;
-        if( CurrentIndex >= Parser->private.Input.MaxIndex ){
+        CurrentIndex = Parser->qPrivate.Input.index; /*to avoid undefined order of volatile accesses*/
+        Parser->qPrivate.Input.Buffer[ CurrentIndex++ ] = (char)tolower( (int)c );
+        Parser->qPrivate.Input.Buffer[ CurrentIndex   ] = 0x00u;
+        if( CurrentIndex >= Parser->qPrivate.Input.MaxIndex ){
             CurrentIndex = 0u;
         }
-        Parser->private.Input.index = CurrentIndex;
+        Parser->qPrivate.Input.index = CurrentIndex;
     }
     if ( '\r' == c ){
         RetValue = _aATParser_Notify( Parser );
@@ -281,8 +281,8 @@ qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const
     qBool_t ReadyInput;
     qSize_t MaxToInsert;
     
-    ReadyInput = Parser->private.Input.Ready;
-    MaxToInsert = Parser->private.Input.MaxIndex;
+    ReadyInput = Parser->qPrivate.Input.Ready;
+    MaxToInsert = Parser->qPrivate.Input.MaxIndex;
     if( ( n > 0u ) && ( n < MaxToInsert ) &&  ( qFalse == ReadyInput ) ) {
         if( 1u == n ){
             RetValue = qATParser_ISRHandler( Parser, data[0] );
@@ -290,8 +290,8 @@ qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const
         else{
             if( isgraph( (int)data[0] ) ){
                 if( NULL != strchr( data, (int)'\r' ) ){ 
-                    strncpy( (char*)Parser->private.Input.Buffer, data, (size_t)n);
-                    _qATParser_FixInput( (char*)Parser->private.Input.Buffer );
+                    strncpy( (char*)Parser->qPrivate.Input.Buffer, data, (size_t)n);
+                    _qATParser_FixInput( (char*)Parser->qPrivate.Input.Buffer );
                     RetValue = _aATParser_Notify( Parser );
                 }
             }
@@ -341,13 +341,13 @@ qBool_t qATParser_Raise( qATParser_t * const Parser, const char *cmd ){
     qSize_t MaxBytestoCopy;
     
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
-        ReadyInput = Parser->private.Input.Ready;        
-        MaxToInsert = Parser->private.Input.MaxIndex;
+        ReadyInput = Parser->qPrivate.Input.Ready;        
+        MaxToInsert = Parser->qPrivate.Input.MaxIndex;
         CmdLen = strlen( cmd );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
-            MaxBytestoCopy = (size_t)Parser->private.Input.Size; /*to avoid undefined order of volatile accesses*/
-            strncpy( (char*)Parser->private.Input.Buffer, cmd, (size_t)MaxBytestoCopy );
-            _qATParser_FixInput( (char*)Parser->private.Input.Buffer );
+            MaxBytestoCopy = (size_t)Parser->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
+            strncpy( (char*)Parser->qPrivate.Input.Buffer, cmd, (size_t)MaxBytestoCopy );
+            _qATParser_FixInput( (char*)Parser->qPrivate.Input.Buffer );
             RetValue = _aATParser_Notify( Parser );
         }
     } 
@@ -374,12 +374,12 @@ qATResponse_t qATParser_Exec( qATParser_t * const Parser, const char *cmd ){
     qATCommand_t *Command = NULL;
     qATCommandCallback_t CmdCallback;
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
-        for( Command = (qATCommand_t*)Parser->private.First ; NULL != Command ; Command = Command->private.Next ){ /*loop over the subscribed commands*/
+        for( Command = (qATCommand_t*)Parser->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/
             if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
             	RetValue = qAT_NOTALLOWED;
-                if( _qATParser_PreProcessing( Command, (volatile char*)cmd, &Parser->private.Params ) ){ /*if success, proceed with the user pos-processing*/
-                    CmdCallback = Command->private.CommandCallback;
-                    RetValue = (qATCMDTYPE_UNDEF == Parser->private.Params.Type )? QAT_ERROR : CmdCallback( Parser, &Parser->private.Params  ); /*invoke the callback*/
+                if( _qATParser_PreProcessing( Command, (volatile char*)cmd, &Parser->qPrivate.Params ) ){ /*if success, proceed with the user pos-processing*/
+                    CmdCallback = Command->qPrivate.CommandCallback;
+                    RetValue = (qATCMDTYPE_UNDEF == Parser->qPrivate.Params.Type )? QAT_ERROR : CmdCallback( Parser, &Parser->qPrivate.Params  ); /*invoke the callback*/
                 }
                 break;
             }
@@ -392,19 +392,19 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
     qBool_t RetValue = qFalse;
     params->Type = qATCMDTYPE_UNDEF;
     params->Command = Command;
-    params->StrLen = (qSize_t)strlen( (const char*)InputBuffer ) - Command->private.CmdLen;
-    params->StrData = (char*)(InputBuffer+Command->private.CmdLen);
+    params->StrLen = (qSize_t)strlen( (const char*)InputBuffer ) - Command->qPrivate.CmdLen;
+    params->StrData = (char*)(InputBuffer+Command->qPrivate.CmdLen);
     params->NumArgs = 0u;
 
     if( 0u == params->StrLen ){ /*command should be an ACT command */
-        if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_ACT ){ /*check if is allowed*/
+        if( Command->qPrivate.CmdOpt & (qATParserOptions_t)qATCMDTYPE_ACT ){ /*check if is allowed*/
             params->Type = qATCMDTYPE_ACT;  /*set the type to ACT*/
             RetValue = qTrue;
         }
     } 
     else if ( params->StrLen > 0u ){
         if( '?' == params->StrData[0] ){ /*command should be READ command */
-            if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_READ ){ /*check if is allowed*/
+            if( Command->qPrivate.CmdOpt & (qATParserOptions_t)qATCMDTYPE_READ ){ /*check if is allowed*/
                 params->Type = qATCMDTYPE_READ; /*set the type to READ*/
                 params->StrData++; /*move string pointer once*/
                 params->StrLen--;  /*decrease the len one*/
@@ -415,7 +415,7 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
             if( '=' == params->StrData[0] ){ /*could be a TEST or PARA command*/
                 if( '?' == params->StrData[1] ){ 
                     if( 2u == params->StrLen ){ /*command should be a TEST Command*/
-                        if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_TEST ){ /*check if is allowed*/
+                        if( Command->qPrivate.CmdOpt & (qATParserOptions_t)qATCMDTYPE_TEST ){ /*check if is allowed*/
                             params->Type = qATCMDTYPE_TEST; /*set the type to TEXT*/
                             params->StrData+=2; /*move string two positions ahead*/
                             params->StrLen-=2u;  /*decrease the len*/
@@ -424,9 +424,9 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
                     }
                 }
                 else{ /*definitely is a PARA command*/
-                    if( Command->private.CmdOpt & (qATParserOptions_t)qATCMDTYPE_PARA ){ /*check if is allowed*/
+                    if( Command->qPrivate.CmdOpt & (qATParserOptions_t)qATCMDTYPE_PARA ){ /*check if is allowed*/
                         params->NumArgs = qATParser_NumOfArgs( params->StrData ); /*get the args count using the default delimiter*/
-                        if( ( params->NumArgs >= QATCMDMASK_ARG_MINNUM( Command->private.CmdOpt ) ) && ( params->NumArgs <= QATCMDMASK_ARG_MAXNUM( Command->private.CmdOpt ) ) ){
+                        if( ( params->NumArgs >= QATCMDMASK_ARG_MINNUM( Command->qPrivate.CmdOpt ) ) && ( params->NumArgs <= QATCMDMASK_ARG_MAXNUM( Command->qPrivate.CmdOpt ) ) ){
                             params->Type = qATCMDTYPE_PARA; /*set the type to PARA*/
                             params->StrData++; /*move string pointer once*/
                             params->StrLen--; /*decrease the len one*/
@@ -449,7 +449,7 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
 void qATCommandParser_FlushInput( qATParser_t * const Parser ){
 	qATParserInput_t *Input;
     if( NULL != Parser ){
-        Input = &Parser->private.Input;
+        Input = &Parser->qPrivate.Input;
         Input->Ready = qFalse;
         Input->index = 0u;
         Input->Buffer[0] = 0x00u;
@@ -476,8 +476,8 @@ qBool_t qATParser_Run( qATParser_t * const Parser ){
     qBool_t RetValue = qFalse;
     if( NULL != Parser){
 		Current = Parser;
-        Input =  &Parser->private.Input;
-		ATOutCharFcn = Parser->private.OutputFcn;
+        Input =  &Parser->qPrivate.Input;
+		ATOutCharFcn = Parser->qPrivate.OutputFcn;
         
 		if( Input->Ready ){ /*a new input has arrived*/
 			/*Validation : set the value for the response lookup table*/
@@ -523,20 +523,20 @@ static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, 
 	if( QAT_NORESPONSE != retval ){
         switch( retval ){ /*handle the command-callback response*/
             case qAT_ERROR:
-                PutString( ( Parser->private.ERROR_Response )? Parser->private.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                PutString( ( Parser->qPrivate.ERROR_Response )? Parser->qPrivate.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
                 break;
             case qAT_OK:
-                PutString( ( Parser->private.OK_Response )? Parser->private.OK_Response: QAT_DEFAULT_OK_RSP_STRING );
+                PutString( ( Parser->qPrivate.OK_Response )? Parser->qPrivate.OK_Response: QAT_DEFAULT_OK_RSP_STRING );
                 break;
             case qAT_NOTALLOWED:   
-                PutString( ( Parser->private.ERROR_Response )? Parser->private.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                PutString( ( Parser->qPrivate.ERROR_Response )? Parser->qPrivate.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
                 PutString(QAT_DEAFULT_NOTALLOWED_RSP_STRING);
                 break; 
             case qAT_DEVID:
-                PutString( ( Parser->private.Identifier )? Parser->private.Identifier: QAT_DEFAULT_DEVID_STRING );
+                PutString( ( Parser->qPrivate.Identifier )? Parser->qPrivate.Identifier: QAT_DEFAULT_DEVID_STRING );
                 break;
             case qAT_NOTFOUND:
-                PutString( ( Parser->private.NOTFOUND_Response )? Parser->private.NOTFOUND_Response: QAT_DEFAULT_NOTFOUND_RSP_STRING );
+                PutString( ( Parser->qPrivate.NOTFOUND_Response )? Parser->qPrivate.NOTFOUND_Response: QAT_DEFAULT_NOTFOUND_RSP_STRING );
                 break;        
             case qAT_OUTPUT:
                 PutString( Parser->Output );
@@ -545,14 +545,14 @@ static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, 
                 if( retval < 0 ){
                     ErrorCode = QAT_ERRORCODE( (qINT32_t)retval );
                     qItoA(ErrorCode, Parser->Output, 10u);
-                    PutString( (Parser->private.ERROR_Response)? Parser->private.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
+                    PutString( (Parser->qPrivate.ERROR_Response)? Parser->qPrivate.ERROR_Response : QAT_DEFAULT_ERROR_RSP_STRING);
                     PutChar(':');
                     PutString(Parser->Output);
                     Parser->Output[0] = '\0';
                 }                            
                 break;
         }
-        PutString( ( Parser->private.term_EOL )? Parser->private.term_EOL : QAT_DEFAULT_EOL_STRING );
+        PutString( ( Parser->qPrivate.term_EOL )? Parser->qPrivate.term_EOL : QAT_DEFAULT_EOL_STRING );
     }
 }
 /*============================================================================*/

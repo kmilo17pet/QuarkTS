@@ -22,9 +22,9 @@ Return value:
 qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        if( Task->private.Notification < QMAX_NOTIFICATION_VALUE ){
-            Task->private.Notification++;
-            Task->private.AsyncData = eventdata;
+        if( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ){
+            Task->qPrivate.Notification++;
+            Task->qPrivate.AsyncData = eventdata;
             RetValue = qTrue;
         }
     }
@@ -97,7 +97,7 @@ Return value:
 qCycles_t qTaskGetCycles( const qTask_t * const Task ){
     qCycles_t RetValue = 0ul;
     if( NULL != Task ){
-        RetValue = Task->private.Cycles;
+        RetValue = Task->qPrivate.Cycles;
     }
     return RetValue;
 }
@@ -115,7 +115,7 @@ Parameters:
 */
 void qTaskSetTime( qTask_t * const Task, const qTime_t Value ){
     if( NULL != Task ){
-        Task->private.Interval = qTime2Clock( Value );
+        Task->qPrivate.Interval = qTime2Clock( Value );
     }
 }
 /*============================================================================*/
@@ -135,7 +135,7 @@ Parameters:
 */
 void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value ){
     if( NULL != Task ){
-        Task->private.Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
+        Task->qPrivate.Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
     }      
 }
 /*============================================================================*/
@@ -151,7 +151,7 @@ Parameters:
 void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
     if( NULL != Task ){
         _qScheduler_ReloadScheme();
-        Task->private.Priority = Value; 
+        Task->qPrivate.Priority = Value; 
     }
 }
 /*============================================================================*/
@@ -168,9 +168,9 @@ Parameters:
 */
 void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     if( NULL != Task ){ 
-        Task->private.Callback = CallbackFcn;
+        Task->qPrivate.Callback = CallbackFcn;
         #if ( Q_FSM == 1)
-            Task->private.StateMachine = NULL;    
+            Task->qPrivate.StateMachine = NULL;    
         #endif  
     }    
 }
@@ -197,7 +197,7 @@ void qTaskSetState(qTask_t * const Task, const qState_t State){
             case qDisabled: case qEnabled:
                 if( State != __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED ) ){ 
                     __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_ENABLED, State );
-                    Task->private.ClockStart = qClock_GetTick();
+                    Task->qPrivate.ClockStart = qClock_GetTick();
                 }
                 break;
             case qAsleep:
@@ -226,7 +226,7 @@ Return value:
 */
 void qTaskSetData( qTask_t * const Task, void* arg ){
     if( NULL != Task ){
-        Task->private.TaskData = arg;
+        Task->qPrivate.TaskData = arg;
     }
 }
 /*============================================================================*/
@@ -240,7 +240,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
-        Task->private.ClockStart = qClock_GetTick();
+        Task->qPrivate.ClockStart = qClock_GetTick();
     }    
 }
 #if ( Q_QUEUES == 1)
@@ -287,9 +287,9 @@ qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQ
         if( NULL != Queue->pHead ) {
             __qPrivate_TaskModifyFlags( Task, Mode & __QTASK_QUEUEFLAGS_MASK, (( arg != qFalse )? qATTACH :qDETACH) );
             if( Mode == qQUEUE_COUNT ){
-                Task->private.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
+                Task->qPrivate.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
-            Task->private.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
+            Task->qPrivate.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
             RetValue = qTrue;
         }
     }
@@ -318,8 +318,8 @@ Return value:
 qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
-        Task->private.Callback = __qFSMCallbackMode;
-        Task->private.StateMachine = StateMachine;
+        Task->qPrivate.Callback = __qFSMCallbackMode;
+        Task->qPrivate.StateMachine = StateMachine;
         RetValue = qTrue;
     }    
     return RetValue;
@@ -362,7 +362,7 @@ Return value:
 qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task ){
     qTaskFlag_t RetValue = 0x00000000;
     if( NULL != Task ){
-        RetValue = Task->private.Flags & QTASK_EVENTFLAGS_RMASK;
+        RetValue = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
     }    
     return RetValue;
 }
@@ -399,7 +399,7 @@ qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qB
     qTaskFlag_t CurrentEventBits;
     if( NULL != Task){
         FlagsToCheck &= QTASK_EVENTFLAGS_RMASK;
-        CurrentEventBits = Task->private.Flags & QTASK_EVENTFLAGS_RMASK;
+        CurrentEventBits = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
         if( qFalse == CheckForAll ){
             if( (CurrentEventBits & FlagsToCheck) != (qTaskFlag_t)0 ){
                 RetValue = qTrue;
@@ -411,7 +411,7 @@ qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qB
             }        
         }
         if( ( qTrue == RetValue )  && ( qTrue == ClearOnExit ) ){
-            Task->private.Flags &= ~FlagsToCheck;
+            Task->qPrivate.Flags &= ~FlagsToCheck;
         }
     }
     return RetValue;
@@ -427,16 +427,16 @@ qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qB
 /*____________________________________________________________________________*/
 qBool_t __qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){
 	qUINT32_t bit;
-	bit = Task->private.Flags & flag;
+	bit = Task->qPrivate.Flags & flag;
 	return (( bit )? qTrue : qFalse);
 }
 /*____________________________________________________________________________*/
 void __qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){
     if( qTrue == value ){
-        Task->private.Flags |= flags; /*Set bits*/
+        Task->qPrivate.Flags |= flags; /*Set bits*/
     }
     else{
-        Task->private.Flags &= ~flags; /*Clear bits*/
+        Task->qPrivate.Flags &= ~flags; /*Clear bits*/
     }
 }
 /*____________________________________________________________________________*/

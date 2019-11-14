@@ -37,10 +37,10 @@ qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubSta
         obj->PreviousState = NULL;
         obj->StateFirstEntry  = 0u;
         obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
-        obj->private.Failure = FailureState;
-        obj->private.Success = SuccessState;
-        obj->private.Unexpected = UnexpectedState;
-        obj->private.BeforeAnyState = BeforeAnyState;
+        obj->qPrivate.Failure = FailureState;
+        obj->qPrivate.Success = SuccessState;
+        obj->qPrivate.Unexpected = UnexpectedState;
+        obj->qPrivate.BeforeAnyState = BeforeAnyState;
         obj->LastState = NULL;
         RetValue = qTrue;
     }
@@ -69,7 +69,7 @@ void qStateMachine_Run( qSM_t * const obj, void *Data ){
     qSM_State_t prev  = NULL; /*used to hold the previous state*/
     if( NULL != obj ){
         obj->Data = Data;   /*pass the data through the fsm*/
-        qStatemachine_ExecSubStateIfAvailable( obj->private.BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
+        qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
         if( NULL != obj->NextState ){ /*eval nextState if available*/
             obj->StateFirstEntry = ( obj->LastState != obj->NextState )? qTrue : qFalse;  /*Get the StateFirstEntry flag*/
             if( obj->StateFirstEntry ){ /*if StateFistEntry is set, update the PreviousState*/
@@ -84,13 +84,13 @@ void qStateMachine_Run( qSM_t * const obj, void *Data ){
         }
         /*Check return status to eval extra states*/
         if( qSM_EXIT_FAILURE == obj->PreviousReturnStatus ){
-            qStatemachine_ExecSubStateIfAvailable( obj->private.Failure, obj ); /*Run failure state if available*/
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Failure, obj ); /*Run failure state if available*/
         }
         else if ( qSM_EXIT_SUCCESS == obj->PreviousReturnStatus ){
-            qStatemachine_ExecSubStateIfAvailable( obj->private.Success, obj ); /*Run success state if available*/
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Success, obj ); /*Run success state if available*/
         } 
         else{
-            qStatemachine_ExecSubStateIfAvailable( obj->private.Unexpected, obj ); /*Run unexpected state if available*/
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, obj ); /*Run unexpected state if available*/
         }
     }
  }
@@ -128,16 +128,16 @@ void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , q
             obj->LastState = NULL;
             break;
         case qSM_FAILURE_STATE:
-            obj->private.Failure = (qSM_SubState_t)subs;
+            obj->qPrivate.Failure = (qSM_SubState_t)subs;
             break;
         case qSM_SUCCESS_STATE:
-            obj->private.Success = (qSM_SubState_t)subs;
+            obj->qPrivate.Success = (qSM_SubState_t)subs;
             break;    
         case qSM_UNEXPECTED_STATE:
-            obj->private.Unexpected = (qSM_SubState_t)subs;
+            obj->qPrivate.Unexpected = (qSM_SubState_t)subs;
             break;   
         case qSM_BEFORE_ANY_STATE:
-            obj->private.BeforeAnyState = (qSM_SubState_t)subs;
+            obj->qPrivate.BeforeAnyState = (qSM_SubState_t)subs;
             break;              
         default:
             break;

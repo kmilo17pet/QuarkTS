@@ -7,6 +7,10 @@
 
     #include <string.h>
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef struct{
         private_start{
             char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
@@ -25,5 +29,9 @@
     qBool_t qResponseReceived( qResponseHandler_t * const obj, const char *Pattern, qSize_t n );
     qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t );
     qBool_t qResponseISRHandler( qResponseHandler_t * const obj, const char rxchar );
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

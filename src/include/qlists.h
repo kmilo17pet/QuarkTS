@@ -4,6 +4,10 @@
 
     #include "qtypes.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef struct node_s{
         struct node_s *next, *prev;
     }qNode_t;
@@ -29,5 +33,8 @@
     qBool_t qList_IsEmpty( const qList_t * const list );
     qSize_t qList_Length( const qList_t * const list );
 
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

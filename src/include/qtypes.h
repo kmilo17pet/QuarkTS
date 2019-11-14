@@ -52,7 +52,7 @@
     #define qAsleep                 ( 3u )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )  
-    #define qLink                   ( sqTrue )
+    #define qLink                   ( qTrue )
     #define qATTACH                 ( qTrue )
     #define qDETACH                 ( qFalse )
     #define qAttach                 ( qTrue )
@@ -79,8 +79,8 @@
         #define STRUCT_PRIVATE_MEMBERS
         #define ___private_join( symbol1, symbol2 )     ___private_do_join( symbol1, symbol2 )
         #define ___private_do_join( symbol1, symbol2 )   symbol1##symbol2
-        #define private_start                           struct ___private_join( private_, __LINE__ )
-        #define private_end                             private
+        #define private_start                           struct ___private_join( qPrivate_, __LINE__ )
+        #define private_end                             qPrivate
     #endif
 
     typedef qUINT8_t qPriority_t;

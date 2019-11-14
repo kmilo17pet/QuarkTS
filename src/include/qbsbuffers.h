@@ -4,6 +4,10 @@
 
     #include "qtypes.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef struct{
         volatile qUIndex_t head;    /*< Used to hold the index of the head. */
         volatile qUIndex_t tail;    /*< Used to hold the index of the tail. */
@@ -20,5 +24,9 @@
     qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const qSize_t n );
     qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data );
     void qBSBuffer_Init( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const qSize_t length );
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

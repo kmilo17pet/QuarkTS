@@ -5,6 +5,10 @@
     #include "qtypes.h"
     #include "qclock.h"
 
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+
     typedef struct{ 
         private_start{
             qClock_t Start; /*< The time(epochs) taken at the arming moment. */
@@ -32,5 +36,9 @@
         #define qDays2Time(t)    ( ((qTime_t)(t))*86400.0 )
         #define qWeeks2Time(t)   ( ((qTime_t)(t))*604800.0 )
     #endif 
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif 

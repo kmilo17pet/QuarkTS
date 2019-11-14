@@ -22,8 +22,8 @@ Return value:
 qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        obj->private.TV  = qTime2Clock(Time); /*set the STimer time in epochs*/
-        obj->private.Start  = qClock_GetTick(); /*set the init time of the STimer with the current system epoch value*/
+        obj->qPrivate.TV  = qTime2Clock(Time); /*set the STimer time in epochs*/
+        obj->qPrivate.Start  = qClock_GetTick(); /*set the init time of the STimer with the current system epoch value*/
         RetValue = qTrue;
     }
     return RetValue;
@@ -87,7 +87,7 @@ qBool_t qSTimerExpired( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ){
-            RetValue = qClock_TimeDeadlineCheck( obj->private.Start, obj->private.TV );
+            RetValue = qClock_TimeDeadlineCheck( obj->qPrivate.Start, obj->qPrivate.TV );
         }
     }
     return RetValue;
@@ -109,7 +109,7 @@ qClock_t qSTimerElapsed( const qSTimer_t * const obj ){
     qClock_t RetValue = 0ul;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
-            RetValue = qClock_GetTick() - obj->private.Start;
+            RetValue = qClock_GetTick() - obj->qPrivate.Start;
         }
     }
     return RetValue;
@@ -131,7 +131,7 @@ qClock_t qSTimerRemaining( const qSTimer_t * const obj ){
     qClock_t RetValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
-            RetValue = obj->private.TV - qSTimerElapsed( obj );
+            RetValue = obj->qPrivate.TV - qSTimerElapsed( obj );
         }
     }
     return RetValue;
@@ -147,8 +147,8 @@ Parameters:
 */
 void qSTimerDisarm(qSTimer_t * const obj){
     if( NULL != obj ){
-        obj->private.TV = QSTIMER_DISARM_VALUE;
-        obj->private.Start = QSTIMER_DISARM_VALUE;
+        obj->qPrivate.TV = QSTIMER_DISARM_VALUE;
+        obj->qPrivate.Start = QSTIMER_DISARM_VALUE;
     }
 }
 /*============================================================================*/
@@ -167,7 +167,7 @@ Return value:
 qBool_t qSTimerStatus(const qSTimer_t * const obj){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        RetValue =  ( obj->private.TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+        RetValue =  ( obj->qPrivate.TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     } 
     return RetValue;
 }
