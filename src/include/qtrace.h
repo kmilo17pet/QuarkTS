@@ -46,43 +46,43 @@
     #endif
 
     #ifndef Message
-        #define Message
+        #define Message             Message
     #endif
     #ifndef String
-        #define String
+        #define String              String
     #endif
     #ifndef Bool
-        #define Bool
+        #define Bool                Bool
     #endif
     #ifndef qBool
-        #define qBool
+        #define qBool               qBool
     #endif
     #ifndef Float
-        #define Float 
+        #define Float               Float
     #endif
     #ifndef Binary
-        #define Binary 
+        #define Binary              Binary
     #endif
     #ifndef Octal
-        #define Octal 
+        #define Octal               Octal
     #endif
     #ifndef Decimal
-        #define Decimal 
+        #define Decimal             Decimal 
     #endif
     #ifndef Hexadecimal
-        #define Hexadecimal 
+        #define Hexadecimal         Hexadecimal
     #endif
     #ifndef UnsignedBinary
-        #define UnsignedBinary 
+        #define UnsignedBinary      UnsignedBinary
     #endif
     #ifndef UnsignedOctal
-        #define UnsignedOctal 
+        #define UnsignedOctal       UnsignedOctal
     #endif
     #ifndef UnsignedDecimal
-        #define UnsignedDecimal 
+        #define UnsignedDecimal     UnsignedDecimal
     #endif
     #ifndef UnsignedHexadecimal
-        #define UnsignedHexadecimal 
+        #define UnsignedHexadecimal UnsignedHexadecimal
     #endif
 
     #if ( Q_TRACE_VARIABLES == 1 )

@@ -184,6 +184,8 @@ int main(int argc, char** argv) {
     
     qSetDebugFcn(putcharfcn);
     qTraceVariable( -3.1416, Float);
+    qTraceVariable("dafdaa", Message );
+    
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);
     qEdgeCheck_InsertNode(&INPUTS, &button2, &PORTA, 1);
