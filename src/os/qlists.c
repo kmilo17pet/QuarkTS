@@ -99,7 +99,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qNode_t *iNode;
     qBase_t iPos;
  
-    if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position < qList_AtBack )) {    
+    if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position <= qList_AtBack )) {    
         if( qFalse == qList_IsMember( list, node )){
             newnode = qList_NodeInit( node );
             RetValue = qTrue;
@@ -320,6 +320,83 @@ qSize_t qList_Length( const qList_t * const list ){
         RetValue = list->size;
     }
     return RetValue;
+}
+/*=========================================================*/
+/*qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(void *n1, void *n2) ) 
+
+Sort the double linked list using the <CompareFcn> function to 
+determine the order.
+The sorting algorithm used by this function compares pairs of 
+adyacent nodes by calling the specified <CompareFcn> function 
+with pointers to them as argument. Sort is performed only 
+modifying node link's without data swapping, improving performance 
+if nodes has large storage.
+
+The function does not return any value, but modifies the content 
+of the list by reordering its elements as defined by CompareFcn.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - CompareFcn :  Pointer to a function that compares two nodes.
+                    This function is called repeatedly by qList_Sort
+                    to compare two nodes. It shall follow the 
+                    following prototype:
+                    qBool_t (*CompareFcn)(void *node1, void *node2)
+                    Taking two pointers as arguments (both converted
+                    to const void*). The function defines the order
+                    of the elements by returning a Boolean data, where
+                    a <qTrue> value indicates that element pointed by 
+                    <node1> goes after the element pointed to by <node2>
+
+Return value:
+
+    qTrue if at least one reordering is performed over the list. 
+*/
+qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) {
+    qBool_t RetValue = qFalse;
+    qSize_t count;
+    qNode_t *current = NULL, *before = NULL, *after = NULL;
+    qBase_t i, j;
+
+    if( ( NULL != list ) && ( NULL != CompareFcn ) ){
+        count = list->size;
+        if( count >= 2){ /*It is only worth running the algorithm if the list has two or more nodes*/
+            for (i = 1; i < count; i++) {
+                current = list->head;
+                for (j = 0; j <= count - i - 1; j++) { 
+                    if( qTrue == CompareFcn( current, current->next )  ) { /*compare adyacent nodes*/
+                        before = current->prev;
+                        after = current->next;
+
+                        if( NULL != before) {
+                            before->next = after;
+                        } 
+                        else {
+                            list->head = after; /* In case before pointer is null, after pointer should be the new head*/
+                        }
+                        current->next = after->next;
+                        current->prev = after;
+
+                        if( NULL != after->next ) {
+                            after->next->prev = current; /* prev pointer of after->next should be set to current. */
+                        }
+
+                        after->next = current;
+                        after->prev = before;
+                        RetValue = qTrue;
+                    } else {
+                        current = current->next; /* Go to next node only if current->data > current->next->data condition is false. */
+                    }
+                }
+            }
+            while(current->next){ /*loop remaining nodes until find the new tail*/
+                current = current->next;
+            }
+            list->tail = current;            
+        }
+    }
+    return qFalse;
 }
 /*=========================================================*/
 

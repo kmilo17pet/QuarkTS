@@ -176,13 +176,32 @@ void blinktaskCallback(qEvent_t e){
     }qCoroutineEnd;
 }
 /*============================================================================*/
+
+typedef struct{
+    qNode_MinimalFields;
+    int priority;
+}mynode_t;
+
+void mylistprinter(const void *node){
+    const mynode_t *xnode = node;
+    printf( "%d->", xnode->priority ); 
+}
+
+qBool_t mylistcompare(const void *n1, const void *n2){
+    const mynode_t *node1 = n1;
+    const mynode_t *node2 = n2;
+    
+    return node1->priority > node2->priority;
+
+}
+
 int main(int argc, char** argv) {   
     qQueue_t somequeue;
     void *memtest;
     int x[]={10,20,30,40,50,60,70,80,90,100};
 
+    qSetDebugFcn(putcharfcn);    
     
-    qSetDebugFcn(putcharfcn);
     qTraceVariable( -3.1416, Float);
     qTraceVariable("dafdaa", Message );
     

@@ -18,7 +18,7 @@
     }qList_t;
     #define qNode_MinimalFields                  void *next, *prev, *data
 
-    typedef void(*qListVisualizer_t)(void* arg1);
+    typedef void(*qListVisualizer_t)(const void* arg1);
     typedef enum{qList_AtFront =-1 , qList_AtBack = 32766}qListPosition_t;
     #define QLIST_ATFRONT             ( qList_AtFront )
     #define QLIST_ATBACK              ( qList_AtBack  )
@@ -32,6 +32,8 @@
     void* qList_GetBack( const qList_t * const list );
     qBool_t qList_IsEmpty( const qList_t * const list );
     qSize_t qList_Length( const qList_t * const list );
+    qBool_t qList_Sort(qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) ;
+
 
     #ifdef __cplusplus
     }
