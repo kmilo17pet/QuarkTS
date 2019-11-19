@@ -1,5 +1,11 @@
 #include "qkernel.h"
 
+/*an item of the priority-queue*/
+typedef struct{
+    qTask_t *Task;      /*< A pointer to the task. */
+    void *QueueData;    /*< The data to queue. */
+}qQueueStack_t;  
+
 typedef struct{ /*Scheduler Core-Flags*/
  	volatile qBool_t Init;                              /*< The scheduler initialization flag. */
     qBool_t FCallIdle;                                  /*< The idle first-call flag. */
@@ -9,10 +15,9 @@ typedef struct{ /*Scheduler Core-Flags*/
 }qCoreFlags_t;
 
 typedef struct{ /*KCB(Kernel Control Block) definition*/
-    #if ( Q_PRIORITY_QUEUE == 1 )
+    #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
         volatile qIndex_t QueueIndex;                   /*< The current index of the FIFO priority queue. */
-        qSize_t QueueSize;                              /*< The size of the FIFO priority queue. */
-        qQueueStack_t *QueueStack;                      /*< Points to the storage area of the FIFO priority queue. */
+        qQueueStack_t QueueStack[ Q_PRIO_QUEUE_SIZE ];  /*< Points to the storage area of the FIFO priority queue. */
         void *QueueData;                                /*< The FIFO priority queue item-data. */
     #endif 
         qTaskFcn_t IDLECallback;                        /*< The callback function that represents the idle-task activities. */
@@ -39,7 +44,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
 
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 
-#if ( Q_PRIORITY_QUEUE == 1 ) 
+#if ( Q_PRIO_QUEUE_SIZE > 0 )  
     static qTask_t* _qScheduler_PriorityQueueGet( void );
 #endif
 
@@ -59,11 +64,11 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
 #define __qChainInitializer     ((qTask_t*)&kernel)/*point to something that is not some task in the chain */
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack ){
+    void qSchedulerSetup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
 #else
-    void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack ){
+    void qSchedulerSetup( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback ){
 #endif
-    #if ( Q_PRIORITY_QUEUE == 1 )  
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qUIndex_t i;
     #endif
     kernel.Head = NULL;
@@ -71,10 +76,8 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
         qClock_SetTimeBase( BaseTimming );
     #endif
     kernel.IDLECallback = IdleCallback;
-    #if ( Q_PRIORITY_QUEUE == 1 )    
-        kernel.QueueStack = (qQueueStack_t*)Q_Stack;
-        kernel.QueueSize = Size_Q_Stack;
-        for( i = 0u ; i < kernel.QueueSize ; i++){
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )    
+        for( i = 0u ; i < Q_PRIO_QUEUE_SIZE ; i++){
             kernel.QueueStack[i].Task = NULL;  /*set the priority queue as empty*/  
         }
         kernel.QueueIndex = -1;     
@@ -167,7 +170,7 @@ qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t m
     }
     return RetValue;
 }
-#if ( Q_PRIORITY_QUEUE == 1 )
+#if ( Q_PRIO_QUEUE_SIZE > 0 )  
 /*============================================================================*/
 static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qTask_t *xTask = NULL;
@@ -179,7 +182,7 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
     if( kernel.QueueIndex >= 0 ){ /*queue has elements*/
         qCritical_Enter(); 
         MaxPriorityValue = kernel.QueueStack[0].Task->qPrivate.Priority;
-        for( i = 1u ; ( i < kernel.QueueSize ) ; i++){  /*walk through the queue to find the task with the highest priority*/
+        for( i = 1u ; ( i < Q_PRIO_QUEUE_SIZE ) ; i++){  /*walk through the queue to find the task with the highest priority*/
             if( NULL != kernel.QueueStack[i].Task ){ /* tail is reached */
                 break;
             }
@@ -542,7 +545,7 @@ void qSchedulerRun( void ){
             kernel.Head = _qScheduler_RearrangeChain( kernel.Head ); /*sort the chain by priority (init flag internally set)*/
         } 
         #endif
-        #if ( Q_PRIORITY_QUEUE == 1 )
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         if( NULL != ( Task = _qScheduler_PriorityQueueGet() ) ){ /*extract a task from the front of the priority queue*/
             Task->qPrivate.State = _qScheduler_Dispatch( Task, byNotificationQueued );  /*Available queueded task will be dispatched in every scheduling cycle : the queue has the higher precedence*/
         }     
@@ -616,7 +619,7 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
                 kernel.EventInfo.EventData = (void*)Task->qPrivate.Queue;  /*the EventData will point to the the linked RingBuffer*/
                 break;
         #endif
-        #if ( Q_PRIORITY_QUEUE == 1 )
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             case byNotificationQueued:
                 kernel.EventInfo.EventData = kernel.QueueData; /*get the extracted data from queue*/
                 kernel.QueueData = NULL;
@@ -727,12 +730,12 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
 }
 /*============================================================================*/
 qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data){
-    #if ( Q_PRIORITY_QUEUE == 1 )
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t RetValue = qFalse;
         qQueueStack_t tmp;
         qIndex_t QueueMaxIndex;
         qIndex_t CurrentQueueIndex;
-        QueueMaxIndex = ( (qIndex_t)kernel.QueueSize ) - 1; /*to avoid side effects */
+        QueueMaxIndex = Q_PRIO_QUEUE_SIZE - 1; /*to avoid side effects */
         CurrentQueueIndex = kernel.QueueIndex; /*to avoid side effects */
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = data;

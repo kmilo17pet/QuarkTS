@@ -1,14 +1,5 @@
 /*
-        _    _         _____  _  __           _______ _____   
-       | |  | |  /\   |  __ \| |/ /          |__   __/ ____|  
-   __ _| |  | | /  \  | |__) | ' /   ______     | | | (___    
-  / _` | |  | |/ /\ \ |  _  /|  <   |______|    | |  \___ \   
- | (_| | |__| / ____ \| | \ \| . \              | |  ____) |  
-  \__, |\____/_/    \_\_|  \_\_|\_\             |_| |_____/   
-     | |                                                      
-     |_|  
-     
-    QuarkTS V5.2.2 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+     QuarkTS V5.3.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
     This file is part of the QuarkTS OS distribution.
@@ -68,6 +59,10 @@
 
     #if ( Q_DEBUGTRACE_BUFSIZE < 36 )
         #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greather o equal to 36.
+    #endif
+
+    #if ( Q_PRIO_QUEUE_SIZE < 0 )   
+        #error Q_PRIO_QUEUE_SIZE should be a value greater of equal than zero.
     #endif
 
 #endif

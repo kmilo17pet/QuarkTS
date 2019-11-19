@@ -10,37 +10,21 @@
     extern "C" {
     #endif
 
-    /*an item of the priority-queue*/
-    typedef struct{
-        qTask_t *Task;      /*< A pointer to the task. */
-        void *QueueData;    /*< The data to queue. */
-    }qQueueStack_t;  
-
     #define qLowest_Priority        ((qPriority_t)(0x00u))
     #define qMedium_Priority        ((qPriority_t)(0x7Fu))
     #define qHigh_Priority          ((qPriority_t)(0xFEu))
     #define qPeriodic               ((qIteration_t)(-32768))
-    #define qIndefinite             qPeriodic
+    #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ((qIteration_t)(1))
 
-    #define LOWEST_Priority         qLowest_Priority
-    #define MEDIUM_Priority         qMedium_Priority
-    #define HIGH_Priority           qHigh_Priority
-
-    #if ( Q_PRIORITY_QUEUE == 1 )    
-        #define _qQueueStackName                    _qQueueStack
-        #define _qQueueStackCreate(QueueSize)       qQueueStack_t _qQueueStackName[(QueueSize)];
-        #define _qQueueLength(QueueSize)            (QueueSize)
-    #else
-        #define _qQueueStackName                    NULL           
-        #define _qQueueStackCreate(QueueSize)       
-        #define _qQueueLength(QueueSize)            ( 0 )                             
-    #endif
+    #define LOWEST_Priority         ( qLowest_Priority )
+    #define MEDIUM_Priority         ( qMedium_Priority )
+    #define HIGH_Priority           ( qHigh_Priority )
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack );
+        void qSchedulerSetup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
     #else
-        void _qInitScheduler( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback, qQueueStack_t *Q_Stack, const qSize_t Size_Q_Stack );
+        void qSchedulerSetup( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback );
     #endif
 
     qTask_t* _qScheduler_GetTaskRunning( void );
@@ -87,15 +71,7 @@
         - IDLE_Callback : Callback function to the Idle Task. To disable the 
                         Idle Task functionality, pass NULL as argument.
 
-        - QueueSize : Size of the priority queue for notifications. This argument should be an integer
-                    number greater than zero
         */
-    #if (Q_SETUP_TIME_CANONICAL == 1)
-        #define qSchedulerSetup( TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize )                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
-    #else 
-        #define qSchedulerSetup( TickProviderFcn, TimmingBase, IDLE_Callback, QueueSize )                                   _qQueueStackCreate(QueueSize) _qInitScheduler((qGetTickFcn_t)(TickProviderFcn), (TimmingBase), (IDLE_Callback), _qQueueStackName, _qQueueLength(QueueSize) )
-    #endif
-
     qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data);
     void _qScheduler_ReloadScheme(void);
 

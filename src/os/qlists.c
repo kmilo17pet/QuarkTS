@@ -396,7 +396,7 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
             list->tail = current;            
         }
     }
-    return qFalse;
+    return RetValue;
 }
 /*=========================================================*/
 
