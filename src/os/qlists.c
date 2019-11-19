@@ -332,8 +332,8 @@ with pointers to them as argument. Sort is performed only
 modifying node link's without data swapping, improving performance 
 if nodes has large storage.
 
-The function does not return any value, but modifies the content 
-of the list by reordering its elements as defined by CompareFcn.
+Note: The function modifies the content of the list by reordering its 
+elements as defined by CompareFcn.
 
 Parameters:
 
