@@ -42,10 +42,10 @@
 
     typedef volatile struct{
         volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
-        volatile qBool_t Ready;                 /*< A flag that indicates when the input is ready to parse. */
         volatile qUIndex_t index;               /*< Used to hold the index of the current input-buffer. */
         qUIndex_t MaxIndex;                     /*< Max index  = (Size - 1) */
-        qSize_t Size;                           /*< The size of the input buffer. */       
+        qSize_t Size;                           /*< The size of the input buffer. */     
+        volatile qBool_t Ready;                 /*< A flag that indicates when the input is ready to parse. */  
     }qATParserInput_t;
 
     typedef void (*qPutchFcn_t)(const char arg);
@@ -74,38 +74,35 @@
     typedef qINT8_t qArgNum_t;
 
     typedef struct{
-        void *Command;                                      /*< A pointer to the calling AT Command object. */
-        char *StrData;                                      /*< The string data. */
-        qSize_t StrLen;                                     /*< The length of StrData. */
-        qATCommandType_t Type;                              /*< The command type. */
-        qSize_t NumArgs;                                    /*< Number of arguments, only available if Type = QATCMDTYPE_SET. */
-        
-        char* (*GetArgPtr)( qArgNum_t n );                  /*< To get the pointer where the desired argument starts.*/
-        int (*GetArgInt)( qArgNum_t n );                    /*< To get the <n> argument parsed <Integer>*/
-        qFloat32_t (*GetArgFlt)( qArgNum_t n );             /*< To get the <n> argument parsed <Float>*/
-        qUINT32_t (*GetArgHex)( qArgNum_t n );              /*< To get the <n> HEX argument parsed <qUINT32_t>*/
-        char* (*GetArgString)( qArgNum_t n, char* out );    /*< This function get the <n> argument parsed as <String>*/
+        void *Command;                                          /*< A pointer to the calling AT Command object. */
+        char *StrData;                                          /*< The string data. */      
+        char* (*GetArgPtr)( qArgNum_t n );                      /*< To get the pointer where the desired argument starts.*/
+        int (*GetArgInt)( qArgNum_t n );                        /*< To get the <n> argument parsed <Integer>*/
+        qFloat32_t (*GetArgFlt)( qArgNum_t n );                 /*< To get the <n> argument parsed <Float>*/
+        qUINT32_t (*GetArgHex)( qArgNum_t n );                  /*< To get the <n> HEX argument parsed <qUINT32_t>*/
+        char* (*GetArgString)( qArgNum_t n, char* out );        /*< This function get the <n> argument parsed as <String>*/
+        qATCommandType_t Type;                                  /*< The command type. */
+        qSize_t StrLen;                                         /*< The length of StrData. */
+        qSize_t NumArgs;                                        /*< Number of arguments, only available if Type = QATCMDTYPE_SET. */          
     }qATParser_PreCmd_t;
 
     typedef struct _qATParser_s{
-        qPutchFcn_t putch;                      /*< Points to a function that writes a single char to the output. */
-        qPutsFcn_t puts;                        /*< Points to a function that writes a string to the output. */
-        char *Output;                           /*< Points to the output buffer storage area. */
+        qPutchFcn_t putch;                                      /*< Points to a function that writes a single char to the output. */
+        qPutsFcn_t puts;                                        /*< Points to a function that writes a string to the output. */
+        char *Output;                                           /*< Points to the output buffer storage area. */
         void *UserData;
         private_start{
-            void *First;                        /*< The response printed when OK is needed. */
-            const char *OK_Response;            /*< The response printed when OK is needed. */
-            const char *ERROR_Response;         /*< The response printed when ERROR is needed. */
-            const char *NOTFOUND_Response;      /*< The response printed when NOTFOUND is needed. */
-            const char *Identifier;             /*< The response printed when the "ATID" command has been entered. */
-            const char *term_EOL;               /*< The End Of Line string after a command response */
-            qPutChar_t OutputFcn;               /*< Points to the user-supplied function to write a single byte to the output. */
-
-            void (*xNotifyFcn)(struct _qATParser_s * const arg);
-            
-            qSize_t SizeOutput;                 /*< The size of Output. */
-            qATParserInput_t Input;             /*< The input of the parser. */
-            qATParser_PreCmd_t Params;          /*< The params used as the 2nd cmd-callback argument*/  
+            void *First;                                        /*< The response printed when OK is needed. */
+            const char *OK_Response;                            /*< The response printed when OK is needed. */
+            const char *ERROR_Response;                         /*< The response printed when ERROR is needed. */
+            const char *NOTFOUND_Response;                      /*< The response printed when NOTFOUND is needed. */
+            const char *Identifier;                             /*< The response printed when the "ATID" command has been entered. */
+            const char *term_EOL;                               /*< The End Of Line string after a command response */
+            qPutChar_t OutputFcn;                               /*< Points to the user-supplied function to write a single byte to the output. */
+            void (*xNotifyFcn)(struct _qATParser_s * const arg);/*< Used to notify the attached task if available*/           
+            qSize_t SizeOutput;                                 /*< The size of Output. */
+            qATParserInput_t Input;                             /*< The input of the parser. */
+            qATParser_PreCmd_t Params;                          /*< The params used as the 2nd cmd-callback argument*/  
         }private_end;
     }qATParser_t;      
 

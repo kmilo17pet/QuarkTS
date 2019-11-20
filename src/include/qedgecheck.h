@@ -18,16 +18,17 @@
     #define QEDGECHECK_CHECK        ( 2u )
 
     typedef struct _qIONode_t{
-        qBool_t Status;                     /*< The status of the pin. */
-        qBool_t Pin;                        /*< The specific pin to read. */
         private_start{                  
-            qBool_t PreviousPinValue;       /*< The previous value of "Pin". */
             struct _qIONode_t *Next;        /*< Point to the next node of the IO list. */    
             void *Port;                     /*< Point to the address of the hardware PORT/IO register. */
+            qBool_t PreviousPinValue;       /*< The previous value of "Pin". */
         }private_end;
+        qBool_t Status;                     /*< The status of the pin. */
+        qBool_t Pin;                        /*< The specific pin to read. */        
     }qIONode_t;
 
     typedef qBool_t (*qCoreRegSize_t)(void* arg1, qBool_t arg2);
+    
     typedef struct{
         private_start{
             qIONode_t *Head;
@@ -36,6 +37,7 @@
             qBool_t State;
         }private_end;
     }qIOEdgeCheck_t;
+    
     qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber );
     qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber );
     qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber );

@@ -30,7 +30,7 @@
 
     typedef struct{
         qMemBlockConnect_t *End;            /*< Points to the last block of the list. */
-        qUINT8_t *Heap;                      /*< Points to the beginning of the heap area statically allocated. */
+        qUINT8_t *Heap;                     /*< Points to the beginning of the heap area statically allocated. */
         size_t HeapSize;                    /*< The size of the memory block pinted by "heap". */
         size_t FreeBytesRemaining;          /*< The number of free bytes in the heap. */
         size_t BlockAllocatedBit;           /*< A bit that is set when the block belongs to the application. Clearead when the block is part of the free space (only the MSB is used) */    

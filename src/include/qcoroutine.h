@@ -20,35 +20,35 @@
     typedef struct {qUINT16_t head, tail;} qCoroutineSemaphore_t; 
     typedef qCoroutineSemaphore_t qCRSem_t;
 
-    #define qCR_PCInitVal           ( -1 )            
+    #define qCR_PCInitVal               ( -1 )            
     #define __qCRKeep
-    #define __qCRCodeStartBlock      do
-    #define __qCRCodeEndBlock        while(qFalse)
-    #define __qPersistent            static qCoroutineInstance_t/*static _qTaskPC_t*/
-    #define __qTaskProgress          __LINE__
-    #define __qAssert(_COND_)        if(!(_COND_))
-    #define __qTaskPCVar             _qCRTaskState_.instr /*_qCRTaskState_*/
-    #define __qCRDelayVar            _qCRTaskState_.crdelay           
-    #define __qCRDelayPrepare        __qCRDelayVar = qClock_GetTick()
-    #define __qSetPC(_VAL_)          __qTaskPCVar = (_VAL_)
-    #define __qTaskSaveState         __qSetPC(__qTaskProgress) 
-    #define __qTaskInitState         _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */
-    #define __qTaskCheckPCJump(_PC_) switch(_PC_){    
-    #define __TagExitCCR             __qCRYield_ExitLabel
-    #define __qExit                  goto __TagExitCCR /*MISRA deviation*/
-    #define __qTaskYield             __qExit;
-    #define __qCRDispose            __qSetPC(qCR_PCInitVal);} __TagExitCCR:/*__qTaskInitState;} __TagExitCCR:*/
-    #define __qRestorator(_VAL_)     case (_qTaskPC_t)(_VAL_):            
-    #define __RestoreAfterYield      __qRestorator(__qTaskProgress)
-    #define __RestoreFromBegin       __qRestorator(qCR_PCInitVal)
-    #define __qCRSemInit(s, c)      __qCRCodeStartBlock{ (s)->tail = 0; (s)->head = (c); }__qCRCodeEndBlock
-    #define __qCRSemCount(s)        ((s)->head - (s)->tail)
-    #define __qCRSemLock(s)         (++(s)->tail)
-    #define __qCRSemRelease(s)      (++(s)->head)
+    #define __qCRCodeStartBlock         do
+    #define __qCRCodeEndBlock           while(qFalse)
+    #define __qPersistent               static qCoroutineInstance_t/*static _qTaskPC_t*/
+    #define __qTaskProgress             __LINE__
+    #define __qAssert(_COND_)           if(!(_COND_))
+    #define __qTaskPCVar                _qCRTaskState_.instr /*_qCRTaskState_*/
+    #define __qCRDelayVar               _qCRTaskState_.crdelay           
+    #define __qCRDelayPrepare           __qCRDelayVar = qClock_GetTick()
+    #define __qSetPC(_VAL_)             __qTaskPCVar = (_VAL_)
+    #define __qTaskSaveState            __qSetPC(__qTaskProgress) 
+    #define __qTaskInitState            _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */
+    #define __qTaskCheckPCJump(_PC_)    switch(_PC_){    
+    #define __TagExitCCR                __qCRYield_ExitLabel
+    #define __qExit                     goto __TagExitCCR /*MISRA deviation*/
+    #define __qTaskYield                __qExit;
+    #define __qCRDispose                __qSetPC(qCR_PCInitVal);} __TagExitCCR:/*__qTaskInitState;} __TagExitCCR:*/
+    #define __qRestorator(_VAL_)        case (_qTaskPC_t)(_VAL_):            
+    #define __RestoreAfterYield         __qRestorator(__qTaskProgress)
+    #define __RestoreFromBegin          __qRestorator(qCR_PCInitVal)
+    #define __qCRSemInit(s, c)          __qCRCodeStartBlock{ (s)->tail = 0; (s)->head = (c); }__qCRCodeEndBlock
+    #define __qCRSemCount(s)            ((s)->head - (s)->tail)
+    #define __qCRSemLock(s)             (++(s)->tail)
+    #define __qCRSemRelease(s)          (++(s)->head)
 
     #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin
     #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
-    #define __qCRRestart                        __qCRCodeStartBlock{  __qSetPC(qCR_PCInitVal)      ; __qTaskYield }                                            __qCRCodeEndBlock
+    #define __qCRRestart                        __qCRCodeStartBlock{  __qSetPC(qCR_PCInitVal)      ; __qTaskYield }                                     __qCRCodeEndBlock
     #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
         
     #define __qCR_do                            __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield;

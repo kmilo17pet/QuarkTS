@@ -15,19 +15,19 @@ typedef struct{ /*Scheduler Core-Flags*/
 }qCoreFlags_t;
 
 typedef struct{ /*KCB(Kernel Control Block) definition*/
-    #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-        volatile qIndex_t QueueIndex;                   /*< The current index of the FIFO priority queue. */
-        qQueueStack_t QueueStack[ Q_PRIO_QUEUE_SIZE ];  /*< Points to the storage area of the FIFO priority queue. */
-        void *QueueData;                                /*< The FIFO priority queue item-data. */
-    #endif 
-        qTaskFcn_t IDLECallback;                        /*< The callback function that represents the idle-task activities. */
+    qTask_t *Head;                                      /*< Points to the first task of the list. */
+    qTaskFcn_t IDLECallback;                            /*< The callback function that represents the idle-task activities. */
+    qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */    
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         qTaskFcn_t ReleaseSchedCallback;                /*< The callback function for the scheduler release action. */
-    #endif
-    qTask_t *Head;                                      /*< Points to the first task of the list. */
-    volatile qCoreFlags_t Flag;                         /*< The scheduler Core-Flags. */
-    qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */
+    #endif    
+    #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
+        void *QueueData;                                /*< The FIFO priority queue item-data. */
+        qQueueStack_t QueueStack[ Q_PRIO_QUEUE_SIZE ];  /*< Points to the storage area of the FIFO priority queue. */
+        volatile qIndex_t QueueIndex;                   /*< The current index of the FIFO priority queue. */
+    #endif 
     _qEvent_t_ EventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
+    volatile qCoreFlags_t Flag;                         /*< The scheduler Core-Flags. */
 }qKernelControlBlock_t;
 
 /*=========================== Kernel Control Block ===========================*/
@@ -62,7 +62,27 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
 #endif
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&kernel)/*point to something that is not some task in the chain */
+
 /*============================================================================*/
+/*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
+        
+Task Scheduler Setup. This function is required and must be called once in 
+the application main thread before any tasks creation.
+
+Parameters:
+
+    - TickProviderFcn :  The function that provides the tick value. If the user application 
+                        uses the qClock_SysTick() from the ISR, this parameter can be NULL.
+                        Note: Function should take void and return a 32bit value. 
+
+    - TimmingBase : This parameter specifies the ISR background timer base time.
+                    This can be the period in seconds(Floating-point format) or frequency 
+                    in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
+
+    - IDLE_Callback : Callback function to the Idle Task. To disable the 
+                    Idle Task functionality, pass NULL as argument.
+
+*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
     void qSchedulerSetup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
 #else

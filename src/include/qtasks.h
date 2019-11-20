@@ -186,7 +186,7 @@
     typedef struct _qTask_t{ /*Task node definition*/
         private_start{
             struct _qTask_t *Next;                  /*< Points to the next node of the task list. */
-            void *TaskData,*AsyncData;              /*< The task storage pointers. */
+            void *TaskData, *AsyncData;             /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
             #if ( Q_FSM == 1)
                 qSM_t *StateMachine;                /*< The pointer to the attached state-machine. */
@@ -204,7 +204,7 @@
             qPriority_t Priority;                   /*< The task priority. */
             qTaskState_t State;                     /*< The task state (set by the scheduler). */
             volatile qNotifier_t Notification;      /*< The notification value. */          
-            volatile qTaskFlag_t Flags;
+            volatile qTaskFlag_t Flags;             /*< Task flags (core and eventflags)*/
         }private_end;
     }qTask_t;
 

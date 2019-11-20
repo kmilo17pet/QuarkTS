@@ -233,12 +233,12 @@ Return value:
     a double(qFloat64_t), it causes undefined behavior
 */
 qFloat64_t qAtoF( const char *s ){
-    qFloat64_t rez = 0.0, fact ;
+    qFloat64_t rez = 0.0, fact;
     qBool_t point_seen;
     char c;
     #if ( Q_ATOF_FULL == 1 )
         int power2, powersign = 1;
-        double power = 1.0, efactor;
+        qFloat64_t power = 1.0, efactor;
     #endif
    
     while( isspace( (int)*s ) ){

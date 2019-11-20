@@ -13,6 +13,13 @@
     #define CurrentState    NextState
 
     typedef struct _qSM_t{ 
+        /*Private members (DO NOT USE THEM)*/
+        private_start{
+            void (*Failure)(_qSMData_t arg);
+            void (*Success)(_qSMData_t arg);
+            void (*Unexpected)(_qSMData_t arg);  
+            void (*BeforeAnyState)(_qSMData_t arg);/*only used when a task has a SM attached*/
+        }private_end;        
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
         */
@@ -25,27 +32,20 @@
         The last state executed
         */        
         qSM_Status_t (* LastState)(_qSMData_t arg);
-        /* PreviousReturnStatus: (Read Only)
-        The return status of <PreviousState>
-        */
-        qSM_Status_t PreviousReturnStatus;
-        /* StateFirstEntry: [== StateJustChanged] (Read Only)
-        True when  <Previous State> !=  <Current State>
-        */
-        qBool_t StateFirstEntry;
         /* Data: (Read Only)
         State-machine associated data.
         Note: If the FSM is running as a task, the associated event data can be 
         queried throught the "Data" field. (cast to qEvent_t is mandatory)
         */
         void * Data;
-        /*Private members (DO NOT USE THEM)*/
-        private_start{
-            void (*Failure)(_qSMData_t arg);
-            void (*Success)(_qSMData_t arg);
-            void (*Unexpected)(_qSMData_t arg);  
-            void (*BeforeAnyState)(_qSMData_t arg);/*only used when a task has a SM attached*/
-        }private_end;
+        /* PreviousReturnStatus: (Read Only)
+        The return status of <PreviousState>
+        */
+        qSM_Status_t PreviousReturnStatus;        
+        /* StateFirstEntry: [== StateJustChanged] (Read Only)
+        True when  <Previous State> !=  <Current State>
+        */
+        qBool_t StateFirstEntry;        
     }qSM_t;
     typedef qSM_t* const qSMData_t;    
     typedef qSM_Status_t (*qSM_State_t)(qSMData_t arg); 

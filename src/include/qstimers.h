@@ -16,10 +16,10 @@
         }private_end;
     }qSTimer_t;
 
-    #define QSTIMER_INITIALIZER                 {{0ul, 0ul}}
+    #define QSTIMER_DISARM_VALUE                ( 0ul )
+    #define QSTIMER_INITIALIZER                 {{QSTIMER_DISARM_VALUE, QSTIMER_DISARM_VALUE}}
     #define QSTIMER_ARMED                       ( qTrue )
     #define QSTIMER_DISARMED                    ( qFalse )
-    #define QSTIMER_DISARM_VALUE                ( 0ul )
     #define QSTIMER_REMAINING_IN_DISARMED_STATE ( 0xFFFFFFFFul )
 
     qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time );

@@ -2,7 +2,7 @@
 
 #if ( Q_MEMORY_MANAGER == 1)
 
-static qUINT8_t DefaultHeap[Q_DEFAULT_HEAP_SIZE] = {0};
+static qUINT8_t DefaultHeap[ Q_DEFAULT_HEAP_SIZE ] = {0};
 static qMemoryPool_t DefaultMemPool = {NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}};
 static qMemoryPool_t *MemPool = &DefaultMemPool;
 

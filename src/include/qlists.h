@@ -9,17 +9,21 @@
     #endif
 
     typedef struct node_s{
-        struct node_s *next, *prev;
+        struct node_s *next, *prev; /*< Pointers to the adyacent nodes. */
     }qNode_t;
 
+    #define qNode_MinimalFields     void *next, *prev
+    #define qNode_MinimalMembers    qNode_MinimalFields                
+
     typedef struct{
-        qNode_t *head, *tail;   /*< Pointers to the beginning of and the end of the list. */
-        qSize_t size;           /*< Used to hold the current size of the list. */
+        qNode_MinimalFields;        /*< to allow list of lists*/
+        qNode_t *head, *tail;       /*< Pointers to the beginning of and the end of the list. */
+        qSize_t size;               /*< Used to hold the current size of the list. */
     }qList_t;
-    #define qNode_MinimalFields                  void *next, *prev, *data
 
     typedef void(*qListVisualizer_t)(const void* arg1);
     typedef enum{qList_AtFront =-1 , qList_AtBack = 32766}qListPosition_t;
+    
     #define QLIST_ATFRONT             ( qList_AtFront )
     #define QLIST_ATBACK              ( qList_AtBack  )
 

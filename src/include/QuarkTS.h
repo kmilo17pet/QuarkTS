@@ -1,5 +1,5 @@
 /*
-     QuarkTS V5.3.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V5.3.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
     This file is part of the QuarkTS OS distribution.
@@ -64,5 +64,8 @@
     #if ( Q_PRIO_QUEUE_SIZE < 0 )   
         #error Q_PRIO_QUEUE_SIZE should be a value greater of equal than zero.
     #endif
+
+
+    #include "qbackward.h"
 
 #endif

@@ -39,7 +39,7 @@
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.2.1"
+    #define QUARKTS_VERSION         "5.3.1"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)

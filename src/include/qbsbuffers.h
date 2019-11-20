@@ -9,10 +9,10 @@
     #endif
 
     typedef struct{
+        volatile qUINT8_t *buffer;  /*< Points to the begining of the buffer storage area. */
         volatile qUIndex_t head;    /*< Used to hold the index of the head. */
         volatile qUIndex_t tail;    /*< Used to hold the index of the tail. */
         qSize_t length;             /*< The length of the buffer(a valid power of two). */ 
-        volatile qUINT8_t *buffer;   /*< Points to the begining of the buffer storage area. */
     }qBSBuffer_t;
 
     qSize_t qBSBuffer_Count( const qBSBuffer_t * const obj );

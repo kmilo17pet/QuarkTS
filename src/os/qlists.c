@@ -357,14 +357,15 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     qBool_t RetValue = qFalse;
     qSize_t count;
     qNode_t *current = NULL, *before = NULL, *after = NULL;
-    qBase_t i, j;
+    qBase_t i, j, n;
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
         if( count >= 2){ /*It is only worth running the algorithm if the list has two or more nodes*/
             for (i = 1; i < count; i++) {
                 current = list->head;
-                for (j = 0; j <= count - i - 1; j++) { 
+                n = count - i - 1;
+                for (j = 0; j <= n; j++) { 
                     if( qTrue == CompareFcn( current, current->next )  ) { /*compare adyacent nodes*/
                         before = current->prev;
                         after = current->next;
