@@ -74,9 +74,8 @@
     #define QTASK_EVENTFLAGS_RMASK	    ( 0xFFFFF000ul )
     #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFul )
     #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
-
+    
     #define __QTASK_QUEUEFLAGS_MASK     ( 0x0000003Cul )
-
     #define __QTASK_BIT_INIT            ( 0x00000001ul )  
     #define __QTASK_BIT_ENABLED         ( 0x00000002ul )
     #define __QTASK_BIT_QUEUE_RECEIVER  ( 0x00000004ul )
@@ -85,7 +84,7 @@
     #define __QTASK_BIT_QUEUE_EMPTY     ( 0x00000020ul )
     #define __QTASK_BIT_SHUTDOWN        ( 0x00000040ul )
     #define __QTASK_BIT_RESERVED        ( 0x00000080ul )
-    
+
     /*The task Bit-Flag definitions*/
     #define QEVENTFLAG_01               ( 0x00001000ul )
     #define QEVENTFLAG_02               ( 0x00002000ul )

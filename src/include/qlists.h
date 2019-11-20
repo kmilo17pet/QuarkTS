@@ -36,7 +36,7 @@
     void* qList_GetBack( const qList_t * const list );
     qBool_t qList_IsEmpty( const qList_t * const list );
     qSize_t qList_Length( const qList_t * const list );
-    qBool_t qList_Sort(qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) ;
+    qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) ;
 
 
     #ifdef __cplusplus

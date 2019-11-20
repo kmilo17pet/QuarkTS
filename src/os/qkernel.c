@@ -1,18 +1,21 @@
 #include "qkernel.h"
 
+#define __QKERNEL_BIT_INIT          ( 0x00000001ul )  
+#define __QKERNEL_BIT_FCALLIDLE     ( 0x00000002ul )
+#define __QKERNEL_BIT_RELEASESCHED  ( 0x00000004ul )
+#define __QKERNEL_BIT_FCALLRELEASED ( 0x00000008ul )
+
+#define __QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (  BIT )     
+#define __QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= ( ~BIT ) 
+#define __QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( ( FLAG ) & ( BIT ) )? qTrue : qFalse )
+
 /*an item of the priority-queue*/
 typedef struct{
     qTask_t *Task;      /*< A pointer to the task. */
     void *QueueData;    /*< The data to queue. */
 }qQueueStack_t;  
 
-typedef struct{ /*Scheduler Core-Flags*/
- 	volatile qBool_t Init;                              /*< The scheduler initialization flag. */
-    qBool_t FCallIdle;                                  /*< The idle first-call flag. */
-    #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )              
-        volatile qBool_t ReleaseSched, FCallReleased;   /*< The scheduler release flags*/
-    #endif  
-}qCoreFlags_t;
+typedef qUINT32_t qCoreFlags_t;
 
 typedef struct{ /*KCB(Kernel Control Block) definition*/
     qTask_t *Head;                                      /*< Points to the first task of the list. */
@@ -64,7 +67,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void );
 #define __qChainInitializer     ((qTask_t*)&kernel)/*point to something that is not some task in the chain */
 
 /*============================================================================*/
-/*void qSchedulerSetup(qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback, unsigned char QueueSize)
+/*void qSchedulerSetup(const qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback)
         
 Task Scheduler Setup. This function is required and must be called once in 
 the application main thread before any tasks creation.
@@ -103,11 +106,9 @@ Parameters:
         kernel.QueueIndex = -1;     
         kernel.QueueData = NULL;
     #endif
-    kernel.Flag.Init = qFalse;
+    kernel.Flag = 0ul; /*clear all the core flags*/
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         kernel.ReleaseSchedCallback = NULL;
-        kernel.Flag.ReleaseSched = qFalse;
-        kernel.Flag.FCallReleased = qFalse;
     #endif
     kernel.CurrentRunningTask = NULL;
     qClock_SetTickProvider( TickProvider );
@@ -146,7 +147,7 @@ Disables the kernel scheduling. The main thread will continue after the
 qSchedule() call.
 */
 void qSchedulerRelease( void ){
-    kernel.Flag.ReleaseSched = qTrue;
+    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_RELEASESCHED );
 }
 /*============================================================================*/
 /*void qSchedulerSetReleaseCallback(qTaskFcn_t Callback)
@@ -154,6 +155,7 @@ void qSchedulerRelease( void ){
 Set/Change the scheduler release callback function
 
 Parameters:
+
     - Callback : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
@@ -489,7 +491,7 @@ static qTask_t* _qScheduler_RearrangeChain( qTask_t *head ){ /*this method rearr
         tmp = tmp->qPrivate.Next;
         new_head = _qScheduler_PriorizedInsert( new_head, tmp1 );  
     }
-    kernel.Flag.Init = qTrue; /*set the initialization flag*/
+    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_INIT ); /*set the initialization flag*/
     qCritical_Exit();
     return new_head; /*return the new head*/
 }
@@ -536,16 +538,17 @@ static qTrigger_t _qScheduler_CheckQueueEvents( const qTask_t * const Task ){
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 static void _qTriggerReleaseSchedEvent( void ){
     qTaskFcn_t Callback;
-    kernel.Flag.Init = qFalse;
-    kernel.Flag.ReleaseSched = qFalse;   
-    kernel.EventInfo.FirstCall = ( qFalse == kernel.Flag.FCallReleased )? qTrue : qFalse;    
+
+    __QKERNEL_COREFLAG_CLEAR( kernel.Flag, __QKERNEL_BIT_INIT ); 
+    __QKERNEL_COREFLAG_CLEAR( kernel.Flag, __QKERNEL_BIT_RELEASESCHED );  
+    kernel.EventInfo.FirstCall = ( qFalse == __QKERNEL_COREFLAG_GET( kernel.Flag, __QKERNEL_BIT_FCALLRELEASED ) )? qTrue : qFalse;    
     kernel.EventInfo.Trigger = bySchedulingRelease;
     kernel.EventInfo.TaskData = NULL;
     if( NULL != kernel.ReleaseSchedCallback ){
         Callback = kernel.ReleaseSchedCallback;
         Callback( (qEvent_t)&kernel.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
-    }
-    kernel.Flag.FCallIdle = qTrue;      
+    }    
+    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ); 
 }
 #endif
 /*============================================================================*/
@@ -558,10 +561,10 @@ pool has been defined.
 */
 void qSchedulerRun( void ){
     qTask_t *Task = NULL; /*this pointer will hold the current node from the chain and/or the top enqueue node if available*/
-    kernel.Flag.Init = qTrue; 
+    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_INIT ); 
     do{
         #if ( Q_AUTO_CHAINREARRANGE == 1 )
-        if( qFalse == kernel.Flag.Init){ /*if initial scheduling conditions changed*/
+        if( qFalse == __QKERNEL_COREFLAG_GET( kernel.Flag, __QKERNEL_BIT_INIT ) ){ /*if initial scheduling conditions changed*/
             kernel.Head = _qScheduler_RearrangeChain( kernel.Head ); /*sort the chain by priority (init flag internally set)*/
         } 
         #endif
@@ -583,7 +586,7 @@ void qSchedulerRun( void ){
         }    
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        while( qFalse == kernel.Flag.ReleaseSched ); /*scheduling end-point*/ 
+        while( qFalse == __QKERNEL_COREFLAG_GET( kernel.Flag, __QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
         _qTriggerReleaseSchedEvent(); /*check for scheduling-release request*/
     #else
         while(1);
@@ -605,12 +608,12 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
     qIteration_t TaskIteration;
     qTaskFcn_t TaskActivities = NULL;
     if( byNoReadyTasks == Event){
-        kernel.EventInfo.FirstCall = (qFalse == kernel.Flag.FCallIdle)? qTrue : qFalse;
+        kernel.EventInfo.FirstCall = (qFalse == __QKERNEL_COREFLAG_GET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ) )? qTrue : qFalse;
         kernel.EventInfo.Trigger = Event;
         kernel.EventInfo.TaskData = NULL;
         TaskActivities = kernel.IDLECallback; /*some compilers can deal with function pointers inside structs*/
         TaskActivities( (qEvent_t)&kernel.EventInfo ); /*run the idle callback*/
-        kernel.Flag.FCallIdle = qTrue;   
+        __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE );
     }
     else{
         switch(Event){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
@@ -770,6 +773,6 @@ qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data){
 }
 /*============================================================================*/
 void _qScheduler_ReloadScheme(void){
-    kernel.Flag.Init = qFalse; 
+    __QKERNEL_COREFLAG_CLEAR( kernel.Flag, __QKERNEL_BIT_INIT );
 }
 /*============================================================================*/

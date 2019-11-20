@@ -145,6 +145,7 @@ void IdleTaskCallback(qEvent_t e){
     qEdgeCheck_Update(&INPUTS);
 
     if(e->FirstCall){
+        qTraceMessage("IDLE TASK FIRST CALL");
         qSTimerSet(&t, 10.0);
     }
 
@@ -173,6 +174,7 @@ void blinktaskCallback(qEvent_t e){
         qTaskSendNotification(&Task1, "notification 3");
         qTaskSendNotification(&Task1, "notification 4");
         puts("notification sended to task1 ");
+        /*qSchedulerRelease();*/
     }qCoroutineEnd;
 }
 /*============================================================================*/
@@ -195,6 +197,10 @@ qBool_t mylistcompare(const void *n1, const void *n2){
 
 }
 
+void scheduler_Release(qEvent_t e){
+    puts("SCHEDULER RELEASED");
+}
+
 int main(int argc, char** argv) {   
     qQueue_t somequeue;
     void *memtest;
@@ -204,6 +210,10 @@ int main(int argc, char** argv) {
     
     qTraceVariable( -3.1416, Float);
     qTraceVariable("dafdaa", Message );
+    qTraceVariable( sizeof(qTask_t) , UnsignedDecimal );
+    qTraceVariable( sizeof(qSM_t) , UnsignedDecimal );
+    qTraceVariable( sizeof(qSTimer_t) , UnsignedDecimal );
+    qTraceVariable( sizeof(qList_t) , UnsignedDecimal );
     
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);
@@ -235,9 +245,9 @@ int main(int argc, char** argv) {
     qQueueReceive( &somequeue, &b);
     printf("queue received = %d \r\n", b);
 
-
     /*return EXIT_SUCCESS;*/
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback);           
+    qSchedulerSetReleaseCallback( scheduler_Release );
     
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");    
     puts("added blink");
@@ -250,6 +260,10 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
+    
     qSchedulerRun();
+    
+    
+    
     return (EXIT_SUCCESS);
 }

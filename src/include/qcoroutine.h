@@ -57,7 +57,7 @@
     #define __qCR_wu_preAssert(_pre_ , _cond_)  __qCR_do{ (_pre_); }__qCR_until((_cond_)) \
 
 
-    #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  (_pos_) =__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_((_pos_));}                                  __qCRCodeEndBlock
+    #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  (_pos_) =__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_((_pos_));}             __qCRCodeEndBlock
     #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
     #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( qClock_TimeDeadlineCheck(_qCRTaskState_.crdelay, qTime2Clock(_time_))  ) __qTaskYield } __qCRCodeEndBlock
     #define __qCR_PositionReset(_pos_)          (_pos_) = qCR_PCInitVal
