@@ -158,7 +158,7 @@ Parameters:
 
 Return value:
 
-    qTrue if the move operation is performed successfully, othewise 
+    qTrue if the move operation is performed successfully, otherwise 
     returns qFalse   
 
 */
@@ -476,7 +476,7 @@ Parameters:
 
 Return value:
 
-    The number of items of the list. 
+    qTrue if the walk through was early terminated, otherwise returns qFalse.
 
 */ 
 qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qBool_t reverse){
