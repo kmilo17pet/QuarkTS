@@ -1,8 +1,5 @@
 #include "qkernel.h"
 
-
-
-
 /*============================================================================*/
 /*void qTaskSendNotification(qTask_t * const Task, void* eventdata)
 

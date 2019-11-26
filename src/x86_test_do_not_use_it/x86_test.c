@@ -184,9 +184,10 @@ typedef struct{
     int priority;
 }mynode_t;
 
-void mylistprinter(const void *node){
+qBool_t mylistprinter(void *node, void *arg){
     const mynode_t *xnode = node;
     printf( "%d->", xnode->priority ); 
+    return qFalse;
 }
 
 qBool_t mylistcompare(const void *n1, const void *n2){
@@ -201,6 +202,7 @@ void scheduler_Release(qEvent_t e){
     puts("SCHEDULER RELEASED");
 }
 
+
 int main(int argc, char** argv) {   
     qQueue_t somequeue;
     void *memtest;
@@ -208,8 +210,47 @@ int main(int argc, char** argv) {
 
     qSetDebugFcn(putcharfcn);    
     
+    mynode_t na, nb, nc, nd, ne;
+    qList_t mylist1, mylist2;
+    na.priority = 20;
+    nb.priority = 39;
+    nc.priority = 40;
+    nd.priority = 100;
+    ne.priority = 41;
+    qList_Initialize( &mylist1 );
+    qList_Initialize( &mylist2 );
+   
+    qList_Insert( &mylist1, &na, qList_AtFront );
+    qList_Insert( &mylist1, &nb, qList_AtFront );
+    qList_Insert( &mylist1, &ne, qList_AtFront );
+   
+    qList_Insert( &mylist2, &nc, qList_AtFront );
+    qList_Insert( &mylist2, &nd, qList_AtFront);
+
+
+    puts("\r\nlist1");
+    qList_View( &mylist1, mylistprinter );
+     puts("\r\nlist2");
+    qList_View( &mylist2, mylistprinter );
+    puts("");
+    qList_Move( &mylist1, &mylist2, 3 );
+    puts("===============================");
+    puts("\r\nlist1");
+    qList_View( &mylist1, mylistprinter );
+     puts("\r\nlist2");
+    qList_View( &mylist2, mylistprinter );
+   
+    printf("\r\nlist1 = %d  list2 = %d\r\n", qList_Length(&mylist1), qList_Length(&mylist2) );
+    printf("head = %d   tail = %d\r\n", ((mynode_t*)qList_GetFront(&mylist1))->priority, ((mynode_t*)qList_GetBack(&mylist1))->priority );
+
+    puts("===============================");
+    qList_View( &mylist1, mylistprinter );
+    puts("");
+    qList_ForEach( &mylist1, mylistprinter, NULL, qTrue );
+
+    return EXIT_SUCCESS;
     qTraceVariable( -3.1416, Float);
-    qTraceVariable("dafdaa", Message );
+    qTraceVariable( "dafdaa", Message );
     qTraceVariable( sizeof(qTask_t) , UnsignedDecimal );
     qTraceVariable( sizeof(qSM_t) , UnsignedDecimal );
     qTraceVariable( sizeof(qSTimer_t) , UnsignedDecimal );
