@@ -10,7 +10,10 @@ static qNode_t* qList_RemoveFront( qList_t * const list );
 static qNode_t* qList_RemoveBack( qList_t * const list );
 
 static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t position );
-static qBool_t qList_1NodeCompare(void *node1, void *node2);
+
+
+static qListMemAllocator_t qListMalloc = NULL; 
+static qListMemFree_t qListFree = NULL; 
 
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
@@ -36,10 +39,6 @@ static qNode_t* qList_NodeInit( void * const node ){
     xNode->prev = NULL;
     xNode->next = NULL;
     return xNode;
-}
-/*=========================================================*/
-static qBool_t qList_1NodeCompare(void *node1, void *node2){
-    return ( node1 == node2 )? qTrue : qFalse;
 }
 /*=========================================================*/
 static void qList_InsertAtFront( qList_t * const list, qNode_t * const node ){
@@ -122,7 +121,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
                 list->head = newnode; 
                 list->tail = newnode;
             }
-            else if( qList_AtFront == position){
+            else if( qList_AtFront == position ){
                 qList_InsertAtFront( list, node );
             }
             else if( ( qList_AtBack == position ) || ( position >= ( (qListPosition_t)list->size - 1 ) ) ){
@@ -166,7 +165,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
 
-    if( ( NULL != destination ) && ( NULL != source ) && ( position >= -1 ) && ( position <= qList_AtBack )) {    
+    if( ( NULL != destination ) && ( NULL != source ) && ( position >= -1 ) && ( position <= qList_AtBack ) ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
             if( NULL == destination->head ){ /*destination is empty*/
@@ -271,26 +270,18 @@ Return value:
 */ 
 qBool_t qList_IsMember( const qList_t * const list, const void * const node ){
     qBool_t RetValue = qFalse;
+    qNode_t *iNode;
+    const qNode_t * const xNode = (qNode_t const*)node;
     
-    if( NULL != node ){       
-        RetValue = qList_ForEach( (qList_t *const)list, qList_1NodeCompare, (void*)node, qFalse );
+    if( NULL != node ){
+        for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
+            if( iNode == xNode){
+                RetValue = qTrue;
+                break;
+            }
+        }
     }
     return RetValue;
-}
-/*=========================================================*/
-/*void qList_View(const qList_t * const list, const qListVisualizer_t visualizer)
- 
-List visualization. The application writer should provide the
-function to print out the corresponding node data.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - visualizer : The function for node data visualization.
-
-*/ 
-void qList_View( qList_t *const list, const qListNodeFcn_t visualizer ){
-    qList_ForEach( list, visualizer, NULL, qFalse ); 
 }
 /*=========================================================*/
 /*void* qList_GetFront(const qList_t * const list)
@@ -465,7 +456,7 @@ Parameters:
     - list : Pointer to the list.
     - Fcn : The function to perform over the node. 
             Should have this prototype:
-            qBool_t Function( void* Node, void *arg )
+            qBool_t Function( void* Node, void *arg, qList_WalkStage_t stage )
             
             If <Function> returns qTrue, the walk through loop
             will be terminated.
@@ -484,24 +475,57 @@ qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qBool
     qNode_t *iNode;
     
     if( NULL != list ){
+        Fcn( NULL, arg, qList_WalkInit );
         if( qTrue == reverse){
             for( iNode = list->tail; NULL != iNode; iNode = iNode->prev){
-                if( ( RetValue = Fcn( iNode, arg ) ) ){
+                if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
                     break;
                 }               
             }
         }
         else{
             for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
-                if( ( RetValue = Fcn( iNode, arg ) ) ){
+                if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
                     break;
                 }   
             }   
         }
-         
+        Fcn( NULL, arg, qList_WalkEnd ); 
     }
     return RetValue;
 } 
+/*=========================================================*/
+void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn  ){
+    qListFree = freeFcn;
+    qListMalloc = mallocFcn;
+}
+/*=========================================================*/
+qBool_t qList_DInsert( qList_t *const list, void *data, qSize_t size, qListPosition_t position ){
+    qBool_t RetValue = qFalse;
+    void *NewNode = NULL;
+    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > 0) ){
+        NewNode = qListMalloc( size );
+        if( NULL != NewNode ){
+            memcpy( NewNode, data, size );
+            RetValue = qList_Insert( list, NewNode, position );
+            if( qFalse == RetValue ){
+                qListFree( NewNode );
+            }
+        }
+    }
+    return RetValue;
+}
+/*=========================================================*/
+void* qList_DRemove( qList_t * const list, void * const node, const qListPosition_t position ){
+    void *removed = NULL;
+    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) ){
+        removed = qList_Remove( list, node, position );
+        if( NULL != removed ){
+            qListFree( removed );        
+        }    
+    }
+    return removed;
+}
 /*=========================================================*/
 
 #endif /* #if ( Q_LISTS == 1) */

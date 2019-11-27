@@ -34,12 +34,12 @@
     typedef int qBase_t;
     /*Floating-point types*/
     typedef float qFloat32_t;
-    typedef double qFloat64_t;
+    typedef double qFloat64_t; /*this is not always true in some compilers*/
         
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.3.1"
+    #define QUARKTS_VERSION         "5.3.2"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)

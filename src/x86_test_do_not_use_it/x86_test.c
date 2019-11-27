@@ -182,12 +182,101 @@ void scheduler_Release(qEvent_t e){
     puts("SCHEDULER RELEASED");
 }
 
+typedef struct{
+    qNode_MinimalFields;
+    int value;
+}mynode_t;
+
+qBool_t mylist_visualizer(void *node, void *arg, qList_WalkStage_t stage){
+    mynode_t *xnode = node;
+    switch (stage){
+        case qList_WalkInit:
+            printf("list={");
+            break;
+        case qList_WalkThrough:
+            printf("%d->", xnode->value );
+            break;
+        case qList_WalkEnd:
+            puts("}");
+            break;    
+        default: break;
+    }
+    return qFalse;
+}
+
+qBool_t comparator(const void *p, const void *q) { 
+    const mynode_t *n1 = p;
+    const mynode_t *n2 = q;
+    int l, r;
+
+    l = n1->value;
+    r = n2->value;
+    /* both odd, put the greater of two first. */
+    if ((l&1) && (r&1)) 
+        return l>r; 
+  
+    /* both even, put the smaller of two first */
+    if ( !(l&1) && !(r&1) ) 
+        return l>r; 
+  
+    /*l is even, put r first */
+    if (!(l&1)) 
+        return qTrue; 
+  
+    /* l is odd, put l first */
+    return qFalse; 
+} 
 
 int main(int argc, char** argv) {   
     qQueue_t somequeue;
     void *memtest;
     int x[]={10,20,30,40,50,60,70,80,90,100};
 
+
+    qList_t mylist;
+    mynode_t n1, n2, n3, n4, n5, n6, n7, n8, n9, xn;
+    n1.value = 1;
+    n2.value = 6;
+    n3.value = 5;
+    n4.value = 2;
+    n5.value = 3;
+    n6.value = 9;
+    n7.value = 4;
+    n8.value = 7;
+    n9.value = 8;
+
+
+    qList_Initialize( &mylist );
+    qList_SetMemoryAllocation( qMalloc, qFree );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_Insert( &mylist, &n1, qList_AtBack );
+    qList_Insert( &mylist, &n2, qList_AtBack );
+    qList_Insert( &mylist, &n3, qList_AtBack );
+    qList_Insert( &mylist, &n4, qList_AtBack );
+    qList_Insert( &mylist, &n5, qList_AtBack );
+    qList_Insert( &mylist, &n6, qList_AtBack );
+    qList_Insert( &mylist, &n7, qList_AtBack );
+    qList_Insert( &mylist, &n8, qList_AtBack );
+    assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qTrue );
+    assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qFalse ); /*node n9 its already a member*/
+    assert( qList_Insert( &mylist, NULL, qList_AtBack ) == qFalse ); 
+
+    xn.value = 50;
+    qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack );
+    xn.value =88;
+    qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack );
+
+    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_Sort( &mylist, comparator );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    
+    qList_DRemove( &mylist, NULL, qList_AtBack );
+    qList_DRemove( &mylist, NULL, qList_AtBack );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+
+
+
+    return EXIT_SUCCESS;
     qSetDebugFcn(putcharfcn);    
 
     qTraceVariable( -3.1416, Float);
