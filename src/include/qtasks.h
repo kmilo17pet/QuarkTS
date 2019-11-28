@@ -306,7 +306,7 @@
     #define qTaskIsEnabled(pTask_)      ( qEnabled == qTaskGetState((pTask_) ) )
 
     #if ( Q_QUEUES == 1 )
-        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT32_t arg );
+        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );
     #endif 
 
     #if ( Q_FSM == 1 ) 

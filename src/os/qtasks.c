@@ -245,7 +245,7 @@ void qTaskClearTimeElapsed( qTask_t * const Task ){
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, qUINT8_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, qUINT16_t arg)
 
 Attach a Queue to the Task. 
 
@@ -281,7 +281,7 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT32_t arg ){
+qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->pHead ) {

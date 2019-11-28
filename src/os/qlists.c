@@ -464,9 +464,9 @@ Parameters:
             will be terminated.
 
     - arg : Argument passed to <Fcn>
-    - reverse: Use one of the following options:
-               QLIST_FORWARD or NULL : to walk through the list forward.
-               QLIST_BACKWARD : to walk through the list backward.
+    - dir : Use one of the following options:
+               QLIST_FORWARD or NULL : to walk through the list forwards.
+               QLIST_BACKWARD : to walk through the list backwards.
 
 Return value:
 
