@@ -1,6 +1,28 @@
 #include "qstimers.h"
 
 /*============================================================================*/
+/*qBool_t qSTimerReload( qSTimer_t * const obj )
+
+Reload the timer with the previous specified time.
+Note: STimer should be armed before this operation
+
+Parameters:
+
+    - obj : A pointer to the STimer object.
+
+Return value:
+
+    Returns qTrue on success, otherwise, returns qFalse.
+*/
+qBool_t qSTimerReload( qSTimer_t * const obj ){
+    qBool_t RetValue = qFalse;
+    if( NULL != obj ){
+        obj->qPrivate.Start = qClock_GetTick();
+        RetValue = qTrue;
+    }
+    return RetValue;
+}
+/*============================================================================*/
 /*qBool_t qSTimerSet(qSTimer_t * const obj, const qTime_t Time)
  
 Set the expiration time for a STimer. On success, the STimer gets
@@ -21,9 +43,8 @@ Return value:
 */
 qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
-    if( NULL != obj ){
+    if( qSTimerReload( obj ) ){
         obj->qPrivate.TV  = qTime2Clock(Time); /*set the STimer time in epochs*/
-        obj->qPrivate.Start  = qClock_GetTick(); /*set the init time of the STimer with the current system epoch value*/
         RetValue = qTrue;
     }
     return RetValue;

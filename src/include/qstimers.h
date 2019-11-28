@@ -22,6 +22,7 @@
     #define QSTIMER_DISARMED                    ( qFalse )
     #define QSTIMER_REMAINING_IN_DISARMED_STATE ( 0xFFFFFFFFul )
 
+    qBool_t qSTimerReload( qSTimer_t * const obj );
     qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time );
     qBool_t qSTimerExpired( const qSTimer_t * const obj );
     qBool_t qSTimerFreeRun( qSTimer_t * const obj, const qTime_t Time );

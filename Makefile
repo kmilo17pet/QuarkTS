@@ -38,6 +38,7 @@ SUCCESS_STRING = "Success!"
 LINK_STRING = "Linking..."
 
 define run_and_test
+echo $(1); \
 printf "%b" "$(COM_COLOR)$(COM_STRING) $(OBJ_COLOR)$(@F)$(NO_COLOR)\r"; \
 $(1) 2> $@.log; \
 RESULT=$$?; \
