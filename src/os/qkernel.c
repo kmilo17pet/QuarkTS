@@ -205,7 +205,7 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
         qCritical_Enter(); 
         MaxPriorityValue = kernel.QueueStack[0].Task->qPrivate.Priority;
         for( i = 1u ; ( i < Q_PRIO_QUEUE_SIZE ) ; i++){  /*walk through the queue to find the task with the highest priority*/
-            if( NULL != kernel.QueueStack[i].Task ){ /* tail is reached */
+            if( NULL == kernel.QueueStack[i].Task ){ /* tail is reached */
                 break;
             }
             if( kernel.QueueStack[i].Task->qPrivate.Priority > MaxPriorityValue ){ /*check if the queued task has the max priority value*/
