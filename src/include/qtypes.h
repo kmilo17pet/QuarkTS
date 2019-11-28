@@ -18,16 +18,18 @@
         /*Signed types*/
         typedef int8_t qINT8_t;
         typedef int16_t qINT16_t;
-        typedef int32_t qINT32_t;          
+        typedef int32_t qINT32_t;      
     #else
         /*Unsigned types*/
         typedef unsigned char qUINT8_t;
         typedef unsigned short qUINT16_t;
         typedef unsigned long qUINT32_t;
+
         /*Signed types*/
         typedef signed char qINT8_t;
         typedef short qINT16_t;
-        typedef long qINT32_t;  
+        typedef long qINT32_t;
+
     #endif
 
     typedef qUINT8_t qByte_t;

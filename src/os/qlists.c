@@ -241,8 +241,8 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
             list->size--;
         }
         else{
-            LastIndex = ( (int)position - 1 );
-            iNode = qList_GetiNode( list, LastIndex );
+            LastIndex = ( (qBase_t)position - 1 );
+            iNode = qList_GetiNode( list, (qListPosition_t)LastIndex );
             removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
             iNode->next = removed->next;
             if( NULL != removed->next ){

@@ -230,6 +230,7 @@ qBool_t comparator(const void *p, const void *q) {
 int main(int argc, char** argv) {   
     qQueue_t somequeue;
     void *memtest;
+    int b;
     int x[]={10,20,30,40,50,60,70,80,90,100};
 
 
@@ -306,7 +307,6 @@ int main(int argc, char** argv) {
     qQueueSendToBack( &somequeue, &x[2]);
     qQueueSendToFront( &somequeue, &x[3]);
 
-    int b;
 
     qQueueReceive( &somequeue, &b);
     

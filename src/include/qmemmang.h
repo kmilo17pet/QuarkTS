@@ -12,16 +12,6 @@
         #define Q_BYTE_ALIGNMENT    ( 8 )
     #endif
 
-    #ifdef __GNUC__
-        #ifdef __x86_64__
-            typedef unsigned long long qAddress_t; 
-        #else
-            typedef qUINT32_t qAddress_t;
-        #endif
-    #else
-        typedef qUINT32_t qAddress_t;
-    #endif
-
     /* Linked list structure to connect the free blocks in order of their memory address. */
     typedef struct qMemBlockConnect_s{
         struct qMemBlockConnect_s *Next;    /*< used to point the next free block in the list*/
