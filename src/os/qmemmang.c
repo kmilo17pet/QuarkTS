@@ -54,9 +54,7 @@ Parameters:
 
 */
 void qMemoryPool_Select(qMemoryPool_t * const mPool){
-    if( NULL != mPool ){
-        MemPool = mPool;
-    }
+    MemPool = mPool;
 }
 /*============================================================================*/
 /*void qFree(void *ptr)
