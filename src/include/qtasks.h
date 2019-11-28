@@ -192,7 +192,7 @@
             #endif
             #if ( Q_QUEUES == 1)
                 qQueue_t *Queue;                    /*< The pointer to the attached queue. */
-                qUINT8_t QueueCount;
+                qUINT32_t QueueCount;
             #endif
             volatile qClock_t Interval, ClockStart; /*< The timestamps of the task in epochs. */
             #if ( Q_TASK_COUNT_CYCLES == 1 )
@@ -306,7 +306,7 @@
     #define qTaskIsEnabled(pTask_)      ( qEnabled == qTaskGetState((pTask_) ) )
 
     #if ( Q_QUEUES == 1 )
-        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT8_t arg );
+        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT32_t arg );
     #endif 
 
     #if ( Q_FSM == 1 ) 

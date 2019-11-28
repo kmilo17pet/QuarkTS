@@ -13,7 +13,7 @@ embedded application
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
-/*#include <sys/time.h>*/
+#include <sys/time.h>
 #include <signal.h>
 #include <ctype.h>
 #include <termios.h>
@@ -204,6 +204,27 @@ qBool_t mylist_visualizer(void *node, void *arg, qList_WalkStage_t stage){
     return qFalse;
 }
 
+qList_t otherlist;
+
+qBool_t mylist_binremove( void *node, void *arg, qList_WalkStage_t stage){
+    mynode_t *xnode = node;
+    switch (stage){
+        case qList_WalkInit:
+            break;
+        case qList_WalkThrough:
+            if( xnode->value & 1 ){
+                qList_Remove( arg, node, 0 );
+                qList_Insert( &otherlist, node, qList_AtBack );
+            }
+            break;
+        case qList_WalkEnd:
+            break;    
+        default: break;
+    }
+    return qFalse;    
+}
+
+
 qBool_t comparator(const void *p, const void *q) { 
     const mynode_t *n1 = p;
     const mynode_t *n2 = q;
@@ -227,7 +248,8 @@ qBool_t comparator(const void *p, const void *q) {
     return qFalse; 
 } 
 
-int main(int argc, char** argv) {   
+int main(int argc, char** argv) {
+       
     qQueue_t somequeue;
     void *memtest;
     int b;
@@ -246,8 +268,11 @@ int main(int argc, char** argv) {
     n8.value = 7;
     n9.value = 8;
 
+    qSetDebugFcn(putcharfcn); 
 
     qList_Initialize( &mylist );
+    qList_Initialize( &otherlist ); 
+
     qList_SetMemoryAllocation( qMalloc, qFree );
     qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
     qList_Insert( &mylist, &n1, qList_AtBack );
@@ -267,18 +292,22 @@ int main(int argc, char** argv) {
     xn.value =88;
     qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack );
 
-    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
     qList_Sort( &mylist, comparator );
-    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
     
     qList_DRemove( &mylist, NULL, qList_AtBack );
     qList_DRemove( &mylist, NULL, qList_AtBack );
-    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
 
+    
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD );
 
+    qList_ForEach( &mylist, mylist_binremove, &mylist, QLIST_FORWARD );
 
-    return EXIT_SUCCESS;
-    qSetDebugFcn(putcharfcn);    
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD );
 
     qTraceVariable( -3.1416, Float);
     qTraceVariable( "dafdaa", Message );

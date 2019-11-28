@@ -15,6 +15,8 @@ static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t
 static qListMemAllocator_t qListMalloc = NULL; 
 static qListMemFree_t qListFree = NULL; 
 
+static qNode_t* __qNode_Forward( const qNode_t *const node );
+
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
  
@@ -182,7 +184,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
                 source->head->prev = destination->tail;
                 destination->tail = source->tail;
             }
-            else{ /*insert the new node after the position*/
+            else{ /*insert the new list after the position*/
                 iNode = qList_GetiNode( destination, position );
                 source->tail->next = iNode->next; 
                 source->head->prev = iNode;
@@ -447,9 +449,9 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qBool_t reverse)
+/*qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir )
  
-Operate on each element of the list
+Operate on each element of the list.
 
 Parameters:
 
@@ -462,38 +464,47 @@ Parameters:
             will be terminated.
 
     - arg : Argument passed to <Fcn>
-    - reverse: If qTrue, this function will walk through the 
-              list in reverse order.
+    - reverse: Use one of the following options:
+               QLIST_FORWARD or NULL : to walk through the list forward.
+               QLIST_BACKWARD : to walk through the list backward.
 
 Return value:
 
     qTrue if the walk through was early terminated, otherwise returns qFalse.
 
 */ 
-qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qBool_t reverse){
+qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir ){
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
+    qNode_t *adyacent; /*to allow i-node links to be changed in the walk throught*/
     
-    if( NULL != list ){
-        Fcn( NULL, arg, qList_WalkInit );
-        if( qTrue == reverse){
-            for( iNode = list->tail; NULL != iNode; iNode = iNode->prev){
-                if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
-                    break;
-                }               
-            }
+    if( ( NULL != list ) && ( NULL != Fcn ) && ( ( QLIST_FORWARD == dir ) || ( QLIST_BACKWARD == dir) ) ){
+        if( QLIST_FORWARD == dir ){
+            dir = __qNode_Forward;
+            adyacent = list->head;
         }
         else{
-            for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
-                if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
-                    break;
-                }   
-            }   
+            adyacent = list->tail;
+        }
+        Fcn( NULL, arg, qList_WalkInit );
+        for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
+            adyacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
+            if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
+                break;
+            }               
         }
         Fcn( NULL, arg, qList_WalkEnd ); 
     }
     return RetValue;
 } 
+/*=========================================================*/
+static qNode_t* __qNode_Forward( const qNode_t *const node ){
+    return node->next;
+}
+/*=========================================================*/
+qNode_t* __qNode_Backward( const qNode_t *const node){
+    return node->prev;
+}
 /*=========================================================*/
 void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn  ){
     qListFree = freeFcn;
