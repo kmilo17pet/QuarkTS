@@ -50,7 +50,9 @@
 
     qBool_t qSchedulerRemoveTask( qTask_t * const Task );
     void qSchedulerRun( void );
-    qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data);
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+        qBool_t _qScheduler_PQueueInsert(qTask_t * const Task, void *data);
+    #endif
     void _qScheduler_ReloadScheme(void);
 
     #define __qFSMCallbackMode      ((qTaskFcn_t)1)

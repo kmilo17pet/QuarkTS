@@ -38,7 +38,11 @@ static qKernelControlBlock_t kernel;
 /*=============================== Private Methods ============================*/
 static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t Event );
 static qTask_t* _qScheduler_GetNodeFromChain( void );
-static qTask_t* _qScheduler_RearrangeChain( qTask_t *head );
+
+#if ( Q_AUTO_CHAINREARRANGE == 1 )
+    static qTask_t* _qScheduler_RearrangeChain( qTask_t *head );
+#endif
+
 static qTask_t* _qScheduler_PriorizedInsert( qTask_t *head, qTask_t * const Task );
 static void _qScheduler_FindPlace( qTask_t * const head, qTask_t * const Task );
 static qBool_t _qScheduler_TransitionTo( qTask_t * const task, const qTaskState_t state, const qTrigger_t trg );
@@ -192,8 +196,8 @@ qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t m
     }
     return RetValue;
 }
-#if ( Q_PRIO_QUEUE_SIZE > 0 )  
 /*============================================================================*/
+#if ( Q_PRIO_QUEUE_SIZE > 0 )  
 static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qTask_t *xTask = NULL;
     qUIndex_t i;
@@ -649,7 +653,6 @@ static qTaskState_t _qScheduler_Dispatch( qTask_t * const Task, const qTrigger_t
                 break;
         #endif
             case byEventFlags:
-                kernel.QueueData = NULL;
                 break;
             default: break;
         }

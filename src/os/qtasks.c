@@ -53,7 +53,11 @@ Return value:
     occurred (The queue exceeds the size).
 */
 qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
-    return _qScheduler_PQueueInsert( Task, eventdata );     
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )      
+        return _qScheduler_PQueueInsert( Task, eventdata );     
+    #else
+        return qFalse;
+    #endif
 }
 /*============================================================================*/
 /*
