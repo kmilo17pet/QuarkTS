@@ -37,7 +37,7 @@
     #define qTrigger_NotificationSimple     ( byNotificationSimple )
     #define qTrigger_NotificationQueued     ( byNotificationQueued )
     #define qTrigger_TimeElapsed            ( byTimeElapsed )
-    #define qTrigger_QueueReceiver          ( byQueueReceiver
+    #define qTrigger_QueueReceiver          ( byQueueReceiver )
     #define qTrigger_QueueFull              ( byQueueFull )
     #define qTrigger_QueueCount             ( byQueueCount )
     #define qTrigger_QueueEmpty             ( byQueueEmpty )
