@@ -365,7 +365,7 @@ Return value:
 
 */
 qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task ){
-    qTaskFlag_t RetValue = 0x00000000;
+    qTaskFlag_t RetValue = 0u;
     if( NULL != Task ){
         RetValue = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
     }    

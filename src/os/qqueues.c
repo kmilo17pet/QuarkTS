@@ -2,9 +2,9 @@
 
 #if (Q_QUEUES == 1)
 
-static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, qBool_t xPosition );
+static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition );
 static void qQueueMoveReader( qQueue_t * const obj );
-static void qQueueCopyDataFromQueue( qQueue_t * const obj, const void *pvBuffer );
+static void qQueueCopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer );
 
 /*============================================================================*/
 /*qBool_t qQueueCreate(qQueue_t * const obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
@@ -27,7 +27,7 @@ Note: Element_count should be a power of two, or it will only use the next
     qTrue on success, otherwise returns qFalse.
 
  */
-qBool_t qQueueCreate( qQueue_t * const obj, void* DataArea, qSize_t ItemSize, qSize_t ItemsCount ){
+qBool_t qQueueCreate( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( NULL != DataArea ) && ( ItemSize > 0u ) && ( ItemsCount > 0u) ){
         obj->ItemsCount = ItemsCount;   /* Initialise the queue members*/
@@ -95,8 +95,8 @@ Return value:
 
     The number of elements in the queue
  */
-qSize_t qQueueCount( const qQueue_t * const obj ){
-    qSize_t RetValue = 0u;
+size_t qQueueCount( const qQueue_t * const obj ){
+    size_t RetValue = 0u;
     if ( NULL != obj ){
         RetValue = obj->ItemsWaiting;
     } 
@@ -179,9 +179,9 @@ qBool_t qQueueRemoveFront( qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, qBool_t xPosition ){
+static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition ){
     if( QUEUE_SEND_TO_BACK == xPosition ){
-        memcpy( (void*) obj->pcWriteTo, pvItemToQueue, (unsigned)obj->ItemSize );
+        (void) memcpy( (void*) obj->pcWriteTo, pvItemToQueue, obj->ItemSize );
         obj->pcWriteTo += obj->ItemSize;
         if( obj->pcWriteTo >= obj->pTail ){
             obj->pcWriteTo = obj->pHead;
@@ -189,7 +189,7 @@ static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQue
               
     }
     else{
-        memcpy( (void*) obj->pcReadFrom, pvItemToQueue, (unsigned)obj->ItemSize );
+        (void) memcpy( (void*) obj->pcReadFrom, pvItemToQueue, obj->ItemSize );
         obj->pcReadFrom -= obj->ItemSize;
         if( obj->pcReadFrom < obj->pHead ){
             obj->pcReadFrom = ( obj->pTail - obj->ItemSize ); 
@@ -205,9 +205,9 @@ static void qQueueMoveReader( qQueue_t * const obj ){
     }
 }
 /*==================================================================================*/
-static void qQueueCopyDataFromQueue( qQueue_t * const obj, const void *pvBuffer ){
+static void qQueueCopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer ){
     qQueueMoveReader( obj );
-    memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, (unsigned)obj->ItemSize );
+    (void) memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, obj->ItemSize );
 }
 /*============================================================================*/
 /*void* qQueueReceive(qQueue_t * const obj, void *dest)

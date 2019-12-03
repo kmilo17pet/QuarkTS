@@ -6,7 +6,7 @@ static qPutChar_t qDebug = NULL;
 char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE] = {0};
 
 /*============================================================================*/
-void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize ){
+void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, size_t BlockSize ){
     if( NULL != qDebug ){ /*trace only if the output-function is defined*/
         qPrintString( qDebug, NULL, loc ); /*print out the line location*/
         if( NULL != fcn ){ /*print out the function if available*/

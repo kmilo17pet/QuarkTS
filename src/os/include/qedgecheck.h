@@ -9,9 +9,9 @@
     extern "C" {
     #endif
 
-    #define QREG_8BIT               __qReg_08Bits
-    #define QREG_16BIT              __qReg_16Bits
-    #define QREG_32BIT              __qReg_32Bits
+    #define QREG_8BIT               ( __qReg_08Bits )
+    #define QREG_16BIT              ( __qReg_16Bits )
+    #define QREG_32BIT              ( __qReg_32Bits )
     
     #define QEDGECHECK_WAIT         ( 0u )
     #define QEDGECHECK_UPDATE       ( 1u )
@@ -27,7 +27,7 @@
         qBool_t Pin;                        /*< The specific pin to read. */        
     }qIONode_t;
 
-    typedef qBool_t (*qCoreRegSize_t)(void* arg1, qBool_t arg2);
+    typedef qBool_t (*qCoreRegSize_t)(const void* arg1, qBool_t arg2);
     
     typedef struct{
         private_start{
@@ -38,9 +38,9 @@
         }private_end;
     }qIOEdgeCheck_t;
     
-    qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber );
-    qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber );
-    qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber );
+    qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber );
+    qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber );
+    qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber );
     qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime );
     qBool_t qEdgeCheck_InsertNode( qIOEdgeCheck_t * const Instance, qIONode_t * const Node, void *PortAddress, const qBool_t PinNumber );    
     qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance );

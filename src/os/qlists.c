@@ -360,8 +360,8 @@ Return value:
     The number of items of the list. 
 
 */ 
-qSize_t qList_Length( const qList_t * const list ){
-    qSize_t RetValue = 0u;
+size_t qList_Length( const qList_t * const list ){
+    size_t RetValue = 0u;
     if( NULL != list ){
         RetValue = list->size;
     }
@@ -401,18 +401,19 @@ Return value:
 */
 qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) {
     qBool_t RetValue = qFalse;
-    qSize_t count;
+    qBool_t xRetCmp;
+    size_t count, i, j, n;
     qNode_t *current = NULL, *before = NULL, *after = NULL;
-    qBase_t i, j, n;
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
-        if( count >= 2){ /*It is only worth running the algorithm if the list has two or more nodes*/
-            for (i = 1; i < count; i++) {
+        if( count >= (size_t)2){ /*It is only worth running the algorithm if the list has two or more nodes*/
+          for (i = (size_t)1; i < count; i++) {
                 current = list->head;
-                n = count - i - 1;
-                for (j = 0; j <= n; j++) { 
-                    if( qTrue == CompareFcn( current, current->next ) ) { /*compare adyacent nodes*/
+                n = count - i - (size_t)1;
+                for (j = (size_t)0; j <= n; j++) { 
+                    xRetCmp = CompareFcn( current, current->next );
+                    if( qTrue == xRetCmp ) { /*compare adyacent nodes*/
                         before = current->prev;
                         after = current->next;
 
@@ -471,14 +472,14 @@ Return value:
     qTrue if the walk through was early terminated, otherwise returns qFalse.
 
 */ 
-qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir ){
+qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir ){
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
     qNode_t *adyacent; /*to allow i-node links to be changed in the walk throught*/
     
-    if( ( NULL != list ) && ( NULL != Fcn ) && ( ( QLIST_FORWARD == dir ) || ( QLIST_BACKWARD == dir) ) ){
+    if( ( NULL != list ) && ( NULL != Fcn ) && ( ( QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
         if( QLIST_FORWARD == dir ){
-            dir = __qNode_Forward;
+            dir = &__qNode_Forward;
             adyacent = list->head;
         }
         else{
@@ -487,7 +488,8 @@ qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qList
         Fcn( NULL, arg, qList_WalkInit );
         for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
             adyacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
-            if( ( RetValue = Fcn( iNode, arg, qList_WalkThrough ) ) ){
+            RetValue = Fcn( iNode, arg, qList_WalkThrough );
+            if( RetValue ){
                 break;
             }               
         }
@@ -509,10 +511,10 @@ void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t fr
     qListMalloc = mallocFcn;
 }
 /*=========================================================*/
-qBool_t qList_DInsert( qList_t *const list, void *data, qSize_t size, qListPosition_t position ){
+qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position ){
     qBool_t RetValue = qFalse;
     void *NewNode = NULL;
-    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > 0) ){
+    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > (size_t)0) ){
         NewNode = qListMalloc( size );
         if( NULL != NewNode ){
             memcpy( NewNode, data, size );

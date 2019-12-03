@@ -15,7 +15,7 @@ Parameters:
     - nMax : The size of <xLocBuff>
   
 */
-void qResponseInitialize( qResponseHandler_t * const obj, char *xLocBuff, qSize_t nMax ){
+void qResponseInitialize( qResponseHandler_t * const obj, char *xLocBuff, size_t nMax ){
     if( NULL != obj ){
         obj->qPrivate.Pattern2Match = xLocBuff;
         obj->qPrivate.MaxStrLength = nMax; 
@@ -56,7 +56,7 @@ Return value:
 
     qTrue if there is a response acknowledge, otherwise returns qFalse
 */
-qBool_t qResponseReceived( qResponseHandler_t * const obj, const char *Pattern, qSize_t n ){
+qBool_t qResponseReceived( qResponseHandler_t * const obj, const char *Pattern, size_t n ){
     return qResponseReceivedWithTimeout( obj, Pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
@@ -79,11 +79,11 @@ Return value:
     qTimeoutReached if timeout t expires
     otherwise returns qFalse
 */
-qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, qSize_t n, qTime_t t ){
+qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, size_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( 0u == obj->qPrivate.PatternLength ) ){ /*handler no configured yet*/
-        strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, (size_t)obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
-        obj->qPrivate.PatternLength = (qSize_t)((0u == n)? strlen( Pattern ) : n); /*set the number of chars to match*/
+        strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
+        obj->qPrivate.PatternLength = (0u == n)? strlen( Pattern ) : n; /*set the number of chars to match*/
         obj->qPrivate.MatchedCount = 0u; /*reinitialize the chars match count*/
         obj->qPrivate.ResponseReceived = qFalse; /*clear the ready flag*/
         if( t > qTimeImmediate ){
@@ -120,7 +120,7 @@ Return value:
 qBool_t qResponseISRHandler(qResponseHandler_t * const obj, const char rxchar){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( obj->qPrivate.PatternLength > 0u ) ) {
-        if( obj->qPrivate.Pattern2Match[obj->qPrivate.MatchedCount] == rxchar ){ /*if the received char match with the expected*/
+        if( obj->qPrivate.Pattern2Match[obj->qPrivate.MatchedCount] == rxchar ){ /*if the received char match with the expected*/ /*MISRAC2004-17.4_b Deviation allowed*/
             obj->qPrivate.MatchedCount++; /*move to the next char in the expected buffer*/
             if( obj->qPrivate.MatchedCount == obj->qPrivate.PatternLength ){
                 obj->qPrivate.ResponseReceived = qTrue; /*if all the requested chars match, set the ready flag */

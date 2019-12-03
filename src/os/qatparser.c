@@ -6,7 +6,7 @@ static qPutChar_t ATOutCharFcn = NULL;
 static qATParser_t *Current = NULL;
 static void _qATPutc_Wrapper( const char c );
 static void _qATPuts_Wrapper( const char *s );
-static qSize_t qATParser_NumOfArgs( const char *str );
+static size_t qATParser_NumOfArgs( const char *str );
 static char* _qATParser_FixInput( char *s );
 static void _qATParser_HandleCommandResponse( const qATParser_t * const Parser, const qATResponse_t retval );
 static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile char *InputBuffer, qATParser_PreCmd_t *params );
@@ -72,7 +72,7 @@ static void _qATPutc_Wrapper( const char c ){
 }
 /*============================================================================*/
 static void _qATPuts_Wrapper( const char *s ){
-	qUIndex_t i = 0u;
+	qIndex_t i = 0u;
 	while( s[i] ){
         ATOutCharFcn( NULL, s[i++] );
     }
@@ -107,7 +107,7 @@ Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL ){
+qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn, char *Input, const size_t SizeInput, char *Output, const size_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL ){
     qBool_t RetValue = qFalse;
     if(  ( NULL != Parser ) && ( NULL != OutputFcn) ) {
         Parser->qPrivate.First  = NULL;
@@ -125,13 +125,13 @@ qBool_t qATParser_Setup( qATParser_t * const Parser, const qPutChar_t OutputFcn,
         Parser->qPrivate.Input.index = 0u;
         Parser->qPrivate.xNotifyFcn = NULL;
         Parser->Output = Output;
-        Parser->putch = _qATPutc_Wrapper;
-        Parser->puts = _qATPuts_Wrapper;
-        Parser->qPrivate.Params.GetArgPtr = GetArgPtr;
-        Parser->qPrivate.Params.GetArgInt = GetArgInt;
-        Parser->qPrivate.Params.GetArgFlt = GetArgFlt;
-        Parser->qPrivate.Params.GetArgHex = GetArgHex;
-        Parser->qPrivate.Params.GetArgString = GetArgString;
+        Parser->putch = &_qATPutc_Wrapper;
+        Parser->puts = &_qATPuts_Wrapper;
+        Parser->qPrivate.Params.GetArgPtr = &GetArgPtr;
+        Parser->qPrivate.Params.GetArgInt = &GetArgInt;
+        Parser->qPrivate.Params.GetArgFlt = &GetArgFlt;
+        Parser->qPrivate.Params.GetArgHex = &GetArgHex;
+        Parser->qPrivate.Params.GetArgString = &GetArgString;
         /*Flush input and output buffers*/
         memset( (void*)Parser->qPrivate.Input.Buffer, 0, SizeInput );
         memset( (void*)Parser->Output, 0, SizeOutput );
@@ -173,10 +173,10 @@ Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, qATCommandCallback_t Callback, qATParserOptions_t CmdOpt, void *param ){
+qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const Command, const char *TextCommand, const qATCommandCallback_t Callback, qATParserOptions_t CmdOpt, void *param ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Parser ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
-        Command->qPrivate.CmdLen = (qSize_t)strlen( TextCommand );
+        Command->qPrivate.CmdLen = strlen( TextCommand );
         if( Command->qPrivate.CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
@@ -243,7 +243,7 @@ Return value:
 qBool_t qATParser_ISRHandler( qATParser_t * const Parser, char c ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;
-    qUIndex_t CurrentIndex;
+    qIndex_t CurrentIndex;
     ReadyInput = Parser->qPrivate.Input.Ready;
     if( ( isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){
         CurrentIndex = Parser->qPrivate.Input.index; /*to avoid undefined order of volatile accesses*/
@@ -276,10 +276,10 @@ Return value:
     qTrue when the Parser is ready to process the input, otherwise return qFalse
 
 */
-qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const qSize_t n ){
+qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const size_t n ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;
-    qSize_t MaxToInsert;
+    size_t MaxToInsert;
     
     ReadyInput = Parser->qPrivate.Input.Ready;
     MaxToInsert = Parser->qPrivate.Input.MaxIndex;
@@ -290,7 +290,7 @@ qBool_t qATParser_ISRHandlerBlock( qATParser_t * const Parser, char *data, const
         else{
             if( isgraph( (int)data[0] ) ){
                 if( NULL != strchr( data, (int)'\r' ) ){ 
-                    strncpy( (char*)Parser->qPrivate.Input.Buffer, data, (size_t)n);
+                    strncpy( (char*)Parser->qPrivate.Input.Buffer, data, n);
                     _qATParser_FixInput( (char*)Parser->qPrivate.Input.Buffer );
                     RetValue = _aATParser_Notify( Parser );
                 }
@@ -335,18 +335,16 @@ Return value:
 */
 qBool_t qATParser_Raise( qATParser_t * const Parser, const char *cmd ){
     qBool_t RetValue = qFalse;
-    qSize_t MaxToInsert;
     qBool_t ReadyInput;           
-    size_t CmdLen;
-    qSize_t MaxBytestoCopy;
+    size_t MaxToInsert, CmdLen, MaxBytestoCopy;
     
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
         ReadyInput = Parser->qPrivate.Input.Ready;        
         MaxToInsert = Parser->qPrivate.Input.MaxIndex;
         CmdLen = strlen( cmd );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
-            MaxBytestoCopy = (size_t)Parser->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
-            strncpy( (char*)Parser->qPrivate.Input.Buffer, cmd, (size_t)MaxBytestoCopy );
+            MaxBytestoCopy = Parser->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
+            strncpy( (char*)Parser->qPrivate.Input.Buffer, cmd, MaxBytestoCopy );
             _qATParser_FixInput( (char*)Parser->qPrivate.Input.Buffer );
             RetValue = _aATParser_Notify( Parser );
         }
@@ -392,7 +390,7 @@ static qBool_t _qATParser_PreProcessing( qATCommand_t * const Command, volatile 
     qBool_t RetValue = qFalse;
     params->Type = qATCMDTYPE_UNDEF;
     params->Command = Command;
-    params->StrLen = (qSize_t)strlen( (const char*)InputBuffer ) - Command->qPrivate.CmdLen;
+    params->StrLen = strlen( (const char*)InputBuffer ) - Command->qPrivate.CmdLen;
     params->StrData = (char*)(InputBuffer+Command->qPrivate.CmdLen);
     params->NumArgs = 0u;
 
@@ -598,8 +596,8 @@ char* qATParser_GetArgString( const qATParser_PreCmd_t *param, qINT8_t n, char* 
 	return RetPtr;
 }
 /*============================================================================*/
-static qSize_t qATParser_NumOfArgs( const char *str ){
-	qSize_t count = 0u;
+static size_t qATParser_NumOfArgs( const char *str ){
+	size_t count = 0u;
 	while( *str ){
         if ( QAT_DEFAULT_ATSET_DELIM == *str++ ){
             ++count;

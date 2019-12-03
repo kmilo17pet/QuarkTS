@@ -34,16 +34,16 @@
                     byNoReadyTasks
                 }qTrigger_t;
 
-    #define qTrigger_NotificationSimple     byNotificationSimple
-    #define qTrigger_NotificationQueued     byNotificationQueued
-    #define qTrigger_TimeElapsed            byTimeElapsed
-    #define qTrigger_QueueReceiver          byQueueReceiver
-    #define qTrigger_QueueFull              byQueueFull
-    #define qTrigger_QueueCount             byQueueCount
-    #define qTrigger_QueueEmpty             byQueueEmpty
-    #define qTrigger_byEventFlags           byEventFlags
-    #define qTrigger_SchedulingRelease      bySchedulingRelease
-    #define qTrigger_NoReadyTasks           byNoReadyTasks
+    #define qTrigger_NotificationSimple     ( byNotificationSimple )
+    #define qTrigger_NotificationQueued     ( byNotificationQueued )
+    #define qTrigger_TimeElapsed            ( byTimeElapsed )
+    #define qTrigger_QueueReceiver          ( byQueueReceiver
+    #define qTrigger_QueueFull              ( byQueueFull )
+    #define qTrigger_QueueCount             ( byQueueCount )
+    #define qTrigger_QueueEmpty             ( byQueueEmpty )
+    #define qTrigger_byEventFlags           ( byEventFlags )
+    #define qTrigger_SchedulingRelease      ( bySchedulingRelease )
+    #define qTrigger_NoReadyTasks           ( byNoReadyTasks )
 
     typedef qUINT8_t qNotifier_t;       
     typedef qUINT32_t qTaskFlag_t; 
@@ -221,8 +221,8 @@
         #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
     #endif
 
-    #define Q_NOTIFY_SIMPLE      qTaskSendNotification
-    #define Q_NOTIFY_QUEUED      qTaskQueueNotification
+    #define Q_NOTIFY_SIMPLE             ( qTaskSendNotification )
+    #define Q_NOTIFY_QUEUED             ( qTaskQueueNotification )
 
     qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
     qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );

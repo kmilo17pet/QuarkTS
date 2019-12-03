@@ -87,7 +87,7 @@
 
     #if ( Q_TRACE_VARIABLES == 1 )
         extern char qDebugTrace_Buffer[Q_DEBUGTRACE_BUFSIZE];
-        void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, qSize_t BlockSize );
+        void __qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, size_t BlockSize );
         void qSetDebugFcn(qPutChar_t fcn);
 
         /*On-demand debug/trace macros*/

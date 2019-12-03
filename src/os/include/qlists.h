@@ -19,7 +19,7 @@
     typedef struct{
         qNode_MinimalFields;        /*< to allow list of lists*/
         qNode_t *head, *tail;       /*< Pointers to the beginning of and the end of the list. */
-        qSize_t size;               /*< Used to hold the current size of the list. */
+        size_t size;               /*< Used to hold the current size of the list. */
     }qList_t;
 
     #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, 0u }
@@ -46,7 +46,7 @@
     void* qList_GetFront( const qList_t * const list );
     void* qList_GetBack( const qList_t * const list );
     qBool_t qList_IsEmpty( const qList_t * const list );
-    qSize_t qList_Length( const qList_t * const list );
+    size_t qList_Length( const qList_t * const list );
     qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) ;
 
 
@@ -54,11 +54,11 @@
     typedef qNode_t* (*qListDirection_t)( const qNode_t *const node );      
     #define QLIST_FORWARD   ( NULL )  
     #define QLIST_BACKWARD  ( __qNode_Backward )
-    qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir );
+    qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir );
 
 
     void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn );
-    qBool_t qList_DInsert( qList_t *const list, void *data, qSize_t size, qListPosition_t position );
+    qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position );
     void* qList_DRemove( qList_t * const list, void * const node, const qListPosition_t position );
 
 

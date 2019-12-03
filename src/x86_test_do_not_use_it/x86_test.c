@@ -315,6 +315,8 @@ int main(int argc, char** argv) {
     qTraceVariable( sizeof(qSM_t) , UnsignedDecimal );
     qTraceVariable( sizeof(qSTimer_t) , UnsignedDecimal );
     qTraceVariable( sizeof(qList_t) , UnsignedDecimal );
+    qTraceVariable( 1.0f/0.0f, Float );
+    qTraceVariable( -1.0f/0.0f, Float );
     
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);

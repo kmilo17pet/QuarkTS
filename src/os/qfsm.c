@@ -117,7 +117,7 @@ Parameters:
 void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
     switch(Flag){
         case qSM_RESTART:
-            obj->NextState = (qSM_State_t)s;
+            obj->NextState = s;
             obj->PreviousState = NULL;
             obj->LastState = NULL;
             obj->StateFirstEntry = 0u;
@@ -128,16 +128,16 @@ void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , q
             obj->LastState = NULL;
             break;
         case qSM_FAILURE_STATE:
-            obj->qPrivate.Failure = (qSM_SubState_t)subs;
+            obj->qPrivate.Failure = subs;        /*MISRAC2004-11.1 deviation allowed*/
             break;
         case qSM_SUCCESS_STATE:
-            obj->qPrivate.Success = (qSM_SubState_t)subs;
+            obj->qPrivate.Success = subs;        /*MISRAC2004-11.1 deviation allowed*/
             break;    
         case qSM_UNEXPECTED_STATE:
-            obj->qPrivate.Unexpected = (qSM_SubState_t)subs;
+            obj->qPrivate.Unexpected = subs;     /*MISRAC2004-11.1 deviation allowed*/
             break;   
         case qSM_BEFORE_ANY_STATE:
-            obj->qPrivate.BeforeAnyState = (qSM_SubState_t)subs;
+            obj->qPrivate.BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
             break;              
         default:
             break;

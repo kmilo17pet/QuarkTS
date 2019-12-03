@@ -17,11 +17,11 @@
     typedef void (*qPutString_t)(void* arg1, const char* arg2);
     typedef char (*qGetChar_t)(void* arg1);
 
-    void qSwapBytes( void *data, const qSize_t n );
+    void qSwapBytes( void *data, const size_t n );
     qBool_t qCheckEndianness( void);
     void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
-    void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP );
-    void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP );
+    void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
+    void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
 
     /*qPrintString(fcn, pStorage, s)
     
@@ -50,7 +50,7 @@
     qBool_t qIsNan( qFloat32_t f );
     char* qFtoA( qFloat32_t num, char *str, qUINT8_t precision );
     qUINT32_t qStringHash( const char* s, qUINT8_t mode );
-    void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, qSize_t n );
+    void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n );
     
     #ifdef __cplusplus
     }

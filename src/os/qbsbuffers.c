@@ -2,18 +2,18 @@
 
 #if ( Q_BYTE_SIZED_BUFFERS ==1 )
 
-static qSize_t _qQueueValidPowerOfTwo( qSize_t k );
+static size_t _qQueueValidPowerOfTwo( size_t k );
 
 /*============================================================================*/
-static qSize_t _qQueueValidPowerOfTwo( qSize_t k ){
-    qUIndex_t i;
-    qSize_t r = k;
+static size_t _qQueueValidPowerOfTwo( size_t k ){
+    qIndex_t i;
+    size_t r = k;
     if( ((k-1u) & k) != 0u ){
         k--;
-        for( i = 1u; i<sizeof(qUIndex_t)*8u; i= (qUIndex_t) (i * 2u)){
-            k = k | (qSize_t)( k >> i );
+        for( i = 1u; i<sizeof(qIndex_t)*8u; i= (qIndex_t) (i * 2u)){
+            k = k | (size_t)( k >> i );
         }
-        k = (qSize_t) ((k + 1u) >> 1u);
+        k = (size_t) ((k + 1u) >> 1u);
     }
     return ( k < r )? k*2u : k;
 }
@@ -30,13 +30,13 @@ Return value:
 
     Number of elements in the BSBuffer(Byte-sized Buffer)
 */
-qSize_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
-    qSize_t RetValue = 0u;
-    qUIndex_t head, tail;
+size_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
+    size_t RetValue = 0u;
+    qIndex_t head, tail;
     if( NULL != obj ){
         head = obj->head;
         tail = obj->tail;
-        RetValue = (qSize_t)( head - tail );
+        RetValue = (size_t)( head - tail );
     }
 
     return RetValue;
@@ -96,8 +96,10 @@ Return value:
 */
 qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     qUINT8_t RetValue = 0x0u;
+    qIndex_t index;
     if( NULL != obj ){
-        RetValue = (qUINT8_t) ( obj->buffer[obj->tail % obj->length] );
+        index = obj->tail % obj->length;
+        RetValue = (qUINT8_t) ( obj->buffer[ index ] ); /*MISRAC2004-17.4_b deviation allowed*/
     }
     return RetValue;
 }
@@ -117,8 +119,10 @@ Return value:
 */
 qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest ){
     qBool_t RetValue = qFalse;
+    qIndex_t index;
     if ( qFalse == qBSBuffer_Empty( obj ) ) {
-        *dest = obj->buffer[obj->tail % obj->length];
+        index = obj->tail % obj->length;
+        *dest = obj->buffer[ index ]; /*MISRAC2004-17.4_b deviation allowed*/
         obj->tail++;
         RetValue = qTrue;
     }
@@ -138,14 +142,14 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const qSize_t n ){
-    qSize_t i;
+qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
+    size_t i;
     qUINT8_t *data = (qUINT8_t*)dest;
     qBool_t RetValue = qFalse;
     if( n > 0u ){
         RetValue = qTrue;
         for( i = 0u ; i < n ; i++ ){
-            RetValue = qBSBuffer_Get( obj, data+i );
+            RetValue = qBSBuffer_Get( obj, data+i ); /*MISRAC2004-17.4_a deviation allowed*/
         }
     }
     return RetValue;
@@ -168,7 +172,7 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data ){
     qBool_t status = qFalse;
     if( NULL != obj ){ 
         if( qFalse == qBSBuffer_IsFull( obj ) ) {/* limit the ring to prevent overwriting */
-            obj->buffer[obj->head % obj->length] = data;
+            obj->buffer[obj->head % obj->length] = data; /*MISRAC2004-17.4_b deviation allowed*/
             obj->head++;
             status = qTrue;
         }
@@ -187,7 +191,7 @@ Parameters:
     - length: The size of the buffer(Must be a power of two)
   
 */
-void qBSBuffer_Init( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const qSize_t length ){
+void qBSBuffer_Init( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length ){
     if( NULL != obj ){
         obj->head = 0u;
         obj->tail = 0u;

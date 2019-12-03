@@ -3,24 +3,24 @@
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
 /*============================================================================*/
-qBool_t __qReg_32Bits( void *Address, qBool_t PinNumber ){
+qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
     qUINT32_t Register = 0ul;
-    Register = *((qUINT32_t*)Address);    
+    Register = *((const qUINT32_t*)Address);    
     return (Register & (1ul << PinNumber))? qFalse : qTrue;
 }
 /*============================================================================*/
-qBool_t __qReg_16Bits( void *Address, qBool_t PinNumber ){
+qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
     qUINT16_t Register = 0u;
     qUINT16_t Mask;
     Mask = (qUINT16_t)1u << (qUINT16_t)PinNumber;
-    Register = *( (qUINT16_t*)Address );
+    Register = *( (const qUINT16_t*)Address );
     return ( Register & Mask )? qFalse : qTrue;
 }
 /*============================================================================*/
-qBool_t __qReg_08Bits( void *Address, qBool_t PinNumber ){
+qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
     qUINT8_t Register = 0u;
-    Register = *((qUINT8_t*)Address);
-    return ( Register & (1u << PinNumber) )? qFalse : qTrue;
+    Register = *((const qUINT8_t*)Address);
+    return ( Register & (qUINT8_t)(1u << PinNumber) )? qFalse : qTrue;
 }
 /*============================================================================*/
 /*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime)
@@ -42,7 +42,7 @@ qBool_t qEdgeCheck_Initialize( qIOEdgeCheck_t * const Instance, const qCoreRegSi
     if( NULL != Instance ){
         Instance->qPrivate.Head = NULL;
         Instance->qPrivate.DebounceTime = DebounceTime;
-        Instance->qPrivate.Reader = ( NULL == RegisterSize )? QREG_32BIT  : RegisterSize;
+        Instance->qPrivate.Reader = ( NULL == RegisterSize )? &QREG_32BIT  : RegisterSize;
         Instance->qPrivate.State = QEDGECHECK_CHECK;
         Instance->qPrivate.Start = qClock_GetTick();
         RetValue = qTrue;
