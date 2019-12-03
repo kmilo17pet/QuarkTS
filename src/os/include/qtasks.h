@@ -3,7 +3,7 @@
     #define QTASKS_H
 
     #include "qtypes.h"
-    #include "qclock.h"
+    #include "qstimers.h"
     
     #if (Q_QUEUES == 1)
         #include "qqueues.h"
@@ -194,7 +194,7 @@
                 qQueue_t *Queue;                    /*< The pointer to the attached queue. */
                 qUINT32_t QueueCount;
             #endif
-            volatile qClock_t Interval, ClockStart; /*< The timestamps of the task in epochs. */
+            qSTimer_t timer;                        /*< To handle the task timming*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif

@@ -268,7 +268,7 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
     if( ( NULL != Task ) ) {
         qSchedulerRemoveTask( Task ); /*Remove the task if was previously added to the chain*/
         Task->qPrivate.Callback = CallbackFcn;
-        Task->qPrivate.Interval = qTime2Clock( Time );
+        qSTimerSet( &Task->qPrivate.timer, Time );/*Task->qPrivate.Interval = qTime2Clock( Time );*/
         Task->qPrivate.TaskData = arg;
         Task->qPrivate.Priority = Priority;
         Task->qPrivate.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
@@ -286,7 +286,6 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
         #if ( Q_TASK_COUNT_CYCLES == 1 )
             Task->qPrivate.Cycles = 0ul;
         #endif
-        Task->qPrivate.ClockStart = qClock_GetTick();
         #if ( Q_QUEUES == 1)
             Task->qPrivate.Queue = NULL;
         #endif
@@ -706,14 +705,12 @@ static qBool_t _qScheduler_TaskDeadLineReached( qTask_t * const task){
     qBool_t RetValue = qFalse;
     qIteration_t TaskIterations;
     qClock_t TaskInterval;
-    qBool_t DeadLineFlag;
 
     if( __qPrivate_TaskGetFlag( task, __QTASK_BIT_ENABLED ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
         TaskIterations = task->qPrivate.Iterations; /*avoid side efects in the next check*/
         if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
-            TaskInterval = task->qPrivate.Interval; /*avoid side efects in the next check*/
-            DeadLineFlag = qClock_TimeDeadlineCheck( task->qPrivate.ClockStart, TaskInterval );
-            if( ( 0ul == TaskInterval ) || ( DeadLineFlag ) ){ /*finally, check the time deadline*/
+            TaskInterval = task->qPrivate.timer.qPrivate.TV;
+            if( ( 0ul == TaskInterval ) || qSTimerExpired( &task->qPrivate.timer ) ){ /*finally, check the time deadline*/
                 RetValue = qTrue;                
             }
         }
@@ -730,7 +727,7 @@ static qBool_t _qScheduler_ReadyTasksAvailable( void ){ /*this method checks for
     for( Task = kernel.Head ; NULL != Task ; Task = Task->qPrivate.Next ){ /*loop every task in the chain : only one event will be verified by node*/
         if( __qPrivate_TaskGetFlag( Task, __QTASK_BIT_SHUTDOWN) ){
             if( _qScheduler_TaskDeadLineReached( Task ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
-                Task->qPrivate.ClockStart = qClock_GetTick(); /*Restart the task time*/
+                qSTimerReload( &Task->qPrivate.timer );
                 nTaskReady = _qScheduler_TransitionTo( Task, qReady, byTimeElapsed ); /*put the task in ready state with their corresponding trigger */                  
             }
             #if ( Q_QUEUES == 1)  

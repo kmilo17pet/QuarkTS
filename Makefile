@@ -4,22 +4,7 @@
 #### This file is public domain.
 #### J. Camilo Gomez C.
 ####
-
-##############################
-### Configurable variables ###
-##############################
-# The compiler
-CC = gcc
-# The linker
-LD = gcc
-# Flags to pass to the compiler for release builds
-CFLAGS ?= -Wall -Os -std=c89 -pedantic -D_POSIX_C_SOURCE=199309L
-# Flags to pass to the linker
-LFLAGS ?= -lm -lpthread
-# Output directories
-OBJ_DIR := obj
-BIN_DIR := bin
-OBJ_EXT ?= .o
+include build_options.mk
 #####################################
 ### Do NOT touch the lines below  ###
 #####################################
@@ -54,13 +39,13 @@ rm -f $@.log; \
 exit $$RESULT
 endef
 
-INC 	:= 	$(sort -I. $(addprefix -I./,$(dir $(wildcard src/**/*.h))) )
+INC 	:= 	$(sort -I. $(addprefix -I./,$(dir  $(wildcard *.h */*.h */*/*.h */*/*/*.h)   )) )
 SRC 	:= 	$(wildcard src/**/*.c)
 OBJ 	:= 	$(addprefix $(OBJ_DIR)/,$(SRC:.c=$(OBJ_EXT)))
 OUT 	= 	$(BIN_DIR)/$(notdir $(CURDIR))
 
 .SUFFIXES:
-.PHONY: clean show
+.PHONY: all clean show rebuild
 
 $(OUT): $(OBJ)
 	@mkdir -p $(dir $@)
@@ -73,6 +58,11 @@ $(OBJ_DIR)/%$(OBJ_EXT): %.c
 	@mkdir -p $(dir $@)
 	@$(call run_and_test, $(CC) $(CFLAGS) $(INC)  -c $< -o $@ )
 	
+rebuild:
+	$(MAKE) clean
+	$(MAKE) all
+
+all: $(OUT)	
 run: $(OUT)
 	@./$(OUT)
 
@@ -80,4 +70,7 @@ test: run
 clean:
 	@$(RM) -rf $(OUT) $(OBJ_DIR) $(BIN_DIR)
 show:
+	@echo INC =  $(INC)
 	@echo SRC =  $(SRC)
+
+-include $(OBJ:.o=.d)	

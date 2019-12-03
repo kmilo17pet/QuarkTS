@@ -5,7 +5,6 @@
     #include "qtypes.h"  
     #include "qioutils.h"  
 
-
     #ifdef __cplusplus
     extern "C" {
     #endif
@@ -41,11 +40,11 @@
     #define     QAT_OUTPUT               ( qAT_OUTPUT )
 
     typedef volatile struct{
-        volatile char *Buffer;                  /*< Points to the user-defined storage area for the input. */
-        volatile qUIndex_t index;               /*< Used to hold the index of the current input-buffer. */
-        qUIndex_t MaxIndex;                     /*< Max index  = (Size - 1) */
-        qSize_t Size;                           /*< The size of the input buffer. */     
-        volatile qBool_t Ready;                 /*< A flag that indicates when the input is ready to parse. */  
+        volatile char *Buffer;                                  /*< Points to the user-defined storage area for the input. */
+        volatile qUIndex_t index;                               /*< Used to hold the index of the current input-buffer. */
+        qUIndex_t MaxIndex;                                     /*< Max index  = (Size - 1) */
+        qSize_t Size;                                           /*< The size of the input buffer. */     
+        volatile qBool_t Ready;                                 /*< A flag that indicates when the input is ready to parse. */  
     }qATParserInput_t;
 
     typedef void (*qPutchFcn_t)(const char arg);
@@ -60,8 +59,8 @@
     #define QATCMDTYPE_SET      ( QATCMDTYPE_PARA )
     #define QATCMDTYPE_CHECK    ( QATCMDTYPE_ACT )
 
-    #define QATCMDMASK_ARG_MAXNUM(opt)   (((opt)>>4)&0x000Fu)
-    #define QATCMDMASK_ARG_MINNUM(opt)   ((opt)&0x000Fu)
+    #define QATCMDMASK_ARG_MAXNUM(opt)   ( ( (opt)>>4 ) & 0x000Fu )
+    #define QATCMDMASK_ARG_MINNUM(opt)   ( (opt) & 0x000Fu )
 
     typedef enum{
         qATCMDTYPE_UNDEF    = QATCMDTYPE_UNDEF, /*< None of the above */
@@ -110,13 +109,13 @@
     typedef qUINT16_t qATParserOptions_t;
 
     typedef struct _qATCommand_t{
-        void *param;                                /*< User parameters. */
-        char *Text;                                 /*< The command string. Used to match to the input< */
-        private_start{            
-            qATCommandCallback_t CommandCallback;   /*< The command callback. */
-            struct _qATCommand_t *Next;             /*< Points to the next command in the list. */
-            qATParserOptions_t CmdOpt;              /*< The command options. */
-            qSize_t CmdLen;                         /*< The command length. */
+        void *param;                                            /*< User parameters. */
+        char *Text;                                             /*< The command string. Used to match to the input< */
+        private_start{                      
+            qATCommandCallback_t CommandCallback;               /*< The command callback. */
+            struct _qATCommand_t *Next;                         /*< Points to the next command in the list. */
+            qATParserOptions_t CmdOpt;                          /*< The command options. */
+            qSize_t CmdLen;                                     /*< The command length. */
         }private_end;       
     }qATCommand_t;
 

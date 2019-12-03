@@ -1,7 +1,5 @@
 #include "qlists.h"
 
-#if ( Q_LISTS == 1)
-
 static qNode_t* qList_NodeInit( void * const node );
 static void qList_InsertAtFront( qList_t * const list, qNode_t * const node );
 static void qList_InserAtBack( qList_t * const list, qNode_t * const node );
@@ -153,7 +151,7 @@ Parameters:
 
     - destination : Pointer to the list where the <source> nodes are to be moved.
     - source : Pointer to the source list to be moved.
-    - position :  The position where <source> list will be inserted. Could be 
+    - position : The position where <source> list will be inserted. Could be 
                  qList_AtFront, qList_AtBack or any other index number 
                  where the list will be inserted after.
 
@@ -538,5 +536,3 @@ void* qList_DRemove( qList_t * const list, void * const node, const qListPositio
     return removed;
 }
 /*=========================================================*/
-
-#endif /* #if ( Q_LISTS == 1) */

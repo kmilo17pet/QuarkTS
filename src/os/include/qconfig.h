@@ -21,7 +21,6 @@
     #define Q_TASK_COUNT_CYCLES         ( 1 )       /*< Used to enable or disable the task cycles counter*/
     #define Q_MAX_FTOA_PRECISION        ( 10u )     /*< default qFtoA precision*/
     #define Q_ATOF_FULL                 ( 0 )       /*< Used to enable or disablethe extended "e" notation parsing in qAtoF*/
-    #define Q_LISTS                     ( 1 )       /*< Used to enable or disable the generic lists APIs */
     #define Q_ALLOW_SCHEDULER_RELEASE   ( 1 )       /*< Used to enable or disable the release of the scheduling */
     #define Q_RESPONSE_HANDLER          ( 1 )       /*< Used to enable or disable the response handler*/
     #define Q_EDGE_CHECK_IOGROUPS       ( 1 )       /*< Used to enable or disable the edge check for I/O groups*/

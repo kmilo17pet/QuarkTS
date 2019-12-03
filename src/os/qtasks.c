@@ -119,7 +119,7 @@ Parameters:
 */
 void qTaskSetTime( qTask_t * const Task, const qTime_t Value ){
     if( NULL != Task ){
-        Task->qPrivate.Interval = qTime2Clock( Value );
+        qSTimerSet( &Task->qPrivate.timer , Value );
     }
 }
 /*============================================================================*/
@@ -201,7 +201,8 @@ void qTaskSetState(qTask_t * const Task, const qState_t State){
             case qDisabled: case qEnabled:
                 if( State != __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED ) ){ 
                     __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_ENABLED, State );
-                    Task->qPrivate.ClockStart = qClock_GetTick();
+                    qSTimerReload( &Task->qPrivate.timer );
+                    /*Task->qPrivate.ClockStart = qClock_GetTick();*/
                 }
                 break;
             case qAsleep:
@@ -244,7 +245,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
-        Task->qPrivate.ClockStart = qClock_GetTick();
+        qSTimerReload( &Task->qPrivate.timer );
     }    
 }
 #if ( Q_QUEUES == 1)

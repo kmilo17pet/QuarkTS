@@ -32,10 +32,10 @@
     qBool_t qSTimerStatus( const qSTimer_t * const obj );
 
     #if ( Q_SETUP_TIME_CANONICAL == 0 )
-        #define qMins2Time(t)    ( ((qTime_t)(t))*60.0 )    
-        #define qHours2Time(t)   ( ((qTime_t)(t))*3600.0 )
-        #define qDays2Time(t)    ( ((qTime_t)(t))*86400.0 )
-        #define qWeeks2Time(t)   ( ((qTime_t)(t))*604800.0 )
+        #define qMins2Time(t)    ( ((qTime_t)(t))*60.0f )    
+        #define qHours2Time(t)   ( ((qTime_t)(t))*3600.0f )
+        #define qDays2Time(t)    ( ((qTime_t)(t))*86400.0f )
+        #define qWeeks2Time(t)   ( ((qTime_t)(t))*604800.0f )
     #endif 
 
     #ifdef __cplusplus

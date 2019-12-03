@@ -15,9 +15,9 @@
     #define	QuarkTS_H
 
     #include "qtypes.h"
+    #include "qlists.h"
     #include "qkernel.h"
     #include "qtasks.h"    
-    #include "qstimers.h"
     #include "qcoroutine.h"
     
     #include "qioutils.h"
@@ -32,10 +32,6 @@
 
     #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
         #include "qedgecheck.h"
-    #endif
-
-    #if ( Q_LISTS == 1 )
-        #include "qlists.h"
     #endif
 
     #if ( Q_RESPONSE_HANDLER == 1 )
