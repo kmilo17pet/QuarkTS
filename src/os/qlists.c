@@ -485,15 +485,20 @@ qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg,
         else{
             adyacent = list->tail;
         }
-        Fcn( NULL, arg, qList_WalkInit );
-        for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
-            adyacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
-            RetValue = Fcn( iNode, arg, qList_WalkThrough );
-            if( RetValue ){
-                break;
-            }               
+        RetValue = Fcn( NULL, arg, qList_WalkInit );
+        if( qFalse == RetValue ){
+            for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
+                adyacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
+                RetValue = Fcn( iNode, arg, qList_WalkThrough );
+                if( RetValue ){
+                    break;
+                }               
+            }
+            if( qFalse == RetValue ){
+                RetValue = Fcn( NULL, arg, qList_WalkEnd ); 
+            }
         }
-        Fcn( NULL, arg, qList_WalkEnd ); 
+        
     }
     return RetValue;
 } 

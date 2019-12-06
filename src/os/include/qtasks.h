@@ -4,6 +4,7 @@
 
     #include "qtypes.h"
     #include "qstimers.h"
+    #include "qlists.h"
     
     #if (Q_QUEUES == 1)
         #include "qqueues.h"
@@ -60,7 +61,7 @@
     /* Task flags
     MSB_________________________________________________________________________________________________________________________________________________________LSB
     31                  |                 |            |            |               |               |              |                  |             |           0
-    |(31..11)EVENTFLAGS |  (10..8)-STATE  | 7-RESERVED | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
+    |(31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
     |___________________|_________________|____________|____________|_______________|_______________|______________|__________________|_____________|___________|
     */
     #define QTASK_COREBITS_RSMASK       ( 0x000000FF )	 
@@ -83,7 +84,7 @@
     #define __QTASK_BIT_QUEUE_COUNT     ( 0x00000010ul )
     #define __QTASK_BIT_QUEUE_EMPTY     ( 0x00000020ul )
     #define __QTASK_BIT_SHUTDOWN        ( 0x00000040ul )
-    #define __QTASK_BIT_RESERVED        ( 0x00000080ul )
+    #define __QTASK_BIT_REMOVE_REQUEST  ( 0x00000080ul )
 
     /*The task Bit-Flag definitions*/
     #define QEVENTFLAG_01               ( 0x00001000ul )
@@ -184,7 +185,7 @@
 
     typedef struct _qTask_t{ /*Task node definition*/
         private_start{
-            struct _qTask_t *Next;                  /*< Points to the next node of the task list. */
+            qNode_MinimalFields;
             void *TaskData, *AsyncData;             /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
             #if ( Q_FSM == 1)
@@ -221,8 +222,8 @@
         #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
     #endif
 
-    #define Q_NOTIFY_SIMPLE             ( qTaskSendNotification )
-    #define Q_NOTIFY_QUEUED             ( qTaskQueueNotification )
+    #define Q_NOTIFY_SIMPLE             ( &qTaskSendNotification )
+    #define Q_NOTIFY_QUEUED             ( &qTaskQueueNotification )
 
     qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
     qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );

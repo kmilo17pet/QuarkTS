@@ -1,5 +1,5 @@
 /*
-    QuarkTS V5.3.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V5.4.1 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
     This file is part of the QuarkTS OS distribution.
@@ -44,6 +44,10 @@
 
     #include "qbitmacros.h"
 
+
+    #if ( Q_PRIORITY_LEVELS < 1)
+        #error Q_PRIORITY_LEVELS must be defined to be greater than or equal to 1.
+    #endif
 
     #if ( Q_DEFAULT_HEAP_SIZE < 64 )
         #error Q_DEFAULT_HEAP_SIZE it is too small. Min(64).

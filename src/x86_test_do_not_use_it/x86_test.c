@@ -169,6 +169,7 @@ void blinktaskCallback(qEvent_t e){
         puts("hello 2 ");
 
         qTaskSendNotification( qTaskSelf(), NULL );
+        
         qTaskQueueNotification(&Task1, "notification 1");
         qTaskQueueNotification(&Task1, "notification 2");
         qTaskSendNotification(&Task1, "notification 3");
@@ -338,7 +339,6 @@ int main(int argc, char** argv) {
     qQueueSendToBack( &somequeue, &x[2]);
     qQueueSendToFront( &somequeue, &x[3]);
 
-
     qQueueReceive( &somequeue, &b);
     
     printf("queue received = %d \r\n", b);
@@ -347,24 +347,18 @@ int main(int argc, char** argv) {
     qQueueReceive( &somequeue, &b);
     printf("queue received = %d \r\n", b);
 
-    /*return EXIT_SUCCESS;*/
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback);           
     qSchedulerSetReleaseCallback( scheduler_Release );
-    
     qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");    
-    puts("added blink");
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
-    puts("added task1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
-    
     qTaskAttachQueue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH);
-    qSchedulerAdd_EventTask(&Task4, TaskSameCallback, 10, "TASK4");
-    qSchedulerAdd_EventTask(&Task5, TaskSameCallback, 80, "TASK5");
-    qSchedulerAdd_EventTask(&Task6, TaskSameCallback, 10, "TASK6");
+    qSchedulerAdd_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4");
+    qSchedulerAdd_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5");
+    qSchedulerAdd_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
     
     qSchedulerRun();
-    
     
     
     return (EXIT_SUCCESS);

@@ -54,7 +54,7 @@ Return value:
 */
 qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )      
-        return _qScheduler_PQueueInsert( Task, eventdata );     
+        return _qScheduler_PriorityQueue_Insert( Task, eventdata );     
     #else
         return qFalse;
     #endif
@@ -154,7 +154,6 @@ Parameters:
 */
 void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
     if( NULL != Task ){
-        _qScheduler_ReloadScheme();
         Task->qPrivate.Priority = Value; 
     }
 }

@@ -3,7 +3,7 @@
     #define QCOROUTINE_H
 
     #include "qtypes.h"
-    #include "qclock.h"
+    #include "qstimers.h"
 
     #ifdef __cplusplus
     extern "C" {
@@ -14,12 +14,12 @@
     
     typedef struct{
         _qTaskPC_t instr;   /*< Used to the instruction where the coroutine yields. */
-        qClock_t crdelay;   /*< Used to hold the required delay(epochs) for qCoroutineDelay. */
+        qSTimer_t crdelay;  /*< Used to hold the required delay for qCoroutineDelay. */
     }qCoroutineInstance_t;
 
     typedef struct {qUINT16_t head, tail;} qCoroutineSemaphore_t; 
     typedef qCoroutineSemaphore_t qCRSem_t;
-
+    
     #define qCR_PCInitVal               ( -1 )            
     #define __qCRKeep
     #define __qCRCodeStartBlock         do
@@ -29,10 +29,9 @@
     #define __qAssert(_COND_)           if(!(_COND_))
     #define __qTaskPCVar                _qCRTaskState_.instr /*_qCRTaskState_*/
     #define __qCRDelayVar               _qCRTaskState_.crdelay           
-    #define __qCRDelayPrepare           __qCRDelayVar = qClock_GetTick()
     #define __qSetPC(_VAL_)             __qTaskPCVar = (_VAL_)
     #define __qTaskSaveState            __qSetPC(__qTaskProgress) 
-    #define __qTaskInitState            _qCRTaskState_ = {qCR_PCInitVal}/*__qSetPC({qCR_PCInitVal}) */
+    #define __qTaskInitState            _qCRTaskState_ = { qCR_PCInitVal, QSTIMER_INITIALIZER }/*__qSetPC({qCR_PCInitVal}) */ 
     #define __qTaskCheckPCJump(_PC_)    switch(_PC_){    
     #define __TagExitCCR                __qCRYield_ExitLabel
     #define __qExit                     goto __TagExitCCR /*MISRA deviation*/
@@ -59,7 +58,7 @@
 
     #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  (_pos_) =__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_((_pos_));}             __qCRCodeEndBlock
     #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
-    #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  __qCRDelayPrepare     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( qClock_TimeDeadlineCheck(_qCRTaskState_.crdelay, qTime2Clock(_time_))  ) __qTaskYield } __qCRCodeEndBlock
+    #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  qSTimerSet( &__qCRDelayVar, _time_  )     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( qSTimerExpired( &__qCRDelayVar )  ) __qTaskYield } __qCRCodeEndBlock
     #define __qCR_PositionReset(_pos_)          (_pos_) = qCR_PCInitVal
 
     /*qCoroutineBegin{
