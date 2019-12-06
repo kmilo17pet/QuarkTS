@@ -719,7 +719,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             TaskActivities = Task->qPrivate.Callback;
             Task->qPrivate.State = qRunning; /*put the task in running state*/
             qList_Remove( xList, NULL, qList_AtFront );
-            qList_Insert( &SuspendedList, Task, QLIST_ATBACK );  
+            qList_Insert( &WaitingList, Task, QLIST_ATBACK );  
 
             #if ( Q_FSM == 1)
                 if ( ( NULL != Task->qPrivate.StateMachine ) && ( __qFSMCallbackMode == Task->qPrivate.Callback ) ){

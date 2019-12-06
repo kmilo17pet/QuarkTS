@@ -175,6 +175,11 @@ void blinktaskCallback(qEvent_t e){
         qTaskSendNotification(&Task1, "notification 3");
         qTaskSendNotification(&Task1, "notification 4");
         puts("notification sended to task1 ");
+
+        qTaskQueueNotification(&Task4, "notification TEST");
+        qTaskQueueNotification(&Task5, "notification TEST");
+        qTaskQueueNotification(&Task6, "notification TEST");
+        qTaskQueueNotification(&Task3, "notification TEST");
         /*qSchedulerRelease();*/
     }qCoroutineEnd;
 }
