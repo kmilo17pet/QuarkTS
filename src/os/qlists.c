@@ -89,9 +89,9 @@ static qNode_t* qList_RemoveBack( qList_t * const list ){
 }
 /*=========================================================*/
 static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t position ){
-    qNode_t *iNode = NULL;
+    qNode_t *iNode;
     qBase_t iPos = 0;
-    for( iNode = list->head ; ( iPos < position ) && ( NULL != iNode->next ) ; iNode = iNode->next ){
+    for( iNode = list->head ; ( iPos < (qBase_t)position ) && ( NULL != iNode->next ) ; iNode = iNode->next ){
         iPos++;
     }
     return iNode;
@@ -119,7 +119,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qNode_t *newnode;
     qNode_t *iNode;
  
-    if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position <= qList_AtBack ) ){    
+    if( ( NULL != list ) && ( NULL != node ) && ( position >= (qListPosition_t)(-1) ) && ( position <= qList_AtBack ) ){    
         #ifdef QLIST_CHECK_NODE_MEMBERSHIP
         if( qFalse == qList_IsMember( list, node )){
         #endif    
@@ -178,7 +178,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
 
-    if( ( NULL != destination ) && ( NULL != source ) && ( position >= -1 ) && ( position <= qList_AtBack ) ) {    
+    if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) ) && ( position <= qList_AtBack ) ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
             if( NULL == destination->head ){ /*destination is empty*/
@@ -204,7 +204,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
             destination->size += source->size;
             qList_Initialize( source ); /*clean up source*/
             #ifdef QLIST_NODE_WITH_CONTAINER
-                qList_ForEach( destination, qList_ChangeContainer, destination, QLIST_FORWARD );
+                (void)qList_ForEach( destination, qList_ChangeContainer, destination, QLIST_FORWARD );
             #endif
         }
     }
@@ -244,7 +244,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
     qNode_t *iNode;
     qNode_t *toRemove;
 
-    if( ( NULL != list->head ) && ( position >= -1 ) ){
+    if( ( NULL != list->head ) && ( position >= (qListPosition_t)(-1) ) ){
         #ifdef QLIST_CHECK_NODE_MEMBERSHIP
         if ( qList_IsMember( list, node ) ){
         #else
@@ -263,7 +263,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
             }
             list->size--;
         }
-        else if( position <= 0 ){
+        else if( position <= (qListPosition_t)0 ){
             removed = qList_RemoveFront( list );     
             list->size--;
         }
@@ -439,12 +439,12 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     qBool_t RetValue = qFalse;
     qBool_t xRetCmp;
     size_t count, i, j, n;
-    qNode_t *current = NULL, *before = NULL, *after = NULL;
+    qNode_t *current = NULL, *before, *after;
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
         if( count >= (size_t)2){ /*It is only worth running the algorithm if the list has two or more nodes*/
-          for (i = (size_t)1; i < count; i++) {
+            for (i = (size_t)1; i < count; i++) {
                 current = list->head;
                 n = count - i - (size_t)1;
                 for (j = (size_t)0; j <= n; j++) { 
@@ -475,7 +475,7 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
                     }
                 }
             }
-            while(current->next){ /*loop remaining nodes until find the new tail*/
+            while( NULL != current->next){ /*loop remaining nodes until find the new tail*/
                 current = current->next;
             }
             list->tail = current;            
@@ -554,11 +554,11 @@ void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t fr
 /*=========================================================*/
 qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position ){
     qBool_t RetValue = qFalse;
-    void *NewNode = NULL;
+    void *NewNode;
     if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > (size_t)0) ){
         NewNode = qListMalloc( size );
         if( NULL != NewNode ){
-            memcpy( NewNode, data, size );
+            (void)memcpy( NewNode, data, size );
             RetValue = qList_Insert( list, NewNode, position );
             if( qFalse == RetValue ){
                 qListFree( NewNode );

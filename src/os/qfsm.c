@@ -35,7 +35,7 @@ qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubSta
     if( ( NULL != obj ) && ( NULL != InitState ) ){
         obj->NextState = InitState;
         obj->PreviousState = NULL;
-        obj->StateFirstEntry  = 0u;
+        obj->StateFirstEntry  = qFalse;
         obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
         obj->qPrivate.Failure = FailureState;
         obj->qPrivate.Success = SuccessState;
@@ -66,7 +66,7 @@ Parameters:
              the arguments and pass a pointer to that structure.
 */    
 void qStateMachine_Run( qSM_t * const obj, void *Data ){
-    qSM_State_t prev  = NULL; /*used to hold the previous state*/
+    qSM_State_t prev; /*used to hold the previous state*/
     if( NULL != obj ){
         obj->Data = Data;   /*pass the data through the fsm*/
         qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
@@ -120,7 +120,7 @@ void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , q
             obj->NextState = s;
             obj->PreviousState = NULL;
             obj->LastState = NULL;
-            obj->StateFirstEntry = 0u;
+            obj->StateFirstEntry = qFalse;
             obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
             break;
         case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:

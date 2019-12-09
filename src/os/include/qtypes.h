@@ -45,11 +45,26 @@
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)
- 
-    #define qFalse                  ( 0x00u )
-    #define qTrue                   ( 0x01u )
-    #define qEnabled                ( qTrue )
-    #define qDisabled               ( qFalse )
+
+    #ifndef STRUCT_PRIVATE_MEMBERS /*to define private inside kernel objects*/
+        #define STRUCT_PRIVATE_MEMBERS
+        #define ___private_join( symbol1, symbol2 )     ___private_do_join( symbol1, symbol2 )
+        #define ___private_do_join( symbol1, symbol2 )   symbol1##symbol2
+        #define private_start                           struct ___private_join( qPrivate_, __LINE__ )
+        #define private_end                             qPrivate
+    #endif
+
+    typedef qUINT8_t qPriority_t;
+    typedef qINT32_t qIteration_t;
+    typedef qUINT8_t qState_t;
+    typedef qUINT8_t qBool_t;
+    typedef size_t qIndex_t; /*better portability*/
+    typedef qUINT32_t qCycles_t;
+    
+    #define qFalse                  ( (qBool_t)0x00u )
+    #define qTrue                   ( (qBool_t)0x01u )
+    #define qEnabled                ( (qState_t)0x01u )
+    #define qDisabled               ( (qState_t)0x00u )
     #define qAwake                  ( 2u )
     #define qAsleep                 ( 3u )
     #define qLINK                   ( qTrue )
@@ -75,22 +90,6 @@
         qRising             = qRISING,
         qFalling            = qFALLING,  
         qUnknown            = qUNKNOWN     
-    }qIOStatus_t;    
-
-    #ifndef STRUCT_PRIVATE_MEMBERS /*to define private inside kernel objects*/
-        #define STRUCT_PRIVATE_MEMBERS
-        #define ___private_join( symbol1, symbol2 )     ___private_do_join( symbol1, symbol2 )
-        #define ___private_do_join( symbol1, symbol2 )   symbol1##symbol2
-        #define private_start                           struct ___private_join( qPrivate_, __LINE__ )
-        #define private_end                             qPrivate
-    #endif
-
-    typedef qUINT8_t qPriority_t;
-    typedef qINT32_t qIteration_t;
-    typedef qUINT8_t qState_t;
-    typedef qUINT8_t qBool_t;
-    typedef size_t qIndex_t; /*better portability*/
-    typedef qUINT32_t qCycles_t;
-    
+    }qIOStatus_t;  
 
 #endif

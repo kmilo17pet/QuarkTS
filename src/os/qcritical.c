@@ -6,7 +6,7 @@ typedef struct{
     volatile qUINT32_t IntFlags; /*< To save the current interrupt flags before the disable action is performed. */
 }qCriticalHandler_t;
 
-static qCriticalHandler_t Critical = { NULL, NULL , 0ul};
+static qCriticalHandler_t Critical = { NULL, NULL , 0uL};
 
 /*============================================================================*/
 /*void qEnterCritical(void)

@@ -82,17 +82,17 @@ Return value:
 qBool_t qResponseReceivedWithTimeout( qResponseHandler_t * const obj, const char *Pattern, size_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
     if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( 0u == obj->qPrivate.PatternLength ) ){ /*handler no configured yet*/
-        strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
+        (void)strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
         obj->qPrivate.PatternLength = (0u == n)? strlen( Pattern ) : n; /*set the number of chars to match*/
         obj->qPrivate.MatchedCount = 0u; /*reinitialize the chars match count*/
         obj->qPrivate.ResponseReceived = qFalse; /*clear the ready flag*/
         if( t > qTimeImmediate ){
-            qSTimerSet( &obj->qPrivate.timeout, t);
+            (void)qSTimerSet( &obj->qPrivate.timeout, t);
         }
     }
     else if( qSTimerExpired( &obj->qPrivate.timeout) ){
         qResponseReset( obj ); /*re-initialize the response handler*/
-        RetValue = qResponseTimeout;
+        RetValue = (qBool_t)qResponseTimeout;
     }        
     else if( obj->qPrivate.ResponseReceived ){ /*if response received from ISR match the expected*/
         qResponseReset( obj ); /*re-initialize the response handler*/

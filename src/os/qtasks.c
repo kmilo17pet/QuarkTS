@@ -77,9 +77,9 @@ Return value:
 qState_t qTaskGetState( const qTask_t * const Task){
     qState_t RetValue = qAsleep;
     if( NULL != Task ){
-        RetValue = __qPrivate_TaskGetFlag( Task, __QTASK_BIT_SHUTDOWN ); 
-        if( qTrue == RetValue ){ /*Task is awaken*/
-            RetValue = __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED );
+        RetValue = (qState_t)__qPrivate_TaskGetFlag( Task, __QTASK_BIT_SHUTDOWN ); 
+        if( (qState_t)qTrue == RetValue ){ /*Task is awaken*/
+            RetValue = (qState_t)__qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED );
         }
     }
     return RetValue;
@@ -99,7 +99,7 @@ Return value:
     A unsigned long value containing the number of task activations.
 */
 qCycles_t qTaskGetCycles( const qTask_t * const Task ){
-    qCycles_t RetValue = 0ul;
+    qCycles_t RetValue = 0uL;
     if( NULL != Task ){
         RetValue = Task->qPrivate.Cycles;
     }
@@ -119,7 +119,7 @@ Parameters:
 */
 void qTaskSetTime( qTask_t * const Task, const qTime_t Value ){
     if( NULL != Task ){
-        qSTimerSet( &Task->qPrivate.timer , Value );
+        (void)qSTimerSet( &Task->qPrivate.timer , Value );
     }
 }
 /*============================================================================*/
@@ -198,10 +198,9 @@ void qTaskSetState(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
         switch( State ){
             case qDisabled: case qEnabled:
-                if( State != __qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED ) ){ 
-                    __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_ENABLED, State );
-                    qSTimerReload( &Task->qPrivate.timer );
-                    /*Task->qPrivate.ClockStart = qClock_GetTick();*/
+                if( State != (qState_t)__qPrivate_TaskGetFlag( Task, __QTASK_BIT_ENABLED ) ){ 
+                    __qPrivate_TaskModifyFlags( Task, __QTASK_BIT_ENABLED, (qBool_t)State );
+                    (void)qSTimerReload( &Task->qPrivate.timer );
                 }
                 break;
             case qAsleep:
@@ -244,7 +243,7 @@ Parameters:
 */
 void qTaskClearTimeElapsed( qTask_t * const Task ){
     if( NULL != Task ){
-        qSTimerReload( &Task->qPrivate.timer );
+        (void)qSTimerReload( &Task->qPrivate.timer );
     }    
 }
 #if ( Q_QUEUES == 1)
@@ -289,7 +288,7 @@ qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQ
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->pHead ) {
-            __qPrivate_TaskModifyFlags( Task, Mode & __QTASK_QUEUEFLAGS_MASK, (( arg != qFalse )? qATTACH :qDETACH) );
+            __qPrivate_TaskModifyFlags( Task, Mode & __QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
             if( Mode == qQUEUE_COUNT ){
                 Task->qPrivate.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }

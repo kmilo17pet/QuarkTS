@@ -158,7 +158,7 @@ char* qU32toX( qUINT32_t value, char *str, qINT8_t n ){
     str[n] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/ 
     for( i = ( n - 1) ; i >= 0 ; i-- ){
         str[i] = qNibbleToX( (qUINT8_t)value ); /*MISRAC2004-17.4_b deviation allowed*/ 
-        value >>= 4ul;
+        value >>= 4uL;
     }
     return str;
 }
@@ -180,7 +180,7 @@ Return value:
   The numeric value uint32_t
 */
 qUINT32_t qXtoU32( const char *s ) {
-    qUINT32_t val = 0ul;
+    qUINT32_t val = 0uL;
     qUINT8_t byte;
     qUINT8_t nparsed = 0u;
     if( NULL != s ){
@@ -197,7 +197,7 @@ qUINT32_t qXtoU32( const char *s ) {
                 else{
                     /*nothing to do */
                 }     
-                val = ((val << 4ul) | ((qUINT32_t)byte & 0xFul));  /*add the corresponding nibble to the output*/                
+                val = ((val << 4uL) | ((qUINT32_t)byte & 0xFuL));  /*add the corresponding nibble to the output*/                
             }
             else if( isspace( (int)byte ) ){
                 /*discard any white-space char*/
@@ -349,13 +349,13 @@ NULL Terminator not included
 static size_t __q_revuta( qUINT32_t num, char* str, qUINT8_t base ){
     size_t i = 0u;
     qUINT32_t rem;
-    if( ( 0ul == num ) || ( 0u == base ) ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
+    if( ( 0uL == num ) || ( 0u == base ) ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
         str[i++] = '0';  /*MISRAC2004-17.4_b deviation allowed*/        
     }
     else{
-        while( 0ul != num ){ /*Process individual digits*/
+        while( 0uL != num ){ /*Process individual digits*/
             rem = num % (qUINT32_t)base;
-            str[i++] = ( rem > 9ul )? (char)(rem - 10ul) + 'A' : (char)rem + '0'; /*MISRAC2004-17.4_b deviation allowed*/ 
+            str[i++] = ( rem > 9uL )? (char)(rem - 10uL) + 'A' : (char)rem + '0'; /*MISRAC2004-17.4_b deviation allowed*/ 
             num = num/base;
         }
         qSwapBytes( str, i );/*Reverse the string*/
@@ -515,7 +515,7 @@ qBool_t qIsNan( qFloat32_t f ){
     void *p;
     p = &f;
     u = *(qUINT32_t*)p;
-    return ( ( ( u & 0x7F800000ul ) ==  0x7F800000ul ) && ( u & 0x7FFFFFul ) )? qTrue : qFalse;
+    return ( ( ( u & 0x7F800000uL ) ==  0x7F800000uL ) && ( u & 0x7FFFFFuL ) )? qTrue : qFalse;
 }
 /*============================================================================*/
 /*qBool_t qIsInf(qFloat32_t f)
@@ -534,7 +534,7 @@ qBool_t qIsInf( qFloat32_t f ){
     void *p;
     p = &f;
     u = *(qUINT32_t*)p;
-    return ( ( 0x7f800000ul == u ) || ( 0xff800000ul == u ) )? qTrue : qFalse;
+    return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
 /* char* qFtoA(qFloat32_t f, char *str, qUINT8_t precision)

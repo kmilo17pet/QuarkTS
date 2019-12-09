@@ -26,7 +26,7 @@ embedded application
 qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (qClock_t)(ts.tv_nsec / 1000000) + ((qClock_t)ts.tv_sec * 1000ul);
+    return (qClock_t)(ts.tv_nsec / 1000000) + ((qClock_t)ts.tv_sec * 1000uL);
 }
 
 /*============================================================================*/

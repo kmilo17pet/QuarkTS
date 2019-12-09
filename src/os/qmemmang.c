@@ -108,7 +108,7 @@ static void qHeapInit( void ){
     }
     
     if( MemPool == &DefaultMemPool ){ /*initialize the default memory pool */
-        qMemoryPool_Init(MemPool, DefaultHeap, (size_t)Q_DEFAULT_HEAP_SIZE);
+        (void)qMemoryPool_Init(MemPool, DefaultHeap, (size_t)Q_DEFAULT_HEAP_SIZE);
     }
 
     TotalHeapSize = MemPool->HeapSize;
@@ -117,7 +117,7 @@ static void qHeapInit( void ){
     MemPool->FreeBytesRemaining = (size_t)0;
     
     Address = (qAddress_t)MemPool->Heap;
-    if( ( Address & ByteAlignmentMask ) != 0ul ){
+    if( ( Address & ByteAlignmentMask ) != 0uL ){
         Address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
         Address &= ~ByteAlignmentMask;
         TotalHeapSize -= Address - (qAddress_t)MemPool->Heap;

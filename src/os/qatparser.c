@@ -43,7 +43,7 @@ static qFloat32_t GetArgFlt( qArgNum_t n ){
 }
 /*============================================================================*/
 static qUINT32_t GetArgHex( qArgNum_t n ){
-    qUINT32_t RetValue = 0ul;
+    qUINT32_t RetValue = 0uL;
     if( NULL != Current){
         RetValue = qATParser_GetArgHex( &Current->qPrivate.Params, n );
     }

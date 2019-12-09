@@ -84,7 +84,7 @@ qBool_t qSTimerFreeRun( qSTimer_t * const obj, const qTime_t Time ){
             }
         }
         else{
-            qSTimerSet( obj, Time ); 
+            (void)qSTimerSet( obj, Time ); 
         }
     }
     return RetValue;   
@@ -127,7 +127,7 @@ Return value:
     The Elapsed time specified in epochs
 */
 qClock_t qSTimerElapsed( const qSTimer_t * const obj ){
-    qClock_t RetValue = 0ul;
+    qClock_t RetValue = 0uL;
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
             RetValue = qClock_GetTick() - obj->qPrivate.Start;

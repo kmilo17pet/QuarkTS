@@ -10,7 +10,7 @@
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef qUINT32_t qTime_t;
-        #define qTimeImmediate       ((qTime_t)(0ul))
+        #define qTimeImmediate       ((qTime_t)(0uL))
     #else
         typedef qFloat32_t qTime_t;
         #define qTimeImmediate       ((qTime_t)(0.0f))

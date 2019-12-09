@@ -143,7 +143,7 @@ void* qQueuePeek( const qQueue_t * const obj ){
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
             qCritical_Enter();
-            RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );
+            RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
             if( RetValue >= obj->pTail ){
                 RetValue = obj->pHead;
             }
@@ -181,7 +181,7 @@ qBool_t qQueueRemoveFront( qQueue_t * const obj ){
 /*============================================================================*/
 static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition ){
     if( QUEUE_SEND_TO_BACK == xPosition ){
-        (void) memcpy( (void*) obj->pcWriteTo, pvItemToQueue, obj->ItemSize );
+        (void) memcpy( (void*) obj->pcWriteTo, pvItemToQueue, obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
         obj->pcWriteTo += obj->ItemSize;
         if( obj->pcWriteTo >= obj->pTail ){
             obj->pcWriteTo = obj->pHead;
@@ -189,7 +189,7 @@ static void qQueueCopyDataToQueue( qQueue_t * const obj, const void *pvItemToQue
               
     }
     else{
-        (void) memcpy( (void*) obj->pcReadFrom, pvItemToQueue, obj->ItemSize );
+        (void) memcpy( (void*) obj->pcReadFrom, pvItemToQueue, obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
         obj->pcReadFrom -= obj->ItemSize;
         if( obj->pcReadFrom < obj->pHead ){
             obj->pcReadFrom = ( obj->pTail - obj->ItemSize ); 
@@ -207,7 +207,7 @@ static void qQueueMoveReader( qQueue_t * const obj ){
 /*==================================================================================*/
 static void qQueueCopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer ){
     qQueueMoveReader( obj );
-    (void) memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, obj->ItemSize );
+    (void) memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
 /*void* qQueueReceive(qQueue_t * const obj, void *dest)
@@ -261,7 +261,7 @@ qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueueMode_t
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/
             qCritical_Enter();
-            qQueueCopyDataToQueue( obj, ItemToQueue, InsertMode );
+            qQueueCopyDataToQueue( obj, ItemToQueue, (qBool_t)InsertMode );
             qCritical_Exit();
             RetValue = qTrue;
         }

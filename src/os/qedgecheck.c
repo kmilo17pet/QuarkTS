@@ -4,13 +4,13 @@
 
 /*============================================================================*/
 qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
-    qUINT32_t Register = 0ul;
+    qUINT32_t Register;
     Register = *((const qUINT32_t*)Address);    
-    return (Register & (1ul << PinNumber))? qFalse : qTrue;
+    return (Register & (1uL << PinNumber))? qFalse : qTrue;
 }
 /*============================================================================*/
 qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
-    qUINT16_t Register = 0u;
+    qUINT16_t Register;
     qUINT16_t Mask;
     Mask = (qUINT16_t)1u << (qUINT16_t)PinNumber;
     Register = *( (const qUINT16_t*)Address );
@@ -18,7 +18,7 @@ qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
 }
 /*============================================================================*/
 qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
-    qUINT8_t Register = 0u;
+    qUINT8_t Register;
     Register = *((const qUINT8_t*)Address);
     return ( Register & (qUINT8_t)(1u << PinNumber) )? qFalse : qTrue;
 }

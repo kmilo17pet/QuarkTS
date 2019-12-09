@@ -1,6 +1,6 @@
 #include "qclock.h"
 
-static volatile qClock_t _qSysTick_Epochs_ = 0ul;
+static volatile qClock_t _qSysTick_Epochs_ = 0uL;
 static qGetTickFcn_t GetSysTick = NULL;
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
