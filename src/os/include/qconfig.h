@@ -7,6 +7,7 @@
     #define Q_SETUP_TIME_CANONICAL      ( 0 )       /*< If enabled, kernel asumes the timing Base to 1mS(1KHz). All time specifications for tasks and STimers must be set in mS*/
     #define Q_SETUP_TICK_IN_HERTZ       ( 0 )       /*< If enabled, the timming base will be taken as frequency(Hz) instead of period(S)*/
     #define Q_PRIO_QUEUE_SIZE           ( 10 )      /*< The size of the priority queue (use a 0(zero) value to disable it)*/    
+    #define Q_PRESERVE_TASK_ENTRY_ORDER ( 0 )       /*< If enabled, kernel will preserver the task entry order every OS scheduling cycle*/
     #define Q_MEMORY_MANAGER            ( 1 )       /*< Used to enable or disable the Memory Manager*/
     #define Q_BYTE_ALIGNMENT            ( 8 )       /*< Byte alignment used by the memory manager*/
     #define Q_DEFAULT_HEAP_SIZE         ( 2048  )   /*< The default heap size for the memory manager*/    

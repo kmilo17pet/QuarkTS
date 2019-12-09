@@ -15,6 +15,9 @@ static qListMemFree_t qListFree = NULL;
 
 static qNode_t* __qNode_Forward( const qNode_t *const node );
 
+#ifdef QLIST_NODE_WITH_CONTAINER
+    static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
+#endif
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
  
@@ -38,6 +41,9 @@ static qNode_t* qList_NodeInit( void * const node ){
     qNode_t *xNode = (qNode_t*)node;
     xNode->prev = NULL;
     xNode->next = NULL;
+    #ifdef QLIST_NODE_WITH_CONTAINER
+        xNode->container = NULL;
+    #endif
     return xNode;
 }
 /*=========================================================*/
@@ -114,7 +120,9 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qNode_t *iNode;
  
     if( ( NULL != list ) && ( NULL != node ) && ( position >= -1 ) && ( position <= qList_AtBack ) ){    
+        #ifdef QLIST_CHECK_NODE_MEMBERSHIP
         if( qFalse == qList_IsMember( list, node )){
+        #endif    
             newnode = qList_NodeInit( node );
             RetValue = qTrue;
             if( NULL == list->head ){ /*list is empty*/
@@ -135,7 +143,12 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
                 iNode->next = newnode;        /*  iNODE -> NEW */  
             }                                 /*  result: iNODE <-> NEW <-> (i+1)NODE    */
             list->size++;
+            #ifdef QLIST_NODE_WITH_CONTAINER
+                newnode->container = list;
+            #endif
+        #ifdef QLIST_CHECK_NODE_MEMBERSHIP    
         }
+        #endif
     }
     return RetValue;  
 }
@@ -190,10 +203,24 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
             }
             destination->size += source->size;
             qList_Initialize( source ); /*clean up source*/
+            #ifdef QLIST_NODE_WITH_CONTAINER
+                qList_ForEach( destination, qList_ChangeContainer, destination, QLIST_FORWARD );
+            #endif
         }
     }
     return RetValue;
 }
+/*=========================================================*/
+#ifdef QLIST_NODE_WITH_CONTAINER
+static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage ){
+    qNode_t *xNode;
+    if( qList_WalkThrough == stage ){
+        xNode = (qNode_t*)node;
+        xNode->container = newcontainer;
+    }
+    return qFalse;
+}
+#endif
 /*=========================================================*/           
 /*void* qList_Remove(qList_t * const list, void * const node, const qListPosition_t position)
  
@@ -218,7 +245,11 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
     qNode_t *toRemove;
 
     if( ( NULL != list->head ) && ( position >= -1 ) ){
-        if ( qList_IsMember( list, node ) ){ 
+        #ifdef QLIST_CHECK_NODE_MEMBERSHIP
+        if ( qList_IsMember( list, node ) ){
+        #else
+        if( NULL != node ){
+        #endif     
             toRemove = (qNode_t*)node;
             if( toRemove == list->head ){
                 removed = qList_RemoveFront( list );          
@@ -250,6 +281,11 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
             }
             list->size--;
         }                
+        #ifdef QLIST_NODE_WITH_CONTAINER
+            if( NULL != removed ){
+                removed->container = NULL;
+            }
+        #endif
     }
     return removed;
 }

@@ -50,12 +50,13 @@
     typedef qUINT32_t qTaskFlag_t; 
     #define QMAX_NOTIFICATION_VALUE         ( 0xFFFFFFFFu )
 
-    typedef qUINT8_t qTaskState_t;
+    /*typedef qUINT8_t qTaskState_t;
     #define qWaiting    ( 0u )
     #define qReady      ( 1u )
     #define qRunning    ( 2u )
     #define qSuspended  ( 3u )
     #define qSleeping   ( 4u )
+    */
 
 
     /* Task flags
@@ -198,6 +199,9 @@
             qSTimer_t timer;                        /*< To handle the task timming*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
+            #endif
+            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
+                size_t Entry;
             #endif
             qIteration_t Iterations;                /*< Holds the number of iterations. */
             volatile qNotifier_t Notification;      /*< The notification value. */          

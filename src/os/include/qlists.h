@@ -9,17 +9,32 @@
     extern "C" {
     #endif
 
+
+    #undef  QLIST_CHECK_NODE_MEMBERSHIP /*disabled for performance reasons*/
+    #define QLIST_NODE_WITH_CONTAINER   /*used by the kernel for future features*/
+
+
+    #ifdef QLIST_NODE_WITH_CONTAINER
+        #define __qNodeMembers  *next, *prev, *container
+    #else
+        #define __qNodeMembers  *next, *prev
+    #endif
+
+
     typedef struct node_s{
         struct node_s *next, *prev; /*< Pointers to the adyacent nodes. */
+        #ifdef QLIST_NODE_WITH_CONTAINER
+            void *container;
+        #endif
     }qNode_t;
 
-    #define qNode_MinimalFields     void *next, *prev
-    #define qNode_MinimalMembers    qNode_MinimalFields                
+    #define qNode_MinimalFields     void __qNodeMembers
+    #define qNode_MinimalMembers    qNode_MinimalFields
 
     typedef struct{
         qNode_MinimalFields;        /*< to allow list of lists*/
         qNode_t *head, *tail;       /*< Pointers to the beginning of and the end of the list. */
-        size_t size;               /*< Used to hold the current size of the list. */
+        size_t size;                /*< Used to hold the current size of the list. */
     }qList_t;
 
     #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, 0u }

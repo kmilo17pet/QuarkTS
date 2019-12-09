@@ -19,6 +19,14 @@
     #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ( (qIteration_t)(1) )
 
+    typedef enum{
+        qUndefinedGlobalState,
+        qReady,
+        qWaiting,
+        qSuspended,
+        qRunning
+    }qStateGlobal_t;
+
     typedef qBool_t (*qTaskNotifyMode_t)(qTask_t* arg1, void* arg2);
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
@@ -55,6 +63,8 @@
     #endif
 
     #define __qFSMCallbackMode      ((qTaskFcn_t)1)
+
+    qStateGlobal_t qScheduler_GetTaskGlobalState( const qTask_t * const Task);
 
     #ifdef __cplusplus
     }
