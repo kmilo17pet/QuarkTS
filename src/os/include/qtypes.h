@@ -86,7 +86,7 @@
     #endif
 
     typedef qUINT8_t qPriority_t;
-    typedef qINT16_t qIteration_t;
+    typedef qINT32_t qIteration_t;
     typedef qUINT8_t qState_t;
     typedef qUINT8_t qOperation_t;
     typedef qUINT8_t qBool_t;

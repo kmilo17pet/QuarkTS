@@ -199,13 +199,11 @@
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
+            qIteration_t Iterations;                /*< Holds the number of iterations. */
             volatile qNotifier_t Notification;      /*< The notification value. */          
             volatile qTaskFlag_t Flags;             /*< Task flags (core and eventflags)*/
             qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
-            qIteration_t Iterations;                /*< Holds the number of iterations. */
             qPriority_t Priority;                   /*< The task priority. */
-
-            qTaskState_t State;                     /*< The task state (set by the scheduler). */
         }private_end;
     }qTask_t;
 

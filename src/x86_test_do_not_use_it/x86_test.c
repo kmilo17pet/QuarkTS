@@ -349,7 +349,7 @@ int main(int argc, char** argv) {
 
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback);           
     qSchedulerSetReleaseCallback( scheduler_Release );
-    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");    
+    qSchedulerAdd_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink");   
     qSchedulerAdd_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1");
     qSchedulerAdd_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3");
     qTaskAttachQueue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH);
@@ -357,7 +357,7 @@ int main(int argc, char** argv) {
     qSchedulerAdd_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5");
     qSchedulerAdd_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6");
     qSchedulerAdd_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask");
-    
+
     qSchedulerRun();
     
     

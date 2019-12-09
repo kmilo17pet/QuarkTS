@@ -331,7 +331,6 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
         #if ( Q_FSM == 1)
             Task->qPrivate.StateMachine = NULL;
         #endif
-        Task->qPrivate.State = qSuspended;
         qList_Insert( &WaitingList, Task, qList_AtBack ); 
         RetValue = qTrue; 
     }
@@ -589,7 +588,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
             xTask = _qScheduler_PriorityQueueGet(); /*try to extract a task from the front of the priority queue*/
             if( NULL != xTask ){  /*if we got a task from the priority queue,*/
                 xTask->qPrivate.Trigger = byNotificationQueued;
-                __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up !!*/
+                __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
             }     
         #endif          
     }
@@ -609,36 +608,32 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         if( __qPrivate_TaskGetFlag( xTask, __QTASK_BIT_SHUTDOWN) ){
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             if( byNotificationQueued == xTask->qPrivate.Trigger ){
-                xTask->qPrivate.State = qReady; /*set the task as ready*/
                 xReady = qTrue;
             }
             else
             #endif 
             if( _qScheduler_TaskDeadLineReached( xTask ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
                 qSTimerReload( &xTask->qPrivate.timer );
-                xTask->qPrivate.State = qReady;
                 xTask->qPrivate.Trigger = byTimeElapsed;      
                 xReady = qTrue;            
             }
             #if ( Q_QUEUES == 1)  
             else if( qTriggerNULL !=  ( trg = _qScheduler_CheckQueueEvents( xTask ) ) ){ /*If the deadline has not met, check if there is a queue event available*/
-                xTask->qPrivate.State = qReady;
                 xTask->qPrivate.Trigger = trg;      
                 xReady = qTrue;
             }
             #endif
             else if( xTask->qPrivate.Notification ){   /*The last check will be if the task has an async event*/
-                xTask->qPrivate.State = qReady;
                 xTask->qPrivate.Trigger = byNotificationSimple;  
                 xReady = qTrue;            
             }
             else if( (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){
-                xTask->qPrivate.State = qReady;
                 xTask->qPrivate.Trigger = byEventFlags;          
                 xReady = qTrue;        
             }
             else{
-                xTask->qPrivate.State = qSuspended; /*If the task has no available events, put it in a suspended state*/        
+                xTask->qPrivate.Trigger = qTriggerNULL;
+                /*the task has no available events, put it in a suspended state*/        
             }
         }
         qList_Remove( &WaitingList, NULL, QLIST_ATFRONT ); 
@@ -650,7 +645,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
             __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_REMOVE_REQUEST, qFalse );  /*clear the removal request*/
         }
         else{
-            xList = ( qReady == xTask->qPrivate.State )? &ReadyList[ xTask->qPrivate.Priority ] : &SuspendedList;
+            xList = ( qTriggerNULL != xTask->qPrivate.Trigger )? &ReadyList[ xTask->qPrivate.Priority ] : &SuspendedList;
             qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
@@ -721,7 +716,6 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             kernel.EventInfo.TaskData = Task->qPrivate.TaskData;
             kernel.CurrentRunningTask = Task; /*needed for qTaskSelf()*/
             TaskActivities = Task->qPrivate.Callback;
-            Task->qPrivate.State = qRunning; /*put the task in running state*/
             qList_Remove( xList, NULL, qList_AtFront );
             qList_Insert( &WaitingList, Task, QLIST_ATBACK );  
 
@@ -753,7 +747,6 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 Task->qPrivate.Cycles++; /*increase the task cycles value*/
             #endif
-            Task->qPrivate.State = qSuspended;  
             Task->qPrivate.Trigger = qTriggerNULL;
         }
         else{ /*run the idle*/

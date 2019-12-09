@@ -15,7 +15,7 @@
     #define qMedium_Priority        ( (qPriority_t)( Q_PRIORITY_LEVELS >> 1 ) )
     #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1u ) )
 
-    #define qPeriodic               ( (qIteration_t)(-32768) )
+    #define qPeriodic               ( (qIteration_t)(-2147483648) )
     #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ( (qIteration_t)(1) )
 
