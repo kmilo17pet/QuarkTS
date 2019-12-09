@@ -328,6 +328,7 @@ qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachin
     }    
     return RetValue;
 }
+#endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 /*void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action )
 
@@ -444,4 +445,3 @@ void __qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t 
     }
 }
 /*____________________________________________________________________________*/
-#endif /* #if ( Q_FSM == 1) */
