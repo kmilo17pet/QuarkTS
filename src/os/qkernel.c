@@ -264,8 +264,6 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
         }   
         kernel.QueueData = kernel.QueueStack[IndexTaskToExtract].QueueData; /*get the data from the queue*/
         xTask = kernel.QueueStack[IndexTaskToExtract].Task; /*assign the task to the output*/
-        __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up !!*/
-        xTask->qPrivate.State = qReady; /*set the task as ready*/
         _qScheduler_PriorityQueue_ClearIndex( IndexTaskToExtract );
         qCritical_Exit();
     }
@@ -315,7 +313,7 @@ qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPrior
                                   Priority;
         Task->qPrivate.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
         Task->qPrivate.Notification = 0u;
-
+        Task->qPrivate.Trigger = qTriggerNULL;
         __qPrivate_TaskModifyFlags( Task,
                                  __QTASK_BIT_INIT | __QTASK_BIT_QUEUE_RECEIVER | 
                                  __QTASK_BIT_QUEUE_FULL | __QTASK_BIT_QUEUE_COUNT | 
@@ -586,6 +584,14 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
 
     if( QLIST_WALKINIT == stage ){
         xReady = qFalse;
+
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+            xTask = _qScheduler_PriorityQueueGet(); /*try to extract a task from the front of the priority queue*/
+            if( NULL != xTask ){  /*if we got a task from the priority queue,*/
+                xTask->qPrivate.Trigger = byNotificationQueued;
+                __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up !!*/
+            }     
+        #endif          
     }
     else if( QLIST_WALKTHROUGH == stage ){
         xTask = (qTask_t*)node;
@@ -601,6 +607,13 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
 
 
         if( __qPrivate_TaskGetFlag( xTask, __QTASK_BIT_SHUTDOWN) ){
+            #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+            if( byNotificationQueued == xTask->qPrivate.Trigger ){
+                xTask->qPrivate.State = qReady; /*set the task as ready*/
+                xReady = qTrue;
+            }
+            else
+            #endif 
             if( _qScheduler_TaskDeadLineReached( xTask ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
                 qSTimerReload( &xTask->qPrivate.timer );
                 xTask->qPrivate.State = qReady;
@@ -641,20 +654,11 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
             qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
-    else if( QLIST_WALKEND == stage ){
-        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-            xTask = _qScheduler_PriorityQueueGet(); /*try to extract a task from the front of the priority queue*/
-            if( NULL != xTask ){  /*if we got a task from the priority queue,*/
-                xTask->qPrivate.Trigger = byNotificationQueued;
-                qList_Remove( &WaitingList, xTask, 0); /*remove it from the wainting list*/
-                qList_Insert( &ReadyList[ (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1 ], xTask, qList_AtFront ); /*and add the task to the highest priority ready list*/
-                xReady = qTrue;
-            }     
-        #endif   
+    else if( QLIST_WALKEND == stage ){ 
         RetValue = xReady;
     }
     else{
-        /*nothing to do*/
+        /*this should never enter here*/
     }
     return RetValue;
 }
@@ -750,6 +754,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
                 Task->qPrivate.Cycles++; /*increase the task cycles value*/
             #endif
             Task->qPrivate.State = qSuspended;  
+            Task->qPrivate.Trigger = qTriggerNULL;
         }
         else{ /*run the idle*/
             kernel.EventInfo.FirstCall = (qFalse == __QKERNEL_COREFLAG_GET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ) )? qTrue : qFalse;

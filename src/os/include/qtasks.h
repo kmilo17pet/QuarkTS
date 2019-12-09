@@ -46,9 +46,9 @@
     #define qTrigger_SchedulingRelease      ( bySchedulingRelease )
     #define qTrigger_NoReadyTasks           ( byNoReadyTasks )
 
-    typedef qUINT8_t qNotifier_t;       
+    typedef qUINT32_t qNotifier_t;       
     typedef qUINT32_t qTaskFlag_t; 
-    #define QMAX_NOTIFICATION_VALUE         ( 0xFFu )
+    #define QMAX_NOTIFICATION_VALUE         ( 0xFFFFFFFFu )
 
     typedef qUINT8_t qTaskState_t;
     #define qWaiting    ( 0u )
@@ -199,12 +199,13 @@
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
+            volatile qNotifier_t Notification;      /*< The notification value. */          
+            volatile qTaskFlag_t Flags;             /*< Task flags (core and eventflags)*/
             qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
             qIteration_t Iterations;                /*< Holds the number of iterations. */
             qPriority_t Priority;                   /*< The task priority. */
+
             qTaskState_t State;                     /*< The task state (set by the scheduler). */
-            volatile qNotifier_t Notification;      /*< The notification value. */          
-            volatile qTaskFlag_t Flags;             /*< Task flags (core and eventflags)*/
         }private_end;
     }qTask_t;
 
