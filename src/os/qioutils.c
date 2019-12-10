@@ -51,7 +51,7 @@ Parameters:
     - AIP : Auto-Increment the storage-pointer
 */
 void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
-    size_t i = 0u;
+    size_t i;
     char *cdata = data;
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
@@ -78,7 +78,7 @@ Parameters:
     - AIP : Auto-Increment the storage-pointer
 */
 void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
-    size_t i = 0u;
+    size_t i;
     char *cdata = data;
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
@@ -384,7 +384,7 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qUtoA( qUINT32_t num, char* str, qUINT8_t base ){
-    size_t i = 0u;
+    size_t i;
     if( NULL != str ){
         i = __q_revuta( num, str, base ); /*make the unsigned conversion without the null terminator*/
         str[i] = '\0'; /*add the null terminator*/ /*MISRAC2004-17.4_b deviation allowed*/
@@ -563,7 +563,7 @@ char* qFtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited to preci
             str[2]='0';  /*MISRAC2004-17.4_b deviation allowed*/
             str[3]='\0'; /*MISRAC2004-17.4_b deviation allowed*/       
         }
-        else if( qTrue == (c = qIsInf(num)) ){ /*handle the infinity*/
+        else if( qTrue == qIsInf(num) ){ /*handle the infinity*/
             str[0] = ( num > 0.0f )? '+' : '-'; /*MISRAC2004-17.4_b deviation allowed*/
             str[1]='i';  /*MISRAC2004-17.4_b deviation allowed*/
             str[2]='n';  /*MISRAC2004-17.4_b deviation allowed*/

@@ -87,7 +87,7 @@ void qFree(void *ptr){
     pToFree = (qUINT8_t*)ptr;
     
     if( NULL != ptr){
-        pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/
+        pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
         Connect = (void*)pToFree;
         if( (size_t)0 != (Connect->BlockSize & MemPool->BlockAllocatedBit) ){
             Connect->BlockSize &= ~MemPool->BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
@@ -126,15 +126,15 @@ static void qHeapInit( void ){
     
     MemPool->Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/
     MemPool->Start.BlockSize = (size_t)0;
-    Address = ( (qAddress_t) Aligned ) + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/
+    Address = ( (qAddress_t) Aligned ) + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4*/
     Address -= HeapStructSize;
     Address &= ~ByteAlignmentMask;
     
-    MemPool->End = (void*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */
+    MemPool->End = (void*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
     MemPool->End->Next = NULL;
     MemPool->End->BlockSize = (size_t)0;
     FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */
-    FirstFreeBlock->BlockSize = Address - (qAddress_t)FirstFreeBlock; /*MISRAC2004-17.4_a deviation allowed*/
+    FirstFreeBlock->BlockSize = Address - (qAddress_t)FirstFreeBlock; /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
     FirstFreeBlock->Next = MemPool->End;
 
     MemPool->FreeBytesRemaining = FirstFreeBlock->BlockSize;
@@ -152,13 +152,13 @@ static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
     for( Iterator = &MemPool->Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
     
     ptr = (qUINT8_t*) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
-    if( ( ptr + Iterator->BlockSize ) == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/ /*MISRAC2004-17.4_a deviation allowed*/
+    if( ( ptr + Iterator->BlockSize ) == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
 	    Iterator->BlockSize += BlockToInsert->BlockSize;
 	    BlockToInsert = Iterator;
     }
 	
     ptr = (qUINT8_t*) BlockToInsert;
-    if( ( ptr + BlockToInsert->BlockSize ) == (qUINT8_t*) Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/
+    if( ( ptr + BlockToInsert->BlockSize ) == (qUINT8_t*) Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
         if( Iterator->Next != MemPool->End ){ 
             BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */
             BlockToInsert->Next = Iterator->Next->Next;
@@ -227,7 +227,7 @@ void* qMalloc( size_t size ){
                 Allocated = (void*) ( ( (qUINT8_t*)PreviousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */
                 PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
                 if( ( Block->BlockSize - size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
-                    NewBlockLink = (void*) ( ( (qUINT8_t*)Block ) + size ); /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/
+                    NewBlockLink = (void*) ( ( (qUINT8_t*)Block ) + size ); /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
                     NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                     Block->BlockSize = size;
                     qInsertBlockIntoFreeList( ( NewBlockLink ) ); /* Insert the new block into the list of free blocks. */
@@ -253,14 +253,14 @@ Return value:
 
 */
 size_t qHeapGetFreeSize( void ){
-    size_t RetValue = (size_t)0;
+    size_t RetValue;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
     RetValue = MemPool->HeapSize;
     
-    if( MemPool->End ){
+    if( NULL != MemPool->End ){
         RetValue =  MemPool->FreeBytesRemaining;
     }
     return RetValue;

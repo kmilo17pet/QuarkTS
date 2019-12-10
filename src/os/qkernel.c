@@ -7,7 +7,7 @@
 
 #define __QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (  BIT )     
 #define __QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= ( ~BIT ) 
-#define __QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( ( FLAG ) & ( BIT ) )? qTrue : qFalse )
+#define __QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/
 typedef struct{
@@ -549,7 +549,7 @@ static void _qTriggerReleaseSchedEvent( void ){
         Callback = kernel.ReleaseSchedCallback;
         Callback( (qEvent_t)&kernel.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
     }    
-    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ); 
+    __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
 #endif
 /*============================================================================*/
@@ -572,7 +572,7 @@ void qSchedulerRun( void ){
                 if( xList->size > (size_t)0 ){ /*check if the target list has items*/
                     (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD ); /*dispatch every task in this list*/
                 }
-            }while( xPriorityListIndex-- );
+            }while( (qIndex_t)0 != xPriorityListIndex-- );
         }
         else{ /*no task in the scheme is ready*/
             if( NULL != kernel.IDLECallback ){ /*check if the idle-task is available*/
@@ -656,7 +656,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
                 xTask->qPrivate.Trigger = byNotificationSimple;  
                 xReady = qTrue;            
             }
-            else if( (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){
+            else if( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){
                 xTask->qPrivate.Trigger = byEventFlags;          
                 xReady = qTrue;        
             }
@@ -694,7 +694,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
     qList_t *xList;
     qTrigger_t Event = byNoReadyTasks;
     qIteration_t TaskIteration;
-    qTaskFcn_t TaskActivities = NULL;
+    qTaskFcn_t TaskActivities;
 
     xList = (qList_t*)arg;
     
@@ -755,7 +755,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
                     qStateMachine_Run( Task->qPrivate.StateMachine, (void*)&kernel.EventInfo );  /*If the task has a FSM attached, just run it*/  
                 }
                 else if ( NULL != TaskActivities ) {
-                    TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/ 
+                    TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/  /*MISRAC2012-Rule-11.3 allowed*/
                 }       
                 else{
                     /*nothing to do*/
@@ -785,7 +785,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             kernel.EventInfo.TaskData = NULL;
             kernel.EventInfo.Trigger = Event;
             TaskActivities = kernel.IDLECallback; /*some compilers can deal with function pointers inside structs*/
-            TaskActivities( (qEvent_t)&kernel.EventInfo ); /*run the idle callback*/
+            TaskActivities( (qEvent_t)&kernel.EventInfo ); /*run the idle callback*/ /*MISRAC2012-Rule-11.3 allowed*/
             __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE );
         }
     }
@@ -825,7 +825,7 @@ qStateGlobal_t qScheduler_GetTaskGlobalState( const qTask_t * const Task){
         else if( SuspendedList == xList ){
             RetValue = qSuspended;
         }
-        else if( ( xList >= &ReadyList[0] ) && ( xList <= &ReadyList[ Q_PRIORITY_LEVELS - 1 ] ) ){
+        else if( ( xList >= &ReadyList[0] ) && ( xList <= &ReadyList[ Q_PRIORITY_LEVELS - 1 ] ) ){ /*MISRAC2012-Rule-18.3 allowed*/
             RetValue = qReady;
         }
         else{

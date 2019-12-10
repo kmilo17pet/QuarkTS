@@ -45,11 +45,13 @@
     #define QLIST_WALKEND           ( qList_WalkEnd )
 
     typedef qBool_t (*qListNodeFcn_t)(void *node, void *arg, qList_WalkStage_t stage );
-    typedef enum{ qList_AtFront =-1 , qList_AtBack = 32766 }qListPosition_t;
+    typedef qINT32_t qListPosition_t;
 
     typedef void* (*qListMemAllocator_t)( size_t size );
     typedef void (*qListMemFree_t)(void *ptr);
 
+    #define qList_AtFront           ((qListPosition_t)(-1))
+    #define qList_AtBack            ((qListPosition_t)(2147483647))
     #define QLIST_ATFRONT           ( qList_AtFront )
     #define QLIST_ATBACK            ( qList_AtBack  )
 
