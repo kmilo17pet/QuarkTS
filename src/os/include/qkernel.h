@@ -62,7 +62,7 @@
         qBool_t _qScheduler_PriorityQueue_Insert(qTask_t * const Task, void *data);
     #endif
 
-    #define __qFSMCallbackMode      ((qTaskFcn_t)1)
+    void __qFSMCallbackMode( qEvent_t e );
 
     qStateGlobal_t qScheduler_GetTaskGlobalState( const qTask_t * const Task);
 

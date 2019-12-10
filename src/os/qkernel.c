@@ -82,7 +82,7 @@ static qBool_t _qOS_EntryOrderPreserver(const void *n1, const void *n2);
 
 /*========================== QuarkTS Private Macros ==========================*/
 #define __qChainInitializer     ((qTask_t*)&kernel)/*point to something that is not some task in the chain */
-
+void __qFSMCallbackMode( qEvent_t e ){}
 /*============================================================================*/
 /*void qSchedulerSetup(const qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback)
         
@@ -669,7 +669,9 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
 
         if( __qPrivate_TaskGetFlag( xTask, __QTASK_BIT_REMOVE_REQUEST) ){ /*check if the task get a removal request*/
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-            _qScheduler_PriorityQueue_CleanUp( xTask ); /*clean any entry of this task from the priority queue */
+                qCritical_Enter(); 
+                _qScheduler_PriorityQueue_CleanUp( xTask ); /*clean any entry of this task from the priority queue */
+                qCritical_Exit();
             #endif
             __qPrivate_TaskModifyFlags( xTask, __QTASK_BIT_REMOVE_REQUEST, qFalse );  /*clear the removal request*/
         }

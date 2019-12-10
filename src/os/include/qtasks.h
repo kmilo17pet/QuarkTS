@@ -317,8 +317,8 @@
         qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine );
     #endif
 
-    void qTaskModifyBitFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action );
-    qTaskFlag_t qTaskReadBitFlags( const qTask_t * const Task );
+    void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action );
+    qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task ); 
     qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
 
     /*============================================================================*/
