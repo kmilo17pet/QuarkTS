@@ -547,7 +547,7 @@ static void _qTriggerReleaseSchedEvent( void ){
     kernel.EventInfo.TaskData = NULL;
     if( NULL != kernel.ReleaseSchedCallback ){
         Callback = kernel.ReleaseSchedCallback;
-        Callback( (qEvent_t)&kernel.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
+        Callback( &kernel.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
     }    
     __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
@@ -755,14 +755,14 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
                     qStateMachine_Run( Task->qPrivate.StateMachine, (void*)&kernel.EventInfo );  /*If the task has a FSM attached, just run it*/  
                 }
                 else if ( NULL != TaskActivities ) {
-                    TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/  /*MISRAC2012-Rule-11.3 allowed*/
+                    TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
                 }       
                 else{
                     /*nothing to do*/
                 }
             #else
                 if ( NULL != TaskActivities ) {
-                    TaskActivities( (qEvent_t)&kernel.EventInfo ); /*else, just launch the callback function*/ 
+                    TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
                 }     
             #endif
             kernel.CurrentRunningTask = NULL;
@@ -785,7 +785,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             kernel.EventInfo.TaskData = NULL;
             kernel.EventInfo.Trigger = Event;
             TaskActivities = kernel.IDLECallback; /*some compilers can deal with function pointers inside structs*/
-            TaskActivities( (qEvent_t)&kernel.EventInfo ); /*run the idle callback*/ /*MISRAC2012-Rule-11.3 allowed*/
+            TaskActivities( &kernel.EventInfo ); /*run the idle callback*/ 
             __QKERNEL_COREFLAG_SET( kernel.Flag, __QKERNEL_BIT_FCALLIDLE );
         }
     }

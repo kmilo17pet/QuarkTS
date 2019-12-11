@@ -5,22 +5,29 @@
 /*============================================================================*/
 qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
     qUINT32_t Register;
+    qUINT32_t Mask;
+    qUINT32_t Bit = (qUINT32_t)PinNumber;
+    Mask = (qUINT32_t)1uL << Bit; 
     Register = *((const qUINT32_t*)Address);    
-    return (Register & (1uL << PinNumber))? qFalse : qTrue;
+    return ( 0uL != (Register & Mask) );
 }
 /*============================================================================*/
 qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
     qUINT16_t Register;
     qUINT16_t Mask;
-    Mask = (qUINT16_t)1u << (qUINT16_t)PinNumber;
+    qUINT16_t Bit = (qUINT16_t)PinNumber;
+    Mask = (qUINT16_t)1u << Bit;
     Register = *( (const qUINT16_t*)Address );
-    return ( Register & Mask )? qFalse : qTrue;
+    return ( 0u != ( Register & Mask ) );
 }
 /*============================================================================*/
 qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
     qUINT8_t Register;
+    qUINT8_t Mask;
+    qUINT8_t Bit = (qUINT8_t)PinNumber;;
+    Mask = (qUINT8_t)1u << Bit;
     Register = *((const qUINT8_t*)Address);
-    return ( Register & (qUINT8_t)(1u << PinNumber) )? qFalse : qTrue;
+    return ( 0u != ( Register & Mask ) );
 }
 /*============================================================================*/
 /*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime)
@@ -111,7 +118,7 @@ qBool_t qEdgeCheck_Update( qIOEdgeCheck_t * const Instance ){
                 CurrentPinValue = PinReader( Node->qPrivate.Port, Node->Pin ); /*read the pin level*/        
                 if( Instance->qPrivate.State >= QEDGECHECK_CHECK ){ /*check state*/
                     if( Node->qPrivate.PreviousPinValue != CurrentPinValue ){ /*check if the input level change since the last inputs-sweep*/
-                        Node->Status = qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
+                        Node->Status = (qBool_t)qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
                         Instance->qPrivate.State++; /* just to know that at least one node changed its state(count of nodes subject to the range of qUINT8_t)*/
                     }
                     else{

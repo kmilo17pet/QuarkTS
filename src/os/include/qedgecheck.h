@@ -13,9 +13,9 @@
     #define QREG_16BIT              ( __qReg_16Bits )
     #define QREG_32BIT              ( __qReg_32Bits )
     
-    #define QEDGECHECK_WAIT         ( 0u )
-    #define QEDGECHECK_UPDATE       ( 1u )
-    #define QEDGECHECK_CHECK        ( 2u )
+    #define QEDGECHECK_WAIT         ( (qBool_t)0u )
+    #define QEDGECHECK_UPDATE       ( (qBool_t)1u )
+    #define QEDGECHECK_CHECK        ( (qBool_t)2u )
 
     typedef struct _qIONode_t{
         private_start{                  

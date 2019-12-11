@@ -132,6 +132,10 @@ void Task3Callback(qEvent_t e){
         qDebugMessage("Queue event: byQueueReceiver");
         qDebugVariable(data, Decimal);
     } 
+    if(e->Trigger == byEventFlags){
+        puts("event flag set");
+        qTaskModifyEventFlags( qTaskSelf(), QEVENTFLAG_03, QEVENTFLAG_CLEAR );
+    }
 }
 /*============================================================================*/
 void TaskSameCallback(qEvent_t e){
@@ -169,7 +173,7 @@ void blinktaskCallback(qEvent_t e){
         puts("hello 2 ");
 
         qTaskSendNotification( qTaskSelf(), NULL );
-        
+        qTaskModifyEventFlags( &Task3, QEVENTFLAG_03, QEVENTFLAG_SET );
         qTaskQueueNotification(&Task1, "notification 1");
         qTaskQueueNotification(&Task1, "notification 2");
         qTaskSendNotification(&Task1, "notification 3");
