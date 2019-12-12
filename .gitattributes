@@ -3,6 +3,7 @@
 make_changelog export-ignore
 .idea export-ignore
 .vscode export-ignore
+src/x86_test_do_not_use_it export-ignore
 
 # Auto detect text files and perform LF normalization
 * text=auto
