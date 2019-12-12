@@ -184,6 +184,9 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) ) && ( position <= qList_AtBack ) ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
+            #ifdef QLIST_NODE_WITH_CONTAINER
+                (void)qList_ForEach( source, qList_ChangeContainer, destination, QLIST_FORWARD );
+            #endif            
             if( NULL == destination->head ){ /*destination is empty*/
                 destination->head = source->head;
                 destination->tail = source->tail;
@@ -206,9 +209,6 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
             }
             destination->size += source->size;
             qList_Initialize( source ); /*clean up source*/
-            #ifdef QLIST_NODE_WITH_CONTAINER
-                (void)qList_ForEach( destination, qList_ChangeContainer, destination, QLIST_FORWARD );
-            #endif
         }
     }
     return RetValue;
