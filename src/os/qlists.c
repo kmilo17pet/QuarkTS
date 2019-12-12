@@ -270,7 +270,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
             removed = qList_RemoveFront( list );     
             list->size--;
         }
-        else if( ( qList_AtBack == position ) || ( position > ( (qListPosition_t)list->size - 1 ) ) ){
+        else if( position > ( (qListPosition_t)list->size - 1 ) ){
             removed = qList_RemoveBack( list );  
             list->size--;
         }
