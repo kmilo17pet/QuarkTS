@@ -122,7 +122,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qNode_t *newnode;
     qNode_t *iNode;
  
-    if( ( NULL != list ) && ( NULL != node ) && ( position >= (qListPosition_t)(-1) ) && ( position <= qList_AtBack ) ){    
+    if( ( NULL != list ) && ( NULL != node ) && ( position >= (qListPosition_t)(-1) ) ){    
         #ifdef QLIST_CHECK_NODE_MEMBERSHIP
         if( qFalse == qList_IsMember( list, node )){
         #endif    
@@ -135,7 +135,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
             else if( qList_AtFront == position ){
                 qList_InsertAtFront( list, node );
             }
-            else if( ( qList_AtBack == position ) || ( position >= ( (qListPosition_t)list->size - 1 ) ) ){
+            else if( position >= ( (qListPosition_t)list->size - 1 ) ){
                 qList_InserAtBack( list, node );
             }
             else{ /*insert the new node after the position*/
@@ -181,7 +181,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     qBool_t RetValue = qFalse;
     qNode_t *iNode;
 
-    if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) ) && ( position <= qList_AtBack ) ) {    
+    if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) )  ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
             #ifdef QLIST_NODE_WITH_CONTAINER
@@ -196,7 +196,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
                 destination->head->prev = source->tail;
                 destination->head = source->head;
             }
-            else if( ( qList_AtBack == position ) || ( position >= ( (qListPosition_t)destination->size - 1 ) ) ){
+            else if( position >= ( (qListPosition_t)destination->size - 1 ) ){
                 destination->tail->next = source->head;
                 source->head->prev = destination->tail;
                 destination->tail = source->tail;
