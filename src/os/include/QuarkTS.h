@@ -53,7 +53,7 @@
         #error Q_DEFAULT_HEAP_SIZE it is too small. Min(64).
     #endif
 
-    #if ( Q_BYTE_ALIGNMENT != 1 && Q_BYTE_ALIGNMENT != 2 && Q_BYTE_ALIGNMENT != 4 && Q_BYTE_ALIGNMENT != 8 )
+    #if ( ( Q_BYTE_ALIGNMENT != 1 ) && ( Q_BYTE_ALIGNMENT != 2 ) && ( Q_BYTE_ALIGNMENT != 4 ) && ( Q_BYTE_ALIGNMENT != 8 ) )
         #error Q_BYTE_ALIGNMENT value not allowed, use only 1,2,4 or 8(default).
     #endif
 

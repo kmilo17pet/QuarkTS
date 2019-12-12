@@ -280,6 +280,9 @@ int main(int argc, char** argv) {
 
     qList_SetMemoryAllocation( qMalloc, qFree );
     qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+
+    qTraceqBool( qList_IsMember(&mylist, &n1) );
+
     qList_Insert( &mylist, &n1, qList_AtBack );
     qList_Insert( &mylist, &n2, qList_AtBack );
     qList_Insert( &mylist, &n3, qList_AtBack );
@@ -288,6 +291,8 @@ int main(int argc, char** argv) {
     qList_Insert( &mylist, &n6, qList_AtBack );
     qList_Insert( &mylist, &n7, qList_AtBack );
     qList_Insert( &mylist, &n8, qList_AtBack );
+
+    qTraceqBool( qList_IsMember(&mylist, &n1) );
     assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qTrue );
     #ifdef QLIST_CHECK_NODE_MEMBERSHIP
     assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qFalse ); /*node n9 its already a member*/
@@ -324,6 +329,7 @@ int main(int argc, char** argv) {
     qTraceVariable( sizeof(qList_t) , UnsignedDecimal );
     qTraceVariable( 1.0f/0.0f, Float );
     qTraceVariable( -1.0f/0.0f, Float );
+    qTraceVariable( -0.0f/0.0f, Float );
     
     qEdgeCheck_Initialize(&INPUTS, QREG_32BIT, 10);
     qEdgeCheck_InsertNode(&INPUTS, &button1, &PORTA, 0);

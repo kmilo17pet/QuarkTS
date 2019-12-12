@@ -9,7 +9,7 @@ static qMemoryPool_t DefaultMemPool = {NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q
 static qMemoryPool_t *MemPool = &DefaultMemPool;
 
 static void qHeapInit( void );
-static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert );
+static void qInsertBlockIntoFreeList( qMemoryPool_t *pool, qMemBlockConnect_t *BlockToInsert );
 
 static const size_t ByteAlignmentMask   = ((size_t)Q_BYTE_ALIGNMENT - (size_t)1);
 static const size_t HeapStructSize	= ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
@@ -92,7 +92,7 @@ void qFree(void *ptr){
         if( (size_t)0 != (Connect->BlockSize & MemPool->BlockAllocatedBit) ){
             Connect->BlockSize &= ~MemPool->BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
             MemPool->FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
-            qInsertBlockIntoFreeList( Connect );
+            qInsertBlockIntoFreeList( MemPool, Connect );
         }
     }
 }
@@ -141,15 +141,12 @@ static void qHeapInit( void ){
     MemPool->BlockAllocatedBit = ( (size_t)1 ) << ( (sizeof(size_t)*(size_t)8) - (size_t)1 ); /* Work out the position of the top bit in a size_t variable. */
 }
 /*============================================================================*/
-static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
+static void qInsertBlockIntoFreeList( qMemoryPool_t *pool, qMemBlockConnect_t *BlockToInsert ){
     qMemBlockConnect_t *Iterator;
     qUINT8_t *ptr;
     
-    if( NULL == MemPool ){  /*use the default memory pool if select*/
-        MemPool = &DefaultMemPool;
-    }
     /* Iterate through the list until a block is found that has a higher address than the block being inserted. */
-    for( Iterator = &MemPool->Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
+    for( Iterator = &pool->Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
     
     ptr = (qUINT8_t*) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
     if( ( ptr + Iterator->BlockSize ) == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
@@ -159,7 +156,7 @@ static void qInsertBlockIntoFreeList( qMemBlockConnect_t *BlockToInsert ){
 	
     ptr = (qUINT8_t*) BlockToInsert;
     if( ( ptr + BlockToInsert->BlockSize ) == (qUINT8_t*) Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
-        if( Iterator->Next != MemPool->End ){ 
+        if( Iterator->Next != pool->End ){ 
             BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */
             BlockToInsert->Next = Iterator->Next->Next;
         }
@@ -230,7 +227,7 @@ void* qMalloc( size_t size ){
                     NewBlockLink = (void*) ( ( (qUINT8_t*)Block ) + size ); /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
                     NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                     Block->BlockSize = size;
-                    qInsertBlockIntoFreeList( ( NewBlockLink ) ); /* Insert the new block into the list of free blocks. */
+                    qInsertBlockIntoFreeList( MemPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */
                 }
 
                 MemPool->FreeBytesRemaining -= Block->BlockSize;

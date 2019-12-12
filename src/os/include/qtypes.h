@@ -78,10 +78,10 @@
     #define qON                     ( qTrue )
     #define qOFF                    ( qFalse )
     
-    #define qRESPONSETIMEOUT        ( 0x02u )
-    #define qRISING                 ( 0x03u )
-    #define qFALLING                ( 0x04u )
-    #define qUNKNOWN                ( 0xFFu )
+    #define qRESPONSETIMEOUT        ( (qBool_t)0x02u )
+    #define qRISING                 ( (qBool_t)0x03u )
+    #define qFALLING                ( (qBool_t)0x04u )
+    #define qUNKNOWN                ( (qBool_t)0xFFu )
 
     typedef enum{
         qOff                = qOFF,

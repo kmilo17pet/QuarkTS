@@ -18,6 +18,9 @@ static qNode_t* __qNode_Forward( const qNode_t *const node );
 #ifdef QLIST_NODE_WITH_CONTAINER
     static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
 #endif
+
+static qBool_t qList_NodeFind( void *NodeInList, void *NodeToFind, qList_WalkStage_t stage );
+
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
  
@@ -290,7 +293,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
     return removed;
 }
 /*=========================================================*/
-/*qBool_t qList_IsMember(const qList_t * const list, const void * const node)
+/*qBool_t qList_IsMember( qList_t * const list,  void * const node)
  
 Check if the node is member of the list.
 
@@ -304,20 +307,21 @@ Return value:
     qTrue if the node belongs to the list, qFalse if it is not.  
 
 */ 
-qBool_t qList_IsMember( const qList_t * const list, const void * const node ){
+qBool_t qList_IsMember( qList_t * const list, void * const node ){
     qBool_t RetValue = qFalse;
-    qNode_t *iNode;
-    const qNode_t * const xNode = (qNode_t const*)node;
-    
+
     if( NULL != node ){
-        for( iNode = list->head ; NULL != iNode ; iNode = iNode->next ){
-            if( iNode == xNode){
-                RetValue = qTrue;
-                break;
-            }
-        }
+        RetValue = qList_ForEach( (void*)list, qList_NodeFind, (void*)node, QLIST_FORWARD );
     }
     return RetValue;
+}
+/*=========================================================*/
+static qBool_t qList_NodeFind( void *NodeInList, void *NodeToFind, qList_WalkStage_t stage ){
+    qBool_t NodeFound = qFalse;
+    if( qList_WalkThrough == stage ){
+        NodeFound =  (qBool_t)(NodeInList == NodeToFind );
+    }
+    return NodeFound;
 }
 /*=========================================================*/
 /*void* qList_GetFront(const qList_t * const list)

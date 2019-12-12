@@ -59,7 +59,7 @@
     qBool_t qList_Insert( qList_t * const list, void * const node, const qListPosition_t position );
     qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position );
     void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position );
-    qBool_t qList_IsMember( const qList_t * const list, const void * const node );
+    qBool_t qList_IsMember( qList_t * const list, void * const node );
     void* qList_GetFront( const qList_t * const list );
     void* qList_GetBack( const qList_t * const list );
     qBool_t qList_IsEmpty( const qList_t * const list );
