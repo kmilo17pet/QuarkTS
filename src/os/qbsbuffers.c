@@ -149,7 +149,7 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     if( n > 0u ){
         RetValue = qTrue;
         for( i = 0u ; i < n ; i++ ){
-            RetValue = qBSBuffer_Get( obj, data+i ); /*MISRAC2004-17.4_a deviation allowed*/
+            RetValue = qBSBuffer_Get( obj, &data[i] ); /*MISRAC2004-17.4_a deviation allowed*/
         }
     }
     return RetValue;

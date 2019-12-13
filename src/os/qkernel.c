@@ -825,11 +825,11 @@ qStateGlobal_t qScheduler_GetTaskGlobalState( const qTask_t * const Task){
         else if( SuspendedList == xList ){
             RetValue = qSuspended;
         }
-        else if( ( xList >= &ReadyList[0] ) && ( xList <= &ReadyList[ Q_PRIORITY_LEVELS - 1 ] ) ){ /*MISRAC2012-Rule-18.3 allowed*/
-            RetValue = qReady;
+        else if( NULL == xList ){
+            /*undefined*/  
         }
         else{
-            /*undefined*/        
+            RetValue = qReady;      /*by discard it must be ready*/
         }
     }
     return RetValue;
