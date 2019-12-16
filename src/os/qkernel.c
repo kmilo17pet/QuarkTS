@@ -210,8 +210,8 @@ qBool_t qSchedulerSpreadNotification( const void *eventdata, const qTaskNotifyMo
     qBool_t RetValue = qFalse;
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         if( ( mode ==  Q_NOTIFY_SIMPLE ) || ( mode == Q_NOTIFY_QUEUED ) ){
-            kernel.NotificationSpreadRequest.mode = NULL;
-            kernel.NotificationSpreadRequest.eventdata = NULL;
+            kernel.NotificationSpreadRequest.mode = mode;
+            kernel.NotificationSpreadRequest.eventdata = eventdata;
             RetValue = qTrue;
         }
     #endif
@@ -296,7 +296,7 @@ Parameters:
     - Task : A pointer to the task node.
     - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
-    - Priority : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     - Time : Execution interval defined in seconds (floating-point format). 
                For immediate execution (tValue = qTimeImmediate).
     - nExecutions : Number of task executions (Integer value). For indefinite 
@@ -367,7 +367,7 @@ Parameters:
     - Task : A pointer to the task node.
     - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter
                  as input argument.
-    - Priority : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     - arg :      Represents the task arguments. All arguments must be passed by
                  reference and cast to (void *). Only one argument is allowed, 
                  so, for multiple arguments, create a structure that contains 
@@ -395,7 +395,7 @@ passed as input argument inside every state.
 
 Parameters:
     - Task : A pointer to the task node.
-    - Priority : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     - Time : Execution interval defined in seconds (floating-point format). 
                For immediate execution (tValue = qTimeImmediate).
     - StateMachine: A pointer to the Finite State-Machine (FSM) object
@@ -450,7 +450,7 @@ Parameters:
 
     - Task : A pointer to the task node.
     - Parser: A pointer to the AT Command Parser
-    - Priority : Task priority Value. [0(min) - 255(max)]
+    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
 
 Return value:
 

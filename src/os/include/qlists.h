@@ -40,9 +40,9 @@
     #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, 0u }
 
     typedef enum{ qList_WalkInit, qList_WalkThrough, qList_WalkEnd }qList_WalkStage_t;
-    #define QLIST_WALKINIT          ( qList_WalkInit ) 
-    #define QLIST_WALKTHROUGH       ( qList_WalkThrough )
-    #define QLIST_WALKEND           ( qList_WalkEnd )
+    #define QLIST_WALKINIT          ( qList_WalkInit )      /*< When the loop is about to start. In this case, A NULL value will be pased in the node pointer*/
+    #define QLIST_WALKTHROUGH       ( qList_WalkThrough )   /*< When the loop is transversing the list.*/
+    #define QLIST_WALKEND           ( qList_WalkEnd )       /*< When the loop has finished. In this case, A NULL value will be passed in the node pointer*/
 
     typedef qBool_t (*qListNodeFcn_t)(void *node, void *arg, qList_WalkStage_t stage );
     typedef qINT32_t qListPosition_t;

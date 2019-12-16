@@ -150,7 +150,7 @@ Set/Change the task priority value
 Parameters:
 
     - Task : A pointer to the task node.
-    - Value : Priority Value. [0(min) - 255(max)]
+    - Value : Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
 */
 void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value ){
     if( NULL != Task ){
@@ -248,7 +248,7 @@ void qTaskClearTimeElapsed( qTask_t * const Task ){
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, qUINT16_t arg)
+/*qBool_t qTaskAttachQueue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg)
 
 Attach a Queue to the Task. 
 

@@ -413,10 +413,10 @@ size_t qList_Length( const qList_t * const list ){
 Sort the double linked list using the <CompareFcn> function to 
 determine the order.
 The sorting algorithm used by this function compares pairs of 
-adyacent nodes by calling the specified <CompareFcn> function 
-with pointers to them as argument. Sort is performed only 
-modifying node link's without data swapping, improving performance 
-if nodes has large storage.
+adjacent nodes by calling the specified <CompareFcn> function 
+with pointers to them as arguments. The sort is performed only 
+modifying node's links without data swapping, improving performance 
+if nodes have a large storage.
 
 Note: The function modifies the content of the list by reordering its 
 elements as defined by CompareFcn.
