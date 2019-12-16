@@ -206,7 +206,7 @@ Return value:
     qTrue if success. Otherwise qFalse.              
 */ 
 /*============================================================================*/
-qBool_t qSchedulerSpreadNotification( const void *eventdata, const qTaskNotifyMode_t mode ){
+qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode ){
     qBool_t RetValue = qFalse;
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         if( ( mode ==  Q_NOTIFY_SIMPLE ) || ( mode == Q_NOTIFY_QUEUED ) ){

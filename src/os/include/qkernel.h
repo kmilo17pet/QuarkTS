@@ -43,7 +43,7 @@
         void qSchedulerSetReleaseCallback( qTaskFcn_t Callback );
     #endif       
 
-    qBool_t qSchedulerSpreadNotification( const void *eventdata, const qTaskNotifyMode_t mode );
+    qBool_t qSchedulerSpreadNotification( void *eventdata, const qTaskNotifyMode_t mode );
     qBool_t qSchedulerAdd_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
     qBool_t qSchedulerAdd_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
     #if ( Q_FSM == 1)
