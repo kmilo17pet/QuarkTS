@@ -9,23 +9,11 @@
     extern "C" {
     #endif
 
-
-    #undef  QLIST_CHECK_NODE_MEMBERSHIP /*disabled for performance reasons*/
-    #define QLIST_NODE_WITH_CONTAINER   /*used by the kernel for future features*/
-
-
-    #ifdef QLIST_NODE_WITH_CONTAINER
-        #define __qNodeMembers  *next, *prev, *container
-    #else
-        #define __qNodeMembers  *next, *prev
-    #endif
-
+    #define __qNodeMembers  *next, *prev, *container
 
     typedef struct node_s{
         struct node_s *next, *prev; /*< Pointers to the adyacent nodes. */
-        #ifdef QLIST_NODE_WITH_CONTAINER
-            void *container;
-        #endif
+        void *container;            /*< Pointer to the container list*/
     }qNode_t;
 
     #define qNode_MinimalFields     void __qNodeMembers
@@ -37,7 +25,7 @@
         size_t size;                /*< Used to hold the current size of the list. */
     }qList_t;
 
-    #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, 0u }
+    #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, NULL, 0u }
 
     typedef enum{ qList_WalkInit, qList_WalkThrough, qList_WalkEnd }qList_WalkStage_t;
     #define QLIST_WALKINIT          ( qList_WalkInit )      /*< When the loop is about to start. In this case, A NULL value will be pased in the node pointer*/
@@ -57,8 +45,11 @@
 
     void qList_Initialize( qList_t * const list );
     qBool_t qList_Insert( qList_t * const list, void * const node, const qListPosition_t position );
-    qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position );
+
+
+    qBool_t qList_RemoveItself( void *const node );
     void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position );
+    qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position );
     qBool_t qList_IsMember( qList_t * const list, void * const node );
     void* qList_GetFront( const qList_t * const list );
     void* qList_GetBack( const qList_t * const list );
@@ -73,14 +64,10 @@
     #define QLIST_BACKWARD  ( __qNode_Backward )
     qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir );
 
-
     void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn );
     qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position );
     void* qList_DRemove( qList_t * const list, void * const node, const qListPosition_t position );
-
-
-    
-
+    qBool_t qList_DRemoveItself( void * const node );
 
     #ifdef __cplusplus
     }

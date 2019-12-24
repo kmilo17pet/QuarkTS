@@ -9,17 +9,11 @@ static qNode_t* qList_RemoveBack( qList_t * const list );
 
 static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t position );
 
-
 static qListMemAllocator_t qListMalloc = NULL; 
 static qListMemFree_t qListFree = NULL; 
 
 static qNode_t* __qNode_Forward( const qNode_t *const node );
-
-#ifdef QLIST_NODE_WITH_CONTAINER
-    static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
-#endif
-
-static qBool_t qList_NodeFind( void *NodeInList, void *NodeToFind, qList_WalkStage_t stage );
+static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
 
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
@@ -44,9 +38,7 @@ static qNode_t* qList_NodeInit( void * const node ){
     qNode_t *xNode = (qNode_t*)node;
     xNode->prev = NULL;
     xNode->next = NULL;
-    #ifdef QLIST_NODE_WITH_CONTAINER
-        xNode->container = NULL;
-    #endif
+    xNode->container = NULL;
     return xNode;
 }
 /*=========================================================*/
@@ -123,9 +115,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
     qNode_t *iNode;
  
     if( ( NULL != list ) && ( NULL != node ) && ( position >= (qListPosition_t)(-1) ) ){    
-        #ifdef QLIST_CHECK_NODE_MEMBERSHIP
         if( qFalse == qList_IsMember( list, node )){
-        #endif    
             newnode = qList_NodeInit( node );
             RetValue = qTrue;
             if( NULL == list->head ){ /*list is empty*/
@@ -146,14 +136,108 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
                 iNode->next = newnode;        /*  iNODE -> NEW */  
             }                                 /*  result: iNODE <-> NEW <-> (i+1)NODE    */
             list->size++;
-            #ifdef QLIST_NODE_WITH_CONTAINER
-                newnode->container = list;
-            #endif
-        #ifdef QLIST_CHECK_NODE_MEMBERSHIP    
+            newnode->container = list;
         }
-        #endif
     }
     return RetValue;  
+}
+/*=========================================================*/           
+/*void* qList_RemoveItself( void * const node )
+ 
+If the node is member of a list, the node will be removed from it.
+
+Parameters:
+
+    - node : A pointer to the node
+
+Return value:
+
+    qTrue on Success. qFalse if removal can't be performed.  
+
+*/ 
+/*=========================================================*/           
+qBool_t qList_RemoveItself( void *const node ){
+    qBool_t RetValue = qFalse;
+    qNode_t *toRemove;
+    qList_t *list;
+    
+    if( NULL != node ){
+        toRemove = (qNode_t*)node;
+        if( NULL != toRemove->container ){
+            list = (qList_t*)toRemove->container;
+            if( toRemove == list->head ){
+                qList_RemoveFront( list );          
+            }
+            else if( toRemove == list->tail ){
+                qList_RemoveBack( list );
+            }
+            else{
+                toRemove->prev->next = toRemove->next;
+                if( NULL != toRemove->next ){
+                    toRemove->next->prev = toRemove->prev;
+                }
+            }
+            list->size--;
+            toRemove->container = NULL;
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
+}
+/*=========================================================*/           
+/*void* qList_Remove(qList_t * const list, void * const node, const qListPosition_t position)
+ 
+Remove an item from the list.
+
+Parameters:
+
+    - list : Pointer to the list.
+    - node : A pointer to the node to be deleted (to ignore pass NULL )
+             If the node is member or the list, use qList_RemoveItself
+             to avoid overhead
+    - position : The position of the node that will be removed. Could be 
+                 qList_AtFront, qList_AtBack or any other index number.
+
+Return value:
+
+    A pointer to the removed node. NULL if removal can't be performed.  
+
+*/ 
+void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
+    qNode_t *removed = NULL;
+    qBase_t LastIndex;
+    qNode_t *iNode;
+
+    if( ( NULL != list->head ) && ( position >= (qListPosition_t)(-1) ) ){
+        if ( qList_IsMember( list, node ) ){
+            if( qList_RemoveItself( node ) ){
+                removed = node;
+            }
+        }
+        else if( position <= (qListPosition_t)0 ){
+            removed = qList_RemoveFront( list );     
+            removed->container = NULL;
+            list->size--;
+            
+        }
+        else if( position > ( (qListPosition_t)list->size - 1 ) ){
+            removed = qList_RemoveBack( list );  
+            removed->container = NULL;
+            list->size--;
+        }
+        else{
+            LastIndex = ( (qBase_t)position - 1 );
+            iNode = qList_GetiNode( list, (qListPosition_t)LastIndex );
+            removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
+            iNode->next = removed->next;
+            if( NULL != removed->next ){
+                iNode->next->prev = iNode;
+            }
+            removed->container = NULL;
+            list->size--;
+        }
+    }
+    return removed;
 }
 /*=========================================================*/           
 /*qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position )
@@ -184,9 +268,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) )  ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
-            #ifdef QLIST_NODE_WITH_CONTAINER
-                (void)qList_ForEach( source, qList_ChangeContainer, destination, QLIST_FORWARD );
-            #endif            
+            (void)qList_ForEach( source, qList_ChangeContainer, destination, QLIST_FORWARD );          
             if( NULL == destination->head ){ /*destination is empty*/
                 destination->head = source->head;
                 destination->tail = source->tail;
@@ -214,7 +296,6 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     return RetValue;
 }
 /*=========================================================*/
-#ifdef QLIST_NODE_WITH_CONTAINER
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage ){
     qNode_t *xNode;
     if( qList_WalkThrough == stage ){
@@ -222,75 +303,6 @@ static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_Walk
         xNode->container = newcontainer;
     }
     return qFalse;
-}
-#endif
-/*=========================================================*/           
-/*void* qList_Remove(qList_t * const list, void * const node, const qListPosition_t position)
- 
-Remove an item from the list.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - node : A pointer to the node to be deleted (to ignore pass NULL )
-    - position : The position of the node that will be removed. Could be 
-                 qList_AtFront, qList_AtBack or any other index number.
-
-Return value:
-
-    A pointer to the removed node. NULL if removal can't be performed.  
-
-*/ 
-void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
-    qNode_t *removed = NULL;
-    qBase_t LastIndex;
-    qNode_t *iNode;
-    qNode_t *toRemove;
-
-    if( ( NULL != list->head ) && ( position >= (qListPosition_t)(-1) ) ){
-        #ifdef QLIST_CHECK_NODE_MEMBERSHIP
-        if ( qList_IsMember( list, node ) ){
-        #else
-        if( NULL != node ){
-        #endif     
-            toRemove = (qNode_t*)node;
-            if( toRemove == list->head ){
-                removed = qList_RemoveFront( list );          
-            }
-            else{
-                removed = toRemove;
-                removed->prev->next = removed->next;
-                if( NULL != removed->next ){
-                    removed->next->prev = removed->prev;
-                }
-            }
-            list->size--;
-        }
-        else if( position <= (qListPosition_t)0 ){
-            removed = qList_RemoveFront( list );     
-            list->size--;
-        }
-        else if( position > ( (qListPosition_t)list->size - 1 ) ){
-            removed = qList_RemoveBack( list );  
-            list->size--;
-        }
-        else{
-            LastIndex = ( (qBase_t)position - 1 );
-            iNode = qList_GetiNode( list, (qListPosition_t)LastIndex );
-            removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
-            iNode->next = removed->next;
-            if( NULL != removed->next ){
-                iNode->next->prev = iNode;
-            }
-            list->size--;
-        }                
-        #ifdef QLIST_NODE_WITH_CONTAINER
-            if( NULL != removed ){
-                removed->container = NULL;
-            }
-        #endif
-    }
-    return removed;
 }
 /*=========================================================*/
 /*qBool_t qList_IsMember( qList_t * const list,  void * const node)
@@ -309,19 +321,15 @@ Return value:
 */ 
 qBool_t qList_IsMember( qList_t * const list, void * const node ){
     qBool_t RetValue = qFalse;
+    qNode_t *xNode;
 
     if( NULL != node ){
-        RetValue = qList_ForEach( (void*)list, qList_NodeFind, (void*)node, QLIST_FORWARD );
+        xNode = node;
+        if( list  == (qList_t*)xNode->container ){
+            RetValue = qTrue;
+        }
     }
     return RetValue;
-}
-/*=========================================================*/
-static qBool_t qList_NodeFind( void *NodeInList, void *NodeToFind, qList_WalkStage_t stage ){
-    qBool_t NodeFound = qFalse;
-    if( qList_WalkThrough == stage ){
-        NodeFound =  (qBool_t)(NodeInList == NodeToFind );
-    }
-    return NodeFound;
 }
 /*=========================================================*/
 /*void* qList_GetFront(const qList_t * const list)
@@ -581,5 +589,16 @@ void* qList_DRemove( qList_t * const list, void * const node, const qListPositio
         }    
     }
     return removed;
+}
+/*=========================================================*/
+qBool_t qList_DRemoveItself( void * const node ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) ){
+        if( qList_RemoveItself( node ) ){
+            qListFree( node );
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
 }
 /*=========================================================*/

@@ -294,9 +294,7 @@ int main(int argc, char** argv) {
 
     qTraceqBool( qList_IsMember(&mylist, &n1) );
     assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qTrue );
-    #ifdef QLIST_CHECK_NODE_MEMBERSHIP
     assert( qList_Insert( &mylist, &n9, qList_AtBack ) == qFalse ); /*node n9 its already a member*/
-    #endif
     assert( qList_Insert( &mylist, NULL, qList_AtBack ) == qFalse ); 
 
     xn.value = 50;
