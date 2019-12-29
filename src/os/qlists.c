@@ -549,7 +549,7 @@ qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg,
         
     }
     return RetValue;
-} 
+}
 /*=========================================================*/
 static qNode_t* __qNode_Forward( const qNode_t *const node ){
     return node->next;
@@ -558,6 +558,99 @@ static qNode_t* __qNode_Forward( const qNode_t *const node ){
 qNode_t* __qNode_Backward( const qNode_t *const node){
     return node->prev;
 }
+/*=========================================================*/
+/*qBool_t qList_Swap( void *node1, void *node2 )
+ 
+Swap two nodes that belongs to the same list by changing its
+own links.
+
+Note: The list containing nodes will be updated if any node 
+is part of the boundaries.
+
+
+Parameters:
+
+    - node1 : Pointer to the first node.
+    - node2 : Pointer to the second node.
+
+Return value:
+
+    qTrue if the swap operation is performed. Otherwise returns qFalse.
+
+*/ 
+qBool_t qList_Swap( void *node1, void *node2 ){
+    qBool_t RetValue = qFalse;
+    qNode_t *n1, *n2;
+    qList_t *list;
+    qNode_t *tmp1, *tmp2;
+
+    if( ( NULL != node1 ) && ( NULL != node2) && ( node1 != node2 ) ){ 
+        n1 = (qNode_t*)node1;
+        n2 = (qNode_t*)node2;
+        list = n1->container;
+        if( ( NULL != list ) && ( n1->container == n2->container ) ){ /*nodes are part of the same list*/
+            if( n2->next == n1 ){
+                n1 = (qNode_t*)node2;
+                n2 = (qNode_t*)node1;                
+            }
+            
+            tmp1 = n1->prev;
+            tmp2 = n2->next;
+            
+            /*update the list links*/
+            if( list->head == n1 ){
+                list->head = n2;
+            }
+            else if( list->head == n2 ){
+                list->head = n1;
+            }    
+            else{
+                /*nothing to do here*/         
+            }        
+
+            if( list->tail == n1 ){
+                list->tail = n2;
+            }
+            else if( list->tail == n2 ){
+                list->tail = n1;
+            }
+            else{
+                /*nothing to do here*/
+            }
+            
+            if( ( (n1->next == n2 ) && ( n2->prev == n1 ) ) || ( ( n1->prev == n2 ) && ( n2->next == n1 ) ) ){ /*adjacent nodes?*/
+                n1->prev = n1->next; 
+                n2->next = n2->prev;
+            }
+            else{
+                n1->prev = n2->prev;
+                n2->next = n1->next;
+            }
+            n2->prev = tmp1;
+            n1->next = tmp2;
+
+            /*update outer links*/
+            if( NULL != n1->prev ){
+                n1->prev->next = n1;
+            }
+
+            if( NULL != n1->next ){
+                n1->next->prev = n1;
+            }
+
+            if( NULL != n2->prev ){
+                n2->prev->next = n2;
+            }
+
+            if( NULL != n2->next ){
+                n2->next->prev = n2;
+            }                
+
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
+} 
 /*=========================================================*/
 void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn  ){
     qListFree = freeFcn;

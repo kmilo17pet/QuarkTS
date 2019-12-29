@@ -64,6 +64,9 @@
     #define QLIST_BACKWARD  ( __qNode_Backward )
     qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir );
 
+    qBool_t qList_Swap( void *node1, void *node2 );
+
+
     void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn );
     qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position );
     void* qList_DRemove( qList_t * const list, void * const node, const qListPosition_t position );
