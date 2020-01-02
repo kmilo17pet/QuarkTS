@@ -4,6 +4,6 @@ A Non-Preemptive RTOS for low-range MCUs
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
 * Download the [User Manual](https://github.com/TECREA/QuarkTS/blob/master/quarkts_usermanual.pdf)
 
-![MISRAC2012 Compliant](https://i2.wp.com/emenda.com/wp-content/uploads/2016/08/MISRA-1.png?fit=245%2C244&ssl=1)
+![MISRAC2012 Compliant](https://eenews.cdnartwhere.eu/sites/default/files/styles/inner_article/public/import/2014-07-22-edne-gp-misra-logo-snip.jpg?itok=bQVhv7S_)
 
-MISRAC2012 Compliant
+Checked with C-STAT for MISRAC2012 Compliance
