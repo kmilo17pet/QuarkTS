@@ -59,10 +59,11 @@
 
 
     qNode_t* __qNode_Backward( const qNode_t *const node ); /*This function are not intended for the user usage*/
+    qNode_t* __qNode_Forward( const qNode_t *const node ); /*This function are not intended for the user usage*/
     typedef qNode_t* (*qListDirection_t)( const qNode_t *const node );      
-    #define QLIST_FORWARD   ( NULL )  
+    #define QLIST_FORWARD   ( __qNode_Forward  )  
     #define QLIST_BACKWARD  ( __qNode_Backward )
-    qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir );
+    qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir, void *NodeOffset );
 
     qBool_t qList_Swap( void *node1, void *node2 );
 

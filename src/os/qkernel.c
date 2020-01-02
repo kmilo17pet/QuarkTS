@@ -565,12 +565,12 @@ void qSchedulerRun( void ){
     qList_t *xList;
 
     do{           
-        if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD ) ){ /*check for ready tasks in the waiting list*/
+        if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ){ /*check for ready tasks in the waiting list*/
             xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1;
             do{ /*loop every ready-list in descending priority order*/
                 xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if( xList->size > (size_t)0 ){ /*check if the target list has items*/
-                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD ); /*dispatch every task in this list*/
+                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in this list*/
                 }
             }while( (qIndex_t)0 != xPriorityListIndex-- );
         }

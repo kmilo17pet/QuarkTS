@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
     qList_Initialize( &otherlist ); 
 
     qList_SetMemoryAllocation( qMalloc, qFree );
-    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse, NULL );
 
     qTraceqBool( qList_IsMember(&mylist, &n1) );
 
@@ -302,22 +302,26 @@ int main(int argc, char** argv) {
     xn.value =88;
     qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack );
 
-    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
     qList_Sort( &mylist, comparator );
-    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
     
     qList_DRemove( &mylist, NULL, qList_AtBack );
     qList_DRemove( &mylist, NULL, qList_AtBack );
-    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
 
     
-    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
 
-    qList_ForEach( &mylist, mylist_binremove, &mylist, QLIST_FORWARD );
+    qList_ForEach( &mylist, mylist_binremove, &mylist, QLIST_FORWARD, NULL );
 
-    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD );
-    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD );
-    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD );
+    qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, NULL );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD, NULL );
+
+    
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, &n3 );
+    qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD, &n3 );
 
     qTraceVariable( -3.1416, Float);
     qTraceVariable( "dafdaa", Message );
