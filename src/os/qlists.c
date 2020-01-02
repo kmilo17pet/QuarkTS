@@ -165,10 +165,10 @@ qBool_t qList_RemoveItself( void *const node ){
         if( NULL != toRemove->container ){
             list = (qList_t*)toRemove->container;
             if( toRemove == list->head ){
-                qList_RemoveFront( list );          
+                (void)qList_RemoveFront( list );          
             }
             else if( toRemove == list->tail ){
-                qList_RemoveBack( list );
+                (void)qList_RemoveBack( list );
             }
             else{
                 toRemove->prev->next = toRemove->next;

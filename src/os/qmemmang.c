@@ -88,7 +88,7 @@ void qFree(void *ptr){
     
     if( NULL != ptr){
         pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
-        Connect = (void*)pToFree;
+        Connect = (qMemBlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3 allowed*/
         if( (size_t)0 != (Connect->BlockSize & MemPool->BlockAllocatedBit) ){
             Connect->BlockSize &= ~MemPool->BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
             MemPool->FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
@@ -131,7 +131,7 @@ static void qHeapInit( void ){
     Address -= HeapStructSize;
     Address &= ~ByteAlignmentMask;
     
-    MemPool->End = (void*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
+    MemPool->End = (qMemBlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
     MemPool->End->Next = NULL;
     MemPool->End->BlockSize = (size_t)0;
     FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */

@@ -426,7 +426,7 @@ char* qItoA( qINT32_t num, char* str, qUINT8_t base ){
             } 
             num = -num;
         }
-        i += __q_revuta( (qUINT32_t)num, str+i, base ); /*make the unsigned conversion without the null terminator*/   /*MISRAC2004-17.4_b deviation allowed*/ 
+        i += __q_revuta( (qUINT32_t)num, &str[i], base ); /*make the unsigned conversion without the null terminator*/   /*MISRAC2004-17.4_b deviation allowed*/ 
         str[i] = '\0'; /*Append string terminator*/ /*MISRAC2004-17.4_b deviation allowed*/
     }
     return str;

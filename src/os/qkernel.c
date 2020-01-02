@@ -690,7 +690,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
 }
 /*============================================================================*/
 static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
-    qTask_t *Task;
+    qTask_t *Task; /*#!ok*/
     qList_t *xList;
     qTrigger_t Event = byNoReadyTasks;
     qIteration_t TaskIteration;
@@ -698,8 +698,8 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
 
     xList = (qList_t*)arg;
     
-    if( QLIST_WALKTHROUGH == stage ){
-        if( NULL != xList){
+    if( QLIST_WALKTHROUGH == stage ){ /*#!ok*/
+        if( NULL != xList){ /*#!ok*/
             Task = (qTask_t*)node;
 
             Event = Task->qPrivate.Trigger;
