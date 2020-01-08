@@ -446,7 +446,7 @@ Return value:
 
     qTrue if at least one reordering is performed over the list. 
 */
-qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) {
+qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ){
     qBool_t RetValue = qFalse;
     qBool_t xRetCmp;
     size_t count, i, j, n;
@@ -455,25 +455,25 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
         if( count >= (size_t)2){ /*It is only worth running the algorithm if the list has two or more nodes*/
-            for (i = (size_t)1; i < count; i++) {
+            for( i = (size_t)1; i < count; i++ ){
                 current = list->head;
                 n = count - i - (size_t)1;
-                for (j = (size_t)0; j <= n; j++) { 
+                for( j = (size_t)0; j <= n; j++ ){ 
                     xRetCmp = CompareFcn( current, current->next );
                     if( qTrue == xRetCmp ) { /*compare adyacent nodes*/
                         before = current->prev;
                         after = current->next;
 
-                        if( NULL != before) {
+                        if( NULL != before){
                             before->next = after;
                         } 
-                        else {
+                        else{
                             list->head = after; /* In case before pointer is null, after pointer should be the new head*/
                         }
                         current->next = after->next;
                         current->prev = after;
 
-                        if( NULL != after->next ) {
+                        if( NULL != after->next ){
                             after->next->prev = current; /* prev pointer of after->next should be set to current. */
                         }
 
@@ -486,13 +486,78 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
                     }
                 }
             }
-            while( NULL != current->next){ /*loop remaining nodes until find the new tail*/
+            while( NULL != current->next ){ /*loop remaining nodes until find the new tail*/
                 current = current->next;
             }
             list->tail = current;            
         }
     }
     return RetValue;
+}
+/*=========================================================*/
+/*qBool_t qList_IteratorSet( qListIterator_t *iterator, qList_t *const list, void *NodeOffset, qListDirection_t dir){
+
+Setup an instance of the given iterator to traverse the list.
+
+Parameters:
+
+    - iterator : Pointer to the iterator instance
+    - list : Pointer to the list.
+    - NodeOffset :  The start offset-node. To ignore, pass NULL-
+    - dir : Use one of the following options:
+               QLIST_FORWARD or NULL : to go in forward direction.
+               QLIST_BACKWARD :  to go in backward direction.
+
+
+Return value:
+
+    qTrue on success. Otherwise returns qFalse. 
+*/
+qBool_t qList_IteratorSet( qListIterator_t *iterator, qList_t *const list, void *NodeOffset, qListDirection_t dir){
+    qBool_t RetValue = qFalse;
+    qNode_t *Offset;
+
+    if( ( NULL != list ) && ( NULL != iterator ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
+        iterator->direction = dir;
+        Offset = (qNode_t*)NodeOffset;
+        if( NULL != Offset){
+            if( list == Offset->container ){
+                iterator->next = Offset;
+                RetValue = qTrue;
+            }
+        }
+        else{
+            iterator->next = (dir == QLIST_FORWARD)? list->head : list->tail;
+            RetValue = qTrue;
+        }
+
+    }
+    return RetValue;
+}
+/*=========================================================*/
+/*void* qList_IteratorGetNext( qListIterator_t *iterator )
+
+Get the current node available in the iterator. After invoked, 
+iterator will be updated to the next node.
+
+Parameters:
+
+    - iterator : Pointer to the iterator instance
+
+Return value:
+
+    Return the next node or NULL when no more nodes remain in the list.
+
+*/
+void* qList_IteratorGetNext( qListIterator_t *iterator ){
+    void *iNode = NULL;
+    if( NULL != iterator ){
+        iNode = iterator->next;
+        if( NULL != iNode ){
+            iterator->next = iterator->direction( iterator->next );
+        }
+    }
+    return iNode;
 }
 /*=========================================================*/
 /*qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir )

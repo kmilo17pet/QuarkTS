@@ -263,6 +263,10 @@ int main(int argc, char** argv) {
 
     qList_t mylist;
     mynode_t n1, n2, n3, n4, n5, n6, n7, n8, n9, xn;
+
+    qListIterator_t iter;
+    mynode_t *inode = NULL;
+
     n1.value = 1;
     n2.value = 6;
     n3.value = 5;
@@ -322,6 +326,13 @@ int main(int argc, char** argv) {
     
     qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, &n3 );
     qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD, &n3 );
+
+
+    qList_IteratorSet( &iter, &otherlist, &n3, QLIST_BACKWARD );
+    
+    while( NULL != ( inode = (mynode_t*)qList_IteratorGetNext(&iter) ) ){
+        printf("{%d}->\r\n", inode->value );
+    }
 
     qTraceVariable( -3.1416, Float);
     qTraceVariable( "dafdaa", Message );
