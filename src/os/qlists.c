@@ -505,7 +505,7 @@ Parameters:
     - list : Pointer to the list.
     - NodeOffset :  The start offset-node. To ignore, pass NULL-
     - dir : Use one of the following options:
-               QLIST_FORWARD or NULL : to go in forward direction.
+               QLIST_FORWARD  : to go in forward direction.
                QLIST_BACKWARD :  to go in backward direction.
 
 
@@ -576,7 +576,7 @@ Parameters:
 
     - arg : Argument passed to <Fcn>
     - dir : Use one of the following options:
-               QLIST_FORWARD or NULL : to walk through the list forwards.
+               QLIST_FORWARD  : to walk through the list forwards.
                QLIST_BACKWARD : to walk through the list backwards.
     - NodeOffset : If available, the list walk through will start from this node.  
                    To ignore, pass NULL.       
