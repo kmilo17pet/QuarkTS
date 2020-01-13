@@ -430,10 +430,15 @@ qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priori
                             qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
+    qSM_TransitionTable_t *tTableFSM;
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
         if ( qTrue == qSchedulerAdd_Task( Task, __qFSMCallbackMode, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
             RetValue = qStateMachine_Init( StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState );
             Task->qPrivate.StateMachine = StateMachine;
+            if( NULL != StateMachine->qPrivate.TransitionTable ){
+                tTableFSM = (qSM_TransitionTable_t*)StateMachine->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
+                RetValue = qTaskAttachQueue( Task, &tTableFSM->SignalQueue, qQUEUE_COUNT, 1 ); 
+            }
         }
     }
     return RetValue;
