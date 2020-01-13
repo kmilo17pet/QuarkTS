@@ -41,7 +41,7 @@
 
     #define __QUARKTS__
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.4.4"
+    #define QUARKTS_VERSION         "5.4.5"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #define _UNUSED_(x)             (void)(x)
@@ -59,6 +59,7 @@
     typedef qUINT8_t qState_t;
     typedef qUINT8_t qBool_t;
     typedef size_t qIndex_t; /*better portability*/
+    typedef size_t qSignal_t;
     typedef qUINT32_t qCycles_t;
     
     #define qFalse                  ( (qBool_t)0x00u )
