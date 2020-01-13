@@ -437,7 +437,7 @@ qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priori
             Task->qPrivate.StateMachine = StateMachine;
             if( NULL != StateMachine->qPrivate.TransitionTable ){
                 tTableFSM = (qSM_TransitionTable_t*)StateMachine->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
-                RetValue = qTaskAttachQueue( Task, &tTableFSM->SignalQueue, qQUEUE_COUNT, 1 ); 
+                RetValue = qTaskAttachQueue( Task, &tTableFSM->SignalQueue, qQUEUE_COUNT, 1u ); 
             }
         }
     }
