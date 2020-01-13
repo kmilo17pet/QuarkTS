@@ -70,7 +70,7 @@
         qSM_Transition_t *Transitions;  
     }qSM_TransitionTable_t;
 
-    #define QSIGNAL_NONE    ( (qSignal_t)0xFFFFFFFF )
+    #define QSIGNAL_NONE    ( (qSignal_t)0xFFFFFFFFu )
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART,                        /*< Restart the FSM. */

@@ -167,7 +167,7 @@ Return value:
 */  
 qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSignal_t *AxSignals, size_t MaxSignals){
     qBool_t RetValue = qFalse;
-    if( ( NULL != table ) && ( NULL != entries) && (NoOfEntries > 0 ) ){
+    if( ( NULL != table ) && ( NULL != entries) && (NoOfEntries > (size_t)0 ) ){
         table->NumberOfEntries = NoOfEntries;
         table->Transitions = entries;
         RetValue = qQueueCreate( &table->SignalQueue, AxSignals, sizeof(qSignal_t), MaxSignals );
@@ -217,7 +217,7 @@ qSignal_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
     qSM_State_t xCurrentState;
     size_t iEntry;
 
-    table = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable;
+    table = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
     if( NULL != table ){
         if( qTrue == qQueueReceive( &table->SignalQueue, &signal ) ){
             xCurrentState = obj->NextState;
@@ -257,9 +257,9 @@ qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSignal_t signal, qBool_t i
     qBool_t RetValue = qFalse;
     qSM_TransitionTable_t *tTable;
     if( ( NULL != obj ) && ( QSIGNAL_NONE != signal ) ){
-        tTable = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable;
+        tTable = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != tTable ){
-            RetValue = qQueueGenericSend( &tTable->SignalQueue, &signal, isUrgent );  
+            RetValue = qQueueGenericSend( &tTable->SignalQueue, &signal, (qQueueMode_t)isUrgent );  
         }
     }
     return RetValue;

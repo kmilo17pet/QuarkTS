@@ -14,7 +14,7 @@ Parameters:
 */
 /*============================================================================*/
 void qSwapBytes( void *data, const size_t n ){
-    qUINT8_t *p = data, tmp;
+    qUINT8_t *p = data, tmp; /*MISRAC2012-Rule-11.5 deviation allowed*/
     size_t lo, hi;
     hi = n - 1u;
     for( lo = 0u ; hi > lo ; lo++ ){
@@ -52,8 +52,8 @@ Parameters:
 */
 void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
     size_t i;
-    char *cdata = data;
-    char *xPtr = pStorage;
+    char *cdata = data; /*MISRAC2012-Rule-11.5 deviation allowed*/
+    char *xPtr = pStorage; /*MISRAC2012-Rule-11.5 deviation allowed*/
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
             fcn( &xPtr[i] , cdata[i] );
@@ -80,8 +80,8 @@ Parameters:
 */
 void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
     size_t i;
-    char *cdata = data;
-    char *xPtr = pStorage;
+    char *cdata = data; /*MISRAC2012-Rule-11.5 deviation allowed*/
+    char *xPtr = pStorage; /*MISRAC2012-Rule-11.5 deviation allowed*/
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; i++ ){
             cdata[i] = fcn( &xPtr[i] );
@@ -107,7 +107,7 @@ Parameters:
 */
 void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP ){
     size_t i = 0u;
-    char *xPtr = pStorage;
+    char *xPtr = pStorage; /*MISRAC2012-Rule-11.5 deviation allowed*/
     if( qTrue == AIP ){
         while( '\0' != *s ){
             fcn( &xPtr[i] ,  *s++ );
@@ -128,7 +128,7 @@ static char qNibbleToX( qUINT8_t value ){
 }
 /*============================================================================*/
 void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n ){
-    qUINT8_t *pdat =(qUINT8_t*)data; 
+    qUINT8_t *pdat =(qUINT8_t*)data;  /*MISRAC2012-Rule-11.5 deviation allowed*/
     size_t i;
     for( i = 0u ; i < n ; i++ ){
         fcn( pStorage, qNibbleToX( pdat[i] >> 4u ) );   /*MISRAC2004-17.4_b deviation allowed*/ 
@@ -517,7 +517,7 @@ qBool_t qIsNan( qFloat32_t f ){
     qUINT32_t u;
     void *p;
     p = &f;
-    u = *(qUINT32_t*)p;
+    u = *(qUINT32_t*)p; /*this breaks the strict aliasing rules*/ /*MISRAC2012-Rule-11.5 deviation allowed*/
     return ( ( ( u & 0x7F800000uL ) ==  0x7F800000uL ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
 }
 /*============================================================================*/
@@ -536,7 +536,7 @@ qBool_t qIsInf( qFloat32_t f ){
     qUINT32_t u;
     void *p;
     p = &f;
-    u = *(qUINT32_t*)p;
+    u = *(qUINT32_t*)p; /*this breaks the strict aliasing rules*/  /*MISRAC2012-Rule-11.5 deviation allowed*/
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/

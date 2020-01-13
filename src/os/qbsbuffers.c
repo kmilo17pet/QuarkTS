@@ -144,7 +144,7 @@ Return value:
 */
 qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     size_t i;
-    qUINT8_t *data = (qUINT8_t*)dest;
+    qUINT8_t *data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5 deviation allowed*/
     qBool_t RetValue = qFalse;
     if( n > 0u ){
         RetValue = qTrue;

@@ -32,7 +32,7 @@ qBool_t qQueueCreate( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
     if( ( NULL != obj ) && ( NULL != DataArea ) && ( ItemSize > 0u ) && ( ItemsCount > 0u) ){
         obj->ItemsCount = ItemsCount;   /* Initialise the queue members*/
         obj->ItemSize = ItemSize;
-        obj->pHead = DataArea;
+        obj->pHead = DataArea; /* MISRAC2012-Rule-11.5 deviation allowed */
         obj->pTail = obj->pHead + ( obj->ItemsCount * obj->ItemSize ); 
         qQueueReset( obj );
         RetValue = qTrue;
@@ -143,7 +143,7 @@ void* qQueuePeek( const qQueue_t * const obj ){
     if( NULL != obj ){
         if( obj->ItemsWaiting > 0u ){
             qCritical_Enter();
-            RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+            RetValue = (void*)( obj->pcReadFrom + obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5 deviation allowed */
             if( RetValue >= obj->pTail ){
                 RetValue = obj->pHead;
             }

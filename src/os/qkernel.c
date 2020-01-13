@@ -467,12 +467,12 @@ qBool_t qSchedulerAdd_ATParserTask( qTask_t * const Task, qATParser_t *Parser, q
 }
 /*============================================================================*/
 static void qScheduler_ATParserTaskCallback( qEvent_t  e ){ /*wrapper for the task callback */
-    (void)qATParser_Run( (qATParser_t*)e->TaskData );
+    (void)qATParser_Run( (qATParser_t*)e->TaskData ); /* MISRAC2012-Rule-11.5 deviation allowed */
 }
 /*============================================================================*/
 static void qScheduler_ATParserNotifyFcn(struct _qATParser_s * const Parser){
     qTask_t *Task;
-    Task = (qTask_t *)Parser->UserData;
+    Task = (qTask_t *)Parser->UserData; /* MISRAC2012-Rule-11.5 deviation allowed */
     (void)qTaskSendNotification( Task, NULL );
 }
 #endif /* #if ( Q_ATCOMMAND_PARSER == 1) */
@@ -622,7 +622,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         #endif          
     }
     else if( QLIST_WALKTHROUGH == stage ){
-        xTask = (qTask_t*)node;
+        xTask = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
 
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             if( NULL != kernel.NotificationSpreadRequest.mode ){
@@ -695,12 +695,12 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
     qTrigger_t Event = byNoReadyTasks;
     qIteration_t TaskIteration;
     qTaskFcn_t TaskActivities;
-
-    xList = (qList_t*)arg;
+ 
+    xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5 deviation allowed */
     
     if( QLIST_WALKTHROUGH == stage ){ /*#!ok*/
         if( NULL != xList){ /*#!ok*/
-            Task = (qTask_t*)node;
+            Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
 
             Event = Task->qPrivate.Trigger;
             switch( Event ){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
@@ -815,7 +815,7 @@ qStateGlobal_t qScheduler_GetTaskGlobalState( const qTask_t * const Task){
     qStateGlobal_t RetValue = qUndefinedGlobalState;
     qList_t *xList;
     if( NULL != Task ){
-        xList = Task->qPrivate.container;
+        xList = Task->qPrivate.container; /* MISRAC2012-Rule-11.5 deviation allowed */
         if( kernel.CurrentRunningTask == Task ){
             RetValue = qRunning;
         }

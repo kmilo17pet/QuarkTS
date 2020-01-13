@@ -35,7 +35,7 @@ Return value:
 qBool_t qMemoryPool_Init(qMemoryPool_t * const mPool, void* Area, size_t size){
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
-        mPool->Heap = Area;
+        mPool->Heap = Area; /* MISRAC2012-Rule-11.5 deviation allowed */
         mPool->HeapSize = size;
         mPool->End = NULL;
         RetValue = qTrue;
@@ -84,7 +84,7 @@ void qFree(void *ptr){
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
-    pToFree = (qUINT8_t*)ptr;
+    pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5 deviation allowed */
     
     if( NULL != ptr){
         pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
@@ -124,7 +124,7 @@ static void qHeapInit( void ){
     }
     Aligned = (qUINT8_t*) Address;
     
-    MemPool->Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/
+    MemPool->Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5 deviation allowed */
     MemPool->Start.BlockSize = (size_t)0;
     xAddrTmp = (qAddress_t)Aligned;
     Address = xAddrTmp + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/
@@ -134,7 +134,7 @@ static void qHeapInit( void ){
     MemPool->End = (qMemBlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
     MemPool->End->Next = NULL;
     MemPool->End->BlockSize = (size_t)0;
-    FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */
+    FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */ /* MISRAC2012-Rule-11.5 deviation allowed */
     xAddrTmp = (qAddress_t)FirstFreeBlock;
     FirstFreeBlock->BlockSize = Address - xAddrTmp; /*MISRAC2004-17.4_a deviation allowed*/
     FirstFreeBlock->Next = MemPool->End;
@@ -228,7 +228,7 @@ void* qMalloc( size_t size ){
                 PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
                 if( ( Block->BlockSize - size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
                     pBlockU8 = (qUINT8_t*)Block;
-                    NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/
+                    NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5 deviation allowed */
                     NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                     Block->BlockSize = size;
                     qInsertBlockIntoFreeList( MemPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */

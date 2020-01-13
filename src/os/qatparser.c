@@ -182,7 +182,7 @@ qBool_t qATParser_CmdSubscribe( qATParser_t * const Parser, qATCommand_t * const
                 Command->Text = (char*)TextCommand;
                 Command->qPrivate.CommandCallback = Callback;
                 Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
-                Command->qPrivate.Next = Parser->qPrivate.First;
+                Command->qPrivate.Next = Parser->qPrivate.First; /*MISRAC2012-Rule-11.5 deviation allowed*/
                 Command->param = param;
                 Parser->qPrivate.First = Command;
                 RetValue = qTrue;  
@@ -212,7 +212,7 @@ qATCommand_t* qATParser_CmdIterate( qATParser_t * const Parser, qBool_t reload )
       
     if(NULL != Parser){
       if( qTrue == reload ){
-          Iterator = Parser->qPrivate.First;
+          Iterator = Parser->qPrivate.First; /*MISRAC2012-Rule-11.5 deviation allowed*/
       } 
       else{
         Cmd = Iterator;
@@ -372,7 +372,7 @@ qATResponse_t qATParser_Exec( qATParser_t * const Parser, char *cmd ){
     qATCommand_t *Command;
     qATCommandCallback_t CmdCallback;
     if( ( NULL != Parser ) && ( NULL != cmd ) ){
-        for( Command = (qATCommand_t*)Parser->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/
+        for( Command = (qATCommand_t*)Parser->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5 deviation allowed*/
             if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
             	RetValue = qAT_NOTALLOWED;
                 if( _qATParser_PreProcessing( Command, (char*)cmd, &Parser->qPrivate.Params ) ){ /*if success, proceed with the user pos-processing*/

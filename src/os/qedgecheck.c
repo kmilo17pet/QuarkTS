@@ -8,7 +8,7 @@ qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
     qUINT32_t Mask;
     qUINT32_t Bit = (qUINT32_t)PinNumber;
     Mask = (qUINT32_t)1uL << Bit; 
-    Register = *((const qUINT32_t*)Address);    
+    Register = *((const qUINT32_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/  
     return ( 0uL != (Register & Mask) );
 }
 /*============================================================================*/
@@ -17,7 +17,7 @@ qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
     qUINT16_t Mask;
     qUINT16_t Bit = (qUINT16_t)PinNumber;
     Mask = (qUINT16_t)1u << Bit;
-    Register = *( (const qUINT16_t*)Address );
+    Register = *( (const qUINT16_t*)Address ); /*MISRAC2012-Rule-11.5 deviation allowed*/
     return ( 0u != ( Register & Mask ) );
 }
 /*============================================================================*/
@@ -26,7 +26,7 @@ qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
     qUINT8_t Mask;
     qUINT8_t Bit = (qUINT8_t)PinNumber;;
     Mask = (qUINT8_t)1u << Bit;
-    Register = *((const qUINT8_t*)Address);
+    Register = *((const qUINT8_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/
     return ( 0u != ( Register & Mask ) );
 }
 /*============================================================================*/
