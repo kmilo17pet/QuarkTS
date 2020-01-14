@@ -114,6 +114,7 @@ Parameters:
          > qSM_SUCCESS_STATE: Set the Success State
          > qSM_UNEXPECTED_STATE: Set the Unexpected State
          > qSM_BEFORE_ANY_STATE: Set the state executed before any state.
+         > qSM_UNISTALL_TRANSTABLE : To uninstall the transition table if available
     - s : The new value for state (only apply in qSM_RESTART). If not used, pass NULL.
     - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
@@ -143,6 +144,9 @@ void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , q
         case qSM_BEFORE_ANY_STATE:
             obj->qPrivate.BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
             break;              
+        case qSM_UNINSTALL_TRANSTABLE:
+            obj->qPrivate.TransitionTable = NULL;
+            break;   
         default:
             break;
     }
@@ -155,9 +159,9 @@ Install a transition table for the supplied state machine instance.
 Parameters:
 
     - obj : a pointer to the FSM object.
-    - table: a pointer tot he transtition table instance
-    - entries : The array of transitions (qSM_Transition_t[]).
-    - NoOfEntries : The number of transtitions inside <entries>
+    - table: a pointer to the transition table instance
+    - entries : The array of transition (qSM_Transition_t[]).
+    - NoOfEntries : The number of transitions inside <entries>
     - AxSignals : A pointer to the memory area used for queueing signals. qSignal_t[]
     - MaxSignals : The number of items inside AxSignals.
 
@@ -178,21 +182,6 @@ qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionT
     return RetValue;
 }
 /*============================================================================*/
-/*void qStateMachine_TransitionTableUnistall( qSM_t * const obj )
-
-Unistall the transtition table fromt he state machine instance if available
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-
-*/  
-void qStateMachine_TransitionTableUnistall( qSM_t * const obj ){
-    if( NULL != obj ){
-        obj->qPrivate.TransitionTable = NULL;
-    }
-}
-/*============================================================================*/
 /* qSignal_t qStateMachine_SweepTable( qSM_t * const obj )
 
 Forces a sweep over the installed transition table. The instance will be updated 
@@ -207,7 +196,7 @@ Parameters:
 
 Return value:
 
-    Return the signal that produces the transitiion over the instance.
+    Return the signal that produces the transition over the instance.
     QSIGNAL_NONE if no signals available or an error is found;
 */
 qSignal_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
@@ -239,18 +228,17 @@ qSignal_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
 /*qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSignal_t signal, qBool_t isUrgent )
 
 Sends a signal to the state machine.
-Note : The state machine instance must have a transtition table previously installed
+Note : The state machine instance must have a transition table previously installed
 
 Parameters:
 
     - obj : a pointer to the FSM object.
     - signal : The user-defined signal
-    - isUrgent : If qTrue, the signal will be sended to the front of the transition-table queue.
+    - isUrgent : If qTrue, the signal will be sent to the front of the transition-table queue.
 
 Return value:
 
-    Return the signal that produces the transitiion over the instance.
-    QSIGNAL_NONE if no signals available or an error is found;
+    qTrue if the provided signal was successfully delivered to the FSM, otherwise return qFalse.
 
 */
 qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSignal_t signal, qBool_t isUrgent ){
