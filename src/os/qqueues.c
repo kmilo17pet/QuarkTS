@@ -210,7 +210,7 @@ static void qQueueCopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer
     (void) memcpy( (void*) pvBuffer, (void*)obj->pcReadFrom, obj->ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
-/*void* qQueueReceive(qQueue_t * const obj, void *dest)
+/*qBool_t qQueueReceive(qQueue_t * const obj, void *dest)
  
 Receive an item from a queue (and removes it). The item is received by copy so a 
 buffer of adequate size must be provided. The number of bytes copied into the buffer 
