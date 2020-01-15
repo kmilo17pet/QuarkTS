@@ -3,22 +3,19 @@
 
 WARNING:
 
-This its just a test file for x86. Dont use this as reference example in your 
+This its just a minor-test file for x86. Dont use this as reference example in your 
 embedded application
+This is not a full OS test, most of the built-in modules are tested externally with
+embedded C compilers in real hardware( this is not included in this repository)
 
 ===================================================================================
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include <signal.h>
-#include <ctype.h>
-#include <termios.h>
 #include <math.h>
-#include <assert.h>
 
 #include "QuarkTS.h"
 #include "unity.h"
@@ -179,16 +176,6 @@ qIONode_t button1, sensor1, button2, sensor2;
 
 qSM_t statemachine;
 
-pthread_t TimerEmulation;
-void* TimerInterruptEmulation(void* arg){
-    struct timespec tick={0, 0.01*1E9};
-    for(;;){
-        nanosleep(&tick, NULL);
-        /*
-        qSchedulerSysTick();       
-        */
-    }
-}
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
 
@@ -395,12 +382,24 @@ void test_OS_API( void ){
 
 
 int main(int argc, char** argv) {   
+    /*Already tested externally (NOT INCLUDED HERE)
+        - kernel internals
+        - task internals
+        - queue internals
+        - STimers and related clock
+        - BSBuffers
+        - Critical
+        - Trace
+        - ioutils
+        - atparser
+        - list internals
+        - memory management internals
+        
+    */
     UNITY_BEGIN();
- 
-    RUN_TEST( test_qList_API );
-    RUN_TEST( test_qMemoryManagement_API );
-    pthread_create(&TimerEmulation, NULL, TimerInterruptEmulation, NULL );
-    RUN_TEST( test_OS_API );
+        RUN_TEST( test_qList_API ); /*Some basic test of the qlist apis*/
+        RUN_TEST( test_qMemoryManagement_API );  
+        RUN_TEST( test_OS_API ); /*some scheduling test, including other redundant modules*/
 
-    UNITY_END();   /*return (EXIT_SUCCESS);*/
+    return UNITY_END();
 }
