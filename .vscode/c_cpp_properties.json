@@ -2,10 +2,12 @@
     "configurations": [
         {
             "name": "Win32",
+            "cwd": "${workspaceFolder}",
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/os/include/**",
-                "${workspaceRoot}/**"
+                "${workspaceRoot}/**",
+                "C:/cygwin64/usr/include/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,8 +15,8 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.18362.0",
-            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.23.28105/bin/Hostx64/x64/cl.exe",
-            "cStandard": "c11",
+            "compilerPath": "C:/cygwin64/bin/gcc.exe",
+            "cStandard": "c89",
             "cppStandard": "c++17",
             "intelliSenseMode": "msvc-x64"
         }
