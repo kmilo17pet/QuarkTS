@@ -42,6 +42,7 @@ qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubSta
         obj->qPrivate.Unexpected = UnexpectedState;
         obj->qPrivate.BeforeAnyState = BeforeAnyState;
         obj->qPrivate.TransitionTable = NULL;
+        obj->qPrivate.Owner = NULL;
         obj->LastState = NULL;
         RetValue = qTrue;
     }

@@ -50,6 +50,7 @@
         qBool_t qSchedulerAdd_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
                             qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
                             qState_t InitialTaskState, void *arg );
+        qBool_t qScheduler_StateMachineTask_SignalConnect( qTask_t * const Task );                    
     #endif
 
     #if ( Q_ATCOMMAND_PARSER == 1)

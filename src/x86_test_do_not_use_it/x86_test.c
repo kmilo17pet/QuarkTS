@@ -174,7 +174,7 @@ qUINT32_t PORTA = 0x0A;
 qIOEdgeCheck_t INPUTS;
 qIONode_t button1, sensor1, button2, sensor2;
 
-qSM_t statemachine;
+qSM_t statemachine = QSTATEMACHINE_INITIALIZER;
 
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;

@@ -13,6 +13,8 @@
     #define _qSMData_t struct _qSM_t * const 
     #define CurrentState    NextState
 
+    #define QSTATEMACHINE_INITIALIZER   { {NULL, NULL, NULL, NULL, NULL, NULL}, NULL, NULL, NULL, NULL, (qSignal_t)0ul, qSM_EXIT_SUCCESS, qFalse }
+
     typedef struct _qSM_t{ 
         /*Private members (DO NOT USE THEM)*/
         private_start{
@@ -21,6 +23,7 @@
             void (*Unexpected)(_qSMData_t arg);  
             void (*BeforeAnyState)(_qSMData_t arg);/*only used when a task has a SM attached*/
             void *TransitionTable;
+            void *Owner;
         }private_end;        
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
