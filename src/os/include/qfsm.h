@@ -13,8 +13,11 @@
     #define _qSMData_t struct _qSM_t * const 
     #define CurrentState    NextState
 
-    #define QSTATEMACHINE_INITIALIZER   { {NULL, NULL, NULL, NULL, NULL, NULL}, NULL, NULL, NULL, NULL, (qSignal_t)0ul, qSM_EXIT_SUCCESS, qFalse }
+   
+    typedef size_t qSM_Signal_t;
 
+    #define QSTATEMACHINE_INITIALIZER   { {NULL, NULL, NULL, NULL, NULL, NULL}, NULL, NULL, NULL, NULL, (qSM_Signal_t)0ul, qSM_EXIT_SUCCESS, qFalse }
+    
     typedef struct _qSM_t{ 
         /*Private members (DO NOT USE THEM)*/
         private_start{
@@ -47,7 +50,7 @@
         Received signal from the transition table queue.
         QSIGNAL_NONE if no table or signal available.
         */
-        qSignal_t Signal;
+        qSM_Signal_t Signal;
         /* PreviousReturnStatus: (Read Only)
         The return status of <PreviousState>
         */
@@ -63,7 +66,7 @@
 
     typedef struct{
         qSM_State_t xCurrentState;
-        qSignal_t Signal;
+        qSM_Signal_t Signal;
         qSM_State_t xNextState;
     }qSM_Transition_t;
 
@@ -73,7 +76,7 @@
         qSM_Transition_t *Transitions;  
     }qSM_TransitionTable_t;
 
-    #define QSIGNAL_NONE    ( (qSignal_t)0xFFFFFFFFu )
+    #define QSIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART,                        /*< Restart the FSM. */
@@ -89,9 +92,9 @@
     void qStateMachine_Run( qSM_t * const obj, void *Data );
     void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
 
-    qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSignal_t *AxSignals, size_t MaxSignals);
-    qSignal_t qStateMachine_SweepTransitionTable( qSM_t * const obj );
-    qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSignal_t signal, qBool_t isUrgent );
+    qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSM_Signal_t *AxSignals, size_t MaxSignals);
+    qSM_Signal_t qStateMachine_SweepTransitionTable( qSM_t * const obj );
+    qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent );
 
     #ifdef __cplusplus
     }
