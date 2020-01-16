@@ -446,7 +446,7 @@ Improve the state-machine-task responsiveness by connecting the incoming signals
 from a transition-table to the task's event flow.
 
 Parameters:
-    - Task : A pointer to the task node.
+    - Task : A pointer to the task node.the
 
 Return value :
 
