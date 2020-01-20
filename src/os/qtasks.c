@@ -82,7 +82,6 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
         else{
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
                 RetValue = _qScheduler_PriorityQueue_IsTaskInside( Task );
-                printf("RETVALUE = %d\r\n", RetValue );
             #endif  
         }   
     }
