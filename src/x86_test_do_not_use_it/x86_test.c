@@ -63,8 +63,8 @@ qBool_t mylist_binremove( void *node, void *arg, qList_WalkStage_t stage){
             break;
         case qList_WalkThrough:
             if( xnode->value & 1 ){
-                qList_Remove( arg, node, 0 );
-                qList_Insert( &otherlist, node, qList_AtBack );
+                TEST_ASSERT_NOT_NULL( qList_Remove( arg, node, 0 ) );
+                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, node, qList_AtBack ) );
             }
             break;
         case qList_WalkEnd:
@@ -194,11 +194,11 @@ qSM_Status_t firststate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(e->FirstCall){
-        qDebugMessage("state machine init");
+        TEST_MESSAGE("state machine init");
     }
     
     if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 2.5);
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimerSet(&tmr, 2.5) );
         qTraceMessage( (char*)e->TaskData );
     }
     if (qSTimerExpired(&tmr)){
@@ -211,13 +211,13 @@ qSM_Status_t secondstate(qSMData_t fsm){
     qEvent_t e = fsm->Data;
     static qSTimer_t tmr;
     if(fsm->StateFirstEntry){
-        qSTimerSet(&tmr, 2.5);
-        qTraceMessage( (char*)e->TaskData );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimerSet(&tmr, 2.5) );
+        TEST_MESSAGE( (char*)e->TaskData );
         
     }
     
     if (qSTimerExpired(&tmr)){
-        qTraceMessage("timer of 2.5s expired");
+        TEST_MESSAGE("timer of 2.5s expired");
         fsm->NextState = firststate;
     }
     return qSM_EXIT_SUCCESS;
@@ -225,41 +225,41 @@ qSM_Status_t secondstate(qSMData_t fsm){
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
-    qTraceMessage( (char*)e->TaskData );
-    qTraceMessage( (char*)e->EventData );
+    TEST_MESSAGE( (char*)e->TaskData );
+    TEST_MESSAGE( (char*)e->EventData );
     qTraceVariable( qTaskGetCycles(&Task1), UnsignedDecimal );
     
     if(e->FirstCall){
-        qDebugMessage("FirstCall");
+        TEST_MESSAGE("FirstCall");
     }
     if(e->FirstIteration){
-        qDebugMessage("FirstIteration");
+        TEST_MESSAGE("FirstIteration");
     }
     if(e->LastIteration){
-        qDebugMessage("LastIteration");
+        TEST_MESSAGE("LastIteration");
     }
     
     if(e->Trigger == byNotificationSimple){
-        qDebugMessage("TASK1 BY SIMPLE NOTIFICATION");
+        TEST_MESSAGE("TASK1 BY SIMPLE NOTIFICATION");
     }
 
     if(e->Trigger == byNotificationQueued){
-        qDebugMessage("TASK1 BY QUEUED NOTIFICATION");
+        TEST_MESSAGE("TASK1 BY QUEUED NOTIFICATION");
     }
     
     if(qSTimerFreeRun(&tmr, 0.5)){
-        qDebugMessage("Timer expired");
+        TEST_MESSAGE("Timer expired");
     }         
 }
 /*============================================================================*/
 void Task3Callback(qEvent_t e){
     int data = -1;
-    qTraceMessage( (char*)e->TaskData );
-    qTraceMessage( (char*)e->EventData );
+    TEST_MESSAGE( (char*)e->TaskData );
+    TEST_MESSAGE( (char*)e->EventData );
 
     if(e->Trigger == byQueueReceiver){
         data = *((int*)e->EventData);
-        qDebugMessage("Queue event: byQueueReceiver");
+        TEST_MESSAGE("Queue event: byQueueReceiver");
         qDebugVariable(data, Decimal);
     } 
     if(e->Trigger == byEventFlags){
@@ -269,8 +269,8 @@ void Task3Callback(qEvent_t e){
 }
 /*============================================================================*/
 void TaskSameCallback(qEvent_t e){
-    qTraceMessage( (char*)e->TaskData );
-    qTraceMessage( (char*)e->EventData );
+    TEST_MESSAGE( (char*)e->TaskData );
+    TEST_MESSAGE( (char*)e->EventData );
 }
 /*============================================================================*/
 void IdleTaskCallback(qEvent_t e){
@@ -279,17 +279,17 @@ void IdleTaskCallback(qEvent_t e){
 
     static qSTimer_t EndSchedulingTimeout = QSTIMER_INITIALIZER;
 
-    qEdgeCheck_Update(&INPUTS);
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Update(&INPUTS) );
 
     if(e->FirstCall){
-        qTraceMessage("IDLE TASK FIRST CALL");
-        qSTimerSet(&t, 10.0);
-        qSTimerSet(&EndSchedulingTimeout, 30.0);
+        TEST_MESSAGE("IDLE TASK FIRST CALL");
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimerSet(&t, 10.0) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimerSet(&EndSchedulingTimeout, 30.0) );
     }
 
     if(qSTimerExpired(&t)){
         PORTA = ~PORTA;
-        qTraceMessage("PORTA toggle");
+        TEST_MESSAGE("PORTA toggle");
         qSTimerDisarm(&t);
     }
 
@@ -310,12 +310,32 @@ void blinktaskCallback(qEvent_t e){
         qCoroutineDelay(2.0);
         TEST_MESSAGE("hello 2 ");
 
-        qTaskSendNotification( qTaskSelf(), NULL );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskSendNotification( qTaskSelf(), NULL ) );
         qTaskModifyEventFlags( &Task3, QEVENTFLAG_03, QEVENTFLAG_SET );
-        qTaskQueueNotification(&Task1, "notification 1");
-        qTaskQueueNotification(&Task1, "notification 2");
-        qTaskSendNotification(&Task1, "notification 3");
-        qTaskSendNotification(&Task1, "notification 4");
+
+        TEST_ASSERT_EQUAL_UINT8( qFalse, qTask_HasPendingNotifications( &Task1 ) );
+
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "notification 1") );
+
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_HasPendingNotifications( &Task1 ) ); 
+
+        TEST_ASSERT_EQUAL_size_t( 1, qOS_Get_PriorityQueueCount()  );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "notification 2") );
+        TEST_ASSERT_EQUAL_size_t( 2, qOS_Get_PriorityQueueCount()  );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskSendNotification(&Task1, "notification 3") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskSendNotification(&Task1, "notification 4") );
+
+
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 3") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 4") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 5") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 6") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 7") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 8") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 9") );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qTaskQueueNotification(&Task1, "qin 10") );
+        TEST_ASSERT_EQUAL_UINT8( qFalse, qTaskQueueNotification(&Task1, "qin 11") );
+
         TEST_MESSAGE("notification sended to task1 ");
         /**/
     }qCoroutineEnd;
@@ -356,13 +376,14 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueSendToFront( &somequeue, &x[1]) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueSendToBack( &somequeue, &x[2]) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueSendToFront( &somequeue, &x[3]) );
+    TEST_ASSERT_EQUAL_size_t( 4, qQueueCount( &somequeue ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueReceive( &somequeue, &DataReceivedFromQueue) );
     TEST_ASSERT_EQUAL_INT( x[3], DataReceivedFromQueue );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueReceive( &somequeue, &DataReceivedFromQueue) );
     TEST_ASSERT_EQUAL_INT( x[1], DataReceivedFromQueue );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueueReceive( &somequeue, &DataReceivedFromQueue) );
     TEST_ASSERT_EQUAL_INT( x[0], DataReceivedFromQueue );
-
+    TEST_ASSERT_EQUAL_size_t( 1, qQueueCount( &somequeue ) );
 
     TEST_MESSAGE( "OS scheduling..." ); 
     qSchedulerSetup(GetTickCountMs, 0.001, IdleTaskCallback);           

@@ -230,6 +230,7 @@
 
     qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
     qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );
+    qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
     qState_t qTaskGetState( const qTask_t * const Task);
     #if ( Q_TASK_COUNT_CYCLES == 1 )
         qCycles_t qTaskGetCycles( const qTask_t * const Task );   

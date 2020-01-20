@@ -96,5 +96,5 @@ This file is used to define symbols required to mantain backward compatibility
     #define     qResponseReceived                           qResponse_Received
     #define     qResponseReceivedWithTimeout                qResponse_ReceivedWithTimeout
     #define     qResponseISRHandler                         qResponse_ISRHandler
-
+    
 #endif

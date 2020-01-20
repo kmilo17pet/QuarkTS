@@ -60,6 +60,35 @@ qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata ){
     #endif
 }
 /*============================================================================*/
+/* qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  )
+
+Check if the task has pending notifications.
+
+Parameters:
+
+    - Task : A pointer to the task node.
+
+Return value:
+
+    qTrue if the functon asserts, otherwise returns qFalse.
+
+*/
+qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
+    qBool_t RetValue = qFalse;
+    if( NULL != Task ){
+        if( Task->qPrivate.Notification > (qNotifier_t)0 ){
+            RetValue = qTrue;
+        }
+        else{
+            #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+                RetValue = _qScheduler_PriorityQueue_IsTaskInside( Task );
+                printf("RETVALUE = %d\r\n", RetValue );
+            #endif  
+        }   
+    }
+    return RetValue;
+}
+/*============================================================================*/
 /*
 qState_t qTaskGetState( const qTask_t * const Task)
 

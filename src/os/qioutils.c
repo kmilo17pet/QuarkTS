@@ -1,7 +1,9 @@
 #include "qioutils.h"
 
+
 static size_t __q_revuta( qUINT32_t num, char* str, qUINT8_t base );
 static char qNibbleToX( qUINT8_t value );
+
 /*============================================================================*/
 /*void qSwapBytes(void *data, qSize_t n)
  
@@ -515,9 +517,7 @@ Return value:
 */
 qBool_t qIsNan( qFloat32_t f ){
     qUINT32_t u;
-    void *p;
-    p = &f;
-    u = *(qUINT32_t*)p; /*this breaks the strict aliasing rules*/ /*MISRAC2012-Rule-11.5 deviation allowed*/
+    (void) memcpy( &u, &f, sizeof(u) );
     return ( ( ( u & 0x7F800000uL ) ==  0x7F800000uL ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
 }
 /*============================================================================*/
@@ -534,9 +534,7 @@ Return value:
 */
 qBool_t qIsInf( qFloat32_t f ){
     qUINT32_t u;
-    void *p;
-    p = &f;
-    u = *(qUINT32_t*)p; /*this breaks the strict aliasing rules*/  /*MISRAC2012-Rule-11.5 deviation allowed*/
+    (void) memcpy( &u, &f, sizeof(u) );
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/

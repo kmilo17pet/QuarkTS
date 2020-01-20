@@ -260,6 +260,27 @@ qBool_t _qScheduler_PriorityQueue_Insert(qTask_t * const Task, void *data){
     #endif   
 }
 /*============================================================================*/
+qBool_t _qScheduler_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )
+        qBool_t RetValue = qFalse;
+        qBase_t CurrentQueueIndex, i;
+        CurrentQueueIndex = kernel.QueueIndex + 1;
+        if( CurrentQueueIndex > 0 ){
+            qCritical_Enter();
+            for( i = 0 ; i < CurrentQueueIndex; i++ ){
+                if( Task == kernel.QueueStack[i].Task ){
+                    RetValue = qTrue;
+                    break;
+                }
+            }
+            qCritical_Exit();
+        }
+        return RetValue;
+    #else
+        return qFalse;
+    #endif   
+}
+/*============================================================================*/
 static qTask_t* _qScheduler_PriorityQueueGet( void ){
     qTask_t *xTask = NULL;
     qIndex_t i;
@@ -285,6 +306,16 @@ static qTask_t* _qScheduler_PriorityQueueGet( void ){
     }
     return xTask;
 }
+/*============================================================================*/
+size_t qOS_Get_PriorityQueueCount( void ){
+    if( kernel.QueueIndex >= 0 ){ 
+        return (size_t)kernel.QueueIndex + (size_t)1;
+    }
+    else{
+        return 0;
+    }
+}
+/*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */
 /*============================================================================*/
 /*qBool_t qSchedulerAdd_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)

@@ -61,6 +61,8 @@
     void qSchedulerRun( void );
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t _qScheduler_PriorityQueue_Insert(qTask_t * const Task, void *data);
+        qBool_t _qScheduler_PriorityQueue_IsTaskInside( const qTask_t * const Task );
+        size_t qOS_Get_PriorityQueueCount( void );
     #endif
 
     void __qFSMCallbackMode( qEvent_t e );
