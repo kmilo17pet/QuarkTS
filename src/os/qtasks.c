@@ -323,6 +323,7 @@ qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachin
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
         Task->qPrivate.Callback = __qFSMCallbackMode;
         Task->qPrivate.StateMachine = StateMachine;
+        StateMachine->qPrivate.Owner = Task;
         RetValue = qTrue;
     }    
     return RetValue;

@@ -1,4 +1,4 @@
-#include "qatparser.h"
+#include "qatcli.h"
 
 #if ( Q_ATCOMMAND_PARSER == 1)
 

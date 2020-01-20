@@ -248,7 +248,7 @@ qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_
     if( ( NULL != obj ) && ( QSIGNAL_NONE != signal ) ){
         tTable = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != tTable ){
-            RetValue = qQueueGenericSend( &tTable->SignalQueue, &signal, (qQueueMode_t)isUrgent );  
+            RetValue = qQueueGenericSend( &tTable->SignalQueue, &signal, (qQueue_Mode_t)isUrgent );  
         }
     }
     return RetValue;

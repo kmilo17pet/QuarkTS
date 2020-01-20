@@ -256,7 +256,7 @@ Return value:
 
     qTrue on successful add, qFalse if not added
 */
-qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueueMode_t InsertMode ){
+qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode_t InsertMode ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->ItemsWaiting < obj->ItemsCount ){ /* Is there room on the queue?*/

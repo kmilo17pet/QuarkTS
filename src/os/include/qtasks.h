@@ -15,7 +15,7 @@
     #endif  
 
     #if ( Q_ATCOMMAND_PARSER == 1)
-        #include "qatparser.h"
+        #include "qatcli.h"
     #endif
 
     #ifdef __cplusplus

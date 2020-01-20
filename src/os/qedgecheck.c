@@ -3,33 +3,6 @@
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
 /*============================================================================*/
-qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
-    qUINT32_t Register;
-    qUINT32_t Mask;
-    qUINT32_t Bit = (qUINT32_t)PinNumber;
-    Mask = (qUINT32_t)1uL << Bit; 
-    Register = *((const qUINT32_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/  
-    return ( 0uL != (Register & Mask) );
-}
-/*============================================================================*/
-qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
-    qUINT16_t Register;
-    qUINT16_t Mask;
-    qUINT16_t Bit = (qUINT16_t)PinNumber;
-    Mask = (qUINT16_t)1u << Bit;
-    Register = *( (const qUINT16_t*)Address ); /*MISRAC2012-Rule-11.5 deviation allowed*/
-    return ( 0u != ( Register & Mask ) );
-}
-/*============================================================================*/
-qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
-    qUINT8_t Register;
-    qUINT8_t Mask;
-    qUINT8_t Bit = (qUINT8_t)PinNumber;;
-    Mask = (qUINT8_t)1u << Bit;
-    Register = *((const qUINT8_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/
-    return ( 0u != ( Register & Mask ) );
-}
-/*============================================================================*/
 /*qBool_t qEdgeCheck_Initialize(qIOEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime)
  
 Initialize a I/O Edge-Check instance 
@@ -163,6 +136,29 @@ Return value:
 */
 qBool_t qEdgeCheck_GetNodeStatus( const qIONode_t * const Node ){
     return Node->Status;
+}
+/*============================================================================*/
+/*                        PRIVATE METHODS, DONT USE THEM                      */
+/*============================================================================*/
+qBool_t __qReg_32Bits( const void *Address, qBool_t PinNumber ){
+    qUINT32_t Register, Mask, Bit = (qUINT32_t)PinNumber;
+    Mask = (qUINT32_t)1uL << Bit; 
+    Register = *((const qUINT32_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/  
+    return ( 0uL != (Register & Mask) );
+}
+/*============================================================================*/
+qBool_t __qReg_16Bits( const void *Address, qBool_t PinNumber ){
+    qUINT16_t Register, Mask, Bit = (qUINT16_t)PinNumber;
+    Mask = (qUINT16_t)1u << Bit;
+    Register = *( (const qUINT16_t*)Address ); /*MISRAC2012-Rule-11.5 deviation allowed*/
+    return ( 0u != ( Register & Mask ) );
+}
+/*============================================================================*/
+qBool_t __qReg_08Bits( const void *Address, qBool_t PinNumber ){
+    qUINT8_t Register, Mask, Bit = (qUINT8_t)PinNumber;;
+    Mask = (qUINT8_t)1u << Bit;
+    Register = *((const qUINT8_t*)Address); /*MISRAC2012-Rule-11.5 deviation allowed*/
+    return ( 0u != ( Register & Mask ) );
 }
 /*============================================================================*/
 

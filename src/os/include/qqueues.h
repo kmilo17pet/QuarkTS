@@ -23,7 +23,7 @@
 
     #define QUEUE_SEND_TO_BACK     ( 0u )
     #define QUEUE_SEND_TO_FRONT    ( 1u )
-    typedef qUINT8_t qQueueMode_t;
+    typedef qUINT8_t qQueue_Mode_t;
 
     /*qBool_t qQueueSendToBack(qQueue_t *obj, void *ItemToQueue)
 
@@ -87,7 +87,7 @@
     void* qQueuePeek( const qQueue_t * const obj );
     qBool_t qQueueRemoveFront( qQueue_t * const obj );
     qBool_t qQueueReceive (qQueue_t * const obj, void *dest );
-    qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueueMode_t InsertMode );
+    qBool_t qQueueGenericSend( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode_t InsertMode );
     
     #ifdef __cplusplus
     }

@@ -1,6 +1,6 @@
 /*This file is part of the QuarkTS distribution.*/
-#ifndef QATPARSER_H
-    #define QATPARSER_H 
+#ifndef QATCLI_H
+    #define QATCLI_H 
 
     #include "qtypes.h"  
     #include "qioutils.h"  
