@@ -13,26 +13,29 @@
     #endif
 
     /* Linked list structure to connect the free blocks in order of their memory address. */
-    typedef struct qMemBlockConnect_s{
-        struct qMemBlockConnect_s *Next;    /*< used to point the next free block in the list*/
-        size_t BlockSize;	                /*< The size of the free block*/     
-    }qMemBlockConnect_t;
+    typedef struct _qMemMang_BlockConnect_s{
+        struct _qMemMang_BlockConnect_s *Next;     /*< used to point the next free block in the list*/
+        size_t BlockSize;	                        /*< The size of the free block*/     
+    }qMemMang_BlockConnect_t;
 
     typedef struct{
-        qMemBlockConnect_t *End;            /*< Points to the last block of the list. */
-        qUINT8_t *Heap;                     /*< Points to the beginning of the heap area statically allocated. */
-        size_t HeapSize;                    /*< The size of the memory block pinted by "heap". */
-        size_t FreeBytesRemaining;          /*< The number of free bytes in the heap. */
-        size_t BlockAllocatedBit;           /*< A bit that is set when the block belongs to the application. Clearead when the block is part of the free space (only the MSB is used) */    
-        qMemBlockConnect_t Start;           /*< The first block of the heap. */
-    }qMemoryPool_t;
+        /*This data should be handled only using the provided API*/
+        struct _qMemMang_Pool_Private_s{
+            qMemMang_BlockConnect_t *End;           /*< Points to the last block of the list. */
+            qUINT8_t *Heap;                         /*< Points to the beginning of the heap area statically allocated. */
+            size_t HeapSize;                        /*< The size of the memory block pinted by "heap". */
+            size_t FreeBytesRemaining;              /*< The number of free bytes in the heap. */
+            size_t BlockAllocatedBit;               /*< A bit that is set when the block belongs to the application. Clearead when the block is part of the free space (only the MSB is used) */    
+            qMemMang_BlockConnect_t Start;          /*< The first block of the heap. */
+        }qPrivate;
+    }qMemMang_Pool_t;
     
-    qBool_t qMemoryPool_Init( qMemoryPool_t * const mPool, void* Area, size_t size );
-    void qMemoryPool_Select( qMemoryPool_t * const mPool );
+    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t size );
+    void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool );
+    size_t qMemMang_Get_FreeSize( void );    
 
-    void* qMalloc(size_t size);
+    void* qMalloc( size_t size );
     void qFree(void *ptr);
-    size_t qHeapGetFreeSize( void );    
 
     #ifdef __cplusplus
     }

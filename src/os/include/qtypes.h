@@ -36,23 +36,12 @@
     typedef int qBase_t;
     /*Floating-point types*/
     typedef float qFloat32_t;
-    typedef double qFloat64_t; /*this is not always true in some compilers*/
-        
+    typedef double qFloat64_t; /*this is not always true in some compilers*/   
 
-    #define __QUARKTS__
+    #define _QUARKTS_
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "5.4.7"
+    #define QUARKTS_VERSION         "6.0.3"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
-
-    #define _UNUSED_(x)             (void)(x)
-
-    #ifndef STRUCT_PRIVATE_MEMBERS /*to define private inside kernel objects*/
-        #define STRUCT_PRIVATE_MEMBERS
-        #define ___private_join( symbol1, symbol2 )     ___private_do_join( symbol1, symbol2 )
-        #define ___private_do_join( symbol1, symbol2 )   symbol1##symbol2
-        #define private_start                           struct ___private_join( qPrivate_, __LINE__ )
-        #define private_end                             qPrivate
-    #endif
 
     typedef qUINT8_t qPriority_t;
     typedef qINT32_t qIteration_t;

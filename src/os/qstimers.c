@@ -1,7 +1,7 @@
 #include "qstimers.h"
 
 /*============================================================================*/
-/*qBool_t qSTimerReload( qSTimer_t * const obj )
+/*qBool_t qSTimer_Reload( qSTimer_t * const obj )
 
 Reload the timer with the previous specified time.
 Note: STimer should be armed before this operation
@@ -14,16 +14,16 @@ Return value:
 
     Returns qTrue on success, otherwise, returns qFalse.
 */
-qBool_t qSTimerReload( qSTimer_t * const obj ){
+qBool_t qSTimer_Reload( qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        obj->qPrivate.Start = qClock_GetTick();
+        obj->Start = qClock_GetTick();
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qSTimerSet(qSTimer_t * const obj, const qTime_t Time)
+/*qBool_t qSTimer_Set(qSTimer_t * const obj, const qTime_t Time)
  
 Set the expiration time for a STimer. On success, the STimer gets
 armed immediately
@@ -41,16 +41,16 @@ Return value:
 
     Returns qTrue on success, otherwise, returns qFalse.
 */
-qBool_t qSTimerSet( qSTimer_t * const obj, const qTime_t Time ){
+qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
-    if( qSTimerReload( obj ) ){
-        obj->qPrivate.TV  = qTime2Clock(Time); /*set the STimer time in epochs*/
+    if( qSTimer_Reload( obj ) ){
+        obj->TV  = qClock_Convert2Clock(Time); /*set the STimer time in epochs*/
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qSTimerFreeRun(qSTimer_t * const obj, const qTime_t Time)
+/*qBool_t qSTimer_FreeRun(qSTimer_t * const obj, const qTime_t Time)
 
 Non-Blocking STimer check with automatic arming. 
 Behavior:
@@ -74,23 +74,23 @@ Return value:
     > Note 4: A disarmed STimer also returns qFalse.
     > Note 5: After the STimer expiration,  qSTimerFreeRun re-arms the STimer
 */
-qBool_t qSTimerFreeRun( qSTimer_t * const obj, const qTime_t Time ){
+qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){ 
-        if( QSTIMER_ARMED == qSTimerStatus( obj ) ){ 
-            if( qSTimerExpired( obj ) ){
-                qSTimerDisarm( obj ); 
+        if( QSTIMER_ARMED == qSTimer_Status( obj ) ){ 
+            if( qSTimer_Expired( obj ) ){
+                qSTimer_Disarm( obj ); 
                 RetValue = qTrue;
             }
         }
         else{
-            (void)qSTimerSet( obj, Time ); 
+            (void)qSTimer_Set( obj, Time ); 
         }
     }
     return RetValue;   
 }
 /*============================================================================*/
-/*qBool_t qSTimerExpired(const qSTimer_t * const obj)
+/*qBool_t qSTimer_Expired(const qSTimer_t * const obj)
 
 Non-Blocking STimer check
 
@@ -104,17 +104,17 @@ Return value:
     > Note 1: A disarmed STimer also returns false.
 
 */
-qBool_t qSTimerExpired( const qSTimer_t * const obj ){
+qBool_t qSTimer_Expired( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus( obj ) ){
-            RetValue = qClock_TimeDeadlineCheck( obj->qPrivate.Start, obj->qPrivate.TV );
+        if( QSTIMER_ARMED == qSTimer_Status( obj ) ){
+            RetValue = qClock_TimeDeadlineCheck( obj->Start, obj->TV );
         }
     }
     return RetValue;
 }
 /*============================================================================*/
-/*qTime_t qSTimerElapsed(const qSTimer_t * const obj)
+/*qTime_t qSTimer_Elapsed(const qSTimer_t * const obj)
 
 Query the elapsed time
 
@@ -126,17 +126,17 @@ Return value:
 
     The Elapsed time specified in epochs
 */
-qClock_t qSTimerElapsed( const qSTimer_t * const obj ){
+qClock_t qSTimer_Elapsed( const qSTimer_t * const obj ){
     qClock_t RetValue = 0uL;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
-            RetValue = qClock_GetTick() - obj->qPrivate.Start;
+        if( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
+            RetValue = qClock_GetTick() - obj->Start;
         }
     }
     return RetValue;
 }
 /*============================================================================*/
-/*qClock_t qSTimerRemainingEpochs(const qSTimer_t * const obj)
+/*qClock_t qSTimer_Remaining(const qSTimer_t * const obj)
 
 Query the remaining epochs
 
@@ -148,17 +148,17 @@ Return value:
 
     The remaining time specified in epochs
 */
-qClock_t qSTimerRemaining( const qSTimer_t * const obj ){
+qClock_t qSTimer_Remaining( const qSTimer_t * const obj ){
     qClock_t RetValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
     if( NULL != obj ){
-        if( QSTIMER_ARMED == qSTimerStatus( obj ) ) {
-            RetValue = obj->qPrivate.TV - qSTimerElapsed( obj );
+        if( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
+            RetValue = obj->TV - qSTimer_Elapsed( obj );
         }
     }
     return RetValue;
 }
 /*============================================================================*/
-/*void qSTimerDisarm(const qSTimer_t * const obj)
+/*void qSTimer_Disarm(const qSTimer_t * const obj)
 
 Disarms the STimer
 
@@ -166,14 +166,14 @@ Parameters:
 
     - obj : A pointer to the STimer object.  
 */
-void qSTimerDisarm(qSTimer_t * const obj){
+void qSTimer_Disarm(qSTimer_t * const obj){
     if( NULL != obj ){
-        obj->qPrivate.TV = QSTIMER_DISARM_VALUE;
-        obj->qPrivate.Start = QSTIMER_DISARM_VALUE;
+        obj->TV = QSTIMER_DISARM_VALUE;
+        obj->Start = QSTIMER_DISARM_VALUE;
     }
 }
 /*============================================================================*/
-/*qBool_t qSTimerStatus(const qSTimer_t * const obj)
+/*qBool_t qSTimer_Status(const qSTimer_t * const obj)
 
 Get the current status of the STimer (Armed or Disarmed)
 
@@ -185,10 +185,10 @@ Return value:
 
     qTrue when armed, otherwise qFalse when disarmed
 */
-qBool_t qSTimerStatus(const qSTimer_t * const obj){
+qBool_t qSTimer_Status(const qSTimer_t * const obj){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        RetValue =  ( obj->qPrivate.TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+        RetValue =  ( obj->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     } 
     return RetValue;
 }

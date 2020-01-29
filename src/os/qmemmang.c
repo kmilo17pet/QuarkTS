@@ -5,16 +5,17 @@
 typedef size_t qAddress_t;  /*restrict*/
 
 static qUINT8_t DefaultHeap[ Q_DEFAULT_HEAP_SIZE ] = {0};
-static qMemoryPool_t DefaultMemPool = {NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}};
-static qMemoryPool_t *MemPool = &DefaultMemPool;
-
-static void qHeapInit( void );
-static void qInsertBlockIntoFreeList( qMemoryPool_t *pool, qMemBlockConnect_t *BlockToInsert );
-
+static qMemMang_Pool_t DefaultMemPool = {{NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}}};
+static qMemMang_Pool_t *MemPool = &DefaultMemPool;
 static const size_t ByteAlignmentMask   = ((size_t)Q_BYTE_ALIGNMENT - (size_t)1);
-static const size_t HeapStructSize	= ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
+static const size_t HeapStructSize	= ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
+
+static void qMemMang_HeapInit( void );
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *pool, qMemMang_BlockConnect_t *BlockToInsert );
+static void* qMemMang_Allocate(size_t size);
+static void qMemMang_Free(void *ptr);
 /*============================================================================*/
-/*qBool_t qMemoryPool_Init(qMemoryPool_t * const mPool, void* Area, size_t size)
+/*qBool_t qMemMang_Pool_Setup(qMemMang_Pool_t * const mPool, void* Area, size_t size)
 
 Initializes a memory pool instance.
 This function should be called once before any heap memory request.
@@ -32,18 +33,18 @@ Return value:
     qTrue on success, otherwise returns qFalse
 
 */
-qBool_t qMemoryPool_Init(qMemoryPool_t * const mPool, void* Area, size_t size){
+qBool_t qMemMang_Pool_Setup(qMemMang_Pool_t * const mPool, void* Area, size_t size){
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
-        mPool->Heap = Area; /* MISRAC2012-Rule-11.5 deviation allowed */
-        mPool->HeapSize = size;
-        mPool->End = NULL;
+        mPool->qPrivate.Heap = Area; /* MISRAC2012-Rule-11.5 deviation allowed */
+        mPool->qPrivate.HeapSize = size;
+        mPool->qPrivate.End = NULL;
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*void qMemoryPool_Select(qMemoryPool_t * const mPool)
+/*void qMemoryPool_Select(qMemMang_Pool_t * const mPool)
 
 Select the memory pool to perform heap memory requests with qMalloc and qFree.
 
@@ -52,7 +53,7 @@ Parameters:
     - mPool : A pointer to the memory pool instance
 
 */
-void qMemoryPool_Select(qMemoryPool_t * const mPool){
+void qMemMang_Pool_Select(qMemMang_Pool_t * const mPool){
     MemPool = mPool;
 }
 /*============================================================================*/
@@ -77,28 +78,32 @@ Parameters:
     - ptr : Pointer to the memory to deallocate
 
 */
+/*============================================================================*/
 void qFree(void *ptr){
+    qMemMang_Free( ptr );
+}
+/*============================================================================*/
+static void qMemMang_Free(void *ptr){
     qUINT8_t *pToFree;
-    qMemBlockConnect_t *Connect;
+    qMemMang_BlockConnect_t *Connect;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
     pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5 deviation allowed */
-    
     if( NULL != ptr){
         pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
-        Connect = (qMemBlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3 allowed*/
-        if( (size_t)0 != (Connect->BlockSize & MemPool->BlockAllocatedBit) ){
-            Connect->BlockSize &= ~MemPool->BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
-            MemPool->FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
-            qInsertBlockIntoFreeList( MemPool, Connect );
+        Connect = (qMemMang_BlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3 allowed*/
+        if( (size_t)0 != (Connect->BlockSize & MemPool->qPrivate.BlockAllocatedBit) ){
+            Connect->BlockSize &= ~MemPool->qPrivate.BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
+            MemPool->qPrivate.FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
+            qMemMang_InsertBlockIntoFreeList( MemPool, Connect );
         }
     }
 }
 /*============================================================================*/
-static void qHeapInit( void ){
-    qMemBlockConnect_t *FirstFreeBlock;
+static void qMemMang_HeapInit( void ){
+    qMemMang_BlockConnect_t *FirstFreeBlock;
     qUINT8_t *Aligned;
     qAddress_t Address, xAddrTmp;
     size_t TotalHeapSize;
@@ -108,62 +113,60 @@ static void qHeapInit( void ){
     }
     
     if( MemPool == &DefaultMemPool ){ /*initialize the default memory pool */
-        (void)qMemoryPool_Init(MemPool, DefaultHeap, (size_t)Q_DEFAULT_HEAP_SIZE);
+        (void)qMemMang_Pool_Setup(MemPool, DefaultHeap, (size_t)Q_DEFAULT_HEAP_SIZE);
     }
 
-    TotalHeapSize = MemPool->HeapSize;
-    MemPool->Start.BlockSize = (size_t)0;
-    MemPool->Start.Next = NULL;
-    MemPool->FreeBytesRemaining = (size_t)0;
+    TotalHeapSize = MemPool->qPrivate.HeapSize;
+    MemPool->qPrivate.Start.BlockSize = (size_t)0;
+    MemPool->qPrivate.Start.Next = NULL;
+    MemPool->qPrivate.FreeBytesRemaining = (size_t)0;
     
-    Address = (qAddress_t)MemPool->Heap;
+    Address = (qAddress_t)MemPool->qPrivate.Heap;
     if( 0uL != ( Address & ByteAlignmentMask ) ){
         Address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
         Address &= ~ByteAlignmentMask;
-        TotalHeapSize -= Address - (qAddress_t)MemPool->Heap;
+        TotalHeapSize -= Address - (qAddress_t)MemPool->qPrivate.Heap;
     }
     Aligned = (qUINT8_t*) Address;
     
-    MemPool->Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5 deviation allowed */
-    MemPool->Start.BlockSize = (size_t)0;
+    MemPool->qPrivate.Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5 deviation allowed */
+    MemPool->qPrivate.Start.BlockSize = (size_t)0;
     xAddrTmp = (qAddress_t)Aligned;
     Address = xAddrTmp + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/
     Address -= HeapStructSize;
     Address &= ~ByteAlignmentMask;
     
-    MemPool->End = (qMemBlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
-    MemPool->End->Next = NULL;
-    MemPool->End->BlockSize = (size_t)0;
+    MemPool->qPrivate.End = (qMemMang_BlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
+    MemPool->qPrivate.End->Next = NULL;
+    MemPool->qPrivate.End->BlockSize = (size_t)0;
     FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */ /* MISRAC2012-Rule-11.5 deviation allowed */
     xAddrTmp = (qAddress_t)FirstFreeBlock;
     FirstFreeBlock->BlockSize = Address - xAddrTmp; /*MISRAC2004-17.4_a deviation allowed*/
-    FirstFreeBlock->Next = MemPool->End;
+    FirstFreeBlock->Next = MemPool->qPrivate.End;
 
-    MemPool->FreeBytesRemaining = FirstFreeBlock->BlockSize;
-    MemPool->BlockAllocatedBit = ( (size_t)1 ) << ( (sizeof(size_t)*(size_t)8) - (size_t)1 ); /* Work out the position of the top bit in a size_t variable. */
+    MemPool->qPrivate.FreeBytesRemaining = FirstFreeBlock->BlockSize;
+    MemPool->qPrivate.BlockAllocatedBit = ( (size_t)1 ) << ( (sizeof(size_t)*(size_t)8) - (size_t)1 ); /* Work out the position of the top bit in a size_t variable. */
 }
 /*============================================================================*/
-static void qInsertBlockIntoFreeList( qMemoryPool_t *pool, qMemBlockConnect_t *BlockToInsert ){
-    qMemBlockConnect_t *Iterator;
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *pool, qMemMang_BlockConnect_t *BlockToInsert ){
+    qMemMang_BlockConnect_t *Iterator;
     qUINT8_t *ptr;
     
     /* Iterate through the list until a block is found that has a higher address than the block being inserted. */
-    for( Iterator = &pool->Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
-    
+    for( Iterator = &pool->qPrivate.Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
     ptr = (qUINT8_t*) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
     if( &ptr[ Iterator->BlockSize ] == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/ /*MISRAC2004-17.4_a deviation allowed*/
 	    Iterator->BlockSize += BlockToInsert->BlockSize;
 	    BlockToInsert = Iterator;
     }
-	
     ptr = (qUINT8_t*) BlockToInsert;
     if( &ptr[ BlockToInsert->BlockSize ] == (qUINT8_t*)Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/
-        if( Iterator->Next != pool->End ){ 
+        if( Iterator->Next != pool->qPrivate.End ){ 
             BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */
             BlockToInsert->Next = Iterator->Next->Next;
         }
         else{
-            BlockToInsert->Next = MemPool->End;
+            BlockToInsert->Next = MemPool->qPrivate.End;
         }
     }
     else{
@@ -195,34 +198,38 @@ Return value:
     If the function failed to allocate the requested block of memory, a NULL
     pointer is returned.
 */
+/*============================================================================*/
 void* qMalloc( size_t size ){
-    const size_t MinBlockSize = ( ( sizeof( qMemBlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) )*(size_t)2;
-    qMemBlockConnect_t *Block, *PreviousBlock, *NewBlockLink;
+    return qMemMang_Allocate( size );
+}
+/*============================================================================*/
+static void* qMemMang_Allocate( size_t size ){
+    const size_t MinBlockSize = ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) )*(size_t)2;
+    qMemMang_BlockConnect_t *Block, *PreviousBlock, *NewBlockLink;
     void *Allocated = NULL;
     qUINT8_t *pBlockU8;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
-    
-    if( NULL == MemPool->End ){ /*First call,*/
-	    qHeapInit(); /*initialize the heap to setup the list of free blocks*/
+    if( NULL == MemPool->qPrivate.End ){ /*First call,*/
+	    qMemMang_HeapInit(); /*initialize the heap to setup the list of free blocks*/
     }
-    if( ( size & MemPool->BlockAllocatedBit ) == (size_t)0 ){
+    if( ( size & MemPool->qPrivate.BlockAllocatedBit ) == (size_t)0 ){
 	    if( size > (size_t)0 ){ /* The requested size is increased so it can contain a qMemBlockConnect_t in addition to the requested amount of bytes. */
             size += HeapStructSize;
             if( ( size & ByteAlignmentMask ) != 0x00u ){ /*Ensure blocks are always aligned to the required number of bytes. */
 		        size += ( (size_t)Q_BYTE_ALIGNMENT - ( size & ByteAlignmentMask ) ); /* byte-alignment */
             }
 	    }
-        if( ( size > (size_t)0 ) && ( size <= MemPool->FreeBytesRemaining ) ){
-            PreviousBlock = &MemPool->Start; /* check list from the start (lowest address) block until one of adequate size is found. */
-            Block = MemPool->Start.Next;
+        if( ( size > (size_t)0 ) && ( size <= MemPool->qPrivate.FreeBytesRemaining ) ){
+            PreviousBlock = &MemPool->qPrivate.Start; /* check list from the start (lowest address) block until one of adequate size is found. */
+            Block = MemPool->qPrivate.Start.Next;
             while( ( Block->BlockSize < size ) && ( Block->Next != NULL ) ){
                 PreviousBlock = Block;
                 Block = Block->Next;
             }
-            if( Block != MemPool->End ){ /* If the end marker was reached then a block of adequate size was	not found. */
+            if( Block != MemPool->qPrivate.End ){ /* If the end marker was reached then a block of adequate size was	not found. */
                 /* Return the memory space pointed to - jumping over the qMemBlockConnect_t node at its start. */
                 Allocated = (void*) ( ( (qUINT8_t*)PreviousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */
                 PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
@@ -231,11 +238,10 @@ void* qMalloc( size_t size ){
                     NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5 deviation allowed */
                     NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                     Block->BlockSize = size;
-                    qInsertBlockIntoFreeList( MemPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */
+                    qMemMang_InsertBlockIntoFreeList( MemPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */
                 }
-
-                MemPool->FreeBytesRemaining -= Block->BlockSize;
-                Block->BlockSize |= MemPool->BlockAllocatedBit; /* The block is being returned - it is allocated and owned by the application and has no "next" block*/
+                MemPool->qPrivate.FreeBytesRemaining -= Block->BlockSize;
+                Block->BlockSize |= MemPool->qPrivate.BlockAllocatedBit; /* The block is being returned - it is allocated and owned by the application and has no "next" block*/
                 Block->Next = NULL;
             }
         }
@@ -243,7 +249,7 @@ void* qMalloc( size_t size ){
     return Allocated;
 }
 /*============================================================================*/
-/*size_t qHeapGetFreeSize(void)
+/*size_t qMemMang_Get_FreeSize(void)
 
 Returns the total amount of heap space that remains unallocated for the selected
 memory pool.
@@ -253,16 +259,15 @@ Return value:
     The size of the unallocated heap*
 
 */
-size_t qHeapGetFreeSize( void ){
+size_t qMemMang_Get_FreeSize( void ){
     size_t RetValue;
     
     if( NULL == MemPool ){ /*use the default memory pool if select*/
         MemPool = &DefaultMemPool;
     }
-    RetValue = MemPool->HeapSize;
-    
-    if( NULL != MemPool->End ){
-        RetValue =  MemPool->FreeBytesRemaining;
+    RetValue = MemPool->qPrivate.HeapSize;   
+    if( NULL != MemPool->qPrivate.End ){
+        RetValue =  MemPool->qPrivate.FreeBytesRemaining;
     }
     return RetValue;
 }

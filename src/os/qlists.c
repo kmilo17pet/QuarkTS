@@ -1,19 +1,14 @@
 #include "qlists.h"
 
-static qNode_t* qList_NodeInit( void * const node );
-static void qList_InsertAtFront( qList_t * const list, qNode_t * const node );
-static void qList_InserAtBack( qList_t * const list, qNode_t * const node );
-
-static qNode_t* qList_RemoveFront( qList_t * const list );
-static qNode_t* qList_RemoveBack( qList_t * const list );
-
-static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t position );
-
-static qListMemAllocator_t qListMalloc = NULL; 
-static qListMemFree_t qListFree = NULL; 
-
+static qList_Node_t* qList_NodeInit( void * const node );
+static void qList_InsertAtFront( qList_t * const list, qList_Node_t * const node );
+static void qList_InserAtBack( qList_t * const list, qList_Node_t * const node );
+static qList_Node_t* qList_RemoveFront( qList_t * const list );
+static qList_Node_t* qList_RemoveBack( qList_t * const list );
+static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Position_t position );
+static qList_MemAllocator_t qListMalloc = NULL; 
+static qList_MemFree_t qListFree = NULL; 
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
-
 /*============================================================================*/
 /*void qList_Initialize(qList_t *list)
  
@@ -33,28 +28,28 @@ void qList_Initialize( qList_t * const list ){
     }
 }
 /*=========================================================*/
-static qNode_t* qList_NodeInit( void * const node ){
-    qNode_t *xNode = (qNode_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
+static qList_Node_t* qList_NodeInit( void * const node ){
+    qList_Node_t *xNode = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
     xNode->prev = NULL;
     xNode->next = NULL;
     xNode->container = NULL;
     return xNode;
 }
 /*=========================================================*/
-static void qList_InsertAtFront( qList_t * const list, qNode_t * const node ){
+static void qList_InsertAtFront( qList_t * const list, qList_Node_t * const node ){
     node->next = list->head;
     list->head->prev = node;
     list->head = node;
 }
 /*=========================================================*/
-static void qList_InserAtBack( qList_t * const list, qNode_t * const node ){
+static void qList_InserAtBack( qList_t * const list, qList_Node_t * const node ){
     list->tail->next = node;
     node->prev = list->tail;
     list->tail = node;
 }
 /*=========================================================*/
-static qNode_t* qList_RemoveFront( qList_t * const list ){
-    qNode_t *removed;
+static qList_Node_t* qList_RemoveFront( qList_t * const list ){
+    qList_Node_t *removed;
     
     removed = list->head;
     list->head = removed->next;
@@ -67,8 +62,8 @@ static qNode_t* qList_RemoveFront( qList_t * const list ){
     return removed;
 }
 /*=========================================================*/
-static qNode_t* qList_RemoveBack( qList_t * const list ){
-    qNode_t *removed;
+static qList_Node_t* qList_RemoveBack( qList_t * const list ){
+    qList_Node_t *removed;
     
     removed = list->tail;
     list->tail = removed->prev;
@@ -78,12 +73,11 @@ static qNode_t* qList_RemoveBack( qList_t * const list ){
     else{
         list->tail->next = NULL;    
     }
-    
     return removed;
 }
 /*=========================================================*/
-static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t position ){
-    qNode_t *iNode;
+static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Position_t position ){
+    qList_Node_t *iNode;
     qBase_t iPos = 0;
     for( iNode = list->head ; ( iPos < (qBase_t)position ) && ( NULL != iNode->next ) ; iNode = iNode->next ){
         iPos++;
@@ -91,7 +85,7 @@ static qNode_t* qList_GetiNode( const qList_t *const list, const qListPosition_t
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_Insert(qList_t * const list, const void * const node, const qListPosition_t position)
+/*qBool_t qList_Insert(qList_t * const list, const void * const node, const qList_Position_t position)
  
 Insert an item into the list.
 
@@ -108,12 +102,12 @@ Return value:
     qTrue if the item was successfully added to the list, othewise returns qFalse   
 
 */
-qBool_t qList_Insert( qList_t *const list, void * const node, const qListPosition_t position ){
+qBool_t qList_Insert( qList_t *const list, void * const node, const qList_Position_t position ){
     qBool_t RetValue = qFalse;
-    qNode_t *newnode;
-    qNode_t *iNode;
+    qList_Node_t *newnode;
+    qList_Node_t *iNode;
  
-    if( ( NULL != list ) && ( NULL != node ) && ( position >= (qListPosition_t)(-1) ) ){    
+    if( ( NULL != list ) && ( NULL != node ) && ( position >= (qList_Position_t)(-1) ) ){    
         if( qFalse == qList_IsMember( list, node )){
             newnode = qList_NodeInit( node );
             RetValue = qTrue;
@@ -124,7 +118,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qListPositio
             else if( qList_AtFront == position ){
                 qList_InsertAtFront( list, node ); /* MISRAC2012-Rule-11.5 deviation allowed */
             }
-            else if( position >= ( (qListPosition_t)list->size - 1 ) ){
+            else if( position >= ( (qList_Position_t)list->size - 1 ) ){
                 qList_InserAtBack( list, node ); /* MISRAC2012-Rule-11.5 deviation allowed */
             }
             else{ /*insert the new node after the position*/
@@ -157,11 +151,11 @@ Return value:
 /*=========================================================*/           
 qBool_t qList_RemoveItself( void *const node ){
     qBool_t RetValue = qFalse;
-    qNode_t *toRemove;
+    qList_Node_t *toRemove;
     qList_t *list;
     
     if( NULL != node ){
-        toRemove = (qNode_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
+        toRemove = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
         if( NULL != toRemove->container ){
             list = (qList_t*)toRemove->container; /* MISRAC2012-Rule-11.5 deviation allowed */
             if( toRemove == list->head ){
@@ -184,7 +178,7 @@ qBool_t qList_RemoveItself( void *const node ){
     return RetValue;
 }
 /*=========================================================*/           
-/*void* qList_Remove(qList_t * const list, void * const node, const qListPosition_t position)
+/*void* qList_Remove(qList_t * const list, void * const node, const qList_Position_t position)
  
 Remove an item from the list.
 
@@ -202,31 +196,31 @@ Return value:
     A pointer to the removed node. NULL if removal can't be performed.  
 
 */ 
-void* qList_Remove( qList_t * const list, void * const node, const qListPosition_t position ){
-    qNode_t *removed = NULL;
+void* qList_Remove( qList_t * const list, void * const node, const qList_Position_t position ){
+    qList_Node_t *removed = NULL;
     qBase_t LastIndex;
-    qNode_t *iNode;
+    qList_Node_t *iNode;
 
-    if( ( NULL != list->head ) && ( position >= (qListPosition_t)(-1) ) ){
+    if( ( NULL != list->head ) && ( position >= (qList_Position_t)(-1) ) ){
         if ( qList_IsMember( list, node ) ){
             if( qList_RemoveItself( node ) ){
                 removed = node; /* MISRAC2012-Rule-11.5 deviation allowed */
             }
         }
-        else if( position <= (qListPosition_t)0 ){
+        else if( position <= (qList_Position_t)0 ){
             removed = qList_RemoveFront( list );     
             removed->container = NULL;
             list->size--;
             
         }
-        else if( position > ( (qListPosition_t)list->size - 1 ) ){
+        else if( position > ( (qList_Position_t)list->size - 1 ) ){
             removed = qList_RemoveBack( list );  
             removed->container = NULL;
             list->size--;
         }
         else{
             LastIndex = ( (qBase_t)position - 1 );
-            iNode = qList_GetiNode( list, (qListPosition_t)LastIndex );
+            iNode = qList_GetiNode( list, (qList_Position_t)LastIndex );
             removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
             iNode->next = removed->next;
             if( NULL != removed->next ){
@@ -239,7 +233,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qListPosition
     return removed;
 }
 /*=========================================================*/           
-/*qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position )
+/*qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qList_Position_t position )
 
 Moves(or merge) the entire list pointed by <source> to the list pointed by 
 <destination> at location specified by <position> 
@@ -260,11 +254,11 @@ Return value:
     returns qFalse   
 
 */
-qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qListPosition_t position ){
+qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qList_Position_t position ){
     qBool_t RetValue = qFalse;
-    qNode_t *iNode;
+    qList_Node_t *iNode;
 
-    if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qListPosition_t)(-1) )  ) {    
+    if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qList_Position_t)(-1) )  ) {    
         if( NULL != source->head){ /*source has items*/
             RetValue = qTrue;
             (void)qList_ForEach( source, qList_ChangeContainer, destination, QLIST_FORWARD, NULL );          
@@ -277,7 +271,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
                 destination->head->prev = source->tail;
                 destination->head = source->head;
             }
-            else if( position >= ( (qListPosition_t)destination->size - 1 ) ){
+            else if( position >= ( (qList_Position_t)destination->size - 1 ) ){
                 destination->tail->next = source->head;
                 source->head->prev = destination->tail;
                 destination->tail = source->tail;
@@ -296,9 +290,9 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
 }
 /*=========================================================*/
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage ){
-    qNode_t *xNode;
+    qList_Node_t *xNode;
     if( qList_WalkThrough == stage ){
-        xNode = (qNode_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
+        xNode = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
         xNode->container = newcontainer;
     }
     return qFalse;
@@ -320,7 +314,7 @@ Return value:
 */ 
 qBool_t qList_IsMember( qList_t * const list, void * const node ){
     qBool_t RetValue = qFalse;
-    qNode_t *xNode;
+    qList_Node_t *xNode;
 
     if( NULL != node ){
         xNode = node; /* MISRAC2012-Rule-11.5 deviation allowed */
@@ -450,7 +444,7 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     qBool_t RetValue = qFalse;
     qBool_t xRetCmp;
     size_t count, i, j, n;
-    qNode_t *current = NULL, *before, *after;
+    qList_Node_t *current = NULL, *before, *after;
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
@@ -495,7 +489,7 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IteratorSet( qListIterator_t *iterator, qList_t *const list, void *NodeOffset, qListDirection_t dir){
+/*qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir){
 
 Setup an instance of the given iterator to traverse the list.
 
@@ -513,13 +507,13 @@ Return value:
 
     qTrue on success. Otherwise returns qFalse. 
 */
-qBool_t qList_IteratorSet( qListIterator_t *iterator, qList_t *const list, void *NodeOffset, qListDirection_t dir){
+qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir){
     qBool_t RetValue = qFalse;
-    qNode_t *Offset;
+    qList_Node_t *Offset;
 
     if( ( NULL != list ) && ( NULL != iterator ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
         iterator->direction = dir;
-        Offset = (qNode_t*)NodeOffset; /* MISRAC2012-Rule-11.5 deviation allowed */
+        Offset = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5 deviation allowed */
         if( NULL != Offset){
             if( list == Offset->container ){
                 iterator->next = Offset;
@@ -530,12 +524,11 @@ qBool_t qList_IteratorSet( qListIterator_t *iterator, qList_t *const list, void 
             iterator->next = (dir == QLIST_FORWARD)? list->head : list->tail;
             RetValue = qTrue;
         }
-
     }
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_IteratorGetNext( qListIterator_t *iterator )
+/*void* qList_IteratorGetNext( qList_Iterator_t *iterator )
 
 Get the current node available in the iterator. After invoked, 
 iterator will be updated to the next node.
@@ -549,7 +542,7 @@ Return value:
     Return the next node or NULL when no more nodes remain in the list.
 
 */
-void* qList_IteratorGetNext( qListIterator_t *iterator ){
+void* qList_IteratorGetNext( qList_Iterator_t *iterator ){
     void *iNode = NULL;
     if( NULL != iterator ){
         iNode = iterator->next;
@@ -560,7 +553,7 @@ void* qList_IteratorGetNext( qListIterator_t *iterator ){
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_ForEach( qList_t *const list, qListNodeFcn_t Fcn, void *arg, qListDirection_t dir )
+/*qBool_t qList_ForEach( qList_t *const list, qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir )
  
 Operate on each element of the list.
 
@@ -586,20 +579,19 @@ Return value:
     qTrue if the walk through was early terminated, otherwise returns qFalse.
 
 */ 
-qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg, qListDirection_t dir, void *NodeOffset ){
+qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset ){
     qBool_t RetValue = qFalse;
-    qNode_t *iNode;
-    qNode_t *adyacent; /*to allow i-node links to be changed in the walk throught*/
+    qList_Node_t *iNode;
+    qList_Node_t *adyacent; /*to allow i-node links to be changed in the walk throught*/
     
     if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
         adyacent = ( &QLIST_FORWARD == dir )? list->head : list->tail;
         if( NULL != NodeOffset){
-            iNode = (qNode_t*)NodeOffset; /* MISRAC2012-Rule-11.5 deviation allowed */
+            iNode = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5 deviation allowed */
             if( iNode->container == list ){
                 adyacent = iNode;
             }
         }
-
         RetValue = Fcn( NULL, arg, qList_WalkInit );
         if( qFalse == RetValue ){
             for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
@@ -612,17 +604,16 @@ qBool_t qList_ForEach( qList_t *const list, const qListNodeFcn_t Fcn, void *arg,
             if( qFalse == RetValue ){
                 RetValue = Fcn( NULL, arg, qList_WalkEnd ); 
             }
-        }
-        
+        }        
     }
     return RetValue;
 }
 /*=========================================================*/
-qNode_t* __qNode_Forward( const qNode_t *const node ){
+qList_Node_t* _qNode_Forward( const qList_Node_t *const node ){
     return node->next;
 }
 /*=========================================================*/
-qNode_t* __qNode_Backward( const qNode_t *const node){
+qList_Node_t* _qNode_Backward( const qList_Node_t *const node){
     return node->prev;
 }
 /*=========================================================*/
@@ -647,23 +638,21 @@ Return value:
 */ 
 qBool_t qList_Swap( void *node1, void *node2 ){
     qBool_t RetValue = qFalse;
-    qNode_t *n1, *n2;
+    qList_Node_t *n1, *n2;
     qList_t *list;
-    qNode_t *tmp1, *tmp2;
+    qList_Node_t *tmp1, *tmp2;
 
     if( ( NULL != node1 ) && ( NULL != node2) && ( node1 != node2 ) ){ 
-        n1 = (qNode_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */
-        n2 = (qNode_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */
+        n1 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */
+        n2 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */
         list = n1->container; /* MISRAC2012-Rule-11.5 deviation allowed */
         if( ( NULL != list ) && ( n1->container == n2->container ) ){ /*nodes are part of the same list*/
             if( n2->next == n1 ){
-                n1 = (qNode_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */ 
-                n2 = (qNode_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */              
-            }
-            
+                n1 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */ 
+                n2 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */              
+            }          
             tmp1 = n1->prev;
-            tmp2 = n2->next;
-            
+            tmp2 = n2->next;           
             /*update the list links*/
             if( list->head == n1 ){
                 list->head = n2;
@@ -674,7 +663,6 @@ qBool_t qList_Swap( void *node1, void *node2 ){
             else{
                 /*nothing to do here*/         
             }        
-
             if( list->tail == n1 ){
                 list->tail = n2;
             }
@@ -683,8 +671,7 @@ qBool_t qList_Swap( void *node1, void *node2 ){
             }
             else{
                 /*nothing to do here*/
-            }
-            
+            }          
             if( ( (n1->next == n2 ) && ( n2->prev == n1 ) ) || ( ( n1->prev == n2 ) && ( n2->next == n1 ) ) ){ /*adjacent nodes?*/
                 n1->prev = n1->next; 
                 n2->next = n2->prev;
@@ -695,36 +682,31 @@ qBool_t qList_Swap( void *node1, void *node2 ){
             }
             n2->prev = tmp1;
             n1->next = tmp2;
-
             /*update outer links*/
             if( NULL != n1->prev ){
                 n1->prev->next = n1;
             }
-
             if( NULL != n1->next ){
                 n1->next->prev = n1;
             }
-
             if( NULL != n2->prev ){
                 n2->prev->next = n2;
             }
-
             if( NULL != n2->next ){
                 n2->next->prev = n2;
             }                
-
             RetValue = qTrue;
         }
     }
     return RetValue;
 }
 /*=========================================================*/
-void qList_SetMemoryAllocation( qListMemAllocator_t mallocFcn, qListMemFree_t freeFcn  ){
+void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn  ){
     qListFree = freeFcn;
     qListMalloc = mallocFcn;
 }
 /*=========================================================*/
-qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPosition_t position ){
+qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qList_Position_t position ){
     qBool_t RetValue = qFalse;
     void *NewNode;
     if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > (size_t)0) ){
@@ -740,7 +722,7 @@ qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qListPositi
     return RetValue;
 }
 /*=========================================================*/
-void* qList_DRemove( qList_t * const list, void * const node, const qListPosition_t position ){
+void* qList_DRemove( qList_t * const list, void * const node, const qList_Position_t position ){
     void *removed = NULL;
     if( ( NULL != qListMalloc ) && ( NULL != qListFree ) ){
         removed = qList_Remove( list, node, position );

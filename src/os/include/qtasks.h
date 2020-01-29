@@ -14,7 +14,7 @@
         #include "qfsm.h"
     #endif  
 
-    #if ( Q_ATCOMMAND_PARSER == 1)
+    #if ( Q_ATCLI == 1)
         #include "qatcli.h"
     #endif
 
@@ -47,23 +47,22 @@
     #define qTrigger_NoReadyTasks           ( byNoReadyTasks )
 
     typedef qUINT32_t qNotifier_t;       
-    typedef qUINT32_t qTaskFlag_t; 
+    typedef qUINT32_t qTask_Flag_t; 
     #define QMAX_NOTIFICATION_VALUE         ( 0xFFFFFFFFuL )
 
-    /*typedef qUINT8_t qTaskState_t;
-    #define qWaiting    ( 0u )
-    #define qReady      ( 1u )
-    #define qRunning    ( 2u )
-    #define qSuspended  ( 3u )
-    #define qSleeping   ( 4u )
-    */
-
+    typedef enum{
+        qUndefinedGlobalState,
+        qReady,
+        qWaiting,
+        qSuspended,
+        qRunning
+    }qTask_GlobalState_t;
 
     /* Task flags
-    MSB_________________________________________________________________________________________________________________________________________________________LSB
+    MSB---------------------------------------------------------------------------------------------------------------------------------------------------------LSB
     31                  |                 |            |            |               |               |              |                  |             |           0
     |(31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
-    |___________________|_________________|____________|____________|_______________|_______________|______________|__________________|_____________|___________|
+    |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
     */
     #define QTASK_COREBITS_RSMASK       ( 0x000000FFuL )	 
     #define QTASK_COREBITS_WMASK        ( 0xFFFFFF00uL )
@@ -77,15 +76,15 @@
     #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFuL )
     #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
     
-    #define __QTASK_QUEUEFLAGS_MASK     ( 0x0000003CuL )
-    #define __QTASK_BIT_INIT            ( 0x00000001uL )  
-    #define __QTASK_BIT_ENABLED         ( 0x00000002uL )
-    #define __QTASK_BIT_QUEUE_RECEIVER  ( 0x00000004uL )
-    #define __QTASK_BIT_QUEUE_FULL      ( 0x00000008uL )
-    #define __QTASK_BIT_QUEUE_COUNT     ( 0x00000010uL )
-    #define __QTASK_BIT_QUEUE_EMPTY     ( 0x00000020uL )
-    #define __QTASK_BIT_SHUTDOWN        ( 0x00000040uL )
-    #define __QTASK_BIT_REMOVE_REQUEST  ( 0x00000080uL )
+    #define _QTASK_QUEUEFLAGS_MASK     ( 0x0000003CuL )
+    #define _QTASK_BIT_INIT            ( 0x00000001uL )  
+    #define _QTASK_BIT_ENABLED         ( 0x00000002uL )
+    #define _QTASK_BIT_QUEUE_RECEIVER  ( 0x00000004uL )
+    #define _QTASK_BIT_QUEUE_FULL      ( 0x00000008uL )
+    #define _QTASK_BIT_QUEUE_COUNT     ( 0x00000010uL )
+    #define _QTASK_BIT_QUEUE_EMPTY     ( 0x00000020uL )
+    #define _QTASK_BIT_SHUTDOWN        ( 0x00000040uL )
+    #define _QTASK_BIT_REMOVE_REQUEST  ( 0x00000080uL )
 
     /*The task Bit-Flag definitions*/
     #define QEVENTFLAG_01               ( 0x00001000uL )
@@ -179,13 +178,23 @@
         the task iteration counter, consequently doesn't have effect in this flag 
         */
         qBool_t LastIteration;
+        /* StartDelay:
+        The number of epochs between current system time and point in time when the 
+        task was marked as Ready.
+        Can be used to keep track when current task's execution took place relative 
+        to when it was scheduled
+        A value of 0 (zero) indicates that task started right on time per schedule.
+        This parameter will be only available on timed tasks. when Trigger == byTimeElapsed
+        */
+        qClock_t StartDelay;
     }_qEvent_t_/*, *const qEvent_t*/;  
     typedef const _qEvent_t_ *qEvent_t;
 
     typedef void (*qTaskFcn_t)(qEvent_t arg);  
 
-    typedef struct _qTask_t{ /*Task node definition*/
-        private_start{
+    typedef struct{ /*Task node definition*/
+        /*This data should be handled only using the provided API*/
+        struct _qTask_Private_s{
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
@@ -194,30 +203,29 @@
             #endif
             #if ( Q_QUEUES == 1)
                 qQueue_t *Queue;                    /*< The pointer to the attached queue. */
-                qUINT32_t QueueCount;
+                qUINT32_t QueueCount;               /*< The item-count threshold */
             #endif
             qSTimer_t timer;                        /*< To handle the task timming*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-                size_t Entry;
+                size_t Entry;                       /*< To allow the US maintain the task entry order. */
             #endif
             qIteration_t Iterations;                /*< Holds the number of iterations. */
             volatile qNotifier_t Notification;      /*< The notification value. */          
-            volatile qTaskFlag_t Flags;             /*< Task flags (core and eventflags)*/
+            volatile qTask_Flag_t Flags;            /*< Task flags (core and eventflags)*/
             qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */
             qPriority_t Priority;                   /*< The task priority. */
-        }private_end;
+        }qPrivate;
     }qTask_t;
-
    
     #if ( Q_QUEUES == 1 )
         typedef qUINT32_t qQueueLinkMode_t;
-        #define qQUEUE_RECEIVER         ( __QTASK_BIT_QUEUE_RECEIVER )
-        #define qQUEUE_FULL             ( __QTASK_BIT_QUEUE_FULL )
-        #define qQUEUE_COUNT            ( __QTASK_BIT_QUEUE_COUNT )
-        #define qQUEUE_EMPTY            ( __QTASK_BIT_QUEUE_EMPTY )
+        #define qQUEUE_RECEIVER         ( _QTASK_BIT_QUEUE_RECEIVER )
+        #define qQUEUE_FULL             ( _QTASK_BIT_QUEUE_FULL )
+        #define qQUEUE_COUNT            ( _QTASK_BIT_QUEUE_COUNT )
+        #define qQUEUE_EMPTY            ( _QTASK_BIT_QUEUE_EMPTY )
 
         #define QUEUE_RECEIVER          ( qQUEUE_RECEIVER )  
         #define QUEUE_FULL              ( qQUEUE_FULL )
@@ -225,25 +233,27 @@
         #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
     #endif
 
-    #define Q_NOTIFY_SIMPLE             ( &qTaskSendNotification )
-    #define Q_NOTIFY_QUEUED             ( &qTaskQueueNotification )
+    #define Q_NOTIFY_SIMPLE             ( &qTask_Notification_Send )
+    #define Q_NOTIFY_QUEUED             ( &qTask_Notification_Queue )
 
-    qBool_t qTaskSendNotification( qTask_t * const Task, void* eventdata);
-    qBool_t qTaskQueueNotification( qTask_t * const Task, void* eventdata );
+    qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata );
+    qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata );
     qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
-    qState_t qTaskGetState( const qTask_t * const Task);
+    qState_t qTask_Get_State( const qTask_t * const Task);
     #if ( Q_TASK_COUNT_CYCLES == 1 )
-        qCycles_t qTaskGetCycles( const qTask_t * const Task );   
+        qCycles_t qTask_Get_Cycles( const qTask_t * const Task );   
     #endif
-    void qTaskSetTime( qTask_t * const Task, const qTime_t Value );
-    void qTaskSetIterations( qTask_t * const Task, const qIteration_t Value );
-    void qTaskSetPriority( qTask_t * const Task, const qPriority_t Value );
-    void qTaskSetCallback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
-    void qTaskSetState( qTask_t * const Task, const qState_t State );
-    void qTaskSetData( qTask_t * const Task, void* arg );
-    void qTaskClearTimeElapsed( qTask_t * const Task );
+    qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task );
+    void qTask_Set_Time( qTask_t * const Task, const qTime_t Value );
+    void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value );
+    void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value );
+    void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
+    void qTask_Set_State( qTask_t * const Task, const qState_t State );
+    void qTask_Set_Data( qTask_t * const Task, void* arg );
+    void qTask_ClearTimeElapsed( qTask_t * const Task );
+    qTask_t* qTask_Self( void );
 
-    /*void qTaskSuspend(qTask_t *Task)
+    /*void qTask_Suspend(qTask_t *Task)
 
     Put the task into a disabled state.    
 
@@ -251,9 +261,9 @@
 
         - Task : A pointer to the task node.
     */
-    #define qTaskSuspend(pTask_)    qTaskSetState((pTask_), qDisabled)
-    #define qTaskDisable(pTask_)    qTaskSetState((pTask_), qDisabled)
-    /*void qTaskResume(qTask_t *Task)
+    #define qTask_Suspend(pTask_)    qTask_Set_State((pTask_), qDisabled)
+    #define qTask_Disable(pTask_)    qTask_Set_State((pTask_), qDisabled)
+    /*void qTask_Resume(qTask_t *Task)
 
     Put the task into a enabled state.    
 
@@ -261,19 +271,10 @@
 
     - Task : A pointer to the task node.
     */
-    #define qTaskResume(pTask_)    qTaskSetState((pTask_), qEnabled)
-    #define qTaskEnable(pTask_)    qTaskSetState((pTask_), qEnabled)
-        /*qTask_t* qTaskSelf(void)
-
-    Get current running task handle.
-
-    Return value:
-
-        A pointer to the current running task.
-        NULL when the scheduler it's in a busy state or when IDLE Task is running.
-    */
-    #define qTaskSelf               _qScheduler_GetTaskRunning
-    /*void qTaskASleep(qTask_t *Task)
+    #define qTask_Resume(pTask_)    qTask_Set_State((pTask_), qEnabled)
+    #define qTask_Enable(pTask_)    qTask_Set_State((pTask_), qEnabled)
+ 
+    /*void qTask_ASleep(qTask_t *Task)
 
     Put the task into a qSLEEP state. The task can't be triggered
     by the lower precedence events.    
@@ -285,8 +286,8 @@
 
     - Task : A pointer to the task node.
     */
-    #define qTaskASleep(pTask_)         qTaskSetState((pTask_), qAsleep)
-    /*void qTaskAwake(qTask_t *Task)
+    #define qTask_ASleep(pTask_)         qTask_Set_State((pTask_), qAsleep)
+    /*void qTask_Awake(qTask_t *Task)
 
     Put the task into a normal operation state. Here the task
     will be able to catch any kind of events.
@@ -295,8 +296,8 @@
 
     - Task : A pointer to the task node.
     */    
-    #define qTaskAwake(pTask_)          qTaskSetState((pTask_), qAwake)
-    /*qBool_t qTaskIsEnabled(const qTask_t *Task)
+    #define qTask_Awake(pTask_)          qTask_Set_State((pTask_), qAwake)
+    /*qBool_t qTask_IsEnabled(const qTask_t *Task)
 
     Retrieve the enabled/disabled state
 
@@ -308,27 +309,27 @@
 
         True if the task in on Enabled state, otherwise returns false.
     */  
-    #define qTaskIsEnabled(pTask_)      ( qEnabled == qTaskGetState((pTask_) ) )
+    #define qTask_IsEnabled(pTask_)      ( qEnabled == qTask_Get_State((pTask_) ) )
 
     #if ( Q_QUEUES == 1 )
-        qBool_t qTaskAttachQueue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );
+        qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );
     #endif 
 
     #if ( Q_FSM == 1 ) 
-        qBool_t qTaskAttachStateMachine( qTask_t * const Task, qSM_t * const StateMachine );
+        qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine );
     #endif
 
-    void qTaskModifyEventFlags( qTask_t * const Task, qTaskFlag_t flags, qBool_t action );
-    qTaskFlag_t qTaskReadEventFlags( const qTask_t * const Task ); 
-    qBool_t qTaskCheckEventFlags( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
+    void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
+    qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ); 
+    qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
 
     /*============================================================================*/
     /*
         PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE
     */
     /*============================================================================*/
-    qBool_t __qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag);
-    void __qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value);
+    qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag);
+    void _qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value);
     /*============================================================================*/
     
     #ifdef __cplusplus

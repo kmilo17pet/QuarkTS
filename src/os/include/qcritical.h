@@ -15,6 +15,7 @@
     void qCritical_Exit( void );
     void qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler );
 
+
     #ifdef __cplusplus
     }
     #endif

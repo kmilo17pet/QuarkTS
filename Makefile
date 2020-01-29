@@ -5,9 +5,9 @@
 #### J. Camilo Gomez C.
 ####
 include build_options.mk
-#####################################
-### Do NOT touch the lines below  ###
-#####################################
+###################################################################################################
+### Do NOT touch the lines below , use the build_options.mk file to change the compile behavior ###
+###################################################################################################
 COM_COLOR   = \033[0;34m
 OBJ_COLOR   = \033[0;36m
 OK_COLOR    = \033[0;32m

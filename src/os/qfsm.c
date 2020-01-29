@@ -2,10 +2,10 @@
 
 #if ( Q_FSM == 1 )
 
-static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_t * const obj );
+static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
 
 /*============================================================================*/
-/*qBool_t qStateMachine_Init(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
+/*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
 
 Initializes a finite state machine (FSM).
 
@@ -30,28 +30,29 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qStateMachine_Init( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
+qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( NULL != InitState ) ){
-        obj->NextState = InitState;
-        obj->PreviousState = NULL;
-        obj->StateFirstEntry  = qFalse;
-        obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;
+        obj->qPrivate.xPublic.NextState = InitState;
+        obj->qPrivate.xPublic.PreviousState = NULL;
+        obj->qPrivate.xPublic.StateFirstEntry  = qFalse;
+        obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;
+        obj->qPrivate.xPublic.LastState = NULL;
+        obj->qPrivate.xPublic.Signal = (qSM_Signal_t)0u;
         obj->qPrivate.Failure = FailureState;
         obj->qPrivate.Success = SuccessState;
         obj->qPrivate.Unexpected = UnexpectedState;
         obj->qPrivate.BeforeAnyState = BeforeAnyState;
         obj->qPrivate.TransitionTable = NULL;
         obj->qPrivate.Owner = NULL;
-        obj->LastState = NULL;
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_t * const obj ){
+static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle ){
     if( NULL != substate ){
-        substate( obj );
+        substate( handle );
     }
 }
 /*============================================================================*/
@@ -71,31 +72,34 @@ Parameters:
 */    
 void qStateMachine_Run( qSM_t * const obj, void *Data ){
     qSM_State_t prev; /*used to hold the previous state*/
+    qSM_Handler_t handle;
+
     if( NULL != obj ){
-        obj->Data = Data;   /*pass the data through the fsm*/
-        qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , obj); /*eval the BeforeAnyState if available*/
-        if( NULL != obj->NextState ){ /*eval nextState if available*/
-            obj->StateFirstEntry = ( obj->LastState != obj->NextState )? qTrue : qFalse;  /*Get the StateFirstEntry flag*/
-            if( obj->StateFirstEntry ){ /*if StateFistEntry is set, update the PreviousState*/
-                obj->PreviousState = obj->LastState ; 
+        obj->qPrivate.xPublic.Data = Data;   /*pass the data through the fsm*/
+        handle = &obj->qPrivate.xPublic;
+        qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , handle ); /*eval the BeforeAnyState if available*/
+        if( NULL != obj->qPrivate.xPublic.NextState ){ /*eval nextState if available*/
+            obj->qPrivate.xPublic.StateFirstEntry = ( obj->qPrivate.xPublic.LastState != obj->qPrivate.xPublic.NextState )? qTrue : qFalse;  /*Get the StateFirstEntry flag*/
+            if( obj->qPrivate.xPublic.StateFirstEntry ){ /*if StateFistEntry is set, update the PreviousState*/
+                obj->qPrivate.xPublic.PreviousState = obj->qPrivate.xPublic.LastState ; 
             }
-            prev = obj->NextState; /*keep the next state in prev for LastState update*/
-            obj->Signal = qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
-            obj->PreviousReturnStatus = prev(obj); /*Eval the current state, and get their return status*/
-            obj->LastState = prev; /*update the LastState*/
+            prev = obj->qPrivate.xPublic.NextState; /*keep the next state in prev for LastState update*/
+            obj->qPrivate.xPublic.Signal = qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
+            obj->qPrivate.xPublic.PreviousReturnStatus = prev( handle ); /*Eval the current state, and get their return status*/
+            obj->qPrivate.xPublic.LastState = prev; /*update the LastState*/
         }
         else{
-            obj->PreviousReturnStatus = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
+            obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
         }
         /*Check return status to eval extra states*/
-        if( qSM_EXIT_FAILURE == obj->PreviousReturnStatus ){
-            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Failure, obj ); /*Run failure state if available*/
+        if( qSM_EXIT_FAILURE == obj->qPrivate.xPublic.PreviousReturnStatus ){
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Failure, handle ); /*Run failure state if available*/
         }
-        else if ( qSM_EXIT_SUCCESS == obj->PreviousReturnStatus ){
-            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Success, obj ); /*Run success state if available*/
+        else if ( qSM_EXIT_SUCCESS == obj->qPrivate.xPublic.PreviousReturnStatus ){
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Success, handle ); /*Run success state if available*/
         } 
         else{
-            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, obj ); /*Run unexpected state if available*/
+            qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, handle ); /*Run unexpected state if available*/
         }
     }
  }
@@ -121,35 +125,37 @@ Parameters:
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
 */    
 void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
-    switch(Flag){
-        case qSM_RESTART:
-            obj->NextState = s;
-            obj->PreviousState = NULL;
-            obj->LastState = NULL;
-            obj->StateFirstEntry = qFalse;
-            obj->PreviousReturnStatus = qSM_EXIT_SUCCESS;            
-            break;
-        case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
-            obj->PreviousState = NULL;
-            obj->LastState = NULL;
-            break;
-        case qSM_FAILURE_STATE:
-            obj->qPrivate.Failure = subs;        /*MISRAC2004-11.1 deviation allowed*/
-            break;
-        case qSM_SUCCESS_STATE:
-            obj->qPrivate.Success = subs;        /*MISRAC2004-11.1 deviation allowed*/
-            break;    
-        case qSM_UNEXPECTED_STATE:
-            obj->qPrivate.Unexpected = subs;     /*MISRAC2004-11.1 deviation allowed*/
-            break;   
-        case qSM_BEFORE_ANY_STATE:
-            obj->qPrivate.BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
-            break;              
-        case qSM_UNINSTALL_TRANSTABLE:
-            obj->qPrivate.TransitionTable = NULL;
-            break;   
-        default:
-            break;
+    if( NULL != obj){
+        switch(Flag){
+            case qSM_RESTART:
+                obj->qPrivate.xPublic.NextState = s;
+                obj->qPrivate.xPublic.PreviousState = NULL;
+                obj->qPrivate.xPublic.LastState = NULL;
+                obj->qPrivate.xPublic.StateFirstEntry = qFalse;
+                obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;            
+                break;
+            case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
+                obj->qPrivate.xPublic.PreviousState = NULL;
+                obj->qPrivate.xPublic.LastState = NULL;
+                break;
+            case qSM_FAILURE_STATE:
+                obj->qPrivate.Failure = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                break;
+            case qSM_SUCCESS_STATE:
+                obj->qPrivate.Success = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                break;    
+            case qSM_UNEXPECTED_STATE:
+                obj->qPrivate.Unexpected = subs;     /*MISRAC2004-11.1 deviation allowed*/
+                break;   
+            case qSM_BEFORE_ANY_STATE:
+                obj->qPrivate.BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
+                break;              
+            case qSM_UNINSTALL_TRANSTABLE:
+                obj->qPrivate.TransitionTable = NULL;
+                break;   
+            default:
+                break;
+        }        
     }
 }
 /*============================================================================*/
@@ -172,10 +178,10 @@ Return value:
 */  
 qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSM_Signal_t *AxSignals, size_t MaxSignals){
     qBool_t RetValue = qFalse;
-    if( ( NULL != table ) && ( NULL != entries) && (NoOfEntries > (size_t)0 ) ){
-        table->NumberOfEntries = NoOfEntries;
-        table->Transitions = entries;
-        RetValue = qQueueCreate( &table->SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
+    if( (NULL != obj) && ( NULL != table ) && ( NULL != entries) && (NoOfEntries > (size_t)0 ) ){
+        table->qPrivate.NumberOfEntries = NoOfEntries;
+        table->qPrivate.Transitions = entries;
+        RetValue = qQueue_Setup( &table->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
         if( qTrue == RetValue ){
             obj->qPrivate.TransitionTable = table;
         }
@@ -198,31 +204,34 @@ Parameters:
 Return value:
 
     Return the signal that produces the transition over the instance.
-    QSIGNAL_NONE if no signals available or an error is found;
+    QFSM_SIGNAL_NONE if no signals available or an error is found;
 */
 qSM_Signal_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
-    qSM_Signal_t signal = QSIGNAL_NONE;   
+    qSM_Signal_t signal = QSM_SIGNAL_NONE;   
     qSM_TransitionTable_t *table;
     qSM_Transition_t iTransition;
     qSM_State_t xCurrentState;
     size_t iEntry;
 
-    table = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
-    if( NULL != table ){
-        if( qTrue == qQueueReceive( &table->SignalQueue, &signal ) ){
-            xCurrentState = obj->NextState;
-            for( iEntry = 0; iEntry < table->NumberOfEntries; iEntry++ ){
-                iTransition = table->Transitions[iEntry];
-                if( ( xCurrentState == iTransition.xCurrentState ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
-                    obj->NextState = iTransition.xNextState;    /*make the transition to the target state*/
-                    break; 
-                } 
+    if( NULL != obj ){
+        table = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
+        if( NULL != table ){
+            if( qTrue == qQueue_Receive( &table->qPrivate.SignalQueue, &signal ) ){
+                xCurrentState = obj->qPrivate.xPublic.NextState;
+                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){
+                    iTransition = table->qPrivate.Transitions[iEntry];
+                    if( ( xCurrentState == iTransition.xCurrentState ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
+                        obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
+                        break; 
+                    } 
+                }
             }
-        }
-        else{
-            signal = QSIGNAL_NONE; 
-        }
+            else{
+                signal = QSM_SIGNAL_NONE; 
+            }
+        }        
     }
+
     return signal;
 }
 /*============================================================================*/
@@ -245,13 +254,21 @@ Return value:
 qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent ){
     qBool_t RetValue = qFalse;
     qSM_TransitionTable_t *tTable;
-    if( ( NULL != obj ) && ( QSIGNAL_NONE != signal ) ){
+    if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != signal ) ){
         tTable = (qSM_TransitionTable_t*)obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != tTable ){
-            RetValue = qQueueGenericSend( &tTable->SignalQueue, &signal, (qQueue_Mode_t)isUrgent );  
+            RetValue = qQueue_SendGeneric( &tTable->qPrivate.SignalQueue, &signal, (qQueue_Mode_t)isUrgent );  
         }
     }
     return RetValue;
+}
+/*============================================================================*/
+qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
+    qSM_Handler_t h =  NULL;
+    if( NULL != obj ){
+        h = &obj->qPrivate.xPublic;
+    }
+    return h;
 }
 /*============================================================================*/
 #endif /* #if ( Q_FSM == 1 ) */

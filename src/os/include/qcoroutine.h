@@ -9,115 +9,102 @@
     extern "C" {
     #endif
 
-    typedef qINT32_t _qTaskPC_t;
-    #define qCRPosition_t static _qTaskPC_t
+    typedef qINT32_t _qCR_TaskPC_t;
+    #define qCR_Position_t static _qCR_TaskPC_t
     
     typedef struct{
-        _qTaskPC_t instr;   /*< Used to the instruction where the coroutine yields. */
-        qSTimer_t crdelay;  /*< Used to hold the required delay for qCoroutineDelay. */
-    }qCoroutineInstance_t;
+        _qCR_TaskPC_t instr;    /*< Used to the instruction where the coroutine yields. */
+        qSTimer_t crdelay;      /*< Used to hold the required delay for qCR_Delay. */
+    }_qCR_Instance_t;
 
-    typedef struct {qUINT16_t head, tail;} qCoroutineSemaphore_t; 
-    typedef qCoroutineSemaphore_t qCRSem_t;
+    typedef struct {qUINT16_t head, tail;} qCR_Semaphore_t; 
     
-    #define qCR_PCInitVal               ( -1 )            
-    #define __qCRKeep
-    #define __qCRCodeStartBlock         do
-    #define __qCRCodeEndBlock           while(qFalse)
-    #define __qPersistent               static qCoroutineInstance_t/*static _qTaskPC_t*/
-    #define __qTaskProgress             __LINE__
-    #define __qAssert(_COND_)           if(!(_COND_))
-    #define __qTaskPCVar                _qCRTaskState_.instr /*_qCRTaskState_*/
-    #define __qCRDelayVar               _qCRTaskState_.crdelay           
-    #define __qSetPC(_VAL_)             __qTaskPCVar = (_VAL_)
-    #define __qTaskSaveState            __qSetPC(__qTaskProgress) 
-    #define __qTaskInitState            _qCRTaskState_ = { qCR_PCInitVal, QSTIMER_INITIALIZER }/*__qSetPC({qCR_PCInitVal}) */ 
-    #define __qTaskCheckPCJump(_PC_)    switch(_PC_){    
-    #define __TagExitCCR                __qCRYield_ExitLabel
-    #define __qExit                     goto __TagExitCCR /*MISRA deviation*/
-    #define __qTaskYield                __qExit;
-    #define __qCRDispose                __qSetPC(qCR_PCInitVal);} __TagExitCCR:/*__qTaskInitState;} __TagExitCCR:*/
-    #define __qRestorator(_VAL_)        case (_qTaskPC_t)(_VAL_):            
-    #define __RestoreAfterYield         __qRestorator(__qTaskProgress)
-    #define __RestoreFromBegin          __qRestorator(qCR_PCInitVal)
-    #define __qCRSemInit(s, c)          __qCRCodeStartBlock{ (s)->tail = 0; (s)->head = (c); }__qCRCodeEndBlock
-    #define __qCRSemCount(s)            ((s)->head - (s)->tail)
-    #define __qCRSemLock(s)             (++(s)->tail)
-    #define __qCRSemRelease(s)          (++(s)->head)
+    #define _qCR_Unused_(x)            (void)(x)
+    #define _qCR_PCInitVal             ( -1 )            
+    #define _qCR_CodeStartBlock        do
+    #define _qCR_CodeEndBlock          while(qFalse)
+    #define _qCR_Persistent            static _qCR_Instance_t
+    #define _qCR_TaskProgress          __LINE__
+    #define _qCR_Assert(_COND_)        if(!(_COND_))
+    #define _qCR_TaskPCVar             _qCRTaskState_.instr
+    #define _qCR_DelayVar              _qCRTaskState_.crdelay           
+    #define _qCR_SetPC(_VAL_)          _qCR_TaskPCVar = (_VAL_)
+    #define _qCR_SaveState             _qCR_SetPC(_qCR_TaskProgress) 
+    #define _qCR_SaveStateOn(_VAR_)    ( _VAR_)  =  _qCR_TaskProgress
+    #define _qCR_InitState             _qCRTaskState_ = { _qCR_PCInitVal, QSTIMER_INITIALIZER }
+    #define _qCR_TaskCheckPCJump(_PC_) switch(_PC_){    
+    #define _qCR_TagExitCCR            _qCRYield_ExitLabel
+    #define _qCR_Exit                  goto _qCR_TagExitCCR /*MISRA deviation*/
+    #define _qCR_TaskYield             _qCR_Exit;
+    #define _qCR_Dispose               _qCR_SetPC(_qCR_PCInitVal);} _qCR_TagExitCCR:
+    #define _qCR_Restorator(_VAL_)     case (_qCR_TaskPC_t)(_VAL_):            
+    #define _qCR_RestoreAfterYield     _qCR_Restorator(_qCR_TaskProgress)
+    #define _qCR_RestoreFromBegin      _qCR_Restorator(_qCR_PCInitVal)
+    #define _qCR_SemInit(s, c)         _qCR_CodeStartBlock{ (s)->tail = 0; (s)->head = (c); }_qCR_CodeEndBlock
+    #define _qCR_SemCount(s)           ((s)->head - (s)->tail)
+    #define _qCR_SemLock(s)            (++(s)->tail)
+    #define _qCR_SemRelease(s)         (++(s)->head)
 
-    #define __qCRStart                          __qPersistent  __qTaskInitState ;  __qTaskCheckPCJump(__qTaskPCVar) __RestoreFromBegin
-    #define __qCRYield                          __qCRCodeStartBlock{  __qTaskSaveState      ; __qTaskYield  __RestoreAfterYield; }                      __qCRCodeEndBlock
-    #define __qCRRestart                        __qCRCodeStartBlock{  __qSetPC(qCR_PCInitVal)      ; __qTaskYield }                                     __qCRCodeEndBlock
-    #define __qCR_wu_Assert(_cond_)             __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield   ; __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock
-        
-    #define __qCR_do                            __qCRCodeStartBlock{  __qTaskSaveState      ; __RestoreAfterYield;
-    #define __qCR_until( _cond_ )               __qAssert(_cond_) __qTaskYield }  __qCRCodeEndBlock           
-        
-    #define __qCR_wu_preAssert(_pre_ , _cond_)  __qCR_do{ (_pre_); }__qCR_until((_cond_)) \
+    #define _qCR_Start                         _qCR_Persistent  _qCR_InitState ;  _qCR_TaskCheckPCJump(_qCR_TaskPCVar) _qCR_RestoreFromBegin
+    #define _qCR_Yield                         _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_TaskYield  _qCR_RestoreAfterYield; }                         _qCR_CodeEndBlock
+    #define _qCR_Restart                       _qCR_CodeStartBlock{ _qCR_SetPC(_qCR_PCInitVal)  ; _qCR_TaskYield }                                                  _qCR_CodeEndBlock
+    #define _qCR_wu_Assert(_cond_)             _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_RestoreAfterYield    ; _qCR_Assert(_cond_) _qCR_TaskYield }  _qCR_CodeEndBlock
+    #define _qCR_GetPosition(_pos_)            _qCR_CodeStartBlock{ _qCR_SaveStateOn((_pos_))   ; _qCR_RestoreAfterYield    ; _qCR_Unused_((_pos_)); }              _qCR_CodeEndBlock
+    #define _qCR_RestoreFromPosition(_pos_)    _qCR_CodeStartBlock{ _qCR_SetPC(_pos_)           ; _qCR_TaskYield }                                                  _qCR_CodeEndBlock
+    #define _qCR_Delay(_time_)                 _qCR_CodeStartBlock{ qSTimer_Set( &_qCR_DelayVar, _time_  )     ; _qCR_SaveState;  _qCR_RestoreAfterYield;   _qCR_Assert( qSTimer_Expired( &_qCR_DelayVar )  ) _qCR_TaskYield } _qCR_CodeEndBlock
+    #define _qCR_SemWait(_sem_)                _qCR_CodeStartBlock{ qCR_WaitUntil(_qCR_SemCount(_sem_) > 0);  _qCR_SemLock(_sem_); } _qCR_CodeEndBlock 
+    #define _qCR_do                            _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_RestoreAfterYield;
+    #define _qCR_until( _cond_ )               _qCR_Assert(_cond_) _qCR_TaskYield }  _qCR_CodeEndBlock     
+    #define _qCR_PositionReset(_pos_)          (_pos_) = _qCR_PCInitVal
+    #define _qCR_wu_preAssert(_pre_ , _cond_)  _qCR_do{ (_pre_); }_qCR_until((_cond_))    
 
 
-    #define __qCR_GetPosition(_pos_)            __qCRCodeStartBlock{  (_pos_) =__qTaskProgress ; __RestoreAfterYield   ;_UNUSED_((_pos_));}             __qCRCodeEndBlock
-    #define __qCR_RestoreFromPosition(_pos_)    __qCRCodeStartBlock{  __qSetPC(_pos_)       ; __qTaskYield}                                             __qCRCodeEndBlock
-    #define __qCR_Delay(_time_)                 __qCRCodeStartBlock{  qSTimerSet( &__qCRDelayVar, _time_  )     ; __qTaskSaveState;  __RestoreAfterYield;   __qAssert( qSTimerExpired( &__qCRDelayVar )  ) __qTaskYield } __qCRCodeEndBlock
-    #define __qCR_PositionReset(_pos_)          (_pos_) = qCR_PCInitVal
 
-    /*qCoroutineBegin{
+    /*qCR_Begin{
     
-    }qCoroutineEnd;
-
-    qCRBegin{
+    }qCR_End;
     
-    }qCREnd;
-    * 
     Defines a Coroutine segment. Only one segment is allowed inside a task; 
-    The qCoroutineBegin statement is used to declare the starting point of 
+    The qCR_Begin statement is used to declare the starting point of 
     a Coroutine. It should be placed at the start of the function in which the 
-    Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
-    It must always be used together with a matching qCoroutineBegin statement.
-    */
-    #define qCoroutineBegin                         __qCRStart
-    #define qCRBegin                                __qCRStart
-    /*qCoroutineYield
-    qCRYield
+    Coroutine runs. qCR_End declare the end of the Coroutine. 
+    It must always be used together with a matching qCR_End statement.
 
-    This statement is only allowed inside a Coroutine segment. qCoroutineYield 
+    */
+    #define qCR_Begin                                   _qCR_Start
+    /*qCR_Begin{
+    
+    }qCR_End;
+    
+    Ends a Coroutine segment. Only one segment is allowed inside a task; 
+    The qCR_End statement is used to define the ending point of 
+    a Coroutine. It should be placed at the end of the function in which the 
+    Coroutine runs. 
+    It must always be used together with a matching qCR_Begin statement.
+
+    */   
+    #define qCR_End                                     _qCR_Dispose
+    /*qCR_Yield
+
+    This statement is only allowed inside a Coroutine segment. qCR_Yield 
     return the CPU control back to the scheduler but saving the execution progress. 
     With the next task activation, the Coroutine will resume the execution after 
-    the last 'qCoroutineYield' statement.
+    the last 'qCR_Yield' statement.
 
     Action sequence : [Save progress] then [Yield]
 
-    */
-    #define qCoroutineYield                         __qCRYield          
-    #define qCRYield                                __qCRYield
-    /*qCoroutineBegin{
-    
-    }qCoroutineEnd;
-    qCRBegin{
-    
-    }qCREnd;
-
-    Defines a Coroutine segment. Only one segment is allowed inside a task; 
-    The qCoroutineBegin statement is used to declare the starting point of 
-    a Coroutine. It should be placed at the start of the function in which the 
-    Coroutine runs. qCoroutineEnd declare the end of the Coroutine. 
-    It must always be used together with a matching qCoroutineBegin statement.
-    */    
-    #define qCoroutineEnd                           __qCRDispose
-    #define qCREnd                                  __qCRDispose
-    /*qCoroutineRestart
-    qCRRestart
+    */     
+    #define qCR_Yield                                   _qCR_Yield
+    /*qCR_Restart
 
     This statement cause the running Coroutine to restart its execution at the 
-    place of the qCoroutineBegin statement.
+    place of the qCR_Begin statement.
 
     Action sequence : [Reload progress] then [Yield]
 
     */
-    #define qCoroutineRestart                       __qCRRestart  
-    #define qCRRestart                              __qCRRestart 
-    /*qCoroutineWaitUntil(_CONDITION_) 
-    qCRWaitUntil(_CONDITION_)
+    #define qCR_Restart                                 _qCR_Restart 
+    /*qCRWait_Until(_CONDITION_)
 
     Yields until the logical condition being true
 
@@ -127,29 +114,23 @@
                     }  
 
     */    
-    #define qCoroutineWaitUntil(_condition_)        __qCR_wu_Assert(_condition_)
-    #define qCRWaitUntil(_condition_)               __qCR_wu_Assert(_condition_)
+    #define qCR_WaitUntil(_condition_)                  _qCR_wu_Assert(_condition_)
+    /*qCR_Do
 
-    /*qCoroutineDo 
-    qCRDo
+    This statement start a blocking Job segment. 
+    Must be used together with a matching qCR_Until statement.  
 
-    This statement tart a blocking Job segment. 
-    Must be used together with a matching qCoroutineDo statement.   
     */    
-    #define qCoroutineDo                        __qCR_do
-    #define qCRDo                               __qCR_do
-    /*qCoroutineUntil( _condition_ )
-    qCRUntil( _condition_ )
+    #define qCR_Do                                      _qCR_do
+    /*qCR_Until( _condition_ )
 
-    This statement ends a qCoroutineDo statement for a blocking Job.   
+    This statement ends a blocking Job segment starting the qCR_Do statement.   
     The condition determines if the blocking job ends (if condition is True)
     or continue yielding (if false)
-    */         
-    #define qCoroutineUntil( _condition_ )           __qCR_until( _condition_ )
-    #define qCRUntil( _condition_ )                  __qCR_until( _condition_ )
 
-    /*qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_) 
-    qCRSemInit(_qCRSemaphore_t_, _Value_)
+    */         
+    #define qCR_Until( _condition_ )                    _qCR_until( _condition_ )
+    /*qCR_SemInit(_qCR_Semaphore_t_, _Value_)
 
     Initializes a semaphore with a value for the counter. Internally, the semaphores
     use an "unsigned int" to represent the counter,  therefore the "count" 
@@ -157,14 +138,13 @@
 
     Parameters:
 
-        - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
+        - _qCR_Semaphore_t_ :  A pointer to the qCR_Semaphore_t representing the semaphore
 
         - _Value_ : The initial count of the semaphore.
+
     */          
-    #define qCoroutineSemaphoreInit(_qCRSemaphore_t_, _Value_)      __qCRSemInit((_qCRSemaphore_t_), (_Value_))
-    #define qCRSemInit(_qCRSemaphore_t_, _Value_)                   __qCRSemInit((_qCRSemaphore_t_), (_Value_))  
-    /*qCoroutineSemaphoreWait(_qCRSemaphore_t_) 
-    qCRSemWait(_qCRSemaphore_t_)  
+    #define qCR_SemInit(_qCR_Semaphore_t_, _Value_)     _qCR_SemInit((_qCR_Semaphore_t_), (_Value_))  
+    /*qCR_SemWait(_qCR_Semaphore_t_)  
 
     Carries out the "wait" operation on the semaphore. The wait operation causes 
     the Co-routine to block while the counter is zero. When the counter reaches a 
@@ -172,13 +152,12 @@
 
     Parameters:
 
-        - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
-    */        
-    #define qCoroutineSemaphoreWait(_qCRSemaphore_t_)               __qCRCodeStartBlock{ qCoroutineWaitUntil(__qCRSemCount(_qCRSemaphore_t_) > 0);  __qCRSemLock(_qCRSemaphore_t_); } __qCRCodeEndBlock    
-    #define qCRSemWait(_qCRSemaphore_t_)                            qCoroutineSemaphoreWait(_qCRSemaphore_t_)
+        - _qCR_Semaphore_t_ :  A pointer to the qCR_Semaphore_t representing the semaphore
 
-    /*qCoroutineSemaphoreSignal(_qCRSemaphore_t_) 
-    qCRSemSignal(_qCRSemaphore_t_)
+    */        
+    #define qCR_SemWait(_qCR_Semaphore_t_)              _qCR_SemWait(_qCR_Semaphore_t_)                    
+
+    /*qCR_SemSignal(_qCR_Semaphore_t_)
 
     Carries out the "signal" operation on the semaphore. The signal operation increments
     the counter inside the semaphore, which eventually will cause waiting Co-routines
@@ -186,43 +165,38 @@
 
     Parameters:
 
-        - _qCRSemaphore_t_ :  A pointer to the qCRSemaphore_t representing the semaphore
-    */     
-    #define qCoroutineSemaphoreSignal(_qCRSemaphore_t_)             __qCRSemRelease(_qCRSemaphore_t_)
-    #define qCRSemSignal(_qCRSemaphore_t_)                          __qCRSemRelease(_qCRSemaphore_t_)
-    /*qCoroutinePositionGet(qCRPosition_t _CRPos_)
-    qCRPositionGet(qCRPosition_t _CRPos_) 
+        - _qCR_Semaphore_t_ :  A pointer to the qCR_Semaphore_t representing the semaphore
 
-    Labels the current position and saves it to _CRPos_ so it can be later restored by qCoroutinePositionRestore
+    */     
+    #define qCR_SemSignal(_qCR_Semaphore_t_)            _qCR_SemRelease(_qCR_Semaphore_t_)
+    /*qCR_PositionGet(qCR_Position_t _CRPos_) 
+
+    Labels the current position and saves it to _CRPos_ so it can be later restored by qCR_PositionRestore
+
     */    
-    #define qCoroutinePositionGet(_CRPos_)                          __qCR_GetPosition(_CRPos_)
-    #define qCRPositionGet(_CRPos_)                                 __qCR_GetPosition(_CRPos_)
-    /*qCoroutinePositionRestore(qCRPosition_t _CRPos_)
-    qCRPositionRestore(qCRPosition_t _CRPos_) 
+    #define qCR_PositionGet(_CRPos_)                    _qCR_GetPosition(_CRPos_)
+    /*qCR_PositionRestore(qCR_Position_t _CRPos_) 
 
     Restores the Co-Routine position saved in _CRPos_
+
     */   
-    #define qCoroutinePositionRestore(_CRPos_)                      __qCR_RestoreFromPosition(_CRPos_)
-    #define qCRPositionRestore(_CRPos_)                             __qCR_RestoreFromPosition(_CRPos_)
-    /*qCoroutinePositionReset(qCRPosition_t _CRPos_)
-    qCRPositionReset(qCRPosition_t _CRPos_) 
+    #define qCR_PositionRestore(_CRPos_)                _qCR_RestoreFromPosition(_CRPos_)
+    /*qCR_PositionReset(qCR_Position_t _CRPos_) 
 
     Resets the _CRPos_ variable to the begining of the Co-Routine
-    */ 
-    #define qCoroutinePositionReset(_CRPos_)                        __qCR_PositionReset(_CRPos_)
-    #define qCRPositionReset(_CRPos_)                               __qCR_PositionReset(_CRPos_)
 
-    /*qCoroutineDelay(_qTime_t_) 
-    qCRDelay(_qTime_t_)  
+    */ 
+    #define qCR_PositionReset(_CRPos_)                  _qCR_PositionReset(_CRPos_)
+    /*qCR_Delay(_qTime_t_)  
 
     Delay a coroutine for a given number of time
 
     Parameters:
 
         - _qTime_t_ :  The amount of time (In seconds), that the calling coroutine should yield.
+
     */        
-    #define qCoroutineDelay(_qTime_t_)                              __qCR_Delay(_qTime_t_)
-    #define qCRDelay(_qTime_t_)                                     __qCR_Delay(_qTime_t_)
+    #define qCR_Delay(_qTime_t_)                        _qCR_Delay(_qTime_t_)
 
     #ifdef __cplusplus
     }

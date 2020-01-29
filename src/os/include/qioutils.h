@@ -17,13 +17,14 @@
     typedef void (*qPutString_t)(void* arg1, const char* arg2);
     typedef char (*qGetChar_t)(void* arg1);
 
-    void qSwapBytes( void *data, const size_t n );
-    qBool_t qCheckEndianness( void);
-    void qOutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
-    void qOutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
-    void qInputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
-
-    /*qPrintString(fcn, pStorage, s)
+    void qIOUtil_SwapBytes( void *data, const size_t n );
+    qBool_t qIOUtil_CheckEndianness( void);
+    void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
+    void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n );
+    void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
+    void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP );
+      
+    /*qIOUtil_PrintString(fcn, pStorage, s)
     
     This macro is a Wrapper method to write a string through fcn
     
@@ -33,24 +34,22 @@
         - pStorage : The storage pointer passed to fcn
         - s: The string to be written
     */
-    #define qPrintString(fcn, pStorage, s)          qOutputString((fcn), (void*)(pStorage), (const char *)(s), qFalse)
-     
-    #define qPrintRaw(fcn, pStorage, data, n)       qOutputRaw((fcn), (void*)(pStorage), (void*)(data), (n), qFalse) 
+    #define qIOUtil_PrintString(fcn, pStorage, s)          qIOUtil_OutputString((fcn), (void*)(pStorage), (const char *)(s), qFalse)
+    #define qIOUtil_PrintRaw(fcn, pStorage, data, n)       qIOUtil_OutputRaw((fcn), (void*)(pStorage), (void*)(data), (n), qFalse) 
 
     /*Some utilities*/
-    char* qU32toX( qUINT32_t value, char *str, qINT8_t n );
-    qUINT32_t qXtoU32( const char *s );
-    qFloat64_t qAtoF( const char *s );
-    int qAtoI( const char *s );
-    char* qUtoA( qUINT32_t num, char* str, qUINT8_t base );
-    char* qItoA( qINT32_t num, char* str, qUINT8_t base );
-    char* qBtoA( qBool_t num, char *str );
-    char* qQBtoA (qBool_t num, char *str );
-    qBool_t qIsInf( qFloat32_t f );
-    qBool_t qIsNan( qFloat32_t f );
-    char* qFtoA( qFloat32_t num, char *str, qUINT8_t precision );
-    qUINT32_t qStringHash( const char* s, qUINT8_t mode );
-    void qPrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n );
+    char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n );
+    qUINT32_t qIOUtil_XtoU32( const char *s );
+    qFloat64_t qIOUtil_AtoF( const char *s );
+    char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision );
+    int qIOUtil_AtoI( const char *s );
+    char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base );
+    char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base );
+    char* qIOUtil_BtoA( qBool_t num, char *str );
+    char* qIOUtil_QBtoA (qBool_t num, char *str );
+    qBool_t qIOUtil_IsInf( qFloat32_t f );
+    qBool_t qIOUtil_IsNan( qFloat32_t f );
+
     
     #ifdef __cplusplus
     }

@@ -37,7 +37,7 @@ void qClock_SetTickProvider( qGetTickFcn_t provider ){
     GetSysTick = provider;
 }
 /*============================================================================*/
-/*qTime_t qClock2Time(const qClock_t t)
+/*qTime_t qClock_Convert2Time(const qClock_t t)
 
 Convert the specified input time(epochs) to time(seconds)
 
@@ -49,7 +49,7 @@ Return value:
 
     time (t) in seconds
 */
-qTime_t qClock2Time( const qClock_t t ){
+qTime_t qClock_Convert2Time( const qClock_t t ){
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         return (qTime_t)t;
     #else
@@ -61,7 +61,7 @@ qTime_t qClock2Time( const qClock_t t ){
     #endif      
 }
 /*============================================================================*/
-/*qCLock_t qTime2Clock(const qTime_t t)
+/*qCLock_t qClock_Convert2Clock(const qTime_t t)
 
 Convert the specified input time(seconds) to time(epochs)
 
@@ -73,12 +73,12 @@ Return value:
 
     time (t) in epochs
 */
-qClock_t qTime2Clock( const qTime_t t ){
+qClock_t qClock_Convert2Clock( const qTime_t t ){
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         return (qClock_t)t;
     #else 
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-            return (qClock_t)(t*QUARKTS.TimmingBase);
+            return (qClock_t)(t*TimmingBase);
         #else
             qTime_t epochs;
             epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;

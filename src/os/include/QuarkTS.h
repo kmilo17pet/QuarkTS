@@ -1,5 +1,5 @@
 /*
-    QuarkTS V5.4.7 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+    QuarkTS V6.0.3 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
     All rights reserved
     
     This file is part of the QuarkTS OS distribution.
@@ -8,7 +8,7 @@
     
     A Non-Preemptive RTOS for small embedded systems
     GNU Lesser General Public License (LGPL)
-    C99 and MISRA-C 2004 Compliant
+    C99 and MISRA-C 2012 Compliant    
 */
 
 #ifndef QuarkTS_H
@@ -19,7 +19,6 @@
     #include "qkernel.h"
     #include "qtasks.h"    
     #include "qcoroutine.h"
-    
     #include "qioutils.h"
 
     #if ( Q_TRACE_VARIABLES ==1 )
@@ -42,10 +41,10 @@
         #include "qbsbuffers.h"
     #endif
 
-    #include "qbitmacros.h"
+    #include "qflm.h"
 
 
-    #if ( Q_PRIORITY_LEVELS < 1)
+    #if ( Q_PRIORITY_LEVELS < 1 )
         #error Q_PRIORITY_LEVELS must be defined to be greater than or equal to 1.
     #endif
 
@@ -63,6 +62,10 @@
 
     #if ( Q_PRIO_QUEUE_SIZE < 0 )   
         #error Q_PRIO_QUEUE_SIZE should be a value greater of equal than zero.
+    #endif
+
+    #if( Q_USE_STDINT_H != 1 )
+        #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers. Use this setting at your own risk.
     #endif
 
 
