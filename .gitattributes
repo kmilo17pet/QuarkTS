@@ -9,6 +9,7 @@ build_options.mk export-ignore
 Makefile export-ignore
 src/x86_test_do_not_use_it export-ignore
 src/unity export-ignore
+check export-ignore
 
 # Auto detect text files and perform LF normalization
 * text=auto
