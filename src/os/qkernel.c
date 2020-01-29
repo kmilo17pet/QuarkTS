@@ -642,9 +642,9 @@ void qOS_Run( void ){
             }
         }
         if( SuspendedList->size > (size_t)0 ){  /*check if the suspended list has items*/
-            qList_Move( WaitingList, SuspendedList, qList_AtBack ); /*move the remaining suspended tasks to the waiting list*/
+            (void)qList_Move( WaitingList, SuspendedList, qList_AtBack ); /*move the remaining suspended tasks to the waiting list*/
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-                qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver );
+                (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver );
             #endif
         }
     }
@@ -652,7 +652,7 @@ void qOS_Run( void ){
         while( qFalse == _QKERNEL_COREFLAG_GET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
         qOS_TriggerReleaseSchedEvent(); /*check for scheduling-release request*/
     #else
-        while(1);
+        while( qTrue == qTrue);
     #endif
 }
 /*============================================================================*/
@@ -686,7 +686,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         xTask = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             if( NULL != kernel.NotificationSpreadRequest.mode ){
-                kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
+                (void)kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
                 kernel.NotificationSpreadRequest.mode = NULL;
                 kernel.NotificationSpreadRequest.eventdata = NULL;
                 RetValue = qTrue;

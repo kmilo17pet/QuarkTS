@@ -1,4 +1,4 @@
-"D:\Camilo\Documentos\GitHub\QuarkTS\src\os\qkernel.c"
+"d:\Camilo\documentos\GitHub\QuarkTS\src\os\qkernel.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
@@ -8,7 +8,7 @@ D:\Camilo\Documentos\GitHub\QuarkTS\check\Debug\Obj\qkernel.pbi.dep
 -o
 qkernel.pbi
 -I
-D:\Camilo\Documentos\GitHub\QuarkTS\src\os
+d:\Camilo\documentos\GitHub\QuarkTS\src\os
 -I
 D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\os\include
 -I

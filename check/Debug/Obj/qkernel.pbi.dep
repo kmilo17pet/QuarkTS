@@ -1,4 +1,4 @@
-qkernel.pbi: D:\Camilo\Documentos\GitHub\QuarkTS\src\os\qkernel.c \
+qkernel.pbi: d:\Camilo\documentos\GitHub\QuarkTS\src\os\qkernel.c \
   D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\os\include\qkernel.h \
   D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\os\include/qtypes.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\stdlib.h \
