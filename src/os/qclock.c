@@ -97,9 +97,9 @@ void qClock_SysTick( void ){
     _qSysTick_Epochs_++; 
 }
 /*============================================================================*/
-/*qClock_t qSchedulerGetTick( void )
+/*qClock_t qClock_GetTick( void )
 
-Return the current tick used by the scheduler
+Return the current tick used by the OS
 
 Parameters:
 

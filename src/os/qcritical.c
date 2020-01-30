@@ -12,7 +12,7 @@ static qCritical_Handler_t Critical = { NULL, NULL , 0uL};
 /*void qEnterCritical(void)
 
 Enter a critical section. This function invokes the <Disabler> if available.
-Please see <qSchedulerSetInterruptsED>
+Please see <qCritical_SetInterruptsED>
 
 */  
 void qCritical_Enter(void){
@@ -26,7 +26,7 @@ void qCritical_Enter(void){
 /*void qEnterCritical(void)
 
 Enter a critical section. This function invokes the <Enabler> if available.
-Please see <qSchedulerSetInterruptsED>
+Please see <qCritical_SetInterruptsED>
 
 */ 
 void qCritical_Exit( void ){
@@ -37,7 +37,7 @@ void qCritical_Exit( void ){
     }
 }
 /*============================================================================*/
-/*void qSchedulerSetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
+/*void qCritical_SetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
 
 Set the hardware-specific code for global interrupt enable/disable. 
 Setting this allows you to comunicate safely from Interrupts using queued notifications

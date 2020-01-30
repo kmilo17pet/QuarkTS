@@ -174,7 +174,7 @@ void qOS_Set_IdleTask( qTaskFcn_t Callback ){
 /*void qOS_Scheduler_Release(void)
 
 Disables the kernel scheduling. The main thread will continue after the
-qSchedule() call.
+qOS_Run() call.
 */
 void qOS_Scheduler_Release( void ){
     _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED );

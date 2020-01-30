@@ -33,9 +33,9 @@ Parameters:
     - obj : A pointer to the STimer object.
     - Time : The expiration time(Must be specified in seconds).
 
-    > Note 1: The scheduler must be running before using STimers.
+    > Note 1: The OS must be running before using STimers.
     > Note 2: The expiration time should be at least, two times greater than
-              the scheduler-Tick.
+              the clock-Tick.
 
 Return value:
 
@@ -63,9 +63,9 @@ Parameters:
     - obj : A pointer to the STimer object.
     - Time : The expiration time(Must be specified in seconds). 
  
-    > Note 1: The scheduler must be running before using STimers.
+    > Note 1: The OS must be running before using STimers.
     > Note 2: The expiration time should be at least, two times greater than
-              the scheduler-Tick.
+              the clock-Tick.
     > Note 3: Time parameter is only taken when the STimer is re-armed
   
 Return value:
