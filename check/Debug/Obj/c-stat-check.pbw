@@ -12443,7 +12443,7 @@
     "location": {
       "column": "9",
       "line": "3",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_BIT_INIT",
     "origin": "project_file",
@@ -12457,7 +12457,7 @@
     "location": {
       "column": "9",
       "line": "4",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_BIT_FCALLIDLE",
     "origin": "project_file",
@@ -12471,7 +12471,7 @@
     "location": {
       "column": "9",
       "line": "5",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_BIT_RELEASESCHED",
     "origin": "project_file",
@@ -12485,7 +12485,7 @@
     "location": {
       "column": "9",
       "line": "6",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_BIT_FCALLRELEASED",
     "origin": "project_file",
@@ -12499,7 +12499,7 @@
     "location": {
       "column": "9",
       "line": "8",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_COREFLAG_SET",
     "origin": "project_file",
@@ -12513,7 +12513,7 @@
     "location": {
       "column": "9",
       "line": "9",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_COREFLAG_CLEAR",
     "origin": "project_file",
@@ -12527,7 +12527,7 @@
     "location": {
       "column": "9",
       "line": "10",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_QKERNEL_COREFLAG_GET",
     "origin": "project_file",
@@ -12541,7 +12541,7 @@
     "location": {
       "column": "9",
       "line": "13",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "members": [
       {
@@ -12552,7 +12552,7 @@
         "location": {
           "column": "14",
           "line": "14",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "Task",
         "origin": "project_file",
@@ -12566,7 +12566,7 @@
         "location": {
           "column": "11",
           "line": "15",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "QueueData",
         "origin": "project_file",
@@ -12580,7 +12580,7 @@
         "location": {
           "column": "2",
           "line": "16",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "qQueueStack_t",
         "origin": "project_file",
@@ -12599,7 +12599,7 @@
     "location": {
       "column": "19",
       "line": "18",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qCoreFlags_t",
     "origin": "project_file",
@@ -12613,7 +12613,7 @@
     "location": {
       "column": "9",
       "line": "20",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "members": [
       {
@@ -12624,7 +12624,7 @@
         "location": {
           "column": "24",
           "line": "21",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "mode",
         "origin": "project_file",
@@ -12638,7 +12638,7 @@
         "location": {
           "column": "11",
           "line": "22",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "eventdata",
         "origin": "project_file",
@@ -12652,7 +12652,7 @@
         "location": {
           "column": "2",
           "line": "23",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "qNotificationSpreader_t",
         "origin": "project_file",
@@ -12671,7 +12671,7 @@
     "location": {
       "column": "9",
       "line": "25",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "members": [
       {
@@ -12682,7 +12682,7 @@
         "location": {
           "column": "13",
           "line": "26",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "CoreLists",
         "origin": "project_file",
@@ -12696,7 +12696,7 @@
         "location": {
           "column": "16",
           "line": "27",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "IDLECallback",
         "origin": "project_file",
@@ -12710,7 +12710,7 @@
         "location": {
           "column": "14",
           "line": "28",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "CurrentRunningTask",
         "origin": "project_file",
@@ -12724,7 +12724,7 @@
         "location": {
           "column": "20",
           "line": "30",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "ReleaseSchedCallback",
         "origin": "project_file",
@@ -12738,7 +12738,7 @@
         "location": {
           "column": "15",
           "line": "33",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "QueueData",
         "origin": "project_file",
@@ -12752,7 +12752,7 @@
         "location": {
           "column": "23",
           "line": "34",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "QueueStack",
         "origin": "project_file",
@@ -12766,7 +12766,7 @@
         "location": {
           "column": "26",
           "line": "35",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "QueueIndex",
         "origin": "project_file",
@@ -12780,7 +12780,7 @@
         "location": {
           "column": "16",
           "line": "37",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "EventInfo",
         "origin": "project_file",
@@ -12794,7 +12794,7 @@
         "location": {
           "column": "27",
           "line": "38",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "Flag",
         "origin": "project_file",
@@ -12808,7 +12808,7 @@
         "location": {
           "column": "33",
           "line": "40",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "NotificationSpreadRequest",
         "origin": "project_file",
@@ -12822,7 +12822,7 @@
         "location": {
           "column": "26",
           "line": "45",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "ExternMethods",
         "origin": "project_file",
@@ -12836,7 +12836,7 @@
         "location": {
           "column": "2",
           "line": "46",
-          "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+          "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
         },
         "name": "qKernelControlBlock_t",
         "origin": "project_file",
@@ -12855,7 +12855,7 @@
     "location": {
       "column": "30",
       "line": "49",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "kernel",
     "origin": "project_file",
@@ -12869,7 +12869,7 @@
     "location": {
       "column": "17",
       "line": "50",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "WaitingList",
     "origin": "project_file",
@@ -12883,7 +12883,7 @@
     "location": {
       "column": "17",
       "line": "51",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "SuspendedList",
     "origin": "project_file",
@@ -12897,7 +12897,7 @@
     "location": {
       "column": "17",
       "line": "52",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "ReadyList",
     "origin": "project_file",
@@ -12911,7 +12911,7 @@
     "location": {
       "column": "17",
       "line": "54",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Get_TaskRunning",
     "origin": "project_file",
@@ -12925,7 +12925,7 @@
     "location": {
       "column": "16",
       "line": "55",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_TaskDeadLineReached",
     "origin": "project_file",
@@ -12939,7 +12939,7 @@
     "location": {
       "column": "16",
       "line": "56",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_CheckIfReady",
     "origin": "project_file",
@@ -12953,7 +12953,7 @@
     "location": {
       "column": "16",
       "line": "57",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Dispatch",
     "origin": "project_file",
@@ -12967,7 +12967,7 @@
     "location": {
       "column": "28",
       "line": "58",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_GetTaskGlobalState",
     "origin": "project_file",
@@ -12981,7 +12981,7 @@
     "location": {
       "column": "13",
       "line": "59",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_DummyTask_Callback",
     "origin": "project_file",
@@ -12995,7 +12995,7 @@
     "location": {
       "column": "9",
       "line": "61",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "_qAbs",
     "origin": "project_file",
@@ -13009,7 +13009,7 @@
     "location": {
       "column": "20",
       "line": "64",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_Insert",
     "origin": "project_file",
@@ -13023,7 +13023,7 @@
     "location": {
       "column": "19",
       "line": "65",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_GetCount",
     "origin": "project_file",
@@ -13037,7 +13037,7 @@
     "location": {
       "column": "17",
       "line": "66",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_ClearIndex",
     "origin": "project_file",
@@ -13051,7 +13051,7 @@
     "location": {
       "column": "17",
       "line": "67",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_CleanUp",
     "origin": "project_file",
@@ -13065,7 +13065,7 @@
     "location": {
       "column": "20",
       "line": "68",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_IsTaskInside",
     "origin": "project_file",
@@ -13079,7 +13079,7 @@
     "location": {
       "column": "21",
       "line": "69",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_Get",
     "origin": "project_file",
@@ -13093,7 +13093,7 @@
     "location": {
       "column": "17",
       "line": "73",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_TriggerReleaseSchedEvent",
     "origin": "project_file",
@@ -13107,7 +13107,7 @@
     "location": {
       "column": "23",
       "line": "77",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_AttachedQueue_CheckEvents",
     "origin": "project_file",
@@ -13121,7 +13121,7 @@
     "location": {
       "column": "17",
       "line": "81",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_ATCLI_TaskCallback",
     "origin": "project_file",
@@ -13135,7 +13135,7 @@
     "location": {
       "column": "17",
       "line": "82",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_ATCLI_NotifyFcn",
     "origin": "project_file",
@@ -13149,7 +13149,7 @@
     "location": {
       "column": "13",
       "line": "90",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_DummyTask_Callback",
     "origin": "project_file",
@@ -13163,7 +13163,7 @@
     "location": {
       "column": "10",
       "line": "114",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Setup",
     "origin": "project_file",
@@ -13177,7 +13177,7 @@
     "location": {
       "column": "14",
       "line": "116",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "i",
     "origin": "project_file",
@@ -13191,7 +13191,7 @@
     "location": {
       "column": "17",
       "line": "156",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Get_TaskRunning",
     "origin": "project_file",
@@ -13205,7 +13205,7 @@
     "location": {
       "column": "6",
       "line": "169",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Set_IdleTask",
     "origin": "project_file",
@@ -13219,7 +13219,7 @@
     "location": {
       "column": "6",
       "line": "179",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Scheduler_Release",
     "origin": "project_file",
@@ -13233,7 +13233,7 @@
     "location": {
       "column": "6",
       "line": "192",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Set_SchedulerReleaseCallback",
     "origin": "project_file",
@@ -13247,7 +13247,7 @@
     "location": {
       "column": "9",
       "line": "213",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Notification_Spread",
     "origin": "project_file",
@@ -13261,7 +13261,7 @@
     "location": {
       "column": "13",
       "line": "214",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13275,7 +13275,7 @@
     "location": {
       "column": "13",
       "line": "226",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_CleanUp",
     "origin": "project_file",
@@ -13289,7 +13289,7 @@
     "location": {
       "column": "14",
       "line": "227",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "i",
     "origin": "project_file",
@@ -13303,7 +13303,7 @@
     "location": {
       "column": "13",
       "line": "235",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_ClearIndex",
     "origin": "project_file",
@@ -13317,7 +13317,7 @@
     "location": {
       "column": "14",
       "line": "236",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "j",
     "origin": "project_file",
@@ -13331,7 +13331,7 @@
     "location": {
       "column": "13",
       "line": "237",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "QueueIndex",
     "origin": "project_file",
@@ -13345,7 +13345,7 @@
     "location": {
       "column": "16",
       "line": "247",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_Insert",
     "origin": "project_file",
@@ -13359,7 +13359,7 @@
     "location": {
       "column": "17",
       "line": "249",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13373,7 +13373,7 @@
     "location": {
       "column": "23",
       "line": "250",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "tmp",
     "origin": "project_file",
@@ -13387,7 +13387,7 @@
     "location": {
       "column": "17",
       "line": "251",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "QueueMaxIndex",
     "origin": "project_file",
@@ -13401,7 +13401,7 @@
     "location": {
       "column": "17",
       "line": "252",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "CurrentQueueIndex",
     "origin": "project_file",
@@ -13415,7 +13415,7 @@
     "location": {
       "column": "16",
       "line": "267",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_IsTaskInside",
     "origin": "project_file",
@@ -13429,7 +13429,7 @@
     "location": {
       "column": "17",
       "line": "269",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13443,7 +13443,7 @@
     "location": {
       "column": "17",
       "line": "270",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "CurrentQueueIndex",
     "origin": "project_file",
@@ -13457,7 +13457,7 @@
     "location": {
       "column": "36",
       "line": "270",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "i",
     "origin": "project_file",
@@ -13471,7 +13471,7 @@
     "location": {
       "column": "17",
       "line": "288",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_Get",
     "origin": "project_file",
@@ -13485,7 +13485,7 @@
     "location": {
       "column": "14",
       "line": "289",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xTask",
     "origin": "project_file",
@@ -13499,7 +13499,7 @@
     "location": {
       "column": "14",
       "line": "290",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "i",
     "origin": "project_file",
@@ -13513,7 +13513,7 @@
     "location": {
       "column": "14",
       "line": "291",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "IndexTaskToExtract",
     "origin": "project_file",
@@ -13527,7 +13527,7 @@
     "location": {
       "column": "17",
       "line": "292",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "MaxPriorityValue",
     "origin": "project_file",
@@ -13541,7 +13541,7 @@
     "location": {
       "column": "35",
       "line": "292",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "iPriorityValue",
     "origin": "project_file",
@@ -13555,7 +13555,7 @@
     "location": {
       "column": "15",
       "line": "315",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_PriorityQueue_GetCount",
     "origin": "project_file",
@@ -13569,7 +13569,7 @@
     "location": {
       "column": "12",
       "line": "316",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13583,7 +13583,7 @@
     "location": {
       "column": "9",
       "line": "356",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Add_Task",
     "origin": "project_file",
@@ -13597,7 +13597,7 @@
     "location": {
       "column": "13",
       "line": "357",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13611,7 +13611,7 @@
     "location": {
       "column": "9",
       "line": "415",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Add_EventTask",
     "origin": "project_file",
@@ -13625,7 +13625,7 @@
     "location": {
       "column": "9",
       "line": "464",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Add_StateMachineTask",
     "origin": "project_file",
@@ -13639,7 +13639,7 @@
     "location": {
       "column": "13",
       "line": "467",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13653,7 +13653,7 @@
     "location": {
       "column": "9",
       "line": "491",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_StateMachineTask_SigCon",
     "origin": "project_file",
@@ -13667,7 +13667,7 @@
     "location": {
       "column": "13",
       "line": "492",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13681,7 +13681,7 @@
     "location": {
       "column": "12",
       "line": "493",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "StateMachine",
     "origin": "project_file",
@@ -13695,7 +13695,7 @@
     "location": {
       "column": "28",
       "line": "494",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "tTableFSM",
     "origin": "project_file",
@@ -13709,7 +13709,7 @@
     "location": {
       "column": "9",
       "line": "524",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Add_ATCLITask",
     "origin": "project_file",
@@ -13723,7 +13723,7 @@
     "location": {
       "column": "13",
       "line": "525",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13737,7 +13737,7 @@
     "location": {
       "column": "13",
       "line": "534",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_ATCLI_TaskCallback",
     "origin": "project_file",
@@ -13751,7 +13751,7 @@
     "location": {
       "column": "13",
       "line": "538",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_ATCLI_NotifyFcn",
     "origin": "project_file",
@@ -13765,7 +13765,7 @@
     "location": {
       "column": "14",
       "line": "539",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "Task",
     "origin": "project_file",
@@ -13779,7 +13779,7 @@
     "location": {
       "column": "9",
       "line": "557",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Remove_Task",
     "origin": "project_file",
@@ -13793,7 +13793,7 @@
     "location": {
       "column": "13",
       "line": "558",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13807,7 +13807,7 @@
     "location": {
       "column": "19",
       "line": "567",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_AttachedQueue_CheckEvents",
     "origin": "project_file",
@@ -13821,7 +13821,7 @@
     "location": {
       "column": "16",
       "line": "568",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -13835,7 +13835,7 @@
     "location": {
       "column": "13",
       "line": "569",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "FullFlag",
     "origin": "project_file",
@@ -13849,7 +13849,7 @@
     "location": {
       "column": "23",
       "line": "569",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "CountFlag",
     "origin": "project_file",
@@ -13863,7 +13863,7 @@
     "location": {
       "column": "34",
       "line": "569",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "ReceiverFlag",
     "origin": "project_file",
@@ -13877,7 +13877,7 @@
     "location": {
       "column": "48",
       "line": "569",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "EmptyFlag",
     "origin": "project_file",
@@ -13891,7 +13891,7 @@
     "location": {
       "column": "13",
       "line": "570",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "IsFull",
     "origin": "project_file",
@@ -13905,7 +13905,7 @@
     "location": {
       "column": "21",
       "line": "570",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "IsEmpty",
     "origin": "project_file",
@@ -13919,7 +13919,7 @@
     "location": {
       "column": "12",
       "line": "571",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "CurrentQueueCount",
     "origin": "project_file",
@@ -13933,7 +13933,7 @@
     "location": {
       "column": "13",
       "line": "604",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_TriggerReleaseSchedEvent",
     "origin": "project_file",
@@ -13947,7 +13947,7 @@
     "location": {
       "column": "16",
       "line": "605",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "Callback",
     "origin": "project_file",
@@ -13961,7 +13961,7 @@
     "location": {
       "column": "6",
       "line": "626",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Run",
     "origin": "project_file",
@@ -13975,7 +13975,7 @@
     "location": {
       "column": "14",
       "line": "627",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xPriorityListIndex",
     "origin": "project_file",
@@ -13989,7 +13989,7 @@
     "location": {
       "column": "14",
       "line": "628",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xList",
     "origin": "project_file",
@@ -14003,7 +14003,7 @@
     "location": {
       "column": "16",
       "line": "668",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_CheckIfReady",
     "origin": "project_file",
@@ -14017,7 +14017,7 @@
     "location": {
       "column": "14",
       "line": "669",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xTask",
     "origin": "project_file",
@@ -14031,7 +14031,7 @@
     "location": {
       "column": "14",
       "line": "670",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xList",
     "origin": "project_file",
@@ -14045,7 +14045,7 @@
     "location": {
       "column": "16",
       "line": "671",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "trg",
     "origin": "project_file",
@@ -14059,7 +14059,7 @@
     "location": {
       "column": "20",
       "line": "672",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xReady",
     "origin": "project_file",
@@ -14073,7 +14073,7 @@
     "location": {
       "column": "13",
       "line": "673",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -14087,7 +14087,7 @@
     "location": {
       "column": "16",
       "line": "752",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_Dispatch",
     "origin": "project_file",
@@ -14101,7 +14101,7 @@
     "location": {
       "column": "14",
       "line": "753",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "Task",
     "origin": "project_file",
@@ -14115,7 +14115,7 @@
     "location": {
       "column": "14",
       "line": "754",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xList",
     "origin": "project_file",
@@ -14129,7 +14129,7 @@
     "location": {
       "column": "16",
       "line": "755",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "Event",
     "origin": "project_file",
@@ -14143,7 +14143,7 @@
     "location": {
       "column": "18",
       "line": "756",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "TaskIteration",
     "origin": "project_file",
@@ -14157,7 +14157,7 @@
     "location": {
       "column": "16",
       "line": "757",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "TaskActivities",
     "origin": "project_file",
@@ -14171,7 +14171,7 @@
     "location": {
       "column": "16",
       "line": "857",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_TaskDeadLineReached",
     "origin": "project_file",
@@ -14185,7 +14185,7 @@
     "location": {
       "column": "13",
       "line": "858",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -14199,7 +14199,7 @@
     "location": {
       "column": "18",
       "line": "859",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "TaskIterations",
     "origin": "project_file",
@@ -14213,7 +14213,7 @@
     "location": {
       "column": "14",
       "line": "860",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "TaskInterval",
     "origin": "project_file",
@@ -14227,7 +14227,7 @@
     "location": {
       "column": "13",
       "line": "861",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "DeadLineReached",
     "origin": "project_file",
@@ -14241,7 +14241,7 @@
     "location": {
       "column": "28",
       "line": "876",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_GetTaskGlobalState",
     "origin": "project_file",
@@ -14255,7 +14255,7 @@
     "location": {
       "column": "25",
       "line": "877",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "RetValue",
     "origin": "project_file",
@@ -14269,7 +14269,7 @@
     "location": {
       "column": "14",
       "line": "878",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "xList",
     "origin": "project_file",
@@ -14283,7 +14283,7 @@
     "location": {
       "column": "23",
       "line": "901",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qkernel.c"
     },
     "name": "qOS_CoreGetExternMethods",
     "origin": "project_file",
