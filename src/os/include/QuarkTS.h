@@ -1,14 +1,28 @@
 /*
-    QuarkTS V6.0.3 - Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
-    All rights reserved
+QuarkTS V6.0.3  - A Non-Preemptive RTOS for small embedded systems
+GNU General Public License v3 (GPL-3)
+C99 and MISRA-C 2012 Compliant    
+
+Copyright (C) 2012 Eng. Juan Camilo Gomez C. MSc.
+All rights reserved
     
-    This file is part of the QuarkTS OS distribution.
+This OS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published 
+by the Free Software Foundation, either version 3 of the License, 
+or (at your option) any later version.
+
+This OS is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+along with this program. If not, see https://www.gnu.org/licenses/.
+
+VISIT https://github.com/TECREA/QuarkTS TO ENSURE YOU ARE USING THE LATEST VERSION.
     
-    VISIT https://github.com/TECREA/QuarkTS TO ENSURE YOU ARE USING THE LATEST VERSION.
-    
-    A Non-Preemptive RTOS for small embedded systems
-    GNU Lesser General Public License (LGPL)
-    C99 and MISRA-C 2012 Compliant    
+
+This file is part of the QuarkTS OS distribution.
 */
 
 #ifndef QuarkTS_H
