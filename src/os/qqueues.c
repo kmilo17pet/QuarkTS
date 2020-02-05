@@ -6,7 +6,7 @@ static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *pvItemToQu
 static void qQueue_MoveReader( qQueue_t * const obj );
 static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer );
 /*============================================================================*/
-/*qBool_t qQueue_Setup(qQueue_t * const obj, void* DataBlock, const qSize_t ElementSize, const qSize_t ElementCount)
+/*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea,  size_t ElementSize, size_t ElementCount)
  
 Configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
 is statically allocated at compile time by the application writer.
@@ -14,7 +14,7 @@ is statically allocated at compile time by the application writer.
 Parameters:
 
     - obj : a pointer to the Queue object
-    - DataBlock :  data block or array of data
+    - DataArea :  data block or array of data
     - ElementSize : size of one element in the data block
     - ElementCount : size of one element in the data block
 
@@ -36,7 +36,7 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
     return RetValue;
 }
 /*============================================================================*/
-/*void qQueue_Reset(qQueue_t * const obj)
+/*void qQueue_Reset( qQueue_t * const obj )
  
 Resets a queue to its original empty state.
  
@@ -54,7 +54,7 @@ void qQueue_Reset( qQueue_t * const obj ){
     }
 }
 /*============================================================================*/
-/*qBool_t qQueue_IsEmpty(const qQueue_t * const obj)
+/*qBool_t qQueue_IsEmpty( const qQueue_t * const obj )
  
 Returns the empty status of the Queue
  
@@ -79,7 +79,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const obj ){
     return RetValue;   
 }
 /*============================================================================*/
-/*qSize_t qQueue_Count(const qQueue_t * const obj)
+/*qSize_t qQueue_Count( const qQueue_t * const obj )
  
 Returns the number of items in the Queue
  
@@ -99,7 +99,7 @@ size_t qQueue_Count( const qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_IsFull(const qQueue_t * const obj)
+/*qBool_t qQueue_IsFull( const qQueue_t * const obj )
  
 Returns the full status of the Queue
  
@@ -122,7 +122,7 @@ qBool_t qQueue_IsFull( const qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*void* qQueue_Peek(const qQueue_t * const obj)
+/*void* qQueue_Peek( const qQueue_t * const obj )
  
 Looks at the data from the front of the Queue without removing it. 
  
@@ -149,7 +149,7 @@ void* qQueue_Peek( const qQueue_t * const obj ){
     return (void*)RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_RemoveFront(qQueue_t * const obj)
+/*qBool_t qQueue_RemoveFront( qQueue_t * const obj )
  
 Remove the data located at the front of the Queue
  
@@ -205,7 +205,7 @@ static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffe
     (void) memcpy( (void*) pvBuffer, (void*)obj->qPrivate.pcReadFrom, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
-/*qBool_t qQueue_Receive(qQueue_t * const obj, void *dest)
+/*qBool_t qQueue_Receive( qQueue_t * const obj, void *dest )
  
 Receive an item from a queue (and removes it). The item is received by copy so a 
 buffer of adequate size must be provided. The number of bytes copied into the buffer 
@@ -234,7 +234,7 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_SendGeneric(qQueue_t * const obj, void *ItemToQueue, qBool_t InsertMode)
+/*qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qBool_t InsertMode )
  
 Post an item to the back of the queue. The item is queued by copy, not by reference
  

@@ -81,7 +81,7 @@ static void qATCLI_Puts_Wrapper( const char *s ){
 }
 /*============================================================================*/
 /*qBool_t qATCLI_Setup(qATCLI_t * const cli, const qPutChar_t OutputFcn, 
-                                char *Input, const qSize_t SizeInput, char *Output, const qSize_t SizeOutput, 
+                                char *Input, const size_t SizeInput, char *Output, const size_t SizeOutput, 
                                 const char *Identifier, const char *OK_Response, const char *ERROR_Response, 
                                 const char *NOTFOUND_Response, const char *term_EOL)
  
@@ -157,7 +157,7 @@ Parameters:
                     Since this service only handles AT commands, this string has 
                     to begin by the "at" characters and should be in lower case.
     - Callback: The handler of the callback function associated to the command.
-    			Prototype: qATCLI_Response_t xCallback(qATCLI_t* cli, qATPCLI_PreCmd_t* param)
+    			Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t, qATCLI_PreCmd_t )
     - CmdOpt : This flag combines with a bitwise OR the following information:
                 
                 > QATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback

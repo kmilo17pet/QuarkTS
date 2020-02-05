@@ -23,7 +23,7 @@ qBool_t qSTimer_Reload( qSTimer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qSTimer_Set(qSTimer_t * const obj, const qTime_t Time)
+/*qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time )
  
 Set the expiration time for a STimer. On success, the STimer gets
 armed immediately
@@ -50,7 +50,7 @@ qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qSTimer_FreeRun(qSTimer_t * const obj, const qTime_t Time)
+/*qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time )
 
 Non-Blocking STimer check with automatic arming. 
 Behavior:
@@ -90,7 +90,7 @@ qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time ){
     return RetValue;   
 }
 /*============================================================================*/
-/*qBool_t qSTimer_Expired(const qSTimer_t * const obj)
+/*qBool_t qSTimer_Expired( const qSTimer_t * const obj )
 
 Non-Blocking STimer check
 
@@ -114,7 +114,7 @@ qBool_t qSTimer_Expired( const qSTimer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qTime_t qSTimer_Elapsed(const qSTimer_t * const obj)
+/*qTime_t qSTimer_Elapsed( const qSTimer_t * const obj )
 
 Query the elapsed time
 
@@ -136,7 +136,7 @@ qClock_t qSTimer_Elapsed( const qSTimer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qClock_t qSTimer_Remaining(const qSTimer_t * const obj)
+/*qClock_t qSTimer_Remaining( const qSTimer_t * const obj )
 
 Query the remaining epochs
 
@@ -158,7 +158,7 @@ qClock_t qSTimer_Remaining( const qSTimer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*void qSTimer_Disarm(const qSTimer_t * const obj)
+/*void qSTimer_Disarm( const qSTimer_t * const obj )
 
 Disarms the STimer
 
@@ -173,7 +173,7 @@ void qSTimer_Disarm(qSTimer_t * const obj){
     }
 }
 /*============================================================================*/
-/*qBool_t qSTimer_Status(const qSTimer_t * const obj)
+/*qBool_t qSTimer_Status( const qSTimer_t * const obj )
 
 Get the current status of the STimer (Armed or Disarmed)
 

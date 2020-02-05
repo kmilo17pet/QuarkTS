@@ -10,7 +10,7 @@ static qList_MemAllocator_t qListMalloc = NULL;
 static qList_MemFree_t qListFree = NULL; 
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
 /*============================================================================*/
-/*void qList_Initialize(qList_t *list)
+/*void qList_Initialize( qList_t *list )
  
 Must be called before a list is used!  This initialises all the members of the 
 list structure.
@@ -85,7 +85,7 @@ static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Posi
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_Insert(qList_t * const list, const void * const node, const qList_Position_t position)
+/*qBool_t qList_Insert( qList_t * const list, void * const node, const qList_Position_t position )
  
 Insert an item into the list.
 
@@ -149,7 +149,7 @@ Return value:
 
 */ 
 /*=========================================================*/           
-qBool_t qList_RemoveItself( void *const node ){
+qBool_t qList_RemoveItself( void * const node ){
     qBool_t RetValue = qFalse;
     qList_Node_t *toRemove;
     qList_t *list;
@@ -178,7 +178,7 @@ qBool_t qList_RemoveItself( void *const node ){
     return RetValue;
 }
 /*=========================================================*/           
-/*void* qList_Remove(qList_t * const list, void * const node, const qList_Position_t position)
+/*void* qList_Remove( qList_t * const list, void * const node, const qList_Position_t position )
  
 Remove an item from the list.
 
@@ -325,7 +325,7 @@ qBool_t qList_IsMember( qList_t * const list, void * const node ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_GetFront(const qList_t * const list)
+/*void* qList_GetFront( const qList_t * const list )
  
 Get a pointer to the front item of the list
 
@@ -346,7 +346,7 @@ void* qList_GetFront( const qList_t *const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_GetBack(const qList_t * const list)
+/*void* qList_GetBack( const qList_t * const list )
  
 Get a pointer to the back item of the list
 
@@ -367,7 +367,7 @@ void* qList_GetBack( const qList_t *const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IsEmpty(const qList_t * const list)
+/*qBool_t qList_IsEmpty( const qList_t * const list )
  
 Check if the list is empty.
 
@@ -388,7 +388,7 @@ qBool_t qList_IsEmpty( const qList_t * const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_Length(const qList_t * const list)
+/*void* qList_Length( const qList_t * const list )
  
 Get the number of items inside the list
 
@@ -409,7 +409,7 @@ size_t qList_Length( const qList_t * const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(void *n1, void *n2) ) 
+/*qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) 
 
 Sort the double linked list using the <CompareFcn> function to 
 determine the order.
@@ -553,7 +553,7 @@ void* qList_IteratorGetNext( qList_Iterator_t *iterator ){
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_ForEach( qList_t *const list, qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir )
+/*qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset )
  
 Operate on each element of the list.
 

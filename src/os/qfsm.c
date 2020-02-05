@@ -5,7 +5,7 @@
 static void qStatemachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
 
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState);
+/*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
 
 Initializes a finite state machine (FSM).
 
@@ -14,17 +14,18 @@ Parameters:
     - obj : a pointer to the FSM object.
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
-                  qFSM_t pointer as input argument.
+                  qSM_Handler_t as input argument.
     - SuccessState : Sub-State performed after a state finish with return status 
                      qSM_EXIT_SUCCESS. This argument is a pointer to a callback
-                     function with a qFSM_t pointer as input argument.
+                     function with a qSM_Handler_t pointer as input argument.
     - FailureState : Sub-State performed after a state finish with return status 
                      qSM_EXIT_FAILURE. This argument is a pointer to a callback
-                     function with a qFSM_t pointer as input argument.
+                     function with a qSM_Handler_t as input argument.
     - UnexpectedState : Sub-State performed after a state finish with return status
                         value between -32766 and 32767. This argument is a 
-                        pointer to a callback function with a qFSM_t pointer
+                        pointer to a callback function with a qSM_Handler_t 
                         as input argument.
+    - BeforeAnyState : A state called before the normal state machine execution,                   
 
 Return value:
 
@@ -104,7 +105,7 @@ void qStateMachine_Run( qSM_t * const obj, void *Data ){
     }
  }
 /*============================================================================*/
-/*void qStateMachine_Attribute(qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs)
+/*void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
 
 Change attributes or set actions to the Finite State Machine (FSM).
 
@@ -263,6 +264,19 @@ qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_
     return RetValue;
 }
 /*============================================================================*/
+/*qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj )
+
+Return the state-machine handler.
+
+Parameters:
+
+    - obj : a pointer to the FSM object.
+
+Return value:
+
+    The requested FSM handler. NULL if the handler cant be retrieved.
+
+*/
 qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
     qSM_Handler_t h =  NULL;
     if( NULL != obj ){

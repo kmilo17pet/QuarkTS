@@ -29,16 +29,16 @@
     #define QTUNIT_TOTIME( _xTime_ , _qunit_ )      ( (qTime_t)( _xTime_ ) *  (qTime_t)( _qunit_ ) )
 
     #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-        #define qTimingBase_type    qClock_t
+        #define qTimingBase_t    qClock_t
     #else
-        #define qTimingBase_type    qTime_t
+        #define qTimingBase_t    qTime_t
     #endif 
 
     typedef qUINT32_t qClock_t;
     typedef qClock_t (*qGetTickFcn_t)(void);
 
 
-    void qClock_SetTimeBase( const qTimingBase_type tb );
+    void qClock_SetTimeBase( const qTimingBase_t tb );
     void qClock_SetTickProvider( qGetTickFcn_t provider );
     qTime_t qClock_Convert2Time( const qClock_t t );
     qClock_t qClock_Convert2Clock( const qTime_t t );
@@ -50,4 +50,4 @@
     }
     #endif
 
-#endif 
+#endif

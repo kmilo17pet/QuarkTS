@@ -3,7 +3,7 @@
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Setup(qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime)
+/*qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime )
  
 Initialize a I/O Edge-Check instance 
 
@@ -30,7 +30,7 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t Re
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Add_Node(qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber)
+/*qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber )
  
 Initialize an I/O Edge-Check instance 
 
@@ -61,7 +61,7 @@ qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t 
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Update(qEdgeCheck_t * const Instance)
+/*qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance )
  
 Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
 
@@ -124,7 +124,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_GetNodeStatus(const qEdgeCheck_IONode_t * const Node)
+/*qBool_t qEdgeCheck_GetNodeStatus( const qEdgeCheck_IONode_t * const Node ) 
  
 Query the status of the specified input-node.
 

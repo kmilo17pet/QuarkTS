@@ -5,10 +5,10 @@ static qGetTickFcn_t GetSysTick = NULL;
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
 
-static qTimingBase_type TimmingBase;
+static qTimingBase_t TimmingBase;
 
 /*============================================================================*/
-/*void qClock_SetTimeBase( const qTimingBase_type tb )
+/*void qClock_SetTimeBase( const qTimingBase_t tb )
 
 Set the system time-base for time conversions
 
@@ -17,7 +17,7 @@ Parameters:
     - tb : Time base 
 
 */
-void qClock_SetTimeBase( const qTimingBase_type tb ){
+void qClock_SetTimeBase( const qTimingBase_t tb ){
     TimmingBase = tb;
 } 
 #endif

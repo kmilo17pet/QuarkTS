@@ -1,11 +1,11 @@
 #include "qkernel.h"
 
 /*============================================================================*/
-/*void qTask_Notification_Send(qTask_t * const Task, void* eventdata)
+/*void qTask_Notification_Send( qTask_t * const Task, void* eventdata )
 
 Sends a simple notification generating an asynchronous event. 
-This method marks the task as 'qReady' for execution, therefore, the planner will launch the task 
-immediately according to the scheduling rules (even if task is disabled) and 
+This method marks the task as 'qReady' for execution, therefore, the planner will 
+launch the task immediately according to the scheduling rules (even if task is disabled) and 
 setting the Trigger flag to "byNotificationSimple". Specific user-data can be passed 
 through, and will be available in the respective callback inside the <EventData> 
 field.
@@ -31,10 +31,10 @@ qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qTask_Notification_Queue(const qTask_t * const Task, void* eventdata)
+/*qBool_t qTask_Notification_Queue( const qTask_t * const Task, void* eventdata )
 
 Insert a notification in the FIFO priority queue. The scheduler get this notification
-as asynchronous event, therefor, the task will be ready for execution according to 
+as an asynchronous event, therefor, the task will be ready for execution according to 
 the queue order (determined by priority), even if task is in a disabled or sleep 
 operational state. When extracted, the scheduler will set Trigger flag to  
 "byNotificationQueued". Specific user-data can be passed through, and will be 
@@ -95,7 +95,7 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
 }
 /*============================================================================*/
 /*
-qState_t qTask_Get_State( const qTask_t * const Task)
+qState_t qTask_Get_State( const qTask_t * const Task )
 
 Retrieve the task operational state.
 
@@ -120,7 +120,7 @@ qState_t qTask_Get_State( const qTask_t * const Task){
 }
 /*============================================================================*/
 #if ( Q_TASK_COUNT_CYCLES == 1 )
-/*qCycles_t qTask_Get_Cycles(const qTask_t *Task)
+/*qCycles_t qTask_Get_Cycles( const qTask_t * const Task )
 
 Retrieve the number of task activations.
 
@@ -162,7 +162,7 @@ qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task ){
     return KernelPrivate->Get_TaskGlobalState( Task );
 }
 /*============================================================================*/
-/*void qTask_Set_Time(qTask_t * const Task, const qTime_t Value)
+/*void qTask_Set_Time( qTask_t * const Task, const qTime_t Value )
 
 Set/Change the Task execution interval
 
@@ -178,7 +178,7 @@ void qTask_Set_Time( qTask_t * const Task, const qTime_t Value ){
     }
 }
 /*============================================================================*/
-/*void qTask_Set_Iterations(qTask_t * const Task, qIteration_t Value)
+/*void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value )
 
 Set/Change the number of task iterations
 
@@ -198,7 +198,7 @@ void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value ){
     }      
 }
 /*============================================================================*/
-/*void qTask_Set_Priority(qTask_t * const Task, const qPriority_t Value)
+/*void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value )
 
 Set/Change the task priority value
 
@@ -213,7 +213,7 @@ void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value ){
     }
 }
 /*============================================================================*/
-/*void qTask_Set_Callback(qTask_t * const Task, const qTaskFcn_t Callback)
+/*void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn )
 
 Set/Change the task callback function.
 Note: This function can be used to detach a state-machine from a task
@@ -221,7 +221,7 @@ Note: This function can be used to detach a state-machine from a task
 Parameters:
 
     - Task : A pointer to the task node.
-    - Callback : A pointer to a void callback method with a qEvent_t parameter 
+    - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter 
                  as input argument.
 */
 void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
@@ -233,7 +233,7 @@ void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     }    
 }
 /*============================================================================*/
-/*void qTask_Set_State(qTask_t * const Task, const qState_t State)
+/*void qTask_Set_State( qTask_t * const Task, const qState_t State )
 
 Set the task state (Enabled or Disabled)
 
@@ -270,7 +270,7 @@ void qTask_Set_State(qTask_t * const Task, const qState_t State){
     }
 }
 /*============================================================================*/
-/*void qTask_Set_Data(qTask_t * const Task, void* UserData)
+/*void qTask_Set_Data( qTask_t * const Task, void* UserData )
 
 Set the task data
 
@@ -288,7 +288,7 @@ void qTask_Set_Data( qTask_t * const Task, void* arg ){
     }
 }
 /*============================================================================*/
-/*void qTaskClearTimeElapsed(qTask_t *Task)
+/*void qTaskClearTimeElapsed( qTask_t * const Task )
 
 Clear the elapsed time of the task. Restart the internal task tick;
 
@@ -302,7 +302,7 @@ void qTask_ClearTimeElapsed( qTask_t * const Task ){
     }    
 }
 /*============================================================================*/
-/*qTask_t* qTask_Self(void)
+/*qTask_t* qTask_Self( void )
 
 Get the current running-task handle.
 
@@ -318,7 +318,7 @@ qTask_t* qTask_Self( void ){
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-/*qBool_t qTask_Attach_Queue(qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg)
+/*qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg )
 
 Attach a Queue to the Task. 
 
@@ -495,11 +495,7 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck,
 }
 /*============================================================================*/
 /******************************************************************************
-
-
    PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE
-   
-
 *******************************************************************************/
 /*============================================================================*/
 qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){

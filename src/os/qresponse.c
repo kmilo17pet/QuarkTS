@@ -3,7 +3,7 @@
 #if ( Q_RESPONSE_HANDLER == 1 )
 
 /*============================================================================*/
-/*void qResponse_Setup(qResponse_t * const obj, char *xLocBuff, qSize_t nMax)
+/*void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax)
 
 Initialize the instance of the response handler object
 
@@ -23,7 +23,7 @@ void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
     }
 }   
 /*============================================================================*/
-/*void qResponseInitialize(qResponse_t * const obj)
+/*void qResponseInitialize( qResponse_t * const obj )
 
 Reset the Response Handler
 
@@ -41,7 +41,7 @@ void qResponse_Reset( qResponse_t * const obj ){
     }
 }
 /*============================================================================*/
-/*qBool_t qResponse_Received(qResponse_t * const obj, const char *Pattern, qSize_t n)
+/*qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n )
  
 Non-Blocking Response check
 
@@ -60,7 +60,7 @@ qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t
     return qResponse_ReceivedWithTimeout( obj, Pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
-/*qBool_t qResponse_ReceivedWithTimeout(qResponse_t * const obj, const char *Pattern, qSize_t n, qTime_t t)
+/*qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t )
  
 Non-Blocking Response check with timeout
 
@@ -70,7 +70,6 @@ Parameters:
     - Pattern: The data checked in the receiver ISR
     - n : The length of the data pointed by Pattern 
           (if Pattern is string, set n to 0 to auto-compute the length)
-    - timeout : A pointer to the qSTimer object
     - t : The timeout value
   
 Return value:
@@ -106,7 +105,7 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qResponse_ISRHandler(qResponse_t * const obj, const char rxchar)
+/*qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar )
 
 ISR receiver for the response handler
 
@@ -119,7 +118,7 @@ Return value:
 
     qTrue when the Response handler match the request from "qResponseReceived"
 */
-qBool_t qResponse_ISRHandler(qResponse_t * const obj, const char rxchar){
+qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( obj->qPrivate.PatternLength > 0u ) ) {

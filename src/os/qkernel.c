@@ -89,7 +89,7 @@ static void qOS_DummyTask_Callback( qEvent_t e );
 /*========================== QuarkTS Private Macros ==========================*/
 static void qOS_DummyTask_Callback( qEvent_t e ){}
 /*============================================================================*/
-/*void qOS_Setup(const qGetTickFcn_t TickProviderFcn,  qTime_t ISRTick, qTaskFcn_t IDLE_Callback)
+/*void qOS_Setup( const qGetTickFcn_t TickProviderFcn, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback )
         
 Task Scheduler Setup. This function is required and must be called once in 
 the application main thread before any tasks creation.
@@ -100,18 +100,18 @@ Parameters:
                         uses the qClock_SysTick() from the ISR, this parameter can be NULL.
                         Note: Function should take void and return a 32bit value. 
 
-    - TimmingBase : This parameter specifies the ISR background timer base time.
+    - BaseTimming (Optional) : This parameter specifies the ISR background timer base time.
                     This can be the period in seconds(Floating-point format) or frequency 
                     in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
 
-    - IDLE_Callback : Callback function to the Idle Task. To disable the 
+    - IdleCallback : Callback function to the Idle Task. To disable the 
                     Idle Task functionality, pass NULL as argument.
 
 */
 #if (Q_SETUP_TIME_CANONICAL == 1)
     void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
 #else
-    void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback ){
+    void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback ){
 #endif
     qIndex_t i;
     qList_Initialize( SuspendedList );
@@ -157,7 +157,7 @@ static qTask_t* qOS_Get_TaskRunning( void ){
     return kernel.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
-/*void qOS_Set_IdleTask(qTaskFcn_t Callback)
+/*void qOS_Set_IdleTask( qTaskFcn_t Callback )
 
 Establish the IDLE Task Callback
 
@@ -171,7 +171,7 @@ void qOS_Set_IdleTask( qTaskFcn_t Callback ){
 }
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 /*============================================================================*/
-/*void qOS_Scheduler_Release(void)
+/*void qOS_Scheduler_Release( void )
 
 Disables the kernel scheduling. The main thread will continue after the
 qOS_Run() call.
@@ -180,7 +180,7 @@ void qOS_Scheduler_Release( void ){
     _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED );
 }
 /*============================================================================*/
-/*void qOS_Set_SchedulerReleaseCallback(qTaskFcn_t Callback)
+/*void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback )
 
 Set/Change the scheduler release callback function
 
@@ -244,7 +244,7 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
     kernel.QueueIndex--;    /*decrease the index*/    
 }
 /*============================================================================*/
-static qBool_t qOS_PriorityQueue_Insert(qTask_t * const Task, void *data){
+static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *data ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t RetValue = qFalse;
         qQueueStack_t tmp;
@@ -322,7 +322,7 @@ static size_t qOS_PriorityQueue_GetCount( void ){
 /*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */
 /*============================================================================*/
-/*qBool_t qOS_Add_Task(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg)
+/*qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg )
 
 Add a task to the scheduling scheme. The task is scheduled to run every <Time> 
 seconds, <nExecutions> times and executing <CallbackFcn> method on every pass.
@@ -390,7 +390,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
     return RetValue;  
 }
 /*============================================================================*/
-/*qBool_t qOS_Add_EventTask(qTask_t *Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg)
+/*qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg )
 
 Add a task to the scheduling scheme.  This API creates a task with qDisabled 
 state by default , so this task will be oriented to be executed only, when 
@@ -417,11 +417,11 @@ qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriori
 }
 /*============================================================================*/
 #if ( Q_FSM == 1)
-/*qBool_t qOS_Add_StateMachineTask(qTask_t *Task, qPriority_t Priority, qTime_t Time,
-                         qSM_t *StateMachine, qSM_State_t InitState, 
+/*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
+                         qSM_t * const StateMachine, qSM_State_t InitState, 
                          qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState,
                          qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
-                         qState_t InitialTaskState, void *arg)
+                         qState_t InitialTaskState, void *arg )
 
 Add a task to the scheduling scheme running a dedicated state-machine. 
 The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
@@ -506,7 +506,7 @@ qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-/*qBool_t qOS_Add_ATCLITask(qTask_t *Task, qATCLI_t *Parser, qPriority_t Priority)
+/*qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *Parser, qPriority_t Priority )
 
 Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
 as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.
@@ -542,7 +542,7 @@ static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli){
 }
 #endif /* #if ( Q_ATCLI == 1) */
 /*============================================================================*/
-/*qBool_t qOS_Remove_Task(qTask_t *Task)
+/*qBool_t qOS_Remove_Task( qTask_t * const Task )
 
 Remove the task from the scheduling scheme.
 
@@ -616,9 +616,9 @@ static void qOS_TriggerReleaseSchedEvent( void ){
 }
 #endif
 /*============================================================================*/
-/*void qOS_Run(void)
+/*void qOS_Run( void )
     
-Executes the task-scheduler scheme. It must be called once after the task
+Executes the scheduling scheme. It must be called once after the task
 pool has been defined.
 
   Note : This call keeps the application in an endless loop

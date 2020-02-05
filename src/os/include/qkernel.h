@@ -39,7 +39,7 @@
     #if (Q_SETUP_TIME_CANONICAL == 1)
         void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
     #else
-        void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback );
+        void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback );
     #endif
 
     void qOS_Set_IdleTask( qTaskFcn_t Callback );

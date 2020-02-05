@@ -30,7 +30,7 @@ static char qIOUtil_NibbleToX( qUINT8_t value ){
     return (char) ((ch > '9') ? ch + 7u : ch);
 }
 /*============================================================================*/
-/*void qIOUtil_SwapBytes(void *data, qSize_t n)
+/*void qIOUtil_SwapBytes( void *data, const qSize_t n )
  
 Invert the endianess for n bytes of the specified memory location
  
@@ -52,7 +52,7 @@ void qIOUtil_SwapBytes( void *data, const size_t n ){
     }
 }
 /*============================================================================*/
-/*qBool_t qIOUtil_CheckEndianness(void)
+/*qBool_t qIOUtil_CheckEndianness( void )
  
 Check the system endianess
   
@@ -65,7 +65,7 @@ qBool_t qIOUtil_CheckEndianness( void ){
     return (qBool_t)( *( (qUINT16_t*)&i ) );
 }
 /*============================================================================*/
-/*void qIOUtil_OutputString(qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP)
+/*void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP )
  
 Wrapper method to write a string through fcn
   
@@ -104,7 +104,7 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n ){
     fcn( pStorage, '\n' );
 }
 /*============================================================================*/
-/*void qIOUtil_OutputRaw(qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP)
+/*void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP )
  
 Wrapper method to write n RAW data through fcn
   
@@ -132,7 +132,7 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t
     }
 }
 /*============================================================================*/
-/*void qIOUtil_InputRaw(const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP)
+/*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP )
 
 Wrapper method to get n RAW data through fcn
   
@@ -160,7 +160,7 @@ void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const s
     }
 }
 /*============================================================================*/
-/*void qIOUtil_U32toX(qUINT32_t value, char *str, qINT8_t n)
+/*void qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n )
  
 Converts an unsigned integer value to a null-terminated string using the 16 base
 and stores the result in the array given by str parameter.
@@ -186,7 +186,7 @@ char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n ){
     return str;
 }
 /*============================================================================*/
-/*uint32_t qIOUtil_XtoU32(const char *s)
+/*uint32_t qIOUtil_XtoU32( const char *s )
   
 Converts the input string s consisting of hexadecimal digits into an unsigned 
 integer value. The input parameter s should consist exclusively of hexadecimal 
@@ -233,7 +233,7 @@ qUINT32_t qIOUtil_XtoU32( const char *s ) {
     return val;
 }
 /*============================================================================*/
-/* qFloat64_t qIOUtil_AtoF(const char *s)
+/* qFloat64_t qIOUtil_AtoF( const char *s )
 Parses the C string s, interpreting its content as a floating point number and 
 returns its value as a double(qFloat64_t). The function first discards as many 
 whitespace characters (as in isspace) as necessary until the first non-whitespace 
@@ -311,7 +311,7 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
     #endif      
 }
 /*============================================================================*/
-/* char* qIOUtil_FtoA(qFloat32_t f, char *str, qUINT8_t precision)
+/* char* qIOUtil_FtoA( qFloat32_t f, char *str, qUINT8_t precision )
 
 Converts a float value to a formatted string.
 
@@ -378,7 +378,7 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited t
     return str;
 }
 /*============================================================================*/
-/*int qIOUtil_AtoI(const char *s)
+/*int qIOUtil_AtoI( const char *s )
 Parses the C-string s interpreting its content as an integral number, which is 
 returned as a value of type int. The function first discards as many whitespace
 characters (as in isspace) as necessary until the first non-whitespace character 
@@ -432,7 +432,7 @@ int qIOUtil_AtoI( const char *s ){
     return RetValue;
 }
 /*============================================================================*/
-/* char* qIOUtil_UtoA(qUINT32_t num, char* str, qUINT8_t base)
+/* char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base )
 
 Converts an unsigned value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. 
@@ -461,7 +461,7 @@ char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base ){
     return str;
 }
 /*============================================================================*/
-/* char* qIOUtil_ItoA(qINT32_t num, char* str, qUINT8_t base)
+/* char* qIOUtil_ItoA(q INT32_t num, char* str, qUINT8_t base )
 
 Converts an integer value to a null-terminated string using the specified base 
 and stores the result in the array given by str parameter. If base is 10 and 
@@ -498,7 +498,7 @@ char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base ){
     return str;
 }
 /*============================================================================*/
-/* char* qIOUtil_BtoA(qBool_t num, char *str)
+/* char* qIOUtil_BtoA( qBool_t num, char *str )
 
 Converts a boolean value to a null-terminated string. Input is considered true
 with any value different to zero (0).
@@ -526,7 +526,7 @@ char* qIOUtil_BtoA( qBool_t num, char *str ){
     return str;
 }
 /*============================================================================*/
-/* char* qIOUtil_QBtoA(qBool_t num, char *str)
+/* char* qIOUtil_QBtoA( qBool_t num, char *str )
 
 Converts a qBool_t value to a null-terminated string. Input is considered true
 with any value different to zero (0).
@@ -568,7 +568,7 @@ char* qIOUtil_QBtoA( qBool_t num, char *str ){
     return str;
 }
 /*============================================================================*/
-/*qBool_t qIOUtil_IsInf(qFloat32_t f)
+/*qBool_t qIOUtil_IsInf( qFloat32_t f )
 Determines if the given floating point number arg is positive or negative infinity
 
 Parameters:
@@ -585,7 +585,7 @@ qBool_t qIOUtil_IsInf( qFloat32_t f ){
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
-/*qBool_t qIsNan(qFloat32_t f)
+/*qBool_t qIsNan( qFloat32_t f )
 Determines if the given floating point number arg is a not-a-number (NaN) value. 
 
 Parameters:
