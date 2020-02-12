@@ -2,6 +2,7 @@
 
 static volatile qClock_t _qSysTick_Epochs_ = 0uL;
 static qGetTickFcn_t GetSysTick = NULL;
+#define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
 
@@ -80,8 +81,10 @@ qClock_t qClock_Convert2Clock( const qTime_t t ){
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
             return (qClock_t)(t*TimmingBase);
         #else
-            qTime_t epochs;
-            epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;
+            qTime_t epochs = 0uL;
+            if( t > qTimeImmediate ){
+                epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;
+            }           
             return (qClock_t)epochs;
         #endif    
     #endif

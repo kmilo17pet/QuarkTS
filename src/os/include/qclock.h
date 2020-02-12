@@ -18,8 +18,6 @@
     #else
         typedef qFloat32_t qTime_t;
         #define qTimeImmediate       ((qTime_t)(0.0f))
-        #define QFLT_TIME_FIX_VALUE  ( 0.15f )
-
         #define QTUNIT_MINUTE     ( 60.0f )    
         #define QTUNIT_HOUR       ( 3600.0f )
         #define QTUNIT_DAY        ( 86400.0f )
