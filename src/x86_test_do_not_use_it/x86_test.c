@@ -397,7 +397,7 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
 
     TEST_MESSAGE( "OS scheduling..." ); 
-    qOS_Setup(GetTickCountMs, 0.001, IdleTaskCallback);           
+    qOS_Setup(GetTickCountMs, 0.001, IdleTaskCallback);      
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
