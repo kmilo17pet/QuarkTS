@@ -87,7 +87,9 @@ static void qOS_DummyTask_Callback( qEvent_t e );
 #endif
 
 /*========================== QuarkTS Private Macros ==========================*/
-static void qOS_DummyTask_Callback( qEvent_t e ){}
+static void qOS_DummyTask_Callback( qEvent_t e ){
+    (void)e; /*unused*/
+}
 /*============================================================================*/
 /*void qOS_Setup( const qGetTickFcn_t TickProviderFcn, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback )
         
@@ -744,7 +746,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         RetValue = xReady;
     }
     else{
-        /*this should never enter here*/
+        (void)arg; /*arg is never used*/  /*this should never enter here*/
     }
     return RetValue;
 }

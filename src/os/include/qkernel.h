@@ -23,7 +23,7 @@
     #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ( (qIteration_t)(1) )
 
-       typedef qBool_t (*qTask_NotifyMode_t)(qTask_t* arg1, void* arg2);
+    typedef qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2);
 
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
