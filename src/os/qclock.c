@@ -81,7 +81,7 @@ qClock_t qClock_Convert2Clock( const qTime_t t ){
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
             return (qClock_t)(t*TimmingBase);
         #else
-            qTime_t epochs = 0uL;
+            qTime_t epochs = qTimeImmediate;
             if( t > qTimeImmediate ){
                 epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;
             }           

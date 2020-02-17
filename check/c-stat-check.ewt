@@ -2387,7 +2387,7 @@
             <name>$PROJ_DIR$\..\src\os\include\qclock.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\src\os\include\qconfig.h</name>
+            <name>$PROJ_DIR$\..\src\config\qconfig.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\src\os\include\qcoroutine.h</name>

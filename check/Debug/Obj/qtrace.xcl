@@ -10,11 +10,15 @@ qtrace.pbi
 -I
 D:\Camilo\Documentos\GitHub\QuarkTS\src\os
 -I
+D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\config
+-I
 D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\os\include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc\c
+-I
+D:\Camilo\Documentos\GitHub\QuarkTS\src\config
 -I
 D:\Camilo\Documentos\GitHub\QuarkTS\src\os\include
 -D__CHAR_BITS__=8
