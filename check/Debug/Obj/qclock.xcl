@@ -1,4 +1,4 @@
-"d:\Camilo\documentos\GitHub\QuarkTS\src\os\qclock.c"
+"D:\Camilo\Documentos\GitHub\QuarkTS\src\os\qclock.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
@@ -8,7 +8,7 @@ D:\Camilo\Documentos\GitHub\QuarkTS\check\Debug\Obj\qclock.pbi.dep
 -o
 qclock.pbi
 -I
-d:\Camilo\documentos\GitHub\QuarkTS\src\os
+D:\Camilo\Documentos\GitHub\QuarkTS\src\os
 -I
 D:\Camilo\Documentos\GitHub\QuarkTS\check\..\src\config
 -I

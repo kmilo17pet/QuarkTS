@@ -5,115 +5,177 @@
     <configuration>
         <name>Debug</name>
         <outputs>
+            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
+            <file>$PROJ_DIR$\..\src\os\qbsbuffers.c</file>
+            <file>$PROJ_DIR$\..\src\os\qclock.c</file>
+            <file>$PROJ_DIR$\..\src\os\qfsm.c</file>
+            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
+            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\qioutils.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qresponse.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qfsm.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qedgecheck.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qlists.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qkernel.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qqueues.__cstat.et</file>
+            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
+            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
+            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
             <file>$PROJ_DIR$\Debug\Obj\qbsbuffers.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\qqueues.xcl</file>
             <file>$PROJ_DIR$\Debug\Obj\qtasks.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\qioutils.o</file>
             <file>$PROJ_DIR$\Debug\Obj\qclock.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qioutils.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qmemmang.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qresponse.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\qlists.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qkernel.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qfsm.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\qedgecheck.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qqueues.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\qstimers.o</file>
+            <file>$PROJ_DIR$\..\src\os\qcritical.c</file>
+            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
+            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
+            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
             <file>$PROJ_DIR$\Debug\Obj\qtrace.o</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
             <file>$PROJ_DIR$\Debug\Obj\qatcli.o</file>
             <file>$PROJ_DIR$\Debug\Obj\qtasks.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
             <file>$PROJ_DIR$\Debug\Obj\qbsbuffers.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qlists.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\qcritical.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qioutils.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\lib\dl6M_tln.a</file>
-            <file>$PROJ_DIR$\Debug\Obj\qfsm.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qatcli.xcl</file>
-            <file>$TOOLKIT_DIR$\lib\rt6M_tl.a</file>
-            <file>$PROJ_DIR$\Debug\Obj\qmemmang.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qresponse.o</file>
-            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\qlists.o</file>
-            <file>$PROJ_DIR$\..\src\os\qcritical.c</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
-            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\qbsbuffers.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\qtrace.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\qatcli.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\qkernel.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\List\c-stat-check.map</file>
-            <file>$PROJ_DIR$\Debug\Obj\qmemmang.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\qcritical.__cstat.et</file>
-            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
             <file>$PROJ_DIR$\..\src\os\qqueues.c</file>
-            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
-            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
-            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\qstimers.xcl</file>
-            <file>$TOOLKIT_DIR$\lib\m6M_tl.a</file>
-            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
-            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
-            <file>$PROJ_DIR$\..\src\os\qclock.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\qkernel.o</file>
-            <file>$PROJ_DIR$\..\src\os\qfsm.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\qioutils.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qmemmang.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qlists.__cstat.et</file>
+            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\qmemmang.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qresponse.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qatcli.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qkernel.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\qqueues.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\qclock.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qtasks.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qcritical.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qcritical.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qresponse.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qclock.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qbsbuffers.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\qstimers.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qmemmang.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qfsm.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qlists.o</file>
             <file>$PROJ_DIR$\Debug\Obj\qfsm.__cstat.et</file>
-            <file>$PROJ_DIR$\..\src\os\include\qioutils.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qkernel.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qlists.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qcoroutine.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qcritical.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qbitmacros.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qfsm.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qresponse.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qclock.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qqueues.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qstimers.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qtasks.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qmemmang.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qtrace.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qbackward.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qtypes.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\QuarkTS.h</file>
-            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
-            <file>$PROJ_DIR$\..\src\os\qbsbuffers.c</file>
-            <file>$PROJ_DIR$\..\src\os\include\qbsbuffers.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qatcli.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qconfig.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qedgecheck.h</file>
             <file>$PROJ_DIR$\Debug\Obj\qedgecheck.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qedgecheck.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qclock.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Exe\c-stat-check.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\qioutils.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qstimers.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qcritical.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\qtrace.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\qkernel.o</file>
             <file>$PROJ_DIR$\Debug\Obj\qtrace.xcl</file>
             <file>$PROJ_DIR$\Debug\Obj\c-stat-check.pbd</file>
-            <file>$TOOLKIT_DIR$\config\generic_cortex.icf</file>
-            <file>$PROJ_DIR$\Debug\Obj\qstimers.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qcritical.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ctype.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\qtasks.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\qresponse.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qedgecheck.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\qclock.o</file>
-            <file>$PROJ_DIR$\Debug\Exe\c-stat-check.out</file>
-            <file>$PROJ_DIR$\..\src\config\qconfig.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\qatcli.__cstat.et</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 100 45</file>
+                    <file> 53</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qatcli.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 26</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 61</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 36</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qbsbuffers.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 44</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 16</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 28</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qclock.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 43</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 19</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qfsm.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 49</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 47</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qtasks.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 18</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 27</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qtrace.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 25</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 57</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 59</file>
                 </tool>
             </outputs>
         </file>
@@ -122,161 +184,68 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 36</file>
+                    <file> 48</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 25</file>
+                    <file> 32</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
                     <file> 10</file>
                 </tool>
             </outputs>
-            <inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qedgecheck.c</name>
+            <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 65 78 22 8 12 24 5 15 92 91</file>
+                    <file> 9</file>
                 </tool>
-            </inputs>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 50</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 51</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qioutils.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 6</file>
+                </tool>
+            </outputs>
         </file>
         <file>
             <name>$PROJ_DIR$\..\src\os\qcritical.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 93</file>
+                    <file> 40</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 47</file>
+                    <file> 41</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 26</file>
+                    <file> 56</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 67 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qmemmang.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 46</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 7</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 33</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 75 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qresponse.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 34</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 9</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 97</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 70 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qtrace.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 18</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 42</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 87</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 76 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qqueues.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 60</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 16</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 1</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 72 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qstimers.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 17</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 90</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 73 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\..\src\os\qkernel.c</name>
@@ -287,137 +256,33 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 44</file>
+                    <file> 37</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
                     <file> 11</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 64 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\src\os\qioutils.c</name>
+            <name>$PROJ_DIR$\..\src\os\qresponse.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 3</file>
+                    <file> 35</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 27</file>
+                    <file> 7</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 6</file>
+                    <file> 42</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 63 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\src\os\qedgecheck.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 14</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 86</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 98</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 85 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qtasks.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 96</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 2</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 21</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 64 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qclock.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 99</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 61</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 4</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 71 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qfsm.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 62</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 29</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 69 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qatcli.c</name>
+            <name>$PROJ_DIR$\..\src\os\qstimers.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -425,182 +290,48 @@
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 43</file>
+                    <file> 55</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 31</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 83 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\os\qbsbuffers.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 41</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 0</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 23</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 82 78 22 8 12 24 5 15 92 91</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\c-stat-check.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
                     <file> 45</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 89 20 41 99 93 14 13 3 58 36 46 60 34 17 96 18 19 32 54 28</file>
-                </tool>
-            </inputs>
         </file>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qlists.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qcritical.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qmemmang.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qresponse.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qtrace.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
+        <file>
             <name>$PROJ_DIR$\..\src\os\qqueues.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qstimers.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qkernel.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qioutils.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qedgecheck.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qtasks.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qclock.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qfsm.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qatcli.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qbsbuffers.c</name>
-            <tool>C-STAT</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qlists.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qcritical.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 12</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 17</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\src\os\qmemmang.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qresponse.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qtrace.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qqueues.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qstimers.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qkernel.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qioutils.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qedgecheck.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qtasks.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qclock.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qfsm.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qatcli.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\..\src\os\qbsbuffers.c</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>[MULTI_TOOL]</name>
-            <tool>ILINK</tool>
-        </forcedrebuild>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 34</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 31</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 46</file>
+                </tool>
+            </outputs>
+        </file>
     </configuration>
     <configuration>
         <name>Release</name>

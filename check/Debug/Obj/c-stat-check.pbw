@@ -11671,7 +11671,7 @@
     "location": {
       "column": "26",
       "line": "3",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "_qSysTick_Epochs_",
     "origin": "project_file",
@@ -11685,7 +11685,7 @@
     "location": {
       "column": "22",
       "line": "4",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "GetSysTick",
     "origin": "project_file",
@@ -11699,7 +11699,7 @@
     "location": {
       "column": "9",
       "line": "5",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "QFLT_TIME_FIX_VALUE",
     "origin": "project_file",
@@ -11713,7 +11713,7 @@
     "location": {
       "column": "22",
       "line": "9",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "TimmingBase",
     "origin": "project_file",
@@ -11727,7 +11727,7 @@
     "location": {
       "column": "6",
       "line": "21",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_SetTimeBase",
     "origin": "project_file",
@@ -11741,7 +11741,7 @@
     "location": {
       "column": "6",
       "line": "37",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_SetTickProvider",
     "origin": "project_file",
@@ -11755,7 +11755,7 @@
     "location": {
       "column": "9",
       "line": "53",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_Convert2Time",
     "origin": "project_file",
@@ -11769,7 +11769,7 @@
     "location": {
       "column": "10",
       "line": "77",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_Convert2Clock",
     "origin": "project_file",
@@ -11783,7 +11783,7 @@
     "location": {
       "column": "21",
       "line": "84",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "epochs",
     "origin": "project_file",
@@ -11797,7 +11797,7 @@
     "location": {
       "column": "6",
       "line": "99",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_SysTick",
     "origin": "project_file",
@@ -11811,7 +11811,7 @@
     "location": {
       "column": "10",
       "line": "115",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_GetTick",
     "origin": "project_file",
@@ -11825,7 +11825,7 @@
     "location": {
       "column": "19",
       "line": "116",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "TickProvider",
     "origin": "project_file",
@@ -11839,7 +11839,7 @@
     "location": {
       "column": "9",
       "line": "137",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "qClock_TimeDeadlineCheck",
     "origin": "project_file",
@@ -11853,7 +11853,7 @@
     "location": {
       "column": "13",
       "line": "138",
-      "path": "d:\\Camilo\\documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
+      "path": "D:\\Camilo\\Documentos\\GitHub\\QuarkTS\\src\\os\\qclock.c"
     },
     "name": "RetValue",
     "origin": "project_file",
