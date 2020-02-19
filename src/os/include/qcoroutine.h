@@ -28,7 +28,7 @@
     #define _qCR_Assert(_COND_)        if(!(_COND_))
     #define _qCR_TaskPCVar             _qCRTaskState_.instr
     #define _qCR_DelayVar              _qCRTaskState_.crdelay           
-    #define _qCR_SetPC(_VAL_)          _qCR_TaskPCVar = (_VAL_)
+    #define _qCR_SetPC(_VAL_)          _qCR_TaskPCVar = (_VAL_) 
     #define _qCR_SaveState             _qCR_SetPC(_qCR_TaskProgress) 
     #define _qCR_SaveStateOn(_VAR_)    ( _VAR_)  =  _qCR_TaskProgress
     #define _qCR_InitState             _qCRTaskState_ = { _qCR_PCInitVal, QSTIMER_INITIALIZER }

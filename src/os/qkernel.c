@@ -5,8 +5,8 @@
 #define _QKERNEL_BIT_RELEASESCHED  ( 0x00000004uL )
 #define _QKERNEL_BIT_FCALLRELEASED ( 0x00000008uL )
 
-#define _QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (  BIT )     
-#define _QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= ( ~BIT ) 
+#define _QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (qCoreFlags_t)(  BIT )     
+#define _QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
 #define _QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/

@@ -200,6 +200,9 @@
 typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
 
 /* isinf & isnan macros should be provided by math.h */
+
+
+
 #ifndef isinf
 /* The value of Inf - Inf is NaN */
 #define isinf(n) (isnan((n) - (n)) && !isnan(n))
@@ -212,6 +215,10 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
 #endif
 
 #endif
+
+
+
+
 
 /*-------------------------------------------------------
  * Double Float Support

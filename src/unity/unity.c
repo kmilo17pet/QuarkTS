@@ -7,6 +7,11 @@
 #include "unity.h"
 #include <stddef.h>
 
+#ifdef __GNUC__
+    #pragma GCC diagnostic push 
+    #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+
 #ifdef AVR
 #include <avr/pgmspace.h>
 #else
@@ -1075,7 +1080,6 @@ void UnityAssertFloatsWithin(const UNITY_FLOAT delta,
         UNITY_FAIL_AND_BAIL;
     }
 }
-
 /*-----------------------------------------------*/
 void UnityAssertFloatSpecial(const UNITY_FLOAT actual,
                              const char* msg,
@@ -1106,8 +1110,8 @@ void UnityAssertFloatSpecial(const UNITY_FLOAT actual,
             break;
 
         case UNITY_FLOAT_IS_DET: /* A determinate number is non infinite and not NaN. */
-        case UNITY_FLOAT_IS_NOT_DET:
-            is_trait = !isinf(actual) && !isnan(actual);
+        case UNITY_FLOAT_IS_NOT_DET:           
+            is_trait = !isinf(actual) && !isnan(actual);           
             break;
 
         default:
@@ -1139,7 +1143,6 @@ void UnityAssertFloatSpecial(const UNITY_FLOAT actual,
         UNITY_FAIL_AND_BAIL;
     }
 }
-
 #endif /* not UNITY_EXCLUDE_FLOAT */
 
 /*-----------------------------------------------*/
@@ -2086,3 +2089,7 @@ int UnityTestMatches(void)
 
 #endif /* UNITY_USE_COMMAND_LINE_ARGS */
 /*-----------------------------------------------*/
+
+#ifdef __GNUC__
+    #pragma GCC diagnostic pop
+#endif

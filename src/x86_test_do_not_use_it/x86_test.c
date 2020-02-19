@@ -16,16 +16,17 @@ embedded C compilers in real hardware( this is not included in this repository)
 #include <time.h>
 #include <sys/time.h>
 #include <math.h>
-
 #include "QuarkTS.h"
 #include "unity.h"
+
+
 
 
 /*===========================Reference clock for the kernel===================*/
 qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (qClock_t)(ts.tv_nsec / 1000000) + ((qClock_t)ts.tv_sec * 1000uL);
+    return (qClock_t)(ts.tv_nsec / (qClock_t)1000000uL) + ((qClock_t)ts.tv_sec * (qClock_t)1000uL);
 }
 /*============================================================================*/
 /*For unity --------------------------------------------------------------------------*/
@@ -41,6 +42,7 @@ qList_t otherlist;
 /*============================================================================*/
 qBool_t mylist_visualizer(void *node, void *arg, qList_WalkStage_t stage){
     mynode_t *xnode = node;
+    (void)arg;
     switch (stage){
         case qList_WalkInit:
             printf("list={");
@@ -184,9 +186,10 @@ qSM_Status_t secondstate(qSM_Handler_t fsm);
 
 /*============================================================================*/
 void datacapture(qSM_Handler_t fsm){
-    
+    (void)fsm;
 }
 void putcharfcn(void* stp, char c){
+    (void)stp;
     putchar(c);
 }
 /*============================================================================*/
@@ -310,7 +313,6 @@ void IdleTaskCallback(qEvent_t e){
 /*============================================================================*/
 void blinktaskCallback(qEvent_t e){
     qCR_Position_t pos;
-    
     qCR_Begin{
         qCR_Delay(2.0);
         TEST_MESSAGE("hello  1");
@@ -349,9 +351,11 @@ void blinktaskCallback(qEvent_t e){
 
         /**/
     }qCR_End;
+    (void)e;
 }
 /*============================================================================*/
 void scheduler_Release(qEvent_t e){
+    (void)e;
     TEST_MESSAGE("SCHEDULER RELEASED");
 }
 /*============================================================================*/
@@ -397,26 +401,28 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
 
     TEST_MESSAGE( "OS scheduling..." ); 
-    qOS_Setup(GetTickCountMs, 0.001, IdleTaskCallback);
+    qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback);
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
 
 
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01, qPeriodic, qEnabled, "blink") );   
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5, 5, qEnabled, "TASK1") );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01f, qPeriodic, qEnabled, "blink") );   
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5f, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, 0.1, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, 0.1f, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );
     qOS_Run();
 
 }
 
 
 int main(int argc, char** argv) {   
+    (void)argc;
+    (void)argv;
     /*Already tested externally (NOT INCLUDED HERE)
         - kernel internals
         - task internals
