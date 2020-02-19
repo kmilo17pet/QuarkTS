@@ -107,7 +107,7 @@ Parameters:
                     in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
 
     - IdleCallback : Callback function to the Idle Task. To disable the 
-                    Idle Task functionality, pass NULL as argument.
+                    Idle Task activities, pass NULL as argument.
 
 */
 #if (Q_SETUP_TIME_CANONICAL == 1)
@@ -634,7 +634,7 @@ void qOS_Run( void ){
             do{ /*loop every ready-list in descending priority order*/
                 xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if( xList->size > (size_t)0 ){ /*check if the target list has items*/
-                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in this list*/
+                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in this ready list*/
                 }
             }while( (qIndex_t)0 != xPriorityListIndex-- );
         }
@@ -710,7 +710,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
                 xReady = qTrue;            
             }
             #if ( Q_QUEUES == 1)  
-            else if( qTriggerNULL !=  ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline has not met, check if there is a queue event available*/
+            else if( qTriggerNULL !=  ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue event available*/
                 xTask->qPrivate.Trigger = trg;      
                 xReady = qTrue;
             }
@@ -784,10 +784,10 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
                     break;
                 #if ( Q_QUEUES == 1)    
                     case byQueueReceiver:
-                        kernel.EventInfo.EventData = qQueue_Peek( Task->qPrivate.Queue ); /*the EventData will point to the RBuffer front-data*/
+                        kernel.EventInfo.EventData = qQueue_Peek( Task->qPrivate.Queue ); /*the EventData will point to the queue front-data*/
                         break;
                     case byQueueFull: case byQueueCount: case byQueueEmpty: 
-                        kernel.EventInfo.EventData = (void*)Task->qPrivate.Queue;  /*the EventData will point to the the linked RingBuffer*/
+                        kernel.EventInfo.EventData = (void*)Task->qPrivate.Queue;  /*the EventData will point to the the linked queue*/
                         break;
                 #endif
                 #if ( Q_PRIO_QUEUE_SIZE > 0 )  

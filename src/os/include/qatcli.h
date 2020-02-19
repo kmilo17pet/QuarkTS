@@ -103,11 +103,11 @@
             const char *Identifier;                                         /*< The response printed when the "ATID" command has been entered. */
             const char *term_EOL;                                           /*< The End Of Line string after a command response */
             qPutChar_t OutputFcn;                                           /*< Points to the user-supplied function to write a single byte to the output. */
-            void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg); /*< Used to notify the attached task if available*/           
+            void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg);  /*< Used to notify the attached task if available*/           
             size_t SizeOutput;                                              /*< The size of Output. */
             qATCLI_Input_t Input;                                           /*< The input of the CLI. */
-            _qATCLI_PreCmd_Block_t Params;                                 /*< The params used as the 2nd cmd-callback argument*/     
-            _qATCLI_PublicData_t xPublic;                                  /*< External accesible throught the qATCLI_Handler_t*/
+            _qATCLI_PreCmd_Block_t Params;                                  /*< The params used as the 2nd cmd-callback argument*/     
+            _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
         }qPrivate;
     }qATCLI_t;  
 

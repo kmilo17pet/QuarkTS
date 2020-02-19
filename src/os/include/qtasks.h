@@ -194,7 +194,7 @@
 
     typedef struct{ /*Task node definition*/
         /*This data should be handled only using the provided API*/
-        struct _qTask_Private_s{
+        struct _qTask_Private_s{    /*Task control block - TCB*/
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
@@ -210,9 +210,9 @@
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-                size_t Entry;                       /*< To allow the US maintain the task entry order. */
+                size_t Entry;                       /*< To allow the OS maintain the task entry order. */
             #endif
-            qIteration_t Iterations;                /*< Holds the number of iterations. */
+            qIteration_t Iterations;                /*< Hold the number of iterations. */
             volatile qNotifier_t Notification;      /*< The notification value. */          
             volatile qTask_Flag_t Flags;            /*< Task flags (core and eventflags)*/
             qTrigger_t Trigger;                     /*< The event source that put the task in a qReady state. */

@@ -56,7 +56,7 @@
             void (*Failure)(_qSM_Handler_t arg);
             void (*Success)(_qSM_Handler_t arg);
             void (*Unexpected)(_qSM_Handler_t arg);  
-            void (*BeforeAnyState)(_qSM_Handler_t arg);/*only used when a task has a SM attached*/
+            void (*BeforeAnyState)(_qSM_Handler_t arg);
             void *TransitionTable;
             void *Owner;
             _qSM_PublicData_t xPublic;

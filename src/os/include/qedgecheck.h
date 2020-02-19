@@ -32,6 +32,7 @@
     typedef qBool_t (*qCoreRegSize_t)(const void* arg1, qBool_t arg2);
     
     typedef struct{
+        /*This data should be handled only using the provided API*/
         struct _qEdgeCheck_Private_s{
             qEdgeCheck_IONode_t *Head;
             qClock_t Start, DebounceTime;
