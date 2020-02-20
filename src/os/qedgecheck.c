@@ -154,19 +154,19 @@ void qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t Pin
 /*============================================================================*/
 qBool_t _qReg_32Bits( const void *Address, qBool_t PinNumber ){ 
     qUINT32_t Register, Mask, Bit = (qUINT32_t)PinNumber; 
-    Mask = (qUINT32_t)1uL << Bit;
+    Mask = (qUINT32_t)((qUINT32_t)1uL << Bit);
     Register = *((const qUINT32_t*)Address);
     return ( (qUINT32_t)0 != (Register & Mask) ); 
 }
 qBool_t _qReg_16Bits( const void *Address, qBool_t PinNumber ){
     qUINT16_t Register, Mask, Bit = (qUINT16_t)PinNumber; 
-    Mask = (qUINT16_t)1uL << Bit;
+    Mask = (qUINT16_t)((qUINT16_t)1uL << Bit);
     Register = *((const qUINT16_t*)Address);
     return ( (qUINT16_t)0 != (Register & Mask) ); 
 }
 qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber ){
     qUINT8_t Register, Mask, Bit = (qUINT8_t)PinNumber; 
-    Mask = (qUINT8_t)1uL << Bit;
+    Mask = (qUINT8_t)((qUINT8_t)1uL << Bit);
     Register = *((const qUINT8_t*)Address);
     return ( (qUINT8_t)0 != (Register & Mask) );
 }

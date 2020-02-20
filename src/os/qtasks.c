@@ -499,9 +499,9 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck,
 *******************************************************************************/
 /*============================================================================*/
 qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){
-	qUINT32_t bit;
-	bit = Task->qPrivate.Flags & flag;
-	return (( bit != 0uL )? qTrue : qFalse);
+	qUINT32_t xbit;
+	xbit = Task->qPrivate.Flags & flag;
+	return (( xbit != 0uL )? qTrue : qFalse);
 }
 /*============================================================================*/
 void _qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){

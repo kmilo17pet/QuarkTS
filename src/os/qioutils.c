@@ -27,7 +27,7 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base ){
 static char qIOUtil_NibbleToX( qUINT8_t value ){
     char ch;
     ch = (char)( (qUINT8_t)(value & 0x0Fu) + '0' );
-    return (char) ((ch > '9') ? ch + 7u : ch);
+    return (char) ((ch > '9') ? (char)(ch + 7) : ch);
 }
 /*============================================================================*/
 /*void qIOUtil_SwapBytes( void *data, const qSize_t n )
@@ -177,9 +177,9 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter str
 */
 char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n ){ 
-    qINT8_t i;
+    qBase_t i;
     str[n] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/ 
-    for( i = ( n - 1) ; i >= 0 ; i-- ){
+    for( i = ( (qBase_t)n - 1) ; i >= 0 ; i-- ){
         str[i] = qIOUtil_NibbleToX( (qUINT8_t)value ); /*MISRAC2004-17.4_b deviation allowed*/ 
         value >>= 4uL;
     }
@@ -212,15 +212,15 @@ qUINT32_t qIOUtil_XtoU32( const char *s ) {
             if( 0 != isxdigit( (int)byte ) ){ /*if is a valid hex digit*/
                 nparsed++; /*increase the parsed char count*/
                 if ( ( (char)byte >= '0' ) && ( (char)byte <= '9') ){
-                    byte = byte - (qUINT8_t)'0'; /*make the conversion in the 0-9 range*/ 
+                    byte = (qUINT8_t)( byte - (qUINT8_t)48u ); /* '48u' = '0' -> make the conversion in the 0-9 range*/ 
                 } 
                 else if ( ( (char)byte >= 'A' ) && ( (char)byte <='F') ){
-                    byte = byte - (qUINT8_t)'A' + 10u;  /*make the conversion in the A-F range*/        
+                    byte = (qUINT8_t)( byte - (qUINT8_t)75u );  /* 75u = 'A' + 10 -> make the conversion in the A-F range*/        
                 }     
                 else{
                     /*nothing to do */
                 }     
-                val = ((val << 4uL) | ((qUINT32_t)byte & 0xFuL));  /*add the corresponding nibble to the output*/                
+                val = (qUINT32_t)((qUINT32_t)(val << 4uL) | ((qUINT32_t)byte & 0xFuL));  /*add the corresponding nibble to the output*/                
             }
             else if( 0 != isspace( (int)byte ) ){
                 /*discard any white-space char*/
