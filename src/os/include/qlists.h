@@ -12,8 +12,8 @@
     #define _qNodeMembers  *next, *prev, *container
 
     typedef struct _qList_Node_s{
-        struct _qList_Node_s *next, *prev; /*< Pointers to the adyacent nodes. */
-        void *container;            /*< Pointer to the container list*/
+        struct _qList_Node_s *next, *prev;  /*< Pointers to the adyacent nodes. */
+        void *container;                    /*< Pointer to the container list*/
     }qList_Node_t;
 
     #define qNode_MinimalFields     void _qNodeMembers
@@ -21,7 +21,7 @@
 
     typedef struct{
         qNode_MinimalFields;        /*< to allow list of lists*/
-        qList_Node_t *head, *tail;       /*< Pointers to the beginning of and the end of the list. */
+        qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
         size_t size;                /*< Used to hold the current size of the list. */
     }qList_t;
 

@@ -14,7 +14,7 @@
 
     /* Linked list structure to connect the free blocks in order of their memory address. */
     typedef struct _qMemMang_BlockConnect_s{
-        struct _qMemMang_BlockConnect_s *Next;     /*< used to point the next free block in the list*/
+        struct _qMemMang_BlockConnect_s *Next;      /*< used to point the next free block in the list*/
         size_t BlockSize;	                        /*< The size of the free block*/     
     }qMemMang_BlockConnect_t;
 
