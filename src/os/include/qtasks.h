@@ -86,30 +86,32 @@
     #define _QTASK_BIT_SHUTDOWN        ( 0x00000040uL )
     #define _QTASK_BIT_REMOVE_REQUEST  ( 0x00000080uL )
 
-    /*The task Bit-Flag definitions*/
-    #define QEVENTFLAG_01               ( 0x00001000uL )
-    #define QEVENTFLAG_02               ( 0x00002000uL )
-    #define QEVENTFLAG_03               ( 0x00004000uL )
-    #define QEVENTFLAG_04               ( 0x00008000uL )
-    #define QEVENTFLAG_05               ( 0x00010000uL )
-    #define QEVENTFLAG_06               ( 0x00020000uL )
-    #define QEVENTFLAG_07               ( 0x00040000uL )
-    #define QEVENTFLAG_08               ( 0x00080000uL )
-    #define QEVENTFLAG_09               ( 0x00100000uL )
-    #define QEVENTFLAG_10               ( 0x00200000uL )
-    #define QEVENTFLAG_11               ( 0x00400000uL )
-    #define QEVENTFLAG_12               ( 0x00800000uL )
-    #define QEVENTFLAG_13               ( 0x01000000uL )
-    #define QEVENTFLAG_14               ( 0x02000000uL )
-    #define QEVENTFLAG_15               ( 0x04000000uL )
-    #define QEVENTFLAG_16               ( 0x08000000uL )
-    #define QEVENTFLAG_17               ( 0x10000000uL )
-    #define QEVENTFLAG_18               ( 0x20000000uL )
-    #define QEVENTFLAG_19               ( 0x40000000uL )
-    #define QEVENTFLAG_20               ( 0x80000000uL )
+    #if ( Q_TASK_EVENT_FLAGS == 1 )
+        /*The task Bit-Flag definitions*/
+        #define QEVENTFLAG_01               ( 0x00001000uL )
+        #define QEVENTFLAG_02               ( 0x00002000uL )
+        #define QEVENTFLAG_03               ( 0x00004000uL )
+        #define QEVENTFLAG_04               ( 0x00008000uL )
+        #define QEVENTFLAG_05               ( 0x00010000uL )
+        #define QEVENTFLAG_06               ( 0x00020000uL )
+        #define QEVENTFLAG_07               ( 0x00040000uL )
+        #define QEVENTFLAG_08               ( 0x00080000uL )
+        #define QEVENTFLAG_09               ( 0x00100000uL )
+        #define QEVENTFLAG_10               ( 0x00200000uL )
+        #define QEVENTFLAG_11               ( 0x00400000uL )
+        #define QEVENTFLAG_12               ( 0x00800000uL )
+        #define QEVENTFLAG_13               ( 0x01000000uL )
+        #define QEVENTFLAG_14               ( 0x02000000uL )
+        #define QEVENTFLAG_15               ( 0x04000000uL )
+        #define QEVENTFLAG_16               ( 0x08000000uL )
+        #define QEVENTFLAG_17               ( 0x10000000uL )
+        #define QEVENTFLAG_18               ( 0x20000000uL )
+        #define QEVENTFLAG_19               ( 0x40000000uL )
+        #define QEVENTFLAG_20               ( 0x80000000uL )
 
-    #define QEVENTFLAG_CLEAR            ( qFalse )
-    #define QEVENTFLAG_SET              ( qTrue )
+        #define QEVENTFLAG_CLEAR            ( qFalse )
+        #define QEVENTFLAG_SET              ( qTrue )
+    #endif
 
     typedef struct{
         /* TaskData (Storage-Pointer):
@@ -319,9 +321,11 @@
         qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine );
     #endif
 
-    void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
-    qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ); 
-    qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
+    #if ( Q_TASK_EVENT_FLAGS == 1 )
+        void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
+        qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ); 
+        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
+    #endif
 
     /*============================================================================*/
     /*

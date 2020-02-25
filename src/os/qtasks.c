@@ -401,6 +401,7 @@ qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMach
     return RetValue;
 }
 #endif /* #if ( Q_FSM == 1) */
+#if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
 /*void qTask_EventFlags_Modify( qTask_t * const Task, qTaskFlag_t flags, qBool_t action )
 
@@ -493,6 +494,7 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck,
     }
     return RetValue;
 }
+#endif/* ( Q_TASK_EVENT_FLAGS == 1 ) */
 /*============================================================================*/
 /******************************************************************************
    PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE

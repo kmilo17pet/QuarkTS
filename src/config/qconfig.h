@@ -18,7 +18,8 @@
     #define Q_DEBUGTRACE_BUFSIZE        ( 36 )      /*< Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL           ( 1 )       /*< Used to enable or disable a full trace output*/
     #define Q_ATCLI                     ( 1 )       /*< Used to enable or disable the AT Command Line Interface(CLI)*/
-    #define Q_TASK_COUNT_CYCLES         ( 0 )       /*< Used to enable or disable the task cycles counter*/
+    #define Q_TASK_COUNT_CYCLES         ( 1 )       /*< Used to enable or disable the task cycles counter*/
+    #define Q_TASK_EVENT_FLAGS          ( 1 )
     #define Q_MAX_FTOA_PRECISION        ( 10u )     /*< default qFtoA precision*/
     #define Q_ATOF_FULL                 ( 0 )       /*< Used to enable or disablethe extended "e" notation parsing in qAtoF*/
     #define Q_ALLOW_SCHEDULER_RELEASE   ( 1 )       /*< Used to enable or disable the release of the scheduling */

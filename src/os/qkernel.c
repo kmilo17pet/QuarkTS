@@ -94,7 +94,7 @@ static void qOS_DummyTask_Callback( qEvent_t e ){
 /*void qOS_Setup( const qGetTickFcn_t TickProviderFcn, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback )
         
 Task Scheduler Setup. This function is required and must be called once in 
-the application main thread before any tasks creation.
+the application main thread before any task is being added to the OS.
 
 Parameters:
 
@@ -359,7 +359,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
     qBool_t RetValue = qFalse;
     if( ( NULL != Task ) ) {
         Task->qPrivate.Callback = CallbackFcn;
-        (void)qSTimer_Set( &Task->qPrivate.timer, Time );/*Task->qPrivate.Interval = qTime2Clock( Time );*/
+        (void)qSTimer_Set( &Task->qPrivate.timer, Time );
         Task->qPrivate.TaskData = arg;
         Task->qPrivate.Priority = ( Priority > ((qPriority_t)Q_PRIORITY_LEVELS - (qPriority_t)1u) )? 
                                   ( (qPriority_t)Q_PRIORITY_LEVELS - (qPriority_t)1u ) : 
@@ -703,9 +703,6 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
             #endif 
             if( qOS_TaskDeadLineReached( xTask ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
                 (void)qSTimer_Reload( &xTask->qPrivate.timer );
-                #if ( Q_TASK_TRACK_TIMELAG == 1)
-                    xTask->qPrivate.xLagTrack = qClock_GetTick();
-                #endif
                 xTask->qPrivate.Trigger = byTimeElapsed;      
                 xReady = qTrue;            
             }
@@ -719,10 +716,12 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
                 xTask->qPrivate.Trigger = byNotificationSimple;  
                 xReady = qTrue;            
             }
+            #if ( Q_TASK_EVENT_FLAGS == 1 )
             else if( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){
                 xTask->qPrivate.Trigger = byEventFlags;          
                 xReady = qTrue;        
             }
+            #endif
             else{
                 xTask->qPrivate.Trigger = qTriggerNULL;
                 /*the task has no available events, put it in a suspended state*/        
@@ -796,8 +795,10 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
                         kernel.QueueData = NULL;
                         break;
                 #endif
+                #if ( Q_TASK_EVENT_FLAGS == 1 )
                     case byEventFlags:
                         break;
+                #endif        
                     default: break;
             }           
             /*Fill the event info structure: Trigger, FirstCall and TaskData */       
@@ -834,14 +835,11 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_INIT, qTrue ); /*set the init flag*/
             kernel.EventInfo.FirstIteration = qFalse;
             kernel.EventInfo.LastIteration =  qFalse; 
-            
+            kernel.EventInfo.StartDelay = (qClock_t)0uL;
             kernel.EventInfo.EventData = NULL; /*clear the eventdata*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 Task->qPrivate.Cycles++; /*increase the task cycles value*/
             #endif
-            #if ( Q_TASK_TRACK_TIMELAG == 1)
-                Task->qPrivate.xLagTrack = (qClock_t)0uL;
-            #endif   
             Task->qPrivate.Trigger = qTriggerNULL;
         }
         else{ /*run the idle*/

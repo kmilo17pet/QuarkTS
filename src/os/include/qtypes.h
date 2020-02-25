@@ -19,16 +19,16 @@
         typedef int8_t qINT8_t;
         typedef int16_t qINT16_t;
         typedef int32_t qINT32_t;      
-    #else
+    #else   
         /*Unsigned types*/
-        typedef unsigned char qUINT8_t;
+        typedef unsigned char qUINT8_t; 
         typedef unsigned short qUINT16_t;
-        typedef unsigned long qUINT32_t;
+        typedef unsigned long qUINT32_t;    /*Not always true, be careful with this definition */
 
         /*Signed types*/
         typedef signed char qINT8_t;
         typedef short qINT16_t;
-        typedef long qINT32_t;
+        typedef long qINT32_t;              /*Not always true, be careful with this definition */
 
     #endif
 
@@ -40,7 +40,7 @@
 
     #define _QUARKTS_
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "6.0.4"
+    #define QUARKTS_VERSION         "6.1.1"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     typedef qUINT8_t qPriority_t;

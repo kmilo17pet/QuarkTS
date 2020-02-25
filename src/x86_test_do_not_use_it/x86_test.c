@@ -160,15 +160,24 @@ void test_qList_API(void){
 }
 /*============================================================================*/
 void test_qMemoryManagement_API(void){
-    void *memtest;
+    void *memtest, *xpooltest;
+    qMemMang_Pool_t xpool;
+    #define XPOOL_SIZE  ( 512 )
+    uint8_t xpool_area[XPOOL_SIZE]={0};
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qMemMang_Pool_Setup(  &xpool, xpool_area, sizeof(xpool_area) ) );
     TEST_MESSAGE( "Executing TEST qMemoryManagement_API..." ); 
-    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize() );
+    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize( NULL ) );
     memtest = qMalloc( 16*sizeof(int) );
     TEST_ASSERT_NOT_NULL( memtest );   
     
-    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(int)*16 - 2*sizeof(qMemMang_BlockConnect_t), qMemMang_Get_FreeSize() );
+    qMemMang_Pool_Select( &xpool );
+    xpooltest = qMalloc( 25 );
+    TEST_ASSERT_NOT_NULL( xpooltest );   
+    qMemMang_Pool_Select( NULL );
+
+    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(int)*16 - 2*sizeof(qMemMang_BlockConnect_t), qMemMang_Get_FreeSize( NULL ) );
     qFree(memtest);
-    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize() );    
+    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize( NULL) );    
     TEST_ASSERT_NULL( qMalloc(Q_DEFAULT_HEAP_SIZE) );
 }
 /*============================================================================*/
@@ -270,7 +279,9 @@ void Task3Callback(qEvent_t e){
     } 
     if(e->Trigger == byEventFlags){
         TEST_MESSAGE("event flag set");
+        #if ( Q_TASK_EVENT_FLAGS == 1 )
         qTask_EventFlags_Modify( qTask_Self(), QEVENTFLAG_03, QEVENTFLAG_CLEAR );
+        #endif
     }
 }
 /*============================================================================*/
@@ -320,7 +331,9 @@ void blinktaskCallback(qEvent_t e){
         TEST_MESSAGE("hello 2 ");
 
         TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Notification_Send( qTask_Self(), NULL ) );
-        qTask_EventFlags_Modify( &Task3, QEVENTFLAG_03, QEVENTFLAG_SET );
+        #if ( Q_TASK_EVENT_FLAGS == 1 )
+            qTask_EventFlags_Modify( &Task3, QEVENTFLAG_03, QEVENTFLAG_SET );
+        #endif
 
         TEST_ASSERT_EQUAL_UINT8( qFalse, qTask_HasPendingNotifications( &Task1 ) );
 

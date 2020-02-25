@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.0.4  - A Cooperative OS for small embedded systems
+QuarkTS V6.1.1  - A Cooperative OS for small embedded systems
 GNU General Public License v3 (GPL-3)
 C99 and MISRA-C 2012 Compliant    
 
@@ -23,6 +23,10 @@ VISIT https://github.com/TECREA/QuarkTS TO ENSURE YOU ARE USING THE LATEST VERSI
     
 
 This file is part of the QuarkTS OS distribution.
+*/
+
+/* 
+Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/quarkts_usermanual.pdf
 */
 
 #ifndef QuarkTS_H
@@ -82,6 +86,9 @@ This file is part of the QuarkTS OS distribution.
         #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers. Use this setting at your own risk.
     #endif
 
+    #ifndef Q_TASK_EVENT_FLAGS
+        #define Q_TASK_EVENT_FLAGS  ( 1 )
+    #endif
 
     #include "qbackward.h"
 
