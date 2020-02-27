@@ -23,8 +23,6 @@
     #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ( (qIteration_t)(1) )
 
-    typedef qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2);
-
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
             qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *data);
@@ -34,7 +32,10 @@
         void (*DummyTask_Callback)( qEvent_t e);
         qTask_GlobalState_t (*Get_TaskGlobalState)( const qTask_t * const Task);
         qTask_t* (*Get_TaskRunning)( void );
-    }qOS_PrivateMethods_t;
+    }_qOS_PrivateMethodsContainer_t;
+    extern _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods;
+
+    typedef qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2);
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
@@ -65,8 +66,6 @@
 
     qBool_t qOS_Remove_Task( qTask_t * const Task );
     void qOS_Run( void );
-
-    qOS_PrivateMethods_t* qOS_CoreGetExternMethods( void );
     
     #ifdef __cplusplus
     }

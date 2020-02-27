@@ -113,8 +113,10 @@ void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr ){
     if( NULL != mPool ){
         pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5 deviation allowed */
         if( NULL != ptr){
+            /*cstat -MISRAC2012-Rule-18.4 -MISRAC2012-Rule-11.3*/
             pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
             Connect = (qMemMang_BlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3 allowed*/
+            /*cstat +MISRAC2012-Rule-18.4 +MISRAC2012-Rule-11.3*/
             if( (size_t)0 != (Connect->BlockSize & mPool->qPrivate.BlockAllocatedBit) ){
                 Connect->BlockSize &= ~mPool->qPrivate.BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
                 mPool->qPrivate.FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */

@@ -49,20 +49,6 @@
         qBool_t StateFirstEntry;
     }_qSM_PublicData_t;
 
-
-    typedef struct{
-        /*This data should be handled only using the provided API*/
-        struct _qSM_Private_s{
-            void (*Failure)(_qSM_Handler_t arg);
-            void (*Success)(_qSM_Handler_t arg);
-            void (*Unexpected)(_qSM_Handler_t arg);  
-            void (*BeforeAnyState)(_qSM_Handler_t arg);
-            void *TransitionTable;
-            void *Owner;
-            _qSM_PublicData_t xPublic;
-        }qPrivate;
-    }qSM_t;
-
     typedef _qSM_PublicData_t* qSM_Handler_t;    
     typedef qSM_Status_t (*qSM_State_t)(qSM_Handler_t arg); 
     typedef void (*qSM_SubState_t)(qSM_Handler_t arg); 
@@ -81,6 +67,19 @@
             qSM_Transition_t *Transitions;  
         }qPrivate;
     }qSM_TransitionTable_t;
+
+    typedef struct{
+        /*This data should be handled only using the provided API*/
+        struct _qSM_Private_s{
+            void (*Failure)(_qSM_Handler_t arg);
+            void (*Success)(_qSM_Handler_t arg);
+            void (*Unexpected)(_qSM_Handler_t arg);  
+            void (*BeforeAnyState)(_qSM_Handler_t arg);
+            qSM_TransitionTable_t *TransitionTable;
+            void *Owner;
+            _qSM_PublicData_t xPublic;
+        }qPrivate;
+    }qSM_t;
 
     #define QSM_SIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
 

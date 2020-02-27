@@ -54,9 +54,7 @@ Return value:
 */
 qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )      
-        qOS_PrivateMethods_t *KernelPrivate;
-        KernelPrivate = qOS_CoreGetExternMethods();
-        return KernelPrivate->PriorityQueue_Insert( Task, eventdata );     
+        return _qOS_PrivateMethods.PriorityQueue_Insert( Task, eventdata );     
     #else
         return qFalse;
     #endif
@@ -77,17 +75,13 @@ Return value:
 */
 qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
     qBool_t RetValue = qFalse;
-    #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-        qOS_PrivateMethods_t *KernelPrivate;
-    #endif  
     if( NULL != Task ){
         if( Task->qPrivate.Notification > (qNotifier_t)0 ){
             RetValue = qTrue;
         }
         else{
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-                KernelPrivate = qOS_CoreGetExternMethods();
-                RetValue = KernelPrivate->PriorityQueue_IsTaskInside( Task );
+                RetValue = _qOS_PrivateMethods.PriorityQueue_IsTaskInside( Task );
             #endif  
         }   
     }
@@ -156,10 +150,8 @@ Return value:
     Return qUndefinedGlobalState if the current task its passing through a 
     current kernel transaction
 */
-qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task ){
-    qOS_PrivateMethods_t *KernelPrivate;
-    KernelPrivate = qOS_CoreGetExternMethods();    
-    return KernelPrivate->Get_TaskGlobalState( Task );
+qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task ){  
+    return _qOS_PrivateMethods.Get_TaskGlobalState( Task );
 }
 /*============================================================================*/
 /*void qTask_Set_Time( qTask_t * const Task, const qTime_t Value )
@@ -312,9 +304,7 @@ Return value:
     NULL when the OS scheduler it's in a busy state or when IDLE Task is running.
 */
 qTask_t* qTask_Self( void ){
-    qOS_PrivateMethods_t *KernelPrivate;
-    KernelPrivate = qOS_CoreGetExternMethods();
-    return KernelPrivate->Get_TaskRunning();
+    return _qOS_PrivateMethods.Get_TaskRunning();
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
@@ -390,14 +380,12 @@ Return value:
 */
 qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
     qBool_t RetValue = qFalse;
-    qOS_PrivateMethods_t *KernelPrivate;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
-        KernelPrivate = qOS_CoreGetExternMethods();
-        Task->qPrivate.Callback = KernelPrivate->DummyTask_Callback;
+        Task->qPrivate.Callback = _qOS_PrivateMethods.DummyTask_Callback;
         Task->qPrivate.StateMachine = StateMachine;
         StateMachine->qPrivate.Owner = Task;
         RetValue = qTrue;
-    }    
+    }
     return RetValue;
 }
 #endif /* #if ( Q_FSM == 1) */

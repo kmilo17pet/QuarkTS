@@ -42,7 +42,6 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
     #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
         size_t TaskEntries;
     #endif
-    qOS_PrivateMethods_t ExternMethods;
 }qKernelControlBlock_t;
 
 /*=========================== Kernel Control Block ===========================*/
@@ -86,6 +85,17 @@ static void qOS_DummyTask_Callback( qEvent_t e );
     static qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2);
 #endif
 
+_qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {
+    #if ( Q_PRIO_QUEUE_SIZE > 0 )   
+        &qOS_PriorityQueue_Insert,
+        &qOS_PriorityQueue_IsTaskInside,
+        &qOS_PriorityQueue_GetCount,
+    #endif
+    &qOS_DummyTask_Callback,
+    &qOS_GetTaskGlobalState, 
+    &qOS_Get_TaskRunning
+};
+
 /*========================== QuarkTS Private Macros ==========================*/
 static void qOS_DummyTask_Callback( qEvent_t e ){
     (void)e; /*unused*/
@@ -125,14 +135,7 @@ Parameters:
         qClock_SetTimeBase( BaseTimming );
     #endif
     kernel.IDLECallback = IdleCallback;
-    /*publish external methods*/
-    kernel.ExternMethods.Get_TaskGlobalState = &qOS_GetTaskGlobalState; 
-    kernel.ExternMethods.Get_TaskRunning = &qOS_Get_TaskRunning;
-    kernel.ExternMethods.DummyTask_Callback = &qOS_DummyTask_Callback;
     #if ( Q_PRIO_QUEUE_SIZE > 0 )    
-        kernel.ExternMethods.PriorityQueue_Insert = &qOS_PriorityQueue_Insert;
-        kernel.ExternMethods.PriorityQueue_GetCount = &qOS_PriorityQueue_GetCount;
-        kernel.ExternMethods.PriorityQueue_IsTaskInside = &qOS_PriorityQueue_IsTaskInside;
         /*init the priority queue*/
         for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++){
             kernel.QueueStack[i].Task = NULL;  /*set the priority queue as empty*/  
@@ -758,8 +761,10 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
     qTaskFcn_t TaskActivities;
 
     xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5 deviation allowed */
+    /*cstat -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b*/
     if( QLIST_WALKTHROUGH == stage ){ /*#!ok*/
         if( NULL != xList){ /*#!ok*/
+    /*cstat +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b*/        
             Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
             Event = Task->qPrivate.Trigger;
             switch( Event ){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
@@ -896,9 +901,5 @@ static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task){
         }
     }
     return RetValue;
-}
-/*============================================================================*/
-qOS_PrivateMethods_t* qOS_CoreGetExternMethods( void ){
-    return &kernel.ExternMethods;
 }
 /*============================================================================*/
