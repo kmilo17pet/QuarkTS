@@ -8,7 +8,7 @@ Cooperative OS for resource-constrained devices
 
 Checked with C-STAT for MISRAC2012 Compliance.
 
-QuarkTS is an operating system that provides a modern environment to build stable and predictable event-driven multitasking embedded software. The OS is built on top of a cooperative quasi-static scheduler. Its simplified kernel implements a specialized round-robin scheme with a linked-chain approach and an event-queue to provide true FIFO priority-scheduling.
+QuarkTS is an operating system that provides a modern environment to build stable and predictable event-driven multitasking embedded software. The OS is built on top of a cooperative quasi-static scheduler and its simplified kernel implements a specialized round-robin scheme with a linked-chain approach and an event-queue to provide true FIFO priority-scheduling.
 
 Rather than having preemption,  tasks manage their own lifecycle. This bring significant benefits, fewer reentrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer. 
 
