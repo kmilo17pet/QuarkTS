@@ -4,7 +4,7 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/alerts/)
 [![Generic badge](https://img.shields.io/badge/Release-6.1.2-green.svg)](https://github.com/TECREA/QuarkTS/releases)
 [![Generic badge](https://img.shields.io/badge/MISRAC2012-Compliant-green.svg)](https://en.wikipedia.org/wiki/MISRA_C)
-[![Generic badge](https://img.shields.io/badge/CERT-Compliant-yes-green.svg)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
+[![Generic badge](https://img.shields.io/badge/CERT-Compliant-green.svg)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Licence](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
