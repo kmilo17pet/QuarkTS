@@ -1,4 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/tecrea/quarkts/badge)](https://www.codefactor.io/repository/github/tecrea/quarkts)
+[![Release](https://img.shields.io/github/release-pre/pbatard/rufus.svg?style=flat-square)](https://github.com/TECREA/QuarkTS/releases)
+[![Licence](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
 
 ![Logo](https://sites.google.com/site/controlpoli2/quarkts.jpg)
 
