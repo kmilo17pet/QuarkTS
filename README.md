@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/tecrea/quarkts/badge)](https://www.codefactor.io/repository/github/tecrea/quarkts)
+
 ![Logo](https://sites.google.com/site/controlpoli2/quarkts.jpg)
 
 Cooperative OS for resource-constrained devices
