@@ -7,13 +7,13 @@
 [![MISRAC2012](https://img.shields.io/badge/MISRAC2012-Compliant-blue.svg)](https://en.wikipedia.org/wiki/MISRA_C)
 [![CERT](https://img.shields.io/badge/CERT-Compliant-blue.svg)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
 [![C Standard](https://img.shields.io/badge/STD-C99-green.svg)](https://en.wikipedia.org/wiki/C99)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/TECREA/QuarkTS/graphs/commit-activity)
 [![Licence](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
 ![Logo](https://sites.google.com/site/controlpoli2/quarkts.jpg)
 
-Cooperative OS for resource-constrained devices
+# Cooperative OS for resource-constrained devices
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
 * Download the latest [User Manual](https://github.com/TECREA/QuarkTS/blob/master/quarkts_usermanual.pdf)
 
@@ -25,7 +25,7 @@ QuarkTS is an operating system that provides a modern environment to build stabl
 
 Rather than having preemption,  tasks manage their own lifecycle. This bring significant benefits, fewer reentrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer. 
 
-Features:
+## Features:
 - Cooperative scheduling
 - Time control (Timed tasks and software timers)
 - Inter-Task comunnication primitives, queues, notifications and event-flags.
