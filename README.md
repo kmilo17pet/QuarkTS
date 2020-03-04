@@ -13,7 +13,8 @@
 
 ![Logo](https://sites.google.com/site/controlpoli2/quarkts.jpg)
 
-# Cooperative OS for resource-constrained devices
+# QuarkTS : An open-source OS for resource-constrained embedded applications.
+
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
 * Download the latest [User Manual](https://github.com/TECREA/QuarkTS/blob/master/quarkts_usermanual.pdf)
 
