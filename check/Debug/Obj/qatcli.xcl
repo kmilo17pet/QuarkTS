@@ -1,4 +1,4 @@
-"c:\Users\HP\Documents\GitHub\QuarkTS\src\os\qatcli.c"
+"C:\Users\HP\Documents\GitHub\QuarkTS\src\os\qatcli.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
@@ -8,7 +8,7 @@ C:\Users\HP\Documents\GitHub\QuarkTS\check\Debug\Obj\qatcli.pbi.dep
 -o
 qatcli.pbi
 -I
-c:\Users\HP\Documents\GitHub\QuarkTS\src\os
+C:\Users\HP\Documents\GitHub\QuarkTS\src\os
 -I
 C:\Users\HP\Documents\GitHub\QuarkTS\check\..\src\config
 -I
