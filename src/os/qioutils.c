@@ -4,7 +4,71 @@
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base );
 static char qIOUtil_NibbleToX( qUINT8_t value );
 
+/*============================================================================*/
+/*
+Returns the length of the given null-terminated byte string, that is, the number 
+of characters in a character array whose first element is pointed to by str up to
+and not including the first null character.
+The function returns zero if str is a null pointer and returns maxlen if the 
+null character was not found in the first maxlen bytes of str.
 
+Parameters:
+
+    - str : pointer to the null-terminated byte string to be examined
+    - maxlen : 	maximum number of characters to examine
+
+Return value:
+
+  The length of the null-terminated byte string str on success, zero if str 
+  is a null pointer, maxlen if the null character was not found.
+*/
+size_t qIOUtil_StrLen( const char* str, size_t maxlen){
+    size_t count;
+
+    if( ( NULL == str ) || ( (size_t)0 == maxlen ) ){
+        count = 0;
+    }
+    else{
+        count = 0;
+        while( ( '\0' != *str ) && ( maxlen > (size_t)0 ) ) {
+            count++;
+            maxlen--;
+            str++;
+        }        
+    }
+    return count;
+}
+/*============================================================================*/
+/*size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen )
+ 
+Copies up to maxlen - 1 characters from the NUL-terminated string src to dst,
+NUL-terminating the result.
+ 
+Parameters:
+
+    - dst : the destination string
+    - src: the source string
+    - maxlen : Max number of characters to copy
+
+Return value:
+
+  The length of src
+*/
+size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen ){
+    const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+
+    if( ( srclen + 1u ) < maxlen ){
+        (void)memcpy( dst, src, srclen + 1u );
+    } 
+    else if ( 0u != maxlen ) {
+        (void)memcpy( dst, src, maxlen - 1u );
+        dst[ maxlen-1u ] = '\0';
+    }
+    else{
+        /*nothing to do here*/
+    }
+    return srclen;
+}
 /*============================================================================*/
 /*makes the basic conversion of unsigned integer to ASCII. NULL Terminator not included*/
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base ){
@@ -30,7 +94,7 @@ static char qIOUtil_NibbleToX( qUINT8_t value ){
     return (char) ((ch > '9') ? (char)(ch + 7) : ch);
 }
 /*============================================================================*/
-/*void qIOUtil_SwapBytes( void *data, const qSize_t n )
+/*void qIOUtil_SwapBytes( void *data, const size_t n )
  
 Invert the endianess for n bytes of the specified memory location
  
@@ -104,7 +168,7 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n ){
     fcn( pStorage, '\n' );
 }
 /*============================================================================*/
-/*void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP )
+/*void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP )
  
 Wrapper method to write n RAW data through fcn
   
@@ -132,7 +196,7 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t
     }
 }
 /*============================================================================*/
-/*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const qSize_t n, qBool_t AIP )
+/*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP )
 
 Wrapper method to get n RAW data through fcn
   

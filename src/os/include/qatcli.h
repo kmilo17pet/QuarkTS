@@ -19,6 +19,7 @@
     #define     QATCLI_DEFAULT_DEVID_STRING             QUARKTS_CAPTION
     #define     QATCLI_DEFAULT_EOL_STRING               "\r\n"             
     #define     QATCLI_MIN_INPUT_LENGTH                 ( 3u )
+    #define     QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
 
     typedef enum{
         qATCLI_ERROR = -32768,

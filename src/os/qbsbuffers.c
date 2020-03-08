@@ -129,7 +129,7 @@ qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const qSize_t n )
+/*qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n )
  
 Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
  
@@ -180,7 +180,7 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data ){
     return status;
 }
 /*============================================================================*/
-/*void qBSBuffer_Setup(qBSBuffer_t *const obj, volatile uint8_t *buffer, const qSize_t length){
+/*void qBSBuffer_Setup(qBSBuffer_t *const obj, volatile uint8_t *buffer, const size_t length){
  
 Initialize the BSBuffer(Byte-sized Buffer)
  

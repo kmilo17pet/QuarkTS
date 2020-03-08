@@ -178,7 +178,7 @@ Return value:
 qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Command, char *TextCommand, const qATCLI_CommandCallback_t Callback, qATCLI_Options_t CmdOpt, void *param ){
     qBool_t RetValue = qFalse;
     if( ( NULL != cli ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
-        Command->qPrivate.CmdLen = strlen( TextCommand );
+        Command->qPrivate.CmdLen = qIOUtil_StrLen( TextCommand, cli->qPrivate.Input.Size );
         if( Command->qPrivate.CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
@@ -265,7 +265,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qATCLI_ISRHandlerBlock(qATCLI_t * const cli, char *data, const qSize_t n)
+/*qBool_t qATCLI_ISRHandlerBlock(qATCLI_t * const cli, char *data, const size_t n)
 Feed the CLI input with a string. This call is mandatory 
 from an interrupt context. Put it inside the desired peripheral's ISR.
 If your ISR only get a single char, use instead qATCLI_ISRHandler
@@ -296,7 +296,7 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *data, const size_t n
             else{
                 if( 0 != isgraph( (int)data[0] ) ){
                     if( NULL != strchr( data, (int)'\r' ) ){ 
-                        (void)strncpy( (char*)cli->qPrivate.Input.Buffer, data, n);
+                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, data, n); /*safe string copy*/
                         (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
                         RetValue = qATCLI_Notify( cli );
                     }
@@ -348,10 +348,10 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         ReadyInput = cli->qPrivate.Input.Ready;        
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
-        CmdLen = strlen( cmd );
+        CmdLen = qIOUtil_StrLen( cmd, cli->qPrivate.Input.Size );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
             MaxBytestoCopy = cli->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
-            (void)strncpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxBytestoCopy );
+            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxBytestoCopy ); /*safe string copy*/
             (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
             RetValue = qATCLI_Notify( cli );
         }
@@ -405,7 +405,7 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
     
     params->Type = qATCLI_CMDTYPE_UNDEF;
     params->Command = Command;
-    params->StrLen = strlen( (const char*)InputBuffer ) - Command->qPrivate.CmdLen;
+    params->StrLen = qIOUtil_StrLen( (const char*)InputBuffer, QATCLI_RECOMMENDED_INPUT_SIZE ) - Command->qPrivate.CmdLen;
     params->StrData = (char*)&InputBuffer[ Command->qPrivate.CmdLen ]; /*params->StrData = (char*)(InputBuffer+Command->qPrivate.CmdLen);*/
     params->NumArgs = 0u;
 
@@ -489,6 +489,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
     qATCLI_Response_t CLIRetVal;
     qATCLI_Input_t *Input;
     qBool_t RetValue = qFalse;
+    char *InputBuffer;
 
     if( NULL != cli){
 		Current = cli;
@@ -496,17 +497,18 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
 		ATOutCharFcn = cli->qPrivate.OutputFcn;
         
 		if( Input->Ready ){ /*a new input has arrived*/
+            InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
 			/*Validation : set the value for the response lookup table*/
-			if 	( 0 == strcmp( (const char*)Input->Buffer, QATCLI_DEFAULT_AT_COMMAND ) ){
+			if 	( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ){
             	OutputRetval = QATCLI_OK;			/*check if the input its the simple AT command*/
             }
 			else if	( QATCLI_NOTFOUND != (CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ){
                 OutputRetval = CLIRetVal;	/*check if the input is one of the subscribed commands*/
             }
-			else if ( 0 == strcmp( (const char*)Input->Buffer, QATCLI_DEFAULT_ID_COMMAND ) ){
+			else if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_ID_COMMAND, Input->Size ) ){
                 OutputRetval = QATCLI_DEVID;		/*check if the input its an ID request using the ATID command*/
             }
-			else if	( strlen( (const char*)Input->Buffer ) >= QATCLI_MIN_INPUT_LENGTH ){
+			else if	( qIOUtil_StrLen( (const char*)InputBuffer, Input->Size ) >= QATCLI_MIN_INPUT_LENGTH ){
                 OutputRetval = QATCLI_NOTFOUND;	/*check if it is pertinent to show the error*/
             }
 			else{

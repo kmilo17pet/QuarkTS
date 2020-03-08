@@ -13,10 +13,14 @@
     extern "C" {
     #endif
 
+    #define Q_IOUTIL_MAX_STRLEN      ( (size_t)512 )
+
     typedef void (*qPutChar_t)(void* arg1, const char arg2);
     typedef void (*qPutString_t)(void* arg1, const char* arg2);
     typedef char (*qGetChar_t)(void* arg1);
 
+    size_t qIOUtil_StrLen( const char* str, size_t maxlen);
+    size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen );
     void qIOUtil_SwapBytes( void *data, const size_t n );
     qBool_t qIOUtil_CheckEndianness( void);
     void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );

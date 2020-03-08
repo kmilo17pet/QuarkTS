@@ -79,7 +79,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const obj ){
     return RetValue;   
 }
 /*============================================================================*/
-/*qSize_t qQueue_Count( const qQueue_t * const obj )
+/*size_t qQueue_Count( const qQueue_t * const obj )
  
 Returns the number of items in the Queue
  
