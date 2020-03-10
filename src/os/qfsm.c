@@ -70,10 +70,15 @@ Parameters:
              reference and cast to (void *). Only one argument is allowed, so,
              for multiple arguments, create a structure that contains all of 
              the arguments and pass a pointer to that structure.
+
+Return value:
+
+    The return status of the current FSM state. 
 */    
-void qStateMachine_Run( qSM_t * const obj, void *Data ){
+qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
     qSM_State_t prev; /*used to hold the previous state*/
     qSM_Handler_t handle;
+    qSM_Status_t RetValue = qSM_EXIT_FAILURE;
 
     if( NULL != obj ){
         obj->qPrivate.xPublic.Data = Data;   /*pass the data through the fsm*/
@@ -86,23 +91,25 @@ void qStateMachine_Run( qSM_t * const obj, void *Data ){
             }
             prev = obj->qPrivate.xPublic.NextState; /*keep the next state in prev for LastState update*/
             obj->qPrivate.xPublic.Signal = qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
-            obj->qPrivate.xPublic.PreviousReturnStatus = prev( handle ); /*Eval the current state, and get their return status*/
+            RetValue = prev( handle ); /*Eval the current state, and get their return status*/
+            obj->qPrivate.xPublic.PreviousReturnStatus = RetValue;
             obj->qPrivate.xPublic.LastState = prev; /*update the LastState*/
         }
         else{
-            obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_FAILURE; /*otherwise jump to the failure state*/
+            obj->qPrivate.xPublic.PreviousReturnStatus = RetValue; /*otherwise jump to the failure state*/
         }
         /*Check return status to eval extra states*/
-        if( qSM_EXIT_FAILURE == obj->qPrivate.xPublic.PreviousReturnStatus ){
+        if( qSM_EXIT_FAILURE == RetValue ){
             qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Failure, handle ); /*Run failure state if available*/
         }
-        else if ( qSM_EXIT_SUCCESS == obj->qPrivate.xPublic.PreviousReturnStatus ){
+        else if ( qSM_EXIT_SUCCESS == RetValue ){
             qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Success, handle ); /*Run success state if available*/
         } 
         else{
             qStatemachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, handle ); /*Run unexpected state if available*/
         }
     }
+    return RetValue;
  }
 /*============================================================================*/
 /*void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
@@ -283,6 +290,26 @@ qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
         h = &obj->qPrivate.xPublic;
     }
     return h;
+}
+/*============================================================================*/
+/*void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent)
+
+Set the state-machine parent.
+
+Parameters:
+
+    - Child : a pointer to the child FSM object.
+    - Parent : a pointer to the parent FSM object.
+
+Return value:
+
+    The requested FSM handler. NULL if the handler cant be retrieved.
+
+*/
+void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent ){
+    if( NULL != Child ){
+        Child->qPrivate.xPublic.Parent = Parent;
+    }
 }
 /*============================================================================*/
 #endif /* #if ( Q_FSM == 1 ) */
