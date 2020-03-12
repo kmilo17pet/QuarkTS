@@ -178,7 +178,7 @@ Return value:
 qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Command, char *TextCommand, const qATCLI_CommandCallback_t Callback, qATCLI_Options_t CmdOpt, void *param ){
     qBool_t RetValue = qFalse;
     if( ( NULL != cli ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
-        Command->qPrivate.CmdLen = qIOUtil_StrLen( TextCommand, cli->qPrivate.Input.Size );
+        Command->qPrivate.CmdLen = qIOUtil_StrLen( TextCommand, cli->qPrivate.Input.Size );        
         if( Command->qPrivate.CmdLen >= 2u ){
             if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
@@ -218,7 +218,9 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload ){
         } 
         else{ 
             Cmd = Iterator;
-            Iterator = Cmd->qPrivate.Next; 
+            if( NULL != Iterator ){
+                Iterator = Cmd->qPrivate.Next; 
+            }
         }
     }
     return Cmd;

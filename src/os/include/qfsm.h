@@ -36,17 +36,22 @@
         void * Data;
         /* Signal: (Read Only)
         Received signal from the transition table queue.
-        QSIGNAL_NONE if no table or signal available.
+        QSM_SIGNAL_NONE if no table or signal available.
+        QSM_SIGNAL_ENTRY When the current state has just entry
+        QSM_SIGNAL_EXIT when the current state is exitimg after a transition
         */
         qSM_Signal_t Signal;
         /* PreviousReturnStatus: (Read Only)
         The return status of <PreviousState>
         */
-        qSM_Status_t PreviousReturnStatus;        
-        /* StateFirstEntry: [== StateJustChanged] (Read Only)
-        True when  <Previous State> !=  <Current State>
+        qSM_Status_t PreviousReturnStatus;
+        /* LastReturnStatus: (Read Only)
+        The return status of <LastState>
+        */        
+        qSM_Status_t LastReturnStatus;
+        /* Parent: (Read/Write)  
+        The parent FSM
         */
-        qBool_t StateFirstEntry;
         void *Parent;
     }_qSM_PublicData_t;
 
@@ -63,7 +68,6 @@
     typedef struct{
         /*This data should be handled only using the provided API*/
         struct _qSM_TransitionTable_Private_s{
-            qQueue_t SignalQueue;
             size_t NumberOfEntries;  
             qSM_Transition_t *Transitions;  
         }qPrivate;
@@ -79,10 +83,16 @@
             qSM_TransitionTable_t *TransitionTable;
             void *Owner;
             _qSM_PublicData_t xPublic;
+            qQueue_t SignalQueue;
         }qPrivate;
     }qSM_t;
 
+    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
+    #define QSM_SIGNAL_RANGE_MAX    ( (qSM_Signal_t)0xFFFFFFFCu )
+    
     #define QSM_SIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
+    #define QSM_SIGNAL_ENTRY   ( (qSM_Signal_t)0xFFFFFFFEu )
+    #define QSM_SIGNAL_EXIT    ( (qSM_Signal_t)0xFFFFFFFDu )
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART,                        /*< Restart the FSM. */
@@ -97,9 +107,11 @@
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
     qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data );
     void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
+    
+    qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
-    qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSM_Signal_t *AxSignals, size_t MaxSignals);
-    qSM_Signal_t qStateMachine_SweepTransitionTable( qSM_t * const obj );
+    qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
+    qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj );
     qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent );
     qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj );
     void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent );

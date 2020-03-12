@@ -483,7 +483,7 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qT
 /* qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task )
 
 Improve the state-machine-task responsiveness by connecting the incoming signals 
-from a transition-table to the task's event flow.
+from a state machine to the task's event flow.
 
 Parameters:
     - Task : A pointer to the task node.
@@ -496,13 +496,11 @@ Return value :
 qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     qSM_t *StateMachine;
-    qSM_TransitionTable_t *tTableFSM;
     if( NULL != Task){
         StateMachine = Task->qPrivate.StateMachine;
         if( NULL != StateMachine ){
-            tTableFSM = (qSM_TransitionTable_t*)StateMachine->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
-            if( NULL != tTableFSM ){
-                RetValue = qTask_Attach_Queue( Task, &tTableFSM->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); 
+            if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){
+                RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); 
             }
         }
     }

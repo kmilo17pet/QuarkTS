@@ -97,7 +97,7 @@
     typedef struct _qATCLI_ControlBlock_s{
         /*This data should be handled only using the provided API*/
         struct _qATCLI_Private_s{
-            void *First;                                                    /*< The response printed when OK is needed. */
+            void *First;                                                    /*< Points to the first command*/
             const char *OK_Response;                                        /*< The response printed when OK is needed. */
             const char *ERROR_Response;                                     /*< The response printed when ERROR is needed. */
             const char *NOTFOUND_Response;                                  /*< The response printed when NOTFOUND is needed. */

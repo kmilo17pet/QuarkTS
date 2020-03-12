@@ -5,6 +5,17 @@
 static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition );
 static void qQueue_MoveReader( qQueue_t * const obj );
 static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer );
+
+
+qBool_t qQueue_IsReady( const qQueue_t * const obj ){
+    qBool_t RetValue = qFalse;
+    if( NULL != obj ){
+        if( NULL != obj->qPrivate.pHead ){
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
+}
 /*============================================================================*/
 /*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea,  size_t ElementSize, size_t ElementCount)
  

@@ -80,6 +80,7 @@
     */        
     #define qQueue_SendToFront(_qQueue_t_, _ItemToQueue_)    qQueue_SendGeneric((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_FRONT)
 
+    qBool_t qQueue_IsReady( const qQueue_t * const obj );
     qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount );
     void qQueue_Reset( qQueue_t * const obj );
     qBool_t qQueue_IsEmpty( const qQueue_t * const obj );
