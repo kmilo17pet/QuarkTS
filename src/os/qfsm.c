@@ -98,9 +98,9 @@ qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
                         (void)qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
                     }
                 }
-            }   
+            }  
             qStateMachine_ExecStateIfAvailable( obj, CurrentState  );
-
+            
             if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*a transition has been performed?*/
                 obj->qPrivate.xPublic.Signal = QSM_SIGNAL_EXIT; 
                 qStateMachine_ExecStateIfAvailable( obj, CurrentState );
@@ -270,6 +270,9 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){
                     iTransition = table->qPrivate.Transitions[iEntry];
                     if( ( xCurrentState == iTransition.xCurrentState ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
+                        if( NULL != iTransition.SignalAction ){
+                            iTransition.SignalAction();
+                        }
                         obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
                         RetValue = qTrue;
                         break; 
