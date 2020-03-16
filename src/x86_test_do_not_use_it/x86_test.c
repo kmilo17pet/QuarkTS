@@ -355,12 +355,11 @@ void IdleTaskCallback(qEvent_t e){
     }
 
     if(qSTimer_FreeRun(&xd, 0.5)){
-        /*
         qTrace_UnsignedDecimal( qSTimer_Elapsed(&t) );
         qTrace_UnsignedDecimal( qSTimer_Remaining(&t) );
-        */
+        /*
        qStateMachine_SendSignal( &statemachine, QSM_SIGNAL_USER1, qFalse );
-        
+        */
     }
 
     if( qSTimer_Expired(&EndSchedulingTimeout) ){

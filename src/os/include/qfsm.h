@@ -74,7 +74,7 @@
             qSM_Transition_t *Transitions;  
         }qPrivate;
     }qSM_TransitionTable_t;
-
+    
     typedef struct _qSM_s{
         /*This data should be handled only using the provided API*/
         struct _qSM_Private_s{
@@ -86,6 +86,10 @@
             void *Owner;
             _qSM_PublicData_t xPublic;
             qQueue_t SignalQueue;
+            struct{
+                struct _qSM_s *head, *next;
+                qSM_State_t rootState;
+            }Composite;
         }qPrivate;
     }qSM_t;
 
@@ -109,7 +113,6 @@
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
     qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data );
     void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
-    
     qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
     qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
@@ -117,6 +120,8 @@
     qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent );
     qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj );
     void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent );
+    
+qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
 
     #ifdef __cplusplus
     }

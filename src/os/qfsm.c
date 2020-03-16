@@ -47,7 +47,12 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.TransitionTable = NULL;
         obj->qPrivate.Owner = NULL;
         obj->qPrivate.SignalQueue.qPrivate.pHead = NULL;
+
+        obj->qPrivate.Composite.head = NULL;
+        obj->qPrivate.Composite.next = NULL;
+        obj->qPrivate.Composite.rootState = NULL;
         RetValue = qTrue;
+
     }
     return RetValue;
 }
@@ -65,8 +70,6 @@ Execute the Finite State Machine (FSM).
 Parameters:
 
     - obj : a pointer to the FSM object.
-    - Signal : The signal data used to produce a state changes if a 
-              transition table is available.
     - Data : Represents the FSM arguments. All arguments must be passed by 
              reference and cast to (void *). Only one argument is allowed, so,
              for multiple arguments, create a structure that contains all of 
@@ -101,7 +104,7 @@ qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
             }  
             qStateMachine_ExecStateIfAvailable( obj, CurrentState  );
             
-            if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*a transition has been performed?*/
+            if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition been made?*/
                 obj->qPrivate.xPublic.Signal = QSM_SIGNAL_EXIT; 
                 qStateMachine_ExecStateIfAvailable( obj, CurrentState );
             }
@@ -113,11 +116,16 @@ qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
 static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state ){
     qSM_Status_t ExitStatus = qSM_EXIT_FAILURE;
     qSM_Handler_t handle;
-
+    qSM_t *xChild;
     handle = &obj->qPrivate.xPublic;
     qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , handle ); /*eval the BeforeAnyState if available*/
     if( NULL != state ){ /*eval the state if available*/
         ExitStatus = state( handle );
+        for( xChild = obj->qPrivate.Composite.head ; NULL != xChild; xChild = xChild->qPrivate.Composite.next ){ /*loop over the childs if available*/
+            if( state == xChild->qPrivate.Composite.rootState ){ /*run the child fsm if their rootState matches the current parent state*/
+                (void)qStateMachine_Run( xChild,  obj->qPrivate.xPublic.Data ); /*child fsm inherits data from parent*/
+            }
+        }
     }
     obj->qPrivate.xPublic.LastReturnStatus = ExitStatus;
     obj->qPrivate.xPublic.LastState = state; /*update the LastState*/
@@ -131,7 +139,6 @@ static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_Sta
     else{
         qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, handle ); /*Run unexpected state if available*/
     }
-
 }
 /*============================================================================*/
 /*void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
@@ -330,6 +337,35 @@ qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
         h = &obj->qPrivate.xPublic;
     }
     return h;
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child )
+
+Setup a state-machine as a composite state.
+
+Parameters:
+
+    - parent : a pointer to the parent FSM object.
+    - state : the state to relate the <child> fsm .
+    - child : a pointer to the child FSM who becomes a composite state of <parent>
+
+Return value:
+
+    qTrue on success. Otherwise, returns qFalse.
+
+*/
+qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != parent ) && ( NULL != state ) && (child != NULL ) ){
+        child->qPrivate.xPublic.Parent = parent;
+        child->qPrivate.Composite.rootState = state;
+
+        /*insert child fsm into the composite fsm list*/
+        child->qPrivate.Composite.next = parent->qPrivate.Composite.head;
+        parent->qPrivate.Composite.head = child;
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent)
