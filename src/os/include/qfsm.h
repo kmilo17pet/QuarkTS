@@ -58,7 +58,7 @@
     typedef _qSM_PublicData_t* qSM_Handler_t;    
     typedef qSM_Status_t (*qSM_State_t)(qSM_Handler_t arg); 
     typedef void (*qSM_SubState_t)(qSM_Handler_t arg); 
-    typedef void (*qSM_SignalAction)( void );
+    typedef qBool_t (*qSM_SignalAction)( qSM_Handler_t arg );
 
     typedef struct{
         qSM_State_t xCurrentState;

@@ -267,6 +267,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
     qSM_State_t xCurrentState;
     size_t iEntry;
     qSM_Signal_t signal;
+    qBool_t SigActionGuard = qTrue;
 
     if( NULL != obj ){
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
@@ -278,9 +279,11 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                     iTransition = table->qPrivate.Transitions[iEntry];
                     if( ( xCurrentState == iTransition.xCurrentState ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
                         if( NULL != iTransition.SignalAction ){
-                            iTransition.SignalAction();
+                            SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
                         }
-                        obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
+                        if( qTrue == SigActionGuard ){
+                            obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
+                        }
                         RetValue = qTrue;
                         break; 
                     } 
