@@ -65,6 +65,8 @@
         qSM_Signal_t Signal;
         qSM_State_t xNextState;
         qSM_SignalAction SignalAction;
+        qSM_State_t xToChildState;
+        qSM_State_t xToParentState;
     }qSM_Transition_t;
 
     typedef struct{

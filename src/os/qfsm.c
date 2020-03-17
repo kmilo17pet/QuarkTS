@@ -268,6 +268,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
     size_t iEntry;
     qSM_Signal_t signal;
     qBool_t SigActionGuard = qTrue;
+    qSM_t *iChild, *xParent;
 
     if( NULL != obj ){
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
@@ -283,6 +284,26 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                         }
                         if( qTrue == SigActionGuard ){
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
+                            
+                            if( ( NULL != iTransition.xToChildState ) && ( NULL == iTransition.xToParentState) ){ /*make the transition inside composite states*/
+                                for( iChild = obj->qPrivate.Composite.head ; NULL != iChild; iChild = iChild->qPrivate.Composite.next ){
+                                    if( obj->qPrivate.xPublic.NextState == iChild->qPrivate.Composite.rootState ){
+                                        /*
+                                        qStateMachine_Attribute( iChild, qSM_RESTART, iTransition.xToChildState, NULL);
+                                        */
+                                        iChild->qPrivate.xPublic.NextState = iTransition.xToChildState;
+                                    }
+                                }
+                            }
+                            else if( ( NULL != iTransition.xToParentState ) && ( NULL == iTransition.xToChildState) ){
+                                xParent = (qSM_t*)obj->qPrivate.xPublic.Parent;
+                                if( NULL != xParent ){
+                                    xParent->qPrivate.xPublic.NextState = iTransition.xToParentState;
+                                }
+                            }
+                            else{
+                                /*bad configuration, not handled*/
+                            }
                         }
                         RetValue = qTrue;
                         break; 
