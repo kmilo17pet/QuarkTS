@@ -61,12 +61,12 @@
     typedef qBool_t (*qSM_SignalAction)( qSM_Handler_t arg );
 
     typedef struct{
-        qSM_State_t xCurrentState;
-        qSM_Signal_t Signal;
-        qSM_State_t xNextState;
-        qSM_SignalAction SignalAction;
-        qSM_State_t xToChildState;
-        qSM_State_t xToParentState;
+        qSM_State_t xCurrentState;      /*< The current state that the FSM occupies*/
+        qSM_Signal_t Signal;            /*< The event-signal used to produce the transittion*/
+        qSM_State_t xNextState;         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
+        qSM_SignalAction SignalAction;  /*< The action performed by the signal on the current transition. NULL to disable.*/
+        qSM_State_t xToChildState;      /*< (Only in hierarchycal FSMs) The next state that the child FSM will occupy after the transition. NULL if not used*/
+        qSM_State_t xToParentState;     /*< (Only in hierarchycal FSMs) The next state that the parent FSM will occupy after the transition. NULL if not used*/
     }qSM_Transition_t;
 
     typedef struct{

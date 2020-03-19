@@ -40,6 +40,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;
         obj->qPrivate.xPublic.LastState = NULL;
         obj->qPrivate.xPublic.Signal = (qSM_Signal_t)0u;
+        obj->qPrivate.xPublic.Parent = NULL;
         obj->qPrivate.Failure = FailureState;
         obj->qPrivate.Success = SuccessState;
         obj->qPrivate.Unexpected = UnexpectedState;
@@ -82,6 +83,7 @@ Return value:
 qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
     qSM_State_t CurrentState; 
     qSM_Status_t RetValue = qSM_EXIT_FAILURE;
+    qSM_t *parent;
 
     if( NULL != obj ){
         obj->qPrivate.xPublic.Data = Data;   /*pass the data through the fsm*/
@@ -98,6 +100,13 @@ qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data ){
             if( QSM_SIGNAL_NONE == obj->qPrivate.xPublic.Signal ){
                 if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
                     if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &obj->qPrivate.xPublic.Signal ) ){
+                        (void)qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
+                    }
+                }
+                else{
+                    parent = (qSM_t*)obj->qPrivate.xPublic.Parent;
+                    if( NULL != parent ){/*check if the current fsm is a child*/
+                        obj->qPrivate.xPublic.Signal = parent->qPrivate.xPublic.Signal; /*use the parent signal if the child doest have their own signal-queue*/
                         (void)qStateMachine_SweepTransitionTable( obj ); /*sweep the table if available*/
                     }
                 }
@@ -302,7 +311,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                                 }
                             }
                             else{
-                                /*bad configuration, not handled*/
+                                /*bad table configuration, not handled*/
                             }
                         }
                         RetValue = qTrue;
@@ -312,7 +321,6 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
             }
         }        
     }
-
     return RetValue;
 }
 /*============================================================================*/
@@ -369,9 +377,9 @@ Setup a state-machine as a composite state.
 
 Parameters:
 
-    - parent : a pointer to the parent FSM object.
-    - state : the state to relate the <child> fsm .
-    - child : a pointer to the child FSM who becomes a composite state of <parent>
+    - parent : A pointer to the parent FSM object.
+    - state : A state from <parent> to relate the <child> fsm .
+    - child : A pointer to the child FSM object who becomes part of the composite state.
 
 Return value:
 

@@ -463,20 +463,19 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
 
     TEST_MESSAGE( "OS scheduling..." ); 
-    qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback); /*  IdleTaskCallback  */ 
+    qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); /*  IdleTaskCallback  */ 
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
 
-    /*
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01f, qPeriodic, qEnabled, "blink") );   
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5f, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );*/
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, 0.1f, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, 0.1f, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );   
     qStateMachine_SignalQueueSetup( &statemachine, fsmsigarea, 5 );
     qOS_Run();
 }
