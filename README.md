@@ -16,7 +16,7 @@
 # QuarkTS : An open-source OS for resource-constrained embedded applications.
 
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
-* Download the latest [User Manual](https://www.overleaf.com/download/project/5c8eb7d49ebbc67762d1c872/build/171313d0dc2-f4d637b11f03460f/output/output.pdf?compileGroup=standard&clsiserverid=clsi-pre-emp-e2-b-jbl8&popupDownload=true)
+* Download the latest [User Manual](https://www.overleaf.com/read/wtmsjyvtznmy)
 
 ![MISRAC2012 Compliant](https://eenews.cdnartwhere.eu/sites/default/files/styles/inner_article/public/import/2014-07-22-edne-gp-misra-logo-snip.jpg?itok=bQVhv7S_)
 
