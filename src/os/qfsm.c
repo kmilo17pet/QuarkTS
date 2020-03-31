@@ -176,7 +176,7 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
         }
         else{   /* backtrack from the empty subtree and visit the nested fsm at the top of the stack; however, if the stack is empty, we are done */
             hierarchy_drilled = qStateMachine_StackIsEmpty( s );
-            if( qFalse ==  qStateMachine_StackIsEmpty( s ) ){
+            if( qFalse ==  hierarchy_drilled ){
                 current = qStateMachine_StackPop( &s );
                 
                 if( NULL != current){
