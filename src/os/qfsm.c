@@ -10,10 +10,13 @@ typedef struct qSM_Stack_s{
     qSM_t *t;
     struct qSM_Stack_s *next;
 }qSM_Stack_t;
-#define Q_STATEMACHINE_MAX_NEST_DEPTH   ( 5 )
+
+#ifndef Q_FSM_MAX_NEST_DEPTH
+    #define Q_FSM_MAX_NEST_DEPTH   ( 5 )
+#endif
 
 static size_t qSM_StackIndex = 0;
-static qSM_Stack_t qSM_RAM_Area[ Q_STATEMACHINE_MAX_NEST_DEPTH ] = {0};
+static qSM_Stack_t qSM_RAM_Area[ Q_FSM_MAX_NEST_DEPTH ] = {0};
 
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
@@ -484,7 +487,7 @@ static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top ){
 /*============================================================================*/
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){ 
     qSM_Stack_t *new_tNode;
-    if( qSM_StackIndex < (size_t)Q_STATEMACHINE_MAX_NEST_DEPTH ){
+    if( qSM_StackIndex < (size_t)Q_FSM_MAX_NEST_DEPTH ){
         new_tNode = &qSM_RAM_Area[ qSM_StackIndex++ ];
         new_tNode->t  = t;  /* put in the data  */
         new_tNode->next = (*top_ref);  /* link the old list off the new tNode */   

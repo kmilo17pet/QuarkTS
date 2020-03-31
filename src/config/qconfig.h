@@ -13,6 +13,7 @@
     #define Q_DEFAULT_HEAP_SIZE         ( 2048  )   /*< The default heap size for the memory manager*/    
     #define Q_NOTIFICATION_SPREADER     ( 1 )       /*< Used to enable or disable the spread notification functionality*/ 
     #define Q_FSM                       ( 1 )       /*< Used to enable or disable the Finite State Machine (FSM) module */
+    #define Q_FSM_MAX_NEST_DEPTH        ( 5 )       /*< The max depth of nesting in Finite State Machines (FSM)*/
     #define Q_QUEUES                    ( 1 )       /*< Used to enable or disable the qQueues*/
     #define Q_TRACE_VARIABLES           ( 1 )       /*< Used to enable or disable variable tracing and debuggin*/
     #define Q_DEBUGTRACE_BUFSIZE        ( 36 )      /*< Size for the debug/trace buffer: 36 bytes should be enough*/

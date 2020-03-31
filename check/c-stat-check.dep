@@ -5,21 +5,21 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
-            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
-            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
-            <file>$PROJ_DIR$\..\src\os\qqueues.c</file>
-            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
-            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
-            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
-            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
-            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
+            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
             <file>$PROJ_DIR$\..\src\os\qbsbuffers.c</file>
             <file>$PROJ_DIR$\..\src\os\qclock.c</file>
-            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
-            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
             <file>$PROJ_DIR$\..\src\os\qcritical.c</file>
+            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
+            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
+            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
+            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
+            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
             <file>$PROJ_DIR$\..\src\os\qfsm.c</file>
+            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
+            <file>$PROJ_DIR$\..\src\os\qqueues.c</file>
+            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
+            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
+            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
         </outputs>
     </configuration>
     <configuration>
