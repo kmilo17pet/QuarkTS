@@ -11,8 +11,7 @@
 
     typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
-    #define CurrentState    NextState
-  
+    
     typedef size_t qSM_Signal_t;
 
     typedef struct _qSM_PublicData_s{
@@ -65,6 +64,7 @@
         qSM_Signal_t Signal;            /*< The event-signal used to produce the transittion*/
         qSM_State_t xNextState;         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
         qSM_SignalAction SignalAction;  /*< The action performed by the signal on the current transition. NULL to disable.*/
+        void *xToChildHandle;           /*< (Only in hierarchycal FSMs) The handle to the target child. */
         qSM_State_t xToChildState;      /*< (Only in hierarchycal FSMs) The next state that the child FSM will occupy after the transition. NULL if not used*/
         qSM_State_t xToParentState;     /*< (Only in hierarchycal FSMs) The next state that the parent FSM will occupy after the transition. NULL if not used*/
     }qSM_Transition_t;
@@ -89,7 +89,8 @@
             _qSM_PublicData_t xPublic;
             qQueue_t SignalQueue;
             struct{
-                struct _qSM_s *head, *next;
+                struct _qSM_s *head, *next, *flatnext;
+                qBool_t UnFlatten;
                 qSM_State_t rootState;
             }Composite;
         }qPrivate;
@@ -113,7 +114,8 @@
     }qFSM_Attribute_t; 
 
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
-    qSM_Status_t qStateMachine_Run( qSM_t * const obj, void *Data );
+    void qStateMachine_Run( qSM_t * const root, void *Data );
+
     void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
     qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
@@ -123,7 +125,7 @@
     qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj );
     void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent );
     
-qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
+    qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
 
     #ifdef __cplusplus
     }

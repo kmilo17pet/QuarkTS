@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.2.1  - A Cooperative OS for small embedded systems
+QuarkTS V6.2.2  - A Cooperative OS for small embedded systems
 GNU General Public License v3 (GPL-3)
 C99 and MISRA-C 2012 Compliant    
 
