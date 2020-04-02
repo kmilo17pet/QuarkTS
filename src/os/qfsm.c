@@ -344,11 +344,11 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                             
                             if( ( NULL != iTransition.xToChildHandle ) && ( NULL != iTransition.xToChildState ) && ( NULL == iTransition.xToParentState) ){ /*make the transition inside composite states*/
                                 toChild = (qSM_t*)iTransition.xToChildHandle;
-                                if( obj == toChild->qPrivate.xPublic.Parent ){ /*chif the the target child its actually a child of the current fsm*/
+                                if( obj == toChild->qPrivate.xPublic.Parent ){ /*check if the the target child its actually a child of the current fsm*/
                                     toChild->qPrivate.xPublic.NextState = iTransition.xToChildState;
                                 } 
                             }
-                            else if( ( NULL != iTransition.xToParentState ) && ( NULL != iTransition.xToChildHandle ) && ( NULL == iTransition.xToChildState) ){
+                            else if( ( NULL != iTransition.xToParentState ) && ( NULL == iTransition.xToChildHandle ) && ( NULL == iTransition.xToChildState) ){
                                 xParent = (qSM_t*)obj->qPrivate.xPublic.Parent;
                                 if( NULL != xParent ){
                                     xParent->qPrivate.xPublic.NextState = iTransition.xToParentState;
@@ -490,7 +490,7 @@ static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){
     if( qSM_StackIndex < (size_t)Q_FSM_MAX_NEST_DEPTH ){
         new_tNode = &qSM_RAM_Area[ qSM_StackIndex++ ];
         new_tNode->t  = t;  /* put in the data  */
-        new_tNode->next = (*top_ref);  /* link the old list off the new tNode */   
+        new_tNode->next = (*top_ref);  /* link the old list of the new tNode */   
         (*top_ref) = new_tNode;   /* move the head to point to the new tNode */      
     }
 } 
