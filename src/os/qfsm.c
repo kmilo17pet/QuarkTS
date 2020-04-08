@@ -5,7 +5,6 @@
 static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
 static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state );
 
-
 typedef struct qSM_Stack_s{
     qSM_t *t;
     struct qSM_Stack_s *next;
@@ -73,7 +72,6 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.Composite.rootState = NULL;
         obj->qPrivate.Composite.UnFlatten = qFalse;
         RetValue = qTrue;
-
     }
     return RetValue;
 }
@@ -108,7 +106,7 @@ static qSM_Status_t qStateMachine_Evalutate( qSM_t * const obj, void *Data ){
             }
             else{
                 parent = (qSM_t*)obj->qPrivate.xPublic.Parent;
-                if( NULL != parent ){/*check if the current fsm is a child*/
+                if( NULL != parent ){/*check if the current fsm is a children*/
                     if( ( QSM_SIGNAL_ENTRY != parent->qPrivate.xPublic.Signal ) && ( QSM_SIGNAL_EXIT != parent->qPrivate.xPublic.Signal ) ){
                         obj->qPrivate.xPublic.Signal = parent->qPrivate.xPublic.Signal; /*use the parent signal if the child doest have their own signal-queue*/
                     }
@@ -169,10 +167,11 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
     qSM_t *parent;
     qBool_t exec;
 
+    root->qPrivate.Active = qTrue;
     while( qFalse == hierarchy_drilled ){
         if( NULL != current ){     /* Reach the deep-most fsm of the current*/
             qStateMachine_StackPush( &s, current );  /* place pointer to the current fsm on the stack before traversing the nested fsm */            
-            current = current->qPrivate.Composite.head;
+            current = current->qPrivate.Composite.next;
         }
         else{   /* backtrack from the empty subtree and visit the nested fsm at the top of the stack; however, if the stack is empty, we are done */
             hierarchy_drilled = qStateMachine_StackIsEmpty( s );
@@ -181,17 +180,23 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
                 
                 if( NULL != current){
                     exec = qTrue;
-                    parent =  (qSM_t*)current->qPrivate.xPublic.Parent;
-                    
+                    parent =  (qSM_t*)current->qPrivate.xPublic.Parent;                 
                     if( NULL != parent ){
-                        exec = parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState;
+                        exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) && ( qTrue == parent->qPrivate.Active) ;
+                        if( ( qTrue == current->qPrivate.Active ) &&  ( qFalse == exec ) ){
+                            current->qPrivate.xPublic.Signal = QSM_SIGNAL_EXIT;
+                            qStateMachine_ExecStateIfAvailable(  current, current->qPrivate.xPublic.NextState ); /*execute exit action*/
+                        }
+                        if( ( qFalse == current->qPrivate.Active ) &&  ( qTrue == exec ) ){
+                            current->qPrivate.xPublic.Signal = QSM_SIGNAL_ENTRY;
+                            qStateMachine_ExecStateIfAvailable(  current, current->qPrivate.xPublic.NextState ); /*execute entry action*/
+                        }
+                        current->qPrivate.Active = exec;
                     }
-                    
                     if( qTrue == exec ){
                         (void)qStateMachine_Evalutate( current, Data );
                     }                    
-                    
-                    current = current->qPrivate.Composite.next; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm's turn */
+                    current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm's turn */                   
                 }
             }
         }
@@ -325,7 +330,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
     size_t iEntry;
     qSM_Signal_t signal;
     qBool_t SigActionGuard = qTrue;
-    qSM_t *toChild, *xParent;
+    qSM_t *toTargetFSM;
 
     if( NULL != obj ){
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
@@ -335,28 +340,18 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj ){
                 xCurrentState = obj->qPrivate.xPublic.NextState;
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){
                     iTransition = table->qPrivate.Transitions[iEntry];
-                    if( ( xCurrentState == iTransition.xCurrentState ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
+                    if( ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) && ( signal == iTransition.Signal) ){ /*both conditions match*/
                         if( NULL != iTransition.SignalAction ){
                             SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
                         }
                         if( qTrue == SigActionGuard ){
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
-                            
-                            if( ( NULL != iTransition.xToChildHandle ) && ( NULL != iTransition.xToChildState ) && ( NULL == iTransition.xToParentState) ){ /*make the transition inside composite states*/
-                                toChild = (qSM_t*)iTransition.xToChildHandle;
-                                if( obj == toChild->qPrivate.xPublic.Parent ){ /*check if the the target child its actually a child of the current fsm*/
-                                    toChild->qPrivate.xPublic.NextState = iTransition.xToChildState;
-                                } 
-                            }
-                            else if( ( NULL != iTransition.xToParentState ) && ( NULL == iTransition.xToChildHandle ) && ( NULL == iTransition.xToChildState) ){
-                                xParent = (qSM_t*)obj->qPrivate.xPublic.Parent;
-                                if( NULL != xParent ){
-                                    xParent->qPrivate.xPublic.NextState = iTransition.xToParentState;
-                                }
-                            }
-                            else{
-                                /*bad table configuration, not handled*/
-                            }
+                            toTargetFSM = (qSM_t*)iTransition.xToTargetHandle;
+                            if( ( NULL != toTargetFSM ) ){
+                                toTargetFSM->qPrivate.xPublic.Signal = QSM_SIGNAL_EXIT;
+                                qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState );
+                                toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState;
+                            } 
                         }
                         RetValue = qTrue;
                         break; 
@@ -432,26 +427,14 @@ Return value:
 */
 qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child ){
     qBool_t RetValue = qFalse;
-    qSM_t *last;
+    /*qSM_t *last;*/
     if( ( NULL != parent ) && ( NULL != state ) && (child != NULL ) ){
         child->qPrivate.xPublic.Parent = parent;
         child->qPrivate.Composite.rootState = state;
 
         /*insert child fsm into the composite fsm list*/
-        if( NULL == parent->qPrivate.Composite.head ){
-             parent->qPrivate.Composite.head = child;
-        }
-        else{
-            last = parent->qPrivate.Composite.head;
-            while( NULL != last->qPrivate.Composite.next ){
-                last = last->qPrivate.Composite.next;
-            }
-            last->qPrivate.Composite.next = child;
-        }
-        /*
         child->qPrivate.Composite.next = parent->qPrivate.Composite.head;
-        parent->qPrivate.Composite.head = child;
-        */
+        parent->qPrivate.Composite.head = child;        
         RetValue = qTrue;
     }
     return RetValue;

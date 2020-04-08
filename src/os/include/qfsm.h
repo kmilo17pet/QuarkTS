@@ -64,9 +64,8 @@
         qSM_Signal_t Signal;            /*< The event-signal used to produce the transittion*/
         qSM_State_t xNextState;         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
         qSM_SignalAction SignalAction;  /*< The action performed by the signal on the current transition. NULL to disable.*/
-        void *xToChildHandle;           /*< (Only in hierarchycal FSMs) The handle to the target child. */
-        qSM_State_t xToChildState;      /*< (Only in hierarchycal FSMs) The next state that the child FSM will occupy after the transition. NULL if not used*/
-        qSM_State_t xToParentState;     /*< (Only in hierarchycal FSMs) The next state that the parent FSM will occupy after the transition. NULL if not used*/
+        void *xToTargetHandle;          /*< (Only in hierarchycal FSMs) The handle to the target child. */
+        qSM_State_t xToTargetState;     /*< (Only in hierarchycal FSMs) The next state that the child FSM will occupy after the transition. NULL if not used*/
     }qSM_Transition_t;
 
     typedef struct{
@@ -80,6 +79,7 @@
     typedef struct _qSM_s{
         /*This data should be handled only using the provided API*/
         struct _qSM_Private_s{
+            qBool_t Active;
             void (*Failure)(_qSM_Handler_t arg);
             void (*Success)(_qSM_Handler_t arg);
             void (*Unexpected)(_qSM_Handler_t arg);  

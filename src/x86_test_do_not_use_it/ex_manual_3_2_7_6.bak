@@ -37,27 +37,27 @@ qBool_t SigAct_BrakeOff( qSM_Handler_t h );
 qTask_t SMTask;
 qSM_t Top_SM, AutomatedControl_SM, LEDBlink_FSM;
 qSM_Transition_t Top_SM_ttable[]={
-    { Top_Idle_State,               QSM_SIGNAL_ENGINE_ON,     Top_Initial_State,           SigAct_ClearDesiredSpeed,       NULL,                    NULL,                                       NULL },
-    { Top_Initial_State,            QSM_SIGNAL_ACCEL,         Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Accelerating_State,        NULL },
-    { Top_AutomatedControl_State,   QSM_SIGNAL_BRAKE_PRESSED, Top_CruisingOff_State,       NULL,                           NULL,                    NULL,                                       NULL },
-    { Top_CruisingOff_State,        QSM_SIGNAL_ENGINE_OFF,    Top_Idle_State,              NULL,                           NULL,                    NULL,                                       NULL },
-    { Top_CruisingOff_State,        QSM_SIGNAL_ACCEL,         Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Accelerating_State,        NULL },
-    { Top_CruisingOff_State,        QSM_SIGNAL_RESUME,        Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Resuming_State,            NULL },
+    { Top_Idle_State,               QSM_SIGNAL_ENGINE_ON,     Top_Initial_State,           SigAct_ClearDesiredSpeed,       NULL,                    NULL,                                        },
+    { Top_Initial_State,            QSM_SIGNAL_ACCEL,         Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Accelerating_State,         },
+    { Top_AutomatedControl_State,   QSM_SIGNAL_BRAKE_PRESSED, Top_CruisingOff_State,       NULL,                           NULL,                    NULL,                                        },
+    { Top_CruisingOff_State,        QSM_SIGNAL_ENGINE_OFF,    Top_Idle_State,              NULL,                           NULL,                    NULL,                                        },
+    { Top_CruisingOff_State,        QSM_SIGNAL_ACCEL,         Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Accelerating_State,         },
+    { Top_CruisingOff_State,        QSM_SIGNAL_RESUME,        Top_AutomatedControl_State,  SigAct_BrakeOff,                &AutomatedControl_SM,    AutomatedControl_Resuming_State,             },
 };
 
 qSM_Transition_t AutomatedControl_SM_ttable[]={
-    { AutomatedControl_Accelerating_State,      QSM_SIGNAL_CRUISE,              AutomatedControl_Cruising_State,        NULL,      NULL,                           NULL,                                       NULL },
-    { AutomatedControl_Cruising_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,                           NULL,                                       NULL },
-    { AutomatedControl_Resuming_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,                           NULL,                                       NULL },
-    { AutomatedControl_Resuming_State,          QSM_SIGNAL_REACHED_CRUISING,    AutomatedControl_Cruising_State,        NULL,      NULL,                           NULL,                                       NULL },
-    { AutomatedControl_Resuming_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      NULL,                           NULL,                                       Top_CruisingOff_State },    
-    { AutomatedControl_Cruising_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      NULL,                           NULL,                                       Top_CruisingOff_State },    
+    { AutomatedControl_Accelerating_State,      QSM_SIGNAL_CRUISE,              AutomatedControl_Cruising_State,        NULL,      NULL,            NULL },
+    { AutomatedControl_Cruising_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,            NULL },
+    { AutomatedControl_Resuming_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,            NULL },
+    { AutomatedControl_Resuming_State,          QSM_SIGNAL_REACHED_CRUISING,    AutomatedControl_Cruising_State,        NULL,      NULL,            NULL },
+    { AutomatedControl_Resuming_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,            Top_CruisingOff_State },    
+    { AutomatedControl_Cruising_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,            Top_CruisingOff_State },    
 };
 
 
 qSM_Transition_t AutomatedControl_LED_ttable[]={
-    { AutomatedControl_Sub_LEDON,                 QSM_SIGNAL_TIMEOUT,             AutomatedControl_Sub_LEDOFF,         NULL,  NULL, NULL, NULL },          
-    { AutomatedControl_Sub_LEDOFF,                QSM_SIGNAL_TIMEOUT,             AutomatedControl_Sub_LEDON,          NULL,  NULL, NULL, NULL },         
+    { AutomatedControl_Sub_LEDON,                 QSM_SIGNAL_TIMEOUT,             AutomatedControl_Sub_LEDOFF,         NULL,  NULL, NULL },          
+    { AutomatedControl_Sub_LEDOFF,                QSM_SIGNAL_TIMEOUT,             AutomatedControl_Sub_LEDON,          NULL,  NULL, NULL },         
 };
 
 /*===========================Reference clock for the kernel===================*/

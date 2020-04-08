@@ -480,10 +480,10 @@ void test_OS_API( void ){
     qOS_Run();
 }
 
-
 int main(int argc, char** argv) {   
     (void)argc;
     (void)argv;
+    
     /*Already tested externally (NOT INCLUDED HERE)
         - kernel internals
         - task internals
