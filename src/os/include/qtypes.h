@@ -40,8 +40,6 @@
 
     #define _QUARKTS_
     #define _QUARKTS_CR_DEFS_
-    #define QUARKTS_VERSION         "6.2.3"
-    #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     typedef qUINT8_t qPriority_t;
     typedef qINT32_t qIteration_t;

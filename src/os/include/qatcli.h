@@ -16,7 +16,7 @@
     #define     QATCLI_DEFAULT_OK_RSP_STRING            "OK"
     #define     QATCLI_DEFAULT_NOTFOUND_RSP_STRING      "UNKNOWN"
     #define     QATCLI_DEAFULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
-    #define     QATCLI_DEFAULT_DEVID_STRING             QUARKTS_CAPTION
+    #define     QATCLI_DEFAULT_DEVID_STRING             "QuarkTS CLI"
     #define     QATCLI_DEFAULT_EOL_STRING               "\r\n"             
     #define     QATCLI_MIN_INPUT_LENGTH                 ( 3u )
     #define     QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )

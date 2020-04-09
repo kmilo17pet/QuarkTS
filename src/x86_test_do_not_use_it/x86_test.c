@@ -481,8 +481,10 @@ void test_OS_API( void ){
 }
 
 int main(int argc, char** argv) {   
+    printf("%ld  \r\n",sizeof(qSM_t) );
     (void)argc;
     (void)argv;
+    return EXIT_SUCCESS;
     
     /*Already tested externally (NOT INCLUDED HERE)
         - kernel internals

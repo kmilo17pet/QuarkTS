@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.2.3  - A Cooperative OS for small embedded systems
+QuarkTS V6.2.4  - A Cooperative OS for small embedded systems
 GNU General Public License v3 (GPL-3)
 C99 and MISRA-C 2012 Compliant    
 
@@ -31,6 +31,9 @@ Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/qu
 
 #ifndef QuarkTS_H
     #define	QuarkTS_H
+
+    #define QUARKTS_VERSION         "6.2.4"
+    #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"
     #include "qlists.h"

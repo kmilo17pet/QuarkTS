@@ -13,7 +13,7 @@
     #define qCR_Position_t static _qCR_TaskPC_t
     
     typedef struct{
-        _qCR_TaskPC_t instr;    /*< Used to the instruction where the coroutine yields. */
+        _qCR_TaskPC_t instr;    /*< Used to hold the instruction where the coroutine resume execution after a yield. */
         qSTimer_t crdelay;      /*< Used to hold the required delay for qCR_Delay. */
     }_qCR_Instance_t;
 

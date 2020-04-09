@@ -2,12 +2,10 @@
 
 #if ( Q_FSM == 1 )
 
-static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
-static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal );
 
 typedef struct qSM_Stack_s{
-    qSM_t *t;
-    struct qSM_Stack_s *next;
+    qSM_t *t;                   /*<The stack data, a pointer to a fsm*/
+    struct qSM_Stack_s *next;   /*<A pointer to the next item in the stack*/
 }qSM_Stack_t;
 
 #ifndef Q_FSM_MAX_NEST_DEPTH
@@ -17,17 +15,22 @@ typedef struct qSM_Stack_s{
 static size_t qSM_StackIndex = 0;
 static qSM_Stack_t qSM_RAM_Area[ Q_FSM_MAX_NEST_DEPTH ] = {0};
 
+
+static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
+static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal );
+
+
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
 static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
 static qSM_Status_t qStateMachine_Evalutate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
-qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){
+/*============================================================================*/
+qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
     (void)h;
     return qSM_EXIT_SUCCESS;
 }
-
 /*============================================================================*/
 /*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
 
@@ -76,7 +79,6 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.Composite.head = NULL;
         obj->qPrivate.Composite.next = NULL;
         obj->qPrivate.Composite.rootState = NULL;
-        obj->qPrivate.Composite.UnFlatten = qFalse;
         RetValue = qTrue;
     }
     return RetValue;

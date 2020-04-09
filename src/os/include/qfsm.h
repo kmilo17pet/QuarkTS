@@ -71,28 +71,28 @@
     typedef struct{
         /*This data should be handled only using the provided API*/
         struct _qSM_TransitionTable_Private_s{
-            size_t NumberOfEntries;  
-            qSM_Transition_t *Transitions;  
+            size_t NumberOfEntries;         /*< The number of entries inside the <Transitions> array */         
+            qSM_Transition_t *Transitions;  /*< Points to the table entries, an array of type qSM_Transition_t[]*/
         }qPrivate;
     }qSM_TransitionTable_t;
 
     typedef struct _qSM_s{
         /*This data should be handled only using the provided API*/
         struct _qSM_Private_s{
-            qBool_t Active;
-            void (*Failure)(_qSM_Handler_t arg);
-            void (*Success)(_qSM_Handler_t arg);
-            void (*Unexpected)(_qSM_Handler_t arg);  
-            void (*BeforeAnyState)(_qSM_Handler_t arg);
-            qSM_TransitionTable_t *TransitionTable;
-            void *Owner;
-            _qSM_PublicData_t xPublic;
-            qQueue_t SignalQueue;
-            struct{
-                struct _qSM_s *head, *next, *flatnext;
-                qBool_t UnFlatten;
-                qSM_State_t rootState;
-            }Composite;
+            void (*Failure)(_qSM_Handler_t arg);            /*< Failure substate handler.*/
+            void (*Success)(_qSM_Handler_t arg);            /*< Success substate handler.*/    
+            void (*Unexpected)(_qSM_Handler_t arg);         /*< Unexpected substate handler.*/
+            void (*BeforeAnyState)(_qSM_Handler_t arg);     /*< BeforeAny substate handler.*/
+            qSM_TransitionTable_t *TransitionTable;         /*< A pointer to the transition table.*/
+            void *Owner;                                    /*< A pointer to the owner task */
+            struct{                 
+                struct _qSM_s *head;                        /*< Composite state pointer. head : points to the head of the nested fsm list .*/    
+                struct _qSM_s *next;                        /*< Composite state pointer. head : points to the next same-level fsm.*/
+                qSM_State_t rootState;                      /*< The state where this fsm should be active*/
+            }Composite;        
+            qQueue_t SignalQueue;                           /*< The fsm signal queue object. */
+            _qSM_PublicData_t xPublic;                      /*< The external-manipulable members of the fsm. */
+            qBool_t Active;                                 /*< A flag indicating whether the fsm should run in a hierarchical environment*/
         }qPrivate;
     }qSM_t;
 

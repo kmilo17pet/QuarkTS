@@ -20,7 +20,7 @@
     #define qNode_MinimalMembers    qNode_MinimalFields
 
     typedef struct{
-        qNode_MinimalFields;        /*< to allow list of lists*/
+        qNode_MinimalFields;        /*< to allow list of lists aka nested lists*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
         size_t size;                /*< Used to hold the current size of the list. */
     }qList_t;
@@ -32,11 +32,11 @@
     #define QLIST_WALKTHROUGH       ( qList_WalkThrough )   /*< When the loop is transversing the list.*/
     #define QLIST_WALKEND           ( qList_WalkEnd )       /*< When the loop has finished. In this case, A NULL value will be passed in the node pointer*/
 
-    typedef qBool_t (*qList_NodeFcn_t)(void *node, void *arg, qList_WalkStage_t stage );
+    typedef qBool_t (*qList_NodeFcn_t)( void *node, void *arg, qList_WalkStage_t stage );
     typedef qINT32_t qList_Position_t;
 
     typedef void* (*qList_MemAllocator_t)( size_t size );
-    typedef void (*qList_MemFree_t)(void *ptr);
+    typedef void (*qList_MemFree_t)( void *ptr );
 
     #define qList_AtFront           ((qList_Position_t)(-1))
     #define qList_AtBack            ((qList_Position_t)(2147483647))
@@ -66,8 +66,8 @@
     #define QLIST_BACKWARD  ( _qNode_Backward )
     
     typedef struct{
-        qList_Node_t *next;
-        qList_Direction_t direction;
+        qList_Node_t *next;             /*< Where the iterator is currently pointing. */
+        qList_Direction_t direction;    /*< How the iterator scrolls through the list, QLIST_FORWARD or QLIST_BACKWARD. */
     }qList_Iterator_t;
 
     qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir);
