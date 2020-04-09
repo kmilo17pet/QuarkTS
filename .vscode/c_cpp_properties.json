@@ -17,7 +17,7 @@
             "compilerPath": "C:/cygwin64/bin/gcc.exe",
             "cStandard": "c89",
             "cppStandard": "c++17",
-            "intelliSenseMode": "msvc-x64"
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
