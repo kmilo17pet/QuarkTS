@@ -182,9 +182,10 @@ qSM_Status_t AutomatedControl_Sub_LEDON( qSM_Handler_t h ){
     switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
             qSTimer_Set( &timeout, 2.0f );
-            puts("AutomatedControl_Sub_LEDON");
+            puts("entering AutomatedControl_Sub_LEDON");
             break;
         case QSM_SIGNAL_EXIT:
+            puts("exiting AutomatedControl_Sub_LEDON");
             break;
         default:
             if( qSTimer_Expired( &timeout) ){
@@ -198,9 +199,10 @@ qSM_Status_t AutomatedControl_Sub_LEDOFF( qSM_Handler_t h ){
     switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
             qSTimer_Set( &timeout, 2.0f );
-            puts("AutomatedControl_Sub_LEDOFF");
+            puts("entering AutomatedControl_Sub_LEDOFF");
             break;
         case QSM_SIGNAL_EXIT:
+            puts("exiting AutomatedControl_Sub_LEDOFF");
             break;
         default:
             if( qSTimer_Expired( &timeout) ){

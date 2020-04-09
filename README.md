@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/tecrea/quarkts/badge)](https://www.codefactor.io/repository/github/tecrea/quarkts)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/context:cpp)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/alerts/)
-[![Latest Release](https://img.shields.io/badge/Release-6.2.2-green.svg)](https://github.com/TECREA/QuarkTS/releases)
+[![Latest Release](https://img.shields.io/badge/Release-6.2.3-green.svg)](https://github.com/TECREA/QuarkTS/releases)
 [![MISRAC2012](https://img.shields.io/badge/MISRAC2012-Compliant-blue.svg)](https://en.wikipedia.org/wiki/MISRA_C)
 [![CERT](https://img.shields.io/badge/CERT-Compliant-blue.svg)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
 [![C Standard](https://img.shields.io/badge/STD-C99-green.svg)](https://en.wikipedia.org/wiki/C99)
@@ -22,16 +22,14 @@
 
 Checked with C-STAT for MISRAC2012 Compliance.
 
-QuarkTS is an operating system that provides a modern environment to build stable and predictable event-driven multitasking embedded software. The OS is built on top of a cooperative quasi-static scheduler and its simplified kernel implements a specialized round-robin scheme with a linked-chain approach and an event-queue to provide true FIFO priority-scheduling.
-
-Rather than having preemption,  tasks manage their own lifecycle. This bring significant benefits, fewer reentrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer. 
+QuarkTS is an operating system that provides a modern environment to build stable and predictable event-driven multitasking embedded software. The OS is built on top of a cooperative quasi-static scheduler and its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority-scheduling.
 
 ## Features:
-- Cooperative scheduling
+- Prioritized cooperative scheduling.
 - Time control (Timed tasks and software timers)
 - Inter-Task comunnication primitives, queues, notifications and event-flags.
 - State-Machines ( hierarchical support )
 - Co-routines.
 - AT Command Line Interface (CLI)
 
-These features make it suitable for resource-constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things.
+All the included features make this OS suitable for resource-constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things.

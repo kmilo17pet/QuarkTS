@@ -75,7 +75,7 @@
             qSM_Transition_t *Transitions;  
         }qPrivate;
     }qSM_TransitionTable_t;
-    
+
     typedef struct _qSM_s{
         /*This data should be handled only using the provided API*/
         struct _qSM_Private_s{
@@ -103,6 +103,8 @@
     #define QSM_SIGNAL_ENTRY   ( (qSM_Signal_t)0xFFFFFFFEu )
     #define QSM_SIGNAL_EXIT    ( (qSM_Signal_t)0xFFFFFFFDu )
 
+    #define QSM_STATE_UNDEFINED ( &_qStateMachine_UndefinedStateCallback )
+
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART,                        /*< Restart the FSM. */
         qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,   /*< Clear the entry flag for the current state if the NextState field doesn't change. */
@@ -120,12 +122,15 @@
     qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
     qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
-    qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj );
-    qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent );
+    qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal );
+    qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent );
     qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj );
     void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent );
     
     qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
+
+
+    qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h );
 
     #ifdef __cplusplus
     }

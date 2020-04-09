@@ -27,10 +27,6 @@ qSM_Status_t Baking_State( qSM_Handler_t h );
 qTask_t SMTask;
 qSM_t Top_SM, DoorClosed_SM, Heating_SM;
 
-qSM_Status_t QSM_UNDEF( qSM_Handler_t h ){
-    return qSM_EXIT_SUCCESS;
-}
-
 qSM_Transition_t Top_SM_ttable[]={
     { DoorClosed_State,    SIG_OPEN,        DoorOpen_State,           NULL,     NULL,       NULL,         },
     { DoorOpen_State,      SIG_CLOSE,       DoorClosed_State,         NULL,     NULL,       NULL,         },      
@@ -155,28 +151,9 @@ qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
 /*=============================================================================*/
 int main(int argc, char** argv) {  
     qSM_Signal_t topsm_sig_stack[10];
-    qSM_TransitionTable_t top_ttable, closed_ttable, heating_ttable;
-    /*
--0x1004014f0
--0x100401550
-    0x1004015b0
-    0x100401610
-        0x100401670
-        0x1004016d0
-*/
+    qSM_TransitionTable_t top_ttable, closed_ttable;
     printf("OvenControl = %d\r\n", getpid() );
 
-qSM_Status_t DoorClosed_State( qSM_Handler_t h );
-qSM_Status_t DoorOpen_State( qSM_Handler_t h );
-
-qSM_Status_t Heating_State( qSM_Handler_t h );
-qSM_Status_t Off_State( qSM_Handler_t h );
-
-qSM_Status_t Toasting_State( qSM_Handler_t h );
-qSM_Status_t Baking_State( qSM_Handler_t h );
-
-    printf("-%p\r\n-%p\r\n    %p\r\n    %p\r\n        %p\r\n        %p\r\n", DoorClosed_State, DoorOpen_State, Heating_State, Off_State, Toasting_State, Baking_State );
-    puts("------------");
     signal( SIGUSR1, Sig_Handler );
     signal( SIGUSR2, Sig_Handler );
     signal( SIGQUIT, Sig_Handler );
@@ -187,13 +164,10 @@ qSM_Status_t Baking_State( qSM_Handler_t h );
     qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
 
     qStateMachine_Setup( &DoorClosed_SM, Off_State, NULL, NULL, NULL, NULL );
-    qStateMachine_Setup( &Heating_SM, QSM_UNDEF, NULL, NULL, NULL, NULL );
-    /*qStateMachine_SignalQueueSetup( &AutomatedControl_SM, chlsm_sig_stack, sizeof(chlsm_sig_stack)/sizeof(chlsm_sig_stack[0]) );*/ /*use the parent signal queue*/
-    
+    qStateMachine_Setup( &Heating_SM, QSM_STATE_UNDEFINED, NULL, NULL, NULL, NULL );
     qStateMachine_TransitionTableInstall( &DoorClosed_SM, &closed_ttable, DoorClosed_SM_ttable, 3);
-    /*qStateMachine_TransitionTableInstall( &Heating_SM, &heating_ttable, Heating_SM_ttable, 2 );*/
     
-    qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.5f, &Top_SM, DoorClosed_State, NULL, NULL, NULL, NULL, qEnabled, NULL); 
+    qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, DoorClosed_State, NULL, NULL, NULL, NULL, qEnabled, NULL); 
     
     qStateMachine_SignalQueueSetup( &Top_SM, topsm_sig_stack, sizeof(topsm_sig_stack)/sizeof(topsm_sig_stack[0]) );
     qStateMachine_TransitionTableInstall( &Top_SM, &top_ttable, Top_SM_ttable, 2 );
