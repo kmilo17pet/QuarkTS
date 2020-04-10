@@ -113,12 +113,12 @@
         qSM_UNEXPECTED_STATE,               /*< Set the Unexpected State. */
         qSM_BEFORE_ANY_STATE,               /*< Set the state executed before any state. */        
         qSM_UNINSTALL_TRANSTABLE            /*< To unistall the transition table if available*/      
-    }qFSM_Attribute_t; 
+    }qSM_Attribute_t; 
 
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
     void qStateMachine_Run( qSM_t * const root, void *Data );
 
-    void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
+    void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
     qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
     qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
