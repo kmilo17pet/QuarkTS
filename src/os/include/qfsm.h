@@ -14,6 +14,14 @@
     
     typedef size_t qSM_Signal_t;
 
+    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
+    #define QSM_SIGNAL_RANGE_MAX    ( (qSM_Signal_t)0xFFFFFFFCu )
+
+
+    #define QSM_SIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
+    #define QSM_SIGNAL_ENTRY   ( (qSM_Signal_t)0xFFFFFFFEu )
+    #define QSM_SIGNAL_EXIT    ( (qSM_Signal_t)0xFFFFFFFDu )
+
     typedef struct _qSM_PublicData_s{
         /* NextState: (Read/Write) 
         Next state to be performed after this state finish
@@ -96,14 +104,8 @@
         }qPrivate;
     }qSM_t;
 
-    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
-    #define QSM_SIGNAL_RANGE_MAX    ( (qSM_Signal_t)0xFFFFFFFCu )
-    
-    #define QSM_SIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
-    #define QSM_SIGNAL_ENTRY   ( (qSM_Signal_t)0xFFFFFFFEu )
-    #define QSM_SIGNAL_EXIT    ( (qSM_Signal_t)0xFFFFFFFDu )
-
-    #define QSM_STATE_UNDEFINED ( &_qStateMachine_UndefinedStateCallback )
+    #define QSM_STATE_UNDEFINED     ( &_qStateMachine_UndefinedStateCallback )
+    #define QSM_STATE_TO_SAME       ( &_qStateMachine_RecursiveStateCallback )
 
     typedef enum{ /*FSM Attribute Flags definition*/
         qSM_RESTART,                        /*< Restart the FSM. */
@@ -129,8 +131,8 @@
     
     qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
 
-
     qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h );
+    qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h );
 
     #ifdef __cplusplus
     }

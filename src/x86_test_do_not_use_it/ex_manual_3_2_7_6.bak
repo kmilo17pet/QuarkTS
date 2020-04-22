@@ -50,8 +50,8 @@ qSM_Transition_t AutomatedControl_SM_ttable[]={
     { AutomatedControl_Cruising_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,            NULL },
     { AutomatedControl_Resuming_State,          QSM_SIGNAL_ACCEL,               AutomatedControl_Accelerating_State,    NULL,      NULL,            NULL },
     { AutomatedControl_Resuming_State,          QSM_SIGNAL_REACHED_CRUISING,    AutomatedControl_Cruising_State,        NULL,      NULL,            NULL },
-    { AutomatedControl_Resuming_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,            Top_CruisingOff_State },    
-    { AutomatedControl_Cruising_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,            Top_CruisingOff_State },    
+    { AutomatedControl_Resuming_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,         Top_CruisingOff_State },    
+    { AutomatedControl_Cruising_State,          QSM_SIGNAL_OFF,                 NULL,                                   NULL,      &Top_SM,         Top_CruisingOff_State },    
 };
 
 

@@ -31,6 +31,10 @@ qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy
     (void)h;
     return qSM_EXIT_SUCCESS;
 }
+qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
+    h->NextState = h->LastState;
+    return qSM_EXIT_SUCCESS;
+}
 /*============================================================================*/
 /*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
 
@@ -362,6 +366,12 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                                 qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
                                 toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState;
                             } 
+                        }
+                        else if( qIgnore == SigActionGuard ){
+                            /* TODO: signal should be queueded again*/ 
+                        }
+                        else{
+                            /*nothing to do here*/
                         }
                         RetValue = qTrue;
                         break; 

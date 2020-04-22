@@ -54,6 +54,7 @@
     #define qDisabled               ( (qState_t)0x00u )
     #define qAwake                  ( 2u )
     #define qAsleep                 ( 3u )
+    #define qIgnore                 ( (qBool_t)0xFE )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )  
     #define qLink                   ( qTrue )

@@ -33,7 +33,7 @@ qSM_Transition_t Top_SM_ttable[]={
 };
 
 qSM_Transition_t DoorClosed_SM_ttable[]={   
-    { NULL,    SIG_OFFTIMEOUT,  Off_State,          NULL,   NULL,     NULL,         },    
+    { NULL,    SIG_OFFTIMEOUT,  Off_State,          NULL,   NULL,            NULL,         },    
     { NULL,    SIG_BAKE,        Heating_State,      NULL,   &Heating_SM,     Baking_State,         },             
     { NULL,    SIG_TOAST,       Heating_State,      NULL,   &Heating_SM,     Toasting_State,         },             
 };
