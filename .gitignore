@@ -13,7 +13,9 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
+*.d
+*.o
+*.exe
 *.stackdump
 
 # Windows shortcuts

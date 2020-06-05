@@ -357,6 +357,7 @@ void IdleTaskCallback(qEvent_t e){
     if(qSTimer_FreeRun(&xd, 0.5)){
         qTrace_UnsignedDecimal( qSTimer_Elapsed(&t) );
         qTrace_UnsignedDecimal( qSTimer_Remaining(&t) );
+        qTrace_Bool( qSTimer_Expired(&t) );
         /*
        qStateMachine_SendSignal( &statemachine, QSM_SIGNAL_USER1, qFalse );
         */
@@ -467,7 +468,6 @@ void test_OS_API( void ){
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
-
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01f, qPeriodic, qEnabled, "blink") );   
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5f, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
@@ -481,10 +481,8 @@ void test_OS_API( void ){
 }
 
 int main(int argc, char** argv) {   
-    printf("%ld  \r\n",sizeof(qSM_t) );
     (void)argc;
     (void)argv;
-    return EXIT_SUCCESS;
     
     /*Already tested externally (NOT INCLUDED HERE)
         - kernel internals
