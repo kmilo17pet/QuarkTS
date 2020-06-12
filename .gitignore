@@ -51,8 +51,8 @@ Temporary Items
 .apdisk
 
 # C-stat temp files
-.pbi
-.ninja
-.ninja_log
-.ninja_deps
-.xcl
+*.pbi
+*.ninja
+*.ninja_log
+*.ninja_deps
+*.xcl

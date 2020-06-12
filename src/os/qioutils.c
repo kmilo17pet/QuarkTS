@@ -3,7 +3,29 @@
 
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base );
 static char qIOUtil_NibbleToX( qUINT8_t value );
+static const char * qIOUtil_DiscardWhitespaces( const char *s );
+static const char * qIOUtil_CheckStrSign( const char *s, int *sgn );
 
+static const char * qIOUtil_DiscardWhitespaces( const char *s ){
+    while( 0 != isspace( (int)*s ) ){
+        s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
+    }    
+    return s;
+}
+/*============================================================================*/
+static const char * qIOUtil_CheckStrSign( const char *s, int *sgn ){
+    if ('-' == *s){ /*if negative found*/
+        *sgn = -1; /*set the sign*/
+        ++s; /*move to next*/ /*MISRAC2004-17.4_a deviation allowed*/ 
+    } 
+    else if ('+' == *s){
+        ++s; /*plus sign ignored, move to next*/  /*MISRAC2004-17.4_a deviation allowed*/ 
+    } 
+    else{
+        /*nothing to do*/
+    }  
+    return s;
+}
 /*============================================================================*/
 /*
 Returns the length of the given null-terminated byte string, that is, the number 
@@ -322,19 +344,16 @@ Return value:
 qFloat64_t qIOUtil_AtoF( const char *s ){
     qFloat64_t rez = 0.0, fact;
     qBool_t point_seen = qFalse;
+    int sgn = 1;
     char c;
     #if ( Q_ATOF_FULL == 1 )
         int power2, powersign = 1;
         qFloat64_t power = 1.0, efactor;
     #endif
    
-    while( 0 != isspace( (int)*s ) ){
-        s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
-    }
-    fact = ('-' == *s)? -1.0 : 1.0; /*set the sign*/
-    if ( ( '-' == *s ) || ( '+' == *s) ){
-        s++; /*move to the next sign*/ /*MISRAC2004-17.4_a deviation allowed*/ 
-    }
+    s = qIOUtil_DiscardWhitespaces( s );
+    s = qIOUtil_CheckStrSign( s, &sgn );
+    fact = ( qFloat64_t )sgn;
 
     while( '\0' != (c=*s) ) { /*MISRAC2004-17.4_a deviation allowed*/ 
         if (c == '.'){
@@ -471,19 +490,8 @@ int qIOUtil_AtoI( const char *s ){
     int RetValue = 0;
 
     if( NULL != s ){
-        while( 0 != isspace( (int)*s ) ){
-            ++s; /*MISRAC2004-17.4_a deviation allowed*/ 
-        }
-        if ('-' == *s){ /*if negative found*/
-            sgn = -1; /*set the sign*/
-            ++s; /*move to next*/ /*MISRAC2004-17.4_a deviation allowed*/ 
-        } 
-        else if ('+' == *s){
-            ++s; /*plus sign ignored, move to next*/  /*MISRAC2004-17.4_a deviation allowed*/ 
-        } 
-        else{
-            /*nothing to do*/
-        }  
+        s = qIOUtil_DiscardWhitespaces( s );
+        s = qIOUtil_CheckStrSign( s, &sgn );
         while( '\0' != *s ){ /*iterate until null char is found*/
             if ( ( *s < '0' ) || ( *s > '9' ) ){
                 break; 
