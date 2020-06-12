@@ -9,6 +9,9 @@ static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Posi
 static qList_MemAllocator_t qListMalloc = NULL; 
 static qList_MemFree_t qListFree = NULL; 
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
+static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 );
+static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 );
+static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 );
 /*============================================================================*/
 /*void qList_Initialize( qList_t *list )
  
@@ -639,66 +642,79 @@ Return value:
 qBool_t qList_Swap( void *node1, void *node2 ){
     qBool_t RetValue = qFalse;
     qList_Node_t *n1, *n2;
-    qList_t *list;
     qList_Node_t *tmp1, *tmp2;
 
     if( ( NULL != node1 ) && ( NULL != node2) && ( node1 != node2 ) ){ 
         n1 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */
         n2 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */
-        list = n1->container; /* MISRAC2012-Rule-11.5 deviation allowed */
-        if( ( NULL != list ) && ( n1->container == n2->container ) ){ /*nodes are part of the same list*/
+
+        if( ( NULL != n1->container ) && ( n1->container == n2->container ) ){ /*nodes are part of the same list*/
             if( n2->next == n1 ){
                 n1 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */ 
                 n2 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */              
             }          
             tmp1 = n1->prev;
             tmp2 = n2->next;           
-            /*update the list links*/
-            if( list->head == n1 ){
-                list->head = n2;
-            }
-            else if( list->head == n2 ){
-                list->head = n1;
-            }    
-            else{
-                /*nothing to do here*/         
-            }        
-            if( list->tail == n1 ){
-                list->tail = n2;
-            }
-            else if( list->tail == n2 ){
-                list->tail = n1;
-            }
-            else{
-                /*nothing to do here*/
-            }          
-            if( ( (n1->next == n2 ) && ( n2->prev == n1 ) ) || ( ( n1->prev == n2 ) && ( n2->next == n1 ) ) ){ /*adjacent nodes?*/
-                n1->prev = n1->next; 
-                n2->next = n2->prev;
-            }
-            else{
-                n1->prev = n2->prev;
-                n2->next = n1->next;
-            }
+            qList_GivenNodes_SwapBoundaries( n1, n2 );
+            qList_GivenNodes_SwapAdjacent( n1, n2 );
             n2->prev = tmp1;
             n1->next = tmp2;
-            /*update outer links*/
-            if( NULL != n1->prev ){
-                n1->prev->next = n1;
-            }
-            if( NULL != n1->next ){
-                n1->next->prev = n1;
-            }
-            if( NULL != n2->prev ){
-                n2->prev->next = n2;
-            }
-            if( NULL != n2->next ){
-                n2->next->prev = n2;
-            }                
+            qList_GivenNodes_UpdateOuterLinks( n1, n2 );   
             RetValue = qTrue;
         }
     }
     return RetValue;
+}
+/*=========================================================*/
+static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 ){
+    qList_t *list;
+    list = n1->container; /* MISRAC2012-Rule-11.5 deviation allowed */
+
+    /*update the list links*/
+    if( list->head == n1 ){
+        list->head = n2;
+    }
+    else if( list->head == n2 ){
+        list->head = n1;
+    }    
+    else{
+        /*nothing to do here*/         
+    }        
+    if( list->tail == n1 ){
+        list->tail = n2;
+    }
+    else if( list->tail == n2 ){
+        list->tail = n1;
+    }
+    else{
+        /*nothing to do here*/
+    } 
+}
+/*=========================================================*/
+static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 ){
+    if( ( (n1->next == n2 ) && ( n2->prev == n1 ) ) || ( ( n1->prev == n2 ) && ( n2->next == n1 ) ) ){ /*adjacent nodes?*/
+        n1->prev = n1->next; 
+        n2->next = n2->prev;
+    }
+    else{
+        n1->prev = n2->prev;
+        n2->next = n1->next;
+    }
+}
+/*=========================================================*/
+static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 ){
+    if( NULL != n1->prev ){
+        n1->prev->next = n1;
+    }
+    if( NULL != n1->next ){
+        n1->next->prev = n1;
+    }
+    if( NULL != n2->prev ){
+        n2->prev->next = n2;
+    }
+    if( NULL != n2->next ){
+        n2->next->prev = n2;
+    } 
 }
 /*=========================================================*/
 void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn  ){
