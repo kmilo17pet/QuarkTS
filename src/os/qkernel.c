@@ -56,6 +56,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
 static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage );    
 static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task);
 static void qOS_DummyTask_Callback( qEvent_t e );
+static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 
@@ -751,11 +752,64 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
     return RetValue;
 }
 /*============================================================================*/
+static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
+    qTrigger_t Event;
+    qIteration_t TaskIteration;
+    
+    Event = Task->qPrivate.Trigger;
+    
+    switch( Event ){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
+        case byTimeElapsed:
+            /*handle the iteration value and the FirstIteration flag*/
+            TaskIteration = Task->qPrivate.Iterations;
+            kernel.EventInfo.FirstIteration = ( ( TaskIteration != qPeriodic ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
+            Task->qPrivate.Iterations = ( kernel.EventInfo.FirstIteration )? -Task->qPrivate.Iterations : Task->qPrivate.Iterations;
+            if( qPeriodic != Task->qPrivate.Iterations){
+                Task->qPrivate.Iterations--; /*Decrease the iteration value*/
+            }
+            kernel.EventInfo.LastIteration = (0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
+            if( kernel.EventInfo.LastIteration ) {
+                _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
+            }           
+            kernel.EventInfo.StartDelay = qClock_GetTick() - Task->qPrivate.timer.Start;
+            break;
+        case byNotificationSimple:
+            kernel.EventInfo.EventData = Task->qPrivate.AsyncData; /*Transfer async-data to the eventinfo structure*/
+            Task->qPrivate.Notification--; /* = qFalse */ /*Clear the async flag*/            
+            break;
+        #if ( Q_QUEUES == 1)    
+            case byQueueReceiver:
+                kernel.EventInfo.EventData = qQueue_Peek( Task->qPrivate.Queue ); /*the EventData will point to the queue front-data*/
+                break;
+            case byQueueFull: case byQueueCount: case byQueueEmpty: 
+                kernel.EventInfo.EventData = (void*)Task->qPrivate.Queue;  /*the EventData will point to the the linked queue*/
+                break;
+        #endif
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+            case byNotificationQueued:
+                kernel.EventInfo.EventData = kernel.QueueData; /*get the extracted data from queue*/
+                kernel.QueueData = NULL;
+                break;
+        #endif
+        #if ( Q_TASK_EVENT_FLAGS == 1 )
+            case byEventFlags:
+                break;
+        #endif        
+            default: break;
+    }     
+
+    /*Fill the event info structure: Trigger, FirstCall and TaskData */       
+    kernel.EventInfo.Trigger = Task->qPrivate.Trigger;
+    kernel.EventInfo.FirstCall = ( qFalse == _qPrivate_TaskGetFlag( Task, _QTASK_BIT_INIT) )? qTrue : qFalse;
+    kernel.EventInfo.TaskData = Task->qPrivate.TaskData;
+    kernel.CurrentRunningTask = Task; /*needed for qTask_Self()*/
+    return Event;
+}
+/*============================================================================*/
 static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
+    qTrigger_t Event = byNoReadyTasks;
     qTask_t *Task; /*#!ok*/
     qList_t *xList;
-    qTrigger_t Event = byNoReadyTasks;
-    qIteration_t TaskIteration;
     qTaskFcn_t TaskActivities;
 
     xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5 deviation allowed */
@@ -764,51 +818,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
         if( NULL != xList){ /*#!ok*/
     /*cstat +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b*/        
             Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
-            Event = Task->qPrivate.Trigger;
-            switch( Event ){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
-                case byTimeElapsed:
-                    /*handle the iteration value and the FirstIteration flag*/
-                    TaskIteration = Task->qPrivate.Iterations;
-                    kernel.EventInfo.FirstIteration = ( ( TaskIteration != qPeriodic ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
-                    Task->qPrivate.Iterations = ( kernel.EventInfo.FirstIteration )? -Task->qPrivate.Iterations : Task->qPrivate.Iterations;
-                    if( qPeriodic != Task->qPrivate.Iterations){
-                        Task->qPrivate.Iterations--; /*Decrease the iteration value*/
-                    }
-                    kernel.EventInfo.LastIteration = (0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
-                    if( kernel.EventInfo.LastIteration ) {
-                        _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
-                    }           
-                    kernel.EventInfo.StartDelay = qClock_GetTick() - Task->qPrivate.timer.Start;
-                    break;
-                case byNotificationSimple:
-                    kernel.EventInfo.EventData = Task->qPrivate.AsyncData; /*Transfer async-data to the eventinfo structure*/
-                    Task->qPrivate.Notification--; /* = qFalse */ /*Clear the async flag*/            
-                    break;
-                #if ( Q_QUEUES == 1)    
-                    case byQueueReceiver:
-                        kernel.EventInfo.EventData = qQueue_Peek( Task->qPrivate.Queue ); /*the EventData will point to the queue front-data*/
-                        break;
-                    case byQueueFull: case byQueueCount: case byQueueEmpty: 
-                        kernel.EventInfo.EventData = (void*)Task->qPrivate.Queue;  /*the EventData will point to the the linked queue*/
-                        break;
-                #endif
-                #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-                    case byNotificationQueued:
-                        kernel.EventInfo.EventData = kernel.QueueData; /*get the extracted data from queue*/
-                        kernel.QueueData = NULL;
-                        break;
-                #endif
-                #if ( Q_TASK_EVENT_FLAGS == 1 )
-                    case byEventFlags:
-                        break;
-                #endif        
-                    default: break;
-            }           
-            /*Fill the event info structure: Trigger, FirstCall and TaskData */       
-            kernel.EventInfo.Trigger = Task->qPrivate.Trigger;
-            kernel.EventInfo.FirstCall = ( qFalse == _qPrivate_TaskGetFlag( Task, _QTASK_BIT_INIT) )? qTrue : qFalse;
-            kernel.EventInfo.TaskData = Task->qPrivate.TaskData;
-            kernel.CurrentRunningTask = Task; /*needed for qTask_Self()*/
+            Event = qOS_Dispatch_xTask_FillEventInfo( Task );
             TaskActivities = Task->qPrivate.Callback;
             #if ( Q_FSM == 1)
                 if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ){
@@ -829,7 +839,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
             (void)qList_Remove( xList, NULL, qList_AtFront ); /*remove the task from the ready list*/
             (void)qList_Insert( WaitingList, Task, QLIST_ATBACK );  /*and put it again into the waiting list*/
             #if ( Q_QUEUES == 1) 
-                if( byQueueReceiver == Event){
+                if( byQueueReceiver == Event ){
                     (void)qQueue_RemoveFront( Task->qPrivate.Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
                 } 
             #endif

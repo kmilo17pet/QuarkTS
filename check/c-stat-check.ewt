@@ -2378,9 +2378,6 @@
             <name>$PROJ_DIR$\..\src\os\include\qbackward.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\src\os\include\qbitmacros.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\src\os\include\qbsbuffers.h</name>
         </file>
         <file>
@@ -2397,6 +2394,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\src\os\include\qedgecheck.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\include\qflm.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\src\os\include\qfsm.h</name>

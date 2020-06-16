@@ -6,7 +6,7 @@ WARNING:
 This its just a minor-test file for x86. Dont use this as reference example in your 
 embedded application
 This is not a full OS test, most of the built-in modules are tested externally with
-embedded C compilers in real hardware( this is not included in this repository)
+embedded C compilers in real hardware( theses are not included in this repository)
 
 ===================================================================================
 */

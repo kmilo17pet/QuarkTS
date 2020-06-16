@@ -465,13 +465,13 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
                             before->next = after;
                         } 
                         else{
-                            list->head = after; /* In case before pointer is null, after pointer should be the new head*/
+                            list->head = after; /* In case <before> pointer is null, <after> pointer should be the new head*/
                         }
                         current->next = after->next;
                         current->prev = after;
 
                         if( NULL != after->next ){
-                            after->next->prev = current; /* prev pointer of after->next should be set to current. */
+                            after->next->prev = current; /* <prev> pointer of after->next should be set to current. */
                         }
 
                         after->next = current;
@@ -653,11 +653,11 @@ qBool_t qList_Swap( void *node1, void *node2 ){
                 n1 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5 deviation allowed */ 
                 n2 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5 deviation allowed */              
             }          
-            tmp1 = n1->prev;
+            tmp1 = n1->prev; /*save links prior swap*/
             tmp2 = n2->next;           
             qList_GivenNodes_SwapBoundaries( n1, n2 );
             qList_GivenNodes_SwapAdjacent( n1, n2 );
-            n2->prev = tmp1;
+            n2->prev = tmp1; /*restore previously saved links*/
             n1->next = tmp2;
             qList_GivenNodes_UpdateOuterLinks( n1, n2 );   
             RetValue = qTrue;
