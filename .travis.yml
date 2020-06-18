@@ -1,31 +1,28 @@
-os:
-  - linux
-  - osx
-
 language: c
 
-dist: trusty
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
-    packages:
-      - gcc-7
-      - g++-7
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+          packages:
+            - clang-8
+      env:
+        - MATRIX_EVAL="CC=clang-8 CXX=clang++-8"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+          packages:
+            - g++-9
+      env:
+        - MATRIX_EVAL="CC=gcc-9 CXX=g++-9"
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew update ;
-      brew install qt5 cmake ;
-      brew link --force qt ;
-    fi
+  - eval "${MATRIX_EVAL}"
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export CC=gcc-7 ;
-      export CXX=g++-7 ;
-      source /opt/qt510/bin/qt510-env.sh ;
-    fi
   - make
