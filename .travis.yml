@@ -1,25 +1,31 @@
+os:
+  - linux
+  - osx
+
+language: c
+
 dist: trusty
-sudo: required
-language:
-  - c
-compiler:
-  - gcc
+
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
     packages:
-      - gcc-6
-      - g++-6
-      - cmake
+      - gcc-7
+      - g++-7
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update ;
+      brew install qt5 cmake ;
+      brew link --force qt ;
+    fi
+
 script:
-  # Link gcc-6 and g++-6 to their standard commands
-  - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-  - ln -s /usr/bin/g++-6 /usr/local/bin/g++
-  # Export CC and CXX to tell cmake which compiler to use
-  - export CC=/usr/bin/gcc-6
-  - export CXX=/usr/bin/g++-6
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
-  # Run your build commands next
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export CC=gcc-7 ;
+      export CXX=g++-7 ;
+      source /opt/qt510/bin/qt510-env.sh ;
+    fi
   - make
