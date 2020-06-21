@@ -70,7 +70,7 @@ Parameters:
 
 Return value:
 
-    qTrue if the functon asserts, otherwise returns qFalse.
+    qTrue if the function asserts, otherwise returns qFalse.
 
 */
 qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
@@ -442,7 +442,7 @@ Parameters:
     - Task : A pointer to the task node.
     - FlagsToCheck : A bitwise value that indicates the flags to test inside the EventFlags.
                     Can be combined with a bitwise OR.
-                    QBITFLAG_01 | QBITFLAG_02 | QBITFLAG_03 | ... | QBITFLAG_20     
+                    QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20     
     - ClearOnExit : If is set to <qTrue> then any flags set in the value passed as the
                    <FlagsToCheck> parameter will be cleared in the event group before
                    this function returns only when the condition is meet.
@@ -489,9 +489,9 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck,
 *******************************************************************************/
 /*============================================================================*/
 qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){
-	qUINT32_t xbit;
-	xbit = Task->qPrivate.Flags & flag;
-	return (( xbit != 0uL )? qTrue : qFalse);
+	qUINT32_t xBit;
+	xBit = Task->qPrivate.Flags & flag;
+	return (( xBit != 0uL )? qTrue : qFalse);
 }
 /*============================================================================*/
 void _qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){

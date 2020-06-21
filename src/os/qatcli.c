@@ -13,7 +13,7 @@ static size_t qATCLI_NumOfArgs( const char *str );
 static char* qATCLI_Input_Fix( char *s );
 static void qATCLI_HandleCommandResponse( const qATCLI_t * const cli, const qATCLI_Response_t retval );
 static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *InputBuffer, qATCLI_PreCmd_t params );
-static qBool_t qATCLI_Notify( qATCLI_t * const clicb );
+static qBool_t qATCLI_Notify( qATCLI_t * const cli );
 static char* GetArgPtr( qArgNum_t n );
 static int GetArgInt( qArgNum_t n );
 static qFloat32_t GetArgFlt( qArgNum_t n );
@@ -345,15 +345,15 @@ Return value:
 qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;           
-    size_t MaxToInsert, CmdLen, MaxBytestoCopy;
+    size_t MaxToInsert, CmdLen, MaxBytesToCopy;
     
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         ReadyInput = cli->qPrivate.Input.Ready;        
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
         CmdLen = qIOUtil_StrLen( cmd, cli->qPrivate.Input.Size );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
-            MaxBytestoCopy = cli->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
-            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxBytestoCopy ); /*safe string copy*/
+            MaxBytesToCopy = cli->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
+            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxBytesToCopy ); /*safe string copy*/
             (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
             RetValue = qATCLI_Notify( cli );
         }

@@ -12,7 +12,7 @@
     #define _qNodeMembers  *next, *prev, *container
 
     typedef struct _qList_Node_s{
-        struct _qList_Node_s *next, *prev;  /*< Pointers to the adyacent nodes. */
+        struct _qList_Node_s *next, *prev;  /*< Pointers to the adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
     }qList_Node_t;
 
@@ -28,7 +28,7 @@
     #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, NULL, 0u }
 
     typedef enum{ qList_WalkInit, qList_WalkThrough, qList_WalkEnd }qList_WalkStage_t;
-    #define QLIST_WALKINIT          ( qList_WalkInit )      /*< When the loop is about to start. In this case, A NULL value will be pased in the node pointer*/
+    #define QLIST_WALKINIT          ( qList_WalkInit )      /*< When the loop is about to start. In this case, A NULL value will be passed in the node pointer*/
     #define QLIST_WALKTHROUGH       ( qList_WalkThrough )   /*< When the loop is transversing the list.*/
     #define QLIST_WALKEND           ( qList_WalkEnd )       /*< When the loop has finished. In this case, A NULL value will be passed in the node pointer*/
 

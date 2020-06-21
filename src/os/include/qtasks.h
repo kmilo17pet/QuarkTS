@@ -64,7 +64,7 @@
     |(31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
     |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    #define QTASK_COREBITS_RSMASK       ( 0x000000FFuL )	 
+    #define QTASK_COREBITS_RMASK        ( 0x000000FFuL )	 
     #define QTASK_COREBITS_WMASK        ( 0xFFFFFF00uL )
     #define QTASK_COREBITS_OFFSET       ( 0 )
 
@@ -76,15 +76,15 @@
     #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFuL )
     #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
     
-    #define _QTASK_QUEUEFLAGS_MASK     ( 0x0000003CuL )
-    #define _QTASK_BIT_INIT            ( 0x00000001uL )  
-    #define _QTASK_BIT_ENABLED         ( 0x00000002uL )
-    #define _QTASK_BIT_QUEUE_RECEIVER  ( 0x00000004uL )
-    #define _QTASK_BIT_QUEUE_FULL      ( 0x00000008uL )
-    #define _QTASK_BIT_QUEUE_COUNT     ( 0x00000010uL )
-    #define _QTASK_BIT_QUEUE_EMPTY     ( 0x00000020uL )
-    #define _QTASK_BIT_SHUTDOWN        ( 0x00000040uL )
-    #define _QTASK_BIT_REMOVE_REQUEST  ( 0x00000080uL )
+    #define _QTASK_QUEUEFLAGS_MASK      ( 0x0000003CuL )
+    #define _QTASK_BIT_INIT             ( 0x00000001uL )  
+    #define _QTASK_BIT_ENABLED          ( 0x00000002uL )
+    #define _QTASK_BIT_QUEUE_RECEIVER   ( 0x00000004uL )
+    #define _QTASK_BIT_QUEUE_FULL       ( 0x00000008uL )
+    #define _QTASK_BIT_QUEUE_COUNT      ( 0x00000010uL )
+    #define _QTASK_BIT_QUEUE_EMPTY      ( 0x00000020uL )
+    #define _QTASK_BIT_SHUTDOWN         ( 0x00000040uL )
+    #define _QTASK_BIT_REMOVE_REQUEST   ( 0x00000080uL )
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /*The task Bit-Flag definitions*/

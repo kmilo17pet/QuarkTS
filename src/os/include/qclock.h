@@ -24,7 +24,7 @@
         #define QTUNIT_WEEK       ( 604800.0f )       
     #endif
 
-    #define QTUNIT_TOTIME( _xTime_ , _qunit_ )      ( (qTime_t)( _xTime_ ) *  (qTime_t)( _qunit_ ) )
+    #define QTUNIT_TOTIME( _xTime_ , _qUnit_ )      ( (qTime_t)( _xTime_ ) *  (qTime_t)( _qUnit_ ) )
 
     #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
         #define qTimingBase_t    qClock_t

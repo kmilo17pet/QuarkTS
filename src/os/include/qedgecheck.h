@@ -36,7 +36,7 @@
         struct _qEdgeCheck_Private_s{
             qEdgeCheck_IONode_t *Head;          /*< The first ionode in the list. */
             qClock_t Start, DebounceTime;       /*< Debounce time control*/
-            qCoreRegSize_t Reader;              /*< The xbits reg-reader function*/
+            qCoreRegSize_t Reader;              /*< The xBits reg-reader function*/
             qUINT8_t State;                     /*< The node state*/
         }qPrivate;
     }qEdgeCheck_t;

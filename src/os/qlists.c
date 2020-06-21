@@ -457,7 +457,7 @@ qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, 
                 n = count - i - (size_t)1;
                 for( j = (size_t)0; j <= n; j++ ){ 
                     xRetCmp = CompareFcn( current, current->next );
-                    if( qTrue == xRetCmp ) { /*compare adyacent nodes*/
+                    if( qTrue == xRetCmp ) { /*compare adjacent nodes*/
                         before = current->prev;
                         after = current->next;
 
@@ -585,20 +585,20 @@ Return value:
 qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset ){
     qBool_t RetValue = qFalse;
     qList_Node_t *iNode;
-    qList_Node_t *adyacent; /*to allow i-node links to be changed in the walk throught*/
+    qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk throught*/
     
     if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
-        adyacent = ( &QLIST_FORWARD == dir )? list->head : list->tail;
+        adjacent = ( &QLIST_FORWARD == dir )? list->head : list->tail;
         if( NULL != NodeOffset){
             iNode = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5 deviation allowed */
             if( iNode->container == list ){
-                adyacent = iNode;
+                adjacent = iNode;
             }
         }
         RetValue = Fcn( NULL, arg, qList_WalkInit );
         if( qFalse == RetValue ){
-            for( iNode = adyacent; NULL != iNode; iNode = adyacent ){
-                adyacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
+            for( iNode = adjacent; NULL != iNode; iNode = adjacent ){
+                adjacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
                 RetValue = Fcn( iNode, arg, qList_WalkThrough );
                 if( RetValue ){
                     break;

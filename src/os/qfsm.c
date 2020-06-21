@@ -23,7 +23,7 @@ static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_Sta
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
 static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
-static qSM_Status_t qStateMachine_Evalutate( qSM_t * const obj, void *Data );
+static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
 /*============================================================================*/
@@ -118,7 +118,7 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
                 current = qStateMachine_StackPop( &s );             
                 if( NULL != current){
                     qStateMachine_HierarchicalExec( current, Data );    
-                    current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm's turn */                   
+                    current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm turn */                   
                 }
             }
         }
@@ -141,11 +141,11 @@ static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
         current->qPrivate.Active = exec;
     }
     if( qTrue == exec ){
-        (void)qStateMachine_Evalutate( current, Data );
+        (void)qStateMachine_Evaluate( current, Data );
     }        
 }
 /*============================================================================*/
-static qSM_Status_t qStateMachine_Evalutate( qSM_t * const obj, void *Data ){
+static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     qSM_State_t CurrentState; 
     qSM_Status_t RetValue = qSM_EXIT_FAILURE;
     qSM_t *parent;

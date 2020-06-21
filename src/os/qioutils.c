@@ -290,25 +290,25 @@ Return value:
 */
 qUINT32_t qIOUtil_XtoU32( const char *s ) {
     qUINT32_t val = 0uL;
-    qUINT8_t xbyte;
+    qUINT8_t xByte;
     qUINT8_t nparsed = 0u;
     if( NULL != s ){
         while ( ( *s != '\0' ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
-            xbyte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/ /*MISRAC2004-17.4_a deviation allowed*/ 
-            if( 0 != isxdigit( (int)xbyte ) ){ /*if is a valid hex digit*/
+            xByte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/ /*MISRAC2004-17.4_a deviation allowed*/ 
+            if( 0 != isxdigit( (int)xByte ) ){ /*if is a valid hex digit*/
                 nparsed++; /*increase the parsed char count*/
-                if ( ( (char)xbyte >= '0' ) && ( (char)xbyte <= '9') ){
-                    xbyte = (qUINT8_t)( xbyte - (qUINT8_t)48u ); /* '48u' = '0' -> make the conversion in the 0-9 range*/ 
+                if ( ( (char)xByte >= '0' ) && ( (char)xByte <= '9') ){
+                    xByte = (qUINT8_t)( xByte - (qUINT8_t)48u ); /* '48u' = '0' -> make the conversion in the 0-9 range*/ 
                 } 
-                else if ( ( (char)xbyte >= 'A' ) && ( (char)xbyte <='F') ){
-                    xbyte = (qUINT8_t)( xbyte - (qUINT8_t)75u );  /* 75u = 'A' + 10 -> make the conversion in the A-F range*/        
+                else if ( ( (char)xByte >= 'A' ) && ( (char)xByte <='F') ){
+                    xByte = (qUINT8_t)( xByte - (qUINT8_t)75u );  /* 75u = 'A' + 10 -> make the conversion in the A-F range*/        
                 }     
                 else{
                     /*nothing to do */
                 }     
-                val = (qUINT32_t)((qUINT32_t)(val << 4uL) | ((qUINT32_t)xbyte & 0xFuL));  /*add the corresponding nibble to the output*/                
+                val = (qUINT32_t)((qUINT32_t)(val << 4uL) | ((qUINT32_t)xByte & 0xFuL));  /*add the corresponding nibble to the output*/                
             }
-            else if( 0 != isspace( (int)xbyte ) ){
+            else if( 0 != isspace( (int)xByte ) ){
                 /*discard any white-space char*/
             } 
             else{

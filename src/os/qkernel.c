@@ -79,7 +79,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 #if ( Q_ATCLI == 1)
     static void qOS_ATCLI_TaskCallback( qEvent_t  e );
-    static void qOS_ATCLI_NotifyFcn( qATCLI_t * const clicb);
+    static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli );
 #endif
 
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
@@ -539,7 +539,7 @@ static void qOS_ATCLI_TaskCallback( qEvent_t  e ){ /*wrapper for the task callba
     (void)qATCLI_Run( (qATCLI_t*)e->TaskData ); /* MISRAC2012-Rule-11.5 deviation allowed */
 }
 /*============================================================================*/
-static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli){
+static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
     qTask_t *Task;
     Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5 deviation allowed */
     (void)qTask_Notification_Queue( Task, NULL );

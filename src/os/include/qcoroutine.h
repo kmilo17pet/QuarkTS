@@ -34,7 +34,7 @@
     #define _qCR_InitState             _qCRTaskState_ = { _qCR_PCInitVal, QSTIMER_INITIALIZER }
     #define _qCR_TaskCheckPCJump(_PC_) switch(_PC_){    
     #define _qCR_TagExitCCR            _qCRYield_ExitLabel
-    #define _qCR_Exit                  goto _qCR_TagExitCCR /*MISRA deviation*/
+    #define _qCR_Exit                  goto _qCR_TagExitCCR /*MISRAC deviation*/
     #define _qCR_TaskYield             _qCR_Exit;
     #define _qCR_Dispose               _qCR_SetPC(_qCR_PCInitVal);} _qCR_TagExitCCR:
     #define _qCR_Restorator(_VAL_)     case (_qCR_TaskPC_t)(_VAL_):            

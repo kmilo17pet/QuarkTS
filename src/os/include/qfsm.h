@@ -69,11 +69,11 @@
 
     typedef struct{
         qSM_State_t xCurrentState;      /*< The current state that the FSM occupies*/
-        qSM_Signal_t Signal;            /*< The event-signal used to produce the transittion*/
+        qSM_Signal_t Signal;            /*< The event-signal used to produce the transition*/
         qSM_State_t xNextState;         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
         qSM_SignalAction SignalAction;  /*< The action performed by the signal on the current transition. NULL to disable.*/
-        void *xToTargetHandle;          /*< (Only in hierarchycal FSMs) The handle to the target child. */
-        qSM_State_t xToTargetState;     /*< (Only in hierarchycal FSMs) The next state that the child FSM will occupy after the transition. NULL if not used*/
+        void *xToTargetHandle;          /*< (Only in hierarchycal FSM) The handle to the target child. */
+        qSM_State_t xToTargetState;     /*< (Only in hierarchycal FSM) The next state that the child FSM will occupy after the transition. NULL if not used*/
     }qSM_Transition_t;
 
     typedef struct{
