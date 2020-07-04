@@ -152,6 +152,7 @@ void qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t Pin
 /*============================================================================*/
 /*                        PRIVATE METHODS, DONT USE THEM                      */
 /*============================================================================*/
+/*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
 qBool_t _qReg_32Bits( const void *Address, qBool_t PinNumber ){ 
     qUINT32_t Register, Mask, Bit = (qUINT32_t)PinNumber; 
     Mask = (qUINT32_t)((qUINT32_t)1uL << Bit);
@@ -170,6 +171,7 @@ qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber ){
     Register = *((const qUINT8_t*)Address);
     return ( (qUINT8_t)0 != (Register & Mask) );
 }
+/*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*============================================================================*/
 
 #endif /* #if ( Q_EDGE_CHECK_IOGROUPS == 1 ) */

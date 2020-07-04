@@ -37,10 +37,7 @@
     /*Floating-point types*/
     typedef float qFloat32_t;  /*this is not always true in some compilers*/   
     typedef double qFloat64_t; /*this is not always true in some compilers*/   
-
-    #define _QUARKTS_
-    #define _QUARKTS_CR_DEFS_
-
+    
     typedef qUINT8_t qPriority_t;
     typedef qINT32_t qIteration_t;
     typedef qUINT8_t qState_t;

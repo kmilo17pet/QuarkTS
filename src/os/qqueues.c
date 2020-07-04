@@ -39,7 +39,9 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
     if( ( NULL != obj ) && ( NULL != DataArea ) && ( ItemSize > 0u ) && ( ItemsCount > 0u) ){
         obj->qPrivate.ItemsCount = ItemsCount;   /* Initialise the queue members*/
         obj->qPrivate.ItemSize = ItemSize;
-        obj->qPrivate.pHead = DataArea; /* MISRAC2012-Rule-11.5 deviation allowed */
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        obj->qPrivate.pHead = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         obj->qPrivate.pTail = obj->qPrivate.pHead + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
         qQueue_Reset( obj );
         RetValue = qTrue;
@@ -150,7 +152,9 @@ void* qQueue_Peek( const qQueue_t * const obj ){
     if( NULL != obj ){
         if( obj->qPrivate.ItemsWaiting > 0u ){
             qCritical_Enter();
-            RetValue = (void*)( obj->qPrivate.pcReadFrom + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5 deviation allowed */
+            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+            RetValue = (void*)( obj->qPrivate.pcReadFrom + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if( RetValue >= obj->qPrivate.pTail ){
                 RetValue = obj->qPrivate.pHead;
             }

@@ -34,7 +34,9 @@ Return value:
 qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t size ){
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
-        mPool->qPrivate.Heap = Area; /* MISRAC2012-Rule-11.5 deviation allowed */
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        mPool->qPrivate.Heap = Area; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         mPool->qPrivate.HeapSize = size;
         mPool->qPrivate.End = NULL;
         RetValue = qTrue;
@@ -111,12 +113,14 @@ void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr ){
     qMemMang_BlockConnect_t *Connect;
     
     if( NULL != mPool ){
-        pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5 deviation allowed */
+        /*cstat -MISRAC2012-Rule-18.4 -MISRAC2012-Rule-11.3 -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/ 
+        pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         if( NULL != ptr){
-            /*cstat -MISRAC2012-Rule-18.4 -MISRAC2012-Rule-11.3*/
             pToFree -= HeapStructSize; /* memory being freed will have an qMemBlockConnect_t immediately before it. */ /*MISRAC2004-17.4_a deviation allowed*/ /*MISRAC2012-Rule-18.4 allowed*/
-            Connect = (qMemMang_BlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3 allowed*/
-            /*cstat +MISRAC2012-Rule-18.4 +MISRAC2012-Rule-11.3*/
+            /*cstat -CERT-EXP36-C_a*/
+            Connect = (qMemMang_BlockConnect_t*)pToFree; /*MISRAC2012-Rule-11.3,CERT-EXP39-C_d,CERT-EXP36-C_a deviation allowed*/
+            /*cstat +CERT-EXP36-C_a*/
+            /*cstat +MISRAC2012-Rule-18.4 +MISRAC2012-Rule-11.3 +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             if( (size_t)0 != (Connect->BlockSize & mPool->qPrivate.BlockAllocatedBit) ){
                 Connect->BlockSize &= ~mPool->qPrivate.BlockAllocatedBit; /* The block is being returned to the heap - it is no longer allocated. */
                 mPool->qPrivate.FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
@@ -140,27 +144,28 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool ){
     mPool->qPrivate.Start.BlockSize = (size_t)0;
     mPool->qPrivate.Start.Next = NULL;
     mPool->qPrivate.FreeBytesRemaining = (size_t)0;
-    
-    Address = (qAddress_t)mPool->qPrivate.Heap;
+    /*cstat -MISRAC2012-Rule-11.4 -CERT-INT36-C -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    Address = (qAddress_t)mPool->qPrivate.Heap; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
     if( 0uL != ( Address & ByteAlignmentMask ) ){
         Address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
         Address &= ~ByteAlignmentMask;
-        TotalHeapSize -= Address - (qAddress_t)mPool->qPrivate.Heap;
+        TotalHeapSize -= Address - (qAddress_t)mPool->qPrivate.Heap; /*MISRAC2012-Rule-11.4 deviation allowed*/
     }
-    Aligned = (qUINT8_t*) Address;
+    Aligned = (qUINT8_t*) Address; /*MISRAC2012-Rule-11.4 deviation allowed*/
     
-    mPool->qPrivate.Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5 deviation allowed */
+    mPool->qPrivate.Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     mPool->qPrivate.Start.BlockSize = (size_t)0;
-    xAddrTmp = (qAddress_t)Aligned;
+    xAddrTmp = (qAddress_t)Aligned; /*MISRAC2012-Rule-11.4 deviation allowed*/
     Address = xAddrTmp + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/
     Address -= HeapStructSize;
     Address &= ~ByteAlignmentMask;
     
-    mPool->qPrivate.End = (qMemMang_BlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.6 allowed*/
+    mPool->qPrivate.End = (qMemMang_BlockConnect_t*) Address; /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */ /*MISRAC2012-Rule-11.4 deviation allowed*/ /*MISRAC2012-Rule-11.6 allowed*/ 
     mPool->qPrivate.End->Next = NULL;
     mPool->qPrivate.End->BlockSize = (size_t)0;
     FirstFreeBlock = (void*) Aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */ /* MISRAC2012-Rule-11.5 deviation allowed */
-    xAddrTmp = (qAddress_t)FirstFreeBlock;
+    xAddrTmp = (qAddress_t)FirstFreeBlock; /*MISRAC2012-Rule-11.4 deviation allowed*/
+    /*cstat +MISRAC2012-Rule-11.4 +CERT-INT36-C +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     FirstFreeBlock->BlockSize = Address - xAddrTmp; /*MISRAC2004-17.4_a deviation allowed*/
     FirstFreeBlock->Next = mPool->qPrivate.End;
 
@@ -175,24 +180,25 @@ static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_B
     /* Iterate through the list until a block is found that has a higher address than the block being inserted. */
     for( Iterator = &mPool->qPrivate.Start ; Iterator->Next < BlockToInsert ; Iterator = Iterator->Next ){}
     ptr = (qUINT8_t*) Iterator; /* Do the block being inserted, and the block it is being inserted after make a contiguous block of memory? */
+    /*cstat -SEC-NULL-cmp-bef -PTR-null-cmp-bef -CERT-EXP34-C_g*/
     if( &ptr[ Iterator->BlockSize ] == (qUINT8_t*) BlockToInsert ){ /*check if the block that its being inserted after make a contiguous block of memory*/ /*MISRAC2004-17.4_a deviation allowed*/
-	    Iterator->BlockSize += BlockToInsert->BlockSize;
+	    Iterator->BlockSize += BlockToInsert->BlockSize; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
 	    BlockToInsert = Iterator;
     }
     ptr = (qUINT8_t*) BlockToInsert;
-    if( &ptr[ BlockToInsert->BlockSize ] == (qUINT8_t*)Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/
+    if( &ptr[ BlockToInsert->BlockSize ] == (qUINT8_t*)Iterator->Next ){ /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         if( Iterator->Next != mPool->qPrivate.End ){ 
-            BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */
-            BlockToInsert->Next = Iterator->Next->Next;
+            BlockToInsert->BlockSize += Iterator->Next->BlockSize; /* Form one big block from the two blocks. */ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+            BlockToInsert->Next = Iterator->Next->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         }
         else{
-            BlockToInsert->Next = mPool->qPrivate.End;
+            BlockToInsert->Next = mPool->qPrivate.End; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         }
     }
     else{
-        BlockToInsert->Next = Iterator->Next;
+        BlockToInsert->Next = Iterator->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
     }
-
+    /*cstat +SEC-NULL-cmp-bef +PTR-null-cmp-bef +CERT-EXP34-C_g*/
     if( Iterator != BlockToInsert ){
 	    Iterator->Next = BlockToInsert;
     }
@@ -273,7 +279,9 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size ){
                     PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
                     if( ( Block->BlockSize - size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
                         pBlockU8 = (qUINT8_t*)Block;
-                        NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5 deviation allowed */
+                        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                        NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                         NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
                         Block->BlockSize = size;
                         qMemMang_InsertBlockIntoFreeList( mPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */

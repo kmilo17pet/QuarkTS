@@ -261,7 +261,9 @@ static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *data ){
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             tmp.QueueData = data;
             tmp.Task = Task;
-            kernel.QueueStack[ ++kernel.QueueIndex ] = tmp; /*insert task and the corresponding eventdata to the queue*/
+            /*cstat -CERT-INT32-C_a*/
+            kernel.QueueStack[ ++kernel.QueueIndex ] = tmp; /*insert task and the corresponding eventdata to the queue*/ /*CERT-INT32-C_a checked programatically*/
+            /*cstat +CERT-INT32-C_a*/
             RetValue = qTrue;
         }
         return RetValue;
@@ -536,12 +538,16 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Prio
 }
 /*============================================================================*/
 static void qOS_ATCLI_TaskCallback( qEvent_t  e ){ /*wrapper for the task callback */
-    (void)qATCLI_Run( (qATCLI_t*)e->TaskData ); /* MISRAC2012-Rule-11.5 deviation allowed */
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    (void)qATCLI_Run( (qATCLI_t*)e->TaskData ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 }
 /*============================================================================*/
 static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
     qTask_t *Task;
-    Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5 deviation allowed */
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     (void)qTask_Notification_Queue( Task, NULL );
 }
 #endif /* #if ( Q_ATCLI == 1) */
@@ -687,7 +693,9 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         #endif          
     }
     else if( QLIST_WALKTHROUGH == stage ){
-        xTask = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        xTask = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             if( NULL != kernel.NotificationSpreadRequest.mode ){
                 (void)kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
@@ -811,13 +819,12 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
     qTask_t *Task; /*#!ok*/
     qList_t *xList;
     qTaskFcn_t TaskActivities;
-
-    xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5 deviation allowed */
-    /*cstat -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b*/
+    /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
+    xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     if( QLIST_WALKTHROUGH == stage ){ /*#!ok*/
-        if( NULL != xList){ /*#!ok*/
-    /*cstat +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b*/        
-            Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5 deviation allowed */
+        if( NULL != xList){ /*#!ok*/     
+            Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task );
             TaskActivities = Task->qPrivate.Callback;
             #if ( Q_FSM == 1)
@@ -891,7 +898,9 @@ static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task){
     qList_t *xList;
 
     if( NULL != Task ){
-        xList = Task->qPrivate.container; /* MISRAC2012-Rule-11.5 deviation allowed */
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        xList = Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if( kernel.CurrentRunningTask == Task ){
             RetValue = qRunning;
         }

@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "D:\Camilo\Documentos\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --backend -f "D:\Camilo\Documentos\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\HP\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --backend -f "C:\Users\HP\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "D:\Camilo\Documentos\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\Camilo\Documentos\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\HP\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\HP\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
 }
