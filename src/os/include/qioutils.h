@@ -50,7 +50,7 @@
     char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base );
     char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base );
     char* qIOUtil_BtoA( qBool_t num, char *str );
-    char* qIOUtil_QBtoA (qBool_t num, char *str );
+    char* qIOUtil_QBtoA( qBool_t num, char *str );
     qBool_t qIOUtil_IsInf( qFloat32_t f );
     qBool_t qIOUtil_IsNan( qFloat32_t f );
 

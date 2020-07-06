@@ -23,6 +23,7 @@
     #define qIndefinite             ( qPeriodic )
     #define qSingleShot             ( (qIteration_t)(1) )
 
+    /*a single container is used to publish the private methods outside the kernel*/
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
             qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *data);

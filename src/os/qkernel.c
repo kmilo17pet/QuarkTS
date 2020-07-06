@@ -30,8 +30,8 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
         qTaskFcn_t ReleaseSchedCallback;                /*< The callback function for the scheduler release action. */
     #endif    
     #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-        void *QueueData;                                /*< The FIFO priority queue item-data. */
-        qQueueStack_t QueueStack[ Q_PRIO_QUEUE_SIZE ];  /*< Points to the storage area of the FIFO priority queue. */
+        void *QueueData;                                /*< Hold temporarly one item-data of the FIFO queue.*/
+        qQueueStack_t QueueStack[ Q_PRIO_QUEUE_SIZE ];  /*< The required stack to build the FIFO priority queue. */
         volatile qBase_t QueueIndex;                    /*< The current index of the FIFO priority queue. */
     #endif 
     _qEvent_t_ EventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
@@ -40,7 +40,7 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
         qNotificationSpreader_t NotificationSpreadRequest;
     #endif
     #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-        size_t TaskEntries;
+        size_t TaskEntries;                             /*< Used to hold the number of task entries*/
     #endif
 }qKernelControlBlock_t;
 
@@ -86,7 +86,8 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
     static qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2);
 #endif
 
-_qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {
+/*initialize the private-methods container*/
+_qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {  
     #if ( Q_PRIO_QUEUE_SIZE > 0 )   
         &qOS_PriorityQueue_Insert,
         &qOS_PriorityQueue_IsTaskInside,
@@ -275,9 +276,9 @@ static qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
         qBool_t RetValue = qFalse;
         qBase_t CurrentQueueIndex, i;
         CurrentQueueIndex = kernel.QueueIndex + 1;
-        if( CurrentQueueIndex > 0 ){
+        if( CurrentQueueIndex > 0 ){ /*check first if the queue has items inside*/
             qCritical_Enter();
-            for( i = 0 ; i < CurrentQueueIndex; i++ ){
+            for( i = 0 ; i < CurrentQueueIndex; i++ ){ /*loop the queue slots to check if the Task is inside*/
                 if( Task == kernel.QueueStack[i].Task ){
                     RetValue = qTrue;
                     break;
@@ -499,9 +500,9 @@ qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
     qSM_t *StateMachine;
     if( NULL != Task){
         StateMachine = Task->qPrivate.StateMachine;
-        if( NULL != StateMachine ){
-            if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){
-                RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); 
+        if( NULL != StateMachine ){ /*signal connection is only possible if the task runs a dedicated state-machine*/
+            if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){ /*check if the state-machine has a signal-queue correctly instantiated*/
+                RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); /*try to perform the queue connection  with the task*/
             }
         }
     }
@@ -614,7 +615,7 @@ static void qOS_TriggerReleaseSchedEvent( void ){
     kernel.EventInfo.TaskData = NULL;
     if( NULL != kernel.ReleaseSchedCallback ){
         Callback = kernel.ReleaseSchedCallback;
-        Callback( &kernel.EventInfo ); /*some compilers cant deal with function pointers inside structs*/
+        Callback( &kernel.EventInfo ); /*some low-end compilers cant deal with function-pointers inside structs*/
     }    
     _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
@@ -636,13 +637,13 @@ void qOS_Run( void ){
             do{ /*loop every ready-list in descending priority order*/
                 xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if( xList->size > (size_t)0 ){ /*check if the target list has items*/
-                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in this ready list*/
+                    (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in the current ready-list*/
                 }
             }while( (qIndex_t)0 != xPriorityListIndex-- );
         }
         else{ /*no task in the scheme is ready*/
             if( NULL != kernel.IDLECallback ){ /*check if the idle-task is available*/
-                (void)qOS_Dispatch( NULL, NULL, QLIST_WALKTHROUGH );
+                (void)qOS_Dispatch( NULL, NULL, QLIST_WALKTHROUGH ); /*special call to dispatch idle-task already hardcoded in the kernel*/
             }
         }
         if( SuspendedList->size > (size_t)0 ){  /*check if the suspended list has items*/
@@ -654,7 +655,7 @@ void qOS_Run( void ){
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         while( qFalse == _QKERNEL_COREFLAG_GET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
-        qOS_TriggerReleaseSchedEvent(); /*check for scheduling-release request*/
+        qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
     #else
         while( qTrue == qTrue);
     #endif
@@ -681,7 +682,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
             if( NULL != xTask ){  /*if we got a task from the priority queue,*/
-                xTask->qPrivate.Trigger = byNotificationQueued;
+                xTask->qPrivate.Trigger = byNotificationQueued; 
                 _qPrivate_TaskModifyFlags( xTask, _QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
             }     
         #endif          
@@ -744,7 +745,7 @@ static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage 
         }
     }
     else if( QLIST_WALKEND == stage ){ 
-        RetValue = xReady;
+        RetValue = xReady; 
     }
     else{
         (void)arg; /*arg is never used*/  /*this should never enter here*/
@@ -867,7 +868,7 @@ static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
     return qFalse;
 }
 /*============================================================================*/
-static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task){
+static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     qIteration_t TaskIterations;
     qClock_t TaskInterval;
@@ -886,7 +887,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task){
     return RetValue;
 }
 /*============================================================================*/
-static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task){
+static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
     qTask_GlobalState_t RetValue = qUndefinedGlobalState;
     qList_t *xList;
 
