@@ -11,7 +11,7 @@ static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
 static char* qATCLI_Input_Fix( char *s );
-static void qATCLI_HandleCommandResponse( const qATCLI_t * const cli, const qATCLI_Response_t retval );
+static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval );
 static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *InputBuffer, qATCLI_PreCmd_t params );
 static qBool_t qATCLI_Notify( qATCLI_t * const cli );
 static char* GetArgPtr( qArgNum_t n );
@@ -184,7 +184,9 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Comm
                 Command->Text = (char*)TextCommand;
                 Command->qPrivate.CommandCallback = Callback;
                 Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
-                Command->qPrivate.Next = cli->qPrivate.First; /*MISRAC2012-Rule-11.5 deviation allowed*/
+                /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                Command->qPrivate.Next = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_bdeviation allowed*/
+                /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                 Command->param = param;
                 cli->qPrivate.First = Command;
                 RetValue = qTrue;  
@@ -214,7 +216,9 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload ){
 
     if(NULL != cli){
         if( qTrue == reload ){
-            Iterator = cli->qPrivate.First; /*MISRAC2012-Rule-11.5 deviation allowed*/
+            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+            Iterator = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         } 
         else{ 
             Cmd = Iterator;
@@ -382,7 +386,9 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd ){
     qATCLI_CommandCallback_t CmdCallback;
     
     if( ( NULL != cli ) && ( NULL != cmd ) ){
-        for( Command = (qATCLI_Command_t*)cli->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5 deviation allowed*/
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        for( Command = (qATCLI_Command_t*)cli->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/  
             if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
             	RetValue = qATCLI_NOTALLOWED;
                 if( qATCLI_PreProcessing( Command, (char*)cmd, &cli->qPrivate.Params ) ){ /*if success, proceed with the user pos-processing*/
@@ -497,9 +503,10 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
 		Current = cli;
         Input =  &cli->qPrivate.Input;
 		ATOutCharFcn = cli->qPrivate.OutputFcn;
-        
+        /*cstat -CERT-STR32-C*/
 		if( Input->Ready ){ /*a new input has arrived*/
             InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
+
 			/*Validation : set the value for the response lookup table*/
 			if 	( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ){
             	OutputRetval = QATCLI_OK;			/*check if the input its the simple AT command*/
@@ -516,7 +523,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
 			else{
                 OutputRetval = QATCLI_NORESPONSE;  /*nothing to do*/
             }
-
+            /*cstat +CERT-STR32-C*/
 			if( NULL != cli->qPrivate.xPublic.Output ){ /*show the user output if available*/
 				if( '\0' != cli->qPrivate.xPublic.Output[0] ){
                     qATCLI_HandleCommandResponse( cli, QATCLI_OUTPUT );
@@ -531,7 +538,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
     return RetValue;
 }
 /*============================================================================*/
-static void qATCLI_HandleCommandResponse( const qATCLI_t * const cli, const qATCLI_Response_t retval ){
+static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval ){
     qINT32_t ErrorCode;
     qPutchFcn_t PutChar;
     qPutsFcn_t PutString;
@@ -599,6 +606,7 @@ char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out ){
         if( qATCLI_CMDTYPE_PARA ==  param->Type ){
             n--;
             j = 0;
+            /*cstat -CERT-STR34-C*/
             for( i=0 ; '\0' != param->StrData[i]; i++){
                 if(argc == n){
                     RetPtr = out;
@@ -611,6 +619,7 @@ char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out ){
                 if( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[i] ){
                     argc++;
                 }
+                /*cstat +CERT-STR34-C*/
             }
         }
     }
@@ -685,7 +694,9 @@ Return value:
     The argument parsed as integer. Same behavior of qIOUtil_AtoI. If argument not found returns 0
 */
 int qATCLI_GetArgInt(const qATCLI_PreCmd_t param, qINT8_t n){
+    /*cstat -CERT-STR34-C*/
 	return (int) qIOUtil_AtoI( qATCLI_GetArgPtr(param, n) );
+    /*cstat +CERT-STR34-C*/
 }
 /*============================================================================*/
 /*float qATCLI_GetArgFlt(const qATCLI_PreCmd_t *param, qINT8_t n)
@@ -726,7 +737,9 @@ Return value:
     The HEX argument parsed as qUINT32_t. Same behavior of qIOUtil_XtoU32. If argument not found returns 0
 */
 qUINT32_t qATCLI_GetArgHex( const qATCLI_PreCmd_t param, qINT8_t n ){
+    /*cstat -CERT-STR34-C*/
 	return (qUINT32_t) qIOUtil_XtoU32( qATCLI_GetArgPtr(param, n) );
+    /*cstat +CERT-STR34-C*/ 
 }
 /*=============================================================================*/
 #endif /* #if ( Q_ATCLI == 1) */

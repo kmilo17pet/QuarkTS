@@ -128,8 +128,9 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
     qSM_t *parent;
     qBool_t exec = qTrue;
- 
-    parent =  (qSM_t*)current->qPrivate.xPublic.Parent;                 
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    parent =  (qSM_t*)current->qPrivate.xPublic.Parent;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/              
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( NULL != parent ){
         exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) && ( qTrue == parent->qPrivate.Active) ;
         if( ( qTrue == current->qPrivate.Active ) &&  ( qFalse == exec ) ){
@@ -170,10 +171,12 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
             }
         }
         else{
-            parent = (qSM_t*)obj->qPrivate.xPublic.Parent;
+            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+            parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if( NULL != parent ){/*check if the current fsm its a child*/
                 if( ( QSM_SIGNAL_ENTRY != parent->qPrivate.xPublic.Signal ) && ( QSM_SIGNAL_EXIT != parent->qPrivate.xPublic.Signal ) ){
-                    xSignal = parent->qPrivate.xPublic.Signal; /*use the parent signal if the child doest have their own signal-queue*/
+                    xSignal = parent->qPrivate.xPublic.Signal; /*use the parent signal if the child doesn't have their own signal-queue*/
                 }
                 (void)qStateMachine_SweepTransitionTable( obj, xSignal );
             }
@@ -322,7 +325,7 @@ qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSigna
     return RetValue;
 }
 /*============================================================================*/
-/* qBool_t qStateMachine_SweepTable( qSM_t * const obj )
+/* qBool_t qStateMachine_SweepTable( qSM_t * const obj, qSM_Signal_t xSignal )
 
 Forces a sweep over the installed transition table. The instance will be updated 
 if a transition from the table is performed.
@@ -333,6 +336,7 @@ current state callback is invoked.
 Parameters:
 
     - obj : a pointer to the FSM object.
+    - xSignal : the incoming signal
 
 Return value:
 
@@ -350,7 +354,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
     if( NULL != obj ){
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != table ){
-            xSignal = obj->qPrivate.xPublic.Signal;
+            /*xSignal = obj->qPrivate.xPublic.Signal;*/
             if( xSignal < QSM_SIGNAL_RANGE_MAX){
                 xCurrentState = obj->qPrivate.xPublic.NextState;
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){
@@ -361,7 +365,9 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                         }
                         if( qTrue == SigActionGuard ){
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
-                            toTargetFSM = (qSM_t*)iTransition.xToTargetHandle;
+                            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                            toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+                            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                             if( ( NULL != toTargetFSM ) ){
                                 qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
                                 toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState;

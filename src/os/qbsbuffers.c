@@ -11,7 +11,9 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k ){
     if( ((k-1u) & k) != 0u ){
         k--;
         for( i = 1u; i<sizeof(qIndex_t)*8u; i= (qIndex_t) (i * 2u)){
-            k = k | (size_t)( k >> i );
+            /*cstat -CERT-INT34-C_a*/
+            k = k | (size_t)( k >> i ); /*CERT-INT34-C_a deviation allowed*/
+            /*cstat +CERT-INT34-C_a*/
         }
         k = (size_t) ((k + 1u) >> 1u);
     }
@@ -144,7 +146,9 @@ Return value:
 */
 qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     size_t i;
-    qUINT8_t *data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5 deviation allowed*/
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    qUINT8_t *data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qBool_t RetValue = qFalse;
     if( n > 0u ){
         RetValue = qTrue;

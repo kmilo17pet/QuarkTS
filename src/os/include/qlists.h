@@ -9,14 +9,12 @@
     extern "C" {
     #endif
 
-    #define _qNodeMembers  *next, *prev, *container
-
     typedef struct _qList_Node_s{
         struct _qList_Node_s *next, *prev;  /*< Pointers to the adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
     }qList_Node_t;
 
-    #define qNode_MinimalFields     void _qNodeMembers
+    #define qNode_MinimalFields     void *next, *prev, *container
     #define qNode_MinimalMembers    qNode_MinimalFields
 
     typedef struct{
