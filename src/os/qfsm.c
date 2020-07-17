@@ -184,7 +184,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
         
         qStateMachine_ExecStateIfAvailable( obj, CurrentState, xSignal );
 
-        if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition been made?*/
+        if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition occurred??*/
             qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_EXIT ); 
         }
     }
@@ -355,22 +355,22 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != table ){
             /*xSignal = obj->qPrivate.xPublic.Signal;*/
-            if( xSignal < QSM_SIGNAL_RANGE_MAX){
+            if( xSignal < QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
                 xCurrentState = obj->qPrivate.xPublic.NextState;
-                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){
-                    iTransition = table->qPrivate.Transitions[iEntry];
+                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){ /*loop the transition-table entries*/
+                    iTransition = table->qPrivate.Transitions[iEntry]; /*get the current entry*/
                     if( ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) && ( xSignal == iTransition.Signal) ){ /*both conditions match*/
-                        if( NULL != iTransition.SignalAction ){ 
+                        if( NULL != iTransition.SignalAction ){  /*run the signal-action(or guard) if available*/
                             SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
                         }
-                        if( qTrue == SigActionGuard ){
+                        if( qTrue == SigActionGuard ){ /*check if he guard allow the transition*/
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
                             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                             toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
                             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-                            if( ( NULL != toTargetFSM ) ){
+                            if( ( NULL != toTargetFSM ) ){ /*run the exit action on target FSM*/
                                 qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
-                                toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState;
+                                toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState; /*move to the new state*/
                             } 
                         }
                         else if( qIgnore == SigActionGuard ){

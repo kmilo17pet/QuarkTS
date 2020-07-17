@@ -40,6 +40,7 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
         obj->qPrivate.ItemsCount = ItemsCount;   /* Initialise the queue members*/
         obj->qPrivate.ItemSize = ItemSize;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /* Set the head to the start of the storage area */
         obj->qPrivate.pHead = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         obj->qPrivate.pTail = obj->qPrivate.pHead + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
