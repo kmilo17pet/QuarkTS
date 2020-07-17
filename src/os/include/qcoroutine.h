@@ -67,7 +67,6 @@
     #define _qCR_wu_preAssert(_pre_ , _cond_)       _qCR_do{ (_pre_); }_qCR_until((_cond_))                            
 
 
-    #define qCR_TimedWaitUntil(_condition_, _timeout_)   _qCR_wu_TmrAssert(_condition_,_timeout_)
     /*qCR_Begin{
     
     }qCR_End;
@@ -145,6 +144,18 @@
 
     */    
     #define qCR_WaitUntil(_condition_)                  _qCR_wu_Assert(_condition_)
+    /*qCR_TimedWaitUntil(_CONDITION_)
+
+    Yields until the logical condition being true or the specified timeout expires
+
+    Action sequence : [Save progress] 
+                    IF (Condition == False || EXPIRED(timeout) ){
+                        [Yield]      
+                    }  
+
+    */    
+    #define qCR_TimedWaitUntil(_condition_, _timeout_)   _qCR_wu_TmrAssert(_condition_,_timeout_)
+    
     /*qCR_Do
 
     This statement start a blocking Job segment. 
