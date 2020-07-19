@@ -10,10 +10,12 @@
     #endif
 
     typedef qINT32_t _qCR_TaskPC_t;
+    typedef _qCR_TaskPC_t qCR_ExtPosition_t;
     #define qCR_Position_t static _qCR_TaskPC_t
     
     typedef struct{
         _qCR_TaskPC_t instr;    /*< Used to hold the instruction where the coroutine resume execution after a yield. */
+        _qCR_TaskPC_t prev;
         qSTimer_t crdelay;      /*< Used to hold the required delay for qCR_Delay. */
     }_qCR_Instance_t;
 
@@ -21,8 +23,22 @@
     typedef _qCR_Instance_t *qCR_Handle_t;
     typedef struct {qUINT16_t head, tail;} qCR_Semaphore_t; 
     
+    #define QCR_RESTART     ( 0 )
+    #define QCR_POSITIONSET ( 1 )
+    #define QCR_SUSPEND     ( 2 )
+    #define QCR_RESUME      ( 3 )
+
+    typedef enum{
+        qCR_RESTART = QCR_RESTART,
+        qCR_POSITIONSET = QCR_POSITIONSET,
+        qCR_SUSPEND = QCR_SUSPEND,
+        qCR_RESUME = QCR_RESUME
+    }qCR_ExternAction_t;
+
     #define _qCR_Unused_(x)            (void)(x)
+    #define _qCR_PCUndefined           (  0 )            
     #define _qCR_PCInitVal             ( -1 )            
+    #define _qCR_PCSuspendVal          ( -2 )
     #define _qCR_CodeStartBlock        do
     #define _qCR_CodeEndBlock          while(qFalse)
     #define _qCR_Persistent            static _qCR_Instance_t
@@ -33,13 +49,14 @@
     #define _qCR_SetPC(_VAL_)          _qCR_TaskPCVar = (_VAL_) 
     #define _qCR_SaveState             _qCR_SetPC(_qCR_TaskProgress) 
     #define _qCR_SaveStateOn(_VAR_)    ( _VAR_)  =  _qCR_TaskProgress
-    #define _qCR_InitState             _qCRTaskState_ = { _qCR_PCInitVal, QSTIMER_INITIALIZER }
+    #define _qCR_InitState             _qCRTaskState_ = { _qCR_PCInitVal, _qCR_PCUndefined, QSTIMER_INITIALIZER }
     #define _qCR_TaskCheckPCJump(_PC_) switch(_PC_){    
     #define _qCR_TagExitCCR            _qCRYield_ExitLabel
     #define _qCR_Exit                  goto _qCR_TagExitCCR /*MISRAC deviation*/
     #define _qCR_TaskYield             _qCR_Exit;
     #define _qCR_Dispose               _qCR_SetPC(_qCR_PCInitVal);} _qCR_TagExitCCR:
     #define _qCR_Restorator(_VAL_)     case (_qCR_TaskPC_t)(_VAL_):            
+    #define _qCR_SuspendPoint          default: _qCR_Exit
     #define _qCR_RestoreAfterYield     _qCR_Restorator(_qCR_TaskProgress)
     #define _qCR_RestoreFromBegin      _qCR_Restorator(_qCR_PCInitVal)
     #define _qCR_SemInit(s, c)         _qCR_CodeStartBlock{ (s)->tail = 0; (s)->head = (c); }_qCR_CodeEndBlock
@@ -52,7 +69,7 @@
     #define qCR_TimeoutExpired( )              qSTimer_Expired( &_qCR_DelayVar )
 
     #define _qCR_Start                              _qCR_Persistent  _qCR_InitState ; _qCR_TaskCheckPCJump(_qCR_TaskPCVar) _qCR_RestoreFromBegin
-    #define _qCR_hStart(h)                          _qCR_Persistent  _qCR_InitState ; _qCR_CatchHandle(h)   _qCR_TaskCheckPCJump(_qCR_TaskPCVar) _qCR_RestoreFromBegin
+    #define _qCR_hStart(h)                          _qCR_Persistent  _qCR_InitState ; _qCR_CatchHandle(h)   _qCR_TaskCheckPCJump(_qCR_TaskPCVar) _qCR_SuspendPoint; _qCR_RestoreFromBegin
     #define _qCR_Yield                              _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_TaskYield  _qCR_RestoreAfterYield; }                         _qCR_CodeEndBlock
     #define _qCR_Restart                            _qCR_CodeStartBlock{ _qCR_SetPC(_qCR_PCInitVal)  ; _qCR_TaskYield }                                                  _qCR_CodeEndBlock
     #define _qCR_wu_Assert(_cond_)                  _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_RestoreAfterYield    ; _qCR_Assert(_cond_) _qCR_TaskYield }  _qCR_CodeEndBlock
@@ -85,7 +102,7 @@
     
     Defines a Coroutine segment with a supplied external handle. 
     Only one segment is allowed inside a task; 
-    The qCR_Begin statement is used to declare the starting point of 
+    The qCR_BeginWithHandle statement is used to declare the starting point of 
     a Coroutine. It should be placed at the start of the function in which the 
     Coroutine runs. qCR_End declare the end of the Coroutine. 
     It must always be used together with a matching qCR_End statement.
@@ -100,7 +117,8 @@
     The qCR_End statement is used to define the ending point of 
     a Coroutine. It should be placed at the end of the function in which the 
     Coroutine runs. 
-    It must always be used together with a matching qCR_Begin statement.
+    It must always be used together with a matching qCR_Begin/qCR_BeginWithHandle
+    statement.
 
     */      
     #define qCR_End                                     _qCR_Dispose
@@ -124,15 +142,6 @@
 
     */
     #define qCR_Restart                                 _qCR_Restart 
-    /*qCR_ExternRestart(handle)   
-    Externally restart the coroutine execution at the place of the qCR_BeginWithHandle 
-    statement.  
-    Note:  Do not use this statement inside a Coroutine segment, use 
-    instead qCR_Restart.
-    
-    */
-    #define qCR_ExternRestart(handle)                   if( NULL != handle ){ handle->instr = _qCR_PCInitVal; }
-    #define qCR_ExternPositionSet(handle, _CRPos_)      if( NULL != handle ){ handle->instr = _CRPos_; }
     /*qCRWait_Until(_CONDITION_)
 
     Yields until the logical condition being true
@@ -165,7 +174,7 @@
     #define qCR_Do                                      _qCR_do
     /*qCR_Until( _condition_ )
 
-    This statement ends a blocking Job segment starting the qCR_Do statement.   
+    This statement ends a blocking Job segment starting with the qCR_Do statement.   
     The condition determines if the blocking job ends (if condition is True)
     or continue yielding (if false)
 
@@ -189,7 +198,7 @@
 
     Carries out the "wait" operation on the semaphore. The wait operation causes 
     the Co-routine to block while the counter is zero. When the counter reaches a 
-    value larger than zero, the Co-routine  will continue.
+    value larger than zero, the Co-routine will continue.
 
     Parameters:
 
@@ -238,6 +247,9 @@
 
     */        
     #define qCR_Delay(_qTime_t_)                        _qCR_Delay(_qTime_t_)
+
+
+    void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos );
 
     #ifdef __cplusplus
     }
