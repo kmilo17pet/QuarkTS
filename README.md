@@ -27,7 +27,7 @@ QuarkTS is an operating system that provides a modern environment to build stabl
 ## Features:
 - Prioritized cooperative scheduling.
 - Time control (Timed tasks and software timers)
-- Inter-Task comunnication primitives, queues, notifications and event-flags.
+- Inter-Task communication primitives, queues, notifications and event-flags.
 - State-Machines ( hierarchical support )
 - Co-routines.
 - AT Command Line Interface (CLI)

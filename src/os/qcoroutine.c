@@ -3,8 +3,7 @@
 /*============================================================================*/
 /*void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos )
 
-Perform an external action over a Co-routine
-Note:  Do not use this function inside a Coroutine segment.
+Perform an external action over the requested Co-routine
 
 Parameters:
 

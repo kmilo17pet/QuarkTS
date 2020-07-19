@@ -185,7 +185,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Comm
                 Command->qPrivate.CommandCallback = Callback;
                 Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-                Command->qPrivate.Next = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_bdeviation allowed*/
+                Command->qPrivate.Next = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                 Command->param = param;
                 cli->qPrivate.First = Command;
