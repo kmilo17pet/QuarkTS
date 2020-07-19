@@ -21,9 +21,7 @@ Parameters:
                             segment will be suspended.      
     - pos : The required position if action = qCR_POSITIONSET. For other actions
             this argument its ignored.           
-Return value:
 
-    time (t) in seconds
 */
 void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos ){
     if( NULL != h ){ 
