@@ -61,7 +61,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-    static qBool_t qOS_PriorityQueue_Insert(qTask_t * const Task, void *data);
+    static qBool_t qOS_PriorityQueue_Insert(qTask_t * const Task, void *Data);
     static size_t qOS_PriorityQueue_GetCount( void );
     static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear );
     static void qOS_PriorityQueue_CleanUp( const qTask_t * task );
@@ -251,7 +251,7 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
     kernel.QueueIndex--;    /*decrease the index*/    
 }
 /*============================================================================*/
-static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *data ){
+static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t RetValue = qFalse;
         qQueueStack_t tmp;
@@ -260,7 +260,7 @@ static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *data ){
         QueueMaxIndex = Q_PRIO_QUEUE_SIZE - 1; /*to avoid side effects */
         CurrentQueueIndex = kernel.QueueIndex; /*to avoid side effects */
         if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
-            tmp.QueueData = data;
+            tmp.QueueData = Data;
             tmp.Task = Task;
             /*cstat -CERT-INT32-C_a*/
             kernel.QueueStack[ ++kernel.QueueIndex ] = tmp; /*insert task and the corresponding eventdata to the queue*/ /*CERT-INT32-C_a checked programatically*/

@@ -26,7 +26,7 @@
     /*a single container is used to publish the private methods outside the kernel*/
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-            qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *data);
+            qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *Data);
             qBool_t (*PriorityQueue_IsTaskInside)( const qTask_t * const Task );
             size_t (*PriorityQueue_GetCount)( void );
         #endif

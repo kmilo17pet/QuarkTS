@@ -287,7 +287,7 @@ Return value:
     qTrue when the CLI is ready to process the input, otherwise return qFalse
 
 */
-qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *data, const size_t n ){
+qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;
     size_t MaxToInsert;
@@ -297,12 +297,12 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *data, const size_t n
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
         if( ( n > 0u ) && ( n < MaxToInsert ) &&  ( qFalse == ReadyInput ) ) {
             if( 1u == n ){
-                RetValue = qATCLI_ISRHandler( cli, data[0] );
+                RetValue = qATCLI_ISRHandler( cli, Data[0] );
             }
             else{
-                if( 0 != isgraph( (int)data[0] ) ){
-                    if( NULL != strchr( data, (int)'\r' ) ){ 
-                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, data, n); /*safe string copy*/
+                if( 0 != isgraph( (int)Data[0] ) ){
+                    if( NULL != strchr( Data, (int)'\r' ) ){ 
+                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, n); /*safe string copy*/
                         (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
                         RetValue = qATCLI_Notify( cli );
                     }

@@ -741,13 +741,13 @@ void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t 
     qListMalloc = mallocFcn;
 }
 /*=========================================================*/
-qBool_t qList_DInsert( qList_t *const list, void *data, size_t size, qList_Position_t position ){
+qBool_t qList_DInsert( qList_t *const list, void *Data, size_t Size, qList_Position_t position ){
     qBool_t RetValue = qFalse;
     void *NewNode;
-    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( size > (size_t)0) ){
-        NewNode = qListMalloc( size );
+    if( ( NULL != qListMalloc ) && ( NULL != qListFree ) && ( Size > (size_t)0) ){
+        NewNode = qListMalloc( Size );
         if( NULL != NewNode ){
-            (void)memcpy( NewNode, data, size );
+            (void)memcpy( NewNode, Data, Size );
             RetValue = qList_Insert( list, NewNode, position );
             if( qFalse == RetValue ){
                 qListFree( NewNode );

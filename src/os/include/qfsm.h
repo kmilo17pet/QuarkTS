@@ -9,7 +9,7 @@
     extern "C" {
     #endif
 
-    typedef enum {qSM_EXIT_SUCCESS = -32768, qSM_EXIT_FAILURE = -32767} qSM_Status_t;
+    typedef enum {qSM_EXIT_SUCCESS = -32767, qSM_EXIT_FAILURE = -32766} qSM_Status_t;
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
     
     typedef size_t qSM_Signal_t;

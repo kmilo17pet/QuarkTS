@@ -25,7 +25,7 @@
 
     qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest );
     qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n );
-    qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data );
+    qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data );
     void qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length );
 
     #ifdef __cplusplus

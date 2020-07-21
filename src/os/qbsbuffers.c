@@ -147,13 +147,13 @@ Return value:
 qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     size_t i;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qUINT8_t *data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    qUINT8_t *Data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qBool_t RetValue = qFalse;
     if( n > 0u ){
         RetValue = qTrue;
         for( i = 0u ; i < n ; i++ ){
-            RetValue = qBSBuffer_Get( obj, &data[i] ); /*MISRAC2004-17.4_a deviation allowed*/
+            RetValue = qBSBuffer_Get( obj, &Data[i] ); /*MISRAC2004-17.4_a deviation allowed*/
         }
     }
     return RetValue;
@@ -172,11 +172,11 @@ Return value:
 
     qTrue on success, otherwise returns qFalse
 */
-qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data ){
+qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data ){
     qBool_t status = qFalse;
     if( NULL != obj ){ 
         if( qFalse == qBSBuffer_IsFull( obj ) ) {/* limit the ring to prevent overwriting */
-            obj->qPrivate.buffer[obj->qPrivate.head % obj->qPrivate.length] = data; /*MISRAC2004-17.4_b deviation allowed*/
+            obj->qPrivate.buffer[obj->qPrivate.head % obj->qPrivate.length] = Data; /*MISRAC2004-17.4_b deviation allowed*/
             obj->qPrivate.head++;
             status = qTrue;
         }

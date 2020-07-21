@@ -128,9 +128,9 @@ Parameters:
     - n : the number of bytes to swap
 */
 /*============================================================================*/
-void qIOUtil_SwapBytes( void *data, const size_t n ){
+void qIOUtil_SwapBytes( void *Data, const size_t n ){
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qUINT8_t *p = data, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    qUINT8_t *p = Data, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t lo, hi;
     hi = n - 1u;
@@ -184,9 +184,9 @@ void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_
     }
 }
 /*============================================================================*/
-void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *data, size_t n ){
+void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n ){
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qUINT8_t *pdat =(qUINT8_t*)data;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    qUINT8_t *pdat =(qUINT8_t*)Data;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t i;
     for( i = 0u ; i < n ; i++ ){
@@ -210,10 +210,10 @@ Parameters:
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
-void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
+void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP ){
     size_t i;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    char *cdata = data; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *cdata = Data; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     char *xPtr = pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
@@ -240,10 +240,10 @@ Parameters:
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
 */
-void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP ){
+void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP ){
     size_t i;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    char *cdata = data; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *cdata = Data; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     char *xPtr = pStorage; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){

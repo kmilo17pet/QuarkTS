@@ -22,8 +22,8 @@
     #define     QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
 
     typedef enum{
-        qATCLI_ERROR = -32768,
-        qATCLI_NOTALLOWED = -32767,
+        qATCLI_ERROR = -32767,
+        qATCLI_NOTALLOWED = -32766,
         qATCLI_NORESPONSE = 0,
         qATCLI_OK = 1,
         qATCLI_DEVID = 32765,
@@ -131,7 +131,7 @@
     qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Command, char *TextCommand, const qATCLI_CommandCallback_t Callback, qATCLI_Options_t CmdOpt, void *param );
     qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload );
     qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c );
-    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *data, const size_t n );
+    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n );
     qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd );
     qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd );
     void qATCLI_Input_Flush( qATCLI_t * const cli );
