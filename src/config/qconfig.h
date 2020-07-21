@@ -29,5 +29,8 @@
     #define Q_BYTE_SIZED_BUFFERS        ( 1 )       /*< Used to enable or disable the Byte-sized buffers*/    
     #define Q_USE_STDINT_H              ( 1 )       /*< Use the stdint.h header to define kernel data-types */
 
+    /*portability options*/
+    #define Q_FUNC_ATTRIBUTE_PRE                    /*< Function attributes for callbacks with more than one argument */
+    #define Q_FUNC_ATTRIBUTE_POS    /*reentrant*/   /*< Function attributes for callbacks with more than one argument. ej: reentrant for the Keil-C51 compiler*/
     /*================================================================================================================================*/  
 #endif

@@ -424,7 +424,7 @@ size_t qList_Length( const qList_t * const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ) 
+/*qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ) 
 
 Sort the double linked list using the <CompareFcn> function to 
 determine the order.
@@ -455,7 +455,7 @@ Return value:
 
     qTrue if at least one reordering is performed over the list. 
 */
-qBool_t qList_Sort( qList_t * const list, qBool_t (*CompareFcn)(const void *n1, const void *n2) ){
+qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     qBool_t RetValue = qFalse;
     qBool_t xRetCmp;
     size_t count, i, j, n;

@@ -112,7 +112,7 @@
         }qPrivate;
     }qATCLI_t;  
 
-    typedef qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1, qATCLI_PreCmd_t arg2);
+    typedef Q_FUNC_ATTRIBUTE_PRE qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1, qATCLI_PreCmd_t arg2) Q_FUNC_ATTRIBUTE_POS;
     typedef qUINT16_t qATCLI_Options_t;
 
     typedef struct _qATCLI_Command_s{

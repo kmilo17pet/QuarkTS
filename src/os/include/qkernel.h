@@ -26,7 +26,7 @@
     /*a single container is used to publish the private methods outside the kernel*/
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-            qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *Data);
+            Q_FUNC_ATTRIBUTE_PRE qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *Data) Q_FUNC_ATTRIBUTE_POS;
             qBool_t (*PriorityQueue_IsTaskInside)( const qTask_t * const Task );
             size_t (*PriorityQueue_GetCount)( void );
         #endif
@@ -36,7 +36,7 @@
     }_qOS_PrivateMethodsContainer_t;
     extern _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods;
 
-    typedef qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2);
+    typedef Q_FUNC_ATTRIBUTE_PRE qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2) Q_FUNC_ATTRIBUTE_POS;
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
