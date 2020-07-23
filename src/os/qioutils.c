@@ -27,7 +27,8 @@ static const char * qIOUtil_CheckStrSign( const char *s, int *sgn ){
     return s;
 }
 /*============================================================================*/
-/*
+/* size_t qIOUtil_StrLen( const char* str, size_t maxlen )
+
 Returns the length of the given null-terminated byte string, that is, the number 
 of characters in a character array whose first element is pointed to by str up to
 and not including the first null character.
@@ -44,7 +45,7 @@ Return value:
   The length of the null-terminated byte string str on success, zero if str 
   is a null pointer, maxlen if the null character was not found.
 */
-size_t qIOUtil_StrLen( const char* str, size_t maxlen){
+size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
     size_t count;
 
     if( ( NULL == str ) || ( (size_t)0 == maxlen ) ){
@@ -118,13 +119,13 @@ static char qIOUtil_NibbleToX( qUINT8_t value ){
     return (char) ((ch > '9') ? (char)(ch + 7) : ch);
 }
 /*============================================================================*/
-/*void qIOUtil_SwapBytes( void *data, const size_t n )
+/*void qIOUtil_SwapBytes( void *Data, const size_t n )
  
 Invert the endianess for n bytes of the specified memory location
  
 Parameters:
 
-    - data : a pointer to block of data
+    - Data : a pointer to block of data
     - n : the number of bytes to swap
 */
 /*============================================================================*/
@@ -198,7 +199,7 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n ){
     fcn( pStorage, '\n' );
 }
 /*============================================================================*/
-/*void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP )
+/*void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP )
  
 Wrapper method to write n RAW data through fcn
   
@@ -206,7 +207,7 @@ Parameters:
 
     - fcn : The basic output byte function
     - pStorage : The storage pointer passed to fcn
-    - data: Buffer to read data from
+    - Data: Buffer to read data from
     - n: The size of "data"
     - AIP : Auto-Increment the storage-pointer
 */
@@ -228,7 +229,7 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t
     }
 }
 /*============================================================================*/
-/*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *data, const size_t n, qBool_t AIP )
+/*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP )
 
 Wrapper method to get n RAW data through fcn
   
@@ -236,7 +237,7 @@ Parameters:
 
     - fcn : The basic input byte function
     - pStorage : The storage pointer passed to fcn
-    - data: Buffer to read data from
+    - Data: Buffer to read data from
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
 */

@@ -43,4 +43,4 @@ void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const 
                 break;
         }
     }
-}                   
+}

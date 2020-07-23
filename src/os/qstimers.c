@@ -166,7 +166,7 @@ Parameters:
 
     - obj : A pointer to the STimer object.  
 */
-void qSTimer_Disarm(qSTimer_t * const obj){
+void qSTimer_Disarm( qSTimer_t * const obj ){
     if( NULL != obj ){
         obj->TV = QSTIMER_DISARM_VALUE;
         obj->Start = QSTIMER_DISARM_VALUE;
@@ -185,7 +185,7 @@ Return value:
 
     qTrue when armed, otherwise qFalse when disarmed
 */
-qBool_t qSTimer_Status(const qSTimer_t * const obj){
+qBool_t qSTimer_Status( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
         RetValue =  ( obj->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;

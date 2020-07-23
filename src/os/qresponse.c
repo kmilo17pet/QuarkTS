@@ -33,7 +33,7 @@ Parameters:
   
 */
 void qResponse_Reset( qResponse_t * const obj ){
-    if( obj != NULL ){
+    if( NULL != obj ){
         obj->qPrivate.PatternLength = 0u;
         obj->qPrivate.MatchedCount = 0u;
         obj->qPrivate.ResponseReceived = qFalse;

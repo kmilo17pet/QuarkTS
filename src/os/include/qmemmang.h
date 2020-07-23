@@ -32,14 +32,14 @@
         }qPrivate;
     }qMemMang_Pool_t;
     
-    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t size );
+    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t Size );
     void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool );
     size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool );    
 
-    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size );
+    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t Size );
     void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr );
 
-    void* qMalloc( size_t size );
+    void* qMalloc( size_t Size );
     void qFree(void *ptr);
 
     #endif

@@ -36,7 +36,7 @@ qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup(qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState);
+/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
 
 Initializes a finite state machine (FSM).
 
@@ -89,7 +89,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
 }
 
 /*============================================================================*/
-/*void qStateMachine_Run(qSM_t * const root, void* Data)
+/*void qStateMachine_Run( qSM_t * const root, void* Data )
 
 Execute the Finite State Machine (FSM).
 
@@ -277,7 +277,7 @@ void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qS
     }
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries, qSM_Signal_t *AxSignals, size_t MaxSignals)
+/*qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries )
 
 Install a transition table for the supplied state machine instance.
 
@@ -325,7 +325,7 @@ qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSigna
     return RetValue;
 }
 /*============================================================================*/
-/* qBool_t qStateMachine_SweepTable( qSM_t * const obj, qSM_Signal_t xSignal )
+/*qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal )
 
 Forces a sweep over the installed transition table. The instance will be updated 
 if a transition from the table is performed.

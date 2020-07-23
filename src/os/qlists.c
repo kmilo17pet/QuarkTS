@@ -13,7 +13,7 @@ static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 
 static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 );
 static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 );
 /*============================================================================*/
-/*void qList_Initialize( qList_t *list )
+/*void qList_Initialize( qList_t * const list )
  
 Must be called before a list is used!  This initialises all the members of the 
 list structure.
@@ -311,7 +311,7 @@ static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_Walk
     return qFalse;
 }
 /*=========================================================*/
-/*qBool_t qList_IsMember( qList_t * const list,  void * const node)
+/*qBool_t qList_IsMember( qList_t * const list,  void * const node )
  
 Check if the node is member of the list.
 
@@ -504,7 +504,7 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir){
+/*qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir ){
 
 Setup an instance of the given iterator to traverse the list.
 
@@ -522,7 +522,7 @@ Return value:
 
     qTrue on success. Otherwise returns qFalse. 
 */
-qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir){
+qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir ){
     qBool_t RetValue = qFalse;
     qList_Node_t *Offset;
 

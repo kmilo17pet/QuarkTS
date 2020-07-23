@@ -9,13 +9,13 @@ typedef struct{
 static qCritical_Handler_t Critical = { NULL, NULL , 0uL};
 
 /*============================================================================*/
-/*void qEnterCritical(void)
+/*void qEnterCritical( void )
 
 Enter a critical section. This function invokes the <Disabler> if available.
 Please see <qCritical_SetInterruptsED>
 
 */  
-void qCritical_Enter(void){
+void qCritical_Enter( void ){
     qInt_Disabler_t Disabler;
     if( NULL != Critical.I_Disable ){
         Disabler = Critical.I_Disable;
@@ -23,7 +23,7 @@ void qCritical_Enter(void){
     }
 }
 /*============================================================================*/
-/*void qEnterCritical(void)
+/*void qEnterCritical( void )
 
 Enter a critical section. This function invokes the <Enabler> if available.
 Please see <qCritical_SetInterruptsED>
@@ -37,7 +37,7 @@ void qCritical_Exit( void ){
     }
 }
 /*============================================================================*/
-/*void qCritical_SetInterruptsED(void (*Restorer)(void), void (*Disabler)(void))
+/*void qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler )
 
 Set the hardware-specific code for global interrupt enable/disable. 
 Setting this allows you to comunicate safely from Interrupts using queued notifications

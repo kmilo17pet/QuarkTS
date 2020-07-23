@@ -201,7 +201,7 @@ void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback ){
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
 /*============================================================================*/
-/*qBool_t qOS_Notification_Spread( const void *eventdata, const qTaskNotifyMode_t mode)
+/*qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode )
 
 Try to spread a notification among all the tasks in the scheduling scheme
 Note: Operation will be performed in the next scheduling cycle. 
@@ -513,7 +513,7 @@ qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-/*qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *Parser, qPriority_t Priority )
+/*qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority )
 
 Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
 as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.

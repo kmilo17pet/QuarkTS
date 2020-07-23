@@ -20,7 +20,7 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k ){
     return ( k < r )? k*2u : k;
 }
 /*============================================================================*/
-/*size_t qBSBuffer_Count(const qBSBuffer_t * const obj)
+/*size_t qBSBuffer_Count( const qBSBuffer_t * const obj )
  
 Query the number of elements in the BSBuffer(Byte-sized Buffer)
  
@@ -44,7 +44,7 @@ size_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_IsFull(const qBSBuffer_t * const obj)
+/*qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj )
  
 Query the the full status of the BSBuffer(Byte-sized Buffer)
  
@@ -64,7 +64,7 @@ qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Empty(const qBSBuffer_t * const obj)
+/*qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj )
  
 Query the the empty status of the BSBuffer(Byte-sized Buffer)
  
@@ -84,7 +84,7 @@ qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*uint8_t qBSBuffer_Peek(const qBSBuffer_t * const obj)
+/*uint8_t qBSBuffer_Peek( const qBSBuffer_t * const obj )
  
 Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it
  
@@ -106,7 +106,7 @@ qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Get(qBSBuffer_t * const obj, qUINT8_t *dest)
+/*qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest )
  
 Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
  
@@ -159,7 +159,7 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Put(qBSBuffer_t * const obj, const qUINT8_t data){
+/*qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data ){
  
 Adds an element of data to the BSBuffer(Byte-sized Buffer)
 
@@ -184,7 +184,7 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data ){
     return status;
 }
 /*============================================================================*/
-/*void qBSBuffer_Setup(qBSBuffer_t *const obj, volatile uint8_t *buffer, const size_t length){
+/*void qBSBuffer_Setup( qBSBuffer_t *const obj, volatile uint8_t *buffer, const size_t length ){
  
 Initialize the BSBuffer(Byte-sized Buffer)
  

@@ -13,7 +13,7 @@ static const size_t HeapStructSize	= ( ( sizeof( qMemMang_BlockConnect_t ) + ( (
 static void qMemMang_HeapInit( qMemMang_Pool_t *mPool );
 static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_BlockConnect_t *BlockToInsert );
 /*============================================================================*/
-/*qBool_t qMemMang_Pool_Setup(qMemMang_Pool_t * const mPool, void* Area, size_t size)
+/*qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t Size )
 
 Initializes a memory pool instance.
 This function should be called once before any heap memory request.
@@ -24,27 +24,27 @@ Parameters:
     - Area : A pointer to a memory block (uint8_t) statically allocated 
             to act as Heap of the memory pool. The size of this block
             should match the <size> argument.
-    - size: The size of the memory block pointed by <Area>. 
+    - Size: The size of the memory block pointed by <Area>. 
 
 Return value:
 
     qTrue on success, otherwise returns qFalse
 
 */
-qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t size ){
+qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t Size ){
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         mPool->qPrivate.Heap = Area; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        mPool->qPrivate.HeapSize = size;
+        mPool->qPrivate.HeapSize = Size;
         mPool->qPrivate.End = NULL;
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*void qMemoryPool_Select(qMemMang_Pool_t * const mPool)
+/*void qMemoryPool_Select( qMemMang_Pool_t * const mPool )
 
 Select the memory pool to perform heap memory requests with qMalloc and qFree.
 
@@ -62,7 +62,7 @@ void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool ){
     }
 }
 /*============================================================================*/
-/*void qFree(void *ptr)
+/*void qFree( void *ptr )
 
 Deallocates the space previously allocated by qMalloc(). Deallocation will 
 be performed in the selected memory pool.
@@ -204,7 +204,7 @@ static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_B
     }
 }
 /*============================================================================*/
-/*void* qMalloc( size_t size )
+/*void* qMalloc( size_t Size )
 
 Allocate a block of memory that is <size> bytes large. Allocation will be performed
 in the selected memory pool. If the requested memory can be allocated, a pointer 
@@ -216,7 +216,7 @@ Note: qMalloc its NOT interrupt-safe.
 
 Parameters:
 
-    - size : Size of the memory block in bytes.
+    - Size : Size of the memory block in bytes.
 
 Return value:
 
@@ -225,11 +225,11 @@ Return value:
     pointer is returned.
 */
 /*============================================================================*/
-void* qMalloc( size_t size ){
-    return qMemMang_Allocate( Selected_MemPool, size );
+void* qMalloc( size_t Size ){
+    return qMemMang_Allocate( Selected_MemPool, Size );
 }
 /*============================================================================*/
-/*void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size )
+/*void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t Size )
 
 Allocate a block of memory that is <size> bytes large. If the requested memory 
 can be allocated, a pointer is returned to the beginning of the memory block.
@@ -249,7 +249,7 @@ Return value:
     If the function failed to allocate the requested block of memory, a NULL
     pointer is returned.
 */
-void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size ){
+void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t Size ){
     const size_t MinBlockSize = ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) )*(size_t)2;
     qMemMang_BlockConnect_t *Block, *PreviousBlock, *NewBlockLink;
     void *Allocated = NULL;
@@ -259,17 +259,17 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size ){
         if( NULL == mPool->qPrivate.End ){ /*First call,*/
             qMemMang_HeapInit( mPool ); /*initialize the heap to setup the list of free blocks*/
         }
-        if( ( size & mPool->qPrivate.BlockAllocatedBit ) == (size_t)0 ){
-            if( size > (size_t)0 ){ /* The requested size is increased so it can contain a qMemBlockConnect_t in addition to the requested amount of bytes. */
-                size += HeapStructSize;
-                if( ( size & ByteAlignmentMask ) != 0x00u ){ /*Ensure blocks are always aligned to the required number of bytes. */
-                    size += ( (size_t)Q_BYTE_ALIGNMENT - ( size & ByteAlignmentMask ) ); /* byte-alignment */
+        if( ( Size & mPool->qPrivate.BlockAllocatedBit ) == (size_t)0 ){
+            if( Size > (size_t)0 ){ /* The requested size is increased so it can contain a qMemBlockConnect_t in addition to the requested amount of bytes. */
+                Size += HeapStructSize;
+                if( ( Size & ByteAlignmentMask ) != 0x00u ){ /*Ensure blocks are always aligned to the required number of bytes. */
+                    Size += ( (size_t)Q_BYTE_ALIGNMENT - ( Size & ByteAlignmentMask ) ); /* byte-alignment */
                 }
             }
-            if( ( size > (size_t)0 ) && ( size <= mPool->qPrivate.FreeBytesRemaining ) ){
+            if( ( Size > (size_t)0 ) && ( Size <= mPool->qPrivate.FreeBytesRemaining ) ){
                 PreviousBlock = &mPool->qPrivate.Start; /* check list from the start (lowest address) block until one of adequate size is found. */
                 Block = mPool->qPrivate.Start.Next;
-                while( ( Block->BlockSize < size ) && ( Block->Next != NULL ) ){
+                while( ( Block->BlockSize < Size ) && ( Block->Next != NULL ) ){
                     PreviousBlock = Block;
                     Block = Block->Next;
                 }
@@ -277,13 +277,13 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t size ){
                     /* Return the memory space pointed to - jumping over the qMemBlockConnect_t node at its start. */
                     Allocated = (void*) ( ( (qUINT8_t*)PreviousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */
                     PreviousBlock->Next = Block->Next; /* Allocated must be removed from the list of free blocks  */
-                    if( ( Block->BlockSize - size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
+                    if( ( Block->BlockSize - Size ) > MinBlockSize ){ /* If the block is larger than required it can be split into two. */
                         pBlockU8 = (qUINT8_t*)Block;
                         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-                        NewBlockLink = (void*)&pBlockU8[ size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                        NewBlockLink = (void*)&pBlockU8[ Size ] ; /* Create a new block following the number of bytes requested. */ /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-                        NewBlockLink->BlockSize = Block->BlockSize - size; /* compute the sizes of two blocks split from the single block. */
-                        Block->BlockSize = size;
+                        NewBlockLink->BlockSize = Block->BlockSize - Size; /* compute the sizes of two blocks split from the single block. */
+                        Block->BlockSize = Size;
                         qMemMang_InsertBlockIntoFreeList( mPool, NewBlockLink ); /* Insert the new block into the list of free blocks. */
                     }
                     mPool->qPrivate.FreeBytesRemaining -= Block->BlockSize;

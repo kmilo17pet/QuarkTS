@@ -17,7 +17,7 @@ qBool_t qQueue_IsReady( const qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea,  size_t ElementSize, size_t ElementCount)
+/*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea,  size_t ItemSize, size_t ItemsCount)
  
 Configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
 is statically allocated at compile time by the application writer.
@@ -26,8 +26,8 @@ Parameters:
 
     - obj : a pointer to the Queue object
     - DataArea :  data block or array of data
-    - ElementSize : size of one element in the data block
-    - ElementCount : size of one element in the data block
+    - ItemSize : size of one element in the data block
+    - ItemsCount : size of one element in the data block
 
 Return value:
 
@@ -250,7 +250,7 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qBool_t InsertMode )
+/*qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode_t InsertMode )
  
 Post an item to the back of the queue. The item is queued by copy, not by reference
  

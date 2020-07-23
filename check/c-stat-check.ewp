@@ -2190,6 +2190,9 @@
             <name>$PROJ_DIR$\..\src\os\qclock.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\src\os\qcoroutine.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\src\os\qcritical.c</name>
         </file>
         <file>

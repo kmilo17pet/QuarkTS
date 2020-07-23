@@ -38,7 +38,7 @@ void qClock_SetTickProvider( qGetTickFcn_t provider ){
     GetSysTick = provider;
 }
 /*============================================================================*/
-/*qTime_t qClock_Convert2Time(const qClock_t t)
+/*qTime_t qClock_Convert2Time( const qClock_t t )
 
 Convert the specified input time(epochs) to time(seconds)
 
@@ -64,7 +64,7 @@ qTime_t qClock_Convert2Time( const qClock_t t ){
     #endif      
 }
 /*============================================================================*/
-/*qCLock_t qClock_Convert2Clock(const qTime_t t)
+/*qCLock_t qClock_Convert2Clock( const qTime_t t )
 
 Convert the specified input time(seconds) to time(epochs)
 
@@ -93,7 +93,7 @@ qClock_t qClock_Convert2Clock( const qTime_t t ){
 }
 /*============================================================================*/
 /*
-void qClock_SysTick(void)
+void qClock_SysTick( void )
 
 Feed the system tick. This call is mandatory and must be called once inside the 
 dedicated timer interrupt service routine (ISR). 
@@ -120,7 +120,7 @@ qClock_t qClock_GetTick( void ){
 	return ( NULL != TickProvider )? TickProvider() : _qSysTick_Epochs_; /*some compilers can deal with function pointers inside structs*/
 }
 /*============================================================================*/
-/*qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )( void )
+/*qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )
 
 Perform a timestamp check. Computes the amount of time elapsed between the current
 instant and the init timestamp <ti> and checks if the result is greather than <td>. 
