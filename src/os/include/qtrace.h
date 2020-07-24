@@ -12,28 +12,36 @@
     #define _qSTRINGIFY(x) #x
     #define _qTOSTRING(x) _qSTRINGIFY(x)
 
+    #ifndef _QTRACE_FUNC
+        #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
+            #if  __GNUC__ >= 2
+                #define _QTRACE_FUNC __PRETTY_FUNCTION__
+            #else
+                #define _QTRACE_FUNC   __func__
+            #endif       
+        #elif defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
+            # define _QTRACE_FUNC __PRETTY_FUNCTION__
+        #elif defined(__DMC__) && (__DMC__ >= 0x810)
+            # define _QTRACE_FUNC __PRETTY_FUNCTION__
+        #elif defined(__FUNCSIG__)
+            # define _QTRACE_FUNC __FUNCSIG__
+        #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+            # define _QTRACE_FUNC __FUNCTION__
+        #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+            # define _QTRACE_FUNC __FUNC__
+        #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+            # define _QTRACE_FUNC __func__
+        #elif defined(__cplusplus) && (__cplusplus >= 201103)
+            # define _QTRACE_FUNC __func__                
+        #else /* failed to detect __func__ support.  */
+            #define _QTRACE_FUNC ((char *) 0)
+        #endif
+    # endif
+
     #if ( Q_DEBUGTRACE_FULL == 1 )
-        #ifndef _QTRACE_FUNC
-            #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
-                #if  __GNUC__ >= 2
-                    #define _QTRACE_FUNC __PRETTY_FUNCTION__
-                #else
-                    #define _QTRACE_FUNC   __func__
-                #endif       
-            #elif defined __STDC_VERSION__ 
-                #if __STDC_VERSION__ >= 199901L /* C99 requires the use of __func__.  */
-                    #define _QTRACE_FUNC __func__
-                #else
-                    #define _QTRACE_FUNC ((char *) 0)
-                #endif
-            #else /* failed to detect __func__ support.  */
-                #define _QTRACE_FUNC ((char *) 0)
-            #endif
-        # endif
         #define _qAT() "[" __FILE__ ":" _qTOSTRING(__LINE__) "] " 
     #else
         #define _qAT()         ""
-        #define _QTRACE_FUNC    ((char *) 0)
     #endif
 
     #ifndef Message
