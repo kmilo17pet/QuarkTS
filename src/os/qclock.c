@@ -1,13 +1,18 @@
 #include "qclock.h"
 
+static qClock_t qClock_InternalTick( void );
+
 static volatile qClock_t _qSysTick_Epochs_ = 0uL;
-static qGetTickFcn_t GetSysTick = NULL;
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
 
 static qTimingBase_t TimmingBase;
 
+/*============================================================================*/
+static qClock_t qClock_InternalTick( void ){
+    return _qSysTick_Epochs_;
+} 
 /*============================================================================*/
 /*void qClock_SetTimeBase( const qTimingBase_t tb )
 
@@ -25,7 +30,7 @@ void qClock_SetTimeBase( const qTimingBase_t tb ){
 /*============================================================================*/
 /*void qClock_SetTickProvider( qGetTickFcn_t provider )
 
-Set the clock tick provider function.
+Set the clock-tick provider function.
 
 Parameters:
 
@@ -35,7 +40,12 @@ Parameters:
 
 */
 void qClock_SetTickProvider( qGetTickFcn_t provider ){
-    GetSysTick = provider;
+    if( NULL != provider ){
+        qClock_GetTick = provider;
+    }
+    else{
+        qClock_GetTick = &qClock_InternalTick;
+    }
 }
 /*============================================================================*/
 /*qTime_t qClock_Convert2Time( const qClock_t t )
@@ -114,11 +124,7 @@ Return value:
 
     time (t) in seconds
 */
-qClock_t qClock_GetTick( void ){   
-    qGetTickFcn_t TickProvider;
-    TickProvider = GetSysTick;
-	return ( NULL != TickProvider )? TickProvider() : _qSysTick_Epochs_; /*some compilers can deal with function pointers inside structs*/
-}
+qGetTickFcn_t qClock_GetTick = &qClock_InternalTick;
 /*============================================================================*/
 /*qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )
 

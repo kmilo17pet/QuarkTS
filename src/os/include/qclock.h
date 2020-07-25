@@ -41,7 +41,7 @@
     qTime_t qClock_Convert2Time( const qClock_t t );
     qClock_t qClock_Convert2Clock( const qTime_t t );
     void qClock_SysTick( void );
-    qClock_t qClock_GetTick( void );
+    extern qGetTickFcn_t qClock_GetTick;
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
 
     #ifdef __cplusplus

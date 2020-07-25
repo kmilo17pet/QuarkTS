@@ -52,8 +52,8 @@ static qList_t *ReadyList = &kernel.CoreLists[ 0 ];
 /*=============================== Private Methods ============================*/
 static qTask_t* qOS_Get_TaskRunning( void );
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task);
-static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage );
-static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage );    
+static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;
+static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;    
 static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task);
 static void qOS_DummyTask_Callback( qEvent_t e );
 static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
@@ -83,7 +83,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 #endif
 
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-    static qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2);
+    static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2) Q_FUNC_ATTRIBUTE_POS;
 #endif
 
 /*initialize the private-methods container*/
@@ -668,7 +668,7 @@ void qOS_Run( void ){
 }
 /*============================================================================*/
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-static qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2){
+static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2) Q_FUNC_ATTRIBUTE_POS{
     qTask_t *t1, *t2;
     t1 = (qTask_t*)n1;
     t2 = (qTask_t*)n1;
@@ -676,7 +676,7 @@ static qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2){
 }
 #endif
 /*============================================================================*/
-static qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ){
+static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS{
     qTask_t *xTask;
     qList_t *xList;
     qTrigger_t trg;
@@ -815,7 +815,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
     return Event;
 }
 /*============================================================================*/
-static qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ){
+static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS{
     qTrigger_t Event = byNoReadyTasks;
     qTask_t *Task; /*#!ok*/
     qList_t *xList;
