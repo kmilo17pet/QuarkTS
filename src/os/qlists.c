@@ -602,28 +602,30 @@ qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg
     qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk throught*/
     
     if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
-        adjacent = ( &QLIST_FORWARD == dir )? list->head : list->tail;
-        if( NULL != NodeOffset){
-            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            iNode = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
-            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-            if( iNode->container == list ){
-                adjacent = iNode;
+        if ( NULL != list->head ){  /*walk the list only if it has items*/
+            adjacent = ( &QLIST_FORWARD == dir )? list->head : list->tail; /*select starting point*/
+            if( NULL != NodeOffset){ /*offset request?*/
+                /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                iNode = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+                if( iNode->container == list ){ /*the offset belongs to the list?*/
+                    adjacent = iNode; /*take offset as a starting point*/
+                }
             }
-        }
-        RetValue = Fcn( NULL, arg, qList_WalkInit );
-        if( qFalse == RetValue ){
-            for( iNode = adjacent; NULL != iNode; iNode = adjacent ){
-                adjacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
-                RetValue = Fcn( iNode, arg, qList_WalkThrough );
-                if( RetValue ){
-                    break;
-                }               
-            }
-            if( qFalse == RetValue ){
-                RetValue = Fcn( NULL, arg, qList_WalkEnd ); 
-            }
-        }        
+            RetValue = Fcn( NULL, arg, qList_WalkInit ); /*run initial stage before looping through list*/
+            if( qFalse == RetValue ){ /*check if the initial stage allows us to continue*/
+                for( iNode = adjacent; NULL != iNode; iNode = adjacent ){ /*loop the list*/
+                    adjacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
+                    RetValue = Fcn( iNode, arg, qList_WalkThrough ); /*perform action over the node*/
+                    if( RetValue ){ /*check if the last node handling breaks the loop*/
+                        break;
+                    }               
+                }
+                if( qFalse == RetValue ){ /*if the last node allows to continue, run the ending stage*/
+                    RetValue = Fcn( NULL, arg, qList_WalkEnd ); 
+                }
+            }    
+        }    
     }
     return RetValue;
 }

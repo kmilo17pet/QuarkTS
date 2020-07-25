@@ -15,8 +15,8 @@
 
     #define Q_IOUTIL_MAX_STRLEN      ( (size_t)512 )
 
-    typedef void (*qPutChar_t)(void* arg1, const char arg2);
-    typedef void (*qPutString_t)(void* arg1, const char* arg2);
+    typedef Q_FUNC_ATTRIBUTE_PRE void (*qPutChar_t)(void* arg1, const char arg2) Q_FUNC_ATTRIBUTE_POS;
+    typedef Q_FUNC_ATTRIBUTE_PRE void (*qPutString_t)(void* arg1, const char* arg2) Q_FUNC_ATTRIBUTE_POS;
     typedef char (*qGetChar_t)(void* arg1);
 
     size_t qIOUtil_StrLen( const char* str, size_t maxlen);
