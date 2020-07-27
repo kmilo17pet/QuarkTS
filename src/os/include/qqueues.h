@@ -85,6 +85,7 @@
     void qQueue_Reset( qQueue_t * const obj );
     qBool_t qQueue_IsEmpty( const qQueue_t * const obj );
     size_t qQueue_Count( const qQueue_t * const obj );
+    size_t qQueue_ItemsAvailable( const qQueue_t * const obj );
     qBool_t qQueue_IsFull( const qQueue_t * const obj );
     
     void* qQueue_Peek( const qQueue_t * const obj );

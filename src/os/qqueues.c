@@ -43,7 +43,6 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
         /* Set the head to the start of the storage area */
         obj->qPrivate.pHead = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        obj->qPrivate.pTail = obj->qPrivate.pHead + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
         qQueue_Reset( obj );
         RetValue = qTrue;
     }
@@ -61,6 +60,7 @@ Parameters:
 void qQueue_Reset( qQueue_t * const obj ){
     if ( NULL != obj ){
         qCritical_Enter();
+        obj->qPrivate.pTail = obj->qPrivate.pHead + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
         obj->qPrivate.ItemsWaiting = 0u;
         obj->qPrivate.pcWriteTo = obj->qPrivate.pHead;
         obj->qPrivate.pcReadFrom = obj->qPrivate.pHead + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
@@ -109,6 +109,26 @@ size_t qQueue_Count( const qQueue_t * const obj ){
     size_t RetValue = 0u;
     if ( NULL != obj ){
         RetValue = obj->qPrivate.ItemsWaiting;
+    } 
+    return RetValue;
+}
+/*============================================================================*/
+/*size_t qQueue_AvailableSlots( const qQueue_t * const obj )
+ 
+Returns the number of available slots to hold items inside the Queue
+ 
+Parameters:
+
+    - obj : a pointer to the Queue object
+  
+Return value:
+
+    The number of available slots in the queue
+ */
+size_t qQueue_ItemsAvailable( const qQueue_t * const obj ){
+    size_t RetValue = 0u;
+    if ( NULL != obj ){
+        RetValue = obj->qPrivate.ItemsCount - obj->qPrivate.ItemsWaiting;
     } 
     return RetValue;
 }
@@ -238,8 +258,10 @@ Return value:
 */
 qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
     qBool_t RetValue = qFalse;
+    size_t ItemsWaiting;
     if( NULL != obj ){
-        if( obj->qPrivate.ItemsWaiting > 0u ){
+        ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
+        if( ItemsWaiting > 0u ){
             qCritical_Enter();
             qQueue_CopyDataFromQueue( obj, dest );
             --( obj->qPrivate.ItemsWaiting ); /* remove the data. */
