@@ -20,12 +20,12 @@
         size_t BlockSize;	                        /*< The size of the free block*/     
     }qMemMang_BlockConnect_t;
 
+    /* Please don't access any members of this structure directly */
     typedef struct{
-        /*This data should be handled only using the provided API*/
         struct _qMemMang_Pool_Private_s{
             qMemMang_BlockConnect_t *End;           /*< Points to the last block of the list. */
-            qUINT8_t *Heap;                         /*< Points to the beginning of the heap area statically allocated. */
-            size_t HeapSize;                        /*< The size of the memory block pinted by "heap". */
+            qUINT8_t *PoolMemory;                   /*< Points to the beginning of the heap area statically allocated. */
+            size_t PoolMemSize;                     /*< The size of the memory block pointed by "heap". */
             size_t FreeBytesRemaining;              /*< The number of free bytes in the heap. */
             size_t BlockAllocatedBit;               /*< A bit that is set when the block belongs to the application. Clearead when the block is part of the free space (only the MSB is used) */    
             qMemMang_BlockConnect_t Start;          /*< The first block of the heap. */

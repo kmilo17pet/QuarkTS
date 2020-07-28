@@ -10,7 +10,7 @@
     #define Q_PRESERVE_TASK_ENTRY_ORDER ( 0 )       /*< If enabled, kernel will preserve the tasks entry order every OS scheduling cycle*/
     #define Q_MEMORY_MANAGER            ( 1 )       /*< Used to enable or disable the Memory Manager*/
     #define Q_BYTE_ALIGNMENT            ( 8 )       /*< Byte alignment used by the memory manager*/
-    #define Q_DEFAULT_HEAP_SIZE         ( 2048  )   /*< The default heap size for the memory manager*/    
+    #define Q_DEFAULT_HEAP_SIZE         ( 512  )    /*< The default heap size for the memory manager*/    
     #define Q_NOTIFICATION_SPREADER     ( 1 )       /*< Used to enable or disable the spread notification functionality*/ 
     #define Q_FSM                       ( 1 )       /*< Used to enable or disable the Finite State Machine (FSM) module */
     #define Q_FSM_MAX_NEST_DEPTH        ( 5 )       /*< The max depth of nesting in Finite State Machines (FSM)*/
@@ -31,6 +31,6 @@
 
     /*portability options*/
     #define Q_FUNC_ATTRIBUTE_PRE                    /*< Function attributes for callbacks with more than one argument */
-    #define Q_FUNC_ATTRIBUTE_POS    /*reentrant*/   /*< Function attributes for callbacks with more than one argument. ej: reentrant for the Keil-C51 compiler*/
+    #define Q_FUNC_ATTRIBUTE_POS    /*reentrant*/   /*< Function attributes for callbacks with more than one argument */
     /*================================================================================================================================*/  
 #endif

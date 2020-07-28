@@ -301,7 +301,7 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
             }
             else{
                 if( 0 != isgraph( (int)Data[0] ) ){
-                    if( NULL != strchr( Data, (int)'\r' ) ){ 
+                    if( NULL != strchr( Data, (int)'\r' ) ){ /* TODO : potentially unsafe, find a better way */
                         (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, n); /*safe string copy*/
                         (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
                         RetValue = qATCLI_Notify( cli );
@@ -389,7 +389,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         for( Command = (qATCLI_Command_t*)cli->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/  
-            if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/
+            if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/ /*TODO : potentially unsafe, find a better way*/
             	RetValue = qATCLI_NOTALLOWED;
                 if( qATCLI_PreProcessing( Command, (char*)cmd, &cli->qPrivate.Params ) ){ /*if success, proceed with the user pos-processing*/
                     CmdCallback = Command->qPrivate.CommandCallback;
@@ -511,7 +511,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
 			if 	( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ){
             	OutputRetval = QATCLI_OK;			/*check if the input its the simple AT command*/
             }
-			else if	( QATCLI_NOTFOUND != (CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ){
+			else if	( QATCLI_NOTFOUND != ( CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ){
                 OutputRetval = CLIRetVal;	/*check if the input is one of the subscribed commands*/
             }
 			else if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_ID_COMMAND, Input->Size ) ){

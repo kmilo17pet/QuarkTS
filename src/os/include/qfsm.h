@@ -85,8 +85,8 @@
         }qPrivate;
     }qSM_TransitionTable_t;
 
+    /* Please don't access any members of this structure directly */
     typedef struct _qSM_s{
-        /*This data should be handled only using the provided API*/
         struct _qSM_Private_s{
             void (*Failure)(_qSM_Handler_t arg);            /*< Failure substate handler.*/
             void (*Success)(_qSM_Handler_t arg);            /*< Success substate handler.*/    

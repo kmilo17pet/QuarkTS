@@ -194,8 +194,8 @@
 
     typedef void (*qTaskFcn_t)(qEvent_t arg);  
 
+    /* Please don't access any members of this structure directly */
     typedef struct{ /*Task node definition*/
-        /*This data should be handled only using the provided API*/
         struct _qTask_Private_s{    /*Task control block - TCB*/
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /*< The task storage pointers. */

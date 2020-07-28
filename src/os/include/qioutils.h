@@ -19,8 +19,8 @@
     typedef Q_FUNC_ATTRIBUTE_PRE void (*qPutString_t)(void* arg1, const char* arg2) Q_FUNC_ATTRIBUTE_POS;
     typedef char (*qGetChar_t)(void* arg1);
 
-    size_t qIOUtil_StrLen( const char* str, size_t maxlen);
-    size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen );
+    size_t qIOUtil_StrLen( const char* str, size_t maxlen); /* safe strlen */
+    size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen ); /* safe strcpy */
     void qIOUtil_SwapBytes( void *Data, const size_t n );
     qBool_t qIOUtil_CheckEndianness( void);
     void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );

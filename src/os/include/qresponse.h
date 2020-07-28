@@ -11,8 +11,8 @@
     extern "C" {
     #endif
 
+    /* Please don't access any members of this structure directly */
     typedef struct{
-        /*This data should be handled only using the provided API*/
         struct _qResponse_Private_s{
             char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
             qSTimer_t timeout;                  /*< The timeout used to wait the requested response. */

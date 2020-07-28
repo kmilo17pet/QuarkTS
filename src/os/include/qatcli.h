@@ -41,6 +41,7 @@
     #define     QATCLI_NOTFOUND             ( qATCLI_NOTFOUND )    
     #define     QATCLI_OUTPUT               ( qATCLI_OUTPUT )
 
+    /* Please don't access any members of this structure directly */
     typedef volatile struct{
         char *Buffer;                       /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;            /*< Used to hold the index of the current input-buffer. */
@@ -94,8 +95,8 @@
     typedef _qATCLI_PublicData_t* qATCLI_Handler_t; 
     typedef _qATCLI_PreCmd_Block_t* qATCLI_PreCmd_t;
 
+    /* Please don't access any members of this structure directly */
     typedef struct _qATCLI_ControlBlock_s{
-        /*This data should be handled only using the provided API*/
         struct _qATCLI_Private_s{
             void *First;                                                    /*< Points to the first command*/
             const char *OK_Response;                                        /*< The response printed when OK is needed. */
@@ -115,10 +116,10 @@
     typedef Q_FUNC_ATTRIBUTE_PRE qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1, qATCLI_PreCmd_t arg2) Q_FUNC_ATTRIBUTE_POS;
     typedef qUINT16_t qATCLI_Options_t;
 
+    /* Please don't access any members of this structure directly */
     typedef struct _qATCLI_Command_s{
         void *param;                                            /*< User parameters. */
         char *Text;                                             /*< The command string. Used to match to the input< */
-        /*This data should be handled only using the provided API*/
         struct _qATCLI_Command_Private_s{                      
             qATCLI_CommandCallback_t CommandCallback;           /*< The command callback. */
             struct _qATCLI_Command_s *Next;                     /*< Points to the next command in the list. */

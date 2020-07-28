@@ -17,9 +17,8 @@
     #define QEDGECHECK_UPDATE       ( (qUINT8_t)1u )
     #define QEDGECHECK_CHECK        ( (qUINT8_t)2u )
 
-  
+    /* Please don't access any members of this structure directly */
     typedef struct _qEdgeCheck_IONode_s{
-        /*This data should be handled only using the provided API*/
         struct _qEdgeCheck_IONode_Private_s{
             struct _qEdgeCheck_IONode_s *Next;  /*< Point to the next node of the IO list. */    
             void *Port;                         /*< Point to the address of the hardware PORT/IO register. */
@@ -31,8 +30,8 @@
 
     typedef qBool_t (*qCoreRegSize_t)(const void* arg1, qBool_t arg2);
     
+    /* Please don't access any members of this structure directly */
     typedef struct{
-        /*This data should be handled only using the provided API*/
         struct _qEdgeCheck_Private_s{
             qEdgeCheck_IONode_t *Head;          /*< The first ionode in the list. */
             qClock_t Start, DebounceTime;       /*< Debounce time control*/

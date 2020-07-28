@@ -4,8 +4,8 @@
 
 typedef size_t qAddress_t;  /*restrict*/
 
-static qUINT8_t DefaultHeap[ Q_DEFAULT_HEAP_SIZE ] = {0};
-static qMemMang_Pool_t DefaultMemPool = {{NULL, DefaultHeap, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}}};
+static qUINT8_t DefaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = {0};
+static qMemMang_Pool_t DefaultMemPool = {{NULL, DefaultPoolMemory, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0}}};
 static qMemMang_Pool_t *Selected_MemPool = &DefaultMemPool;
 static const size_t ByteAlignmentMask   = ((size_t)Q_BYTE_ALIGNMENT - (size_t)1);
 static const size_t HeapStructSize	= ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) - ( size_t ) 1 ) ) & ~( ( size_t ) ((size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
@@ -35,9 +35,9 @@ qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t S
     qBool_t RetValue = qFalse;
     if( NULL != mPool ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        mPool->qPrivate.Heap = Area; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        mPool->qPrivate.PoolMemory = Area; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        mPool->qPrivate.HeapSize = Size;
+        mPool->qPrivate.PoolMemSize = Size;
         mPool->qPrivate.End = NULL;
         RetValue = qTrue;
     }
@@ -134,29 +134,29 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool ){
     qMemMang_BlockConnect_t *FirstFreeBlock;
     qUINT8_t *Aligned;
     qAddress_t Address, xAddrTmp;
-    size_t TotalHeapSize;
+    size_t TotalPoolSize;
        
     if( mPool == &DefaultMemPool ){ /*initialize the default memory pool */
-        (void)qMemMang_Pool_Setup( mPool, DefaultHeap, (size_t)Q_DEFAULT_HEAP_SIZE );
+        (void)qMemMang_Pool_Setup( mPool, DefaultPoolMemory, (size_t)Q_DEFAULT_HEAP_SIZE );
     }
 
-    TotalHeapSize = mPool->qPrivate.HeapSize;
+    TotalPoolSize = mPool->qPrivate.PoolMemSize;
     mPool->qPrivate.Start.BlockSize = (size_t)0;
     mPool->qPrivate.Start.Next = NULL;
     mPool->qPrivate.FreeBytesRemaining = (size_t)0;
     /*cstat -MISRAC2012-Rule-11.4 -CERT-INT36-C -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    Address = (qAddress_t)mPool->qPrivate.Heap; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
+    Address = (qAddress_t)mPool->qPrivate.PoolMemory; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
     if( 0uL != ( Address & ByteAlignmentMask ) ){
         Address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
         Address &= ~ByteAlignmentMask;
-        TotalHeapSize -= Address - (qAddress_t)mPool->qPrivate.Heap; /*MISRAC2012-Rule-11.4 deviation allowed*/
+        TotalPoolSize -= Address - (qAddress_t)mPool->qPrivate.PoolMemory; /*MISRAC2012-Rule-11.4 deviation allowed*/
     }
     Aligned = (qUINT8_t*) Address; /*MISRAC2012-Rule-11.4 deviation allowed*/
     
     mPool->qPrivate.Start.Next = ( void * ) Aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     mPool->qPrivate.Start.BlockSize = (size_t)0;
     xAddrTmp = (qAddress_t)Aligned; /*MISRAC2012-Rule-11.4 deviation allowed*/
-    Address = xAddrTmp + TotalHeapSize; /*MISRAC2004-17.4_a deviation allowed*/
+    Address = xAddrTmp + TotalPoolSize; /*MISRAC2004-17.4_a deviation allowed*/
     Address -= HeapStructSize;
     Address &= ~ByteAlignmentMask;
     
@@ -317,7 +317,7 @@ size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool ){
     if( NULL == mPool ){ /*use the default memory pool if select*/
         mPool = &DefaultMemPool;
     }
-    RetValue = mPool->qPrivate.HeapSize;   
+    RetValue = mPool->qPrivate.PoolMemSize;   
     if( NULL != mPool->qPrivate.End ){
         RetValue =  mPool->qPrivate.FreeBytesRemaining;
     }

@@ -347,7 +347,7 @@ Return value:
 qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
-        if( NULL != Queue->qPrivate.pHead ) {
+        if( NULL != Queue->qPrivate.head ) {
             _qPrivate_TaskModifyFlags( Task, Mode & _QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
             if( Mode == qQUEUE_COUNT ){
                 Task->qPrivate.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/

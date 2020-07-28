@@ -24,6 +24,7 @@
     #define qSingleShot             ( (qIteration_t)(1) )
 
     /*a single container is used to publish the private methods outside the kernel*/
+    /* Please don't access any members of this structure directly */
     typedef struct{
         #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
             Q_FUNC_ATTRIBUTE_PRE qBool_t (*PriorityQueue_Insert)(qTask_t * const Task, void *Data) Q_FUNC_ATTRIBUTE_POS;

@@ -13,6 +13,7 @@
     typedef _qCR_TaskPC_t qCR_ExtPosition_t;
     #define qCR_Position_t static _qCR_TaskPC_t
     
+    /* Please don't access any members of this structure directly */
     typedef struct{
         _qCR_TaskPC_t instr;    /*< Used to hold the local continuation. */
         _qCR_TaskPC_t prev;     /*< Temporally holds the a local continuation during a coroutine suspension*/

@@ -64,7 +64,7 @@ qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper ){
                 }
                 break;
             default:
-                if( oper > _qCR_UNDEFINED ){
+                if( oper >= _qCR_UNDEFINED ){
                     sem->count = (size_t)oper;
                 }
                 break;    

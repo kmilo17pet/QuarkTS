@@ -2,7 +2,7 @@
 
 #if (Q_QUEUES == 1)
 
-static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition );
+static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *ItemToQueue, const qBool_t xPosition );
 static void qQueue_MoveReader( qQueue_t * const obj );
 static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer );
 
@@ -10,7 +10,7 @@ static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffe
 qBool_t qQueue_IsReady( const qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
     if( NULL != obj ){
-        if( NULL != obj->qPrivate.pHead ){
+        if( NULL != obj->qPrivate.head ){
             RetValue = qTrue;
         }
     }
@@ -41,7 +41,7 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
         obj->qPrivate.ItemSize = ItemSize;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /* Set the head to the start of the storage area */
-        obj->qPrivate.pHead = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        obj->qPrivate.head = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         qQueue_Reset( obj );
         RetValue = qTrue;
@@ -60,10 +60,10 @@ Parameters:
 void qQueue_Reset( qQueue_t * const obj ){
     if ( NULL != obj ){
         qCritical_Enter();
-        obj->qPrivate.pTail = obj->qPrivate.pHead + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
+        obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
         obj->qPrivate.ItemsWaiting = 0u;
-        obj->qPrivate.pcWriteTo = obj->qPrivate.pHead;
-        obj->qPrivate.pcReadFrom = obj->qPrivate.pHead + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
+        obj->qPrivate.writer = obj->qPrivate.head;
+        obj->qPrivate.reader = obj->qPrivate.head + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
         qCritical_Exit();
     }
 }
@@ -174,10 +174,10 @@ void* qQueue_Peek( const qQueue_t * const obj ){
         if( obj->qPrivate.ItemsWaiting > 0u ){
             qCritical_Enter();
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            RetValue = (void*)( obj->qPrivate.pcReadFrom + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            RetValue = (void*)( obj->qPrivate.reader + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-            if( RetValue >= obj->qPrivate.pTail ){
-                RetValue = obj->qPrivate.pHead;
+            if( RetValue >= obj->qPrivate.tail ){
+                RetValue = obj->qPrivate.head;
             }
             qCritical_Exit();
         }
@@ -211,34 +211,34 @@ qBool_t qQueue_RemoveFront( qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *pvItemToQueue, const qBool_t xPosition ){
+static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *ItemToQueue, const qBool_t xPosition ){
     if( QUEUE_SEND_TO_BACK == xPosition ){
-        (void) memcpy( (void*) obj->qPrivate.pcWriteTo, pvItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
-        obj->qPrivate.pcWriteTo += obj->qPrivate.ItemSize;
-        if( obj->qPrivate.pcWriteTo >= obj->qPrivate.pTail ){
-            obj->qPrivate.pcWriteTo = obj->qPrivate.pHead;
+        (void) memcpy( (void*) obj->qPrivate.writer, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+        obj->qPrivate.writer += obj->qPrivate.ItemSize;
+        if( obj->qPrivate.writer >= obj->qPrivate.tail ){
+            obj->qPrivate.writer = obj->qPrivate.head;
         }         
     }
     else{
-        (void) memcpy( (void*) obj->qPrivate.pcReadFrom, pvItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
-        obj->qPrivate.pcReadFrom -= obj->qPrivate.ItemSize;
-        if( obj->qPrivate.pcReadFrom < obj->qPrivate.pHead ){
-            obj->qPrivate.pcReadFrom = ( obj->qPrivate.pTail - obj->qPrivate.ItemSize ); 
+        (void) memcpy( (void*) obj->qPrivate.reader, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+        obj->qPrivate.reader -= obj->qPrivate.ItemSize;
+        if( obj->qPrivate.reader < obj->qPrivate.head ){
+            obj->qPrivate.reader = ( obj->qPrivate.tail - obj->qPrivate.ItemSize ); 
         }   
     }
-    ++( obj->qPrivate.ItemsWaiting );
+    obj->qPrivate.ItemsWaiting++;
 }
 /*==================================================================================*/
 static void qQueue_MoveReader( qQueue_t * const obj ){
-    obj->qPrivate.pcReadFrom += obj->qPrivate.ItemSize;
-    if( obj->qPrivate.pcReadFrom >= obj->qPrivate.pTail ){
-        obj->qPrivate.pcReadFrom = obj->qPrivate.pHead;
+    obj->qPrivate.reader += obj->qPrivate.ItemSize;
+    if( obj->qPrivate.reader >= obj->qPrivate.tail ){
+        obj->qPrivate.reader = obj->qPrivate.head;
     }
 }
 /*==================================================================================*/
 static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer ){
     qQueue_MoveReader( obj );
-    (void) memcpy( (void*) pvBuffer, (void*)obj->qPrivate.pcReadFrom, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+    (void) memcpy( (void*) pvBuffer, (void*)obj->qPrivate.reader, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
 /*qBool_t qQueue_Receive( qQueue_t * const obj, void *dest )
@@ -264,7 +264,7 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
         if( ItemsWaiting > 0u ){
             qCritical_Enter();
             qQueue_CopyDataFromQueue( obj, dest );
-            --( obj->qPrivate.ItemsWaiting ); /* remove the data. */
+            obj->qPrivate.ItemsWaiting--; /* remove the data. */
             qCritical_Exit();
             RetValue = qTrue;
         }        

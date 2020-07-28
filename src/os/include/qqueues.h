@@ -11,13 +11,13 @@
     extern "C" {
     #endif
     
+    /* Please don't access any members of this structure directly */
     typedef struct{
-        /*This data should be handled only using the provided API*/
         struct _qQueue_Private_s{
-            qUINT8_t *pHead;			    /*< Points to the beginning of the queue storage area. */
-            qUINT8_t *pTail;			    /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
-            qUINT8_t *pcWriteTo;	        /*< Points to the free next place in the storage area. */
-            qUINT8_t *pcReadFrom;	        /*< Points to the last place that a queued item was read from. */
+            qUINT8_t *head;			        /*< Points to the beginning of the queue storage area. */
+            qUINT8_t *tail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
+            qUINT8_t *writer;	        /*< Points to the free next place in the storage area. */
+            qUINT8_t *reader;	        /*< Points to the last place that a queued item was read from. */
             volatile size_t ItemsWaiting;   /*< The number of items currently in the queue. */
             size_t ItemsCount;		        /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
             size_t ItemSize;		        /*< The size of each items that the queue will hold. */

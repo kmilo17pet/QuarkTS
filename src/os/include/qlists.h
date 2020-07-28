@@ -9,6 +9,7 @@
     extern "C" {
     #endif
 
+    /* Please don't access any members of this structure directly */
     typedef struct _qList_Node_s{
         struct _qList_Node_s *next, *prev;  /*< Pointers to the adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/

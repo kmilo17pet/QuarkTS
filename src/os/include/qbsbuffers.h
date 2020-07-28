@@ -8,8 +8,8 @@
     extern "C" {
     #endif
 
+    /* Please don't access any members of this structure directly */
     typedef struct{
-        /*This data should be handled only using the provided API*/
         struct _qBSBuffer_Private_s{
             volatile qUINT8_t *buffer;  /*< Points to the begining of the buffer storage area. */
             volatile qIndex_t head;     /*< Used to hold the index of the head. */

@@ -9,6 +9,7 @@
     extern "C" {
     #endif
     
+    /* Please don't access any members of this structure directly */
     typedef struct{ 
         qClock_t Start;     /*< The time(epochs) taken at the arming moment. */
         qClock_t TV;        /*< The required time in epochs. */

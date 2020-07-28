@@ -78,7 +78,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.BeforeAnyState = BeforeAnyState;
         obj->qPrivate.TransitionTable = NULL;
         obj->qPrivate.Owner = NULL;
-        obj->qPrivate.SignalQueue.qPrivate.pHead = NULL;
+        obj->qPrivate.SignalQueue.qPrivate.head = NULL;
 
         obj->qPrivate.Composite.head = NULL;
         obj->qPrivate.Composite.next = NULL;
