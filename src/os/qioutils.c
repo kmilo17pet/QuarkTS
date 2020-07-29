@@ -27,6 +27,38 @@ static const char * qIOUtil_CheckStrSign( const char *s, int *sgn ){
     return s;
 }
 /*============================================================================*/
+/*
+Returns a pointer to the first occurrence of character in the C string str.
+
+The terminating null-character is considered part of the C string. Therefore, 
+it can also be located in order to retrieve a pointer to the end of a string.
+
+Parameters:
+
+    - s : pointer to the null-terminated byte string to be examined
+    - c : Character to be located. It is passed as its int promotion, but it 
+        is internally converted back to char for the comparison.
+    - maxlen : 	maximum number of characters to examine
+
+Return value:
+
+    A pointer to the first occurrence of character in str.
+    If the character is not found, the function returns a null pointer.
+*/
+char* qIOUtil_StrChr( const char *s, int c, size_t maxlen ){
+    char *RetValue = NULL;
+    do{
+        if ((int)(*s) == c){
+            /*cstat -MISRAC2012-Rule-11.8*/
+            RetValue =(char*)s; /*MISRAC2012-Rule-11.8 deviation allowed*/
+            /*cstat +MISRAC2012-Rule-11.8*/
+            break;
+        }
+        --maxlen;
+    }while( ( '\0' != ( *s++ ) ) && ( maxlen > 0u ) );
+    return RetValue;
+}
+/*============================================================================*/
 /* size_t qIOUtil_StrLen( const char* str, size_t maxlen )
 
 Returns the length of the given null-terminated byte string, that is, the number 

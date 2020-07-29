@@ -301,7 +301,7 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
             }
             else{
                 if( 0 != isgraph( (int)Data[0] ) ){
-                    if( NULL != strchr( Data, (int)'\r' ) ){ /* TODO : potentially unsafe, find a better way */
+                    if( NULL != qIOUtil_StrChr( Data, (int)'\r', n ) ){ /*find the end of line safely*/
                         (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, n); /*safe string copy*/
                         (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
                         RetValue = qATCLI_Notify( cli );

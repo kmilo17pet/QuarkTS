@@ -207,7 +207,7 @@
                                 operation is executed
 
     */        
-    #define qCR_SemWait(_qCR_Semaphore_t_)              _qCR_wu_Assert( _qCR_Sem( _qCR_Semaphore_t_, qCR_SEM_TRYLOCK ) ) 
+    #define qCR_SemWait(_qCR_Semaphore_t_)              _qCR_wu_Assert( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_TRYLOCK ) ) 
 
     /*qCR_SemSignal( qCR_Semaphore_t *sem )
 
@@ -221,7 +221,7 @@
                                 operation is executed
 
     */     
-    #define qCR_SemSignal(_qCR_Semaphore_t_)            _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, qCR_SEM_SIGNAL ) )
+    #define qCR_SemSignal(_qCR_Semaphore_t_)            _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_SIGNAL ) )
     /*qCR_PositionGet(qCR_Position_t _CRPos_) 
 
     Labels the current position and saves it to _CRPos_ so it can be later restored by qCR_PositionRestore
