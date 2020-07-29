@@ -404,7 +404,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
 Add a task to the scheduling scheme.  This API creates a task with qDisabled 
 state by default , so this task will be oriented to be executed only, when 
 asynchronous events occurs. However, this behavior can be changed in execution
-time using qTaskSetTime or qTaskSetIterations.
+time using qTask_SetTime or qTask_SetIterations.
 
 Parameters:
 
@@ -549,7 +549,7 @@ static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    (void)qTask_Notification_Queue( Task, NULL );
+    (void)qTask_Notification_Send( Task, NULL ); /*simple notifications preferred because queued notification can be disabled en <qconfig.h> */
 }
 #endif /* #if ( Q_ATCLI == 1) */
 /*============================================================================*/
@@ -827,7 +827,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_W
             Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task );
-            TaskActivities = Task->qPrivate.Callback;
+            TaskActivities = Task->qPrivate.Callback; /*#!OK*/
             #if ( Q_FSM == 1)
                 if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ){
                     (void)qStateMachine_Run( Task->qPrivate.StateMachine, (void*)&kernel.EventInfo );  /*If the task has a FSM attached, just run it*/  
