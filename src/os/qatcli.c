@@ -10,7 +10,9 @@ static qATCLI_t *Current = NULL;
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
-static char* qATCLI_Input_Fix( char *s );
+#if ( Q_ATCLI_INPUT_FIX == 1 )
+static char* qATCLI_Input_Fix( char *s, size_t maxlen );
+#endif 
 static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval );
 static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *InputBuffer, qATCLI_PreCmd_t params );
 static qBool_t qATCLI_Notify( qATCLI_t * const cli );
@@ -301,9 +303,11 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
             }
             else{
                 if( 0 != isgraph( (int)Data[0] ) ){
-                    if( NULL != qIOUtil_StrChr( Data, (int)'\r', n ) ){ /*find the end of line safely*/
-                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, n); /*safe string copy*/
-                        (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
+                    if( NULL != qIOUtil_StrChr( Data, (int)'\r', cli->qPrivate.Input.Size ) ){ /*find the end of line safely*/
+                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, cli->qPrivate.Input.Size ); /*safe string copy*/
+                        #if ( Q_ATCLI_INPUT_FIX == 1 )
+                        (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, cli->qPrivate.Input.Size ); /*TODO : check pertinence*/
+                        #endif
                         RetValue = qATCLI_Notify( cli );
                     }
                 }
@@ -316,10 +320,11 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
 /*
 modifies the input string removing non-graph chars 
 */
-static char* qATCLI_Input_Fix( char *s ){
+#if ( Q_ATCLI_INPUT_FIX == 1 )
+static char* qATCLI_Input_Fix( char *s, size_t maxlen){
     int i,j;
     j = 0;
-    for( i = 0; '\0' != s[i] ; i++ ){
+    for( i = 0; ( '\0' != s[i] ) && (maxlen > 0u) ; i++ ){
         if( '\r' == s[i] ){
             s[i] = '\0';
             break;    
@@ -327,10 +332,12 @@ static char* qATCLI_Input_Fix( char *s ){
         if( 0 != isgraph( (int)s[i]) ){
             s[j++] = (char)tolower( (int)s[i] );
         }
+        --maxlen;
     }
     s[j] = '\0';
     return s;
 }
+#endif
 /*============================================================================*/
 /*qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd )
 
@@ -349,16 +356,17 @@ Return value:
 qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;           
-    size_t MaxToInsert, CmdLen, MaxBytesToCopy;
+    size_t MaxToInsert, CmdLen;
     
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         ReadyInput = cli->qPrivate.Input.Ready;        
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
         CmdLen = qIOUtil_StrLen( cmd, cli->qPrivate.Input.Size );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
-            MaxBytesToCopy = cli->qPrivate.Input.Size; /*to avoid undefined order of volatile accesses*/
-            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxBytesToCopy ); /*safe string copy*/
-            (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer );
+            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, cli->qPrivate.Input.Size ); /*safe string copy*/
+            #if ( Q_ATCLI_INPUT_FIX == 1 )
+            (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, cli->qPrivate.Input.Size );
+            #endif
             RetValue = qATCLI_Notify( cli );
         }
     } 

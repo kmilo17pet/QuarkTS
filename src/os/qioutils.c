@@ -97,7 +97,7 @@ size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
 /*size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen )
  
 Copies up to maxlen - 1 characters from the NUL-terminated string src to dst,
-NUL-terminating the result.
+NULL-terminating the result.
  
 Parameters:
 
