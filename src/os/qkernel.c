@@ -823,7 +823,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_W
     /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
     xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     if( QLIST_WALKTHROUGH == stage ){ /*#!OK: false-positive can be reported here*/
-        if( NULL != xList){ /*#!OK* false-positive can be reported here/     
+        if( NULL != xList){ /*#!OK* false-positive can be reported here*/     
             Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task ); /*#!OK : false-positive can be reported here*/
