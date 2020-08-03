@@ -514,7 +514,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
         /*cstat -CERT-STR32-C*/
 		if( Input->Ready ){ /*a new input has arrived*/
             InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
-
+            InputBuffer[ Input->MaxIndex ] = (char)'\0'; /*to perform string-safe operations */
 			/*Validation : set the value for the response lookup table*/
 			if 	( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ){
             	OutputRetval = QATCLI_OK;			/*check if the input its the simple AT command*/
