@@ -194,7 +194,7 @@
         - _Value_ : The initial count of the semaphore.
 
     */          
-    #define qCR_SemInit(qCR_Semaphore_t, _Value_)       _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
+    #define qCR_SemInit(_qCR_Semaphore_t_, _Value_)       _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
     /*qCR_SemWait( qCR_Semaphore_t *sem )
 
     Carries out the "wait" operation on the semaphore. The wait operation causes 

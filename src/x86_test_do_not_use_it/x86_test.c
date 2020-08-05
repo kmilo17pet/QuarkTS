@@ -370,9 +370,17 @@ void IdleTaskCallback(qEvent_t e){
     }
 }
 /*============================================================================*/
+qCR_Semaphore_t cr_sem;
+int sem_test = 0;
 void blinktaskCallback(qEvent_t e){
     qCR_Position_t pos;
+    if( e->FirstCall ){
+        qCR_SemInit( &cr_sem, 1);
+    }
     qCR_Begin{
+        qCR_SemWait( &cr_sem );
+        sem_test++;
+        qCR_SemSignal( &cr_sem );
         qCR_Delay(2.0);
         TEST_MESSAGE("hello  1");
         qCR_Delay(2.0);
