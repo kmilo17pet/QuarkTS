@@ -381,6 +381,9 @@ void blinktaskCallback(qEvent_t e){
         qCR_SemWait( &cr_sem );
         sem_test++;
         qCR_SemSignal( &cr_sem );
+
+        qCR_TimedWaitUntil( sem_test > 5 , 1.0 );
+        sem_test = 0;
         qCR_Delay(2.0);
         TEST_MESSAGE("hello  1");
         qCR_Delay(2.0);

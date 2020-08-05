@@ -203,7 +203,7 @@
 
     Parameters:
 
-          - sem :  A pointer to the qCR_Semaphore_t object in whic the 
+          - sem :  A pointer to the qCR_Semaphore_t object in which the 
                                 operation is executed
 
     */        
@@ -217,7 +217,7 @@
 
     Parameters:
 
-        - sem :  A pointer to the qCR_Semaphore_t object in whic the 
+        - sem :  A pointer to the qCR_Semaphore_t object in which the 
                                 operation is executed
 
     */     
