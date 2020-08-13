@@ -303,10 +303,10 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
             }
             else{
                 if( 0 != isgraph( (int)Data[0] ) ){
-                    if( NULL != qIOUtil_StrChr( Data, (int)'\r', cli->qPrivate.Input.Size ) ){ /*find the end of line safely*/
-                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, cli->qPrivate.Input.Size ); /*safe string copy*/
+                    if( NULL != qIOUtil_StrChr( Data, (int)'\r', MaxToInsert ) ){ /*find the end of line safely*/
+                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, MaxToInsert ); /*safe string copy*/
                         #if ( Q_ATCLI_INPUT_FIX == 1 )
-                        (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, cli->qPrivate.Input.Size ); /*TODO : check pertinence*/
+                        (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, MaxToInsert ); /*TODO : check pertinence*/
                         #endif
                         RetValue = qATCLI_Notify( cli );
                     }
@@ -361,11 +361,11 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         ReadyInput = cli->qPrivate.Input.Ready;        
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
-        CmdLen = qIOUtil_StrLen( cmd, cli->qPrivate.Input.Size );
+        CmdLen = qIOUtil_StrLen( cmd, MaxToInsert );
         if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
-            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, cli->qPrivate.Input.Size ); /*safe string copy*/
+            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxToInsert ); /*safe string copy*/
             #if ( Q_ATCLI_INPUT_FIX == 1 )
-            (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, cli->qPrivate.Input.Size );
+            (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, MaxToInsert );
             #endif
             RetValue = qATCLI_Notify( cli );
         }
