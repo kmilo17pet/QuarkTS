@@ -13,7 +13,7 @@
 
 ![Logo](https://sites.google.com/site/controlpoli2/quarkts.jpg)
 
-# QuarkTS : An open-source OS for resource-constrained embedded applications.
+# QuarkTS : An open-source OS for small embedded applications.
 
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
 * Download the latest [User Manual](https://github.com/kmilo17pet/quarkts-usermanual/raw/travis-pdf/main.pdf)

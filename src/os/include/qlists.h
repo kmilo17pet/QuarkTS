@@ -11,7 +11,7 @@
 
     /* Please don't access any members of this structure directly */
     typedef struct _qList_Node_s{
-        struct _qList_Node_s *next, *prev;  /*< Pointers to the adjacent nodes. */
+        struct _qList_Node_s *next, *prev;  /*< Pointers to adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
     }qList_Node_t;
 
@@ -19,7 +19,7 @@
     #define qNode_MinimalMembers    qNode_MinimalFields
 
     typedef struct{
-        qNode_MinimalFields;        /*< to allow list of lists aka nested lists*/
+        qNode_MinimalFields;        /*< to allow "list of lists" aka "nested-lists"*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
         size_t size;                /*< Used to hold the current size of the list. */
     }qList_t;

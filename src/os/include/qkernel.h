@@ -35,7 +35,7 @@
         qTask_GlobalState_t (*Get_TaskGlobalState)( const qTask_t * const Task);
         qTask_t* (*Get_TaskRunning)( void );
     }_qOS_PrivateMethodsContainer_t;
-    extern _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods;
+    extern const _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods;
 
     typedef Q_FUNC_ATTRIBUTE_PRE qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2) Q_FUNC_ATTRIBUTE_POS;
 

@@ -46,9 +46,9 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
 
 /*=========================== Kernel Control Block ===========================*/
 static qKernelControlBlock_t kernel;
-static qList_t *WaitingList = &kernel.CoreLists[ Q_PRIORITY_LEVELS ];
-static qList_t *SuspendedList = &kernel.CoreLists[ Q_PRIORITY_LEVELS + 1 ];
-static qList_t *ReadyList = &kernel.CoreLists[ 0 ];
+static qList_t *const WaitingList = &kernel.CoreLists[ Q_PRIORITY_LEVELS ];
+static qList_t *const SuspendedList = &kernel.CoreLists[ Q_PRIORITY_LEVELS + 1 ];
+static qList_t *const ReadyList = &kernel.CoreLists[ 0 ];
 /*=============================== Private Methods ============================*/
 static qTask_t* qOS_Get_TaskRunning( void );
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task);
@@ -87,7 +87,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 #endif
 
 /*initialize the private-methods container*/
-_qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {  
+const _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {  
     #if ( Q_PRIO_QUEUE_SIZE > 0 )   
         &qOS_PriorityQueue_Insert,
         &qOS_PriorityQueue_IsTaskInside,

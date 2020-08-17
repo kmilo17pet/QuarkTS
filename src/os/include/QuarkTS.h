@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.3.3  - An open-source OS for resource-constrained embedded applications.
+QuarkTS V6.3.3  - An open-source OS for small embedded applications.
 GNU General Public License v3 (GPL-3)
 C99 and MISRAC 2012 Compliant    
 
