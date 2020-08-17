@@ -1,4 +1,5 @@
 #include "qkernel.h"
+#include "qkshared.h" /*kernel shared methods*/
 
 #define _QKERNEL_BIT_INIT          ( 0x00000001uL )  
 #define _QKERNEL_BIT_FCALLIDLE     ( 0x00000002uL )
@@ -50,22 +51,16 @@ static qList_t *const WaitingList = &kernel.CoreLists[ Q_PRIORITY_LEVELS ];
 static qList_t *const SuspendedList = &kernel.CoreLists[ Q_PRIORITY_LEVELS + 1 ];
 static qList_t *const ReadyList = &kernel.CoreLists[ 0 ];
 /*=============================== Private Methods ============================*/
-static qTask_t* qOS_Get_TaskRunning( void );
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task);
 static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;
 static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;    
-static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task);
-static void qOS_DummyTask_Callback( qEvent_t e );
 static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
 
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-    static qBool_t qOS_PriorityQueue_Insert(qTask_t * const Task, void *Data);
-    static size_t qOS_PriorityQueue_GetCount( void );
     static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear );
     static void qOS_PriorityQueue_CleanUp( const qTask_t * task );
-    static qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task );
     static qTask_t* qOS_PriorityQueue_Get( void );
 #endif
 
@@ -86,20 +81,8 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
     static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver(const void *n1, const void *n2) Q_FUNC_ATTRIBUTE_POS;
 #endif
 
-/*initialize the private-methods container*/
-const _qOS_PrivateMethodsContainer_t _qOS_PrivateMethods = {  
-    #if ( Q_PRIO_QUEUE_SIZE > 0 )   
-        &qOS_PriorityQueue_Insert,
-        &qOS_PriorityQueue_IsTaskInside,
-        &qOS_PriorityQueue_GetCount,
-    #endif
-    &qOS_DummyTask_Callback,
-    &qOS_GetTaskGlobalState, 
-    &qOS_Get_TaskRunning
-};
-
-/*========================== QuarkTS Private Macros ==========================*/
-static void qOS_DummyTask_Callback( qEvent_t e ){
+/*========================== Shared Private Method ===========================*/
+void qOS_DummyTask_Callback( qEvent_t e ){
     (void)e; /*unused*/
 }
 /*============================================================================*/
@@ -159,8 +142,8 @@ Parameters:
     kernel.CurrentRunningTask = NULL;
     qClock_SetTickProvider( TickProvider );
 }
-/*============================================================================*/
-static qTask_t* qOS_Get_TaskRunning( void ){
+/*========================== Shared Private Method ===========================*/
+qTask_t* qOS_Get_TaskRunning( void ){
     return kernel.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
@@ -250,8 +233,8 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
     }
     kernel.QueueIndex--;    /*decrease the index*/    
 }
-/*============================================================================*/
-static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
+/*========================== Shared Private Method ===========================*/
+qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t RetValue = qFalse;
         qQueueStack_t tmp;
@@ -272,8 +255,8 @@ static qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
         return qFalse;
     #endif   
 }
-/*============================================================================*/
-static qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
+/*========================== Shared Private Method ===========================*/
+qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         qBool_t RetValue = qFalse;
         qBase_t CurrentQueueIndex, i;
@@ -320,8 +303,8 @@ static qTask_t* qOS_PriorityQueue_Get( void ){
     }
     return xTask;
 }
-/*============================================================================*/
-static size_t qOS_PriorityQueue_GetCount( void ){
+/*========================== Shared Private Method ===========================*/
+size_t qOS_PriorityQueue_GetCount( void ){
     size_t RetValue = (size_t)0;
     if( kernel.QueueIndex >= 0 ){ 
         RetValue = (size_t)kernel.QueueIndex + (size_t)1;
@@ -893,8 +876,8 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task ){
     }
     return RetValue;
 }
-/*============================================================================*/
-static qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
+/*========================== Shared Private Method ===========================*/
+qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
     qTask_GlobalState_t RetValue = qUndefinedGlobalState;
     qList_t *xList;
 

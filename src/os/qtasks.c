@@ -1,5 +1,5 @@
 #include "qkernel.h"
-
+#include "qkshared.h" /*kernel shared methods*/
 /*============================================================================*/
 /*void qTask_Notification_Send( qTask_t * const Task, void* eventdata )
 
@@ -54,7 +54,7 @@ Return value:
 */
 qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata ){
     #if ( Q_PRIO_QUEUE_SIZE > 0 )      
-        return _qOS_PrivateMethods.PriorityQueue_Insert( Task, eventdata );     
+        return qOS_PriorityQueue_Insert( Task, eventdata );     
     #else
         return qFalse;
     #endif
@@ -81,7 +81,7 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  ){
         }
         else{
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-                RetValue = _qOS_PrivateMethods.PriorityQueue_IsTaskInside( Task );
+                RetValue = qOS_PriorityQueue_IsTaskInside( Task );
             #endif  
         }   
     }
@@ -151,7 +151,7 @@ Return value:
     current kernel transaction
 */
 qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task ){  
-    return _qOS_PrivateMethods.Get_TaskGlobalState( Task );
+    return qOS_GetTaskGlobalState( Task );
 }
 /*============================================================================*/
 /*void qTask_Set_Time( qTask_t * const Task, const qTime_t Value )
@@ -304,7 +304,7 @@ Return value:
     NULL when the OS scheduler it's in a busy state or when IDLE Task is running.
 */
 qTask_t* qTask_Self( void ){
-    return _qOS_PrivateMethods.Get_TaskRunning();
+    return qOS_Get_TaskRunning();
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
@@ -381,7 +381,7 @@ Return value:
 qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
     qBool_t RetValue = qFalse;
     if( ( NULL != Task ) && ( NULL != StateMachine ) ){
-        Task->qPrivate.Callback = _qOS_PrivateMethods.DummyTask_Callback;
+        Task->qPrivate.Callback = qOS_DummyTask_Callback;
         Task->qPrivate.StateMachine = StateMachine;
         StateMachine->qPrivate.Owner = Task;
         RetValue = qTrue;

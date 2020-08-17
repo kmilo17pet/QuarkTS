@@ -2151,6 +2151,9 @@
             <name>$PROJ_DIR$\..\src\os\include\qkernel.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\src\os\include\qkshared.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\src\os\include\qlists.h</name>
         </file>
         <file>
