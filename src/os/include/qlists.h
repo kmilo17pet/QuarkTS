@@ -77,10 +77,12 @@
     qBool_t qList_Swap( void *node1, void *node2 );
 
 
-    void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn );
-    qBool_t qList_DInsert( qList_t *const list, void *Data, size_t Size, qList_Position_t position );
-    void* qList_DRemove( qList_t * const list, void * const node, const qList_Position_t position );
-    qBool_t qList_DRemoveItself( void * const node );
+    #ifdef QLIST_D_HANDLING  /*use only if strictly necessary*/
+        void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn );
+        qBool_t qList_DInsert( qList_t *const list, void *Data, size_t Size, qList_Position_t position );
+        void* qList_DRemove( qList_t * const list, void * const node, const qList_Position_t position );
+        qBool_t qList_DRemoveItself( void * const node );
+    #endif
 
     #ifdef __cplusplus
     }

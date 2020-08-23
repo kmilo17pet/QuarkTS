@@ -18,8 +18,6 @@
 * Download the latest release [here](https://github.com/TECREA/QuarkTS/releases)
 * Download the latest [User Manual](https://github.com/kmilo17pet/quarkts-usermanual/raw/travis-pdf/main.pdf)
 
-Checked with C-STAT for MISRAC2012 Compliance.
-
 QuarkTS is an operating system that provides a modern environment to build stable and predictable event-driven multitasking embedded software. The OS is built on top of a cooperative quasi-static scheduler and its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority-scheduling.
 
 ## Features:
@@ -30,4 +28,7 @@ QuarkTS is an operating system that provides a modern environment to build stabl
 - Co-routines.
 - AT Command Line Interface (CLI)
 
-All the included features make this OS suitable for resource-constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things.
+QuarkTS is developed using a formal and rigorous process framed in compliance of the MISRA C 2012 and CERT coding standard guidelines and complemented with multiple static-analysis checks targered to safe critical applications. 
+
+QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. The design goal of QuarkTS is to achieve its stated functionality using a small, simple, and (most importantly) robust safety implementation to make it suitable on resource-constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things.
+ 

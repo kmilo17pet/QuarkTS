@@ -6,12 +6,17 @@ static void qList_InserAtBack( qList_t * const list, qList_Node_t * const node )
 static qList_Node_t* qList_RemoveFront( qList_t * const list );
 static qList_Node_t* qList_RemoveBack( qList_t * const list );
 static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Position_t position );
-static qList_MemAllocator_t qListMalloc = NULL; 
-static qList_MemFree_t qListFree = NULL; 
 static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
 static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 );
 static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 );
 static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 );
+
+
+#ifdef QLIST_D_HANDLING  /*use only if strictly necessary*/
+static qList_MemAllocator_t qListMalloc = NULL; 
+static qList_MemFree_t qListFree = NULL; 
+#endif
+
 /*============================================================================*/
 /*void qList_Initialize( qList_t * const list )
  
@@ -737,6 +742,8 @@ static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n
         n2->next->prev = n2;
     } 
 }
+
+#ifdef QLIST_D_HANDLING  /*use only if strictly necessary*/
 /*=========================================================*/
 void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn  ){
     qListFree = freeFcn;
@@ -781,3 +788,4 @@ qBool_t qList_DRemoveItself( void * const node ){
     return RetValue;
 }
 /*=========================================================*/
+#endif
