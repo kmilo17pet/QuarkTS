@@ -432,10 +432,12 @@ void scheduler_Release(qEvent_t e){
 }
 /*============================================================================*/
 void test_OS_API( void ){
+    #if ( Q_QUEUES == 1 )
     qQueue_t somequeue;
     int DataReceivedFromQueue;
     int x[]={10,20,30,40,50,60,70,80,90,100};
     int queuearea[8];
+    #endif
     qSM_Signal_t fsmsigarea[5];
     
     TEST_MESSAGE( "Executing TEST OS_API.." ); 
@@ -458,22 +460,23 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Add_Node(&INPUTS, &button2, &PORTA, 1) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Add_Node(&INPUTS, &sensor1, &PORTA, 2) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Add_Node(&INPUTS, &sensor2, &PORTA, 3) );
-    TEST_MESSAGE( "qQueue_Module..." ); 
-    
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &somequeue, queuearea, sizeof(int), 8) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[0]) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[1]) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[2]) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[3]) );
-    TEST_ASSERT_EQUAL_size_t( 4, qQueue_Count( &somequeue ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
-    TEST_ASSERT_EQUAL_INT( x[3], DataReceivedFromQueue );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
-    TEST_ASSERT_EQUAL_INT( x[1], DataReceivedFromQueue );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
-    TEST_ASSERT_EQUAL_INT( x[0], DataReceivedFromQueue );
-    TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
-
+    #if ( Q_QUEUES == 1 )
+        TEST_MESSAGE( "qQueue_Module..." ); 
+        
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &somequeue, queuearea, sizeof(int), 8) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[0]) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[1]) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[2]) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[3]) );
+        TEST_ASSERT_EQUAL_size_t( 4, qQueue_Count( &somequeue ) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
+        TEST_ASSERT_EQUAL_INT( x[3], DataReceivedFromQueue );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
+        TEST_ASSERT_EQUAL_INT( x[1], DataReceivedFromQueue );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
+        TEST_ASSERT_EQUAL_INT( x[0], DataReceivedFromQueue );
+        TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
+    #endif
     TEST_MESSAGE( "OS scheduling..." ); 
     qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); /*  IdleTaskCallback  */ 
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
@@ -482,7 +485,9 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01f, qPeriodic, qEnabled, "blink") );   
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5f, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
+    #if ( Q_QUEUES == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH) );
+    #endif
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );

@@ -200,11 +200,7 @@ void qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const 
         obj->qPrivate.head = 0u;
         obj->qPrivate.tail = 0u;
         obj->qPrivate.buffer = buffer;
-        #if ( Q_QUEUES == 1 )
-            obj->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );
-        #else
-            obj->qPrivate.length = length;
-        #endif      
+        obj->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );   
     }
 }
 /*============================================================================*/

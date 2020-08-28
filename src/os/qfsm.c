@@ -162,6 +162,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
         qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_ENTRY);
     }
     else{
+        #if ( Q_QUEUES == 1 )
         if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &xSignal ) ){
                 if( NULL != obj->qPrivate.Composite.head ){
@@ -171,6 +172,9 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
             }
         }
         else{
+        #else
+        {
+        #endif    
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -306,6 +310,7 @@ qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionT
 /*qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals )
 
 Setup the state-machine signal queue.
+Note : Signals feature only available if queues are enabled in qconfig.h   Q_QUEUES == 1  
 
 Parameters:
 
@@ -319,9 +324,15 @@ Return value:
 */ 
 qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals ){
     qBool_t RetValue = qFalse;
-    if( ( NULL != AxSignals ) && ( MaxSignals > (size_t)0u ) ){
-        RetValue = qQueue_Setup( &obj->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
-    }
+    #if ( Q_QUEUES == 1 )
+        if( ( NULL != AxSignals ) && ( MaxSignals > (size_t)0u ) ){
+            RetValue = qQueue_Setup( &obj->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
+        }
+    #else
+        (void)obj;
+        (void)AxSignals;
+        (void)MaxSignals;
+    #endif
     return RetValue;
 }
 /*============================================================================*/
@@ -393,6 +404,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
 
 Sends a signal to the state machine.
 Note : The state machine instance must have a transition table previously installed
+Note : Signals feature only available if queues are enabled in qconfig.h   Q_QUEUES == 1  
 
 Parameters:
 
@@ -407,11 +419,17 @@ Return value:
 */
 qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent ){
     qBool_t RetValue = qFalse;
-    if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != xSignal ) ){
-        if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
-            RetValue = qQueue_SendGeneric( &obj->qPrivate.SignalQueue, &xSignal, (qQueue_Mode_t)isUrgent );  
+    #if ( Q_QUEUES == 1 )
+        if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != xSignal ) ){
+            if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+                RetValue = qQueue_SendGeneric( &obj->qPrivate.SignalQueue, &xSignal, (qQueue_Mode_t)isUrgent );  
+            }
         }
-    }
+    #else
+        (void)obj;
+        (void)xSignal;
+        (void)isUrgent;
+    #endif
     return RetValue;
 }
 /*============================================================================*/

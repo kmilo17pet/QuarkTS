@@ -471,6 +471,7 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qT
 
 Improve the state-machine-task responsiveness by connecting the incoming signals 
 from a state machine to the task's event flow.
+Note : Only available if queues are enabled Q_QUEUES == 1 in qconfig.h
 
 Parameters:
     - Task : A pointer to the task node.
@@ -482,6 +483,7 @@ Return value :
 */ 
 qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
+    #if ( Q_QUEUES == 1 )
     qSM_t *StateMachine;
     if( NULL != Task){
         StateMachine = Task->qPrivate.StateMachine;
@@ -491,6 +493,9 @@ qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
             }
         }
     }
+    #else
+    (void)Task;
+    #endif
     return RetValue;
 }
 #endif /* #if ( Q_FSM == 1) */
@@ -662,7 +667,9 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver(const void *n1, 
 static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS{
     qTask_t *xTask;
     qList_t *xList;
-    qTrigger_t trg;
+    #if ( Q_QUEUES == 1 )
+        qTrigger_t trg;
+    #endif
     static qBool_t xReady = qFalse;
     qBool_t RetValue = qFalse;
 
