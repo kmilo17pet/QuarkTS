@@ -23,6 +23,26 @@ embedded C compilers in real hardware( theses are not included in this repositor
 #define QSM_SIGNAL_USER1    1
 #define QSM_SIGNAL_USER2    1
 
+    #if  (Q_SETUP_TIME_CANONICAL != 1)
+        #define T10MSEC         0.01f    
+        #define T100MSEC        0.1f
+        #define T500MSEC        0.5f
+        #define T1SEC           1.0f
+        #define T2SEC           2.0f        
+        #define T2_5SEC         2.5f
+        #define T10SEC          10.0f
+        #define T30SEC          30.0f        
+    #else
+        #define T10MSEC         10
+        #define T100MSEC        100
+        #define T500MSEC        500
+        #define T1SEC           1000
+        #define T2SEC           2000           
+        #define T2_5SEC         2500
+        #define T10SEC          10000
+        #define T30SEC          30000
+    #endif
+
 
 /*===========================Reference clock for the kernel===================*/
 qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
@@ -215,7 +235,7 @@ qSM_Status_t firststate(qSM_Handler_t fsm){
     switch( fsm->Signal ){
         case QSM_SIGNAL_ENTRY:
             puts("entering firststate");
-            TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, 2.5) );
+            TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, T2_5SEC) );
             qTrace_Message( (char*)e->TaskData );
             break;
         case QSM_SIGNAL_NONE:
@@ -239,7 +259,7 @@ qSM_Status_t secondstate(qSM_Handler_t fsm){
     switch( fsm->Signal ){
         case QSM_SIGNAL_ENTRY:
             puts("entering secondstate");    
-            TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, 2.5) );
+            TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, T2_5SEC) );
             TEST_MESSAGE( (char*)e->TaskData );
             break;
         case QSM_SIGNAL_NONE:
@@ -306,7 +326,7 @@ void Task1Callback(qEvent_t e){
         TEST_MESSAGE("TASK1 BY QUEUED NOTIFICATION");
     }
     
-    if(qSTimer_FreeRun(&tmr, 0.5)){
+    if(qSTimer_FreeRun(&tmr, T500MSEC)){
         TEST_MESSAGE("Timer expired");
     }         
 }
@@ -344,8 +364,8 @@ void IdleTaskCallback(qEvent_t e){
 
     if(e->FirstCall){
         TEST_MESSAGE("IDLE TASK FIRST CALL");
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&t, 10.0) );
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&EndSchedulingTimeout, 30.0) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&t, T10SEC) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&EndSchedulingTimeout, T30SEC) );
     }
 
     if(qSTimer_Expired(&t)){
@@ -354,7 +374,7 @@ void IdleTaskCallback(qEvent_t e){
         qSTimer_Disarm(&t);
     }
 
-    if(qSTimer_FreeRun(&xd, 0.5)){
+    if(qSTimer_FreeRun(&xd, T500MSEC)){
         qTrace_UnsignedDecimal( qSTimer_Elapsed(&t) );
         qTrace_UnsignedDecimal( qSTimer_Remaining(&t) );
         qTrace_Bool( qSTimer_Expired(&t) );
@@ -382,11 +402,11 @@ void blinktaskCallback(qEvent_t e){
         sem_test++;
         qCR_SemSignal( &cr_sem );
 
-        qCR_TimedWaitUntil( sem_test > 5 , 1.0 );
+        qCR_TimedWaitUntil( sem_test > 5 , T1SEC);
         sem_test = 0;
-        qCR_Delay(2.0);
+        qCR_Delay(T2SEC);
         TEST_MESSAGE("hello  1");
-        qCR_Delay(2.0);
+        qCR_Delay(T2SEC);
         TEST_MESSAGE("hello 2 ");
 
         TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Notification_Send( qTask_Self(), NULL ) );
@@ -478,12 +498,16 @@ void test_OS_API( void ){
         TEST_ASSERT_EQUAL_size_t( 1, qQueue_Count( &somequeue ) );
     #endif
     TEST_MESSAGE( "OS scheduling..." ); 
-    qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); /*  IdleTaskCallback  */ 
+    #if  (Q_SETUP_TIME_CANONICAL != 1)
+        qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); /*  IdleTaskCallback  */ 
+    #else
+        qOS_Setup(GetTickCountMs, IdleTaskCallback ); /*  IdleTaskCallback  */
+    #endif
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, 0.01f, qPeriodic, qEnabled, "blink") );   
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, 0.5f, 5, qEnabled, "TASK1") );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, T10MSEC, qPeriodic, qEnabled, "blink") );   
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, T500MSEC, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     #if ( Q_QUEUES == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH) );
@@ -491,7 +515,7 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, 0.1f, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );   
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, T100MSEC, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );   
     qStateMachine_SignalQueueSetup( &statemachine, fsmsigarea, 5 );
     qOS_Run();
 }

@@ -6,13 +6,7 @@ static volatile qClock_t _qSysTick_Epochs_ = 0uL;
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
-
 static qTimingBase_t TimmingBase;
-
-/*============================================================================*/
-static qClock_t qClock_InternalTick( void ){
-    return _qSysTick_Epochs_;
-} 
 /*============================================================================*/
 /*void qClock_SetTimeBase( const qTimingBase_t tb )
 
@@ -27,6 +21,10 @@ void qClock_SetTimeBase( const qTimingBase_t tb ){
     TimmingBase = tb;
 } 
 #endif
+/*============================================================================*/
+static qClock_t qClock_InternalTick( void ){
+    return _qSysTick_Epochs_;
+} 
 /*============================================================================*/
 /*void qClock_SetTickProvider( qGetTickFcn_t provider )
 
