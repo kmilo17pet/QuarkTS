@@ -208,6 +208,9 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
             kernel.NotificationSpreadRequest.eventdata = eventdata;
             RetValue = qTrue;
         }
+    #else
+        (void)eventdata;
+        (void)mode;    
     #endif
     return RetValue;    
 }
