@@ -16,7 +16,7 @@
     /* Please don't access any members of this structure directly */
     typedef struct{
         _qCR_TaskPC_t instr;    /*< Used to hold the local continuation. */
-        _qCR_TaskPC_t prev;     /*< Temporally holds the a local continuation during a coroutine suspension*/
+        _qCR_TaskPC_t prev;     /*< Temporally holds the local continuation during a coroutine suspension*/
         qSTimer_t crdelay;      /*< Used to hold the required delay for qCR_Delay. */
     }_qCR_Instance_t;
 
@@ -43,8 +43,7 @@
         _qCR_SEM_TRYLOCK = -4
     }_qCR_Oper_t;
 
-    /*Contruction stataments*/
-    #define _qCR_Unused_(x)            (void)(x)
+    /*Construction stataments*/
     #define _qCR_CodeStartBlock        do
     #define _qCR_CodeEndBlock          while(qFalse)
     #define _qCR_Persistent            static _qCR_Instance_t
@@ -75,7 +74,7 @@
     #define _qCR_Yield                              _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_TaskYield  _qCR_RestoreAfterYield; }                      _qCR_CodeEndBlock
     #define _qCR_Restart                            _qCR_CodeStartBlock{ _qCR_SetPC(_qCR_PC_INITVAL) ; _qCR_TaskYield }                                               _qCR_CodeEndBlock
     #define _qCR_wu_Assert(_cond_)                  _qCR_CodeStartBlock{ _qCR_SaveState              ; _qCR_RestoreAfterYield ; _qCR_Assert(_cond_) _qCR_TaskYield }  _qCR_CodeEndBlock
-    #define _qCR_GetPosition(_pos_)                 _qCR_CodeStartBlock{ _qCR_SaveStateOn((_pos_))   ; _qCR_RestoreAfterYield ; _qCR_Unused_((_pos_)); }              _qCR_CodeEndBlock
+    #define _qCR_GetPosition(_pos_)                 _qCR_CodeStartBlock{ _qCR_SaveStateOn((_pos_))   ; _qCR_RestoreAfterYield ; Q_UNUSED((_pos_)); }              _qCR_CodeEndBlock
     #define _qCR_RestoreFromPosition(_pos_)         _qCR_CodeStartBlock{ _qCR_SetPC(_pos_)           ; _qCR_TaskYield }                                               _qCR_CodeEndBlock    
     #define _qCR_Delay(_time_)                      _qCR_CodeStartBlock{ qCR_TimeoutSet(_time_)      ; _qCR_SaveState;  _qCR_RestoreAfterYield;   _qCR_Assert( qCR_TimeoutExpired() ) _qCR_TaskYield } _qCR_CodeEndBlock
     #define _qCR_wu_TmrAssert(_cond_, _timeout_)    _qCR_CodeStartBlock{ qCR_TimeoutSet(_timeout_)   ; _qCR_SaveState         ; _qCR_RestoreAfterYield    ; _qCR_Assert((_cond_) || qCR_TimeoutExpired() ) _qCR_TaskYield }  _qCR_CodeEndBlock       
@@ -194,7 +193,7 @@
         - _Value_ : The initial count of the semaphore.
 
     */          
-    #define qCR_SemInit(_qCR_Semaphore_t_, _Value_)       _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
+    #define qCR_SemInit(_qCR_Semaphore_t_, _Value_)       Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
     /*qCR_SemWait( qCR_Semaphore_t *sem )
 
     Carries out the "wait" operation on the semaphore. The wait operation causes 
@@ -221,7 +220,7 @@
                                 operation is executed
 
     */     
-    #define qCR_SemSignal(_qCR_Semaphore_t_)            _qCR_Unused_( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_SIGNAL ) )
+    #define qCR_SemSignal(_qCR_Semaphore_t_)            Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_SIGNAL ) )
     /*qCR_PositionGet(qCR_Position_t _CRPos_) 
 
     Labels the current position and saves it to _CRPos_ so it can be later restored by qCR_PositionRestore

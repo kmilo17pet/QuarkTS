@@ -83,7 +83,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 /*========================== Shared Private Method ===========================*/
 void qOS_DummyTask_Callback( qEvent_t e ){
-    (void)e; /*unused*/
+    Q_UNUSED( e ); 
 }
 /*============================================================================*/
 /*void qOS_Setup( const qGetTickFcn_t TickProviderFcn, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback )
@@ -209,8 +209,8 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
             RetValue = qTrue;
         }
     #else
-        (void)eventdata;
-        (void)mode;    
+        Q_UNUSED( eventdata );
+        Q_UNUSED( mode );    
     #endif
     return RetValue;    
 }
@@ -255,6 +255,8 @@ qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
         }
         return RetValue;
     #else
+        Q_UNUSED( Task );
+        Q_UNUSED( Data );
         return qFalse;
     #endif   
 }
@@ -276,6 +278,7 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
         }
         return RetValue;
     #else
+        Q_UNUSED( Task );
         return qFalse;
     #endif   
 }
@@ -487,17 +490,17 @@ Return value :
 qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     #if ( Q_QUEUES == 1 )
-    qSM_t *StateMachine;
-    if( NULL != Task){
-        StateMachine = Task->qPrivate.StateMachine;
-        if( NULL != StateMachine ){ /*signal connection is only possible if the task runs a dedicated state-machine*/
-            if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){ /*check if the state-machine has a properly instantiated signal queue*/
-                RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); /*try to perform the queue connection */
+        qSM_t *StateMachine;
+        if( NULL != Task){
+            StateMachine = Task->qPrivate.StateMachine;
+            if( NULL != StateMachine ){ /*signal connection is only possible if the task runs a dedicated state-machine*/
+                if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){ /*check if the state-machine has a properly instantiated signal queue*/
+                    RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); /*try to perform the queue connection */
+                }
             }
         }
-    }
     #else
-    (void)Task;
+        Q_UNUSED( Task );
     #endif
     return RetValue;
 }
@@ -646,7 +649,7 @@ void qOS_Run( void ){
         if( SuspendedList->size > (size_t)0 ){  /*check for a non-empty suspended-list*/
             (void)qList_Move( WaitingList, SuspendedList, qList_AtBack ); /*move the remaining suspended tasks to the waiting-list*/
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-                (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver ); /*preseve the entry order by sorting the new wainting-list arrangement*/
+                (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver ); /*preseve the entry order by sorting the new waiting-list layout*/
             #endif
         }
     }
@@ -711,17 +714,17 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
                 xReady = qTrue;            
             }
             #if ( Q_QUEUES == 1)  
-            else if( qTriggerNULL !=  ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue event available*/
+            else if( qTriggerNULL !=  ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue-event available*/
                 xTask->qPrivate.Trigger = trg;      
                 xReady = qTrue;
             }
             #endif
-            else if( xTask->qPrivate.Notification > (qNotifier_t)0 ){   /*last check : task with a pending notification event?*/
+            else if( xTask->qPrivate.Notification > (qNotifier_t)0 ){   /* task with a pending notification event?*/
                 xTask->qPrivate.Trigger = byNotificationSimple;  
                 xReady = qTrue;            
             }
             #if ( Q_TASK_EVENT_FLAGS == 1 )
-            else if( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){
+            else if( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){ /*task with enabled eventflags?*/
                 xTask->qPrivate.Trigger = byEventFlags;          
                 xReady = qTrue;        
             }
@@ -749,7 +752,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
         RetValue = xReady; 
     }
     else{
-        (void)arg; /*arg is never used*/  /*this should never enter here*/
+        Q_UNUSED( arg ); /*this should never enter here*/
     }
     return RetValue;
 }

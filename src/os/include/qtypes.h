@@ -9,6 +9,8 @@
         #define NULL ((void*)0)
     #endif
 
+    #define     Q_UNUSED(arg)     (void)(arg)
+
     #if ( Q_USE_STDINT_H  == 1 )
         #include <stdint.h>
         /*Unsigned types*/

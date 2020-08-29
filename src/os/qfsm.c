@@ -28,7 +28,7 @@ static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
 /*============================================================================*/
 qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
-    (void)h;
+    Q_UNUSED( h );
     return qSM_EXIT_SUCCESS;
 }
 qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
@@ -171,10 +171,9 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
                 (void)qStateMachine_SweepTransitionTable( obj, xSignal ); 
             }
         }
-        else{
-        #else
+        else
+        #endif
         {
-        #endif    
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -329,9 +328,9 @@ qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSigna
             RetValue = qQueue_Setup( &obj->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
         }
     #else
-        (void)obj;
-        (void)AxSignals;
-        (void)MaxSignals;
+        Q_UNUSED( obj );
+        Q_UNUSED( AxSignals );
+        Q_UNUSED( MaxSignals );
     #endif
     return RetValue;
 }
@@ -426,9 +425,9 @@ qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool
             }
         }
     #else
-        (void)obj;
-        (void)xSignal;
-        (void)isUrgent;
+        Q_UNUSED( obj );
+        Q_UNUSED( xSignal );
+        Q_UNUSED( isUrgent );
     #endif
     return RetValue;
 }
