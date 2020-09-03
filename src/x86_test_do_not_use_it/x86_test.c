@@ -510,7 +510,7 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, T500MSEC, 5, qEnabled, "TASK1") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     #if ( Q_QUEUES == 1 )
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQUEUE_RECEIVER, qATTACH) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQueueMode_Receiver, qATTACH) );
     #endif
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );

@@ -495,7 +495,7 @@ qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
             StateMachine = Task->qPrivate.StateMachine;
             if( NULL != StateMachine ){ /*signal connection is only possible if the task runs a dedicated state-machine*/
                 if( qTrue == qQueue_IsReady( &StateMachine->qPrivate.SignalQueue ) ){ /*check if the state-machine has a properly instantiated signal queue*/
-                    RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQUEUE_COUNT, 1u ); /*try to perform the queue connection */
+                    RetValue = qTask_Attach_Queue( Task, &StateMachine->qPrivate.SignalQueue, qQueueMode_Count, 1u ); /*try to perform the queue connection */
                 }
             }
         }

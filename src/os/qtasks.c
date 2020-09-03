@@ -348,9 +348,9 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->qPrivate.head ) {
-            _qPrivate_TaskModifyFlags( Task, Mode & _QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
-            if( Mode == qQUEUE_COUNT ){
-                Task->qPrivate.QueueCount = arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
+            _qPrivate_TaskModifyFlags( Task, (qUINT32_t)Mode & _QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
+            if( Mode == qQueueMode_Count ){
+                Task->qPrivate.QueueCount = (qUINT32_t)arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
             Task->qPrivate.Queue = ( arg > 0u )? Queue : NULL; /*reject, no valid arg input*/
             RetValue = qTrue;

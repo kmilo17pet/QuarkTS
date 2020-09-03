@@ -173,3 +173,16 @@ This file is used to define symbols required to mantain backward compatibility
 
 
 #endif
+
+
+#if ( Q_QUEUES == 1 )
+    #define qQUEUE_RECEIVER         ( qQueueMode_Receiver )
+    #define qQUEUE_FULL             ( qQueueMode_Full )
+    #define qQUEUE_COUNT            ( qQueueMode_Count )
+    #define qQUEUE_EMPTY            ( qQueueMode_Empty )
+    
+    #define QUEUE_RECEIVER          ( qQUEUE_RECEIVER )  
+    #define QUEUE_FULL              ( qQUEUE_FULL )
+    #define QUEUE_COUNT             ( qQUEUE_COUNT )
+    #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
+#endif

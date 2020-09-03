@@ -58,34 +58,6 @@
         qRunning
     }qTask_GlobalState_t;
 
-    /* Task flags
-    MSB---------------------------------------------------------------------------------------------------------------------------------------------------------LSB
-    31                  |                 |            |            |               |               |              |                  |             |           0
-    |(31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
-    |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-    */
-    #define QTASK_COREBITS_RMASK        ( 0x000000FFuL )	 
-    #define QTASK_COREBITS_WMASK        ( 0xFFFFFF00uL )
-    #define QTASK_COREBITS_OFFSET       ( 0 )
-
-    #define QTASK_STATEBITS_RMASK	    ( 0x00000F00uL )
-    #define QTASK_STATEBITS_WMASK	    ( 0xFFFFF0FFuL )
-    #define QTASK_STATEBITS_OFFSET      ( 8 )
-
-    #define QTASK_EVENTFLAGS_RMASK	    ( 0xFFFFF000uL )
-    #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFuL )
-    #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
-    
-    #define _QTASK_QUEUEFLAGS_MASK      ( 0x0000003CuL )
-    #define _QTASK_BIT_INIT             ( 0x00000001uL )  
-    #define _QTASK_BIT_ENABLED          ( 0x00000002uL )
-    #define _QTASK_BIT_QUEUE_RECEIVER   ( 0x00000004uL )
-    #define _QTASK_BIT_QUEUE_FULL       ( 0x00000008uL )
-    #define _QTASK_BIT_QUEUE_COUNT      ( 0x00000010uL )
-    #define _QTASK_BIT_QUEUE_EMPTY      ( 0x00000020uL )
-    #define _QTASK_BIT_SHUTDOWN         ( 0x00000040uL )
-    #define _QTASK_BIT_REMOVE_REQUEST   ( 0x00000080uL )
-
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /*The task Bit-Flag definitions*/
         #define QEVENTFLAG_01               ( 0x00001000uL )
@@ -221,18 +193,14 @@
             qPriority_t Priority;                   /*< The task priority. */
         }qPrivate;
     }qTask_t;
-   
-    #if ( Q_QUEUES == 1 )
-        typedef qUINT32_t qQueueLinkMode_t;
-        #define qQUEUE_RECEIVER         ( _QTASK_BIT_QUEUE_RECEIVER )
-        #define qQUEUE_FULL             ( _QTASK_BIT_QUEUE_FULL )
-        #define qQUEUE_COUNT            ( _QTASK_BIT_QUEUE_COUNT )
-        #define qQUEUE_EMPTY            ( _QTASK_BIT_QUEUE_EMPTY )
 
-        #define QUEUE_RECEIVER          ( qQUEUE_RECEIVER )  
-        #define QUEUE_FULL              ( qQUEUE_FULL )
-        #define QUEUE_COUNT             ( qQUEUE_COUNT )
-        #define QUEUE_EMPTY             ( qQUEUE_EMPTY )
+    #if ( Q_QUEUES == 1 )
+        typedef enum {
+            qQueueMode_Receiver  = 4,
+            qQueueMode_Full = 8,
+            qQueueMode_Count = 16,
+            qQueueMode_Empty = 32,
+        }qQueueLinkMode_t;
     #endif
 
     #define Q_NOTIFY_SIMPLE             ( &qTask_Notification_Send )
