@@ -105,9 +105,9 @@ Return value:
 qState_t qTask_Get_State( const qTask_t * const Task){
     qState_t RetValue = qAsleep;
     if( NULL != Task ){
-        RetValue = (qState_t)_qPrivate_TaskGetFlag( Task, _QTASK_BIT_SHUTDOWN ); 
+        RetValue = (qState_t)qOS_Get_TaskFlag( Task, QTASK_BIT_SHUTDOWN ); 
         if( (qState_t)qTrue == RetValue ){ /*Task is awaken*/
-            RetValue = (qState_t)_qPrivate_TaskGetFlag( Task, _QTASK_BIT_ENABLED );
+            RetValue = (qState_t)qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED );
         }
     }
     return RetValue;
@@ -245,16 +245,16 @@ void qTask_Set_State(qTask_t * const Task, const qState_t State){
     if( NULL != Task ){
         switch( State ){
             case qDisabled: case qEnabled:
-                if( State != (qState_t)_qPrivate_TaskGetFlag( Task, _QTASK_BIT_ENABLED ) ){ 
-                    _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_ENABLED, (qBool_t)State );
+                if( State != (qState_t)qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ){ 
+                    qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, (qBool_t)State );
                     (void)qSTimer_Reload( &Task->qPrivate.timer );
                 }
                 break;
             case qAsleep:
-                _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_SHUTDOWN, qFalse );
+                qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN, qFalse );
                 break;
             case qAwake:
-                _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_SHUTDOWN, qTrue );
+                qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN, qTrue );
                 break;
             default:
                 break;
@@ -348,7 +348,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->qPrivate.head ) {
-            _qPrivate_TaskModifyFlags( Task, (qUINT32_t)Mode & _QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
+            qOS_Set_TaskFlags( Task, (qUINT32_t)Mode & QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
             if( Mode == qQueueMode_Count ){
                 Task->qPrivate.QueueCount = (qUINT32_t)arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }
@@ -408,7 +408,7 @@ void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t 
     qTask_Flag_t FlagsToSet;
     if( NULL != Task ){
         FlagsToSet = flags & QTASK_EVENTFLAGS_RMASK;
-        _qPrivate_TaskModifyFlags( Task, FlagsToSet, action );
+        qOS_Set_TaskFlags( Task, FlagsToSet, action );
     }
 }
 /*============================================================================*/
@@ -483,23 +483,4 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck,
     return RetValue;
 }
 #endif/* ( Q_TASK_EVENT_FLAGS == 1 ) */
-/*============================================================================*/
-/******************************************************************************
-   PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE
-*******************************************************************************/
-/*============================================================================*/
-qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag){
-	qUINT32_t xBit;
-	xBit = Task->qPrivate.Flags & flag;
-	return (( xBit != 0uL )? qTrue : qFalse);
-}
-/*============================================================================*/
-void _qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){
-    if( qTrue == value ){
-        Task->qPrivate.Flags |= flags; /*Set bits*/
-    }
-    else{
-        Task->qPrivate.Flags &= ~flags; /*Clear bits*/
-    }
-}
-/*============================================================================*/
+

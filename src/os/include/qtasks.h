@@ -294,15 +294,6 @@
         qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ); 
         qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
     #endif
-
-    /*============================================================================*/
-    /*
-        PRIVATE : THIS FUNCTIONS ARE NOT INTENDED FOR THE USER USAGE
-    */
-    /*============================================================================*/
-    qBool_t _qPrivate_TaskGetFlag( const qTask_t * const Task, qUINT32_t flag);
-    void _qPrivate_TaskModifyFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value);
-    /*============================================================================*/
     
     #ifdef __cplusplus
     }

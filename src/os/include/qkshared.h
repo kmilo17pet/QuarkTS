@@ -26,15 +26,16 @@
     #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFuL )
     #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
     
-    #define _QTASK_QUEUEFLAGS_MASK      ( 0x0000003CuL )
-    #define _QTASK_BIT_INIT             ( 0x00000001uL )  
-    #define _QTASK_BIT_ENABLED          ( 0x00000002uL )    
-    #define _QTASK_BIT_QUEUE_RECEIVER   ( 0x00000004uL )
-    #define _QTASK_BIT_QUEUE_FULL       ( 0x00000008uL )
-    #define _QTASK_BIT_QUEUE_COUNT      ( 0x00000010uL )
-    #define _QTASK_BIT_QUEUE_EMPTY      ( 0x00000020uL )
-    #define _QTASK_BIT_SHUTDOWN         ( 0x00000040uL )
-    #define _QTASK_BIT_REMOVE_REQUEST   ( 0x00000080uL )    
+    #define QTASK_QUEUEFLAGS_MASK      ( 0x0000003CuL )
+
+    #define QTASK_BIT_INIT             ( 0x00000001uL )  
+    #define QTASK_BIT_ENABLED          ( 0x00000002uL )    
+    #define QTASK_BIT_QUEUE_RECEIVER   ( 0x00000004uL )
+    #define QTASK_BIT_QUEUE_FULL       ( 0x00000008uL )
+    #define QTASK_BIT_QUEUE_COUNT      ( 0x00000010uL )
+    #define QTASK_BIT_QUEUE_EMPTY      ( 0x00000020uL )
+    #define QTASK_BIT_SHUTDOWN         ( 0x00000040uL )
+    #define QTASK_BIT_REMOVE_REQUEST   ( 0x00000080uL )    
    
     /*Private kernel shared functions*/
     #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
@@ -46,6 +47,9 @@
     extern void qOS_DummyTask_Callback( qEvent_t e );
     extern qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task);
     extern qTask_t* qOS_Get_TaskRunning( void );
+
+    extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag);
+    extern void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value);
 
     #ifdef __cplusplus
     }

@@ -1,14 +1,14 @@
 #include "qkernel.h"
 #include "qkshared.h" /*kernel shared methods*/
 
-#define _QKERNEL_BIT_INIT          ( 0x00000001uL )  
-#define _QKERNEL_BIT_FCALLIDLE     ( 0x00000002uL )
-#define _QKERNEL_BIT_RELEASESCHED  ( 0x00000004uL )
-#define _QKERNEL_BIT_FCALLRELEASED ( 0x00000008uL )
+#define QKERNEL_BIT_INIT          ( 0x00000001uL )  
+#define QKERNEL_BIT_FCALLIDLE     ( 0x00000002uL )
+#define QKERNEL_BIT_RELEASESCHED  ( 0x00000004uL )
+#define QKERNEL_BIT_FCALLRELEASED ( 0x00000008uL )
 
-#define _QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (qCoreFlags_t)(  BIT )     
-#define _QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
-#define _QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
+#define QKERNEL_COREFLAG_SET(FLAG, BIT)       ( FLAG ) |= (qCoreFlags_t)(  BIT )     
+#define QKERNEL_COREFLAG_CLEAR(FLAG, BIT)     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
+#define QKERNEL_COREFLAG_GET(FLAG, BIT)       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/
 typedef struct{
@@ -167,7 +167,7 @@ Disables the kernel scheduling. The main thread will continue after the
 qOS_Run() call.
 */
 void qOS_Scheduler_Release( void ){
-    _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED );
+    QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_RELEASESCHED );
 }
 /*============================================================================*/
 /*void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback )
@@ -363,12 +363,12 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
         Task->qPrivate.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
         Task->qPrivate.Notification = 0uL;
         Task->qPrivate.Trigger = qTriggerNULL;
-        _qPrivate_TaskModifyFlags( Task,
-                                 _QTASK_BIT_INIT | _QTASK_BIT_QUEUE_RECEIVER | 
-                                 _QTASK_BIT_QUEUE_FULL | _QTASK_BIT_QUEUE_COUNT | 
-                                 _QTASK_BIT_QUEUE_EMPTY | _QTASK_BIT_REMOVE_REQUEST, 
-                                 qFalse);
-        _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_SHUTDOWN | _QTASK_BIT_ENABLED, qTrue );  /*task will be awaken and enabled*/ 
+        qOS_Set_TaskFlags( Task,
+                           QTASK_BIT_INIT | QTASK_BIT_QUEUE_RECEIVER | 
+                           QTASK_BIT_QUEUE_FULL | QTASK_BIT_QUEUE_COUNT | 
+                           QTASK_BIT_QUEUE_EMPTY | QTASK_BIT_REMOVE_REQUEST, 
+                           qFalse);
+        qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN | QTASK_BIT_ENABLED, qTrue );  /*task will be awaken and enabled*/ 
         qTask_Set_State( Task, InitialState );
 
         #if ( Q_TASK_COUNT_CYCLES == 1 )
@@ -562,7 +562,7 @@ Return value:
 qBool_t qOS_Remove_Task( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_REMOVE_REQUEST, qTrue );
+        qOS_Set_TaskFlags( Task, QTASK_BIT_REMOVE_REQUEST, qTrue );
         RetValue = qTrue;
     }
     return RetValue;
@@ -576,10 +576,10 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
     size_t CurrentQueueCount;
 
     if( NULL != Task->qPrivate.Queue){
-        FullFlag = _qPrivate_TaskGetFlag( Task, _QTASK_BIT_QUEUE_FULL );
-        CountFlag = _qPrivate_TaskGetFlag( Task, _QTASK_BIT_QUEUE_COUNT );
-        ReceiverFlag = _qPrivate_TaskGetFlag( Task, _QTASK_BIT_QUEUE_RECEIVER );
-        EmptyFlag = _qPrivate_TaskGetFlag( Task, _QTASK_BIT_QUEUE_EMPTY );
+        FullFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_FULL );
+        CountFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_COUNT );
+        ReceiverFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_RECEIVER );
+        EmptyFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_EMPTY );
         
         CurrentQueueCount = qQueue_Count( Task->qPrivate.Queue ); /*to avoid side effects*/
         IsFull = qQueue_IsFull( Task->qPrivate.Queue ); /*to avoid side effects*/
@@ -608,16 +608,16 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 static void qOS_TriggerReleaseSchedEvent( void ){
     qTaskFcn_t Callback;
-    _QKERNEL_COREFLAG_CLEAR( kernel.Flag, _QKERNEL_BIT_INIT ); 
-    _QKERNEL_COREFLAG_CLEAR( kernel.Flag, _QKERNEL_BIT_RELEASESCHED );  
-    kernel.EventInfo.FirstCall = ( qFalse == _QKERNEL_COREFLAG_GET( kernel.Flag, _QKERNEL_BIT_FCALLRELEASED ) )? qTrue : qFalse;    
+    QKERNEL_COREFLAG_CLEAR( kernel.Flag, QKERNEL_BIT_INIT ); 
+    QKERNEL_COREFLAG_CLEAR( kernel.Flag, QKERNEL_BIT_RELEASESCHED );  
+    kernel.EventInfo.FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_FCALLRELEASED ) )? qTrue : qFalse;    
     kernel.EventInfo.Trigger = bySchedulingRelease;
     kernel.EventInfo.TaskData = NULL;
     if( NULL != kernel.ReleaseSchedCallback ){
         Callback = kernel.ReleaseSchedCallback;
         Callback( &kernel.EventInfo ); /*some low-end compilers cant deal with function-pointers inside structs*/
     }    
-    _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
+    QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
 #endif
 /*============================================================================*/
@@ -654,7 +654,7 @@ void qOS_Run( void ){
         }
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        while( qFalse == _QKERNEL_COREFLAG_GET( kernel.Flag, _QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
+        while( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
     #else
         while( qTrue == qTrue);
@@ -685,7 +685,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
             xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
             if( NULL != xTask ){  /*if we got a task from the priority queue,*/
                 xTask->qPrivate.Trigger = byNotificationQueued; 
-                _qPrivate_TaskModifyFlags( xTask, _QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
+                qOS_Set_TaskFlags( xTask, QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
             }     
         #endif          
     }
@@ -701,7 +701,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
                 RetValue = qTrue;
             }
         #endif
-        if( _qPrivate_TaskGetFlag( xTask, _QTASK_BIT_SHUTDOWN) ){
+        if( qOS_Get_TaskFlag( xTask, QTASK_BIT_SHUTDOWN) ){
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             if( byNotificationQueued == xTask->qPrivate.Trigger ){
                 xReady = qTrue;
@@ -735,13 +735,13 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
             }
         }
         (void)qList_Remove( WaitingList, NULL, QLIST_ATFRONT ); 
-        if( _qPrivate_TaskGetFlag( xTask, _QTASK_BIT_REMOVE_REQUEST) ){ /*check if the task get a removal request*/
+        if( qOS_Get_TaskFlag( xTask, QTASK_BIT_REMOVE_REQUEST) ){ /*check if the task get a removal request*/
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
                 qCritical_Enter(); 
                 qOS_PriorityQueue_CleanUp( xTask ); /*clean any entry of this task from the priority queue */
                 qCritical_Exit();
             #endif
-            _qPrivate_TaskModifyFlags( xTask, _QTASK_BIT_REMOVE_REQUEST, qFalse );  /*clear the removal request*/
+            qOS_Set_TaskFlags( xTask, QTASK_BIT_REMOVE_REQUEST, qFalse );  /*clear the removal request*/
         }
         else{
             xList = ( qTriggerNULL != xTask->qPrivate.Trigger )? &ReadyList[ xTask->qPrivate.Priority ] : SuspendedList;
@@ -774,7 +774,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
             }
             kernel.EventInfo.LastIteration = (0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
             if( kernel.EventInfo.LastIteration ) {
-                _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
+                qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
             }           
             kernel.EventInfo.StartDelay = qClock_GetTick() - Task->qPrivate.timer.Start;
             break;
@@ -805,7 +805,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
 
     /*Fill the event info structure: Trigger, FirstCall and TaskData */       
     kernel.EventInfo.Trigger = Task->qPrivate.Trigger;
-    kernel.EventInfo.FirstCall = ( qFalse == _qPrivate_TaskGetFlag( Task, _QTASK_BIT_INIT) )? qTrue : qFalse;
+    kernel.EventInfo.FirstCall = ( qFalse == qOS_Get_TaskFlag( Task, QTASK_BIT_INIT) )? qTrue : qFalse;
     kernel.EventInfo.TaskData = Task->qPrivate.TaskData;
     kernel.CurrentRunningTask = Task; /*needed for qTask_Self()*/
     return Event;
@@ -849,7 +849,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_W
             #endif
             
             
-            _qPrivate_TaskModifyFlags( Task, _QTASK_BIT_INIT, qTrue ); /*set the init flag*/
+            qOS_Set_TaskFlags( Task, QTASK_BIT_INIT, qTrue ); /*set the init flag*/
             kernel.EventInfo.FirstIteration = qFalse;
             kernel.EventInfo.LastIteration =  qFalse; 
             kernel.EventInfo.StartDelay = (qClock_t)0uL;
@@ -860,12 +860,12 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_W
             Task->qPrivate.Trigger = qTriggerNULL;
         }
         else{ /*run the idle*/
-            kernel.EventInfo.FirstCall = (qFalse == _QKERNEL_COREFLAG_GET( kernel.Flag, _QKERNEL_BIT_FCALLIDLE ) )? qTrue : qFalse;
+            kernel.EventInfo.FirstCall = (qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_FCALLIDLE ) )? qTrue : qFalse;
             kernel.EventInfo.TaskData = NULL;
             kernel.EventInfo.Trigger = Event;
             TaskActivities = kernel.IDLECallback; /*some compilers can´t deal with function pointers inside structs*/
             TaskActivities( &kernel.EventInfo ); /*run the idle callback*/ 
-            _QKERNEL_COREFLAG_SET( kernel.Flag, _QKERNEL_BIT_FCALLIDLE );
+            QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_FCALLIDLE );
         }
     }
     return qFalse;
@@ -877,7 +877,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task ){
     qClock_t TaskInterval;
     qBool_t DeadLineReached;
     
-    if( _qPrivate_TaskGetFlag( Task, _QTASK_BIT_ENABLED ) ){ /*nested-check for timed task, check the first requirement(the task must be enabled)*/
+    if( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ){ /*nested-check for timed task, check the first requirement(the task must be enabled)*/
         TaskIterations = Task->qPrivate.Iterations; /*avoid side efects in the next check*/
         if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
             TaskInterval = Task->qPrivate.timer.TV;
@@ -916,4 +916,18 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
     }
     return RetValue;
 }
-/*============================================================================*/
+/*========================== Shared Private Method ===========================*/
+qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag){
+	qUINT32_t xBit;
+	xBit = Task->qPrivate.Flags & flag;
+	return (( xBit != 0uL )? qTrue : qFalse);
+}
+/*========================== Shared Private Method ===========================*/
+void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value){
+    if( qTrue == value ){
+        Task->qPrivate.Flags |= flags; /*Set bits*/
+    }
+    else{
+        Task->qPrivate.Flags &= ~flags; /*Clear bits*/
+    }
+}
