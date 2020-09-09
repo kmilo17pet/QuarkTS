@@ -16,8 +16,8 @@
         struct _qQueue_Private_s{
             qUINT8_t *head;			        /*< Points to the beginning of the queue storage area. */
             qUINT8_t *tail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
-            qUINT8_t *writer;	        /*< Points to the free next place in the storage area. */
-            qUINT8_t *reader;	        /*< Points to the last place that a queued item was read from. */
+            qUINT8_t *writer;	            /*< Points to the free next place in the storage area. */
+            qUINT8_t *reader;	            /*< Points to the last place that a queued item was read from. */
             volatile size_t ItemsWaiting;   /*< The number of items currently in the queue. */
             size_t ItemsCount;		        /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
             size_t ItemSize;		        /*< The size of each items that the queue will hold. */
@@ -28,7 +28,7 @@
     #define QUEUE_SEND_TO_FRONT    ( 1u )
     typedef qUINT8_t qQueue_Mode_t;
 
-    /*qBool_t qQueue_SendToBack(qQueue_t *obj, void *ItemToQueue)
+    /*qBool_t qQueue_SendToBack( qQueue_t * const obj, void *ItemToQueue )
 
     Post an item to the back of the queue. The item is queued by copy, not by reference
     
@@ -44,8 +44,8 @@
 
         qTrue on successful add, qFalse if not added
     */
-    #define qQueue_SendToBack(_qQueue_t_, _ItemToQueue_)     qQueue_SendGeneric((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_BACK)
-    /*qBool_t qQueue_Send(qQueue_t *obj, void *ItemToQueue)
+    #define qQueue_SendToBack( _qQueue_t_, _ItemToQueue_ )      qQueue_SendGeneric( (_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_BACK )
+    /*qBool_t qQueue_Send( qQueue_t * const obj, void *ItemToQueue )
 
     Post an item to the back of the queue. The item is queued by copy, not by reference
     
@@ -61,8 +61,8 @@
 
         qTrue on successful add, qFalse if not added
     */
-    #define qQueue_Send(_qQueue_t_, _ItemToQueue_)           qQueue_SendGeneric((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_BACK)
-    /*qBool_t qQueue_SendToFront(qQueue_t *obj, void *ItemToQueue)
+    #define qQueue_Send( _qQueue_t_, _ItemToQueue_ )            qQueue_SendGeneric( (_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_BACK )
+    /*qBool_t qQueue_SendToFront( qQueue_t * const obj, void *ItemToQueue )
     
     Post an item in the front of the queue. The item is queued by copy, not by reference
     
@@ -78,7 +78,7 @@
 
         qTrue on successful add, qFalse if not added
     */        
-    #define qQueue_SendToFront(_qQueue_t_, _ItemToQueue_)    qQueue_SendGeneric((_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_FRONT)
+    #define qQueue_SendToFront( _qQueue_t_, _ItemToQueue_ )     qQueue_SendGeneric( (_qQueue_t_), (_ItemToQueue_), QUEUE_SEND_TO_FRONT )
 
     qBool_t qQueue_IsReady( const qQueue_t * const obj );
     qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount );

@@ -2,7 +2,7 @@
 
 static qClock_t qClock_InternalTick( void );
 
-static volatile qClock_t _qSysTick_Epochs_ = 0uL;
+static volatile qClock_t qSysTick_Epochs = 0uL;
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if (Q_SETUP_TIME_CANONICAL != 1)
@@ -23,7 +23,7 @@ void qClock_SetTimeBase( const qTimingBase_t tb ){
 #endif
 /*============================================================================*/
 static qClock_t qClock_InternalTick( void ){
-    return _qSysTick_Epochs_;
+    return qSysTick_Epochs;
 } 
 /*============================================================================*/
 /*void qClock_SetTickProvider( qGetTickFcn_t provider )
@@ -63,7 +63,7 @@ qTime_t qClock_Convert2Time( const qClock_t t ){
         return (qTime_t)t;
     #else
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-            return (qTime_t)(t/TimmingBase);
+            return (qTime_t)( t/TimmingBase );
         #else
             /*cstat -CERT-FLP36-C*/
             return (qTime_t)(TimmingBase*((qTime_t)t)); /*CERT-FLP36-C deviation allowed*/
@@ -89,11 +89,11 @@ qClock_t qClock_Convert2Clock( const qTime_t t ){
         return (qClock_t)t;
     #else 
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-            return (qClock_t)(t*TimmingBase);
+            return (qClock_t)( t*TimmingBase );
         #else
             qTime_t epochs = qTimeImmediate;
             if( t > qTimeImmediate ){
-                epochs = (t/TimmingBase) + QFLT_TIME_FIX_VALUE;
+                epochs = ( t/TimmingBase ) + QFLT_TIME_FIX_VALUE;
             }           
             return (qClock_t)epochs;
         #endif    
@@ -107,7 +107,7 @@ Feed the system tick. This call is mandatory and must be called once inside the
 dedicated timer interrupt service routine (ISR). 
 */    
 void qClock_SysTick( void ){ 
-    _qSysTick_Epochs_++; 
+    qSysTick_Epochs++; 
 }
 /*============================================================================*/
 /*qClock_t qClock_GetTick( void )

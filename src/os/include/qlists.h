@@ -71,7 +71,7 @@
         qList_Direction_t direction;    /*< How the iterator scrolls through the list, QLIST_FORWARD or QLIST_BACKWARD. */
     }qList_Iterator_t;
 
-    qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir);
+    qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir );
     void* qList_IteratorGetNext( qList_Iterator_t *iterator );
     qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset );
     qBool_t qList_Swap( void *node1, void *node2 );

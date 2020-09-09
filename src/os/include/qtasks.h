@@ -10,11 +10,11 @@
         #include "qqueues.h"
     #endif
 
-    #if ( Q_FSM == 1)
+    #if ( Q_FSM == 1 )
         #include "qfsm.h"
     #endif  
 
-    #if ( Q_ATCLI == 1)
+    #if ( Q_ATCLI == 1 )
         #include "qatcli.h"
     #endif
 
@@ -164,7 +164,7 @@
     }_qEvent_t_/*, *const qEvent_t*/;  
     typedef const _qEvent_t_ *qEvent_t;
 
-    typedef void (*qTaskFcn_t)(qEvent_t arg);  
+    typedef void (*qTaskFcn_t)( qEvent_t arg );  
 
     /* Please don't access any members of this structure directly */
     typedef struct{ /*Task node definition*/
@@ -172,10 +172,10 @@
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /*< The task storage pointers. */
             qTaskFcn_t Callback;                    /*< The callback function representing the task activities. */
-            #if ( Q_FSM == 1)
+            #if ( Q_FSM == 1 )
                 qSM_t *StateMachine;                /*< The pointer to the attached state-machine. */
             #endif
-            #if ( Q_QUEUES == 1)
+            #if ( Q_QUEUES == 1 )
                 qQueue_t *Queue;                    /*< The pointer to the attached queue. */
                 qUINT32_t QueueCount;               /*< The item-count threshold */
             #endif
@@ -183,7 +183,7 @@
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /*< The current number of executions performed by the task. */
             #endif
-            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
+            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
                 size_t Entry;                       /*< To allow the OS maintain the task entry order. */
             #endif
             qIteration_t Iterations;                /*< Hold the number of iterations. */
@@ -223,7 +223,7 @@
     void qTask_ClearTimeElapsed( qTask_t * const Task );
     qTask_t* qTask_Self( void );
 
-    /*void qTask_Suspend(qTask_t *Task)
+    /*void qTask_Suspend( qTask_t * const Task )
 
     Put the task into a disabled state.    
 
@@ -231,9 +231,9 @@
 
         - Task : A pointer to the task node.
     */
-    #define qTask_Suspend(pTask_)    qTask_Set_State((pTask_), qDisabled)
-    #define qTask_Disable(pTask_)    qTask_Set_State((pTask_), qDisabled)
-    /*void qTask_Resume(qTask_t *Task)
+    #define qTask_Suspend( pTask_ )     qTask_Set_State( (pTask_), qDisabled )
+    #define qTask_Disable( pTask_ )     qTask_Set_State( (pTask_), qDisabled )
+    /*void qTask_Resume( qTask_t * const Task )
 
     Put the task into a enabled state.    
 
@@ -241,10 +241,10 @@
 
     - Task : A pointer to the task node.
     */
-    #define qTask_Resume(pTask_)    qTask_Set_State((pTask_), qEnabled)
-    #define qTask_Enable(pTask_)    qTask_Set_State((pTask_), qEnabled)
+    #define qTask_Resume( pTask_ )      qTask_Set_State( (pTask_), qEnabled )
+    #define qTask_Enable( pTask_ )      qTask_Set_State( (pTask_), qEnabled )
  
-    /*void qTask_ASleep(qTask_t *Task)
+    /*void qTask_ASleep( qTask_t * const Task )
 
     Put the task into a qSLEEP state. The task can't be triggered
     by the lower precedence events.    
@@ -256,8 +256,8 @@
 
     - Task : A pointer to the task node.
     */
-    #define qTask_ASleep(pTask_)         qTask_Set_State((pTask_), qAsleep)
-    /*void qTask_Awake(qTask_t *Task)
+    #define qTask_ASleep( pTask_ )      qTask_Set_State( (pTask_), qAsleep )
+    /*void qTask_Awake( qTask_t * const Task )
 
     Put the task into a normal operation state. Here the task
     will be able to catch any kind of events.
@@ -266,8 +266,8 @@
 
     - Task : A pointer to the task node.
     */    
-    #define qTask_Awake(pTask_)          qTask_Set_State((pTask_), qAwake)
-    /*qBool_t qTask_IsEnabled(const qTask_t *Task)
+    #define qTask_Awake( pTask_ )       qTask_Set_State( (pTask_), qAwake )
+    /*qBool_t qTask_IsEnabled( const qTask_t * const Task )
 
     Retrieve the enabled/disabled state
 
@@ -279,7 +279,7 @@
 
         True if the task in on Enabled state, otherwise returns false.
     */  
-    #define qTask_IsEnabled(pTask_)      ( qEnabled == qTask_Get_State((pTask_) ) )
+    #define qTask_IsEnabled( pTask_ )   ( qEnabled == qTask_Get_State( (pTask_) ) )
 
     #if ( Q_QUEUES == 1 )
         qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );

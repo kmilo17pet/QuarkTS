@@ -10,8 +10,8 @@
     #endif
 
     typedef enum {qSM_EXIT_SUCCESS = -32767, qSM_EXIT_FAILURE = -32766} qSM_Status_t;
-    #define QSM_EXIT_SUCCESS   ( qSM_EXIT_SUCCESS ) 
-    #define QSM_EXIT_FAILURE   ( qSM_EXIT_FAILURE )
+    #define QSM_EXIT_SUCCESS        ( qSM_EXIT_SUCCESS ) 
+    #define QSM_EXIT_FAILURE        ( qSM_EXIT_FAILURE )
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
     
     typedef qUINT32_t qSM_Signal_t;
@@ -19,11 +19,10 @@
     #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
     #define QSM_SIGNAL_RANGE_MAX    ( (qSM_Signal_t)0xFFFFFFFCu )
 
-
-    #define QSM_SIGNAL_NONE    ( (qSM_Signal_t)0xFFFFFFFFu )
-    #define QSM_SIGNAL_ENTRY   ( (qSM_Signal_t)0xFFFFFFFEu )
-    #define QSM_SIGNAL_EXIT    ( (qSM_Signal_t)0xFFFFFFFDu )
-    #define QSM_SIGNAL_USER    ( QSM_SIGNAL_RANGE_MIN )
+    #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFFu )
+    #define QSM_SIGNAL_ENTRY        ( (qSM_Signal_t)0xFFFFFFFEu )
+    #define QSM_SIGNAL_EXIT         ( (qSM_Signal_t)0xFFFFFFFDu )
+    #define QSM_SIGNAL_USER         ( QSM_SIGNAL_RANGE_MIN )
 
     typedef struct _qSM_PublicData_s{
         /* NextState: (Read/Write) 

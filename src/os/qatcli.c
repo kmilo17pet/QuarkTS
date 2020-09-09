@@ -24,7 +24,7 @@ static char* GetArgString( qArgNum_t n, char* out );
 /*============================================================================*/
 static char* GetArgPtr( qArgNum_t n ){
     char *RetValue = NULL;
-    if( NULL != Current){
+    if( NULL != Current ){
         RetValue = qATCLI_GetArgPtr( &Current->qPrivate.Params, n );
     }
     return RetValue;
@@ -32,7 +32,7 @@ static char* GetArgPtr( qArgNum_t n ){
 /*============================================================================*/
 static int GetArgInt( qArgNum_t n ){
     int RetValue = 0;
-    if( NULL != Current){
+    if( NULL != Current ){
         RetValue = qATCLI_GetArgInt( &Current->qPrivate.Params, n );
     }
     return RetValue;    
@@ -40,7 +40,7 @@ static int GetArgInt( qArgNum_t n ){
 /*============================================================================*/
 static qFloat32_t GetArgFlt( qArgNum_t n ){
     qFloat32_t RetValue = 0.0f;
-    if( NULL != Current){
+    if( NULL != Current ){
         RetValue = qATCLI_GetArgFlt( &Current->qPrivate.Params, n );
     }
     return RetValue;  
@@ -48,7 +48,7 @@ static qFloat32_t GetArgFlt( qArgNum_t n ){
 /*============================================================================*/
 static qUINT32_t GetArgHex( qArgNum_t n ){
     qUINT32_t RetValue = 0uL;
-    if( NULL != Current){
+    if( NULL != Current ){
         RetValue = qATCLI_GetArgHex( &Current->qPrivate.Params, n );
     }
     return RetValue;  
@@ -56,7 +56,7 @@ static qUINT32_t GetArgHex( qArgNum_t n ){
 /*============================================================================*/
 static char* GetArgString( qArgNum_t n, char* out ){
     char* RetValue = NULL;
-    if( NULL != Current){
+    if( NULL != Current ){
         RetValue = qATCLI_GetArgString( &Current->qPrivate.Params, n, out );
     }
     return RetValue;
@@ -77,8 +77,8 @@ static void qATCLI_Putc_Wrapper( const char c ){
 /*============================================================================*/
 static void qATCLI_Puts_Wrapper( const char *s ){
 	qIndex_t i = 0u;
-	while( '\0' != s[i] ){
-        ATOutCharFcn( NULL, s[i++] );
+	while( '\0' != s[ i ] ){
+        ATOutCharFcn( NULL, s[ i++ ] );
     }
 }
 /*============================================================================*/
@@ -182,7 +182,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Comm
     if( ( NULL != cli ) && ( NULL != Command ) && ( NULL != TextCommand ) && ( NULL != Callback ) ){
         Command->qPrivate.CmdLen = qIOUtil_StrLen( TextCommand, cli->qPrivate.Input.Size );        
         if( Command->qPrivate.CmdLen >= 2u ){
-            if( ( 'a' == TextCommand[0] ) && ( 't' == TextCommand[1] ) ) { /*command should start with an <at> at the beginning */
+            if( ( 'a' == TextCommand[ 0 ] ) && ( 't' == TextCommand[ 1 ] ) ) { /*command should start with an <at> at the beginning */
                 Command->Text = (char*)TextCommand;
                 Command->qPrivate.CommandCallback = Callback;
                 Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
@@ -216,7 +216,7 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload ){
     static qATCLI_Command_t *Iterator = NULL;
     qATCLI_Command_t *Cmd = NULL;
 
-    if(NULL != cli){
+    if( NULL != cli ){
         if( qTrue == reload ){
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             Iterator = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
@@ -273,7 +273,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *data, const size_t n )
+/*qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n )
 Feed the CLI input with a string. This call is mandatory 
 from an interrupt context. Put it inside the desired peripheral's ISR.
 If your ISR only get a single char, use instead qATCLI_ISRHandler
@@ -281,7 +281,7 @@ If your ISR only get a single char, use instead qATCLI_ISRHandler
 Parameters:
 
     - cli : A pointer to the AT Command Line Interface instance
-    - data : The incoming string.
+    - Data : The incoming string.
     - n : The length of the string
 
 Return value:
@@ -322,15 +322,15 @@ modifies the input string removing non-graph chars
 */
 #if ( Q_ATCLI_INPUT_FIX == 1 )
 static char* qATCLI_Input_Fix( char *s, size_t maxlen){
-    int i,j;
+    int i, j;
     j = 0;
-    for( i = 0; ( '\0' != s[i] ) && (maxlen > 0u) ; i++ ){
-        if( '\r' == s[i] ){
-            s[i] = '\0';
+    for( i = 0; ( '\0' != s[ i ] ) && (maxlen > 0u) ; i++ ){
+        if( '\r' == s[ i ] ){
+            s[ i ] = '\0';
             break;    
         } 
-        if( 0 != isgraph( (int)s[i]) ){
-            s[j++] = (char)tolower( (int)s[i] );
+        if( 0 != isgraph( (int)s[ i ]) ){
+            s[ j++ ] = (char)tolower( (int)s[ i ] );
         }
         --maxlen;
     }
@@ -483,7 +483,7 @@ void qATCLI_Input_Flush( qATCLI_t * const cli ){
         Input = &cli->qPrivate.Input;
         Input->Ready = qFalse;
         Input->index = 0u;
-        Input->Buffer[0] = (char)0x00u;
+        Input->Buffer[ 0 ] = (char)0x00u;
     }
 }
 /*============================================================================*/
@@ -507,7 +507,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
     qBool_t RetValue = qFalse;
     char *InputBuffer;
 
-    if( NULL != cli){
+    if( NULL != cli ){
 		Current = cli;
         Input =  &cli->qPrivate.Input;
 		ATOutCharFcn = cli->qPrivate.OutputFcn;
@@ -533,13 +533,13 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
             }
             /*cstat +CERT-STR32-C*/
 			if( NULL != cli->qPrivate.xPublic.Output ){ /*show the user output if available*/
-				if( '\0' != cli->qPrivate.xPublic.Output[0] ){
+				if( '\0' != cli->qPrivate.xPublic.Output[ 0 ] ){
                     qATCLI_HandleCommandResponse( cli, QATCLI_OUTPUT );
                 }
 			}
 			qATCLI_HandleCommandResponse( cli, OutputRetval ); /*print out the command output*/
 			qATCLI_Input_Flush( cli ); /*flush buffers*/
-			cli->qPrivate.xPublic.Output[0]  = '\0';
+			cli->qPrivate.xPublic.Output[ 0 ] = '\0';
 			RetValue = qTrue;
 		}
     }
@@ -580,7 +580,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
                     ErrorCode = QATCLI_ERRORCODE( (qINT32_t)retval );
                     (void)qIOUtil_ItoA( ErrorCode, cli->qPrivate.xPublic.Output, 10u );
                     PutString( ( NULL != cli->qPrivate.ERROR_Response)? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING);
-                    PutChar(':');
+                    PutChar( ':' );
                     PutString( cli->qPrivate.xPublic.Output );
                     cli->qPrivate.xPublic.Output[0] = '\0';
                 }                            
@@ -607,7 +607,7 @@ Return value:
     Same as <out>  on success, otherwise returns NULL.
 */
 char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out ){
-	qINT8_t i,j, argc = 0;
+	qINT8_t i, j, argc = 0;
 	char *RetPtr = NULL;
 
     if( ( NULL != param ) && ( NULL != out ) && ( n > 0 ) ){
@@ -615,16 +615,16 @@ char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out ){
             n--;
             j = 0;
             /*cstat -CERT-STR34-C*/
-            for( i=0 ; '\0' != param->StrData[i]; i++){
-                if(argc == n){
+            for( i=0 ; '\0' != param->StrData[ i ]; i++){
+                if( argc == n ){
                     RetPtr = out;
-                    if( ( argc > n ) || ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[i] ) ){
+                    if( ( argc > n ) || ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) ){
                         break;
                     } 
-                    out[j++] = param->StrData[i];
-                    out[j] = '\0';
+                    out[ j++ ] = param->StrData[ i ];
+                    out[ j ] = '\0';
                 }
-                if( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[i] ){
+                if( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
                     argc++;
                 }
                 /*cstat +CERT-STR34-C*/
@@ -670,9 +670,9 @@ char* qATCLI_GetArgPtr( const qATCLI_PreCmd_t param, qINT8_t n ){
             else{
                 n--;
 	            for( i = 0 ; '\0' != param->StrData[i] ; i++){
-		            if( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[i] ){
+		            if( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
 			            if( ++argc >= (qIndex_t)n ){
-                            RetPtr = param->StrData+i+1;        
+                            RetPtr = param->StrData + i + 1;        
                             break;
                         }
 		            }

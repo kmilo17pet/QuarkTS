@@ -225,7 +225,7 @@ static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate
     }
 }
 /*============================================================================*/
-/*void qStateMachine_Attribute( qSM_t * const obj, const qFSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
+/*void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
 
 Change attributes or set actions to the Finite State Machine (FSM).
 
@@ -246,8 +246,8 @@ Parameters:
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
 */    
 void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs ){
-    if( NULL != obj){
-        switch(Flag){
+    if( NULL != obj ){
+        switch( Flag ){
             case qSM_RESTART:
                 obj->qPrivate.xPublic.NextState = s;
                 obj->qPrivate.xPublic.PreviousState = NULL;
@@ -297,7 +297,7 @@ Return value:
 */  
 qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries ){
     qBool_t RetValue = qFalse;
-    if( (NULL != obj) && ( NULL != table ) && ( NULL != entries) && (NoOfEntries > (size_t)0 ) ){
+    if( ( NULL != obj ) && ( NULL != table ) && ( NULL != entries) && ( NoOfEntries > (size_t)0 ) ){
         table->qPrivate.NumberOfEntries = NoOfEntries;
         table->qPrivate.Transitions = entries;
         obj->qPrivate.TransitionTable = table;
@@ -309,13 +309,13 @@ qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionT
 /*qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals )
 
 Setup the state-machine signal queue.
-Note : Signals feature only available if queues are enabled in qconfig.h   Q_QUEUES == 1  
+Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUEUES == 1 ]
 
 Parameters:
 
     - obj : a pointer to the FSM object.
     - AxSignals : A pointer to the memory area used for queueing signals. qSM_Signal_t[MaxSignals]
-    - MaxSignals : The number of items inside AxSignals.
+    - MaxSignals : The number of items inside <AxSignals>.
 
 Return value:
 
@@ -340,7 +340,7 @@ qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSigna
 Forces a sweep over the installed transition table. The instance will be updated 
 if a transition from the table is performed.
 
-Note : This method is performed from the qStateMachine_Run() API before the 
+Note : This method is performed from the <qStateMachine_Run> API before the 
 current state callback is invoked.
 
 Parameters:
@@ -403,7 +403,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
 
 Sends a signal to the state machine.
 Note : The state machine instance must have a transition table previously installed
-Note : Signals feature only available if queues are enabled in qconfig.h   Q_QUEUES == 1  
+Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUEUES == 1 ]  
 
 Parameters:
 
@@ -525,7 +525,7 @@ static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){
     qSM_t *res = NULL; 
     qSM_Stack_t *top; 
   
-    if( qFalse == qStateMachine_StackIsEmpty( *top_ref )) { 
+    if( qFalse == qStateMachine_StackIsEmpty( *top_ref ) ){ 
         top = *top_ref; 
         res = top->t; 
         *top_ref = top->next; 

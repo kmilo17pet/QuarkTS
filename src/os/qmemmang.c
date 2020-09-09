@@ -259,7 +259,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t Size ){
         if( NULL == mPool->qPrivate.End ){ /*First call,*/
             qMemMang_HeapInit( mPool ); /*initialize the heap to setup the list of free blocks*/
         }
-        if( ( Size & mPool->qPrivate.BlockAllocatedBit ) == (size_t)0 ){
+        if( (size_t)0 == ( Size & mPool->qPrivate.BlockAllocatedBit ) ){
             if( Size > (size_t)0 ){ /* The requested size is increased so it can contain a qMemBlockConnect_t in addition to the requested amount of bytes. */
                 Size += HeapStructSize;
                 if( ( Size & ByteAlignmentMask ) != 0x00u ){ /*Ensure blocks are always aligned to the required number of bytes. */

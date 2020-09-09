@@ -17,7 +17,7 @@ qBool_t qQueue_IsReady( const qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea,  size_t ItemSize, size_t ItemsCount)
+/*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount )
  
 Configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
 is statically allocated at compile time by the application writer.
@@ -83,7 +83,7 @@ Return value:
 qBool_t qQueue_IsEmpty( const qQueue_t * const obj ){
     qBool_t RetValue = qTrue;
     if( NULL != obj ){
-        if( obj->qPrivate.ItemsWaiting == 0u ){
+        if( 0u == obj->qPrivate.ItemsWaiting ){
             RetValue = qTrue;
         }
         else{
@@ -213,14 +213,14 @@ qBool_t qQueue_RemoveFront( qQueue_t * const obj ){
 /*============================================================================*/
 static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *ItemToQueue, const qBool_t xPosition ){
     if( QUEUE_SEND_TO_BACK == xPosition ){
-        (void) memcpy( (void*) obj->qPrivate.writer, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+        (void) memcpy( (void*)obj->qPrivate.writer, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
         obj->qPrivate.writer += obj->qPrivate.ItemSize;
         if( obj->qPrivate.writer >= obj->qPrivate.tail ){
             obj->qPrivate.writer = obj->qPrivate.head;
         }         
     }
     else{
-        (void) memcpy( (void*) obj->qPrivate.reader, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+        (void) memcpy( (void*)obj->qPrivate.reader, ItemToQueue, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
         obj->qPrivate.reader -= obj->qPrivate.ItemSize;
         if( obj->qPrivate.reader < obj->qPrivate.head ){
             obj->qPrivate.reader = ( obj->qPrivate.tail - obj->qPrivate.ItemSize ); 
@@ -238,7 +238,7 @@ static void qQueue_MoveReader( qQueue_t * const obj ){
 /*==================================================================================*/
 static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffer ){
     qQueue_MoveReader( obj );
-    (void) memcpy( (void*) pvBuffer, (void*)obj->qPrivate.reader, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
+    (void) memcpy( (void*)pvBuffer, (void*)obj->qPrivate.reader, obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
 /*qBool_t qQueue_Receive( qQueue_t * const obj, void *dest )

@@ -19,7 +19,7 @@ Return value:
 
     qTrue on success. Otherwise qFalse.
 */ 
-qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata){
+qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
         if( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ){
@@ -219,7 +219,7 @@ Parameters:
 void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     if( NULL != Task ){ 
         Task->qPrivate.Callback = CallbackFcn;
-        #if ( Q_FSM == 1)
+        #if ( Q_FSM == 1 )
             Task->qPrivate.StateMachine = NULL;    
         #endif  
     }    
@@ -241,7 +241,7 @@ Parameters:
             qAwake : Put the task into the previous state before it was put in the sleep state.
                     ( SHUTDOWN Bit = 1 )
 */
-void qTask_Set_State(qTask_t * const Task, const qState_t State){
+void qTask_Set_State( qTask_t * const Task, const qState_t State ){
     if( NULL != Task ){
         switch( State ){
             case qDisabled: case qEnabled:
@@ -391,7 +391,7 @@ qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMach
 #endif /* #if ( Q_FSM == 1) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
-/*void qTask_EventFlags_Modify( qTask_t * const Task, qTaskFlag_t flags, qBool_t action )
+/*void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action )
 
 Modify the EventFlags of the task. 
 Note: Any EventFlag set will cause a task activation
@@ -433,7 +433,7 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTaskFlag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll )
+/*qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll )
 
 Check for flags set to qTrue inside the task Event Flags.
 
@@ -463,16 +463,16 @@ Return value:
 qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll ){
     qBool_t RetValue = qFalse;
     qTask_Flag_t CurrentEventBits;
-    if( NULL != Task){
+    if( NULL != Task ){
         FlagsToCheck &= QTASK_EVENTFLAGS_RMASK;
         CurrentEventBits = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
         if( qFalse == CheckForAll ){
-            if( (CurrentEventBits & FlagsToCheck) != (qTask_Flag_t)0 ){
+            if( (qTask_Flag_t)0 != ( CurrentEventBits & FlagsToCheck ) ){
                 RetValue = qTrue;
             }
         }
         else{
-            if( (CurrentEventBits & FlagsToCheck) == FlagsToCheck ){
+            if(  (CurrentEventBits & FlagsToCheck ) == FlagsToCheck ){
                 RetValue = qTrue;
             }        
         }

@@ -89,14 +89,14 @@
     }qCR_End;
     
     Defines a Coroutine segment. Only one segment is allowed inside a task; 
-    The qCR_Begin statement is used to declare the starting point of 
+    The <qCR_Begin> statement is used to declare the starting point of 
     a Coroutine. It should be placed at the start of the function in which the 
-    Coroutine runs. qCR_End declare the end of the Coroutine. 
-    It must always be used together with a matching qCR_End statement.
+    Coroutine runs. <qCR_End> declare the end of the Coroutine. 
+    It must always be used together with a matching <qCR_End> statement.
 
     */
-    #define qCR_Begin                                   _qCR_Start
-    /*qCR_BeginWithHandle(handle){
+    #define qCR_Begin                                       _qCR_Start
+    /*qCR_BeginWithHandle( handle ){
     
     }qCR_End;
     
@@ -104,96 +104,96 @@
     Only one segment is allowed inside a task; 
     The qCR_BeginWithHandle statement is used to declare the starting point of 
     a Coroutine. It should be placed at the start of the function in which the 
-    Coroutine runs. qCR_End declare the end of the Coroutine. 
-    It must always be used together with a matching qCR_End statement.
+    Coroutine runs. <qCR_End> declare the end of the Coroutine. 
+    It must always be used together with a matching <qCR_End> statement.
 
     */   
-    #define qCR_BeginWithHandle(handle)                 _qCR_hStart(handle)
+    #define qCR_BeginWithHandle( handle )                   _qCR_hStart( handle )
     /*qCR_Begin{
     
     }qCR_End;
     
     Ends a Coroutine segment. Only one segment is allowed inside a task; 
-    The qCR_End statement is used to define the ending point of 
+    The <qCR_End> statement is used to define the ending point of 
     a Coroutine. It should be placed at the end of the function in which the 
     Coroutine runs. 
-    It must always be used together with a matching qCR_Begin/qCR_BeginWithHandle
+    It must always be used together with a matching <qCR_Begin>/<qCR_BeginWithHandle>
     statement.
 
     */      
-    #define qCR_End                                     _qCR_Dispose
+    #define qCR_End                                         _qCR_Dispose
     /*qCR_Yield
 
-    This statement is only allowed inside a Coroutine segment. qCR_Yield 
+    This statement is only allowed inside a Coroutine segment. <qCR_Yield> 
     return the CPU control back to the scheduler but saving the execution progress. 
     With the next task activation, the Coroutine will resume the execution after 
-    the last 'qCR_Yield' statement.
+    the last <qCR_Yield> statement.
 
     Action sequence : [Save progress] then [Yield]
 
     */     
-    #define qCR_Yield                                   _qCR_Yield
+    #define qCR_Yield                                       _qCR_Yield
     /*qCR_Restart
 
     This statement cause the running Coroutine to restart its execution at the 
-    place of the qCR_Begin statement.
+    place of the <qCR_Begin> statement.
 
     Action sequence : [Reload progress] then [Yield]
 
     */
-    #define qCR_Restart                                 _qCR_Restart 
-    /*qCRWait_Until(_CONDITION_)
+    #define qCR_Restart                                     _qCR_Restart 
+    /*qCRWait_Until( condition )
 
     Yields until the logical condition being true
 
     Action sequence : [Save progress] 
-                    IF (Condition == False){
+                    IF ( condition == False ){
                         [Yield]      
                     }  
 
     */    
-    #define qCR_WaitUntil(_condition_)                  _qCR_wu_Assert(_condition_)
-    /*qCR_TimedWaitUntil(_CONDITION_)
+    #define qCR_WaitUntil( _condition_ )                    _qCR_wu_Assert( _condition_ )
+    /*qCR_TimedWaitUntil( condition)
 
     Yields until the logical condition being true or the specified timeout expires
 
     Action sequence : [Save progress] 
-                    IF (Condition == False || EXPIRED(timeout) ){
+                    IF ( condition == False || EXPIRED(timeout) ){
                         [Yield]      
                     }  
 
     */    
-    #define qCR_TimedWaitUntil(_condition_, _timeout_)  _qCR_wu_TmrAssert(_condition_,_timeout_)
+    #define qCR_TimedWaitUntil( _condition_, _timeout_ )    _qCR_wu_TmrAssert( _condition_,_timeout_ )
     
     /*qCR_Do
 
     This statement start a blocking Job segment. 
-    Must be used together with a matching qCR_Until statement.  
+    Must be used together with a matching <qCR_Until> statement.  
 
     */    
-    #define qCR_Do                                      _qCR_do
-    /*qCR_Until( _condition_ )
+    #define qCR_Do                                          _qCR_do
+    /*qCR_Until( condition )
 
-    This statement ends a blocking Job segment starting with the qCR_Do statement.   
+    This statement ends a blocking Job segment starting with the <qCR_Do> statement.   
     The condition determines if the blocking job ends (if condition is True)
     or continue yielding (if false)
 
     */         
-    #define qCR_Until( _condition_ )                    _qCR_until( _condition_ )
+    #define qCR_Until( _condition_ )                        _qCR_until( _condition_ )
     /*qCR_SemInit( qCR_Semaphore_t *sem, int Value )
 
     Initializes a semaphore with a value for the counter. Internally, the semaphores
-    use an "unsigned int" to represent the counter,  therefore the "count" 
-    argument should be within range of an unsigned int.
+    use an "unsigned int" to represent the counter,  therefore the <Value> 
+    argument should be within range of an "unsigned int".
 
     Parameters:
 
         - sem :  A pointer to the qCR_Semaphore_t representing the semaphore
 
-        - _Value_ : The initial count of the semaphore.
+        - Value : The initial count of the semaphore.
 
     */          
-    #define qCR_SemInit(_qCR_Semaphore_t_, _Value_)       Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
+    #define qCR_SemInit( _qCR_Semaphore_t_, _Value_ )       Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _Value_ ) )
     /*qCR_SemWait( qCR_Semaphore_t *sem )
 
     Carries out the "wait" operation on the semaphore. The wait operation causes 
@@ -202,11 +202,11 @@
 
     Parameters:
 
-          - sem :  A pointer to the qCR_Semaphore_t object in which the 
-                                operation is executed
+        - sem :  A pointer to the qCR_Semaphore_t object in which the 
+                operation is executed
 
     */        
-    #define qCR_SemWait(_qCR_Semaphore_t_)              _qCR_wu_Assert( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_TRYLOCK ) ) 
+    #define qCR_SemWait( _qCR_Semaphore_t_ )                _qCR_wu_Assert( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_TRYLOCK ) ) 
 
     /*qCR_SemSignal( qCR_Semaphore_t *sem )
 
@@ -217,38 +217,38 @@
     Parameters:
 
         - sem :  A pointer to the qCR_Semaphore_t object in which the 
-                                operation is executed
+                operation is executed
 
     */     
-    #define qCR_SemSignal(_qCR_Semaphore_t_)            Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_SIGNAL ) )
-    /*qCR_PositionGet(qCR_Position_t _CRPos_) 
+    #define qCR_SemSignal( _qCR_Semaphore_t_ )              Q_UNUSED( _qCR_Sem( _qCR_Semaphore_t_, _qCR_SEM_SIGNAL ) )
+    /*qCR_PositionGet( qCR_Position_t CRPos ) 
 
-    Labels the current position and saves it to _CRPos_ so it can be later restored by qCR_PositionRestore
+    Labels the current position and saves it to <CRPos> so it can be later restored by <qCR_PositionRestore>
 
     */    
-    #define qCR_PositionGet(_CRPos_)                    _qCR_GetPosition(_CRPos_)
-    /*qCR_PositionRestore(qCR_Position_t _CRPos_) 
+    #define qCR_PositionGet( _CRPos_ )                      _qCR_GetPosition( _CRPos_ )
+    /*qCR_PositionRestore( qCR_Position_t CRPos ) 
 
-    Restores the Co-Routine position saved in _CRPos_
+    Restores the Co-Routine position saved in <CRPos>
 
     */   
-    #define qCR_PositionRestore(_CRPos_)                _qCR_RestoreFromPosition(_CRPos_)
-    /*qCR_PositionReset(qCR_Position_t _CRPos_) 
+    #define qCR_PositionRestore( _CRPos_ )                  _qCR_RestoreFromPosition(_CRPos_)
+    /*qCR_PositionReset( qCR_Position_t CRPos ) 
 
-    Resets the _CRPos_ variable to the begining of the Co-Routine
+    Resets the <CRPos> variable to the begining of the Co-Routine
 
     */ 
-    #define qCR_PositionReset(_CRPos_)                  _qCR_PositionReset(_CRPos_)
-    /*qCR_Delay( _qTime_t_ )  
+    #define qCR_PositionReset( _CRPos_ )                    _qCR_PositionReset( _CRPos_ )
+    /*qCR_Delay( qTime_t time )  
 
     Delay a coroutine for a given number of time
 
     Parameters:
 
-        - _qTime_t_ :  The amount of time (In seconds), that the calling coroutine should yield.
+        - time :  The amount of time (In seconds), that the calling coroutine should yield.
 
     */        
-    #define qCR_Delay(_qTime_t_)                        _qCR_Delay(_qTime_t_)
+    #define qCR_Delay( _qTime_t_ )                          _qCR_Delay( _qTime_t_ )
 
 
     void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos );

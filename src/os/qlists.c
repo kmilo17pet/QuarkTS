@@ -468,7 +468,7 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
-        if( count >= (size_t)2){ /*It is only worth running the algorithm if the list has two or more nodes*/
+        if( count >= (size_t)2 ){ /*It is only worth running the algorithm if the list has two or more nodes*/
             for( i = (size_t)1; i < count; i++ ){
                 current = list->head;
                 n = count - i - (size_t)1;
@@ -543,7 +543,7 @@ qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void
             }
         }
         else{
-            iterator->next = (dir == QLIST_FORWARD)? list->head : list->tail;
+            iterator->next = ( dir == QLIST_FORWARD )? list->head : list->tail;
             RetValue = qTrue;
         }
     }
@@ -609,7 +609,7 @@ qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg
     if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
         if ( NULL != list->head ){  /*walk the list only if it has items*/
             adjacent = ( &QLIST_FORWARD == dir )? list->head : list->tail; /*select starting point*/
-            if( NULL != NodeOffset){ /*offset request?*/
+            if( NULL != NodeOffset ){ /*offset request?*/
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                 iNode = (qList_Node_t*)NodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
