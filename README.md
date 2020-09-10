@@ -32,3 +32,22 @@ QuarkTS is developed using a formal and rigorous process framed in compliance of
 
 QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. The design goal of QuarkTS is to achieve its stated functionality using a small, simple, and (most importantly) robust safety implementation to make it suitable on resource-constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things.
  
+## QuarkTS as a git submodule :
+
+### Creating
+
+```
+git submodule add -b kernel_only https://github.com/TECREA/QuarkTS.git <destination path>
+```
+
+Then, run the initialize command to fetch the code for the first time:
+
+```
+git submodule update --init
+```
+
+### Updating
+
+```
+git submodule update --remote
+```
