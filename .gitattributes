@@ -11,6 +11,7 @@ src/x86_test_do_not_use_it export-ignore
 src/unity export-ignore
 check export-ignore
 .travis.yml export-ignore
+manual export-ignore
 
 # Auto detect text files and perform LF normalization
 * text=auto

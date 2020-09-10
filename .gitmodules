@@ -1,0 +1,3 @@
+[submodule "manual"]
+	path = manual
+	url = https://github.com/kmilo17pet/quarkts-usermanual.git
