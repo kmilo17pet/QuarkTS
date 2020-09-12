@@ -1,4 +1,4 @@
 language: c
 compiler: gcc
 dist: bionic
-script:  git submodule update --init && make && make test
+script: make && make test
