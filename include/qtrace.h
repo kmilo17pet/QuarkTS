@@ -3,6 +3,7 @@
     #define QTRACE_H
 
     #include "qtypes.h"
+    #include "qclock.h"
     #include "qioutils.h"
    
     #ifdef __cplusplus
@@ -20,30 +21,26 @@
                 #define _QTRACE_FUNC   __func__
             #endif       
         #elif defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
-            # define _QTRACE_FUNC __PRETTY_FUNCTION__
+            #define _QTRACE_FUNC __PRETTY_FUNCTION__
         #elif defined(__DMC__) && (__DMC__ >= 0x810)
-            # define _QTRACE_FUNC __PRETTY_FUNCTION__
+            #define _QTRACE_FUNC __PRETTY_FUNCTION__
         #elif defined(__FUNCSIG__)
-            # define _QTRACE_FUNC __FUNCSIG__
+            #define _QTRACE_FUNC __FUNCSIG__
         #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
-            # define _QTRACE_FUNC __FUNCTION__
+            #define _QTRACE_FUNC __FUNCTION__
         #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
-            # define _QTRACE_FUNC __FUNC__
+            #define _QTRACE_FUNC __FUNC__
         #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
-            # define _QTRACE_FUNC __func__
+            #define _QTRACE_FUNC __func__
         #elif defined(__cplusplus) && (__cplusplus >= 201103)
-            # define _QTRACE_FUNC __func__                
+            #define _QTRACE_FUNC __func__                
         #else /* failed to detect __func__ support.  */
             #define _QTRACE_FUNC ((char *) 0)
         #endif
-    # endif
-
-    #if ( Q_DEBUGTRACE_FULL == 1 )
-        #define _qAT() "[" __FILE__ ":" _qTOSTRING(__LINE__) "] " 
-    #else
-        #define _qAT()         ""
     #endif
 
+    #define _qAT() ":" _qTOSTRING(__LINE__) " "
+  
     #ifndef Message
         #define Message             Message
     #endif
