@@ -366,7 +366,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
 Attach a Finite State Machine(FSM) to the Task. 
 
 Note: Task and state-machine should be previously initialized before the attach procedure.
-Note: To perform a state-machine detach, use the qTaskSetCallback API. 
+Note: To perform a state-machine detach, use the <qTask_Set_Callback> API. 
 
 Parameters:
 
@@ -435,7 +435,7 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ){
 /*============================================================================*/
 /*qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll )
 
-Check for flags set to qTrue inside the task Event Flags.
+Check for flags set to qTrue inside the task Event-Flags.
 
 Parameters:
 

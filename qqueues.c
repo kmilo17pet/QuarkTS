@@ -19,7 +19,7 @@ qBool_t qQueue_IsReady( const qQueue_t * const obj ){
 /*============================================================================*/
 /*qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount )
  
-Configures a Queue. Here, the RAM used to hold the queue data <DataBlock>
+Configures a Queue. Here, the RAM used to hold the queue data <DataArea>
 is statically allocated at compile time by the application writer.
  
 Parameters:
@@ -113,7 +113,7 @@ size_t qQueue_Count( const qQueue_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*size_t qQueue_AvailableSlots( const qQueue_t * const obj )
+/*size_t qQueue_ItemsAvailable( const qQueue_t * const obj )
  
 Returns the number of available slots to hold items inside the Queue
  
@@ -281,7 +281,7 @@ Parameters:
     - obj : a pointer to the Queue object
     - ItemToQueue : A pointer to the item that is to be placed on the queue. The size of 
             the items the queue will hold was defined when the queue was created, 
-            so this many bytes will be copied from ItemToQueue into the queue storage
+            so this many bytes will be copied from <ItemToQueue> into the queue storage
             area.
     - InsertMode : Can take the value QUEUE_SEND_TO_BACK to place the item at the back 
                   of the queue, or QUEUE_SEND_TO_FRONT to place the item at the front of 

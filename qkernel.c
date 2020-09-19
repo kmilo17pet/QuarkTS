@@ -96,7 +96,7 @@ the application main thread before any task is being added to the OS.
 Parameters:
 
     - TickProviderFcn :  The function that provides the tick value. If the user application 
-                        uses the qClock_SysTick() from the ISR, this parameter can be NULL.
+                        uses the <qClock_SysTick> from the ISR, this parameter can be NULL.
                         Note: Function should take void and return a 32bit value. 
 
     - BaseTimming (Optional) : This parameter specifies the ISR background timer base time.
@@ -155,7 +155,7 @@ Establish the IDLE Task Callback
 
 Parameters:
 
-    - IDLE_Callback : A pointer to a void callback method with a qEvent_t 
+    - Callback : A pointer to a void callback method with a qEvent_t 
                       parameter as input argument.
 */
 void qOS_Set_IdleTask( qTaskFcn_t Callback ){
@@ -166,7 +166,7 @@ void qOS_Set_IdleTask( qTaskFcn_t Callback ){
 /*void qOS_Scheduler_Release( void )
 
 Disables the kernel scheduling. The main thread will continue after the
-qOS_Run() call.
+<qOS_Run> call.
 */
 void qOS_Scheduler_Release( void ){
     QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_RELEASESCHED );
@@ -395,7 +395,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
 Add a task to the scheduling scheme.  This API creates a task with qDisabled 
 state by default , so this task will be oriented to be executed only, when 
 asynchronous events occurs. However, this behavior can be changed in execution
-time using qTask_SetTime or qTask_SetIterations.
+time using <qTask_Set_Time> or <qTask_Set_Iterations>.
 
 Parameters:
 

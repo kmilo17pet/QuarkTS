@@ -1,1 +1,2 @@
-# QuarkTS OS kernel files only to use as a git submodule
+# QuarkTS OS kernel files
+This branch contains QuarkTS kernel source/header files. This branch is referenced as a submodule in the master branch.

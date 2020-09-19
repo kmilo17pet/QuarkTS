@@ -18,7 +18,7 @@ Parameters:
             qCR_POSITIONSET : Force the coroutine execution at the position specified 
                             in <pos>. If a non-valid position is supplied, the Co-routine
                             segment will be suspended.      
-    - pos : The required position if action = qCR_POSITIONSET. For other actions
+    - pos : The required position if <action> = qCR_POSITIONSET. For other actions
             this argument its ignored.           
 
 */

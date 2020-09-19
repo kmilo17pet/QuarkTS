@@ -18,7 +18,7 @@ static const char * qIOUtil_CheckStrSign( const char *s, int *sgn ){
         *sgn = -1; /*set the sign*/
         ++s; /*move to next*/ /*MISRAC2004-17.4_a deviation allowed*/ 
     } 
-    else if ('+' == *s){
+    else if( '+' == *s ){
         ++s; /*plus sign ignored, move to next*/  /*MISRAC2004-17.4_a deviation allowed*/ 
     } 
     else{
@@ -42,7 +42,7 @@ Parameters:
 
 Return value:
 
-    A pointer to the first occurrence of character in str.
+    A pointer to the first occurrence of character in <str>.
     If the character is not found, the function returns a null pointer.
 */
 char* qIOUtil_StrChr( const char *s, int c, size_t maxlen ){
@@ -62,10 +62,10 @@ char* qIOUtil_StrChr( const char *s, int c, size_t maxlen ){
 /* size_t qIOUtil_StrLen( const char* str, size_t maxlen )
 
 Returns the length of the given null-terminated byte string, that is, the number 
-of characters in a character array whose first element is pointed to by str up to
-and not including the first null character.
-The function returns zero if str is a null pointer and returns maxlen if the 
-null character was not found in the first maxlen bytes of str.
+of characters in a character array whose first element is pointed to by <str> up 
+to and not including the first null character.
+The function returns zero if <str> is a null pointer and returns <maxlen> if the 
+null character was not found in the first <maxlen> bytes of <str>.
 
 Parameters:
 
@@ -74,8 +74,8 @@ Parameters:
 
 Return value:
 
-  The length of the null-terminated byte string str on success, zero if str 
-  is a null pointer, maxlen if the null character was not found.
+  The length of the null-terminated byte string str on success, zero if <str> 
+  is a null pointer, <maxlen> if the null character was not found.
 */
 size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
     size_t count;
@@ -96,8 +96,8 @@ size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
 /*============================================================================*/
 /*size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen )
  
-Copies up to maxlen - 1 characters from the NUL-terminated string src to dst,
-NULL-terminating the result.
+Copies up to <maxlen> - 1 characters from the null-terminated string <src> to 
+<dst>, null-terminating the result.
  
 Parameters:
 
@@ -107,7 +107,7 @@ Parameters:
 
 Return value:
 
-  The length of src
+  The length of <src>
 */
 size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen ){
     const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
@@ -148,7 +148,7 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base ){
 static char qIOUtil_NibbleToX( qUINT8_t value ){
     char ch;
     ch = (char)( (qUINT8_t)( value & 0x0Fu ) + '0' );
-    return (char) (( ch > '9' )? (char)( ch + 7 ) : ch);
+    return (char)( ( ch > '9' )? (char)( ch + 7 ) : ch );
 }
 /*============================================================================*/
 /*void qIOUtil_SwapBytes( void *Data, const size_t n )
@@ -190,12 +190,12 @@ qBool_t qIOUtil_CheckEndianness( void ){
 /*============================================================================*/
 /*void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP )
  
-Wrapper method to write a string through fcn
-  
+Wrapper method to write a string through <fcn> 
+
 Parameters:
 
     - fcn : The basic output byte function
-    - pStorage : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to <fcn>
     - s: The string to be written
     - AIP : Auto-Increment the storage-pointer
 */
@@ -238,9 +238,9 @@ Wrapper method to write n RAW data through fcn
 Parameters:
 
     - fcn : The basic output byte function
-    - pStorage : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to <fcn>
     - Data: Buffer to read data from
-    - n: The size of "data"
+    - n: The size of <data>
     - AIP : Auto-Increment the storage-pointer
 */
 void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP ){
@@ -263,12 +263,12 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t
 /*============================================================================*/
 /*void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP )
 
-Wrapper method to get n RAW data through fcn
+Wrapper method to get <n> RAW data through <fcn>
   
 Parameters:
 
     - fcn : The basic input byte function
-    - pStorage : The storage pointer passed to fcn
+    - pStorage : The storage pointer passed to <fcn>
     - Data: Buffer to read data from
     - n: Number of bytes to get
     - AIP : Auto-Increment the storage-pointer
@@ -294,18 +294,18 @@ void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const s
 /*void qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n )
  
 Converts an unsigned integer value to a null-terminated string using the 16 base
-and stores the result in the array given by str parameter.
-str should be an array long enough to contain any possible value.
+and stores the result in the array given by <str> parameter.
+<str> should be an array long enough to contain any possible value.
   
 Parameters:
 
     - value : Value to be converted to a string.
     - str : Array in memory where to store the resulting null-terminated string.
-    - n: The number of chars used to represent the value in 'str' 
+    - n: The number of chars used to represent the value in <str> 
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n ){ 
     qBase_t i;
@@ -321,8 +321,8 @@ char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n ){
 /*============================================================================*/
 /*uint32_t qIOUtil_XtoU32( const char *s )
   
-Converts the input string s consisting of hexadecimal digits into an unsigned 
-integer value. The input parameter s should consist exclusively of hexadecimal 
+Converts the input string <s> consisting of hexadecimal digits into an unsigned 
+integer value. The input parameter <s> should consist exclusively of hexadecimal 
 digits, with optional whitespaces. The string will be processed one character at
 a time, until the function reaches a character which it doesn't recognize
 (including a null character).
@@ -455,7 +455,7 @@ Parameters:
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited to precision=10*/
     char c;
@@ -512,7 +512,7 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited t
 }
 /*============================================================================*/
 /*int qIOUtil_AtoI( const char *s )
-Parses the C-string s interpreting its content as an integral number, which is 
+Parses the C-string <s> interpreting its content as an integral number, which is 
 returned as a value of type int. The function first discards as many whitespace
 characters (as in isspace) as necessary until the first non-whitespace character 
 is found. Then, starting from this character, takes an optional initial plus or
@@ -520,8 +520,8 @@ minus sign followed by as many base-10 digits as possible, and interprets them
 as a numerical value.
 The string can contain additional characters after those that form the integral
 number, which are ignored and have no effect on the behavior of this function.
-If the first sequence of non-whitespace characters in str is not a valid integral 
-number, or if no such sequence exists because either str is empty or it contains 
+If the first sequence of non-whitespace characters in <s> is not a valid integral 
+number, or if no such sequence exists because either <s> is empty or it contains 
 only whitespace characters, no conversion is performed and zero is returned.
 
 Parameters:
@@ -557,9 +557,9 @@ int qIOUtil_AtoI( const char *s ){
 /* char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base )
 
 Converts an unsigned value to a null-terminated string using the specified base 
-and stores the result in the array given by str parameter. 
+and stores the result in the array given by <str> parameter. 
 
-str should be an array long enough to contain any possible value: 
+<str> should be an array long enough to contain any possible value: 
 (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
 32-bits platforms.
 
@@ -572,7 +572,7 @@ Parameters:
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base ){
     size_t i;
@@ -586,11 +586,11 @@ char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base ){
 /* char* qIOUtil_ItoA(q INT32_t num, char* str, qUINT8_t base )
 
 Converts an integer value to a null-terminated string using the specified base 
-and stores the result in the array given by str parameter. If base is 10 and 
+and stores the result in the array given by <str> parameter. If base is 10 and 
 value is negative, the resulting string is preceded with a minus sign (-). 
 With any other base, value is always considered unsigned.
 
-str should be an array long enough to contain any possible value: 
+<str> should be an array long enough to contain any possible value: 
 (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
 32-bits platforms.
 
@@ -603,7 +603,7 @@ Parameters:
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base ){
     size_t i = 0u;
@@ -625,7 +625,7 @@ char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base ){
 Converts a boolean value to a null-terminated string. Input is considered true
 with any value different to zero (0).
 
-str should be an array long enough to contain the output
+<str> should be an array long enough to contain the output
 
 Parameters:
 
@@ -634,7 +634,7 @@ Parameters:
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_BtoA( qBool_t num, char *str ){
     if( NULL != str ){
@@ -653,7 +653,7 @@ char* qIOUtil_BtoA( qBool_t num, char *str ){
 Converts a qBool_t value to a null-terminated string. Input is considered true
 with any value different to zero (0).
 
-str should be an array long enough to contain the output
+<str> should be an array long enough to contain the output
 
 Parameters:
 
@@ -662,7 +662,7 @@ Parameters:
 
 Return value:
 
-  A pointer to the resulting null-terminated string, same as parameter str
+  A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_QBtoA( qBool_t num, char *str ){
     if( NULL != str ){

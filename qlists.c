@@ -252,7 +252,7 @@ void* qList_Remove( qList_t * const list, void * const node, const qList_Positio
 /*qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qList_Position_t position )
 
 Moves(or merge) the entire list pointed by <source> to the list pointed by 
-<destination> at location specified by <position> 
+<destination> at location specified by <position>. 
 After the move operation, this function leaves empty the list pointed 
 by <source>.
 
@@ -440,7 +440,7 @@ modifying node's links without data swapping, improving performance
 if nodes have a large storage.
 
 Note: The function modifies the content of the list by reordering its 
-elements as defined by CompareFcn.
+elements as defined by <CompareFcn>.
 
 Parameters:
 
@@ -586,7 +586,7 @@ Parameters:
             Should have this prototype:
             qBool_t Function( void* Node, void *arg, qList_WalkStage_t stage )
             
-            If <Function> returns qTrue, the walk through loop
+            If <Function> returns qTrue, the walk-through loop
             will be terminated.
 
     - arg : Argument passed to <Fcn>

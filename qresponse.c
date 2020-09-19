@@ -23,7 +23,7 @@ void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
     }
 }   
 /*============================================================================*/
-/*void qResponseInitialize( qResponse_t * const obj )
+/*void qResponse_Reset( qResponse_t * const obj )
 
 Reset the Response Handler
 
@@ -49,8 +49,8 @@ Parameters:
 
     - obj : A pointer to the Response Handler object
     - Pattern: The data checked in the receiver ISR
-    - n : The length of the data pointer by Pattern 
-          (if Pattern is string, set n to 0 to auto-compute the length)
+    - n : The length of the data pointer by <Pattern> 
+          (if Pattern is string, set <n> to 0 to auto-compute the length)
   
 Return value:
 
@@ -68,8 +68,8 @@ Parameters:
 
     - obj : A pointer to the Response Handler object
     - Pattern: The data checked in the receiver ISR
-    - n : The length of the data pointed by Pattern 
-          (if Pattern is string, set n to 0 to auto-compute the length)
+    - n : The length of the data pointed by <Pattern> 
+          (if Pattern is string, set <n> to 0 to auto-compute the length)
     - t : The timeout value
   
 Return value:

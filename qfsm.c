@@ -36,7 +36,7 @@ qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_ExState_t SuccessState, qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
+/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
 
 Initializes a finite state machine (FSM).
 

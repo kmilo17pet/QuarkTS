@@ -101,7 +101,7 @@ Parameters:
 Return value:
 
     Returns qTrue when STimer expires, otherwise, returns qFalse.
-    > Note 1: A disarmed STimer also returns false.
+    > Note : A disarmed STimer also returns false.
 
 */
 qBool_t qSTimer_Expired( const qSTimer_t * const obj ){

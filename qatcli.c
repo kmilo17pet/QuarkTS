@@ -105,7 +105,7 @@ Parameters:
                       QATCLI_ERRORCODE(#)
     - NOTFOUND_Response: The output message when input doesn't match with any of 
                          the available commands
-    - term_EOL: The End Of Line string printed out after any of the CLI messages 
+    - term_EOL: The End-Of-Line string printed out after any of the CLI messages 
   
 Return value:
 
@@ -236,7 +236,7 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload ){
  
 Feed the CLI input with a single character. This call is mandatory 
 from an interrupt context. Put it inside the desired peripheral's ISR.
-If your ISR get a block of data, use instead qATCLI_ISRHandlerBlock
+If your ISR get a block of data, use instead <qATCLI_ISRHandlerBlock>
 
 Note: This API assumes that the respective ISR catch a single byte at a time.
 
@@ -276,7 +276,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
 /*qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n )
 Feed the CLI input with a string. This call is mandatory 
 from an interrupt context. Put it inside the desired peripheral's ISR.
-If your ISR only get a single char, use instead qATCLI_ISRHandler
+If your ISR only get a single char, use instead <qATCLI_ISRHandler>
 
 Parameters:
 
@@ -592,7 +592,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
 /*============================================================================*/
 /*char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out )
 
-This function get the <n> argument parsed as <String> from the incoming AT command.
+This function get the <n> argument parsed as string from the incoming AT command.
 This function should be only invoked from the callback context of the  recognized command.
 
 Parameters:
@@ -647,7 +647,7 @@ static size_t qATCLI_NumOfArgs( const char *str ){
 /*char* qATCLI_GetArgPtr( const qATCLI_PreCmd_t param, qINT8_t n )
 
 Get the pointer where the desired argument starts.
-This function should be only invoked from the callback context of the  recognized command.
+This function should be only invoked from the callback context of the recognized command.
 
 Parameters:
 
@@ -686,9 +686,9 @@ char* qATCLI_GetArgPtr( const qATCLI_PreCmd_t param, qINT8_t n ){
 /*============================================================================*/
 /*int qATCLI_GetArgInt( const qATCLI_PreCmd_t param, qINT8_t n )
 
-This function get the <n> argument parsed as <Integer> from the incoming AT command.
+This function get the <n> argument parsed as integer from the incoming AT command.
 This function should be only invoked from the callback context of the recognized command.
-Note: see qIOUtil_AtoI
+Note: see <qIOUtil_AtoI>
 
 
 Parameters:
@@ -709,9 +709,9 @@ int qATCLI_GetArgInt( const qATCLI_PreCmd_t param, qINT8_t n ){
 /*============================================================================*/
 /*float qATCLI_GetArgFlt( const qATCLI_PreCmd_t param, qINT8_t n )
 
-This function get the <n> argument parsed as <Float> from the incoming AT command.
+This function get the <n> argument parsed as float from the incoming AT command.
 This function should be only invoked from the callback context of the  recognized command.
-Note: see qIOUtil_AtoF
+Note: see <qIOUtil_AtoF>
 
 Parameters:
 
@@ -729,10 +729,10 @@ qFloat32_t qATCLI_GetArgFlt( const qATCLI_PreCmd_t param, qINT8_t n ){
 /*============================================================================*/
 /*qUINT32_t qATCLI_GetArgHex( const qATCLI_PreCmd_t param, qINT8_t n)
 
-This function get the <n> HEX argument parsed <qUINT32_t> from the
+This function get the <n> HEX argument parsed qUINT32_t from the
 incoming AT command.
 This function should be only invoked from the callback context of the recognized command.
-Note: see qIOUtil_XtoU32
+Note: see <qIOUtil_XtoU32>
 
 Parameters:
 
