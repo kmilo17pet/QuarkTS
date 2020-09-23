@@ -24,10 +24,10 @@ is statically allocated at compile time by the application writer.
  
 Parameters:
 
-    - obj : a pointer to the Queue object
-    - DataArea :  data block or array of data
-    - ItemSize : size of one element in the data block
-    - ItemsCount : size of one element in the data block
+    - obj : a pointer to the Queue object.
+    - DataArea :  data block or array of data.
+    - ItemSize : The size, in bytes, of one single item in the queue.
+    - ItemsCount : The maximum number of items the queue can hold.
 
 Return value:
 
