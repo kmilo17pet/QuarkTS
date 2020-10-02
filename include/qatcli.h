@@ -70,30 +70,25 @@
         qATCLI_CMDTYPE_ACT      = QATCLI_CMDTYPE_ACT    /*< AT+cmd */     
     }qATCLI_CommandType_t;
 
-    typedef qINT8_t qArgNum_t;
-
-    typedef struct{
+    typedef struct{ /*public data only available inside the command callback*/
         void *Command;                                          /*< A pointer to the calling AT Command object. */
         char *StrData;                                          /*< The string data. */      
-        char* (*GetArgPtr)( qArgNum_t n );                      /*< To get the pointer where the desired argument starts.*/
-        int (*GetArgInt)( qArgNum_t n );                        /*< To get the <n> argument parsed <Integer>*/
-        qFloat32_t (*GetArgFlt)( qArgNum_t n );                 /*< To get the <n> argument parsed <Float>*/
-        qUINT32_t (*GetArgHex)( qArgNum_t n );                  /*< To get the <n> HEX argument parsed <qUINT32_t>*/
-        char* (*GetArgString)( qArgNum_t n, char* out );        /*< This function get the <n> argument parsed as <String>*/
-        qATCLI_CommandType_t Type;                              /*< The command type. */
-        size_t StrLen;                                          /*< The length of StrData. */
-        size_t NumArgs;                                         /*< Number of arguments, only available if Type = QATCMDTYPE_SET. */          
-    }_qATCLI_PreCmd_Block_t;
-
-    typedef struct{
+        char* (*GetArgPtr)( qIndex_t n );                       /*< To get the pointer where the desired argument starts.*/
+        int (*GetArgInt)( qIndex_t n );                         /*< To get the <n> argument parsed <Integer>*/
+        qFloat32_t (*GetArgFlt)( qIndex_t n );                  /*< To get the <n> argument parsed <Float>*/
+        qUINT32_t (*GetArgHex)( qIndex_t n );                   /*< To get the <n> HEX argument parsed <qUINT32_t>*/
+        char* (*GetArgString)( qIndex_t n, char* out );         /*< This function get the <n> argument parsed as <String>*/
         qPutchFcn_t putch;                                      /*< Points to a function that writes a single char to the output. */
         qPutsFcn_t puts;                                        /*< Points to a function that writes a string to the output. */
         char *Output;                                           /*< Points to the output buffer storage area. */
-        void *UserData;
-    }_qATCLI_PublicData_t;
+        void *UserData;                                         /*< Points to the user-defined data - Storage Pointer*/        
+        size_t StrLen;                                          /*< The length of StrData. */
+        size_t NumArgs;                                         /*< Number of arguments, only available if Type = QATCMDTYPE_SET. */          
+        qATCLI_CommandType_t Type;                              /*< The command type. */
+    }_qATCLI_PublicData_t; 
+
 
     typedef _qATCLI_PublicData_t* qATCLI_Handler_t; 
-    typedef _qATCLI_PreCmd_Block_t* qATCLI_PreCmd_t;
 
     /* Please don't access any members of this structure directly */
     typedef struct _qATCLI_ControlBlock_s{
@@ -107,13 +102,12 @@
             qPutChar_t OutputFcn;                                           /*< Points to the user-supplied function to write a single byte to the output. */
             void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg);  /*< Used to notify the attached task if available*/           
             size_t SizeOutput;                                              /*< The size of Output. */
-            qATCLI_Input_t Input;                                           /*< The input of the CLI. */
-            _qATCLI_PreCmd_Block_t Params;                                  /*< The params used as the 2nd cmd-callback argument*/     
+            qATCLI_Input_t Input;                                           /*< The input of the CLI. */  
             _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
         }qPrivate;
     }qATCLI_t;  
 
-    typedef Q_FUNC_ATTRIBUTE_PRE qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1, qATCLI_PreCmd_t arg2) Q_FUNC_ATTRIBUTE_POS;
+    typedef qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1);
     typedef qUINT16_t qATCLI_Options_t;
 
     /* Please don't access any members of this structure directly */
@@ -137,12 +131,6 @@
     qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd );
     void qATCLI_Input_Flush( qATCLI_t * const cli );
     qBool_t qATCLI_Run( qATCLI_t * const cli );
-
-    char* qATCLI_GetArgString( const qATCLI_PreCmd_t param, qINT8_t n, char* out );
-    char* qATCLI_GetArgPtr( const qATCLI_PreCmd_t param, qINT8_t n );
-    int qATCLI_GetArgInt( const qATCLI_PreCmd_t param, qINT8_t n );
-    qFloat32_t qATCLI_GetArgFlt( const qATCLI_PreCmd_t param, qINT8_t n );
-    qUINT32_t qATCLI_GetArgHex( const qATCLI_PreCmd_t param, qINT8_t n );
 
     #ifdef __cplusplus
     }
