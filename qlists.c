@@ -6,7 +6,7 @@ static void qList_InserAtBack( qList_t * const list, qList_Node_t * const node )
 static qList_Node_t* qList_RemoveFront( qList_t * const list );
 static qList_Node_t* qList_RemoveBack( qList_t * const list );
 static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Position_t position );
-static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage );
+static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h );
 static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 );
 static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 );
 static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 );
@@ -305,13 +305,13 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
     return RetValue;
 }
 /*=========================================================*/
-static qBool_t qList_ChangeContainer( void *node, void *newcontainer, qList_WalkStage_t stage ){
+static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h ){
     qList_Node_t *xNode;
-    if( qList_WalkThrough == stage ){
+    if( qList_WalkThrough == h->stage ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/ 
-        xNode = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        xNode = (qList_Node_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        xNode->container = newcontainer;
+        xNode->container = h->arg; /*new container stored into <arg>*/
     }
     return qFalse;
 }
@@ -465,6 +465,7 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     qBool_t xRetCmp;
     size_t count, i, j, n;
     qList_Node_t *current = NULL, *before, *after;
+    _qList_CompareHandle_t xHandle;
 
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
@@ -473,7 +474,9 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
                 current = list->head;
                 n = count - i - (size_t)1;
                 for( j = (size_t)0; j <= n; j++ ){ 
-                    xRetCmp = CompareFcn( current, current->next );
+                    xHandle.n1 = current;
+                    xHandle.n2 = current->next;
+                    xRetCmp = CompareFcn( &xHandle );
                     if( qTrue == xRetCmp ) { /*compare adjacent nodes*/
                         before = current->prev;
                         after = current->next;
@@ -605,6 +608,7 @@ qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg
     qBool_t RetValue = qFalse;
     qList_Node_t *iNode;
     qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk throught*/
+    _qList_ForEachHandle_t xHandle = { NULL, arg,  qList_WalkInit};
     
     if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
         if ( NULL != list->head ){  /*walk the list only if it has items*/
@@ -617,17 +621,21 @@ qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg
                     adjacent = iNode; /*take offset as a starting point*/
                 }
             }
-            RetValue = Fcn( NULL, arg, qList_WalkInit ); /*run initial stage before looping through list*/
+            RetValue = Fcn( &xHandle ); /*run initial stage before looping through list*/
             if( qFalse == RetValue ){ /*check if the initial stage allows us to continue*/
+                xHandle.stage = qList_WalkThrough;
                 for( iNode = adjacent; NULL != iNode; iNode = adjacent ){ /*loop the list*/
                     adjacent = dir( iNode ); /*Save the adjacent node if the current node changes its links. */
-                    RetValue = Fcn( iNode, arg, qList_WalkThrough ); /*perform action over the node*/
+                    xHandle.node = iNode;
+                    RetValue = Fcn( &xHandle ); /*perform action over the node*/
                     if( RetValue ){ /*check if the last node handling breaks the loop*/
                         break;
                     }               
                 }
                 if( qFalse == RetValue ){ /*if the last node allows to continue, run the ending stage*/
-                    RetValue = Fcn( NULL, arg, qList_WalkEnd ); 
+                    xHandle.node = NULL;
+                    xHandle.stage = qList_WalkEnd;
+                    RetValue = Fcn( &xHandle ); 
                 }
             }    
         }    

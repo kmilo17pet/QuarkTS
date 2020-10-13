@@ -203,9 +203,8 @@
         }qQueueLinkMode_t;
     #endif
 
-    #define Q_NOTIFY_SIMPLE             ( &qTask_Notification_Send )
-    #define Q_NOTIFY_QUEUED             ( &qTask_Notification_Queue )
-
+    typedef enum{qTask_NotifyNULL, qTask_NotifySimple, qTask_NotifyQueued}qTask_NotifyMode_t;
+    
     qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata );
     qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata );
     qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );

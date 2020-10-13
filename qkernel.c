@@ -10,7 +10,7 @@
 #define QKERNEL_COREFLAG_CLEAR( FLAG, BIT )     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
 #define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
-#define QKERNEL_IDLETASK_INVOKE                 NULL, NULL, QLIST_WALKTHROUGH
+static _qList_ForEachHandle_t qOS_BuiltIn_IdleTask = { NULL, NULL, qList_WalkThrough };
 
 /*an item of the priority-queue*/
 typedef struct{
@@ -54,8 +54,8 @@ static qList_t *const SuspendedList = &kernel.CoreLists[ Q_PRIORITY_LEVELS + 1 ]
 static qList_t *const ReadyList = &kernel.CoreLists[ 0 ];
 /*=============================== Private Methods ============================*/
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task );
-static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;
-static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;    
+static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h );
+static qBool_t qOS_Dispatch( qList_ForEachHandle_t h );    
 static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 #define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
@@ -80,7 +80,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 #endif
 
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-    static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver( const void *n1, const void *n2 ) Q_FUNC_ATTRIBUTE_POS;
+    static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h );
 #endif
 
 /*========================== Shared Private Method ===========================*/
@@ -131,7 +131,7 @@ Parameters:
         kernel.QueueData = NULL;
     #endif
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        kernel.NotificationSpreadRequest.mode = NULL;
+        kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
         kernel.NotificationSpreadRequest.eventdata = NULL;
     #endif    
     kernel.Flag = 0uL; /*clear all the core flags*/
@@ -195,7 +195,7 @@ Parameters:
 
     - eventdata : Specific event user-data.
     - mode : the method used to spread the event:
-              Q_NOTIFY_SIMPLE or Q_NOTIFY_QUEUED.
+              qTask_NotifySimple or qTask_NotifyQueued.
 
 Return value:
 
@@ -205,7 +205,7 @@ Return value:
 qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode ){
     qBool_t RetValue = qFalse;
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        if( ( mode ==  Q_NOTIFY_SIMPLE ) || ( mode == Q_NOTIFY_QUEUED ) ){
+        if( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ){
             kernel.NotificationSpreadRequest.mode = mode;
             kernel.NotificationSpreadRequest.eventdata = eventdata;
             RetValue = qTrue;
@@ -647,7 +647,7 @@ void qOS_Run( void ){
         }
         else{ /*no task in the scheme is ready*/
             if( NULL != kernel.IDLECallback ){ /*check if the idle-task is available*/
-                (void)qOS_Dispatch( QKERNEL_IDLETASK_INVOKE ); /*special call to dispatch idle-task already hardcoded in the kernel*/
+                (void)qOS_Dispatch( &qOS_BuiltIn_IdleTask ); /*special call to dispatch idle-task already hardcoded in the kernel*/
             }
         }
         if( SuspendedList->size > (size_t)0 ){  /*check for a non-empty suspended-list*/
@@ -666,15 +666,15 @@ void qOS_Run( void ){
 }
 /*============================================================================*/
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_TaskEntryOrderPreserver( const void *n1, const void *n2 ) Q_FUNC_ATTRIBUTE_POS{
+static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h ){
     qTask_t *t1, *t2;
-    t1 = (qTask_t*)n1;
-    t2 = (qTask_t*)n1;
+    t1 = (qTask_t*)h->n1;
+    t2 = (qTask_t*)h->n1;
     return (qBool_t)( t1->qPrivate.Entry > t2->qPrivate.Entry );
 }
 #endif
 /*============================================================================*/
-static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS{
+static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
     qTask_t *xTask;
     qList_t *xList;
     #if ( Q_QUEUES == 1 )
@@ -683,7 +683,7 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
     static qBool_t xReady = qFalse;
     qBool_t RetValue = qFalse;
 
-    if( QLIST_WALKINIT == stage ){
+    if( QLIST_WALKINIT == h->stage ){
         xReady = qFalse;
         #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
@@ -693,15 +693,18 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
             }     
         #endif          
     }
-    else if( QLIST_WALKTHROUGH == stage ){
+    else if( QLIST_WALKTHROUGH == h->stage ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        xTask = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
-            if( NULL != kernel.NotificationSpreadRequest.mode ){
-                (void)kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
-                kernel.NotificationSpreadRequest.mode = NULL;
-                kernel.NotificationSpreadRequest.eventdata = NULL;
+            if( qTask_NotifyNULL != kernel.NotificationSpreadRequest.mode ){
+                if( qTask_NotifySimple == kernel.NotificationSpreadRequest.mode ){
+                    (void)qTask_Notification_Send( xTask, kernel.NotificationSpreadRequest.eventdata );
+                }
+                else{
+                    (void)qTask_Notification_Queue( xTask, kernel.NotificationSpreadRequest.eventdata );
+                }
                 RetValue = qTrue;
             }
         #endif
@@ -752,11 +755,15 @@ static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_CheckIfReady( void *node, void *arg, qLi
             (void)qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
-    else if( QLIST_WALKEND == stage ){ 
+    else if( QLIST_WALKEND == h->stage ){ 
+        #if ( Q_NOTIFICATION_SPREADER == 1 )
+            kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
+            kernel.NotificationSpreadRequest.eventdata = NULL;
+        #endif
         RetValue = xReady; 
     }
     else{
-        Q_UNUSED( arg ); /*this should never enter here*/
+        /*this should never enter here*/
     }
     return RetValue;
 }
@@ -815,16 +822,16 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
     return Event;
 }
 /*============================================================================*/
-static Q_FUNC_ATTRIBUTE_PRE qBool_t qOS_Dispatch( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS{
+static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
     qTrigger_t Event = byNoReadyTasks;
     qTask_t *Task; /*#!ok*/
     qList_t *xList;
     qTaskFcn_t TaskActivities;
     /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
-    xList = (qList_t*)arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
-    if( QLIST_WALKTHROUGH == stage ){ /*#!OK: false-positive can be reported here*/
+    xList = (qList_t*)h->arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+    if( QLIST_WALKTHROUGH == h->stage ){ /*#!OK: false-positive can be reported here*/
         if( NULL != xList){ /*#!OK* false-positive can be reported here*/     
-            Task = (qTask_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            Task = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task ); /*#!OK : false-positive can be reported here*/
             TaskActivities = Task->qPrivate.Callback; /*#!OK: false-positive can be reported here*/

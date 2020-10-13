@@ -26,8 +26,6 @@
     /*a single container is used to publish the private methods outside the kernel*/
     /* Please don't access any members of this structure directly */
 
-    typedef Q_FUNC_ATTRIBUTE_PRE qBool_t (*qTask_NotifyMode_t)(qTask_t * const arg1, void* arg2) Q_FUNC_ATTRIBUTE_POS;
-
     #if (Q_SETUP_TIME_CANONICAL == 1)
         void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
     #else

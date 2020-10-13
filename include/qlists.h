@@ -31,7 +31,19 @@
     #define QLIST_WALKTHROUGH       ( qList_WalkThrough )   /*< When the loop is transversing the list.*/
     #define QLIST_WALKEND           ( qList_WalkEnd )       /*< When the loop has finished. In this case, A NULL value will be passed in the node pointer*/
 
-    typedef Q_FUNC_ATTRIBUTE_PRE qBool_t (*qList_NodeFcn_t)( void *node, void *arg, qList_WalkStage_t stage ) Q_FUNC_ATTRIBUTE_POS;
+    typedef struct{
+        void *node;
+        void *arg;
+        qList_WalkStage_t stage;
+    }_qList_ForEachHandle_t;
+    typedef _qList_ForEachHandle_t* qList_ForEachHandle_t;
+
+    typedef struct{
+        const void *n1, *n2;
+    }_qList_CompareHandle_t;
+    typedef _qList_CompareHandle_t* qList_CompareHandle_t;
+
+    typedef qBool_t (*qList_NodeFcn_t)( qList_ForEachHandle_t h );
     typedef qINT32_t qList_Position_t;
 
     typedef void* (*qList_MemAllocator_t)( size_t size );
@@ -55,7 +67,7 @@
     qBool_t qList_IsEmpty( const qList_t * const list );
     size_t qList_Length( const qList_t * const list );
 
-    typedef Q_FUNC_ATTRIBUTE_PRE qBool_t (*qList_CompareFcn_t)( const void *n1, const void *n2 ) Q_FUNC_ATTRIBUTE_POS;
+    typedef qBool_t (*qList_CompareFcn_t)( qList_CompareHandle_t h );
     qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ) ;
 
 
