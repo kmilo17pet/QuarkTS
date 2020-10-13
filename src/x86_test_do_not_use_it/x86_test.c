@@ -99,7 +99,7 @@ qBool_t mylist_binremove( qList_ForEachHandle_t h ){
 /*============================================================================*/
 qBool_t comparator( qList_CompareHandle_t h ) { 
     const mynode_t *n1 = h->n1;
-    const mynode_t *n2 = h->n1;
+    const mynode_t *n2 = h->n2;
     int l, r;
 
     l = n1->value;
