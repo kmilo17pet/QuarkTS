@@ -62,10 +62,9 @@ typedef struct{
 
 qList_t otherlist;
 /*============================================================================*/
-qBool_t mylist_visualizer(void *node, void *arg, qList_WalkStage_t stage){
-    mynode_t *xnode = node;
-    (void)arg;
-    switch (stage){
+qBool_t mylist_visualizer( qList_ForEachHandle_t h ){
+    mynode_t *xnode = h->node;
+    switch( h->stage ){
         case qList_WalkInit:
             printf("list={");
             break;
@@ -80,15 +79,15 @@ qBool_t mylist_visualizer(void *node, void *arg, qList_WalkStage_t stage){
     return qFalse;
 }
 /*============================================================================*/
-qBool_t mylist_binremove( void *node, void *arg, qList_WalkStage_t stage){
-    mynode_t *xnode = node;
-    switch (stage){
+qBool_t mylist_binremove( qList_ForEachHandle_t h ){
+    mynode_t *xnode = h->node;
+    switch( h->stage ){
         case qList_WalkInit:
             break;
         case qList_WalkThrough:
             if( xnode->value & 1 ){
-                TEST_ASSERT_NOT_NULL( qList_Remove( arg, node, 0 ) );
-                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, node, qList_AtBack ) );
+                TEST_ASSERT_NOT_NULL( qList_Remove( h->arg, h->node, 0 ) );
+                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, h->node, qList_AtBack ) );
             }
             break;
         case qList_WalkEnd:
@@ -98,9 +97,9 @@ qBool_t mylist_binremove( void *node, void *arg, qList_WalkStage_t stage){
     return qFalse;    
 }
 /*============================================================================*/
-qBool_t comparator(const void *p, const void *q) { 
-    const mynode_t *n1 = p;
-    const mynode_t *n2 = q;
+qBool_t comparator( qList_CompareHandle_t h ) { 
+    const mynode_t *n1 = h->n1;
+    const mynode_t *n2 = h->n1;
     int l, r;
 
     l = n1->value;
