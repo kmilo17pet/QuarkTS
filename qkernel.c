@@ -40,7 +40,7 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
     _qEvent_t_ EventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
     volatile qCoreFlags_t Flag;                         /*< The scheduler Core-Flags. */
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        qNotificationSpreader_t NotificationSpreadRequest;
+        volatile qNotificationSpreader_t NotificationSpreadRequest;
     #endif
     #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
         size_t TaskEntries;                             /*< Used to hold the number of task entries*/
@@ -199,16 +199,19 @@ Parameters:
 
 Return value:
 
-    qTrue if success. Otherwise qFalse.              
+    qTrue if success. qFalse if any other spread operation is in progress.
 */ 
 /*============================================================================*/
 qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode ){
     qBool_t RetValue = qFalse;
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        if( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ){
-            kernel.NotificationSpreadRequest.mode = mode;
-            kernel.NotificationSpreadRequest.eventdata = eventdata;
-            RetValue = qTrue;
+        /*do not proceed if any previous operation is in progress*/
+        if( qTask_NotifyNULL ==  kernel.NotificationSpreadRequest.mode ){ 
+            if( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ){
+                kernel.NotificationSpreadRequest.mode = mode;
+                kernel.NotificationSpreadRequest.eventdata = eventdata;
+                RetValue = qTrue;
+            }
         }
     #else
         Q_UNUSED( eventdata );
@@ -757,6 +760,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
     }
     else if( QLIST_WALKEND == h->stage ){ 
         #if ( Q_NOTIFICATION_SPREADER == 1 )
+            /*spread operation done, clean-up*/
             kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
             kernel.NotificationSpreadRequest.eventdata = NULL;
         #endif
