@@ -3,12 +3,13 @@
 
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base );
 static char qIOUtil_NibbleToX( qUINT8_t value );
-static const char * qIOUtil_DiscardWhitespaces( const char *s );
+static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen );
 static const char * qIOUtil_CheckStrSign( const char *s, int *sgn );
 
-static const char * qIOUtil_DiscardWhitespaces( const char *s ){
-    while( 0 != isspace( (int)*s ) ){
+static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen ){
+    while( ( 0 != isspace( (int)*s ) )  && ( maxlen > (size_t)0 )  ){
         s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
+        maxlen--;
     }    
     return s;
 }
@@ -398,7 +399,7 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
         qFloat64_t power = 1.0, efactor;
     #endif
    
-    s = qIOUtil_DiscardWhitespaces( s );
+    s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
     s = qIOUtil_CheckStrSign( s, &sgn );
     /*cstat -CERT-FLP36-C*/
     fact = ( qFloat64_t )sgn; /*CERT-FLP36-C deviation allowed*/
@@ -540,7 +541,7 @@ int qIOUtil_AtoI( const char *s ){
     int RetValue = 0;
 
     if( NULL != s ){
-        s = qIOUtil_DiscardWhitespaces( s );
+        s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
         s = qIOUtil_CheckStrSign( s, &sgn );
         while( '\0' != *s ){ /*iterate until null char is found*/
             if ( ( *s < '0' ) || ( *s > '9' ) ){
