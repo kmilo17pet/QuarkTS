@@ -471,7 +471,7 @@ Return value:
 qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child ){
     qBool_t RetValue = qFalse;
     /*qSM_t *last;*/
-    if( ( NULL != parent ) && ( NULL != state ) && ( child != NULL ) ){
+    if( ( NULL != parent ) && ( NULL != state ) && ( NULL != child ) ){
         child->qPrivate.xPublic.Parent = parent;
         child->qPrivate.Composite.rootState = state;
 
