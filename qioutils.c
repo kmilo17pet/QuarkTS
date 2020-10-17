@@ -341,7 +341,7 @@ qUINT32_t qIOUtil_XtoU32( const char *s ) {
     qUINT8_t xByte;
     qUINT8_t nparsed = 0u;
     if( NULL != s ){
-        while ( ( *s != '\0' ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
+        while ( ( '\0' != *s ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
             xByte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/ /*MISRAC2004-17.4_a deviation allowed*/ 
             if( 0 != isxdigit( (int)xByte ) ){ /*if is a valid hex digit*/
                 nparsed++; /*increase the parsed char count*/
@@ -404,8 +404,8 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
     /*cstat -CERT-FLP36-C*/
     fact = ( qFloat64_t )sgn; /*CERT-FLP36-C deviation allowed*/
 
-    while( '\0' != (c=*s) ) { /*MISRAC2004-17.4_a deviation allowed*/ 
-        if( c == '.'){
+    while( '\0' != ( c = *s) ) { /*MISRAC2004-17.4_a deviation allowed*/ 
+        if( '.' == c ){
             point_seen = qTrue; 
         }
         else if( 0 != isdigit( (int)c ) ){
@@ -704,7 +704,7 @@ Return value:
 */
 qBool_t qIOUtil_IsInf( qFloat32_t f ){
     qUINT32_t u = 0uL;
-    (void) memcpy( &u, &f, sizeof(u) );
+    (void)memcpy( &u, &f, sizeof(u) );
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
@@ -721,7 +721,7 @@ Return value:
 */
 qBool_t qIOUtil_IsNan( qFloat32_t f ){
     qUINT32_t u = 0uL;
-    (void) memcpy( &u, &f, sizeof(u) );
-    return ( ( ( u & 0x7F800000uL ) ==  0x7F800000uL ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
+    (void)memcpy( &u, &f, sizeof(u) );
+    return ( ( 0x7F800000uL == ( u & 0x7F800000uL ) ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
 }
 /*============================================================================*/

@@ -124,7 +124,7 @@ Parameters:
     kernel.IDLECallback = IdleCallback;
     #if ( Q_PRIO_QUEUE_SIZE > 0 )    
         /*init the priority queue*/
-        for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++){
+        for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ){
             kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
         }
         kernel.QueueIndex = -1;     
@@ -223,7 +223,7 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
 static void qOS_PriorityQueue_CleanUp( const qTask_t * task ){
     qIndex_t i;
-    for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; i++){ 
+    for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; i++ ){ 
         if( kernel.QueueStack[ i ].Task == task ){
             qOS_PriorityQueue_ClearIndex( i );
         }
@@ -236,7 +236,7 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
 
     kernel.QueueStack[ IndexToClear ].Task = NULL; /*set the position in the queue as empty*/  
     QueueIndex = (qBase_t)kernel.QueueIndex; /*to avoid side effects*/
-    for( j = IndexToClear ; (qBase_t)j < QueueIndex ; j++){ 
+    for( j = IndexToClear ; (qBase_t)j < QueueIndex ; j++ ){ 
         kernel.QueueStack[ j ] = kernel.QueueStack[ j + (qIndex_t)1 ]; /*shift the remaining items of the queue*/
     }
     kernel.QueueIndex--;    /*decrease the index*/    
@@ -724,7 +724,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
                 xReady = qTrue;            
             }
             #if ( Q_QUEUES == 1 )  
-            else if( qTriggerNULL !=  ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue-event available*/
+            else if( qTriggerNULL != ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue-event available*/
                 xTask->qPrivate.Trigger = trg;      
                 xReady = qTrue;
             }
@@ -782,12 +782,12 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
         case byTimeElapsed:
             /*handle the iteration value and the FirstIteration flag*/
             TaskIteration = Task->qPrivate.Iterations;
-            kernel.EventInfo.FirstIteration = ( ( TaskIteration != qPeriodic ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
+            kernel.EventInfo.FirstIteration = ( ( qPeriodic != TaskIteration ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
             Task->qPrivate.Iterations = ( kernel.EventInfo.FirstIteration )? -Task->qPrivate.Iterations : Task->qPrivate.Iterations;
             if( qPeriodic != Task->qPrivate.Iterations ){
                 Task->qPrivate.Iterations--; /*Decrease the iteration value*/
             }
-            kernel.EventInfo.LastIteration = (0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
+            kernel.EventInfo.LastIteration = ( 0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
             if( kernel.EventInfo.LastIteration ) {
                 qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
             }           
@@ -935,7 +935,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
 qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag ){
 	qUINT32_t xBit;
 	xBit = Task->qPrivate.Flags & flag;
-	return (( xBit != 0uL )? qTrue : qFalse);
+	return (( 0uL != xBit )? qTrue : qFalse );
 }
 /*========================== Shared Private Method ===========================*/
 void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value ){
