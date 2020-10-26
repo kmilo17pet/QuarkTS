@@ -12,9 +12,11 @@ typedef struct qSM_Stack_s{
     #define Q_FSM_MAX_NEST_DEPTH   ( 5 )
 #endif
 
-static size_t qSM_StackIndex = 0;
-static qSM_Stack_t qSM_RAM_Area[ Q_FSM_MAX_NEST_DEPTH ] = {0};
-
+typedef struct{
+    size_t Index;
+    qSM_Stack_t Element[ Q_FSM_MAX_NEST_DEPTH ];
+}qSM_Stack_Handle_t;
+static qSM_Stack_Handle_t qSM_NestStack = { 0u };
 
 static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate, qSM_Handler_t handle );
 static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal );
@@ -23,6 +25,8 @@ static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_Sta
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
 static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
+static void qStateMachine_StackCleanUp( void );
+
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
@@ -102,6 +106,7 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
     qSM_Stack_t *s = NULL;  /* Initialize stack s */
     qBool_t hierarchy_drilled = qFalse;     
 
+    qStateMachine_StackCleanUp( );
     root->qPrivate.Active = qTrue; /*the root fsm is always active*/
     while( qFalse == hierarchy_drilled ){
         if( NULL != current ){     /* Reach the deep-most fsm of the current*/
@@ -615,15 +620,15 @@ void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent ){
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top ){ 
     qBool_t RetValue = qTrue;
     if( NULL != top ){
-        RetValue = ( 0u == qSM_StackIndex )? qTrue : qFalse;
+        RetValue = ( 0u == qSM_NestStack.Index )? qTrue : qFalse;
     }
     return RetValue; 
 }  
 /*============================================================================*/
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){ 
     qSM_Stack_t *new_tNode;
-    if( qSM_StackIndex < (size_t)Q_FSM_MAX_NEST_DEPTH ){
-        new_tNode = &qSM_RAM_Area[ qSM_StackIndex++ ];
+    if( qSM_NestStack.Index < (size_t)Q_FSM_MAX_NEST_DEPTH ){
+        new_tNode = &qSM_NestStack.Element[ qSM_NestStack.Index++ ];
         new_tNode->t  = t;  /* put in the data  */
         new_tNode->next = (*top_ref);  /* link the old list of the new tNode */   
         (*top_ref) = new_tNode;   /* move the head to point to the new tNode */      
@@ -638,10 +643,19 @@ static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){
         top = *top_ref; 
         res = top->t; 
         *top_ref = top->next; 
-        qSM_StackIndex--; 
+        qSM_NestStack.Index--; 
     } 
     return res;
 } 
+/*============================================================================*/
+static void qStateMachine_StackCleanUp( void ){
+    size_t i;
+    for( i = 0u; i < (size_t)Q_FSM_MAX_NEST_DEPTH; i++ ){
+        qSM_NestStack.Element[ i ].next = NULL;
+        qSM_NestStack.Element[ i ].t = NULL;
+    }
+    qSM_NestStack.Index = 0u;
+}
 /*============================================================================*/
 
 #endif /* #if ( Q_FSM == 1 ) */

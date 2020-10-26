@@ -4,7 +4,9 @@
 
 typedef size_t qAddress_t;  /*restrict*/
 
-static qUINT8_t DefaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = {0};
+/*cstat -MISRAC2012-Rule-8.9_b*/
+static qUINT8_t DefaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = {0}; /*MISRAC2012-Rule-8.9_b deviation allowed, required for <DefaultMemPool>*/
+/*cstat +MISRAC2012-Rule-8.9_b*/
 static qMemMang_Pool_t DefaultMemPool = { {NULL, DefaultPoolMemory, Q_DEFAULT_HEAP_SIZE, Q_DEFAULT_HEAP_SIZE, 0, {NULL, 0} } };
 static qMemMang_Pool_t *Selected_MemPool = &DefaultMemPool;
 static const size_t ByteAlignmentMask   = ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
