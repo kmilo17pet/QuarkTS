@@ -186,7 +186,7 @@ Parameters:
 */
 void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value ){
     if( NULL != Task ){
-        Task->qPrivate.Iterations = ( qPeriodic==Value )? qPeriodic : -Value;
+        Task->qPrivate.Iterations = ( qPeriodic == Value )? qPeriodic : -Value;
     }      
 }
 /*============================================================================*/
@@ -348,7 +348,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->qPrivate.head ) {
-            qOS_Set_TaskFlags( Task, (qUINT32_t)Mode & QTASK_QUEUEFLAGS_MASK, (( arg != 0u )? qATTACH :qDETACH) );
+            qOS_Set_TaskFlags( Task, (qUINT32_t)Mode & QTASK_QUEUEFLAGS_MASK, (( 0u != arg )? qATTACH :qDETACH ) );
             if( Mode == qQueueMode_Count ){
                 Task->qPrivate.QueueCount = (qUINT32_t)arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }

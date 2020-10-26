@@ -403,7 +403,7 @@ Return value:
 qBool_t qList_IsEmpty( const qList_t * const list ){
     qBool_t RetValue = qTrue;
     if( NULL != list ){
-        RetValue = (NULL == list->head)? qTrue : qFalse;
+        RetValue = ( NULL == list->head )? qTrue : qFalse;
     }
     return RetValue;
 }
@@ -546,7 +546,7 @@ qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void
             }
         }
         else{
-            iterator->next = ( dir == QLIST_FORWARD )? list->head : list->tail;
+            iterator->next = ( QLIST_FORWARD == dir )? list->head : list->tail;
             RetValue = qTrue;
         }
     }

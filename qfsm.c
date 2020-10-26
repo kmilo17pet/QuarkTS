@@ -121,7 +121,7 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
             hierarchy_drilled = qStateMachine_StackIsEmpty( s );
             if( qFalse ==  hierarchy_drilled ){
                 current = qStateMachine_StackPop( &s );             
-                if( NULL != current){
+                if( NULL != current ){
                     qStateMachine_HierarchicalExec( current, Data );    
                     current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm turn */                   
                 }
@@ -476,7 +476,7 @@ Return value:
 qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child ){
     qBool_t RetValue = qFalse;
     /*qSM_t *last;*/
-    if( ( NULL != parent ) && ( NULL != state ) && (child != NULL ) ){
+    if( ( NULL != parent ) && ( NULL != state ) && ( NULL != child ) ){
         child->qPrivate.xPublic.Parent = parent;
         child->qPrivate.Composite.rootState = state;
 
