@@ -40,7 +40,7 @@ Their modularity and reliability make this OS a great choice to develop efficien
 Make sure to use the recursive flag to fetch the kernel submodule into src/os
 
 ```
-git clone https://github.com/TECREA/QuarkTS.git --recursive
+git clone https://github.com/kmilo17pet/QuarkTS.git --recursive
 ```
 
 
@@ -49,7 +49,7 @@ git clone https://github.com/TECREA/QuarkTS.git --recursive
 ### Creating
 
 ```
-git submodule add -b kernel_only https://github.com/TECREA/QuarkTS.git <destination path>
+git submodule add -b kernel_only https://github.com/kmilo17pet/QuarkTS.git <destination path>
 ```
 
 Then, run the initialize command to fetch the code for the first time:
@@ -67,5 +67,5 @@ git submodule update --remote
 ### Get a copy of the configuration file (qconfig.h):
 
 ```
-curl https://raw.githubusercontent.com/TECREA/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
+curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
 ```
