@@ -10,8 +10,6 @@
 #define QKERNEL_COREFLAG_CLEAR( FLAG, BIT )     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
 #define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
-static _qList_ForEachHandle_t qOS_BuiltIn_IdleTask = { NULL, NULL, qList_WalkThrough };
-
 /*an item of the priority-queue*/
 typedef struct{
     qTask_t *Task;      /*< A pointer to the task. */
@@ -620,6 +618,8 @@ pool has been defined.
 void qOS_Run( void ){
     qIndex_t xPriorityListIndex; 
     qList_t *xList;
+    _qList_ForEachHandle_t qOS_BuiltIn_IdleTask = { NULL, NULL, qList_WalkThrough };
+    
     do{           
         if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ){ /*check for ready tasks in the waiting-list*/
             xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1;
