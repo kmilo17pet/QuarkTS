@@ -27,9 +27,9 @@
     #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFFu )
     #define QSM_SIGNAL_ENTRY        ( (qSM_Signal_t)0xFFFFFFFEu )
     #define QSM_SIGNAL_EXIT         ( (qSM_Signal_t)0xFFFFFFFDu )
-    #define QSM_SIGNAL_TIMEOUT0     ( (qSM_Signal_t)0xFFFFFFFCu )    
+    #define QSM_SIGNAL_TIMEOUT2     ( (qSM_Signal_t)0xFFFFFFFCu )    
     #define QSM_SIGNAL_TIMEOUT1     ( (qSM_Signal_t)0xFFFFFFFBu )    
-    #define QSM_SIGNAL_TIMEOUT2     ( (qSM_Signal_t)0xFFFFFFFAu )    
+    #define QSM_SIGNAL_TIMEOUT0     ( (qSM_Signal_t)0xFFFFFFFAu )    
     #define QSM_SIGNAL_USER         ( QSM_SIGNAL_RANGE_MIN )
   
 
