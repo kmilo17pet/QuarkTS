@@ -134,7 +134,7 @@ void Sig_Handler(int signum ){
             qStateMachine_SendSignal( &Top_SM, SIG_BAKE, qFalse );
             break;
         case SIGTRAP:
-            qStateMachine_SendSignal( &Top_SM, SIG_OFFTIMEOUT, qFalse );     
+            //qStateMachine_SendSignal( &Top_SM, SIG_OFFTIMEOUT, qFalse );     
             break;
         case SIGSYS:  
             break;
@@ -163,11 +163,11 @@ int main(int argc, char** argv) {
 
     qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
 
-    qStateMachine_Setup( &DoorClosed_SM, Off_State, NULL, NULL, NULL, NULL );
-    qStateMachine_Setup( &Heating_SM, QSM_STATE_UNDEFINED, NULL, NULL, NULL, NULL );
+    qStateMachine_Setup( &DoorClosed_SM, Off_State, NULL );
+    qStateMachine_Setup( &Heating_SM, QSM_STATE_UNDEFINED, NULL );
     qStateMachine_TransitionTableInstall( &DoorClosed_SM, &closed_ttable, DoorClosed_SM_ttable, 3);
     
-    qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, DoorClosed_State, NULL, NULL, NULL, NULL, qEnabled, NULL); 
+    qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, DoorClosed_State, NULL, qEnabled, NULL); 
     
     qStateMachine_SignalQueueSetup( &Top_SM, topsm_sig_stack, sizeof(topsm_sig_stack)/sizeof(topsm_sig_stack[0]) );
     qStateMachine_TransitionTableInstall( &Top_SM, &top_ttable, Top_SM_ttable, 2 );

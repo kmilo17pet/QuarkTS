@@ -481,12 +481,12 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Add_Node(&INPUTS, &sensor2, &PORTA, 3) );
     #if ( Q_QUEUES == 1 )
         TEST_MESSAGE( "qQueue_Module..." ); 
-        
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &somequeue, queuearea, sizeof(int), 8) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[0]) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[1]) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[2]) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[3]) );
+        qTrace_Variable( qQueue_Count( &somequeue) , Decimal );
         TEST_ASSERT_EQUAL_size_t( 4, qQueue_Count( &somequeue ) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
         TEST_ASSERT_EQUAL_INT( x[3], DataReceivedFromQueue );
@@ -514,7 +514,7 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, T100MSEC, &statemachine, firststate, NULL, NULL, NULL, NULL, qEnabled, "smtask") );   
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, T100MSEC, &statemachine, firststate, NULL, qEnabled, "smtask") );   
     qStateMachine_SignalQueueSetup( &statemachine, fsmsigarea, 5 );
     qOS_Run();
 }
