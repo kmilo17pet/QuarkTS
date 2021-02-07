@@ -15,7 +15,7 @@
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
     
 
-    #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+    #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
         #include "qstimers.h"
     #endif
 
@@ -117,7 +117,7 @@
             qQueue_t SignalQueue;                           /*< The fsm signal queue object. */
             _qSM_PublicData_t xPublic;                      /*< The external-manipulable members of the fsm. */
             qBool_t Active;                                 /*< A flag indicating whether the fsm should run in a hierarchical environment*/
-            #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+            #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
                 qSTimer_t builtin_timeout[3];
             #endif
         }qPrivate;

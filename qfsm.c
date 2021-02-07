@@ -30,7 +30,7 @@ static void qStateMachine_StackCleanUp( void );
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
-#if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+#if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
     static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
     static void qStateMachine_DisableTimeouts( qSM_t * const obj );
     static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
@@ -81,7 +81,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.Composite.next = NULL;
         obj->qPrivate.Composite.rootState = NULL;
         RetValue = qTrue;
-        #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+        #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
             qStateMachine_DisableTimeouts( obj );
         #endif
     }
@@ -165,7 +165,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     else{        
         #if ( Q_QUEUES == 1 )
         if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
-            #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+            #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
                 qStateMachine_CheckTimeoutSignals( obj );
             #endif
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &xSignal ) ){
@@ -234,7 +234,7 @@ static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate
         substate( handle );
     }
 }
-#if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+#if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
 /*============================================================================*/
 static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
     qSTimer_Disarm( &obj->qPrivate.builtin_timeout[0] );
@@ -294,7 +294,7 @@ Return value:
 */ 
 qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time ){
     qBool_t RetValue = qFalse;
-    #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+    #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
         if( ( xTimeout <= 2 ) && ( NULL != obj ) ){
             RetValue = qSTimer_Set( &obj->qPrivate.builtin_timeout[ xTimeout ], time  );
         }
