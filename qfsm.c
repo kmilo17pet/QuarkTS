@@ -26,6 +26,12 @@ static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
+#if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+    static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
+    static void qStateMachine_DisableTimeouts( qSM_t * const obj );
+    static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
+#endif
+
 /*============================================================================*/
 qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
     Q_UNUSED( h );
@@ -36,7 +42,7 @@ qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
+/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates )
 
 Initializes a finite state machine (FSM).
 
@@ -46,23 +52,13 @@ Parameters:
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qSM_Handler_t as input argument.
-    - SuccessState : Sub-State performed after a state finish with return status 
-                     qSM_EXIT_SUCCESS. This argument is a pointer to a callback
-                     function with a qSM_Handler_t pointer as input argument.
-    - FailureState : Sub-State performed after a state finish with return status 
-                     qSM_EXIT_FAILURE. This argument is a pointer to a callback
-                     function with a qSM_Handler_t as input argument.
-    - UnexpectedState : Sub-State performed after a state finish with return status
-                        value between -32766 and 32767. This argument is a 
-                        pointer to a callback function with a qSM_Handler_t 
-                        as input argument.
-    - BeforeAnyState : A state called before the normal state machine execution,                   
+    - substates : A pointer to the container of Sub-States. To ignore pass NULL                 
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState ){
+qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates ){
     qBool_t RetValue = qFalse;
     if( ( NULL != obj ) && ( NULL != InitState ) ){
         obj->qPrivate.xPublic.NextState = InitState;
@@ -72,10 +68,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.xPublic.LastState = NULL;
         obj->qPrivate.xPublic.Signal = (qSM_Signal_t)0u;
         obj->qPrivate.xPublic.Parent = NULL;
-        obj->qPrivate.Failure = FailureState;
-        obj->qPrivate.Success = SuccessState;
-        obj->qPrivate.Unexpected = UnexpectedState;
-        obj->qPrivate.BeforeAnyState = BeforeAnyState;
+        obj->qPrivate.substates = substates;
         obj->qPrivate.TransitionTable = NULL;
         obj->qPrivate.Owner = NULL;
         obj->qPrivate.SignalQueue.qPrivate.head = NULL;
@@ -84,6 +77,9 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.Composite.next = NULL;
         obj->qPrivate.Composite.rootState = NULL;
         RetValue = qTrue;
+        #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+            qStateMachine_DisableTimeouts( obj );
+        #endif
     }
     return RetValue;
 }
@@ -115,7 +111,7 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
         else{   /* backtrack from the empty subtree and visit the nested fsm at the top of the stack; however, if the stack is empty, we are done */
             hierarchy_drilled = qStateMachine_StackIsEmpty( s );
             if( qFalse ==  hierarchy_drilled ){
-                current = qStateMachine_StackPop( &s );             
+                current = qStateMachine_StackPop( &s );           
                 if( NULL != current ){
                     qStateMachine_HierarchicalExec( current, Data );    
                     current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm turn */                   
@@ -161,9 +157,12 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
         obj->qPrivate.xPublic.PreviousReturnStatus = obj->qPrivate.xPublic.LastReturnStatus;
         qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_ENTRY);
     }
-    else{
+    else{        
         #if ( Q_QUEUES == 1 )
         if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+            #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+                qStateMachine_CheckTimeoutSignals( obj );
+            #endif
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &xSignal ) ){
                 if( NULL != obj->qPrivate.Composite.head ){
                     obj->qPrivate.xPublic.Signal = xSignal; /*store the signal if any child needs it*/
@@ -187,8 +186,9 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
         
         qStateMachine_ExecStateIfAvailable( obj, CurrentState, xSignal );
 
-        if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition occurred??*/
+        if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition occurred??*/           
             qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_EXIT ); 
+            qStateMachine_TimeoutQueueCleanup( obj );
         }
     }
     
@@ -201,21 +201,26 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
 
     handle = &obj->qPrivate.xPublic;
     handle->Signal = xSignal;
-    qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.BeforeAnyState , handle ); /*eval the BeforeAnyState if available*/
+    if( NULL != obj->qPrivate.substates ){
+        qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.substates->BeforeAnyState , handle ); /*eval the BeforeAnyState if available*/
+    }
+
     if( NULL != state ){ /*eval the state if available*/
         ExitStatus = state( handle );
     }
     obj->qPrivate.xPublic.LastReturnStatus = ExitStatus;
     obj->qPrivate.xPublic.LastState = state; /*update the LastState*/
     /*Check return status to eval extra states*/
-    if( qSM_EXIT_FAILURE == ExitStatus ){
-        qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.Failure, handle ); /*Run failure state if available*/
-    }
-    else if ( qSM_EXIT_SUCCESS == ExitStatus ){
-        qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.Success, handle ); /*Run success state if available*/
-    } 
-    else{
-        qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.Unexpected, handle ); /*Run unexpected state if available*/
+    if( NULL != obj->qPrivate.substates ){
+        if( qSM_EXIT_FAILURE == ExitStatus ){
+            qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.substates->Failure, handle ); /*Run failure state if available*/
+        }
+        else if ( qSM_EXIT_SUCCESS == ExitStatus ){
+            qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.substates->Success, handle ); /*Run success state if available*/
+        } 
+        else{
+            qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.substates->Unexpected, handle ); /*Run unexpected state if available*/
+        }
     }
 }
 /*============================================================================*/
@@ -223,6 +228,98 @@ static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate
     if( NULL != substate ){
         substate( handle );
     }
+}
+#if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+/*============================================================================*/
+static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
+    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[0] );
+    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[1] );
+    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[2] );
+}
+/*============================================================================*/
+static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
+    if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[0] ) ) {
+        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT0, qFalse );   
+    }
+    else if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[1] ) ) {
+        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT1, qFalse ); 
+    }
+    else if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[2] ) ) {
+        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT2, qFalse ); 
+    }
+    else{
+        /*nothing to do here*/
+    }
+}
+/*============================================================================*/
+static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  ){
+    size_t cnt;
+    qSM_Signal_t xSignal;
+    if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+        cnt = qQueue_Count( &obj->qPrivate.SignalQueue );
+        while( cnt-- ){
+            if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue , &xSignal ) ){
+                if( ( xSignal < QSM_SIGNAL_TIMEOUT0 ) || ( xSignal > QSM_SIGNAL_TIMEOUT2) ){
+                    qQueue_SendToBack( &obj->qPrivate.SignalQueue , &xSignal );
+                }
+            }
+        }
+    }
+    qStateMachine_DisableTimeouts( obj );
+}
+#endif
+/*============================================================================*/
+/*qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time )
+
+Set the time for one of the built-in timeout inside the target FSM
+
+Note : This feature its only available if the FSM has a signal queue installed.
+Note : In a hierarchical FSM, the TIMEOUT signal can be propagated from the parent 
+if childs do not have their own signal queue.
+
+Parameters:
+
+    - obj : a pointer to the target FSM object.
+    - xTimeout : the index of the timeout (0, 1 ot 2)
+    - time : the specified time
+
+Return value:
+
+    Returns qTrue on success, otherwise returns qFalse;
+*/ 
+qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time ){
+    qBool_t RetValue = qFalse;
+    #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+        if( ( xTimeout <= 2 ) && ( NULL != obj ) ){
+            RetValue = qSTimer_Set( &obj->qPrivate.builtin_timeout[ xTimeout ], time  );
+        }
+    #else
+        Q_UNUSED( xTimeout );
+        Q_UNUSED( time );
+    #endif
+    return RetValue;
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_SubStatesInstall( qSM_t * const obj, qSM_SubStatesContainer_t *substates )
+
+Install the substates for the supplied state machine instance.
+
+Parameters:
+
+    - obj : a pointer to the FSM object.
+    - substates : a pointer to the substates container
+
+Return value:
+
+    Returns qTrue on success, otherwise returns qFalse;
+*/  
+qBool_t qStateMachine_SubStatesInstall( qSM_t * const obj, qSM_SubStatesContainer_t *substates ){
+    qBool_t RetValue = qFalse;
+    if( NULL != obj ){
+        obj->qPrivate.substates = substates;
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 /*============================================================================*/
 /*void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs )
@@ -241,6 +338,7 @@ Parameters:
          > qSM_UNEXPECTED_STATE: Set the Unexpected State
          > qSM_BEFORE_ANY_STATE: Set the state executed before any state.
          > qSM_UNISTALL_TRANSTABLE : To uninstall the transition table if available
+         > qSM_UNISTALL_SUBSTATES : To unistall the FSM substates
     - s : The new value for state (only apply in qSM_RESTART). If not used, pass NULL.
     - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
              qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
@@ -260,20 +358,31 @@ void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qS
                 obj->qPrivate.xPublic.LastState = NULL;
                 break;
             case qSM_FAILURE_STATE:
-                obj->qPrivate.Failure = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                if( NULL != obj->qPrivate.substates ){
+                    obj->qPrivate.substates->Failure = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                }
                 break;
             case qSM_SUCCESS_STATE:
-                obj->qPrivate.Success = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                if( NULL != obj->qPrivate.substates ){
+                    obj->qPrivate.substates->Success = subs;        /*MISRAC2004-11.1 deviation allowed*/
+                }
                 break;    
             case qSM_UNEXPECTED_STATE:
-                obj->qPrivate.Unexpected = subs;     /*MISRAC2004-11.1 deviation allowed*/
+                if( NULL != obj->qPrivate.substates ){
+                    obj->qPrivate.substates->Unexpected = subs;     /*MISRAC2004-11.1 deviation allowed*/
+                }
                 break;   
             case qSM_BEFORE_ANY_STATE:
-                obj->qPrivate.BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
+                if( NULL != obj->qPrivate.substates ){
+                    obj->qPrivate.substates->BeforeAnyState = subs; /*MISRAC2004-11.1 deviation allowed*/
+                }
                 break;              
             case qSM_UNINSTALL_TRANSTABLE:
                 obj->qPrivate.TransitionTable = NULL;
                 break;   
+            case qSM_UNISTALL_SUBSTATES:
+                obj->qPrivate.substates = NULL;
+                break;    
             default:
                 break;
         }        
@@ -360,12 +469,12 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
     size_t iEntry;
     qBool_t SigActionGuard = qTrue;
     qSM_t *toTargetFSM;
-
+                    
     if( NULL != obj ){
         table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
         if( NULL != table ){
             /*xSignal = obj->qPrivate.xPublic.Signal;*/
-            if( xSignal < QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
+            if( xSignal <= QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
                 xCurrentState = obj->qPrivate.xPublic.NextState;
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){ /*loop the transition-table entries*/
                     iTransition = table->qPrivate.Transitions[iEntry]; /*get the current entry*/

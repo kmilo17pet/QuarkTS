@@ -14,6 +14,11 @@
     #define QSM_EXIT_FAILURE        ( qSM_EXIT_FAILURE )
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
     
+
+    #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+        #include "qstimers.h"
+    #endif
+
     typedef qUINT32_t qSM_Signal_t;
 
     #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
@@ -22,7 +27,11 @@
     #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFFu )
     #define QSM_SIGNAL_ENTRY        ( (qSM_Signal_t)0xFFFFFFFEu )
     #define QSM_SIGNAL_EXIT         ( (qSM_Signal_t)0xFFFFFFFDu )
+    #define QSM_SIGNAL_TIMEOUT0     ( (qSM_Signal_t)0xFFFFFFFCu )    
+    #define QSM_SIGNAL_TIMEOUT1     ( (qSM_Signal_t)0xFFFFFFFBu )    
+    #define QSM_SIGNAL_TIMEOUT2     ( (qSM_Signal_t)0xFFFFFFFAu )    
     #define QSM_SIGNAL_USER         ( QSM_SIGNAL_RANGE_MIN )
+  
 
     typedef struct _qSM_PublicData_s{
         /* NextState: (Read/Write) 
@@ -42,7 +51,7 @@
         Note: If the FSM is running as a task, the associated event data can be 
         queried throught the "Data" field. (cast to qEvent_t is mandatory)
         */
-        void * Data;
+        void *Data;
         /* Signal: (Read Only)
         Received signal from the transition table queue.
         QSM_SIGNAL_NONE if no table or signal available.
@@ -86,13 +95,18 @@
         }qPrivate;
     }qSM_TransitionTable_t;
 
+
+    typedef struct{
+        void (*Failure)(_qSM_Handler_t arg);            /*< Failure substate handler.*/
+        void (*Success)(_qSM_Handler_t arg);            /*< Success substate handler.*/    
+        void (*Unexpected)(_qSM_Handler_t arg);         /*< Unexpected substate handler.*/
+        void (*BeforeAnyState)(_qSM_Handler_t arg);     /*< BeforeAny substate handler.*/
+    }qSM_SubStatesContainer_t;
+
     /* Please don't access any members of this structure directly */
     typedef struct _qSM_s{
         struct _qSM_Private_s{
-            void (*Failure)(_qSM_Handler_t arg);            /*< Failure substate handler.*/
-            void (*Success)(_qSM_Handler_t arg);            /*< Success substate handler.*/    
-            void (*Unexpected)(_qSM_Handler_t arg);         /*< Unexpected substate handler.*/
-            void (*BeforeAnyState)(_qSM_Handler_t arg);     /*< BeforeAny substate handler.*/
+            qSM_SubStatesContainer_t *substates;
             qSM_TransitionTable_t *TransitionTable;         /*< A pointer to the transition table.*/
             void *Owner;                                    /*< A pointer to the owner task */
             struct{                 
@@ -103,6 +117,9 @@
             qQueue_t SignalQueue;                           /*< The fsm signal queue object. */
             _qSM_PublicData_t xPublic;                      /*< The external-manipulable members of the fsm. */
             qBool_t Active;                                 /*< A flag indicating whether the fsm should run in a hierarchical environment*/
+            #if ( Q_FSM_MAX_MODULE_TIMERS == 1 )
+                qSTimer_t builtin_timeout[3];
+            #endif
         }qPrivate;
     }qSM_t;
 
@@ -116,15 +133,17 @@
         qSM_SUCCESS_STATE,                  /*< Set the Success State. */
         qSM_UNEXPECTED_STATE,               /*< Set the Unexpected State. */
         qSM_BEFORE_ANY_STATE,               /*< Set the state executed before any state. */        
-        qSM_UNINSTALL_TRANSTABLE            /*< To unistall the transition table if available*/      
+        qSM_UNINSTALL_TRANSTABLE,           /*< To unistall the transition table if available*/     
+        qSM_UNISTALL_SUBSTATES              /*< To unistall the FSM substates*/           
     }qSM_Attribute_t; 
 
-    qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState, qSM_SubState_t BeforeAnyState );
+    qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates );
     void qStateMachine_Run( qSM_t * const root, void *Data );
 
     void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SubState_t subs );
     qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
 
+    qBool_t qStateMachine_SubStatesInstall( qSM_t * const obj, qSM_SubStatesContainer_t *substates );
     qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
     qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal );
     qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent );
@@ -135,6 +154,9 @@
 
     qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h );
     qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h );
+
+
+    qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time );
 
     #ifdef __cplusplus
     }

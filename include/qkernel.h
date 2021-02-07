@@ -44,8 +44,8 @@
     qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg );
     #if ( Q_FSM == 1)
         qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
-                            qSM_t * const StateMachine, qSM_State_t InitState, qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
-                            qState_t InitialTaskState, void *arg );
+                            qSM_t * const StateMachine, qSM_State_t InitState, 
+                            qSM_SubStatesContainer_t *substates, qState_t InitialTaskState, void *arg );
         qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task );                    
     #endif
 

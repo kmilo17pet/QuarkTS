@@ -421,10 +421,8 @@ qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriori
 /*============================================================================*/
 #if ( Q_FSM == 1)
 /*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
-                         qSM_t * const StateMachine, qSM_State_t InitState, 
-                         qSM_ExState_t BeforeAnyState, qSM_ExState_t SuccessState,
-                         qSM_ExState_t FailureState, qSM_ExState_t UnexpectedState,
-                         qState_t InitialTaskState, void *arg )
+                        qSM_t * const StateMachine, qSM_State_t InitState, 
+                        qSM_SubStatesContainer_t *substates, qState_t InitialTaskState, void *arg ){
 
 Add a task to the scheduling scheme running a dedicated state-machine. 
 The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
@@ -440,21 +438,7 @@ Parameters:
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qSM_t pointer as input argument.
-    - BeforeAnyState : A state called before the normal state machine execution.
-                  This argument is a pointer to a callback function,  with a 
-                  qSM_t pointer as input argument.
-    - SuccessState : State performed after the current state finish with return status 
-                     qSM_EXIT_SUCCESS. This argument is a pointer to a callback
-                     function with a qSM_t pointer as input argument.
-    - FailureState : State performed after the current state finish with return status 
-                     qSM_EXIT_FAILURE. This argument is a pointer to a callback
-                     function with a qSM_t pointer as input argument.
-    - UnexpectedState : State performed after the current state finish with return status
-                        value between -32766 and 32767. This argument is a 
-                        pointer to a callback function with a qSM_t pointer
-                        as input argument.
-    - InitialTaskState : Specifies the initial operational state of the task 
-                        (qEnabled, qDisabled, qASleep, qAwake).
+    - substates : A pointer to the FSM substates container. To ignore pass NULL.
     - arg : Represents the task arguments. All arguments must be passed by
                      reference and cast to (void *). Only one argument is allowed, 
                      so, for multiple arguments, create a structure that contains 
@@ -466,13 +450,11 @@ Return value:
 */
 qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
                             qSM_t * const StateMachine, qSM_State_t InitState, 
-                            qSM_SubState_t BeforeAnyState, qSM_SubState_t SuccessState, 
-                            qSM_SubState_t FailureState, qSM_SubState_t UnexpectedState,
-                            qState_t InitialTaskState, void *arg ){
+                            qSM_SubStatesContainer_t *substates, qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
         if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
-            RetValue = qStateMachine_Setup( StateMachine, InitState, SuccessState, FailureState, UnexpectedState, BeforeAnyState );
+            RetValue = qStateMachine_Setup( StateMachine, InitState, substates);
             Task->qPrivate.StateMachine = StateMachine;
             StateMachine->qPrivate.Owner = Task;
         }
