@@ -4,6 +4,7 @@
 
     #include "qtypes.h"
     #include "qqueues.h"
+    #include "qstimers.h"
 
     #ifdef __cplusplus
     extern "C" {
@@ -13,11 +14,6 @@
     #define QSM_EXIT_SUCCESS        ( qSM_EXIT_SUCCESS ) 
     #define QSM_EXIT_FAILURE        ( qSM_EXIT_FAILURE )
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
-    
-
-    #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
-        #include "qstimers.h"
-    #endif
 
     typedef qUINT32_t qSM_Signal_t;
 
@@ -79,19 +75,19 @@
     typedef qBool_t (*qSM_SignalAction)( qSM_Handler_t arg );
 
     typedef struct{
-        qSM_State_t xCurrentState;      /*< The current state that the FSM occupies*/
-        qSM_Signal_t Signal;            /*< The event-signal used to produce the transition*/
-        qSM_State_t xNextState;         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
-        qSM_SignalAction SignalAction;  /*< The action performed by the signal on the current transition. NULL to disable.*/
-        void *xToTargetHandle;          /*< (Only in hierarchycal FSM) The handle to the target child. */
-        qSM_State_t xToTargetState;     /*< (Only in hierarchycal FSM) The next state that the child FSM will occupy after the transition. NULL if not used*/
+        qSM_State_t xCurrentState;                      /*< The current state that the FSM occupies*/
+        qSM_Signal_t Signal;                            /*< The event-signal used to produce the transition*/
+        qSM_State_t xNextState;                         /*< The next state that the FSM will occupy after the transition. NULL if not used*/
+        qSM_SignalAction SignalAction;                  /*< The action performed by the signal on the current transition. NULL to disable.*/
+        void *xToTargetHandle;                          /*< (Only in hierarchycal FSM) The handle to the target child. */
+        qSM_State_t xToTargetState;                     /*< (Only in hierarchycal FSM) The next state that the child FSM will occupy after the transition. NULL if not used*/
     }qSM_Transition_t;
 
     typedef struct{
         /*This data should be handled only using the provided API*/
         struct _qSM_TransitionTable_Private_s{
-            size_t NumberOfEntries;         /*< The number of entries inside the <Transitions> array */         
-            qSM_Transition_t *Transitions;  /*< Points to the table entries, an array of type qSM_Transition_t[]*/
+            size_t NumberOfEntries;                     /*< The number of entries inside the <Transitions> array */         
+            qSM_Transition_t *Transitions;              /*< Points to the table entries, an array of type qSM_Transition_t[]*/
         }qPrivate;
     }qSM_TransitionTable_t;
 
@@ -103,23 +99,33 @@
         void (*BeforeAnyState)(_qSM_Handler_t arg);     /*< BeforeAny substate handler.*/
     }qSM_SubStatesContainer_t;
 
+
+    typedef struct{
+        qSM_State_t xState;                             /*< in witch state the timeout will be installed.*/
+        qTime_t xTimeout;                               /*< the time value to be used as Timeout.*/
+    }qSM_TimeoutStateDefinition_t;
+
+    typedef struct{
+        qSM_TimeoutStateDefinition_t *spec;             /*< a pointer to the state-timeout lookup table*/
+        qSTimer_t builtin_timeout[3];                   /*< the built-in timeouts*/
+        size_t n;                                       /*< the number of entries inside the <spec> field*/
+    }qSM_TimeoutSpec_t;
+
     /* Please don't access any members of this structure directly */
     typedef struct _qSM_s{
         struct _qSM_Private_s{
             qSM_SubStatesContainer_t *substates;
-            qSM_TransitionTable_t *TransitionTable;         /*< A pointer to the transition table.*/
-            void *Owner;                                    /*< A pointer to the owner task */
-            struct{                 
-                struct _qSM_s *head;                        /*< Composite state pointer. head : points to the head of the nested fsm list .*/    
-                struct _qSM_s *next;                        /*< Composite state pointer. head : points to the next same-level fsm.*/
-                qSM_State_t rootState;                      /*< The state where this fsm should be active*/
-            }Composite;        
-            qQueue_t SignalQueue;                           /*< The fsm signal queue object. */
-            _qSM_PublicData_t xPublic;                      /*< The external-manipulable members of the fsm. */
-            qBool_t Active;                                 /*< A flag indicating whether the fsm should run in a hierarchical environment*/
-            #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
-                qSTimer_t builtin_timeout[3];
-            #endif
+            qSM_TransitionTable_t *TransitionTable;     /*< A pointer to the transition table.*/
+            void *Owner;                                /*< A pointer to the owner task */
+            struct{             
+                struct _qSM_s *head;                    /*< Composite state pointer. head : points to the head of the nested fsm list .*/    
+                struct _qSM_s *next;                    /*< Composite state pointer. head : points to the next same-level fsm.*/
+                qSM_State_t rootState;                  /*< The state where this fsm should be active*/
+            }Composite; 
+            qQueue_t SignalQueue;                       /*< The fsm signal queue object. */
+            _qSM_PublicData_t xPublic;                  /*< The external-manipulable members of the fsm. */
+            qSM_TimeoutSpec_t *TimeSpec;                /*< A pointer to the timeout specification object*/
+            qBool_t Active;                             /*< A flag indicating whether the fsm should run in a hierarchical environment*/          
         }qPrivate;
     }qSM_t;
 
@@ -127,14 +133,14 @@
     #define QSM_STATE_TO_SAME       ( &_qStateMachine_RecursiveStateCallback )
 
     typedef enum{ /*FSM Attribute Flags definition*/
-        qSM_RESTART,                        /*< Restart the FSM. */
-        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,   /*< Clear the entry flag for the current state if the NextState field doesn't change. */
-        qSM_FAILURE_STATE,                  /*< Set the Failure State. */
-        qSM_SUCCESS_STATE,                  /*< Set the Success State. */
-        qSM_UNEXPECTED_STATE,               /*< Set the Unexpected State. */
-        qSM_BEFORE_ANY_STATE,               /*< Set the state executed before any state. */        
-        qSM_UNINSTALL_TRANSTABLE,           /*< To unistall the transition table if available*/     
-        qSM_UNISTALL_SUBSTATES              /*< To unistall the FSM substates*/           
+        qSM_RESTART,                                    /*< Restart the FSM. */
+        qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,               /*< Clear the entry flag for the current state if the NextState field doesn't change. */
+        qSM_FAILURE_STATE,                              /*< Set the Failure State. */
+        qSM_SUCCESS_STATE,                              /*< Set the Success State. */
+        qSM_UNEXPECTED_STATE,                           /*< Set the Unexpected State. */
+        qSM_BEFORE_ANY_STATE,                           /*< Set the state executed before any state. */        
+        qSM_UNINSTALL_TRANSTABLE,                       /*< To unistall the transition table if available*/     
+        qSM_UNISTALL_SUBSTATES                          /*< To unistall the FSM substates*/           
     }qSM_Attribute_t; 
 
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates );
@@ -155,8 +161,9 @@
     qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h );
     qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h );
 
-
-    qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time );
+    
+    qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n );
+    qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time );
 
     #ifdef __cplusplus
     }

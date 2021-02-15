@@ -30,11 +30,11 @@ static void qStateMachine_StackCleanUp( void );
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
-#if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
-    static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
-    static void qStateMachine_DisableTimeouts( qSM_t * const obj );
-    static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
-#endif
+static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
+static void qStateMachine_DisableTimeouts( qSM_t * const obj );
+static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
+static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current );
+
 
 /*============================================================================*/
 qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
@@ -80,14 +80,11 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubSt
         obj->qPrivate.Composite.head = NULL;
         obj->qPrivate.Composite.next = NULL;
         obj->qPrivate.Composite.rootState = NULL;
-        RetValue = qTrue;
-        #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
-            qStateMachine_DisableTimeouts( obj );
-        #endif
+        obj->qPrivate.TimeSpec = NULL;
+        RetValue = qTrue;     
     }
     return RetValue;
 }
-
 /*============================================================================*/
 /*void qStateMachine_Run( qSM_t * const root, void* Data )
 
@@ -165,9 +162,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     else{        
         #if ( Q_QUEUES == 1 )
         if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
-            #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
                 qStateMachine_CheckTimeoutSignals( obj );
-            #endif
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &xSignal ) ){
                 if( NULL != obj->qPrivate.Composite.head ){
                     obj->qPrivate.xPublic.Signal = xSignal; /*store the signal if any child needs it*/
@@ -211,6 +206,11 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     }
 
     if( NULL != state ){ /*eval the state if available*/
+        if( QSM_SIGNAL_ENTRY == xSignal){
+            if( NULL != obj->qPrivate.TimeSpec ){
+                qStateMachine_TimeoutStateArm( obj, state );
+            }
+        }
         ExitStatus = state( handle );
     }
     obj->qPrivate.xPublic.LastReturnStatus = ExitStatus;
@@ -234,26 +234,29 @@ static void qStateMachine_ExecSubStateIfAvailable( const qSM_SubState_t substate
         substate( handle );
     }
 }
-#if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
 /*============================================================================*/
 static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
-    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[0] );
-    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[1] );
-    qSTimer_Disarm( &obj->qPrivate.builtin_timeout[2] );
+    if( NULL != obj->qPrivate.TimeSpec) {
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[0] );
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[1] );
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[2] );
+    }
 }
 /*============================================================================*/
 static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
-    if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[0] ) ) {
-        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT0, qFalse );   
-    }
-    else if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[1] ) ) {
-        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT1, qFalse ); 
-    }
-    else if( qTrue == qSTimer_Expired( &obj->qPrivate.builtin_timeout[2] ) ) {
-        qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT2, qFalse ); 
-    }
-    else{
-        /*nothing to do here*/
+    if( NULL != obj->qPrivate.TimeSpec) {
+        if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[0] ) ) {
+            qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT0, qFalse );   
+        }
+        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[1] ) ) {
+            qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT1, qFalse ); 
+        }
+        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[2] ) ) {
+            qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT2, qFalse ); 
+        }
+        else{
+            /*nothing to do here*/
+        }
     }
 }
 /*============================================================================*/
@@ -272,14 +275,72 @@ static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  ){
     }
     qStateMachine_DisableTimeouts( obj );
 }
-#endif
 /*============================================================================*/
-/*qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time )
+static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current ){
+    qSM_TimeoutStateDefinition_t *tbl;
+    size_t i;
+    size_t n;
+
+    tbl = obj->qPrivate.TimeSpec->spec;
+    n = obj->qPrivate.TimeSpec->n;    
+    if( ( n > 0 ) && ( NULL != tbl ) ){
+        for( i=0; i < n;  i++ ){
+            if( current == tbl[i].xState ){
+                qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[i].xTimeout  );
+                break;
+            }
+        }
+    }
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n )
+
+Install the specification object to use the FSM built-in timeouts.
+This methods also set fixed timeouts for specific states usign a lookup-table. 
+The QSM_SIGNAL_TIMEOUT0 will be adquired for this purpose. 
+
+Note : This feature its only available if the FSM has a signal queue installed.
+Note: The lookup table will be an array of type <qSM_TimeoutStateDefinition_t> with 
+      <nEntries> elements matching { state, time }. 
+
+Parameters:
+
+    - obj : a pointer to the target FSM object.
+    - ts : a pointer to the timeout specification object
+    - tdef : the lookup table matching the target state and the requested timeout.
+             to ignore or disable, pass NULL as argument.
+    - n: the number of elements inside <tdef>. To ignore pass 0 as argument
+
+Return value:
+
+    Returns qTrue on success, otherwise returns qFalse;
+*/ 
+qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != obj ) && ( NULL != ts ) ){
+        obj->qPrivate.TimeSpec = ts;
+        qStateMachine_DisableTimeouts( obj );
+        if( ( NULL != tdef ) && ( n > 0u ) ){
+            obj->qPrivate.TimeSpec->n = n;
+            obj->qPrivate.TimeSpec->spec = tdef;
+        }
+        else{
+            obj->qPrivate.TimeSpec->n = 0u;
+            obj->qPrivate.TimeSpec->spec = NULL;
+        }
+        RetValue = qTrue;
+    }
+    return RetValue;
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time )
 
 Set the time for one of the built-in timeout inside the target FSM
 
-Note : This feature its only available if the FSM has a signal queue installed.
-Note : In a hierarchical FSM, the TIMEOUT signal can be propagated from the parent 
+<Requirements> : 
+   *> An installed time specification. For this use <qStateMachine_TimeoutSpecInstall>
+   *> An installed signal queue. For this use <qStateMachine_SignalQueueSetup>
+Note : In a hierarchical FSM, the signal QSM_SIGNAL_TIMEOUTx can be propagated from the parent 
 if childs do not have their own signal queue.
 
 Parameters:
@@ -292,16 +353,15 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_SetTimeout( qSM_t *obj, qIndex_t xTimeout, qTime_t time ){
+qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time ){
     qBool_t RetValue = qFalse;
-    #if ( Q_FSM_BUILTIN_TIMEOUTS == 1 )
-        if( ( xTimeout <= 2 ) && ( NULL != obj ) ){
-            RetValue = qSTimer_Set( &obj->qPrivate.builtin_timeout[ xTimeout ], time  );
+
+    if( ( xTimeout <= 2 ) && ( NULL != obj ) ){
+        if( NULL != obj->qPrivate.TimeSpec ) {
+            RetValue = qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], time  );
         }
-    #else
-        Q_UNUSED( xTimeout );
-        Q_UNUSED( time );
-    #endif
+    }
+
     return RetValue;
 }
 /*============================================================================*/
