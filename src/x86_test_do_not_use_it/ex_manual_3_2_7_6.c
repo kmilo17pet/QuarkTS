@@ -59,6 +59,11 @@ qSM_Transition_t AutomatedControl_LED_ttable[]={
     { AutomatedControl_Sub_LEDON,                 QSM_SIGNAL_TIMEOUT0,             AutomatedControl_Sub_LEDOFF,         NULL,  NULL, NULL },          
     { AutomatedControl_Sub_LEDOFF,                QSM_SIGNAL_TIMEOUT0,             AutomatedControl_Sub_LEDON,          NULL,  NULL, NULL },         
 };
+
+qSM_TimeoutStateDefinition_t LED_timeouts[]={
+    {AutomatedControl_Sub_LEDON, 2.0f },
+    {AutomatedControl_Sub_LEDOFF, 4.0f },
+};
 /*============================================================================*/
 void putcharfcn(void* stp, char c){
     (void)stp;
@@ -185,7 +190,6 @@ qSTimer_t timeout;
 qSM_Status_t AutomatedControl_Sub_LEDON( qSM_Handler_t h ){
     switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
-            qStateMachine_SetTimeout( h->Parent, 0, 2.0f );
             puts("entering AutomatedControl_Sub_LEDON");
             break;
         case QSM_SIGNAL_EXIT:
@@ -199,7 +203,6 @@ qSM_Status_t AutomatedControl_Sub_LEDON( qSM_Handler_t h ){
 qSM_Status_t AutomatedControl_Sub_LEDOFF( qSM_Handler_t h ){
     switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
-            qStateMachine_SetTimeout( h->Parent, 0, 4.0f );
             puts("entering AutomatedControl_Sub_LEDOFF");
             break;
         case QSM_SIGNAL_EXIT:
@@ -236,8 +239,9 @@ void Sig_Handler(int signum ){
 }
 /*============================================================================*/
 int main(int argc, char** argv) {  
-    qSM_Signal_t topsm_sig_stack[10];
+    qSM_Signal_t topsm_sig_stack[10], ledsm_sig_stack[4];
     qSM_TransitionTable_t top_ttable, auto_ttable, auto_ttable2;
+    qSM_TimeoutSpec_t tm_spectimeout;
     
     qTrace_Set_OutputFcn(putcharfcn); 
     printf("CruiseControl = %d\r\n", getpid() );
@@ -264,7 +268,9 @@ int main(int argc, char** argv) {
 
     qStateMachine_Set_CompositeState( &Top_SM, Top_AutomatedControl_State, &AutomatedControl_SM );
     qStateMachine_Set_CompositeState( &Top_SM, Top_AutomatedControl_State, &LEDBlink_FSM );
-    
+
+    qStateMachine_SignalQueueSetup( &LEDBlink_FSM, ledsm_sig_stack, sizeof(ledsm_sig_stack)/sizeof(ledsm_sig_stack[0]) );
+    qStateMachine_TimeoutSpecInstall( &LEDBlink_FSM, &tm_spectimeout, LED_timeouts, 2  );
 
     qOS_StateMachineTask_SigCon( &SMTask );
     qOS_Run();
