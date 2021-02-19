@@ -559,7 +559,6 @@ qBool_t qOS_Remove_Task( qTask_t * const Task ){
 static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
     qTrigger_t RetValue = qTriggerNULL;
     qBool_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
-    qBool_t IsFull, IsEmpty;
     size_t CurrentQueueCount;
 
     if( NULL != Task->qPrivate.Queue){
@@ -569,10 +568,9 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
         EmptyFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_EMPTY );
         
         CurrentQueueCount = qQueue_Count( Task->qPrivate.Queue ); /*to avoid side effects*/
-        IsFull = qQueue_IsFull( Task->qPrivate.Queue ); /*to avoid side effects*/
-        IsEmpty = qQueue_IsEmpty( Task->qPrivate.Queue ); /*to avoid side effects*/
         /*check the queue events in the corresponding precedence order*/
-        if( FullFlag && IsFull ){        
+        /*cstat -MISRAC2012-Rule-13.5 */ 
+        if( FullFlag && qQueue_IsFull( Task->qPrivate.Queue ) ){ /*qQueue_IsFull is known to have no side effects*/        
             RetValue =  byQueueFull;
         }
         else if( ( CountFlag ) && ( CurrentQueueCount >= Task->qPrivate.QueueCount ) ){
@@ -581,12 +579,13 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
         else if( ReceiverFlag && ( CurrentQueueCount > 0u ) ){    
             RetValue = byQueueReceiver; 
         }
-        else if( EmptyFlag && IsEmpty ){
+        else if( EmptyFlag && qQueue_IsEmpty( Task->qPrivate.Queue ) ){ /*qQueue_IsEmpty is known to have no side effects*/
             RetValue =  byQueueEmpty;
         }
         else{
             /*this case does not need to be handled*/
         }
+        /*cstat +MISRAC2012-Rule-13.5 */ 
     }
     return RetValue;
 }

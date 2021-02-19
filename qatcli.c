@@ -220,7 +220,9 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
 
     if( NULL != cli ){
         ReadyInput = cli->qPrivate.Input.Ready;
-        if( ( 0 != isgraph( (int)c ) ) && ( qFalse == ReadyInput ) ){ /*check if the input is available and incoming chars are valid*/
+        /*cstat -MISRAC2012-Rule-13.5 */ /*isgraph is known to have no side effects*/
+        if( ( qFalse == ReadyInput ) && ( 0 != isgraph( (int)c ) ) ){ /*check if the input is available and incoming chars are valid*/
+        /*cstat +MISRAC2012-Rule-13.5 */  
             CurrentIndex = cli->qPrivate.Input.index; /*to avoid undefined order of volatile accesses*/
             cli->qPrivate.Input.Buffer[ CurrentIndex++ ] = (char)tolower( (int)c ); /*insert lower-case char*/
             cli->qPrivate.Input.Buffer[ CurrentIndex   ] = (char)0x00u; /*put the null-char after to keep the string safe*/
@@ -319,13 +321,14 @@ Return value:
 qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
     qBool_t RetValue = qFalse;
     qBool_t ReadyInput;           
-    size_t MaxToInsert, CmdLen;
+    size_t MaxToInsert;
     
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         ReadyInput = cli->qPrivate.Input.Ready;        
         MaxToInsert = cli->qPrivate.Input.MaxIndex;
-        CmdLen = qIOUtil_StrLen( cmd, MaxToInsert );
-        if( ( qFalse == ReadyInput ) && ( CmdLen <= MaxToInsert ) ){ 
+        /*cstat -MISRAC2012-Rule-13.5 */
+        if( ( qFalse == ReadyInput ) && ( qIOUtil_StrLen( cmd, MaxToInsert ) <= MaxToInsert ) ){ /*qIOUtil_StrLen is known to have no side effects*/
+        /*cstat +MISRAC2012-Rule-13.5 */  
             (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxToInsert ); /*safe string copy*/
             #if ( Q_ATCLI_INPUT_FIX == 1 )
             (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, MaxToInsert );

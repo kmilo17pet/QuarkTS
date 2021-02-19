@@ -7,7 +7,9 @@ static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen );
 static const char * qIOUtil_CheckStrSign( const char *s, int *sgn );
 
 static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen ){
-    while( ( 0 != isspace( (int)*s ) )  && ( maxlen > (size_t)0 )  ){
+    /*cstat -MISRAC2012-Rule-13.5 */ 
+    while( ( maxlen > (size_t)0 ) && ( 0 != isspace( (int)*s ) ) ){ /*isspace is known to have no side effects*/  
+    /*cstat +MISRAC2012-Rule-13.5 */  
         s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
         maxlen--;
     }    
