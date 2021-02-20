@@ -59,8 +59,8 @@
     #define QATCLI_CMDTYPE_READ     ( 0x0400 )
     #define QATCLI_CMDTYPE_ACT      ( 0x0800 )
 
-    #define QATCLI_CMDTYPE_SET      ( QATCMDTYPE_PARA )
-    #define QATCLI_CMDTYPE_CHECK    ( QATCMDTYPE_ACT )
+    #define QATCLI_CMDTYPE_SET      ( QATCLI_CMDTYPE_PARA )
+    #define QATCLI_CMDTYPE_CHECK    ( QATCLI_CMDTYPE_ACT )
 
     typedef enum{
         qATCLI_CMDTYPE_UNDEF    = QATCLI_CMDTYPE_UNDEF, /*< None of the above */
