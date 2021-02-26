@@ -55,12 +55,12 @@ qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper ){
     if( NULL != sem ){
         switch( oper ){
             case _qCR_SEM_SIGNAL:
-                sem->count++;
+                ++sem->count;
                 break;
             case _qCR_SEM_TRYLOCK:
                 if( sem->count > (size_t)0 ){
                     RetValue = qTrue; /*break the Wait operation*/
-                    sem->count--;
+                    --sem->count;
                 }
                 break;
             default:

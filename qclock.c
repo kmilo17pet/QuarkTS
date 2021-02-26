@@ -107,7 +107,7 @@ Feed the system tick. This call is mandatory and must be called once inside the
 dedicated timer interrupt service routine (ISR). 
 */    
 void qClock_SysTick( void ){ 
-    qSysTick_Epochs++; 
+    ++qSysTick_Epochs; 
 }
 /*============================================================================*/
 /*qClock_t qClock_GetTick( void )

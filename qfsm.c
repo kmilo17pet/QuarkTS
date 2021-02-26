@@ -267,7 +267,7 @@ static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  ){
         cnt = qQueue_Count( &obj->qPrivate.SignalQueue );
         while( 0u != cnt-- ){
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue , &xSignal ) ){
-                if( ( xSignal < QSM_SIGNAL_TIMEOUT0 ) || ( xSignal > QSM_SIGNAL_TIMEOUT2) ){
+                if( ( xSignal < QSM_SIGNAL_TIMEOUT0 ) || ( xSignal > QSM_SIGNAL_TIMEOUT2) ){ /*keep the non-timeout signals*/
                     (void)qQueue_SendToBack( &obj->qPrivate.SignalQueue , &xSignal );
                 }
             }
@@ -284,7 +284,7 @@ static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t curren
     tbl = obj->qPrivate.TimeSpec->spec;
     n = obj->qPrivate.TimeSpec->n;    
     if( ( n > 0u ) && ( NULL != tbl ) ){
-        for( i = 0; i < n;  i++ ){
+        for( i = 0; i < n;  ++i ){
             if( current == tbl[i].xState ){
                 (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[i].xTimeout  );
                 break;
@@ -541,7 +541,7 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
             /*xSignal = obj->qPrivate.xPublic.Signal;*/
             if( xSignal <= QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
                 xCurrentState = obj->qPrivate.xPublic.NextState;
-                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; iEntry++ ){ /*loop the transition-table entries*/
+                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; ++iEntry ){ /*loop the transition-table entries*/
                     iTransition = table->qPrivate.Transitions[iEntry]; /*get the current entry*/
                     if( ( xSignal == iTransition.Signal) && ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) ){ /*both conditions match*/
                         if( NULL != iTransition.SignalAction ){  /*run the signal-action(or guard) if available*/
@@ -703,14 +703,14 @@ static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){
         top = *top_ref; 
         res = top->t; 
         *top_ref = top->next; 
-        qSM_NestStack.Index--; 
+        --qSM_NestStack.Index; 
     } 
     return res;
 } 
 /*============================================================================*/
 static void qStateMachine_StackCleanUp( void ){
     size_t i;
-    for( i = 0u; i < (size_t)Q_FSM_MAX_NEST_DEPTH; i++ ){
+    for( i = 0u; i < (size_t)Q_FSM_MAX_NEST_DEPTH; ++i ){
         qSM_NestStack.Element[ i ].next = NULL;
         qSM_NestStack.Element[ i ].t = NULL;
     }

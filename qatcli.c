@@ -289,7 +289,7 @@ modifies the input string removing non-graph chars
 static char* qATCLI_Input_Fix( char *s, size_t maxlen){
     int i, j;
     j = 0;
-    for( i = 0; ( '\0' != s[ i ] ) && (maxlen > 0u) ; i++ ){
+    for( i = 0; ( '\0' != s[ i ] ) && (maxlen > 0u) ; ++i ){
         if( '\r' == s[ i ] ){
             s[ i ] = '\0';
             break;    
@@ -403,8 +403,8 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
         if( '?' == params->StrData[0] ){ /*command should be READ command */
             if( 0u != ( Command->qPrivate.CmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_READ ) ){ /*check if is allowed*/
                 params->Type = qATCLI_CMDTYPE_READ; /*set the type to READ*/
-                params->StrData++; /*move string pointer once*/
-                params->StrLen--;  /*decrease the len one*/
+                ++params->StrData; /*move string pointer once*/
+                --params->StrLen;  /*decrease the len one*/
                 RetValue = qTrue;
             }
         } 
@@ -427,8 +427,8 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
                         argMax = QATCLI_CMDMASK_ARG_MAXNUM( (size_t)Command->qPrivate.CmdOpt );
                         if( ( params->NumArgs >= argMin ) && ( params->NumArgs <= argMax ) ){
                             params->Type = qATCLI_CMDTYPE_PARA; /*set the type to PARA*/
-                            params->StrData++; /*move string pointer once*/
-                            params->StrLen--; /*decrease the len one*/
+                            ++params->StrData; /*move string pointer once*/
+                            --params->StrLen; /*decrease the len one*/
                             RetValue = qTrue;
                         }
                     }
@@ -591,8 +591,8 @@ static char* GetArgPtr( qIndex_t n ){
                 RetPtr = param->StrData;
             } 
             else{
-                n--;
-	            for( i = 0 ; '\0' != param->StrData[i] ; i++){
+                --n;
+	            for( i = 0 ; '\0' != param->StrData[i] ; ++i ){
 		            if( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
 			            if( ++argc >= (qIndex_t)n ){
                             RetPtr = param->StrData + i + 1;        
@@ -701,10 +701,10 @@ static char* GetArgString( qIndex_t n, char* out ){
     if( ( NULL != cli_CurrentCmdHelper ) && ( NULL != out ) && ( n > 0u ) ){
         param = cli_CurrentCmdHelper;
         if( qATCLI_CMDTYPE_PARA ==  param->Type ){
-            n--;
+            --n;
             j = 0;
             /*cstat -CERT-STR34-C*/
-            for( i = 0 ; '\0' != param->StrData[ i ]; i++){
+            for( i = 0 ; '\0' != param->StrData[ i ]; ++i ){
                 if( argc == n ){
                     RetPtr = out;
                     if( ( argc > n ) || ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) ){
@@ -714,7 +714,7 @@ static char* GetArgString( qIndex_t n, char* out ){
                     out[ j ] = '\0';
                 }
                 if( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
-                    argc++;
+                    ++argc;
                 }
             /*cstat +CERT-STR34-C*/
             }

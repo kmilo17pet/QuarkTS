@@ -11,7 +11,7 @@ static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen ){
     while( ( maxlen > (size_t)0 ) && ( 0 != isspace( (int)*s ) ) ){ /*isspace is known to have no side effects*/  
     /*cstat +MISRAC2012-Rule-13.5 */  
         s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
-        maxlen--;
+        --maxlen;
     }    
     return s;
 }
@@ -89,8 +89,8 @@ size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
     else{
         count = 0;
         while( ( '\0' != *str ) && ( maxlen > (size_t)0 ) ) {
-            count++;
-            maxlen--;
+            ++count;
+            --maxlen;
             str++;
         }        
     }
@@ -170,11 +170,11 @@ void qIOUtil_SwapBytes( void *Data, const size_t n ){
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t lo, hi;
     hi = n - 1u;
-    for( lo = 0u ; hi > lo ; lo++ ){
+    for( lo = 0u ; hi > lo ; ++lo ){
         tmp = p[ lo ];
         p[ lo ] = p[ hi ];
         p[ hi ] = tmp;
-        hi--;
+        --hi;
     }
 }
 /*============================================================================*/
@@ -188,7 +188,7 @@ Return value:
 */
 qBool_t qIOUtil_CheckEndianness( void ){
     qUINT16_t i = 1u;
-    return (qBool_t)( *( (qUINT16_t*)&i ) );
+    return (qBool_t)( *( (qUINT8_t*)&i ) );
 }
 /*============================================================================*/
 /*void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP )
@@ -210,7 +210,7 @@ void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_
     if( qTrue == AIP ){
         while( '\0' != *s ){
             fcn( &xPtr[ i ] ,  *s++ );
-            i++;
+            ++i;
         }
     }
     else{
@@ -225,7 +225,7 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n ){
     qUINT8_t *pdat =(qUINT8_t*)Data;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t i;
-    for( i = 0u ; i < n ; i++ ){
+    for( i = 0u ; i < n ; ++i ){
         fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] >> 4u ) );   /*MISRAC2004-17.4_b deviation allowed*/ 
         fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] & 0x0Fu ) ); /*MISRAC2004-17.4_b deviation allowed*/ 
         fcn( pStorage, ' ');
@@ -253,12 +253,12 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t
     char *xPtr = pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
-        for( i = 0u ; i < n ; i++ ){
+        for( i = 0u ; i < n ; ++i ){
             fcn( &xPtr[ i ] , cdata[ i ] );
         }
     }
     else{
-        for( i = 0u ; i < n ; i++ ){
+        for( i = 0u ; i < n ; ++i ){
             fcn( pStorage, cdata[ i ] );
         }
     }
@@ -283,12 +283,12 @@ void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const s
     char *xPtr = pStorage; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
-        for( i = 0u ; i < n ; i++ ){
+        for( i = 0u ; i < n ; ++i ){
             cdata[ i ] = fcn( &xPtr[ i ] );
         }
     }
     else{
-        for( i = 0u ; i < n ; i++ ){
+        for( i = 0u ; i < n ; ++i ){
             cdata[ i ] = fcn( pStorage );
         }
     }
@@ -314,7 +314,7 @@ char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n ){
     qBase_t i;
     /*cstat -CERT-STR34-C*/
     str[ n ] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/ /*CERT-STR34-C deviation allowed*/
-    for( i = ( (qBase_t)n - 1 ) ; i >= 0 ; i-- ){
+    for( i = ( (qBase_t)n - 1 ) ; i >= 0 ; --i ){
         str[ i ] = qIOUtil_NibbleToX( (qUINT8_t)value ); /*MISRAC2004-17.4_b deviation allowed*/ 
         value >>= 4uL;
     }

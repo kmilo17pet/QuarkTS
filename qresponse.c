@@ -123,7 +123,7 @@ qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar ){
     if( NULL != obj ){
         if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( obj->qPrivate.PatternLength > 0u ) ) {
             if( obj->qPrivate.Pattern2Match[ obj->qPrivate.MatchedCount ] == rxchar ){ /*if the received char match with the expected*/ /*MISRAC2004-17.4_b Deviation allowed*/
-                obj->qPrivate.MatchedCount++; /*move to the next char in the expected buffer*/
+                ++obj->qPrivate.MatchedCount; /*move to the next char in the expected buffer*/
                 if( obj->qPrivate.MatchedCount == obj->qPrivate.PatternLength ){
                     obj->qPrivate.ResponseReceived = qTrue; /*if all the requested chars match, set the ready flag */
                     RetValue = obj->qPrivate.ResponseReceived;

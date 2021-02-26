@@ -226,7 +226,7 @@ static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *ItemToQueu
             obj->qPrivate.reader = ( obj->qPrivate.tail - obj->qPrivate.ItemSize ); 
         }   
     }
-    obj->qPrivate.ItemsWaiting++;
+    ++obj->qPrivate.ItemsWaiting;
 }
 /*==================================================================================*/
 static void qQueue_MoveReader( qQueue_t * const obj ){
@@ -264,7 +264,7 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
         if( ItemsWaiting > 0u ){
             qCritical_Enter();
             qQueue_CopyDataFromQueue( obj, dest );
-            obj->qPrivate.ItemsWaiting--; /* remove the data. */
+            --( obj->qPrivate.ItemsWaiting ); /* remove the data. */
             qCritical_Exit();
             RetValue = qTrue;
         }        

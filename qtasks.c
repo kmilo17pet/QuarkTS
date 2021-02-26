@@ -23,7 +23,7 @@ qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata ){
     qBool_t RetValue = qFalse;
     if( NULL != Task ){
         if( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ){
-            Task->qPrivate.Notification++;
+            ++Task->qPrivate.Notification;
             Task->qPrivate.AsyncData = eventdata;
             RetValue = qTrue;
         }
@@ -348,7 +348,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
     qBool_t RetValue = qFalse;
     if( ( NULL != Queue ) && ( NULL != Task ) ){
         if( NULL != Queue->qPrivate.head ) {
-            qOS_Set_TaskFlags( Task, (qUINT32_t)Mode & QTASK_QUEUEFLAGS_MASK, (( 0u != arg )? qATTACH :qDETACH ) );
+            qOS_Set_TaskFlags( Task, (qUINT32_t)Mode & QTASK_QUEUEFLAGS_MASK, (( 0u != arg )? qATTACH : qDETACH ) );
             if( Mode == qQueueMode_Count ){
                 Task->qPrivate.QueueCount = (qUINT32_t)arg; /*if mode is qQUEUE_COUNT, use their arg value as count*/
             }

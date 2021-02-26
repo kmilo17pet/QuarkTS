@@ -221,7 +221,7 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
 static void qOS_PriorityQueue_CleanUp( const qTask_t * task ){
     qIndex_t i;
-    for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; i++ ){ 
+    for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; ++i ){ 
         if( kernel.QueueStack[ i ].Task == task ){
             qOS_PriorityQueue_ClearIndex( i );
         }
@@ -234,10 +234,10 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
 
     kernel.QueueStack[ IndexToClear ].Task = NULL; /*set the position in the queue as empty*/  
     QueueIndex = (qBase_t)kernel.QueueIndex; /*to avoid side effects*/
-    for( j = IndexToClear ; (qBase_t)j < QueueIndex ; j++ ){ 
+    for( j = IndexToClear ; (qBase_t)j < QueueIndex ; ++j ){ 
         kernel.QueueStack[ j ] = kernel.QueueStack[ j + (qIndex_t)1 ]; /*shift the remaining items of the queue*/
     }
-    kernel.QueueIndex--;    /*decrease the index*/    
+    --kernel.QueueIndex;    /*decrease the index*/    
 }
 /*========================== Shared Private Method ===========================*/
 qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
@@ -271,7 +271,7 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
         CurrentQueueIndex = kernel.QueueIndex + 1;
         if( CurrentQueueIndex > 0 ){ /*check first if the queue has items inside*/
             qCritical_Enter();
-            for( i = 0 ; i < CurrentQueueIndex; i++ ){ /*loop the queue slots to check if the Task is inside*/
+            for( i = 0 ; i < CurrentQueueIndex; ++i ){ /*loop the queue slots to check if the Task is inside*/
                 if( Task == kernel.QueueStack[ i ].Task ){
                     RetValue = qTrue;
                     break;
@@ -295,7 +295,7 @@ static qTask_t* qOS_PriorityQueue_Get( void ){
     if( kernel.QueueIndex >= 0 ){ /*queue has elements*/
         qCritical_Enter();
         MaxPriorityValue = kernel.QueueStack[ 0 ].Task->qPrivate.Priority;
-        for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; i++){  /*walk through the queue to find the task with the highest priority*/
+        for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; ++i ){  /*walk through the queue to find the task with the highest priority*/
             if( NULL == kernel.QueueStack[i].Task ){ /* tail is reached */
                 break;
             }
@@ -766,7 +766,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
             kernel.EventInfo.FirstIteration = ( ( qPeriodic != TaskIteration ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
             Task->qPrivate.Iterations = ( kernel.EventInfo.FirstIteration )? -Task->qPrivate.Iterations : Task->qPrivate.Iterations;
             if( qPeriodic != Task->qPrivate.Iterations ){
-                Task->qPrivate.Iterations--; /*Decrease the iteration value*/
+                --Task->qPrivate.Iterations; /*Decrease the iteration value*/
             }
             kernel.EventInfo.LastIteration = ( 0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
             if( kernel.EventInfo.LastIteration ) {
@@ -776,7 +776,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
             break;
         case byNotificationSimple:
             kernel.EventInfo.EventData = Task->qPrivate.AsyncData; /*Transfer async-data to the eventinfo structure*/
-            Task->qPrivate.Notification--; /* = qFalse */ /*Clear the async flag*/            
+            --Task->qPrivate.Notification; /* = qFalse */ /*Clear the async flag*/            
             break;
         #if ( Q_QUEUES == 1 )    
             case byQueueReceiver:
@@ -851,7 +851,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
             kernel.EventInfo.StartDelay = (qClock_t)0uL;
             kernel.EventInfo.EventData = NULL; /*clear the eventdata*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
-                Task->qPrivate.Cycles++; /*increase the task-cycles value*/
+                ++Task->qPrivate.Cycles; /*increase the task-cycles value*/
             #endif
             Task->qPrivate.Trigger = qTriggerNULL;
         }

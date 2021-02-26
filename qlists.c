@@ -90,7 +90,7 @@ static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Posi
     qList_Node_t *iNode;
     qBase_t iPos = 0;
     for( iNode = list->head ; ( iPos < (qBase_t)position ) && ( NULL != iNode->next ) ; iNode = iNode->next ){
-        iPos++;
+        ++iPos;
     }
     return iNode;
 }
@@ -140,7 +140,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qList_Positi
                 iNode->next->prev = newnode;  /*  NEW <- (i+1)NODE  */
                 iNode->next = newnode;        /*  iNODE -> NEW */  
             }                                 /*  result: iNODE <-> NEW <-> (i+1)NODE    */
-            list->size++;
+            ++list->size;
             newnode->container = list;
         }
     }
@@ -184,7 +184,7 @@ qBool_t qList_RemoveItself( void * const node ){
                     toRemove->next->prev = toRemove->prev;
                 }
             }
-            list->size--;
+            --list->size;
             toRemove->container = NULL;
             RetValue = qTrue;
         }
@@ -223,27 +223,24 @@ void* qList_Remove( qList_t * const list, void * const node, const qList_Positio
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             }
         }
-        else if( position <= (qList_Position_t)0 ){
-            removed = qList_RemoveFront( list );     
-            removed->container = NULL;
-            list->size--;
-            
-        }
-        else if( position > ( (qList_Position_t)list->size - 1 ) ){
-            removed = qList_RemoveBack( list );  
-            removed->container = NULL;
-            list->size--;
-        }
         else{
-            LastIndex = ( (qBase_t)position - 1 );
-            iNode = qList_GetiNode( list, (qList_Position_t)LastIndex );
-            removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
-            iNode->next = removed->next;
-            if( NULL != removed->next ){
-                iNode->next->prev = iNode;
+            if( position <= (qList_Position_t)0 ){
+                removed = qList_RemoveFront( list );     
+            }
+            else if( position > ( (qList_Position_t)list->size - 1 ) ){
+                removed = qList_RemoveBack( list );  
+            }
+            else{
+                LastIndex = ( (qBase_t)position - 1 );
+                iNode = qList_GetiNode( list, (qList_Position_t)LastIndex );
+                removed = iNode->next;       /*  <-> (inode0) <-> inode1 <-> inode2 */
+                iNode->next = removed->next;
+                if( NULL != removed->next ){
+                    iNode->next->prev = iNode;
+                }
             }
             removed->container = NULL;
-            list->size--;
+            --list->size;
         }
     }
     return removed;
@@ -470,10 +467,10 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     if( ( NULL != list ) && ( NULL != CompareFcn ) ){
         count = list->size;
         if( count >= (size_t)2 ){ /*It is only worth running the algorithm if the list has two or more nodes*/
-            for( i = (size_t)1; i < count; i++ ){
+            for( i = (size_t)1; i < count; ++i ){
                 current = list->head;
                 n = count - i - (size_t)1;
-                for( j = (size_t)0; j <= n; j++ ){ 
+                for( j = (size_t)0; j <= n; ++j ){ 
                     xHandle.n1 = current;
                     xHandle.n2 = current->next;
                     xRetCmp = CompareFcn( &xHandle );
