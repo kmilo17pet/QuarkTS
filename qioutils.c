@@ -88,10 +88,10 @@ size_t qIOUtil_StrLen( const char* str, size_t maxlen ){
     }
     else{
         count = 0;
-        while( ( '\0' != *str ) && ( maxlen > (size_t)0 ) ) {
+        while( ( (char)'\0' != *str ) && ( maxlen > (size_t)0 ) ) {
             ++count;
             --maxlen;
-            str++;
+            ++str;
         }        
     }
     return count;
@@ -120,7 +120,7 @@ size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen ){
     } 
     else if ( 0u != maxlen ) {
         (void)memcpy( dst, src, maxlen - 1u );
-        dst[ maxlen-1u ] = '\0';
+        dst[ maxlen-1u ] = (char)'\0';
     }
     else{
         /*nothing to do here*/
@@ -131,11 +131,12 @@ size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen ){
 /*makes the basic conversion of unsigned integer to ASCII. NULL Terminator not included*/
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base ){
     size_t i = 0u;
-    qUINT32_t rem;
+    
     if( ( 0uL == num ) || ( 0u == base ) ){ /* Handle 0 explicitly, otherwise empty string is printed for 0 */
         str[ i++ ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/        
     }
     else{
+        qUINT32_t rem;
         while( 0uL != num ){ /*Process individual digits*/
             rem = num % (qUINT32_t)base;
             /*cstat -CERT-INT30-C_a*/
@@ -150,6 +151,7 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base ){
 /*============================================================================*/
 static char qIOUtil_NibbleToX( qUINT8_t value ){
     char ch;
+    
     ch = (char)( (qUINT8_t)( value & 0x0Fu ) + '0' );
     return (char)( ( ch > '9' )? (char)( ch + 7 ) : ch );
 }
@@ -169,6 +171,7 @@ void qIOUtil_SwapBytes( void *Data, const size_t n ){
     qUINT8_t *p = Data, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t lo, hi;
+
     hi = n - 1u;
     for( lo = 0u ; hi > lo ; ++lo ){
         tmp = p[ lo ];
@@ -188,6 +191,7 @@ Return value:
 */
 qBool_t qIOUtil_CheckEndianness( void ){
     qUINT16_t i = 1u;
+
     return (qBool_t)( *( (qUINT8_t*)&i ) );
 }
 /*============================================================================*/
@@ -208,7 +212,7 @@ void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_
     char *xPtr = pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
-        while( '\0' != *s ){
+        while( (char)'\0' != *s ){
             fcn( &xPtr[ i ] ,  *s++ );
             ++i;
         }
@@ -225,6 +229,7 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n ){
     qUINT8_t *pdat =(qUINT8_t*)Data;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t i;
+
     for( i = 0u ; i < n ; ++i ){
         fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] >> 4u ) );   /*MISRAC2004-17.4_b deviation allowed*/ 
         fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] & 0x0Fu ) ); /*MISRAC2004-17.4_b deviation allowed*/ 
@@ -340,13 +345,15 @@ Return value:
 */
 qUINT32_t qIOUtil_XtoU32( const char *s ) {
     qUINT32_t val = 0uL;
-    qUINT8_t xByte;
-    qUINT8_t nparsed = 0u;
+
     if( NULL != s ){
-        while ( ( '\0' != *s ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
+        qUINT8_t nparsed = 0u;
+        qUINT8_t xByte;
+
+        while ( ( (char)'\0' != *s ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
             xByte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/ /*MISRAC2004-17.4_a deviation allowed*/ 
             if( 0 != isxdigit( (int)xByte ) ){ /*if is a valid hex digit*/
-                nparsed++; /*increase the parsed char count*/
+                ++nparsed; /*increase the parsed char count*/
                 if ( ( (char)xByte >= '0' ) && ( (char)xByte <= '9') ){
                     xByte = (qUINT8_t)( xByte - (qUINT8_t)48u ); /* '48u' = '0' -> make the conversion in the 0-9 range*/ 
                 } 
@@ -396,6 +403,7 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
     qBool_t point_seen = qFalse;
     int sgn = 1;
     char c;
+
     #if ( Q_ATOF_FULL == 1 )
         int power2, powersign = 1;
         qFloat64_t power = 1.0, efactor;
@@ -406,7 +414,7 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
     /*cstat -CERT-FLP36-C*/
     fact = ( qFloat64_t )sgn; /*CERT-FLP36-C deviation allowed*/
 
-    while( '\0' != ( c = *s) ) { /*MISRAC2004-17.4_a deviation allowed*/ 
+    while( (char)'\0' != ( c = *s) ) { /*MISRAC2004-17.4_a deviation allowed*/ 
         if( '.' == c ){
             point_seen = qTrue; 
         }
@@ -461,30 +469,30 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited to precision=10*/
-    char c;
-    size_t i = 0u;
-    qUINT32_t intPart;
     if( NULL != str ){
         if( ( num >= 0.0f ) && ( num < 1.0E-38 ) ){ /*handle the 0.0f*/
             str[ 0 ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 1 ] = '.';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 2 ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 3 ] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/       
+            str[ 3 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/       
         }
         else if( qTrue == qIOUtil_IsInf(num) ){ /*handle the infinity*/
             str[ 0 ] = ( num > 0.0f )? '+' : '-'; /*MISRAC2004-17.4_b deviation allowed*/
             str[ 1 ] = 'i';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 3 ] = 'f';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 4 ] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/  
+            str[ 4 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/  
         }
         else if( qTrue == qIOUtil_IsNan(num) ){ /*handle the NAN*/
             str[ 0 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 1 ] = 'a';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/ 
-            str[ 3 ] = '\0'; /*MISRAC2004-17.4_b deviation allowed*/
+            str[ 3 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/
         }
         else{
+            qUINT32_t intPart;
+            size_t i = 0u;
+
             if( precision > Q_MAX_FTOA_PRECISION ){
                 precision = Q_MAX_FTOA_PRECISION; /*clip the precision*/
             }
@@ -499,6 +507,8 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited t
             num -= (qFloat32_t)intPart; /*get the floating-point part subtracting the integer part from the original value*/ /*CERT-FLP36-C deviation allowed*/
             i += qIOUtil_xBase_U32toA( intPart, &str[ i ], 10u ); /*convert the integer part in decimal form*/
             if( precision > 0u ){ /*decimal part*/
+                char c;
+
                 str[ i++ ] = '.'; /*place decimal point*/ /*MISRAC2004-17.4_b deviation allowed*/
                 while( 0u != precision-- ){ /*convert until precision reached*/
                     num *= 10.0f;  /*start moving the floating-point part one by one multiplying by 10*/
@@ -508,7 +518,7 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ){ /*limited t
                 }
             }
             /*cstat +CERT-FLP36-C*/
-            str[ i ] = '\0'; /*put the null char*/ /*MISRAC2004-17.4_b deviation allowed*/
+            str[ i ] = (char)'\0'; /*put the null char*/ /*MISRAC2004-17.4_b deviation allowed*/
         }
     }
     return str;
@@ -538,11 +548,12 @@ If the converted value would be out of the range of representable values by
 an int, it causes undefined behavior.
 */
 int qIOUtil_AtoI( const char *s ){
-	int res = 0; /*holds the resulting integer*/
-    int sgn = 1; /*only to hold the sign*/
     int RetValue = 0;
 
     if( NULL != s ){
+        int res = 0; /*holds the resulting integer*/
+        int sgn = 1; /*only to hold the sign*/
+        
         s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
         s = qIOUtil_CheckStrSign( s, &sgn );
         while( '\0' != *s ){ /*iterate until null char is found*/
@@ -578,10 +589,11 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base ){
-    size_t i;
     if( NULL != str ){
+        size_t i;
+
         i = qIOUtil_xBase_U32toA( num, str, base ); /*make the unsigned conversion without the null terminator*/
-        str[ i ] = '\0'; /*add the null terminator*/ /*MISRAC2004-17.4_b deviation allowed*/
+        str[ i ] = (char)'\0'; /*add the null terminator*/ /*MISRAC2004-17.4_b deviation allowed*/
     }
     return str;
 }
@@ -609,8 +621,9 @@ Return value:
   A pointer to the resulting null-terminated string, same as parameter <str>
 */
 char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base ){
-    size_t i = 0u;
     if( NULL != str ){
+        size_t i = 0u;
+
         if( num < 0 ){ 
             if( 10u == base ){ /*handle negative numbers only with 10-base*/
                 str[ i++ ] = '-';/*put the sign at the begining*/ /*MISRAC2004-17.4_b deviation allowed*/
@@ -706,6 +719,7 @@ Return value:
 */
 qBool_t qIOUtil_IsInf( qFloat32_t f ){
     qUINT32_t u = 0uL;
+
     (void)memcpy( &u, &f, sizeof(u) );
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
@@ -723,6 +737,7 @@ Return value:
 */
 qBool_t qIOUtil_IsNan( qFloat32_t f ){
     qUINT32_t u = 0uL;
+
     (void)memcpy( &u, &f, sizeof(u) );
     return ( ( 0x7F800000uL == ( u & 0x7F800000uL ) ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
 }

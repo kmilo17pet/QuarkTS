@@ -7,11 +7,10 @@ char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ] = {0};
 
 /*============================================================================*/
 void _qtrace_func( const char *loc, const char* fcn, const char *varname, const char* varvalue, void* Pointer, size_t BlockSize ){
-    #if ( Q_DEBUGTRACE_FULL == 1 )
-        char qTrace_EpochsBuffer[ 11 ] = {0};
-    #endif
     if( NULL != qDebug ){ /*trace only if the output-function is defined*/
         #if ( Q_DEBUGTRACE_FULL == 1 )
+            char qTrace_EpochsBuffer[ 11 ] = {0};
+
             qDebug( NULL, '[' );
             qIOUtil_OutputString( qDebug, NULL, qIOUtil_UtoA( qClock_GetTick(), qTrace_EpochsBuffer, 10 ), qFalse ); /*print out the systick*/
             qDebug( NULL, ']' );

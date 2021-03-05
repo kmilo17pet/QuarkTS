@@ -19,6 +19,7 @@ Return value:
 */
 qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime ){
     qBool_t RetValue = qFalse;
+
     if( NULL != Instance ){
         Instance->qPrivate.Head = NULL;
         Instance->qPrivate.DebounceTime = DebounceTime;
@@ -47,13 +48,13 @@ Return value:
 */
 qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber ){
     qBool_t RetValue = qFalse;
-    qCoreRegSize_t PinReader;
 
     if( ( NULL != Node ) && ( NULL != Instance ) ){
+        qCoreRegSize_t PinReader = Instance->qPrivate.Reader;
+
         Node->qPrivate.Port = PortAddress;
         Node->qPrivate.Pin = PinNumber;
         Node->qPrivate.Next = Instance->qPrivate.Head;
-        PinReader = Instance->qPrivate.Reader;
         Node->qPrivate.PreviousPinValue = PinReader( Node->qPrivate.Port, Node->qPrivate.Pin ); /*some compilers cant deal with function pointers inside structs*/
         Instance->qPrivate.Head = Node;
         RetValue = qTrue;
@@ -75,10 +76,7 @@ Return value:
 */
 /*============================================================================*/
 qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
-    qBool_t CurrentPinValue;
     qBool_t RetValue = qFalse;   
-    qCoreRegSize_t PinReader;
-    qEdgeCheck_IONode_t *Node;
 
     if( NULL != Instance ){ 
         if( QEDGECHECK_WAIT == Instance->qPrivate.State ){ /*de-bounce wait state*/
@@ -88,7 +86,10 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
             RetValue = qTrue;
         }
         else{
-            PinReader = Instance->qPrivate.Reader;
+            qBool_t CurrentPinValue;
+            qEdgeCheck_IONode_t *Node;
+            qCoreRegSize_t PinReader = Instance->qPrivate.Reader;
+            
             for( Node = Instance->qPrivate.Head ; NULL != Node ; Node = Node->qPrivate.Next ){ /*iterate through all the input-nodes*/
                 CurrentPinValue = PinReader( Node->qPrivate.Port, Node->qPrivate.Pin ); /*read the pin level*/        
                 if( Instance->qPrivate.State >= QEDGECHECK_CHECK ){ /*check state*/
@@ -138,6 +139,7 @@ Return value:
 */
 qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node ){
     qBool_t RetValue = (qBool_t)qUnknown;
+
     if( NULL != Node ){
         RetValue = Node->qPrivate.Status;
     }
@@ -155,18 +157,21 @@ void qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t Pin
 /*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
 qBool_t _qReg_32Bits( const void *Address, qBool_t PinNumber ){ 
     qUINT32_t Register, Mask, Bit = (qUINT32_t)PinNumber; 
+
     Mask = (qUINT32_t)((qUINT32_t)1uL << Bit);
     Register = *((const qUINT32_t*)Address);
     return ( (qUINT32_t)0 != (Register & Mask) ); 
 }
 qBool_t _qReg_16Bits( const void *Address, qBool_t PinNumber ){
     qUINT16_t Register, Mask, Bit = (qUINT16_t)PinNumber; 
+
     Mask = (qUINT16_t)((qUINT16_t)1uL << Bit);
     Register = *((const qUINT16_t*)Address);
     return ( (qUINT16_t)0 != (Register & Mask) ); 
 }
 qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber ){
     qUINT8_t Register, Mask, Bit = (qUINT8_t)PinNumber; 
+    
     Mask = (qUINT8_t)((qUINT8_t)1uL << Bit);
     Register = *((const qUINT8_t*)Address);
     return ( (qUINT8_t)0 != (Register & Mask) );

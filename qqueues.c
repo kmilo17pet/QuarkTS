@@ -9,6 +9,7 @@ static void qQueue_CopyDataFromQueue( qQueue_t * const obj, void * const pvBuffe
 
 qBool_t qQueue_IsReady( const qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         if( NULL != obj->qPrivate.head ){
             RetValue = qTrue;
@@ -36,6 +37,7 @@ Return value:
  */
 qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount ){
     qBool_t RetValue = qFalse;
+
     if( ( NULL != obj ) && ( NULL != DataArea ) && ( ItemSize > 0u ) && ( ItemsCount > 0u) ){
         obj->qPrivate.ItemsCount = ItemsCount;   /* Initialise the queue members*/
         obj->qPrivate.ItemSize = ItemSize;
@@ -82,6 +84,7 @@ Return value:
  */
 qBool_t qQueue_IsEmpty( const qQueue_t * const obj ){
     qBool_t RetValue = qTrue;
+
     if( NULL != obj ){
         if( 0u == obj->qPrivate.ItemsWaiting ){
             RetValue = qTrue;
@@ -107,6 +110,7 @@ Return value:
  */
 size_t qQueue_Count( const qQueue_t * const obj ){
     size_t RetValue = 0u;
+
     if ( NULL != obj ){
         RetValue = obj->qPrivate.ItemsWaiting;
     } 
@@ -127,6 +131,7 @@ Return value:
  */
 size_t qQueue_ItemsAvailable( const qQueue_t * const obj ){
     size_t RetValue = 0u;
+
     if ( NULL != obj ){
         RetValue = obj->qPrivate.ItemsCount - obj->qPrivate.ItemsWaiting;
     } 
@@ -148,6 +153,7 @@ Return value:
 /*============================================================================*/
 qBool_t qQueue_IsFull( const qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         if( obj->qPrivate.ItemsWaiting == obj->qPrivate.ItemsCount ){
             RetValue = qTrue;
@@ -170,6 +176,7 @@ Return value:
  */
 void* qQueue_Peek( const qQueue_t * const obj ){
     qUINT8_t *RetValue = NULL;
+
     if( NULL != obj ){
         if( obj->qPrivate.ItemsWaiting > 0u ){
             qCritical_Enter();
@@ -199,11 +206,12 @@ Return value:
  */
 qBool_t qQueue_RemoveFront( qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         if( obj->qPrivate.ItemsWaiting > 0u ){
             qCritical_Enter();
             qQueue_MoveReader( obj );
-            --( obj->qPrivate.ItemsWaiting ); /* remove the data. */
+            --obj->qPrivate.ItemsWaiting; /* remove the data. */
             qCritical_Exit();
             RetValue = qTrue;
         }
@@ -258,13 +266,13 @@ Return value:
 */
 qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
     qBool_t RetValue = qFalse;
-    size_t ItemsWaiting;
+    
     if( NULL != obj ){
-        ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
+        size_t ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if( ItemsWaiting > 0u ){
-            qCritical_Enter();
-            qQueue_CopyDataFromQueue( obj, dest );
-            --( obj->qPrivate.ItemsWaiting ); /* remove the data. */
+            qCritical_Enter(); 
+            qQueue_CopyDataFromQueue( obj, dest ); /* items available, remove one of them. */
+            --obj->qPrivate.ItemsWaiting; /* remove the data. */
             qCritical_Exit();
             RetValue = qTrue;
         }        
@@ -293,6 +301,7 @@ Return value:
 */
 qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode_t InsertMode ){
     qBool_t RetValue = qFalse;
+    
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
         if( obj->qPrivate.ItemsWaiting < obj->qPrivate.ItemsCount ){ /* Is there room on the queue?*/
             qCritical_Enter();

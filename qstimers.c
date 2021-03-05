@@ -16,6 +16,7 @@ Return value:
 */
 qBool_t qSTimer_Reload( qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
+    
     if( NULL != obj ){
         obj->Start = qClock_GetTick();
         RetValue = qTrue;
@@ -43,6 +44,7 @@ Return value:
 */
 qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
+
     if( qSTimer_Reload( obj ) ){
         obj->TV  = qClock_Convert2Clock(Time); /*set the STimer time in epochs*/
         RetValue = qTrue;
@@ -76,6 +78,7 @@ Return value:
 */
 qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){ 
         if( QSTIMER_ARMED == qSTimer_Status( obj ) ){ 
             if( qSTimer_Expired( obj ) ){
@@ -106,6 +109,7 @@ Return value:
 */
 qBool_t qSTimer_Expired( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimer_Status( obj ) ){
             RetValue = qClock_TimeDeadlineCheck( obj->Start, obj->TV );
@@ -128,6 +132,7 @@ Return value:
 */
 qClock_t qSTimer_Elapsed( const qSTimer_t * const obj ){
     qClock_t RetValue = 0uL;
+
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
             RetValue = qClock_GetTick() - obj->Start;
@@ -150,6 +155,7 @@ Return value:
 */
 qClock_t qSTimer_Remaining( const qSTimer_t * const obj ){
     qClock_t RetValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
+
     if( NULL != obj ){
         if( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
             RetValue = obj->TV - qSTimer_Elapsed( obj );
@@ -187,6 +193,7 @@ Return value:
 */
 qBool_t qSTimer_Status( const qSTimer_t * const obj ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         RetValue =  ( obj->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     } 

@@ -80,6 +80,7 @@ Return value:
 */
 qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
+    
     if( NULL != obj ){
         if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( 0u == obj->qPrivate.PatternLength ) ){ /*handler no configured yet*/
             (void)strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
@@ -99,7 +100,7 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
             RetValue = qTrue; /*let it know to the caller that expected response was received*/
         } 
         else{
-        /*nothing to do*/
+            /*nothing to do*/
         }    
     }
     return RetValue;
@@ -120,6 +121,7 @@ Return value:
 */
 qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar ){
     qBool_t RetValue = qFalse;
+    
     if( NULL != obj ){
         if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( obj->qPrivate.PatternLength > 0u ) ) {
             if( obj->qPrivate.Pattern2Match[ obj->qPrivate.MatchedCount ] == rxchar ){ /*if the received char match with the expected*/ /*MISRAC2004-17.4_b Deviation allowed*/

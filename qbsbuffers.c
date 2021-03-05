@@ -6,9 +6,11 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k );
 
 /*============================================================================*/
 static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k ){
-    qIndex_t i;
     size_t r = k;
+
     if( 0u != ((k-1u) & k) ){
+        qIndex_t i;
+        
         k--;
         for( i = 1u; i < sizeof(qIndex_t)*8u; i = (qIndex_t)(i * 2u)){
             /*cstat -CERT-INT34-C_a*/
@@ -34,10 +36,10 @@ Return value:
 */
 size_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     size_t RetValue = 0u;
-    qIndex_t head, tail;
+    
     if( NULL != obj ){
-        head = obj->qPrivate.head;
-        tail = obj->qPrivate.tail;
+        qIndex_t head = obj->qPrivate.head;
+        qIndex_t tail = obj->qPrivate.tail;
         RetValue = (size_t)( head - tail );
     }
 
@@ -58,6 +60,7 @@ Return value:
 */
 qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qFalse;
+    
     if( NULL != obj ){
         RetValue = ( obj->qPrivate.length == qBSBuffer_Count( obj ) )? qTrue : qFalse;
     }
@@ -78,6 +81,7 @@ Return value:
 */
 qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qTrue;
+
     if( NULL != obj ){
         RetValue = ( 0u == qBSBuffer_Count( obj ) )? qTrue : qFalse;
     }
@@ -98,9 +102,9 @@ Return value:
 */
 qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     qUINT8_t RetValue = 0x0u;
-    qIndex_t index;
+
     if( NULL != obj ){
-        index = obj->qPrivate.tail % obj->qPrivate.length;
+        qIndex_t index = obj->qPrivate.tail % obj->qPrivate.length;
         RetValue = (qUINT8_t) ( obj->qPrivate.buffer[ index ] ); /*MISRAC2004-17.4_b deviation allowed*/
     }
     return RetValue;
@@ -121,9 +125,9 @@ Return value:
 */
 qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest ){
     qBool_t RetValue = qFalse;
-    qIndex_t index;
+
     if ( qFalse == qBSBuffer_Empty( obj ) ) {
-        index = obj->qPrivate.tail % obj->qPrivate.length;
+        qIndex_t index = obj->qPrivate.tail % obj->qPrivate.length;
         *dest = obj->qPrivate.buffer[ index ]; /*MISRAC2004-17.4_b deviation allowed*/
         ++obj->qPrivate.tail;
         RetValue = qTrue;
@@ -145,15 +149,16 @@ Return value:
     qTrue on success, otherwise returns qFalse
 */
 qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
-    size_t i;
-    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qUINT8_t *Data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qBool_t RetValue = qFalse;
+
     if( n > 0u ){
+        size_t i;
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        qUINT8_t *Data = (qUINT8_t*)dest; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         RetValue = qTrue;
         for( i = 0u ; i < n ; ++i ){
-            RetValue = qBSBuffer_Get( obj, &Data[i] ); /*MISRAC2004-17.4_a deviation allowed*/
+            RetValue = qBSBuffer_Get( obj, &Data[ i ] ); /*MISRAC2004-17.4_a deviation allowed*/
         }
     }
     return RetValue;

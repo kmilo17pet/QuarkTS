@@ -16,9 +16,9 @@ Please see <qCritical_SetInterruptsED>
 
 */  
 void qCritical_Enter( void ){
-    qInt_Disabler_t Disabler;
     if( NULL != Critical.I_Disable ){
-        Disabler = Critical.I_Disable;
+        qInt_Disabler_t Disabler = Critical.I_Disable;
+
         Critical.IntFlags = Disabler();
     }
 }
@@ -30,9 +30,9 @@ Please see <qCritical_SetInterruptsED>
 
 */ 
 void qCritical_Exit( void ){
-    qInt_Restorer_t Restorer;
     if( NULL != Critical.I_Restorer ){
-        Restorer = Critical.I_Restorer;
+        qInt_Restorer_t Restorer = Critical.I_Restorer;
+
         Restorer( Critical.IntFlags );
     }
 }

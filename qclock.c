@@ -142,6 +142,7 @@ Return value:
 /*============================================================================*/
 qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td ){
     qBool_t RetValue = qFalse;
+    
     if( ( qClock_GetTick() - ti ) >= td ){
         RetValue = qTrue;
     }

@@ -64,6 +64,7 @@ Return value:
 */
 qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates ){
     qBool_t RetValue = qFalse;
+    
     if( ( NULL != obj ) && ( NULL != InitState ) ){
         obj->qPrivate.xPublic.NextState = InitState;
         obj->qPrivate.xPublic.PreviousState = NULL;
@@ -124,10 +125,9 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
 }
 /*============================================================================*/
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
-    qSM_t *parent;
     qBool_t exec = qTrue;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    parent =  (qSM_t*)current->qPrivate.xPublic.Parent;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/              
+    qSM_t *parent =  (qSM_t*)current->qPrivate.xPublic.Parent;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/              
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( NULL != parent ){
         exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) && ( qTrue == parent->qPrivate.Active ) ;
@@ -145,21 +145,17 @@ static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
 }
 /*============================================================================*/
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
-    qSM_State_t CurrentState; 
+    qSM_State_t CurrentState = obj->qPrivate.xPublic.NextState; 
     qSM_Status_t RetValue = qSM_EXIT_FAILURE;
-    qSM_t *parent;
-    qSM_Signal_t xSignal = QSM_SIGNAL_NONE;
 
     obj->qPrivate.xPublic.Data = Data;   /*pass the data through the fsm*/
-    /*obj->qPrivate.xPublic.Signal = QSM_SIGNAL_NONE;*/
-    CurrentState = obj->qPrivate.xPublic.NextState;
-
     if( obj->qPrivate.xPublic.LastState != CurrentState ){ /*entry condition, update the PreviousState*/
         obj->qPrivate.xPublic.PreviousState = obj->qPrivate.xPublic.LastState ; 
         obj->qPrivate.xPublic.PreviousReturnStatus = obj->qPrivate.xPublic.LastReturnStatus;
         qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_ENTRY);
     }
     else{        
+        qSM_Signal_t xSignal = QSM_SIGNAL_NONE;
         #if ( Q_QUEUES == 1 )
         if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
             qStateMachine_CheckTimeoutSignals( obj );
@@ -174,7 +170,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
         #endif
         {
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+            qSM_t *parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if( NULL != parent ){/*check if the current fsm its a child*/
                 if( ( QSM_SIGNAL_ENTRY != parent->qPrivate.xPublic.Signal ) && ( QSM_SIGNAL_EXIT != parent->qPrivate.xPublic.Signal ) ){
@@ -197,9 +193,8 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
  /*============================================================================*/
  static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal ){
     qSM_Status_t ExitStatus = qSM_EXIT_FAILURE;
-    qSM_Handler_t handle;
+    qSM_Handler_t handle = &obj->qPrivate.xPublic;
 
-    handle = &obj->qPrivate.xPublic;
     handle->Signal = xSignal;
     if( NULL != obj->qPrivate.substates ){
         qStateMachine_ExecSubStateIfAvailable( obj->qPrivate.substates->BeforeAnyState , handle ); /*eval the BeforeAnyState if available*/
@@ -261,9 +256,10 @@ static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
 }
 /*============================================================================*/
 static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  ){
-    size_t cnt;
-    qSM_Signal_t xSignal;
     if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+        size_t cnt;
+        qSM_Signal_t xSignal;
+        
         cnt = qQueue_Count( &obj->qPrivate.SignalQueue );
         while( 0u != cnt-- ){
             if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue , &xSignal ) ){
@@ -277,13 +273,11 @@ static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  ){
 }
 /*============================================================================*/
 static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current ){
-    qSM_TimeoutStateDefinition_t *tbl;
-    size_t i;
-    size_t n;
+    qSM_TimeoutStateDefinition_t *tbl = obj->qPrivate.TimeSpec->spec;
+    size_t n = obj->qPrivate.TimeSpec->n;    
 
-    tbl = obj->qPrivate.TimeSpec->spec;
-    n = obj->qPrivate.TimeSpec->n;    
     if( ( n > 0u ) && ( NULL != tbl ) ){
+        size_t i;
         for( i = 0; i < n;  ++i ){
             if( current == tbl[i].xState ){
                 (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[i].xTimeout  );
@@ -296,8 +290,8 @@ static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t curren
 /*qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n )
 
 Install the specification object to use the FSM built-in timeouts.
-This methods also set fixed timeouts for specific states usign a lookup-table. 
-The QSM_SIGNAL_TIMEOUT0 will be adquired for this purpose. 
+This methods also set fixed timeouts for specific states using a lookup-table. 
+The QSM_SIGNAL_TIMEOUT0 will be acquired for this purpose. 
 
 Note : This feature its only available if the FSM has a signal queue installed.
 Note: The lookup table will be an array of type <qSM_TimeoutStateDefinition_t> with 
@@ -317,6 +311,7 @@ Return value:
 */ 
 qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n ){
     qBool_t RetValue = qFalse;
+
     if( ( NULL != obj ) && ( NULL != ts ) ){
         obj->qPrivate.TimeSpec = ts;
         qStateMachine_DisableTimeouts( obj );
@@ -380,6 +375,7 @@ Return value:
 */  
 qBool_t qStateMachine_SubStatesInstall( qSM_t * const obj, qSM_SubStatesContainer_t *substates ){
     qBool_t RetValue = qFalse;
+
     if( NULL != obj ){
         obj->qPrivate.substates = substates;
         RetValue = qTrue;
@@ -471,6 +467,7 @@ Return value:
 */  
 qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries ){
     qBool_t RetValue = qFalse;
+
     if( ( NULL != obj ) && ( NULL != table ) && ( NULL != entries) && ( NoOfEntries > (size_t)0 ) ){
         table->qPrivate.NumberOfEntries = NoOfEntries;
         table->qPrivate.Transitions = entries;
@@ -497,6 +494,7 @@ Return value:
 */ 
 qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals ){
     qBool_t RetValue = qFalse;
+
     #if ( Q_QUEUES == 1 )
         if( ( NULL != AxSignals ) && ( MaxSignals > (size_t)0u ) ){
             RetValue = qQueue_Setup( &obj->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
@@ -528,19 +526,18 @@ Return value:
 */
 qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal ){
     qBool_t RetValue = qFalse;
-    qSM_TransitionTable_t *table;
-    qSM_Transition_t iTransition;
-    qSM_State_t xCurrentState;
-    size_t iEntry;
-    qBool_t SigActionGuard = qTrue;
-    qSM_t *toTargetFSM;
-                    
+                 
     if( NULL != obj ){
-        table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
+        qSM_TransitionTable_t *table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
+
         if( NULL != table ){
             /*xSignal = obj->qPrivate.xPublic.Signal;*/
             if( xSignal <= QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
-                xCurrentState = obj->qPrivate.xPublic.NextState;
+                qSM_State_t xCurrentState = obj->qPrivate.xPublic.NextState;
+                qSM_Transition_t iTransition;
+                size_t iEntry;
+                qBool_t SigActionGuard = qTrue;
+
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; ++iEntry ){ /*loop the transition-table entries*/
                     iTransition = table->qPrivate.Transitions[iEntry]; /*get the current entry*/
                     if( ( xSignal == iTransition.Signal) && ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) ){ /*both conditions match*/
@@ -548,6 +545,8 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                             SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
                         }
                         if( qTrue == SigActionGuard ){ /*check if he guard allow the transition*/
+                            qSM_t *toTargetFSM;
+
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
                             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                             toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
@@ -592,6 +591,7 @@ Return value:
 */
 qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent ){
     qBool_t RetValue = qFalse;
+
     #if ( Q_QUEUES == 1 )
         if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != xSignal ) ){
             if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
@@ -621,6 +621,7 @@ Return value:
 */
 qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
     qSM_Handler_t h =  NULL;
+
     if( NULL != obj ){
         h = &obj->qPrivate.xPublic;
     }
@@ -679,6 +680,7 @@ void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent ){
 /*============================================================================*/
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top ){ 
     qBool_t RetValue = qTrue;
+
     if( NULL != top ){
         RetValue = ( 0u == qSM_NestStack.Index )? qTrue : qFalse;
     }
@@ -686,8 +688,9 @@ static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top ){
 }  
 /*============================================================================*/
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){ 
-    qSM_Stack_t *new_tNode;
     if( qSM_NestStack.Index < (size_t)Q_FSM_MAX_NEST_DEPTH ){
+        qSM_Stack_t *new_tNode;
+
         new_tNode = &qSM_NestStack.Element[ qSM_NestStack.Index++ ];
         new_tNode->t  = t;  /* put in the data  */
         new_tNode->next = (*top_ref);  /* link the old list of the new tNode */   
@@ -697,10 +700,9 @@ static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){
 /*============================================================================*/
 static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){ 
     qSM_t *res = NULL; 
-    qSM_Stack_t *top; 
-  
+    
     if( qFalse == qStateMachine_StackIsEmpty( *top_ref ) ){ 
-        top = *top_ref; 
+        qSM_Stack_t *top = *top_ref; 
         res = top->t; 
         *top_ref = top->next; 
         --qSM_NestStack.Index; 
@@ -710,6 +712,7 @@ static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){
 /*============================================================================*/
 static void qStateMachine_StackCleanUp( void ){
     size_t i;
+
     for( i = 0u; i < (size_t)Q_FSM_MAX_NEST_DEPTH; ++i ){
         qSM_NestStack.Element[ i ].next = NULL;
         qSM_NestStack.Element[ i ].t = NULL;
