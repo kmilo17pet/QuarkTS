@@ -32,7 +32,7 @@ Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/qu
 #ifndef QuarkTS_H
     #define	QuarkTS_H
 
-    #define QUARKTS_VERSION         "6.4.3"
+    #define QUARKTS_VERSION         "6.4.4"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"

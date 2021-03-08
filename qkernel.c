@@ -453,12 +453,12 @@ Return value:
 */
 qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
                             qSM_t * const StateMachine, qSM_State_t InitState, 
-                            qSM_SubStatesContainer_t *substates, qState_t InitialTaskState, void *arg ){
+                            qSM_SurroundingState_t Surrounding, qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
 
     if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
         if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
-            RetValue = qStateMachine_Setup( StateMachine, InitState, substates );
+            RetValue = qStateMachine_Setup( StateMachine, InitState, Surrounding );
             Task->qPrivate.StateMachine = StateMachine;
             StateMachine->qPrivate.Owner = Task;
         }
