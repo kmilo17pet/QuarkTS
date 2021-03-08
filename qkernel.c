@@ -425,7 +425,7 @@ qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriori
 #if ( Q_FSM == 1)
 /*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
                         qSM_t * const StateMachine, qSM_State_t InitState, 
-                        qSM_SubStatesContainer_t *substates, qState_t InitialTaskState, void *arg ){
+                        qSM_SurroundingState_t Surrounding, qState_t InitialTaskState, void *arg ){
 
 Add a task to the scheduling scheme running a dedicated state-machine. 
 The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
@@ -441,7 +441,7 @@ Parameters:
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qSM_t pointer as input argument.
-    - substates : A pointer to the FSM substates container. To ignore pass NULL.
+    - Surrounding : The surrounding state. To ignore pass NULL.
     - arg : Represents the task arguments. All arguments must be passed by
                      reference and cast to (void *). Only one argument is allowed, 
                      so, for multiple arguments, create a structure that contains 

@@ -45,7 +45,7 @@ qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
     return qSM_EXIT_SUCCESS;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SubStatesContainer_t *substates )
+/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SurroundingState_t Surrounding )
 
 Initializes a finite state machine (FSM).
 
@@ -55,7 +55,7 @@ Parameters:
     - InitState : The first state to be performed. This argument is a pointer 
                   to a callback function, returning qSM_Status_t and with a 
                   qSM_Handler_t as input argument.
-    - substates : A pointer to the container of Sub-States. To ignore pass NULL                 
+    - Surrounding : The surrounding state To ignore pass NULL                 
 
 Return value:
 
@@ -366,8 +366,8 @@ Parameters:
          > qSM_SURROUNDING_STATE: Set the surrounding State
          > qSM_UNISTALL_TRANSTABLE : To uninstall the transition table if available
     - s : The new value for state (only apply in qSM_RESTART). If not used, pass NULL.
-    - subs : The new value for SubState (only apply in qSM_FAILURE_STATE, qSM_SUCCESS_STATE, 
-             qSM_UNEXPECTED_STATE, qSM_BEFORE_ANY_STATE). If not used, pass NULL.
+    - Surrounding : The new value for SubStSurrounding (only apply in qSM_SURROUNDING_STATE).
+     If not used, pass NULL.
 */    
 void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SurroundingState_t Surrounding ){
     if( NULL != obj ){

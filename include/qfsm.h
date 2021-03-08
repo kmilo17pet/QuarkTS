@@ -128,8 +128,7 @@
         qSM_RESTART,                                    /*< Restart the FSM. */
         qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,               /*< Clear the entry flag for the current state if the NextState field doesn't change. */
         qSM_SURROUNDING_STATE,                          /*< To set the surrounding state*/       
-        qSM_UNINSTALL_TRANSTABLE,                       /*< To unistall the transition table if available*/     
-        qSM_UNISTALL_SUBSTATES                          /*< To unistall the FSM substates*/           
+        qSM_UNINSTALL_TRANSTABLE,                       /*< To unistall the transition table if available*/           
     }qSM_Attribute_t; 
 
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SurroundingState_t Surrounding );
