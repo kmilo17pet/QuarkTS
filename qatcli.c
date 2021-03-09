@@ -10,9 +10,8 @@ static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
-#if ( Q_ATCLI_INPUT_FIX == 1 )
 static char* qATCLI_Input_Fix( char *s, size_t maxlen );
-#endif 
+
 static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval );
 static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *InputBuffer, qATCLI_Handler_t params );
 static qBool_t qATCLI_Notify( qATCLI_t * const cli );
@@ -226,7 +225,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
         /*cstat +MISRAC2012-Rule-13.5 */  
             qIndex_t CurrentIndex = cli->qPrivate.Input.index; /*to avoid undefined order of volatile accesses*/
 
-            cli->qPrivate.Input.Buffer[ CurrentIndex++ ] = (char)tolower( (int)c ); /*insert lower-case char*/
+            cli->qPrivate.Input.Buffer[ CurrentIndex++ ] = c; /*insert char*/
             cli->qPrivate.Input.Buffer[ CurrentIndex   ] = (char)'\0'; /*put the null-char after to keep the string safe*/
             if( CurrentIndex >= cli->qPrivate.Input.MaxIndex ){ /*check if the input buffer its reached*/
                 CurrentIndex = 0u;  
@@ -270,9 +269,6 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
                 if( 0 != isgraph( (int)Data[ 0 ] ) ){
                     if( NULL != qIOUtil_StrChr( Data, (int)'\r', MaxToInsert ) ){ /*find the end of line safely*/
                         (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, MaxToInsert ); /*safe string copy*/
-                        #if ( Q_ATCLI_INPUT_FIX == 1 )
-                        (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, MaxToInsert ); /*TODO : check pertinence*/
-                        #endif
                         RetValue = qATCLI_Notify( cli );
                     }
                 }
@@ -285,24 +281,31 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
 /*
 modifies the input string removing non-graph chars 
 */
-#if ( Q_ATCLI_INPUT_FIX == 1 )
-static char* qATCLI_Input_Fix( char *s, size_t maxlen){
+static char* qATCLI_Input_Fix( char *s, size_t maxlen ){
     int i, j = 0;
+    int NoL = 0;
     
     for( i = 0; ( (char)'\0' != s[ i ] ) && ( maxlen > 0u ) ; ++i ){
+        if( '=' == s[ i ] || '?' == s[ i ] ){
+            NoL = 1;    
+        }
         if( '\r' == s[ i ] ){
             s[ i ] = (char)'\0';
             break;    
         } 
         if( 0 != isgraph( (int)s[ i ]) ){
-            s[ j++ ] = (char)tolower( (int)s[ i ] );
+            if( 0 == NoL ){
+                s[ j++ ] = (char)tolower( (int)s[ i ] );
+            }
+            else{
+                s[ j++ ] = s[ i ];
+            }
         }
         --maxlen;
     }
     s[ j ] = (char)'\0';
     return s;
 }
-#endif
 /*============================================================================*/
 /*qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd )
 
@@ -328,9 +331,7 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd ){
         if( ( qFalse == ReadyInput ) && ( qIOUtil_StrLen( cmd, MaxToInsert ) <= MaxToInsert ) ){ /*qIOUtil_StrLen is known to have no side effects*/
         /*cstat +MISRAC2012-Rule-13.5 */  
             (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, MaxToInsert ); /*safe string copy*/
-            #if ( Q_ATCLI_INPUT_FIX == 1 )
             (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, MaxToInsert );
-            #endif
             RetValue = qATCLI_Notify( cli );
         }
     } 
@@ -358,6 +359,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd ){
     if( ( NULL != cli ) && ( NULL != cmd ) ){
         qATCLI_Command_t *Command;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+
         for( Command = (qATCLI_Command_t*)cli->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ){ /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/  
             if( strstr( cmd, Command->Text ) == cmd ){ /*check if the input match the subscribed command starting from the beginning*/ /*TODO : potentially unsafe, find a better way*/
@@ -477,6 +479,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
             char *InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
 
             InputBuffer[ Input->MaxIndex ] = (char)'\0'; /*to perform string-safe operations */
+            (void)qATCLI_Input_Fix( InputBuffer, Input->Size ); /*remove non-graph chars*/
 			/*Validation : set the value for the response lookup table*/
 			if 	( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ){
             	OutputRetval = QATCLI_OK;			/*check if the input its the simple AT command*/
