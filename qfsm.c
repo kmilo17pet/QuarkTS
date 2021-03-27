@@ -224,21 +224,21 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
 /*============================================================================*/
 static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
     if( NULL != obj->qPrivate.TimeSpec) {
-        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[0] );
-        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[1] );
-        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[2] );
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ] );
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 1 ] );
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 2 ] );
     }
 }
 /*============================================================================*/
 static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
     if( NULL != obj->qPrivate.TimeSpec) {
-        if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[0] ) ) {
+        if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ] ) ) {
             (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT0, qFalse );   
         }
-        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[1] ) ) {
+        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 1 ] ) ) {
             (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT1, qFalse ); 
         }
-        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[2] ) ) {
+        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 2 ] ) ) {
             (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT2, qFalse ); 
         }
         else{
@@ -271,8 +271,8 @@ static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t curren
     if( ( n > 0u ) && ( NULL != tbl ) ){
         size_t i;
         for( i = 0; i < n;  ++i ){
-            if( current == tbl[i].xState ){
-                (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[i].xTimeout  );
+            if( current == tbl[ i ].xState ){
+                (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[ i ].xTimeout  );
                 break;
             }
         }
@@ -484,12 +484,12 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                 qBool_t SigActionGuard = qTrue;
 
                 for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; ++iEntry ){ /*loop the transition-table entries*/
-                    iTransition = table->qPrivate.Transitions[iEntry]; /*get the current entry*/
+                    iTransition = table->qPrivate.Transitions[ iEntry ]; /*get the current entry*/
                     if( ( xSignal == iTransition.Signal) && ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) ){ /*both conditions match*/
                         if( NULL != iTransition.SignalAction ){  /*run the signal-action(or guard) if available*/
                             SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
                         }
-                        if( qTrue == SigActionGuard ){ /*check if he guard allow the transition*/
+                        if( qTrue == SigActionGuard ){ /*check if the guard allow the transition*/
                             qSM_t *toTargetFSM;
 
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
@@ -497,8 +497,11 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                             toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
                             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                             if( ( NULL != toTargetFSM ) ){ /*run the exit action on target FSM*/
-                                qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
-                                toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState; /*move to the new state*/
+                                if( iTransition.xToTargetState != toTargetFSM->qPrivate.xPublic.LastState ){
+                                    qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
+                                    toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState; /*move to the new state*/
+                                    break; 
+                                }
                             } 
                         }
                         else if( qIgnore == SigActionGuard ){
@@ -508,8 +511,8 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                             /*nothing to do here*/
                         }
                         RetValue = qTrue;
-                        break; 
                     } 
+                    SigActionGuard = qTrue;
                 }
             }
         }        
