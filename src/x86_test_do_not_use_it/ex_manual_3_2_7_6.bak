@@ -56,13 +56,13 @@ qSM_Transition_t AutomatedControl_SM_ttable[]={
 
 
 qSM_Transition_t AutomatedControl_LED_ttable[]={
-    { AutomatedControl_Sub_LEDON,                 QSM_SIGNAL_TIMEOUT0,             AutomatedControl_Sub_LEDOFF,         NULL,  NULL, NULL },          
-    { AutomatedControl_Sub_LEDOFF,                QSM_SIGNAL_TIMEOUT0,             AutomatedControl_Sub_LEDON,          NULL,  NULL, NULL },         
+    { AutomatedControl_Sub_LEDON,                 QSM_SIGNAL_TIMEOUT(0),             AutomatedControl_Sub_LEDOFF,         NULL,  NULL, NULL },          
+    { AutomatedControl_Sub_LEDOFF,                QSM_SIGNAL_TIMEOUT(0),             AutomatedControl_Sub_LEDON,          NULL,  NULL, NULL },         
 };
 
 qSM_TimeoutStateDefinition_t LED_timeouts[]={
-    {AutomatedControl_Sub_LEDON, 2.0f },
-    {AutomatedControl_Sub_LEDOFF, 4.0f },
+    {AutomatedControl_Sub_LEDON,    2.0f,   0 },
+    {AutomatedControl_Sub_LEDOFF,   4.0f,   0 },
 };
 /*============================================================================*/
 void putcharfcn(void* stp, char c){

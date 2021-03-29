@@ -33,9 +33,13 @@ qSM_Transition_t Top_SM_ttable[]={
 };
 
 qSM_Transition_t DoorClosed_SM_ttable[]={   
-    { NULL,    SIG_OFFTIMEOUT,  Off_State,          NULL,   NULL,            NULL,         },    
-    { NULL,    SIG_BAKE,        Heating_State,      NULL,   &Heating_SM,     Baking_State,         },             
-    { NULL,    SIG_TOAST,       Heating_State,      NULL,   &Heating_SM,     Toasting_State,         },             
+    { NULL,    QSM_SIGNAL_TIMEOUT(0),   Off_State,          NULL,   NULL,            NULL,         },    
+    { NULL,    SIG_BAKE,                Heating_State,      NULL,   &Heating_SM,     Baking_State,         },             
+    { NULL,    SIG_TOAST,               Heating_State,      NULL,   &Heating_SM,     Toasting_State,         },             
+};
+
+qSM_TimeoutStateDefinition_t Oven_timeouts[]={
+    { DoorClosed_State, 5.0f, 0 },
 };
 
 qSM_Status_t DoorClosed_State( qSM_Handler_t h ){
@@ -84,6 +88,7 @@ qSM_Status_t Off_State( qSM_Handler_t h ){
             puts("    entering Off_State");
             break;
         case QSM_SIGNAL_EXIT:
+            qStateMachine_SetTimeout( h->Parent, 0, 5.0f );
             puts("    exiting Off_State");
             break;
         default:
@@ -134,7 +139,7 @@ void Sig_Handler(int signum ){
             qStateMachine_SendSignal( &Top_SM, SIG_BAKE, qFalse );
             break;
         case SIGTRAP:
-            //qStateMachine_SendSignal( &Top_SM, SIG_OFFTIMEOUT, qFalse );     
+            qStateMachine_SendSignal( &Top_SM, QSM_SIGNAL_TIMEOUT(0), qFalse );     
             break;
         case SIGSYS:  
             break;
@@ -152,6 +157,7 @@ qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
 int main(int argc, char** argv) {  
     qSM_Signal_t topsm_sig_stack[10];
     qSM_TransitionTable_t top_ttable, closed_ttable;
+    qSM_TimeoutSpec_t tm_spectimeout;
     printf("OvenControl = %d\r\n", getpid() );
 
     signal( SIGUSR1, Sig_Handler );
@@ -169,11 +175,14 @@ int main(int argc, char** argv) {
     
     qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, DoorClosed_State, NULL, qEnabled, NULL); 
     
-    qStateMachine_SignalQueueSetup( &Top_SM, topsm_sig_stack, sizeof(topsm_sig_stack)/sizeof(topsm_sig_stack[0]) );
+    qStateMachine_SignalQueueSetup( &Top_SM, topsm_sig_stack, qFLM_ArraySize(topsm_sig_stack) );
     qStateMachine_TransitionTableInstall( &Top_SM, &top_ttable, Top_SM_ttable, 2 );
 
     qStateMachine_Set_CompositeState( &Top_SM, DoorClosed_State, &DoorClosed_SM );
     qStateMachine_Set_CompositeState( &DoorClosed_SM, Heating_State, &Heating_SM );
+
+    qStateMachine_TimeoutSpecInstall( &Top_SM, &tm_spectimeout, Oven_timeouts, 1  );
+    
     
 
     qOS_StateMachineTask_SigCon( &SMTask );

@@ -28,6 +28,7 @@
     #define Q_EDGE_CHECK_IOGROUPS       ( 1 )       /*< Used to enable or disable the edge check for I/O groups*/
     #define Q_BYTE_SIZED_BUFFERS        ( 1 )       /*< Used to enable or disable the Byte-sized buffers*/    
     #define Q_USE_STDINT_H              ( 1 )       /*< Use the stdint.h header to define kernel data-types */
+    #define Q_FSM_MAX_TIMEOUTS          ( 3 )    
 
     /*portability options*/
     #define Q_FUNC_ATTRIBUTE_PRE                    /*< Function attributes for callbacks with more than one argument */
