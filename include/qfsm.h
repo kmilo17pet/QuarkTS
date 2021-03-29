@@ -18,16 +18,14 @@
 
     typedef qUINT32_t qSM_Signal_t;
 
-    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_Signal_t)0u )
-    #define QSM_SIGNAL_RANGE_MAX    ( (qSM_Signal_t)0xFFFFFFFCu )
+    #define QSM_SIGNAL_RANGE_MIN        ( (qSM_Signal_t)0u )
+    #define QSM_SIGNAL_RANGE_MAX        ( (qSM_Signal_t)0xFFFFFFFCu )
 
-    #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFFu )
-    #define QSM_SIGNAL_ENTRY        ( (qSM_Signal_t)0xFFFFFFFEu )
-    #define QSM_SIGNAL_EXIT         ( (qSM_Signal_t)0xFFFFFFFDu )
-    #define QSM_SIGNAL_TIMEOUT2     ( (qSM_Signal_t)0xFFFFFFFCu )    
-    #define QSM_SIGNAL_TIMEOUT1     ( (qSM_Signal_t)0xFFFFFFFBu )    
-    #define QSM_SIGNAL_TIMEOUT0     ( (qSM_Signal_t)0xFFFFFFFAu )    
-    #define QSM_SIGNAL_USER         ( QSM_SIGNAL_RANGE_MIN )
+    #define QSM_SIGNAL_NONE             ( (qSM_Signal_t)0xFFFFFFFFu )
+    #define QSM_SIGNAL_ENTRY            ( (qSM_Signal_t)0xFFFFFFFEu )
+    #define QSM_SIGNAL_EXIT             ( (qSM_Signal_t)0xFFFFFFFDu )
+    #define QSM_SIGNAL_TIMEOUT(index)   ( (qSM_Signal_t)0xFFFFFFFCu - (qSM_Signal_t)(Q_FSM_MAX_TIMEOUTS-1) + (qSM_Signal_t)(index) )   
+    #define QSM_SIGNAL_USER             ( QSM_SIGNAL_RANGE_MIN )
   
 
     typedef struct _qSM_PublicData_s{
@@ -95,11 +93,12 @@
     typedef struct{
         qSM_State_t xState;                             /*< in witch state the timeout will be installed.*/
         qTime_t xTimeout;                               /*< the time value to be used as Timeout.*/
+        size_t index;                                   /*< the for the timeout. */
     }qSM_TimeoutStateDefinition_t;
 
     typedef struct{
         qSM_TimeoutStateDefinition_t *spec;             /*< a pointer to the state-timeout lookup table*/
-        qSTimer_t builtin_timeout[3];                   /*< the built-in timeouts*/
+        qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];/*< the built-in timeouts*/
         size_t n;                                       /*< the number of entries inside the <spec> field*/
     }qSM_TimeoutSpec_t;
 

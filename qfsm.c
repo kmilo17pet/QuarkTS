@@ -205,7 +205,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     }
 
     if( NULL != state ){ /*eval the state if available*/
-        if( QSM_SIGNAL_ENTRY == xSignal){ 
+        if( QSM_SIGNAL_ENTRY == xSignal ){ 
             qStateMachine_TimeoutStateArm( obj, state ); /*re-arm timeouts at the entry if available*/
         }
         ExitStatus = state( handle );
@@ -222,24 +222,20 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
 }
 /*============================================================================*/
 static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
-    qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ] );
-    qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 1 ] );
-    qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ 2 ] );
+    size_t i;
+    for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
+        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] );
+    }
 }
 /*============================================================================*/
 static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
     if( NULL != obj->qPrivate.TimeSpec) {
-        if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ] ) ) {
-            (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT0, qFalse );   
-        }
-        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 1 ] ) ) {
-            (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT1, qFalse ); 
-        }
-        else if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ 2 ] ) ) {
-            (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT2, qFalse ); 
-        }
-        else{
-            /*nothing to do here*/
+        size_t i;
+        for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
+            if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] ) ) {
+                (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT(i), qFalse );   
+                qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] );
+            } 
         }
     }
 }
@@ -253,7 +249,7 @@ static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj ){
             cnt = qQueue_Count( &obj->qPrivate.SignalQueue );
             while( 0u != cnt-- ){
                 if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue , &xSignal ) ){
-                    if( ( xSignal < QSM_SIGNAL_TIMEOUT0 ) || ( xSignal > QSM_SIGNAL_TIMEOUT2) ){ /*keep the non-timeout signals*/
+                    if( ( xSignal < QSM_SIGNAL_TIMEOUT(0) ) || ( xSignal > QSM_SIGNAL_TIMEOUT(2) ) ){ /*keep the non-timeout signals*/
                         (void)qQueue_SendToBack( &obj->qPrivate.SignalQueue , &xSignal );
                     }
                 }
@@ -272,7 +268,7 @@ static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t curren
             size_t i;
             for( i = 0; i < n;  ++i ){
                 if( current == tbl[ i ].xState ){
-                    (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ 0 ], tbl[ i ].xTimeout  );
+                    (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ tbl[ i ].index ], tbl[ i ].xTimeout  );
                     break;
                 }
             }
@@ -323,7 +319,7 @@ qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t 
 /*============================================================================*/
 /*qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time )
 
-Set the time for one of the built-in timeout inside the target FSM
+Set the time for one of the built-in timeouts inside the target FSM
 
 <Requirements> : 
    *> An installed time specification. For this use <qStateMachine_TimeoutSpecInstall>
@@ -345,7 +341,7 @@ qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, co
     qBool_t RetValue = qFalse;
 
     if( ( xTimeout <= 2u ) && ( NULL != obj ) ){
-        if( NULL != obj->qPrivate.TimeSpec ) {
+        if( NULL != obj->qPrivate.TimeSpec ){
             RetValue = qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], time  );
         }
     }
@@ -414,7 +410,7 @@ Return value:
 qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries ){
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != obj ) && ( NULL != table ) && ( NULL != entries) && ( NoOfEntries > (size_t)0 ) ){
+    if( ( NULL != obj ) && ( NULL != table ) && ( NULL != entries ) && ( NoOfEntries > (size_t)0 ) ){
         table->qPrivate.NumberOfEntries = NoOfEntries;
         table->qPrivate.Transitions = entries;
         obj->qPrivate.TransitionTable = table;

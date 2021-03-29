@@ -32,6 +32,7 @@
     #define qFLM_IsBetween(X, Low, High)                    ((qBool_t)((X) >= (Low) && (X) <= (High)))
     #define qFLM_Min(a,b)                                   (((a)<(b))?(a):(b))
     #define qFLM_Max(a,b)                                   (((a)>(b))?(a):(b))
+    #define qFLM_ArraySize(x)                               (sizeof(x) / sizeof((x)[0]))
 
     #ifdef __cplusplus
     }
