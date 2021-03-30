@@ -40,7 +40,7 @@ The design goal of QuarkTS is to achieve its stated functionality using a small,
 
 ### Why should I choose QuarkTS?
 
-QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer yet want to avoid the space and complexity of an full RTOS, but keeping the taste of a robust and safe one. 
+QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer yet want to avoid the space and complexity of a full RTOS, but keeping the taste of a robust and safe one. 
 
 ## Cloning QuarkTS
 
