@@ -10,9 +10,10 @@
     extern "C" {
     #endif
 
-    typedef enum {qSM_BEFORE_ANY = -32767, qSM_EXIT_FAILURE = -32766, qSM_EXIT_SUCCESS = -32765} qSM_Status_t;
+    typedef enum {qSM_BEFORE_ANY = -32767, qSM_EXIT_NULL = -32766, qSM_EXIT_FAILURE = -32765, qSM_EXIT_SUCCESS = -32764} qSM_Status_t;
     #define QSM_EXIT_SUCCESS        ( qSM_EXIT_SUCCESS )
     #define QSM_EXIT_FAILURE        ( qSM_EXIT_FAILURE )
+    #define QSM_EXIT_NULL           ( qSM_EXIT_NULL )
     #define QSM_BEFORE_ANY          ( qSM_BEFORE_ANY )
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
 
@@ -36,11 +37,11 @@
         /* PreviousState: (Read Only)
         Last state seen in the flow chart
         */
-        qSM_Status_t (* PreviousState)(_qSM_Handler_t arg);
+        qSM_Status_t (*PreviousState)(_qSM_Handler_t arg);
         /* LastState: (Read Only) 
         The last state executed
         */        
-        qSM_Status_t (* LastState)(_qSM_Handler_t arg);
+        qSM_Status_t (*LastState)(_qSM_Handler_t arg);
         /* Data: (Read Only)
         State-machine associated data.
         Note: If the FSM is running as a task, the associated event data can be 
@@ -105,7 +106,8 @@
     /* Please don't access any members of this structure directly */
     typedef struct _qSM_s{
         struct _qSM_Private_s{
-            qSM_SurroundingState_t Surrounding;        /*< An additional state to handle actions after and before any normal state. */
+            qSM_SurroundingState_t Surrounding;         /*< An additional state to handle actions after and before any normal state. */
+            qSM_State_t InitState;                      /*< The initial state*/
             qSM_TransitionTable_t *TransitionTable;     /*< A pointer to the transition table.*/
             void *Owner;                                /*< A pointer to the owner task */
             struct{             
@@ -113,7 +115,7 @@
                 struct _qSM_s *next;                    /*< Composite state pointer. head : points to the next same-level fsm.*/
                 qSM_State_t rootState;                  /*< The state where this fsm should be active*/
             }Composite; 
-            qQueue_t SignalQueue;                       /*< The fsm signal queue object. */
+            qQueue_t *SignalQueue;                       /*< The fsm signal queue object. */
             _qSM_PublicData_t xPublic;                  /*< The external-manipulable members of the fsm. */
             qSM_TimeoutSpec_t *TimeSpec;                /*< A pointer to the timeout specification object*/
             qBool_t Active;                             /*< A flag indicating whether the fsm should run in a hierarchical environment*/          
@@ -127,14 +129,15 @@
         qSM_RESTART,                                    /*< Restart the FSM. */
         qSM_CLEAR_STATE_FIRST_ENTRY_FLAG,               /*< Clear the entry flag for the current state if the NextState field doesn't change. */
         qSM_SURROUNDING_STATE,                          /*< To set the surrounding state*/       
-        qSM_UNINSTALL_TRANSTABLE,                       /*< To unistall the transition table if available*/           
+        qSM_UNINSTALL_TRANSTABLE,                       /*< To unistall the transition table if available*/      
+        qSM_CHANGE_INITSTATE                            /*< To change the init state*/
     }qSM_Attribute_t; 
 
     qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SurroundingState_t Surrounding );
     void qStateMachine_Run( qSM_t * const root, void *Data );
 
     void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SurroundingState_t Surrounding  );
-    qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals );
+    qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qQueue_t *xQueue, qSM_Signal_t *AxSignals, size_t MaxSignals );
     qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries );
     qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal );
     qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent );

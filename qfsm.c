@@ -65,6 +65,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_Surro
     qBool_t RetValue = qFalse;
     
     if( ( NULL != obj ) && ( NULL != InitState ) ){
+        obj->qPrivate.InitState = InitState;
         obj->qPrivate.xPublic.NextState = InitState;
         obj->qPrivate.xPublic.PreviousState = NULL;
         obj->qPrivate.xPublic.Signal  = QSM_SIGNAL_NONE;
@@ -75,7 +76,7 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_Surro
         obj->qPrivate.Surrounding = Surrounding;
         obj->qPrivate.TransitionTable = NULL;
         obj->qPrivate.Owner = NULL;
-        obj->qPrivate.SignalQueue.qPrivate.head = NULL;
+        obj->qPrivate.SignalQueue = NULL;
 
         obj->qPrivate.Composite.head = NULL;
         obj->qPrivate.Composite.next = NULL;
@@ -157,9 +158,9 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     else{        
         qSM_Signal_t xSignal = QSM_SIGNAL_NONE;
         #if ( Q_QUEUES == 1 )
-        if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+        if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
             qStateMachine_CheckTimeoutSignals( obj );
-            if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue, &xSignal ) ){
+            if( qTrue == qQueue_Receive( obj->qPrivate.SignalQueue, &xSignal ) ){
                 if( NULL != obj->qPrivate.Composite.head ){
                     obj->qPrivate.xPublic.Signal = xSignal; /*store the signal if any child needs it*/
                 }
@@ -216,7 +217,7 @@ static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
     obj->qPrivate.xPublic.LastReturnStatus = ExitStatus;
     obj->qPrivate.xPublic.LastState = state; /*update the LastState*/
     /*Check return status to eval extra states*/
-    if( NULL != obj->qPrivate.Surrounding ){ /*check again, because this property may have been changed asynchronously*/
+    if( ( NULL != obj->qPrivate.Surrounding ) && ( ExitStatus > qSM_EXIT_NULL ) ){ /*check again, because this property may have been changed asynchronously*/
         obj->qPrivate.Surrounding( handle );  /*execute the surrounding state with the latest return status*/
     }
 }
@@ -242,15 +243,15 @@ static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
 /*============================================================================*/
 static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj ){
     if( NULL != obj->qPrivate.TimeSpec ){
-        if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
+        if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
             size_t cnt;
             qSM_Signal_t xSignal;
             
-            cnt = qQueue_Count( &obj->qPrivate.SignalQueue );
+            cnt = qQueue_Count( obj->qPrivate.SignalQueue );
             while( 0u != cnt-- ){
-                if( qTrue == qQueue_Receive( &obj->qPrivate.SignalQueue , &xSignal ) ){
+                if( qTrue == qQueue_Receive( obj->qPrivate.SignalQueue , &xSignal ) ){
                     if( ( xSignal < QSM_SIGNAL_TIMEOUT(0) ) || ( xSignal > QSM_SIGNAL_TIMEOUT(2) ) ){ /*keep the non-timeout signals*/
-                        (void)qQueue_SendToBack( &obj->qPrivate.SignalQueue , &xSignal );
+                        (void)qQueue_SendToBack( obj->qPrivate.SignalQueue , &xSignal );
                     }
                 }
             }
@@ -376,6 +377,9 @@ void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qS
                 obj->qPrivate.xPublic.Signal = QSM_SIGNAL_NONE;
                 obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;            
                 break;
+            case qSM_CHANGE_INITSTATE:
+                obj->qPrivate.InitState = s;
+                break;    
             case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
                 obj->qPrivate.xPublic.PreviousState = NULL;
                 obj->qPrivate.xPublic.LastState = NULL;
@@ -419,7 +423,7 @@ qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionT
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals )
+/*qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qQueue_t *xQueue, qSM_Signal_t *AxSignals, size_t MaxSignals )
 
 Setup the state-machine signal queue.
 Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUEUES == 1 ]
@@ -427,6 +431,7 @@ Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUE
 Parameters:
 
     - obj : a pointer to the FSM object.
+    - xQueue : a pointer to the queue instance.
     - AxSignals : A pointer to the memory area used for queueing signals. qSM_Signal_t[MaxSignals]
     - MaxSignals : The number of items inside <AxSignals>.
 
@@ -434,12 +439,13 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qSM_Signal_t *AxSignals, size_t MaxSignals ){
+qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qQueue_t *xQueue, qSM_Signal_t *AxSignals, size_t MaxSignals ){
     qBool_t RetValue = qFalse;
 
     #if ( Q_QUEUES == 1 )
         if( ( NULL != AxSignals ) && ( MaxSignals > (size_t)0u ) ){
-            RetValue = qQueue_Setup( &obj->qPrivate.SignalQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
+            obj->qPrivate.SignalQueue = xQueue;
+            RetValue = qQueue_Setup( xQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
         }
     #else
         Q_UNUSED( obj );
@@ -540,8 +546,8 @@ qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool
 
     #if ( Q_QUEUES == 1 )
         if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != xSignal ) ){
-            if( qTrue == qQueue_IsReady( &obj->qPrivate.SignalQueue ) ){
-                RetValue = qQueue_SendGeneric( &obj->qPrivate.SignalQueue, &xSignal, (qQueue_Mode_t)isUrgent );  
+            if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
+                RetValue = qQueue_SendGeneric( obj->qPrivate.SignalQueue, &xSignal, (qQueue_Mode_t)isUrgent );  
             }
         }
     #else

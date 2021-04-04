@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.4.6 - An open-source OS for small embedded applications.
+QuarkTS V6.4.7 - An open-source OS for small embedded applications.
 GNU General Public License v3 (GPL-3)
 C99 and MISRAC 2012 Compliant    
 
@@ -32,7 +32,7 @@ Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/qu
 #ifndef QuarkTS_H
     #define	QuarkTS_H
 
-    #define QUARKTS_VERSION         "6.4.6"
+    #define QUARKTS_VERSION         "6.4.7"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"
