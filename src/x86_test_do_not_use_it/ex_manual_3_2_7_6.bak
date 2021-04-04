@@ -239,6 +239,7 @@ void Sig_Handler(int signum ){
 }
 /*============================================================================*/
 int main(int argc, char** argv) {  
+    qQueue_t top_sigqueue, led_sigqueue;
     qSM_Signal_t topsm_sig_stack[10], ledsm_sig_stack[4];
     qSM_TransitionTable_t top_ttable, auto_ttable, auto_ttable2;
     qSM_TimeoutSpec_t tm_spectimeout;
@@ -263,13 +264,13 @@ int main(int argc, char** argv) {
     
     qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, Top_Idle_State, NULL, qEnabled, NULL); 
     
-    qStateMachine_SignalQueueSetup( &Top_SM, topsm_sig_stack, sizeof(topsm_sig_stack)/sizeof(topsm_sig_stack[0]) );
+    qStateMachine_SignalQueueSetup( &Top_SM, &top_sigqueue, topsm_sig_stack, qFLM_ArraySize(topsm_sig_stack)  );
     qStateMachine_TransitionTableInstall( &Top_SM, &top_ttable, Top_SM_ttable, 6 );
 
     qStateMachine_Set_CompositeState( &Top_SM, Top_AutomatedControl_State, &AutomatedControl_SM );
     qStateMachine_Set_CompositeState( &Top_SM, Top_AutomatedControl_State, &LEDBlink_FSM );
 
-    qStateMachine_SignalQueueSetup( &LEDBlink_FSM, ledsm_sig_stack, sizeof(ledsm_sig_stack)/sizeof(ledsm_sig_stack[0]) );
+    qStateMachine_SignalQueueSetup( &LEDBlink_FSM, &led_sigqueue, ledsm_sig_stack, qFLM_ArraySize(ledsm_sig_stack) );
     qStateMachine_TimeoutSpecInstall( &LEDBlink_FSM, &tm_spectimeout, LED_timeouts, 2  );
 
     qOS_StateMachineTask_SigCon( &SMTask );

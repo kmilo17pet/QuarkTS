@@ -452,7 +452,7 @@ void scheduler_Release(qEvent_t e){
 /*============================================================================*/
 void test_OS_API( void ){
     #if ( Q_QUEUES == 1 )
-    qQueue_t somequeue;
+    qQueue_t somequeue, sigqueue;
     int DataReceivedFromQueue;
     int x[]={10,20,30,40,50,60,70,80,90,100};
     int queuearea[8];
@@ -515,7 +515,7 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, T100MSEC, &statemachine, firststate, NULL, qEnabled, "smtask") );   
-    qStateMachine_SignalQueueSetup( &statemachine, fsmsigarea, 5 );
+    qStateMachine_SignalQueueSetup( &statemachine, &sigqueue, fsmsigarea, qFLM_ArraySize(fsmsigarea) );
     qOS_Run();
 }
 
