@@ -25,16 +25,4 @@ jobs:
       run: make
     - name: make test
       run: make test
-  build_x86:
-    runs-on: ubuntu-latest
-    name: Validate latest tag
-    steps:
-      - name: Store GCC information in a file
-        uses: paulproteus/ubuntu-18.04-x86@0.1
-        with:
-          command: gcc -v 2> output.txt
-      - name: Read GCC information from a file, x86
-        uses: paulproteus/ubuntu-18.04-x86@0.1
-        with:
-          command: make test
 
