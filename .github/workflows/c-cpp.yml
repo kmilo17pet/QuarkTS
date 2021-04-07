@@ -25,8 +25,8 @@ jobs:
       run: make
     - name: make test
       run: make test
- build_x86:
-   runs-on: ubuntu-latest
+  build_x86:
+    runs-on: ubuntu-latest
     name: Validate latest tag
     steps:
       - name: Store GCC information in a file
