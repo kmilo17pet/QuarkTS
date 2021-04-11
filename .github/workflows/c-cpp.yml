@@ -25,11 +25,7 @@ jobs:
       run: make
     - name: make test
       run: make test
-  linting:
-    name: cppcheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: c-linter
-        uses: tonybaloney/cppcheck-action@master
-        with:
-           path: src/os
+    - name: c-linter
+      uses: tonybaloney/cppcheck-action@master
+      with:
+        path: src/os
