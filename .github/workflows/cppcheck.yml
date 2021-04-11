@@ -8,11 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: recursive
+          ref: 'kernel_only'
           
       - name: cppcheck
         uses: deep5050/cppcheck-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN}}
+          
           
         
