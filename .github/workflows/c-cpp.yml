@@ -25,7 +25,3 @@ jobs:
       run: make
     - name: make test
       run: make test
-    - name: c-linter
-      uses: tonybaloney/cppcheck-action@master
-      with:
-        path: src/os
