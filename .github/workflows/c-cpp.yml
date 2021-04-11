@@ -25,10 +25,9 @@ jobs:
       run: make
     - name: make test
       run: make test
-    - name: Run Cppcheck
-      uses: Bedzior/cppcheck-action@v1.0
-      with:
-        enabled checks: all
-        enable inconclusive: true
-        generate report: false
-        path: /src/os
+  linting:
+    name: cppcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: c-linter
+        uses: tonybaloney/cppcheck-action@master
