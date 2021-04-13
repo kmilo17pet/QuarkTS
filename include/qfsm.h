@@ -18,6 +18,12 @@
     #define _qSM_Handler_t struct _qSM_PublicData_s * 
 
     typedef qUINT32_t qSM_Signal_t;
+    extern qBool_t _qSM_DummyPtrValues[ 2 ]; 
+
+    #define QSM_H_DEEP_HISTORY          ( NULL )
+    #define QSM_H_SHALLOW_HISTORY       ( (void *)&_qSM_DummyPtrValues[ 0 ] )   /*this functionality its under test*/
+    #define QSM_H_NO_HISTORY            ( (void *)&_qSM_DummyPtrValues[ 1 ] )   /*this functionality its under test*/
+    
 
     #define QSM_SIGNAL_RANGE_MIN        ( (qSM_Signal_t)0u )
     #define QSM_SIGNAL_RANGE_MAX        ( (qSM_Signal_t)0xFFFFFFFCu )
@@ -94,7 +100,7 @@
     typedef struct{
         qSM_State_t xState;                             /*< in witch state the timeout will be installed.*/
         qTime_t xTimeout;                               /*< the time value to be used as Timeout.*/
-        size_t index;                                   /*< the for the timeout. */
+        size_t index;                                   /*< the timeout index. */
     }qSM_TimeoutStateDefinition_t;
 
     typedef struct{
@@ -102,6 +108,11 @@
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];/*< the built-in timeouts*/
         size_t n;                                       /*< the number of entries inside the <spec> field*/
     }qSM_TimeoutSpec_t;
+
+    typedef struct{
+        struct _qSM_s *childs[ Q_FSM_MAX_NEST_DEPTH ];
+        size_t childscount;
+    }qSM_HierarchicalInstance_t;
 
     /* Please don't access any members of this structure directly */
     typedef struct _qSM_s{
@@ -115,7 +126,8 @@
                 struct _qSM_s *next;                    /*< Composite state pointer. head : points to the next same-level fsm.*/
                 qSM_State_t rootState;                  /*< The state where this fsm should be active*/
             }Composite; 
-            qQueue_t *SignalQueue;                       /*< The fsm signal queue object. */
+            qSM_HierarchicalInstance_t *hInstance;      /*< To track all the composite states of this state*/
+            qQueue_t *SignalQueue;                      /*< The fsm signal queue object. */
             _qSM_PublicData_t xPublic;                  /*< The external-manipulable members of the fsm. */
             qSM_TimeoutSpec_t *TimeSpec;                /*< A pointer to the timeout specification object*/
             qBool_t Active;                             /*< A flag indicating whether the fsm should run in a hierarchical environment*/          
@@ -143,6 +155,7 @@
     qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent );
     qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj );
     void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent );
+    void qStateMachine_CloseDesign( qSM_t * const obj, qSM_HierarchicalInstance_t *h );
     
     qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child );
 

@@ -2,7 +2,6 @@
 
 #if ( Q_FSM == 1 )
 
-
 typedef struct qSM_Stack_s{
     qSM_t *t;                   /*<The stack data, a pointer to a fsm*/
     struct qSM_Stack_s *next;   /*<A pointer to the next item in the stack*/
@@ -21,12 +20,15 @@ static qSM_Stack_Handle_t qSM_NestStack = { 0u };
 static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal );
 
 
+#define QSM_PACK_CHILDS     ( (void*)&qSM_NestStack )
+
 static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
 static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
 static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
 static void qStateMachine_StackCleanUp( void );
 
 static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
+static void qStateMachine_PackChilds( qSM_t * current, void *xRoot );
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
 
 static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
@@ -34,6 +36,7 @@ static void qStateMachine_DisableTimeouts( qSM_t * const obj );
 static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
 static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current );
 
+qBool_t _qSM_DummyPtrValues[ 2 ]; 
 
 /*============================================================================*/
 qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
@@ -81,6 +84,8 @@ qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_Surro
         obj->qPrivate.Composite.head = NULL;
         obj->qPrivate.Composite.next = NULL;
         obj->qPrivate.Composite.rootState = NULL;
+        obj->qPrivate.hInstance = NULL;
+
         obj->qPrivate.TimeSpec = NULL;
         RetValue = qTrue;     
     }
@@ -103,9 +108,18 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
     qSM_t *current = root; 
     qSM_Stack_t *s = NULL;  /* Initialize stack s */
     qBool_t hierarchy_drilled = qFalse;     
+    void (*hAction)( qSM_t *arg1, void* arg2 );
 
+    if( QSM_PACK_CHILDS == Data ){
+        hAction = &qStateMachine_PackChilds;
+        Data = root;
+    }
+    else{
+        hAction = &qStateMachine_HierarchicalExec;
+        root->qPrivate.Active = qTrue; /*the root fsm is always active*/
+    }
+    
     qStateMachine_StackCleanUp( );
-    root->qPrivate.Active = qTrue; /*the root fsm is always active*/
     while( qFalse == hierarchy_drilled ){
         if( NULL != current ){     /* Reach the deep-most fsm of the current*/
             qStateMachine_StackPush( &s, current );  /* place pointer to the current fsm on the stack before traversing the nested fsm */            
@@ -116,12 +130,19 @@ void qStateMachine_Run( qSM_t * const root, void *Data ){
             if( qFalse ==  hierarchy_drilled ){
                 current = qStateMachine_StackPop( &s );           
                 if( NULL != current ){
-                    qStateMachine_HierarchicalExec( current, Data );    
+                    hAction( current, Data );        
                     current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm turn */                   
                 }
             }
         }
     }
+}
+/*============================================================================*/
+static void qStateMachine_PackChilds( qSM_t * current, void *xRoot ){ 
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    qSM_t *root = xRoot; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/  
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    root->qPrivate.hInstance->childs[ root->qPrivate.hInstance->childscount++ ] = current;
 }
 /*============================================================================*/
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
@@ -130,7 +151,7 @@ static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
     qSM_t *parent =  (qSM_t*)current->qPrivate.xPublic.Parent;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/              
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( NULL != parent ){
-        exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) && ( qTrue == parent->qPrivate.Active ) ;
+        exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) ;
         if( ( qTrue == current->qPrivate.Active ) && ( qFalse == exec ) ){
             qStateMachine_ExecStateIfAvailable(  current, current->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT ); /*execute exit action*/
             qStateMachine_TimeoutQueueCleanup( current ); 
@@ -498,15 +519,38 @@ qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSig
                             obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
                             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                             toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-                            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-                            if( ( NULL != toTargetFSM ) ){ /*run the exit action on target FSM*/
+                            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/       
+
+                            if( QSM_H_DEEP_HISTORY == toTargetFSM ){
+                                /* nothing to do, deep history its preserved by default*/
+                            }
+                            else if( QSM_H_SHALLOW_HISTORY == toTargetFSM ){
+                                /*TODO*/
+                                break;
+                            }
+                            else if( QSM_H_NO_HISTORY == toTargetFSM ){ /*restore init/states on nested*/
+                                qSM_HierarchicalInstance_t *hi = obj->qPrivate.hInstance;
+                                obj->qPrivate.Active = qFalse;
+                                if ( NULL != hi ){
+                                    if( hi->childscount > (size_t)1u ){
+                                        size_t i;
+                                        for( i = 1u ; i < hi->childscount; ++i ){
+                                            qStateMachine_ExecStateIfAvailable( hi->childs[ i ], hi->childs[ i ]->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
+                                            hi->childs[ i ]->qPrivate.xPublic.NextState = hi->childs[ i ]->qPrivate.InitState;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            else{
                                 if( iTransition.xToTargetState != toTargetFSM->qPrivate.xPublic.LastState ){ /*innermost check : target state differs from the current?*/
                                     qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
                                     toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState; /*move to the new state*/
                                     qStateMachine_TimeoutQueueCleanup( toTargetFSM ); 
                                     break; 
                                 }
-                            } 
+                            }
+
                         }
                         else if( qIgnore == SigActionGuard ){
                             /* TODO: signal should be queueded again*/ 
@@ -627,6 +671,21 @@ Return value:
 void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent ){
     if( NULL != Child ){
         Child->qPrivate.xPublic.Parent = Parent;
+    }
+}
+/*============================================================================*/
+/*this functionality its under test*/
+void qStateMachine_CloseDesign( qSM_t * const obj, qSM_HierarchicalInstance_t *h ){
+    if( ( NULL != obj ) && ( NULL != h ) ){
+        size_t i;
+        obj->qPrivate.hInstance = h;
+
+        for( i=0 ; i < Q_FSM_MAX_NEST_DEPTH; ++i ){
+            obj->qPrivate.hInstance->childs[ i ] = NULL;
+        }
+        obj->qPrivate.hInstance->childscount = 0u;
+
+        qStateMachine_Run( obj, QSM_PACK_CHILDS );
     }
 }
 /*============================================================================*/
