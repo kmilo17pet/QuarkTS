@@ -142,7 +142,9 @@ static void qStateMachine_PackChilds( qSM_t * current, void *xRoot ){
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     qSM_t *root = xRoot; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/  
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    root->qPrivate.hInstance->childs[ root->qPrivate.hInstance->childscount++ ] = current;
+    if( root->qPrivate.hInstance->childscount < (size_t)Q_FSM_MAX_NEST_DEPTH ){
+        root->qPrivate.hInstance->childs[ root->qPrivate.hInstance->childscount++ ] = current;
+    }
 }
 /*============================================================================*/
 static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
@@ -680,7 +682,7 @@ void qStateMachine_CloseDesign( qSM_t * const obj, qSM_HierarchicalInstance_t *h
         size_t i;
         obj->qPrivate.hInstance = h;
 
-        for( i=0 ; i < Q_FSM_MAX_NEST_DEPTH; ++i ){
+        for( i = 0u ; i < (size_t)Q_FSM_MAX_NEST_DEPTH; ++i ){
             obj->qPrivate.hInstance->childs[ i ] = NULL;
         }
         obj->qPrivate.hInstance->childscount = 0u;
