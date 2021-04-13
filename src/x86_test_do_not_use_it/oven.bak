@@ -28,15 +28,15 @@ qTask_t SMTask;
 qSM_t Top_SM, DoorClosed_SM, Heating_SM;
 
 qSM_Transition_t Top_SM_ttable[]={
-    { DoorClosed_State,    SIG_OPEN,        DoorOpen_State,           NULL,     NULL,       NULL,         },
-    { DoorOpen_State,      SIG_CLOSE,       DoorClosed_State,         NULL,     NULL,       NULL,         },      
-    { DoorClosed_State,    SIG_RESET,       QSM_STATE_TO_SAME,        NULL,     NULL,       NULL,         },      
+    { DoorClosed_State,    SIG_OPEN,        DoorOpen_State,           NULL,                 NULL,                   NULL,   },
+    { DoorOpen_State,      SIG_CLOSE,       DoorClosed_State,         NULL,                 QSM_H_NO_HISTORY,                   NULL,   },      
+    { DoorClosed_State,    SIG_RESET,       QSM_STATE_TO_SAME,        NULL,                 QSM_H_NO_HISTORY,       NULL,   },      
 };
 
 qSM_Transition_t DoorClosed_SM_ttable[]={   
-    { NULL,    QSM_SIGNAL_TIMEOUT(0),   Off_State,          NULL,   NULL,            NULL,         },    
-    { NULL,    SIG_BAKE,                Heating_State,      NULL,   &Heating_SM,     Baking_State,         },             
-    { NULL,    SIG_TOAST,               Heating_State,      NULL,   &Heating_SM,     Toasting_State,         },             
+    { NULL,    QSM_SIGNAL_TIMEOUT(0),   Off_State,          NULL,   NULL,            NULL,              },    
+    { NULL,    SIG_BAKE,                Heating_State,      NULL,   &Heating_SM,     Baking_State,      },             
+    { NULL,    SIG_TOAST,               Heating_State,      NULL,   &Heating_SM,     Toasting_State,    },             
 };
 
 qSM_TimeoutStateDefinition_t Oven_timeouts[]={
@@ -161,6 +161,7 @@ int main(int argc, char** argv) {
     qSM_Signal_t topsm_sig_stack[10];
     qSM_TransitionTable_t top_ttable, closed_ttable;
     qSM_TimeoutSpec_t tm_spectimeout;
+    qSM_HierarchicalInstance_t htop, hdoorclose, hheating;
     printf("OvenControl = %d\r\n", getpid() );
 
     signal( SIGUSR1, Sig_Handler );
@@ -174,6 +175,7 @@ int main(int argc, char** argv) {
 
     qStateMachine_Setup( &DoorClosed_SM, Off_State, NULL );
     qStateMachine_Setup( &Heating_SM, QSM_STATE_UNDEFINED, NULL );
+
     qStateMachine_TransitionTableInstall( &DoorClosed_SM, &closed_ttable, DoorClosed_SM_ttable, qFLM_ArraySize(DoorClosed_SM_ttable) );
     
     qOS_Add_StateMachineTask(  &SMTask, qMedium_Priority, 0.1f, &Top_SM, DoorClosed_State, NULL, qEnabled, NULL); 
@@ -184,11 +186,33 @@ int main(int argc, char** argv) {
     qStateMachine_Set_CompositeState( &Top_SM, DoorClosed_State, &DoorClosed_SM );
     qStateMachine_Set_CompositeState( &DoorClosed_SM, Heating_State, &Heating_SM );
 
-    qStateMachine_TimeoutSpecInstall( &Top_SM, &tm_spectimeout, Oven_timeouts, 1  );
+    printf(" %p    %p    %p\r\n", &Top_SM, &DoorClosed_SM, &Heating_SM );
+    qStateMachine_CloseDesign( &Top_SM, &htop );
+    qStateMachine_CloseDesign( &DoorClosed_SM, &hdoorclose );
+    qStateMachine_CloseDesign( &Heating_SM, &hheating );
     
+ 
+    size_t i;
+    //printf("childs of %p  %d\r\n", &Top_SM, );
+    for(i = 0; i<Top_SM.qPrivate.hInstance->childscount; i++ ){
+        printf("%p \r\n", Top_SM.qPrivate.hInstance->childs[ i ] );
+    }
+    printf("childs of %p\r\n", &DoorClosed_SM);
+    for(i = 0; i<DoorClosed_SM.qPrivate.hInstance->childscount; i++ ){
+        printf("%p \r\n", DoorClosed_SM.qPrivate.hInstance->childs[ i ] );
+    }
+    printf("childs of %p\r\n", &Heating_SM);
+    for(i = 0; i<Heating_SM.qPrivate.hInstance->childscount; i++ ){
+        printf("%p \r\n", Heating_SM.qPrivate.hInstance->childs[ i ] );
+    }
+
+    //return EXIT_SUCCESS;
     
 
+    qStateMachine_TimeoutSpecInstall( &Top_SM, &tm_spectimeout, Oven_timeouts, 1  );
+      
     qOS_StateMachineTask_SigCon( &SMTask );
+    
     qOS_Run();
     (void)argc;
     (void)argv;
