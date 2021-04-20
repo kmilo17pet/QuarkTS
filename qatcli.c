@@ -123,7 +123,7 @@ Parameters:
                     Since this service only handles AT commands, this string has 
                     to begin by the "at" characters and should be in lower case.
     - Callback: The handler of the callback function associated to the command.
-    			Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t, qATCLI_PreCmd_t )
+    			Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t )
     - CmdOpt : This flag combines with a bitwise OR the following information:
                 
                 > QATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
