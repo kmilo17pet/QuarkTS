@@ -10,6 +10,7 @@
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef qUINT32_t qTime_t;
+        #define QTIME_NULL        ( 0uL )
         #define qTimeImmediate    ( (qTime_t)(0uL) )
         #define QTUNIT_MINUTE     ( 60000uL )    
         #define QTUNIT_HOUR       ( 3600000uL )
@@ -17,6 +18,7 @@
         #define QTUNIT_WEEK       ( 604800000uL )           
     #else
         typedef qFloat32_t qTime_t;
+        #define QTIME_NULL        ( 0.0f )
         #define qTimeImmediate    ((qTime_t)(0.0f))
         #define QTUNIT_MINUTE     ( 60.0f )    
         #define QTUNIT_HOUR       ( 3600.0f )

@@ -11,6 +11,11 @@
     extern "C" {
     #endif
     
+
+    #ifndef Q_QUEUES
+        #define Q_QUEUES        ( 1 )
+    #endif
+
     /* Please don't access any members of this structure directly */
     typedef struct{
         struct _qQueue_Private_s{

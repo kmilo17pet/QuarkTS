@@ -10,6 +10,23 @@
     extern "C" {
     #endif
 
+
+    #ifndef Q_TRACE_VARIABLES
+        #define Q_TRACE_VARIABLES       ( 1 )
+    #endif
+
+    #ifndef Q_DEBUGTRACE_BUFSIZE
+        #define Q_DEBUGTRACE_BUFSIZE    ( 36 )
+    #endif
+
+    #ifndef Q_DEBUGTRACE_FULL
+        #define Q_DEBUGTRACE_FULL       ( 1 )
+    #endif
+
+    #if ( Q_DEBUGTRACE_BUFSIZE < 36 )
+        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greather o equal to 36.
+    #endif
+
     #define _qSTRINGIFY(x) #x
     #define _qTOSTRING(x) _qSTRINGIFY(x)
 

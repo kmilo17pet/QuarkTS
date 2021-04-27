@@ -11,6 +11,10 @@
     extern "C" {
     #endif
 
+    #ifndef Q_RESPONSE_HANDLER
+        #define Q_RESPONSE_HANDLER      ( 1 )
+    #endif
+
     /* Please don't access any members of this structure directly */
     typedef struct{
         struct _qResponse_Private_s{

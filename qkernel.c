@@ -421,27 +421,23 @@ Return value:
 qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
     return qOS_Add_Task( Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
-/*============================================================================*/
 #if ( Q_FSM == 1)
-/*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
-                        qSM_t * const StateMachine, qSM_State_t InitState, 
-                        qSM_SurroundingState_t Surrounding, qState_t InitialTaskState, void *arg ){
+/*============================================================================*/
+/*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, 
+                                    qTime_t Time, qState_t InitialTaskState, void *arg )
 
 Add a task to the scheduling scheme running a dedicated state-machine. 
 The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
-will be available as a generic pointer inside the <Data> field of the qSM_t pointer
-passed as input argument inside every state.
+will be available as a generic pointer inside the <Data> field of the qSM_Handler_t argument.
 
 Parameters:
     - Task : A pointer to the task node.
+    - m: A pointer to the Finite State-Machine (FSM) object    
     - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     - Time : Execution interval defined in seconds (floating-point format). 
                For immediate execution (tValue = qTimeImmediate).
-    - StateMachine: A pointer to the Finite State-Machine (FSM) object
-    - InitState : The first state to be performed. This argument is a pointer 
-                  to a callback function, returning qSM_Status_t and with a 
-                  qSM_t pointer as input argument.
-    - Surrounding : The surrounding state. To ignore pass NULL.
+    - InitialState : Specifies the initial operational state of the task 
+                    (qEnabled, qDisabled, qASleep or qAwake(implies qEnabled)).
     - arg : Represents the task arguments. All arguments must be passed by
                      reference and cast to (void *). Only one argument is allowed, 
                      so, for multiple arguments, create a structure that contains 
@@ -451,50 +447,20 @@ Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */
-qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qPriority_t Priority, qTime_t Time,
-                            qSM_t * const StateMachine, qSM_State_t InitState, 
-                            qSM_SurroundingState_t Surrounding, qState_t InitialTaskState, void *arg ){
+qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, qTime_t Time, qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != StateMachine ) && ( NULL != InitState ) ){
+    if( ( NULL != m ) ){
         if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
-            RetValue = qStateMachine_Setup( StateMachine, InitState, Surrounding );
-            Task->qPrivate.StateMachine = StateMachine;
-            StateMachine->qPrivate.Owner = Task;
+            Task->qPrivate.StateMachine = m;
+            RetValue = qTrue;
+            #if ( Q_QUEUES == 1 )
+                if( NULL != m->qPrivate.queue ){
+                    RetValue = qTask_Attach_Queue( Task, m->qPrivate.queue, qQueueMode_Count, 1u ); /*to perform the queue connection */
+                }
+            #endif
         }
     }
-    return RetValue;
-}
-/*============================================================================*/
-/* qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task )
-
-Improve the state-machine-task responsiveness by connecting the incoming signals 
-from a state machine to the task's event flow.
-Note : Only available if queues are enabled Q_QUEUES == 1 in qconfig.h
-
-Parameters:
-    - Task : A pointer to the task node.
-
-Return value :
-
-    Returns qTrue on success, otherwise returns qFalse;
-
-*/ 
-qBool_t qOS_StateMachineTask_SigCon( qTask_t * const Task ){
-    qBool_t RetValue = qFalse;
-
-    #if ( Q_QUEUES == 1 )
-        if( NULL != Task){
-            qSM_t *StateMachine = Task->qPrivate.StateMachine;
-            if( NULL != StateMachine ){ /*signal connection is only possible if the task runs a dedicated state-machine*/
-                if( NULL != StateMachine->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
-                    RetValue = qTask_Attach_Queue( Task, StateMachine->qPrivate.SignalQueue, qQueueMode_Count, 1u ); /*try to perform the queue connection */
-                }
-            }
-        }
-    #else
-        Q_UNUSED( Task );
-    #endif
     return RetValue;
 }
 #endif /* #if ( Q_FSM == 1) */
@@ -826,7 +792,8 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
             TaskActivities = Task->qPrivate.Callback; /*#!OK: false-positive can be reported here*/
             #if ( Q_FSM == 1)
                 if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ){
-                    (void)qStateMachine_Run( Task->qPrivate.StateMachine, (void*)&kernel.EventInfo );  /*If the task has a FSM attached, just run it*/  
+                    Task->qPrivate.StateMachine->qPrivate.handler.Data = &kernel.EventInfo;
+                    (void)qStateMachine_Run( Task->qPrivate.StateMachine, QSM_SIGNAL_NONE );  /*If the task has a FSM attached, just run it*/  
                 }
                 else if ( NULL != TaskActivities ) {
                     TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 

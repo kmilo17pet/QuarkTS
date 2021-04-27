@@ -8,6 +8,9 @@
     extern "C" {
     #endif
 
+    #ifndef Q_BYTE_SIZED_BUFFERS
+        #define Q_BYTE_SIZED_BUFFERS    ( 1 )
+    #endif
     /* Please don't access any members of this structure directly */
     typedef struct{
         struct _qBSBuffer_Private_s{

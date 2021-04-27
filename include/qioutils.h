@@ -13,6 +13,15 @@
     extern "C" {
     #endif
 
+
+    #ifndef  Q_MAX_FTOA_PRECISION
+        #define Q_MAX_FTOA_PRECISION    ( 10u )
+    #endif
+    
+    #ifndef Q_ATOF_FULL
+        #define Q_ATOF_FULL             ( 0 )
+    #endif
+
     #define Q_IOUTIL_MAX_STRLEN      ( (size_t)512 )
 
     typedef Q_FUNC_ATTRIBUTE_PRE void (*qPutChar_t)(void* arg1, const char arg2) Q_FUNC_ATTRIBUTE_POS;

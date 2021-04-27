@@ -363,37 +363,6 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
     return RetValue;
 }
 #endif /* #if ( Q_QUEUES == 1) */
-#if ( Q_FSM == 1)
-/*============================================================================*/
-/*qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine )
-
-Attach a Finite State Machine(FSM) to the Task. 
-
-Note: Task and state-machine should be previously initialized before the attach procedure.
-Note: To perform a state-machine detach, use the <qTask_Set_Callback> API. 
-
-Parameters:
-
-    - Task : A pointer to the task node.
-    - StateMachine : A pointer to the FSM object.
-
-Return value:
-
-    Returns qTrue on success, otherwise, returns qFalse.
-
-*/
-qBool_t qTask_Attach_StateMachine( qTask_t * const Task, qSM_t * const StateMachine ){
-    qBool_t RetValue = qFalse;
-
-    if( ( NULL != Task ) && ( NULL != StateMachine ) ){
-        Task->qPrivate.Callback = qOS_DummyTask_Callback;
-        Task->qPrivate.StateMachine = StateMachine;
-        StateMachine->qPrivate.Owner = Task;
-        RetValue = qTrue;
-    }
-    return RetValue;
-}
-#endif /* #if ( Q_FSM == 1) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
 /*void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action )

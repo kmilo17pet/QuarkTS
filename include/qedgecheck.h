@@ -9,6 +9,10 @@
     extern "C" {
     #endif
 
+    #ifndef Q_EDGE_CHECK_IOGROUPS
+        #define Q_EDGE_CHECK_IOGROUPS       ( 1 )
+    #endif
+
     #define QREG_8BIT               ( _qReg_08Bits )
     #define QREG_16BIT              ( _qReg_16Bits )
     #define QREG_32BIT              ( _qReg_32Bits )

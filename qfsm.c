@@ -2,297 +2,408 @@
 
 #if ( Q_FSM == 1 )
 
-typedef struct qSM_Stack_s{
-    qSM_t *t;                   /*<The stack data, a pointer to a fsm*/
-    struct qSM_Stack_s *next;   /*<A pointer to the next item in the stack*/
-}qSM_Stack_t;
 
-#ifndef Q_FSM_MAX_NEST_DEPTH
-    #define Q_FSM_MAX_NEST_DEPTH   ( 5 )
-#endif
+typedef qByte_t qSM_LCA_t;
 
-typedef struct{
-    size_t Index;
-    qSM_Stack_t Element[ Q_FSM_MAX_NEST_DEPTH ];
-}qSM_Stack_Handle_t;
-static qSM_Stack_Handle_t qSM_NestStack = { 0u };
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target );
 
-static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal );
+static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
+static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal );
+static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
 
 
-#define QSM_PACK_CHILDS     ( (void*)&qSM_NestStack )
+static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
+static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s );
+static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s );
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t xSignal );
+static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **entryPath );
+static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath );
 
-static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top );
-static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t );
-static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref );
-static void qStateMachine_StackCleanUp( void );
+static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * const CurrentState, qSM_UnprotectedHandler_t h );
 
-static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data );
-static void qStateMachine_PackChilds( qSM_t * current, void *xRoot );
-static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data );
+static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, qSM_Signal_t xSignal );
 
-static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj );
-static void qStateMachine_DisableTimeouts( qSM_t * const obj );
-static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj  );
-static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current );
-
-qBool_t _qSM_DummyPtrValues[ 2 ]; 
+#define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
 /*============================================================================*/
-qSM_Status_t _qStateMachine_UndefinedStateCallback( qSM_Handler_t h ){ /*a dummy state-callback to be used in hierarchical fsm without an initial-state definition*/
-    Q_UNUSED( h );
-    return qSM_EXIT_SUCCESS;
-}
-qSM_Status_t _qStateMachine_RecursiveStateCallback( qSM_Handler_t h ){
-    h->NextState = h->LastState;
-    return qSM_EXIT_SUCCESS;
-}
-/*============================================================================*/
-/*qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SurroundingState_t Surrounding )
-
-Initializes a finite state machine (FSM).
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-    - InitState : The first state to be performed. This argument is a pointer 
-                  to a callback function, returning qSM_Status_t and with a 
-                  qSM_Handler_t as input argument.
-    - Surrounding : The surrounding state To ignore pass NULL                 
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/
-qBool_t qStateMachine_Setup( qSM_t * const obj, qSM_State_t InitState, qSM_SurroundingState_t Surrounding  ){
-    qBool_t RetValue = qFalse;
-    
-    if( ( NULL != obj ) && ( NULL != InitState ) ){
-        obj->qPrivate.InitState = InitState;
-        obj->qPrivate.xPublic.NextState = InitState;
-        obj->qPrivate.xPublic.PreviousState = NULL;
-        obj->qPrivate.xPublic.Signal  = QSM_SIGNAL_NONE;
-        obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;
-        obj->qPrivate.xPublic.LastState = NULL;
-        obj->qPrivate.xPublic.Signal = (qSM_Signal_t)0u;
-        obj->qPrivate.xPublic.Parent = NULL;
-        obj->qPrivate.Surrounding = Surrounding;
-        obj->qPrivate.TransitionTable = NULL;
-        obj->qPrivate.Owner = NULL;
-        obj->qPrivate.SignalQueue = NULL;
-
-        obj->qPrivate.Composite.head = NULL;
-        obj->qPrivate.Composite.next = NULL;
-        obj->qPrivate.Composite.rootState = NULL;
-        obj->qPrivate.hInstance = NULL;
-
-        obj->qPrivate.TimeSpec = NULL;
-        RetValue = qTrue;     
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target ){ /*wrapper*/
+    if( NULL == m->qPrivate.next ){
+        qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
+        m->qPrivate.next = target;
     }
-    return RetValue;
 }
 /*============================================================================*/
-/*void qStateMachine_Run( qSM_t * const root, void* Data )
+static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target ){
+    qSM_LCA_t toLca = 0u;
+
+    if( m->qPrivate.source == target ){ /*recursive transition, only a level needs to be performed*/
+        toLca = 1u;
+    }
+    else{
+        qSM_State_t *s, *t;
+        qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
+        qSM_LCA_t n = 0u; 
+        for( s = m->qPrivate.source; NULL != s; s = s->qPrivate.parent ) {
+            for( t = target; NULL != t; t = t->qPrivate.parent ) {
+                if( s == t ){
+                    toLca = n;
+                    xBreak = qTrue;
+                    break;
+                }
+            }
+            if( qTrue == xBreak ){ /*also break the outer loop*/
+                break;
+            }
+            ++n;
+        }        
+    }
+    return toLca;  
+}
+/*============================================================================*/
+static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca ){
+    qSM_State_t *s = m->qPrivate.current;
+    while( s != m->qPrivate.source ){
+        (void)qStateMachine_StateOnExit( m, s );
+        s = s->qPrivate.parent;   
+    }
+    while( 0u != lca-- ) {
+        (void)qStateMachine_StateOnExit( m, s ); 
+        s = s->qPrivate.parent;
+    }
+    m->qPrivate.current = s;    
+}
+/*============================================================================*/
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal ){
+    h->Signal = xSignal;
+    h->NextState = NULL;
+    h->StartState = NULL;
+    h->Status = qSM_STATUS_NULL;    
+}
+/*============================================================================*/
+static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * const s, qSM_UnprotectedHandler_t h ){
+    if( NULL != m->qPrivate.surrounding ){
+        h->Status = qSM_STATUS_BEFORE_ANY;
+        /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
+        /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
+    }
+    if( NULL != s->qPrivate.sCallback ){
+        h->Status = qSM_STATUS_NULL;
+        /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        h->Status = s->qPrivate.sCallback( (qSM_Handler_t)h ); /*execute the state callback (Transitions here are not allowed)*/ /*cast allowed, struct layout its compatible*/
+        /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
+    }
+    else{
+        h->Status = qSM_STATUS_EXIT_FAILURE;
+    }
+
+    if( NULL != m->qPrivate.surrounding ){ /*this property can change from the callback, so check it again*/
+        if( h->Status < qSM_STATUS_EXIT_FAILURE ){
+            h->Status = qSM_STATUS_EXIT_FAILURE;
+        }
+        /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
+        /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
+    }
+    return h->Status;
+}
+/*============================================================================*/
+static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){ 
+    qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
+    
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_EXIT );
+    (void)qStateMachine_InvokeStateCallback( m, s, h);
+    s->qPrivate.lastRunningChild = m->qPrivate.current; /*remember the last running child*/
+    qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
+}
+/*============================================================================*/
+static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s ){ 
+    qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
+    
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_ENTRY );
+    (void)qStateMachine_InvokeStateCallback( m, s, h );
+    qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_ENTRY );
+}
+/*============================================================================*/
+static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s ){
+    qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
+
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_START );
+    (void)qStateMachine_InvokeStateCallback( m, s, h );
+    if( NULL != s->qPrivate.ChildStart ){ /*set the start transition if available*/
+        if( qTrue == s->qPrivate.keephistory ){
+            if( NULL != s->qPrivate.lastRunningChild ){
+                m->qPrivate.next = s->qPrivate.lastRunningChild; 
+            }
+        }
+        else{
+            m->qPrivate.next = s->qPrivate.ChildStart;
+        }
+    }
+    if( NULL != h->StartState ){ /*changes from callback takes more precedence*/
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        m->qPrivate.next = (qSM_State_t*)h->StartState ;
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    }   
+    return m->qPrivate.next;
+}
+/*============================================================================*/
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t xSignal ){
+    qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
+    qSM_Status_t status;
+    
+    qStateMachine_PrepareHandler( h, xSignal );
+    if( NULL != m->qPrivate.tTable ){
+        qStateMachine_SweepTransitionTable( m, s, h ); 
+    }
+    status = qStateMachine_InvokeStateCallback( m, s, h );
+ 
+    if( NULL != h->NextState ){ /*perform the transition if available*/
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        qStateMachine_Transition( m, (qSM_State_t*)h->NextState );
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+        status = qSM_STATUS_SIGNAL_HANDLED; /*the signal is assumed to be handled if the transition occurs*/
+    }
+    
+    return status;
+}
+/*============================================================================*/
+static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **trace ){
+    qSM_State_t *s;
+
+    *trace = NULL;
+    for(s = m->qPrivate.next; s != m->qPrivate.current; s = s->qPrivate.parent ) {
+        *(++trace) = s;  /* trace path to target */
+    }
+    while( NULL != ( s = *trace-- ) ) {  /* retrace entry from LCA */
+        qStateMachine_StateOnEntry( m, s );
+    }
+    m->qPrivate.current = m->qPrivate.next;
+    m->qPrivate.next = NULL;    
+}
+/*============================================================================*/
+static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath ){
+    while( NULL != qStateMachine_StateOnStart( m, m->qPrivate.current ) ){
+        qStateMachine_TracePathandRetraceEntry( m, entryPath );
+    }
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal )
 
 Execute the Finite State Machine (FSM).
 
 Parameters:
 
-    - root : a pointer to the FSM object.
+    - m : a pointer to the FSM object.
+    - xSignal : User-defined signal (this value will be ignored if the installed queue 
+                has items available)
+
+Return value: 
+
+    qTrue if the signal was successfully handled, otherwise returns qFalse.
+*/
+qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
+    qBool_t RetValue = qFalse;
+    if( NULL != m ){
+        qSM_State_t *entryPath[ Q_FSM_MAX_NEST_DEPTH ];
+        qSM_State_t *s;
+        
+        qStateMachine_TimeoutCheckSignals( m );
+        #if ( Q_QUEUES == 1 )
+            if( NULL != m->qPrivate.queue ){
+                qSM_Signal_t ReceivedSignal;
+                if( qTrue == qQueue_Receive( m->qPrivate.queue, &ReceivedSignal ) ){
+                    xSignal = ReceivedSignal; 
+                }
+            }
+        #endif
+        if ( ( QSM_SIGNAL_NONE == xSignal ) && ( QSM_SIGNAL_NONE != m->qPrivate.SignalNot ) ){ 
+            xSignal = m->qPrivate.SignalNot;
+            m->qPrivate.SignalNot = QSM_SIGNAL_NONE; 
+        }
+
+        if( NULL == m->qPrivate.current  ){ /*Enter only once to start the top state*/
+            m->qPrivate.current = &m->qPrivate.top;
+            m->qPrivate.next = NULL;
+            qStateMachine_StateOnEntry( m, m->qPrivate.current );
+            qStateMachine_TraceOnStart( m, entryPath );
+        }
+        
+        for( s = m->qPrivate.current; NULL != s; s = s->qPrivate.parent ){
+            m->qPrivate.source = s; /* level of outermost event handler */
+            if( qSM_STATUS_SIGNAL_HANDLED == qStateMachine_StateOnSignal( m, s, xSignal ) ) {
+                if( NULL != m->qPrivate.next) {  /* state transition taken? */
+                    qStateMachine_TracePathandRetraceEntry( m, entryPath );
+                    qStateMachine_TraceOnStart( m, entryPath );
+                }
+                RetValue = qTrue;
+                break;/* signal processed */
+            }
+        }   
+    }
+    return RetValue;
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data )
+
+Initializes a finite state machine (FSM) object.
+(this API also initializes the top state)
+
+Parameters:
+
+    - m : a pointer to the FSM object.
+    - topCallback : the callback for the "Top" state
+    - childstart : The first state to be executed (init-state). 
+    - Surrounding : The surrounding callback. To ignore pass NULL      
     - Data : Represents the FSM arguments. All arguments must be passed by 
              reference and cast to (void *). Only one argument is allowed, so,
              for multiple arguments, create a structure that contains all of 
-             the arguments and pass a pointer to that structure.
+             the arguments and pass a pointer to that structure.           
+
+Return value:
+
+    Returns qTrue on Success, otherwise returns qFalse
 */
-void qStateMachine_Run( qSM_t * const root, void *Data ){
-    qSM_t *current = root; 
-    qSM_Stack_t *s = NULL;  /* Initialize stack s */
-    qBool_t hierarchy_drilled = qFalse;     
-    void (*hAction)( qSM_t *arg1, void* arg2 );
-
-    if( QSM_PACK_CHILDS == Data ){
-        hAction = &qStateMachine_PackChilds;
-        Data = root;
-    }
-    else{
-        hAction = &qStateMachine_HierarchicalExec;
-        root->qPrivate.Active = qTrue; /*the root fsm is always active*/
-    }
-    
-    qStateMachine_StackCleanUp( );
-    while( qFalse == hierarchy_drilled ){
-        if( NULL != current ){     /* Reach the deep-most fsm of the current*/
-            qStateMachine_StackPush( &s, current );  /* place pointer to the current fsm on the stack before traversing the nested fsm */            
-            current = current->qPrivate.Composite.next;
-        }
-        else{   /* backtrack from the empty subtree and visit the nested fsm at the top of the stack; however, if the stack is empty, we are done */
-            hierarchy_drilled = qStateMachine_StackIsEmpty( s );
-            if( qFalse ==  hierarchy_drilled ){
-                current = qStateMachine_StackPop( &s );           
-                if( NULL != current ){
-                    hAction( current, Data );        
-                    current = current->qPrivate.Composite.head; /* we have visited the fsm and its nested subtree. Now, it's same-level fsm turn */                   
-                }
-            }
-        }
-    }
-}
-/*============================================================================*/
-static void qStateMachine_PackChilds( qSM_t * current, void *xRoot ){ 
-    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qSM_t *root = xRoot; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/  
-    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    if( root->qPrivate.hInstance->childscount < (size_t)Q_FSM_MAX_NEST_DEPTH ){
-        root->qPrivate.hInstance->childs[ root->qPrivate.hInstance->childscount++ ] = current;
-    }
-}
-/*============================================================================*/
-static void qStateMachine_HierarchicalExec( qSM_t * current, void *Data ){
-    qBool_t exec = qTrue;
-    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qSM_t *parent =  (qSM_t*)current->qPrivate.xPublic.Parent;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/              
-    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    if( NULL != parent ){
-        exec = ( parent->qPrivate.xPublic.NextState == current->qPrivate.Composite.rootState ) ;
-        if( ( qTrue == current->qPrivate.Active ) && ( qFalse == exec ) ){
-            qStateMachine_ExecStateIfAvailable(  current, current->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT ); /*execute exit action*/
-            qStateMachine_TimeoutQueueCleanup( current ); 
-        }
-        if( ( qFalse == current->qPrivate.Active ) && ( qTrue == exec ) ){
-            qStateMachine_ExecStateIfAvailable(  current, current->qPrivate.xPublic.NextState, QSM_SIGNAL_ENTRY ); /*execute entry action*/
-        }
-        current->qPrivate.Active = exec;
-    }
-    if( qTrue == exec ){
-        (void)qStateMachine_Evaluate( current, Data );
-    }        
-}
-/*============================================================================*/
-static qSM_Status_t qStateMachine_Evaluate( qSM_t * const obj, void *Data ){
-    qSM_State_t CurrentState = obj->qPrivate.xPublic.NextState; 
-    qSM_Status_t RetValue = qSM_EXIT_FAILURE;
-
-    obj->qPrivate.xPublic.Data = Data;   /*pass the data through the fsm*/
-    if( obj->qPrivate.xPublic.LastState != CurrentState ){ /*entry condition, update the PreviousState*/
-        obj->qPrivate.xPublic.PreviousState = obj->qPrivate.xPublic.LastState ; 
-        obj->qPrivate.xPublic.PreviousReturnStatus = obj->qPrivate.xPublic.LastReturnStatus;
-        qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_ENTRY );
-    }
-    else{        
-        qSM_Signal_t xSignal = QSM_SIGNAL_NONE;
+qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != m ) ){
+        m->qPrivate.current = NULL;
+        m->qPrivate.next = NULL;
+        m->qPrivate.source = NULL;
+        m->qPrivate.Data = Data;
+        m->qPrivate.surrounding = surrounding;
+        m->qPrivate.handler.machine = m;
+        m->qPrivate.handler.Data = Data;
         #if ( Q_QUEUES == 1 )
-        if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
-            qStateMachine_CheckTimeoutSignals( obj );
-            if( qTrue == qQueue_Receive( obj->qPrivate.SignalQueue, &xSignal ) ){
-                if( NULL != obj->qPrivate.Composite.head ){
-                    obj->qPrivate.xPublic.Signal = xSignal; /*store the signal if any child needs it*/
-                }
-                (void)qStateMachine_SweepTransitionTable( obj, xSignal ); 
-            }
-        }
-        else
+            m->qPrivate.queue = NULL;
         #endif
-        {
-            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            qSM_t *parent = (qSM_t*)obj->qPrivate.xPublic.Parent; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-            if( NULL != parent ){/*check if the current fsm its a child*/
-                if( ( QSM_SIGNAL_ENTRY != parent->qPrivate.xPublic.Signal ) && ( QSM_SIGNAL_EXIT != parent->qPrivate.xPublic.Signal ) ){
-                    xSignal = parent->qPrivate.xPublic.Signal; /*use the parent signal if the child doesn't have their own signal-queue*/
-                }
-                (void)qStateMachine_SweepTransitionTable( obj, xSignal );
-            }
-        }
-        
-        qStateMachine_ExecStateIfAvailable( obj, CurrentState, xSignal );
+        m->qPrivate.TimeSpec = NULL;
+        m->qPrivate.tTable = NULL;
+        m->qPrivate.tEntries = 0u;
 
-        if( CurrentState != obj->qPrivate.xPublic.NextState ){ /*Has a transition occurred??*/           
-            qStateMachine_ExecStateIfAvailable( obj, CurrentState, QSM_SIGNAL_EXIT ); 
-            qStateMachine_TimeoutQueueCleanup( obj );
-        }
+        RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, childstart, qFalse );
+        m->qPrivate.top.qPrivate.parent = NULL;
     }
-    
     return RetValue;
- }
- /*============================================================================*/
- static void qStateMachine_ExecStateIfAvailable( qSM_t * const obj, const qSM_State_t state, qSM_Signal_t xSignal ){
-    qSM_Status_t ExitStatus = qSM_EXIT_FAILURE;
-    qSM_Handler_t handle = &obj->qPrivate.xPublic;
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, const qBool_t KeepHistory )
 
-    handle->Signal = xSignal;
-    if( NULL != obj->qPrivate.Surrounding ){
-        ExitStatus = handle->LastReturnStatus; /*temporally save the LastReturnStatus*/
-        handle->LastReturnStatus = qSM_BEFORE_ANY; /*set the LastReturnStatus field to the qSM_BEFORE_ANY*/
-        obj->qPrivate.Surrounding( handle ); /*execute the surrounding state with the qSM_BEFORE_ANY*/
-        handle->LastReturnStatus = ExitStatus; /*restore  the LastReturnStatus */
-        ExitStatus = qSM_EXIT_FAILURE; /*let the default ExitStatus value into qSM_EXIT_FAILURE*/
-    }
+This function subscribes the FSM instance to a specific state with an associated 
+callback function. 
 
-    if( NULL != state ){ /*eval the state if available*/
-        if( QSM_SIGNAL_ENTRY == xSignal ){ 
-            qStateMachine_TimeoutStateArm( obj, state ); /*re-arm timeouts at the entry if available*/
+Parameters:
+
+    - m : a pointer to the FSM object.
+    - state : A pointer to the state object.
+    - parent : A pointer to the parent state. 
+              ( pass NULL if this state its a child of the "Top" state)
+    - StateFcn: The handler function associated to the state.
+    			Prototype: qSM_Status_t xCallback( qSM_Handler_t h )
+    - ChildStart : The first child-state to be executed if the 
+                    subscribed state its a parent in an hierarchical pattern,
+                   To ignore pass NULL as argument.
+    - KeepHistory : <qTrue> to keep the shallow history of the subscribed state.
+
+Return value:
+
+    qTrue on success, otherwise return qFalse
+*/
+qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, const qBool_t KeepHistory ){
+    qBool_t RetValue = qFalse;
+    if( NULL != state ){
+        state->qPrivate.keephistory = KeepHistory;
+        state->qPrivate.lastRunningChild = ( qTrue == KeepHistory )? ChildStart : NULL;
+        state->qPrivate.ChildStart = ChildStart;
+        state->qPrivate.sCallback = StateFcn;
+        if( NULL == parent ){
+            state->qPrivate.parent = &m->qPrivate.top;
         }
-        ExitStatus = state( handle );
-        if( ExitStatus < qSM_EXIT_FAILURE ){ /*just in case, fix the return value*/
-            ExitStatus = qSM_EXIT_FAILURE; /*failure by default*/
+        else{
+            state->qPrivate.parent = parent;
         }
+        RetValue = qTrue;
     }
-    obj->qPrivate.xPublic.LastReturnStatus = ExitStatus;
-    obj->qPrivate.xPublic.LastState = state; /*update the LastState*/
-    /*Check return status to eval extra states*/
-    if( ( NULL != obj->qPrivate.Surrounding ) && ( ExitStatus > qSM_EXIT_NULL ) ){ /*check again, because this property may have been changed asynchronously*/
-        obj->qPrivate.Surrounding( handle );  /*execute the surrounding state with the latest return status*/
-    }
+    return RetValue;
 }
 /*============================================================================*/
-static void qStateMachine_DisableTimeouts( qSM_t * const obj ){
-    size_t i;
-    for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
-        qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] );
+/*qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n )
+
+Installs a transition table in to the supplied state machine
+
+Parameters:
+
+    - m : a pointer to the FSM object.
+    - table : An array of transitions that describes the state-machine behavior.
+    - n : The number of transitions available within the table
+
+Return value:
+
+    qTrue on success, otherwise return qFalse
+*/
+qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != m ) && ( NULL != table) && ( n > 0u ) ){
+        m->qPrivate.tTable = table;
+        m->qPrivate.tEntries = n;
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
-static void qStateMachine_CheckTimeoutSignals( qSM_t * const obj ){
-    if( NULL != obj->qPrivate.TimeSpec) {
-        size_t i;
-        for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
-            if( qTrue == qSTimer_Expired( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] ) ) {
-                (void)qStateMachine_SendSignal( obj, QSM_SIGNAL_TIMEOUT(i), qFalse );   
-                qSTimer_Disarm( &obj->qPrivate.TimeSpec->builtin_timeout[ i ] );
-            } 
-        }
-    }
-}
-/*============================================================================*/
-static void qStateMachine_TimeoutQueueCleanup( qSM_t * const obj ){
-    if( NULL != obj->qPrivate.TimeSpec ){
-        if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
-            size_t cnt;
-            qSM_Signal_t xSignal;
-            
-            cnt = qQueue_Count( obj->qPrivate.SignalQueue );
-            while( 0u != cnt-- ){
-                if( qTrue == qQueue_Receive( obj->qPrivate.SignalQueue , &xSignal ) ){
-                    if( ( xSignal < QSM_SIGNAL_TIMEOUT(0) ) || ( xSignal > QSM_SIGNAL_TIMEOUT(2) ) ){ /*keep the non-timeout signals*/
-                        (void)qQueue_SendToBack( obj->qPrivate.SignalQueue , &xSignal );
-                    }
-                }
+/*qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue )
+
+Installs a signal queue of qSM_Signal_t in to the supplied state machine
+Note: Queue object should be previously initialized by using "qQueue_Setup"
+Note: Queue itemsize == qSM_Signal_t. 
+
+Parameters:
+
+    - m : a pointer to the FSM object.
+    - queue: a pointer to the queue object.
+
+Return value:
+
+    qTrue on success, otherwise return qFalse
+*/
+qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue ){
+    qBool_t RetValue = qFalse;
+    #if ( Q_QUEUES == 1 )
+        if( ( NULL != m ) && ( NULL != queue) ){
+            if( ( qTrue == qQueue_IsReady( queue ) )  &&  ( sizeof(qSM_Signal_t) == queue->qPrivate.ItemSize )  ){
+                m->qPrivate.queue = queue;
+                RetValue = qTrue;
             }
         }
-        qStateMachine_DisableTimeouts( obj );
-    }
+    #else
+        Q_UNUSED( m );
+        Q_UNUSED( queue );
+    #endif    
+    return RetValue;
 }
 /*============================================================================*/
-static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t current ){
-    if( NULL != obj->qPrivate.TimeSpec ){
-        qSM_TimeoutStateDefinition_t *tbl = obj->qPrivate.TimeSpec->spec;
-        size_t n = obj->qPrivate.TimeSpec->n;    
-
-        if( ( n > 0u ) && ( NULL != tbl ) ){
-            size_t i;
-            for( i = 0; i < n;  ++i ){
-                if( current == tbl[ i ].xState ){
-                    (void)qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ tbl[ i ].index ], tbl[ i ].xTimeout  );
+static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * const CurrentState, qSM_UnprotectedHandler_t h ){
+    size_t i, n;
+    qBool_t TransitionAllowed;
+    qSM_Transition_t *iTransition;
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    qSM_Transition_t *table = (qSM_Transition_t *)m->qPrivate.tTable;
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    n = m->qPrivate.tEntries;
+    for( i = 0; i < n; ++i ){
+        iTransition = &table[ i ];
+        TransitionAllowed = qTrue; /*if no signal-guard available, allow the transition by default*/
+        if( ( CurrentState == iTransition->CurrentState ) && ( h->Signal == iTransition->xSignal ) ){ /*table entry match*/
+            if( NULL != iTransition->Guard ){
+                /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+                TransitionAllowed = iTransition->Guard( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
+                /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
+            }
+            if( qTrue == TransitionAllowed ){
+                if( NULL != iTransition->NextState ){
+                    h->NextState = iTransition->NextState; /*set the transition from the table*/    
                     break;
                 }
             }
@@ -300,438 +411,253 @@ static void qStateMachine_TimeoutStateArm( qSM_t * const obj, qSM_State_t curren
     }
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n )
+/*qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, const qBool_t isUrgent )
 
-Install the specification object to use the FSM built-in timeouts.
+Send a signal to the specified state machine.
+
+Note : If the signal queue is not available, an exclusion variable will be used.
+       This means that the signal cannot be sent until the variable is empty. 
+       (the signal was handled by the state-machine engine).
+Note: The signal-queue has the highest precedence.       
+
+Parameters:
+    - obj : a pointer to the FSM object.
+    - signal : The user-defined signal
+    - isUrgent : If qTrue, the signal will be sent to the front of the queue. (only if the
+                 there is a signal-queue available)
+
+Return value:
+
+    qTrue if the provided signal was successfully delivered to the FSM, otherwise return qFalse.
+    qFalse if there is a queue, and the signal cannot be inserted because it is full.
+*/
+qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t xSignal, const qBool_t isUrgent ){
+    qBool_t RetValue = qFalse;
+
+    if( ( NULL != m ) && ( xSignal < QSM_SIGNAL_NONE  ) ){
+        #if ( Q_QUEUES == 1 )
+            if( NULL != m->qPrivate.queue ){ /*check if the state-machine has a signal queue*/
+                RetValue = qQueue_SendGeneric( m->qPrivate.queue, &xSignal, (qQueue_Mode_t)isUrgent );  
+            }
+        #else
+            Q_UNUSED( isUrgent );
+        #endif
+        
+        if( ( qFalse == RetValue ) && ( QSM_SIGNAL_NONE == m->qPrivate.SignalNot ) ){
+            m->qPrivate.SignalNot = xSignal;
+            RetValue = qTrue;
+        }
+    }
+    return RetValue;
+}
+/*============================================================================*/
+static void qStateMachine_TimeoutCheckSignals( qSM_t * const m ){
+    qSM_TimeoutSpec_t *ts = m->qPrivate.TimeSpec;
+    if( NULL != ts ) {
+        size_t i;
+        for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
+            if( qTrue == qSTimer_Expired( &ts->builtin_timeout[ i ] ) ) {
+                #if ( Q_QUEUES == 1 )
+                    (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT(i), qFalse );   
+                #endif
+                if( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ){
+                    (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
+                }
+                else{
+                    (void)qSTimer_Disarm( &ts->builtin_timeout[ i ] );
+                }
+            } 
+        }
+    }
+}
+/*============================================================================*/
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, qSM_Signal_t xSignal ){
+    if( NULL != m->qPrivate.TimeSpec ){
+        qSM_TimeoutStateDefinition_t *tbl = m->qPrivate.TimeSpec->spec;
+        size_t n = m->qPrivate.TimeSpec->n;    
+
+        if( ( n > 0u ) && ( NULL != tbl ) ){
+            size_t i;
+            qSM_TimeoutSpecOptions_t SetCheck, ResetCheck;
+            if( QSM_SIGNAL_ENTRY == xSignal){
+                SetCheck = QSM_TSOPT_SET_ENTRY; 
+                ResetCheck = QSM_TSOPT_RST_ENTRY;
+            }
+            else{
+                SetCheck = QSM_TSOPT_SET_EXIT; 
+                ResetCheck = QSM_TSOPT_RST_EXIT;
+            }
+
+            for( i = 0u; i < n;  ++i ){ /*loop table */
+                qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
+                qIndex_t index = opt & QSM_TSOPT_INDEX_MASK; /*get the timeout index*/
+
+                if( ( current == tbl[ i ].xState ) &&  ( index < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){ /*state match and index is valid?*/
+                    qSTimer_t *tmr = &m->qPrivate.TimeSpec->builtin_timeout[ index ]; /*get the timeout handle*/
+                    qTime_t tValue = tbl[ i ].xTimeout;
+                    if( 0uL != ( opt & SetCheck ) ){
+                        if( 0uL == ( opt & QSM_TSOPT_KEEP_IF_SET ) ){
+                            (void)qSTimer_Set( tmr, tValue  );        
+                        }
+                        if( 0uL != (opt & QSM_TSOPT_PERIODIC) ){
+                            m->qPrivate.TimeSpec->isPeriodic |= (qUINT32_t)( ( 1uL << index ));         
+                        }
+                        else{
+                            m->qPrivate.TimeSpec->isPeriodic &= (qUINT32_t)(~( 1uL << index ));      
+                        }
+                    }   
+                    if( 0uL != ( opt & ResetCheck ) ){
+                        (void)qSTimer_Disarm( tmr );
+                    }     
+                }
+            }
+        }
+    }
+}
+/*============================================================================*/
+/*qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n )
+
+Install the Timeout specification object to use the FSM built-in timeouts.
 This methods also set fixed timeouts for specific states using a lookup-table. 
-The QSM_SIGNAL_TIMEOUT0 will be acquired for this purpose. 
-
 Note : This feature its only available if the FSM has a signal queue installed.
-Note: The lookup table will be an array of type <qSM_TimeoutStateDefinition_t> with 
-      <nEntries> elements matching { state, time }. 
+Note : The lookup table will be an array of type <qSM_TimeoutStateDefinition_t> with 
+      <nEntries> elements matching { state, time, options }. 
+Note : You can increse the number of available timeouts instances by changing 
+        the Q_FSM_MAX_TIMEOUTS configuration macro inside qconfig.h      
 
 Parameters:
 
-    - obj : a pointer to the target FSM object.
+    - m : a pointer to the target FSM object.
     - ts : a pointer to the timeout specification object
     - tdef : the lookup table matching the target state and the requested timeout.
-             to ignore or disable, pass NULL as argument.
-    - n: the number of elements inside <tdef>. To ignore pass 0 as argument
+    - n: the number of elements inside <tdef>. 
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_TimeoutSpecInstall( qSM_t * const obj,  qSM_TimeoutSpec_t *ts, qSM_TimeoutStateDefinition_t *tdef, size_t n ){
+qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n ){
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != obj ) && ( NULL != ts ) ){
-        obj->qPrivate.TimeSpec = ts;
-        qStateMachine_DisableTimeouts( obj );
+    if( ( NULL != m ) && ( NULL != ts ) ){
+        size_t i;
+
+        m->qPrivate.TimeSpec = ts;
+        for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
+            qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ i ] );
+        }
         if( ( NULL != tdef ) && ( n > 0u ) ){
-            obj->qPrivate.TimeSpec->n = n;
-            obj->qPrivate.TimeSpec->spec = tdef;
+            m->qPrivate.TimeSpec->n = n;
+            m->qPrivate.TimeSpec->spec = tdef;
         }
         else{
-            obj->qPrivate.TimeSpec->n = 0u;
-            obj->qPrivate.TimeSpec->spec = NULL;
+            m->qPrivate.TimeSpec->n = 0u;
+            m->qPrivate.TimeSpec->spec = NULL;
         }
         RetValue = qTrue;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time )
+/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time )
 
-Set the time for one of the built-in timeouts inside the target FSM
-
+Set the time for the selected built-in timeout inside the target FSM
 <Requirements> : 
-   *> An installed time specification. For this use <qStateMachine_TimeoutSpecInstall>
-   *> An installed signal queue. For this use <qStateMachine_SignalQueueSetup>
-Note : In a hierarchical FSM, the signal QSM_SIGNAL_TIMEOUTx can be propagated from the parent 
-if childs do not have their own signal queue.
+   *> An installed time specification. For this use <qStateMachine_InstallTimeoutSpec>
+   *> An installed signal queue. For this use <qStateMachine_InstallSignalQueue>
 
 Parameters:
-
-    - obj : a pointer to the target FSM object.
-    - xTimeout : the index of the timeout (0, 1 ot 2)
+    - m : a pointer to the target FSM object.
+    - xTimeout : the index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     - time : the specified time
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_SetTimeout( qSM_t * const obj, const qIndex_t xTimeout, const qTime_t time ){
+qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time ){
     qBool_t RetValue = qFalse;
 
-    if( ( xTimeout <= 2u ) && ( NULL != obj ) ){
-        if( NULL != obj->qPrivate.TimeSpec ){
-            RetValue = qSTimer_Set( &obj->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], time  );
+    if( ( NULL != m ) && ( xTimeout <= (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){
+        if( NULL != m->qPrivate.TimeSpec ){
+            RetValue = qSTimer_Set( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], time  );
         }
     }
 
     return RetValue;
 }
 /*============================================================================*/
-/*void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SurroundingState_t Surrounding )
+/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time )
 
-Change attributes or set actions to the Finite State Machine (FSM).
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-    - Flag: The attribute/action to be taken
-         > qSM_RESTART : Restart the FSM (val argument must correspond to the init state)
-         > qSM_CLEAR_STATE_FIRST_ENTRY_FLAG: clear the entry flag for the 
-                current state if the NextState field doesn't change.
-         > qSM_SURROUNDING_STATE: Set the surrounding State
-         > qSM_UNISTALL_TRANSTABLE : To uninstall the transition table if available
-    - s : The new value for state (only apply in qSM_RESTART). If not used, pass NULL.
-    - Surrounding : The new value for SubStSurrounding (only apply in qSM_SURROUNDING_STATE).
-     If not used, pass NULL.
-*/    
-void qStateMachine_Attribute( qSM_t * const obj, const qSM_Attribute_t Flag , qSM_State_t  s, qSM_SurroundingState_t Surrounding ){
-    if( NULL != obj ){
-        switch( Flag ){
-            case qSM_RESTART:
-                obj->qPrivate.xPublic.NextState = s;
-                obj->qPrivate.xPublic.PreviousState = NULL;
-                obj->qPrivate.xPublic.LastState = NULL;
-                obj->qPrivate.xPublic.Signal = QSM_SIGNAL_NONE;
-                obj->qPrivate.xPublic.PreviousReturnStatus = qSM_EXIT_SUCCESS;            
-                break;
-            case qSM_CHANGE_INITSTATE:
-                obj->qPrivate.InitState = s;
-                break;    
-            case qSM_CLEAR_STATE_FIRST_ENTRY_FLAG:
-                obj->qPrivate.xPublic.PreviousState = NULL;
-                obj->qPrivate.xPublic.LastState = NULL;
-                break;
-            case qSM_SURROUNDING_STATE:
-                obj->qPrivate.Surrounding = Surrounding; 
-                break;             
-            case qSM_UNINSTALL_TRANSTABLE:
-                obj->qPrivate.TransitionTable = NULL;
-                break;   
-            default:
-                break;
-        }        
-    }
-}
-/*============================================================================*/
-/*qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries )
-
-Install a transition table for the supplied state machine instance.
+Stop the time count for the selected built-in timeout inside the target FSM
+<Requirements> : 
+   *> An installed time specification. For this use <qStateMachine_InstallTimeoutSpec>
+   *> An installed signal queue. For this use <qStateMachine_InstallSignalQueue>
 
 Parameters:
-
-    - obj : a pointer to the FSM object.
-    - table: a pointer to the transition table instance
-    - entries : The array of transition (qSM_Transition_t[]).
-    - NoOfEntries : The number of transitions inside <entries>
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/  
-qBool_t qStateMachine_TransitionTableInstall( qSM_t * const obj, qSM_TransitionTable_t *table, qSM_Transition_t *entries, size_t NoOfEntries ){
-    qBool_t RetValue = qFalse;
-
-    if( ( NULL != obj ) && ( NULL != table ) && ( NULL != entries ) && ( NoOfEntries > (size_t)0 ) ){
-        table->qPrivate.NumberOfEntries = NoOfEntries;
-        table->qPrivate.Transitions = entries;
-        obj->qPrivate.TransitionTable = table;
-        RetValue = qTrue;
-    }
-    return RetValue;
-}
-/*============================================================================*/
-/*qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qQueue_t *xQueue, qSM_Signal_t *AxSignals, size_t MaxSignals )
-
-Setup the state-machine signal queue.
-Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUEUES == 1 ]
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-    - xQueue : a pointer to the queue instance.
-    - AxSignals : A pointer to the memory area used for queueing signals. qSM_Signal_t[MaxSignals]
-    - MaxSignals : The number of items inside <AxSignals>.
+    - m : a pointer to the target FSM object.
+    - xTimeout : the index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_SignalQueueSetup( qSM_t * const obj, qQueue_t *xQueue, qSM_Signal_t *AxSignals, size_t MaxSignals ){
-    qBool_t RetValue = qFalse;
-
-    #if ( Q_QUEUES == 1 )
-        if( ( NULL != AxSignals ) && ( MaxSignals > (size_t)0u ) ){
-            obj->qPrivate.SignalQueue = xQueue;
-            RetValue = qQueue_Setup( xQueue, AxSignals, sizeof(qSM_Signal_t), MaxSignals );
-        }
-    #else
-        Q_UNUSED( obj );
-        Q_UNUSED( AxSignals );
-        Q_UNUSED( MaxSignals );
-    #endif
-    return RetValue;
-}
-/*============================================================================*/
-/*qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal )
-
-Forces a sweep over the installed transition table. The instance will be updated 
-if a transition from the table is performed.
-
-Note : This method is performed from the <qStateMachine_Run> API before the 
-current state callback is invoked.
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-    - xSignal : the incoming signal
-
-Return value:
-
-    Returns qTrue if the sweep produce a state transition, otherwise returns qFalse;
-*/
-qBool_t qStateMachine_SweepTransitionTable( qSM_t * const obj, qSM_Signal_t xSignal ){
-    qBool_t RetValue = qFalse;
-                 
-    if( NULL != obj ){
-        qSM_TransitionTable_t *table = obj->qPrivate.TransitionTable; /*MISRAC2012-Rule-11.5 deviation allowed*/
-
-        if( NULL != table ){
-            /*xSignal = obj->qPrivate.xPublic.Signal;*/
-            if( xSignal <= QSM_SIGNAL_RANGE_MAX ){ /*check for a valid signal value*/
-                qSM_State_t xCurrentState = obj->qPrivate.xPublic.NextState;
-                qSM_Transition_t iTransition;
-                size_t iEntry;
-                qBool_t SigActionGuard = qTrue;
-
-                for( iEntry = 0; iEntry < table->qPrivate.NumberOfEntries; ++iEntry ){ /*loop the transition-table entries*/
-                    iTransition = table->qPrivate.Transitions[ iEntry ]; /*get the current entry*/
-                    if( ( xSignal == iTransition.Signal) && ( ( NULL == iTransition.xCurrentState ) || ( xCurrentState == iTransition.xCurrentState ) ) ){ /*both conditions match*/
-                        if( NULL != iTransition.SignalAction ){  /*run the signal-action(or guard) if available*/
-                            SigActionGuard = iTransition.SignalAction( &obj->qPrivate.xPublic );
-                        }
-                        if( qTrue == SigActionGuard ){ /*check if the guard allow the transition*/
-                            qSM_t *toTargetFSM;
-
-                            obj->qPrivate.xPublic.NextState = iTransition.xNextState;    /*make the transition to the target state*/
-                            /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-                            toTargetFSM = (qSM_t*)iTransition.xToTargetHandle; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-                            /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/       
-
-                            if( QSM_H_DEEP_HISTORY == toTargetFSM ){
-                                /* nothing to do, deep history its preserved by default*/
-                            }
-                            else if( QSM_H_SHALLOW_HISTORY == toTargetFSM ){
-                                /*TODO*/
-                                break;
-                            }
-                            else if( QSM_H_NO_HISTORY == toTargetFSM ){ /*restore init/states on nested*/
-                                qSM_HierarchicalInstance_t *hi = obj->qPrivate.hInstance;
-                                obj->qPrivate.Active = qFalse;
-                                if ( NULL != hi ){
-                                    if( hi->childscount > (size_t)1u ){
-                                        size_t i;
-                                        for( i = 1u ; i < hi->childscount; ++i ){
-                                            qStateMachine_ExecStateIfAvailable( hi->childs[ i ], hi->childs[ i ]->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
-                                            hi->childs[ i ]->qPrivate.xPublic.NextState = hi->childs[ i ]->qPrivate.InitState;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                            else{
-                                if( iTransition.xToTargetState != toTargetFSM->qPrivate.xPublic.LastState ){ /*innermost check : target state differs from the current?*/
-                                    qStateMachine_ExecStateIfAvailable( toTargetFSM, toTargetFSM->qPrivate.xPublic.NextState, QSM_SIGNAL_EXIT );
-                                    toTargetFSM->qPrivate.xPublic.NextState = iTransition.xToTargetState; /*move to the new state*/
-                                    qStateMachine_TimeoutQueueCleanup( toTargetFSM ); 
-                                    break; 
-                                }
-                            }
-
-                        }
-                        else if( qIgnore == SigActionGuard ){
-                            /* TODO: signal should be queueded again*/ 
-                        }
-                        else{
-                            /*nothing to do here*/
-                        }
-                        RetValue = qTrue;
-                    } 
-                    SigActionGuard = qTrue;
+void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
+    if( ( NULL != m->qPrivate.TimeSpec ) && ( xTimeout < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){
+        #if ( Q_QUEUES == 1 )
+            size_t cnt;
+            qSM_Signal_t xSignal;
+            
+            cnt = qQueue_Count( m->qPrivate.queue );
+            while( 0u != cnt-- ){
+                if( qTrue == qQueue_Receive( m->qPrivate.queue , &xSignal ) ){
+                    if( xSignal != QSM_SIGNAL_TIMEOUT(xTimeout) ){ /*keep the non-timeout signals*/
+                        (void)qQueue_SendToBack( m->qPrivate.queue , &xSignal );
+                    }
                 }
-            }
-        }        
-    }
-    return RetValue;
+            }           
+        #endif
+        qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ] );
+    }    
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, qBool_t isUrgent )
-
-Sends a signal to the state machine.
-Note : The state machine instance must have a transition table previously installed
-Note : Signals feature only available if queues are enabled in qconfig.h [ Q_QUEUES == 1 ]  
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-    - signal : The user-defined signal
-    - isUrgent : If qTrue, the signal will be sent to the front of the transition-table queue.
-
-Return value:
-
-    qTrue if the provided signal was successfully delivered to the FSM, otherwise return qFalse.
-
-*/
-qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t xSignal, qBool_t isUrgent ){
-    qBool_t RetValue = qFalse;
-
-    #if ( Q_QUEUES == 1 )
-        if( ( NULL != obj ) && ( QSM_SIGNAL_NONE != xSignal ) ){
-            if( NULL != obj->qPrivate.SignalQueue ){ /*check if the state-machine has a signal queue*/
-                RetValue = qQueue_SendGeneric( obj->qPrivate.SignalQueue, &xSignal, (qQueue_Mode_t)isUrgent );  
-            }
+void* qStateMachine_Get( qSM_t * const m, const qSM_Attribute_t attr ){
+    void *Attribute = NULL;
+    if( NULL != m ){
+        switch ( attr ){
+            case qSM_ATTRIB_STATE_TOP:
+                Attribute = &m->qPrivate.top;
+                break;  
+            case qSM_ATTRIB_STATE_CURRENT:
+                Attribute = m->qPrivate.current;
+                break;           
+            case qSM_ATTRIB_SIGNAL_QUEUE:
+                Attribute = m->qPrivate.queue;
+                break;         
+            case qSM_ATTRIB_TIMESPEC:
+                Attribute = m->qPrivate.TimeSpec;
+                break;       
+            case qSM_ATTRIB_TRANSITION_TABLE:
+                Attribute = m->qPrivate.tTable;
+                break;  
+            case qSM_ATTRIB_DATA:
+                Attribute = m->qPrivate.Data;
+                break;                
+            default:
+                break;
         }
-    #else
-        Q_UNUSED( obj );
-        Q_UNUSED( xSignal );
-        Q_UNUSED( isUrgent );
-    #endif
-    return RetValue;
-}
-/*============================================================================*/
-/*qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj )
-
-Return the state-machine handler.
-
-Parameters:
-
-    - obj : a pointer to the FSM object.
-
-Return value:
-
-    The requested FSM handler. NULL if the handler cant be retrieved.
-
-*/
-qSM_Handler_t qStateMachine_Get_Handler( qSM_t * const obj ){
-    qSM_Handler_t h =  NULL;
-
-    if( NULL != obj ){
-        h = &obj->qPrivate.xPublic;
     }
-    return h;
+    return Attribute;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child )
-
-Setup a state-machine as a composite state.
-
-Parameters:
-
-    - parent : A pointer to the parent FSM object.
-    - state : A state from <parent> to relate the <child> fsm .
-    - child : A pointer to the child FSM object who becomes part of the composite state.
-
-Return value:
-
-    qTrue on success. Otherwise, returns qFalse.
-
-*/
-qBool_t qStateMachine_Set_CompositeState( qSM_t * const parent, qSM_State_t state, qSM_t * const child ){
+qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t StateFcn ){
     qBool_t RetValue = qFalse;
-    /*qSM_t *last;*/
-    if( ( NULL != parent ) && ( NULL != state ) && ( NULL != child ) ){
-        child->qPrivate.xPublic.Parent = parent;
-        child->qPrivate.Composite.rootState = state;
-
-        /*insert child fsm into the composite fsm list*/
-        child->qPrivate.Composite.next = parent->qPrivate.Composite.head;
-        parent->qPrivate.Composite.head = child;        
-        RetValue = qTrue;
+    if( NULL != state ){
+        state->qPrivate.sCallback = StateFcn;
     }
     return RetValue;
 }
 /*============================================================================*/
-/*void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent)
 
-Set the state-machine parent.
 
-Parameters:
-
-    - Child : a pointer to the child FSM object.
-    - Parent : a pointer to the parent FSM object.
-
-Return value:
-
-    The requested FSM handler. NULL if the handler cant be retrieved.
-
-*/
-void qStateMachine_Set_Parent( qSM_t * const Child, qSM_t * const Parent ){
-    if( NULL != Child ){
-        Child->qPrivate.xPublic.Parent = Parent;
-    }
-}
-/*============================================================================*/
-/*this functionality its under test*/
-void qStateMachine_CloseDesign( qSM_t * const obj, qSM_HierarchicalInstance_t *h ){
-    if( ( NULL != obj ) && ( NULL != h ) ){
-        size_t i;
-        obj->qPrivate.hInstance = h;
-
-        for( i = 0u ; i < (size_t)Q_FSM_MAX_NEST_DEPTH; ++i ){
-            obj->qPrivate.hInstance->childs[ i ] = NULL;
-        }
-        obj->qPrivate.hInstance->childscount = 0u;
-
-        qStateMachine_Run( obj, QSM_PACK_CHILDS );
-    }
-}
-/*============================================================================*/
-static qBool_t qStateMachine_StackIsEmpty( qSM_Stack_t *top ){ 
-    qBool_t RetValue = qTrue;
-
-    if( NULL != top ){
-        RetValue = ( 0u == qSM_NestStack.Index )? qTrue : qFalse;
-    }
-    return RetValue; 
-}  
-/*============================================================================*/
-static void qStateMachine_StackPush( qSM_Stack_t **top_ref, qSM_t *t ){ 
-    if( qSM_NestStack.Index < (size_t)Q_FSM_MAX_NEST_DEPTH ){
-        qSM_Stack_t *new_tNode;
-
-        new_tNode = &qSM_NestStack.Element[ qSM_NestStack.Index++ ];
-        new_tNode->t  = t;  /* put in the data  */
-        new_tNode->next = (*top_ref);  /* link the old list of the new tNode */   
-        (*top_ref) = new_tNode;   /* move the head to point to the new tNode */      
-    }
-} 
-/*============================================================================*/
-static qSM_t* qStateMachine_StackPop( qSM_Stack_t **top_ref ){ 
-    qSM_t *res = NULL; 
-    
-    if( qFalse == qStateMachine_StackIsEmpty( *top_ref ) ){ 
-        qSM_Stack_t *top = *top_ref; 
-        res = top->t; 
-        *top_ref = top->next; 
-        --qSM_NestStack.Index; 
-    } 
-    return res;
-} 
-/*============================================================================*/
-static void qStateMachine_StackCleanUp( void ){
-    size_t i;
-
-    for( i = 0u; i < (size_t)Q_FSM_MAX_NEST_DEPTH; ++i ){
-        qSM_NestStack.Element[ i ].next = NULL;
-        qSM_NestStack.Element[ i ].t = NULL;
-    }
-    qSM_NestStack.Index = 0u;
-}
-/*============================================================================*/
-
-#endif /* #if ( Q_FSM == 1 ) */
+#endif /*#if ( Q_FSM == 1 )*/

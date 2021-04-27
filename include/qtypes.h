@@ -3,7 +3,19 @@
     #define QTYPES_H
 
     #include <stdlib.h>
-    #include "qconfig.h"
+
+    #ifndef  QCONFIG_H          /*if this file available?*/
+        #include "qconfig.h"
+    #endif
+
+
+    #ifndef Q_USE_STDINT_H
+        #define Q_USE_STDINT_H      ( 1 )     
+    #endif
+
+    #if( Q_USE_STDINT_H != 1 )
+        #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers. Use this setting at your own risk.
+    #endif
 
     #ifndef NULL
         #define NULL ((void*)0)

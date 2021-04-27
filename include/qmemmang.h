@@ -8,11 +8,28 @@
     extern "C" {
     #endif
 
-    #if ( Q_MEMORY_MANAGER == 1)
+
+    #ifndef Q_MEMORY_MANAGER
+        #define Q_MEMORY_MANAGER        ( 1 )
+    #endif
+
+    #if ( Q_MEMORY_MANAGER == 1 )
 
     #ifndef Q_BYTE_ALIGNMENT    
-        #define Q_BYTE_ALIGNMENT    ( 8 )
+        #define Q_BYTE_ALIGNMENT        ( 8 )
     #endif
+
+    #ifndef Q_DEFAULT_HEAP_SIZE    
+        #define Q_DEFAULT_HEAP_SIZE     ( 512 )
+    #endif
+
+    #if ( Q_DEFAULT_HEAP_SIZE < 64 )
+        #error Q_DEFAULT_HEAP_SIZE it is too small. Min(64).
+    #endif
+
+    #if ( ( Q_BYTE_ALIGNMENT != 1 ) && ( Q_BYTE_ALIGNMENT != 2 ) && ( Q_BYTE_ALIGNMENT != 4 ) && ( Q_BYTE_ALIGNMENT != 8 ) )
+        #error Q_BYTE_ALIGNMENT value not allowed, use only 1,2,4 or 8(default).
+    #endif    
 
     /* Linked list structure to connect the free blocks in order of their memory address. */
     typedef struct _qMemMang_BlockConnect_s{

@@ -9,6 +9,10 @@
     extern "C" {
     #endif
 
+    #ifndef Q_ATCLI
+        #define Q_ATCLI     ( 1 )
+    #endif
+
     #define		QATCLI_DEFAULT_AT_COMMAND	            "at"
     #define		QATCLI_DEFAULT_ID_COMMAND	            "atid"
     #define		QATCLI_DEFAULT_ATSET_DELIM	            ','

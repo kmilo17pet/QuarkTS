@@ -1,5 +1,5 @@
 /*
-QuarkTS V6.4.7 - An open-source OS for small embedded applications.
+QuarkTS V7.0.1- An open-source OS for small embedded applications.
 GNU General Public License v3 (GPL-3)
 C99 and MISRAC 2012 Compliant    
 
@@ -32,7 +32,7 @@ Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/qu
 #ifndef QuarkTS_H
     #define	QuarkTS_H
 
-    #define QUARKTS_VERSION         "6.4.7"
+    #define QUARKTS_VERSION         "7.0.1"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"
@@ -64,42 +64,14 @@ Download the user manual here : https://github.com/TECREA/QuarkTS/blob/master/qu
 
     #include "qflm.h"
 
-
-    #if ( Q_PRIORITY_LEVELS < 1 )
-        #error Q_PRIORITY_LEVELS must be defined to be greater than or equal to 1.
-    #endif
-
-    #if ( Q_DEFAULT_HEAP_SIZE < 64 )
-        #error Q_DEFAULT_HEAP_SIZE it is too small. Min(64).
-    #endif
-
-    #if ( ( Q_BYTE_ALIGNMENT != 1 ) && ( Q_BYTE_ALIGNMENT != 2 ) && ( Q_BYTE_ALIGNMENT != 4 ) && ( Q_BYTE_ALIGNMENT != 8 ) )
-        #error Q_BYTE_ALIGNMENT value not allowed, use only 1,2,4 or 8(default).
-    #endif
-
-    #if ( Q_DEBUGTRACE_BUFSIZE < 36 )
-        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greather o equal to 36.
+    #ifndef Q_PRIO_QUEUE_SIZE
+        #define Q_PRIO_QUEUE_SIZE       (10)
     #endif
 
     #if ( Q_PRIO_QUEUE_SIZE < 0 )   
         #error Q_PRIO_QUEUE_SIZE should be a value greater of equal than zero.
     #endif
 
-    #if( Q_USE_STDINT_H != 1 )
-        #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers. Use this setting at your own risk.
-    #endif
-
-    #if ( Q_FSM_MAX_NEST_DEPTH < 1 )
-        #error Q_FSM_MAX_NEST_DEPTH must be defined to be greater than or equal to 1.
-    #endif
-
-    #if ( ( Q_FSM_MAX_TIMEOUTS < 1 ) || ( Q_FSM_MAX_TIMEOUTS > 10 ) )
-        #error Q_FSM_MAX_TIMEOUTS must be defined with a value between 1 to 10.
-    #endif
-
-    #ifndef Q_TASK_EVENT_FLAGS
-        #define Q_TASK_EVENT_FLAGS  ( 1 )
-    #endif
 
     #include "qbackward.h"
 
