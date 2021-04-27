@@ -1,0 +1,201 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
+#include "QuarkTS.h"
+
+
+#define SIGNAL_CLOSE        ((qSM_Signal_t)(1))
+#define SIGNAL_OPEN         ((qSM_Signal_t)(2))
+#define SIGNAL_OFFTIMEOUT   ((qSM_Signal_t)(3))
+#define SIGNAL_TOAST        ((qSM_Signal_t)(4))
+#define SIGNAL_BAKE         ((qSM_Signal_t)(5))
+
+
+qSM_t super;
+qSM_State_t state_dooropen, state_doorclosed;
+qSM_State_t state_off, state_heating;
+qSM_State_t state_toasting, state_baking;
+
+
+qSM_Status_t DoorClosed_State( qSM_Handler_t h );
+qSM_Status_t DoorOpen_State( qSM_Handler_t h );
+
+qSM_Status_t Heating_State( qSM_Handler_t h );
+qSM_Status_t Off_State( qSM_Handler_t h );
+
+qSM_Status_t Toasting_State( qSM_Handler_t h );
+qSM_Status_t Baking_State( qSM_Handler_t h );
+
+qTask_t SMTask;
+
+qSM_Transition_t table[] = {
+    { &state_doorclosed,              SIGNAL_OPEN,              NULL,           &state_dooropen },  
+    { &state_dooropen,                SIGNAL_CLOSE,             NULL,           &state_doorclosed }, 
+    { &state_doorclosed,              QSM_SIGNAL_TIMEOUT(0),    NULL,           &state_off }, 
+    { &state_doorclosed,              SIGNAL_TOAST,             NULL,           &state_toasting }, 
+    { &state_doorclosed,              SIGNAL_BAKE,              NULL,           &state_baking }, 
+};
+
+qSM_TimeoutStateDefinition_t Oven_timeouts[]={
+    { &state_heating, 10.0f, QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
+};
+
+qSM_Status_t state_top_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("->top");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("x-top");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_doorclosed_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->doorclosed");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-doorclosed");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_dooropen_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->dooropen");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-dooropen");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_off_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->off");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-off");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_heating_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->heating");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-heating");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_toasting_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("           ->toasting");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("           x-toasting");
+            break;           
+    } 
+    return RetVal;
+}
+
+qSM_Status_t state_baking_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("           ->baking");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("           x-baking");
+            break;           
+    } 
+    return RetVal;
+}
+/*=============================================================================*/
+void Sig_Handler(int signum ){
+    switch( signum){
+        case SIGUSR1:
+            qStateMachine_SendSignal( &super, SIGNAL_CLOSE, qFalse );
+            break;
+        case SIGUSR2:
+            qStateMachine_SendSignal( &super, SIGNAL_OPEN, qFalse );
+            break;        
+        case SIGQUIT:
+            qStateMachine_SendSignal( &super, QSM_SIGNAL_TIMEOUT(0), qFalse );
+            break;         
+        case SIGALRM:
+            qStateMachine_SendSignal( &super, SIGNAL_TOAST, qFalse );
+            break;
+        case SIGTRAP:
+            qStateMachine_SendSignal( &super, SIGNAL_BAKE, qFalse );     
+            break;
+        default:
+            break;
+    }
+}
+/*===========================Reference clock for the kernel===================*/
+qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (qClock_t)(ts.tv_nsec / (qClock_t)1000000uL) + ((qClock_t)ts.tv_sec * (qClock_t)1000uL);
+}
+
+/*=============================================================================*/
+int main(int argc, char** argv) {  
+    qQueue_t sigqueue;
+    qSM_Signal_t topsm_sig_stack[10];
+    qSM_TimeoutSpec_t tm_spectimeout;
+    printf("OvenControl = %d\r\n", getpid() );
+
+    signal( SIGUSR1, Sig_Handler );
+    signal( SIGUSR2, Sig_Handler );
+    signal( SIGQUIT, Sig_Handler );
+    signal( SIGALRM, Sig_Handler );
+    signal( SIGTRAP, Sig_Handler );
+    signal( SIGSYS, Sig_Handler );
+
+    qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
+
+    qStateMachine_Setup( &super, state_top_callback, &state_doorclosed, NULL, NULL );
+    qStateMachine_InstallTransitionTable( &super, table, sizeof(table)/sizeof(table[0]) );
+        qStateMachine_StateSubscribe( &super, &state_doorclosed, NULL, state_doorclosed_callback, &state_off, qTrue ); 
+        qStateMachine_StateSubscribe( &super, &state_dooropen, NULL, state_dooropen_callback, NULL, qFalse ); 
+            qStateMachine_StateSubscribe( &super, &state_off, &state_doorclosed, state_off_callback, NULL, qFalse ); 
+            qStateMachine_StateSubscribe( &super, &state_heating, &state_doorclosed, state_heating_callback, NULL, qTrue ); 
+                qStateMachine_StateSubscribe( &super, &state_toasting, &state_heating, state_toasting_callback, NULL, qFalse ); 
+                qStateMachine_StateSubscribe( &super, &state_baking, &state_heating, state_baking_callback, NULL, qFalse ); 
+
+    qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
+    qStateMachine_InstallSignalQueue( &super, &sigqueue );
+    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
+    qStateMachine_InstallTimeoutSpec( &super, &tm_spectimeout, Oven_timeouts, 1  );
+          
+    qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
+    qOS_Run();
+    (void)argc;
+    (void)argv;
+    
+    return EXIT_SUCCESS;
+}

@@ -14,13 +14,14 @@
     #define Q_NOTIFICATION_SPREADER     ( 1 )       /*< Used to enable or disable the spread notification functionality*/ 
     #define Q_FSM                       ( 1 )       /*< Used to enable or disable the Finite State Machine (FSM) module */
     #define Q_FSM_MAX_NEST_DEPTH        ( 5 )       /*< The max depth of nesting in Finite State Machines (FSM)*/
+    #define Q_FSM_MAX_TIMEOUTS          ( 3 )       /*< Max number of timeouts inside a timeout specification for the Finite State machine (FSM) module*/
     #define Q_QUEUES                    ( 1 )       /*< Used to enable or disable the qQueues*/
     #define Q_TRACE_VARIABLES           ( 1 )       /*< Used to enable or disable variable tracing and debuggin*/
     #define Q_DEBUGTRACE_BUFSIZE        ( 36 )      /*< Size for the debug/trace buffer: 36 bytes should be enough*/
     #define Q_DEBUGTRACE_FULL           ( 1 )       /*< Used to enable or disable a full trace output*/
     #define Q_ATCLI                     ( 1 )       /*< Used to enable or disable the AT Command Line Interface(CLI)*/
-    #define Q_TASK_COUNT_CYCLES         ( 1 )       /*< Used to enable or disable the task cycles counter*/
-    #define Q_TASK_EVENT_FLAGS          ( 1 )
+    #define Q_TASK_COUNT_CYCLES         ( 1 )       /*<?Used to enable or disable the task cycles counter*/
+    #define Q_TASK_EVENT_FLAGS          ( 1 )       /*<?Used to enable or disable the task event flags*/
     #define Q_MAX_FTOA_PRECISION        ( 10u )     /*< default qFtoA precision*/
     #define Q_ATOF_FULL                 ( 0 )       /*< Used to enable or disablethe extended "e" notation parsing in qAtoF*/
     #define Q_ALLOW_SCHEDULER_RELEASE   ( 1 )       /*< Used to enable or disable the release of the scheduling */
@@ -28,7 +29,7 @@
     #define Q_EDGE_CHECK_IOGROUPS       ( 1 )       /*< Used to enable or disable the edge check for I/O groups*/
     #define Q_BYTE_SIZED_BUFFERS        ( 1 )       /*< Used to enable or disable the Byte-sized buffers*/    
     #define Q_USE_STDINT_H              ( 1 )       /*< Use the stdint.h header to define kernel data-types */
-    #define Q_FSM_MAX_TIMEOUTS          ( 3 )    
+ 
 
     /*portability options*/
     #define Q_FUNC_ATTRIBUTE_PRE                    /*< Function attributes for callbacks with more than one argument */

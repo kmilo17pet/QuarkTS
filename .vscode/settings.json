@@ -26,6 +26,7 @@
         "QSEND",
         "QSTIMER",
         "QTASK",
+        "TSOPT",
         "cstat",
         "kmilo",
         "putch",

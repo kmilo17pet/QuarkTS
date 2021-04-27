@@ -206,14 +206,16 @@ qUINT32_t PORTA = 0x0A;
 qEdgeCheck_t INPUTS;
 qEdgeCheck_IONode_t button1, sensor1, button2, sensor2;
 
-qSM_t statemachine ;
+qSM_t statemachine;
+qSM_State_t statefirst, statesecond, statethird;
 
 /*============================================================================*/
 qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
 
-qSM_Status_t firststate(qSM_Handler_t fsm);
-qSM_Status_t secondstate(qSM_Handler_t fsm);
-qSM_Status_t thridstate(qSM_Handler_t fsm);
+qSM_Status_t statefirst_callback(qSM_Handler_t fsm);
+qSM_Status_t statesecond_callback(qSM_Handler_t fsm);
+qSM_Status_t statethird_callback(qSM_Handler_t fsm);
+qSM_Status_t statetop_callback(qSM_Handler_t h);
 /*============================================================================*/
 void datacapture(qSM_Handler_t fsm){
     (void)fsm;
@@ -223,15 +225,20 @@ void putcharfcn(void* stp, char c){
     putchar(c);
 }
 /*============================================================================*/
-qSM_Status_t firststate(qSM_Handler_t fsm){
-    qEvent_t e = fsm->Data;
+qSM_Status_t statetop_callback(qSM_Handler_t h){
+    (void)h;
+    return qSM_STATUS_EXIT_SUCCESS;
+}
+/*============================================================================*/
+qSM_Status_t statefirst_callback(qSM_Handler_t h){
+    qEvent_t e = h->Data;
     static qSTimer_t tmr;
 
     if(e->FirstCall){
         TEST_MESSAGE("state machine init");
     }
-    
-    switch( fsm->Signal ){
+  
+    switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
             puts("entering firststate");
             TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, T2_5SEC) );
@@ -239,7 +246,7 @@ qSM_Status_t firststate(qSM_Handler_t fsm){
             break;
         case QSM_SIGNAL_NONE:
             if (qSTimer_Expired(&tmr)){
-                fsm->NextState = secondstate;
+                h->NextState = &statesecond;
             }
             break;
         case QSM_SIGNAL_EXIT:
@@ -248,14 +255,14 @@ qSM_Status_t firststate(qSM_Handler_t fsm){
         default:
             break;
     }
-    return qSM_EXIT_SUCCESS;
+    return qSM_STATUS_EXIT_SUCCESS;
 }
 /*============================================================================*/
-qSM_Status_t secondstate(qSM_Handler_t fsm){
-    qEvent_t e = fsm->Data;
+qSM_Status_t statesecond_callback(qSM_Handler_t h){
+    qEvent_t e = h->Data;
     static qSTimer_t tmr;
 
-    switch( fsm->Signal ){
+    switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
             puts("entering secondstate");    
             TEST_ASSERT_EQUAL_UINT8( qTrue, qSTimer_Set(&tmr, T2_5SEC) );
@@ -264,11 +271,11 @@ qSM_Status_t secondstate(qSM_Handler_t fsm){
         case QSM_SIGNAL_NONE:
             if (qSTimer_Expired(&tmr)){
                 TEST_MESSAGE("timer of 2.5s expired");
-                fsm->NextState = firststate;
+                h->NextState = &statefirst;
             }
             break;
         case QSM_SIGNAL_USER1:    
-            fsm->NextState = thridstate;
+            h->NextState = &statethird;
             break;
         case QSM_SIGNAL_EXIT:
             puts("exiting from secondstate");
@@ -276,17 +283,17 @@ qSM_Status_t secondstate(qSM_Handler_t fsm){
         default:
             break;
     }    
-    return qSM_EXIT_SUCCESS;
+    return qSM_STATUS_EXIT_SUCCESS;
 }
-qSM_Status_t thridstate(qSM_Handler_t fsm){
-    switch( fsm->Signal ){
+qSM_Status_t statethird_callback(qSM_Handler_t h){
+    switch( h->Signal ){
         case QSM_SIGNAL_ENTRY:
             puts("entering thridstate");    
             break;
         case QSM_SIGNAL_NONE:
             break;
         case QSM_SIGNAL_USER1:
-            fsm->NextState = fsm->PreviousState;
+            h->NextState = &statefirst;
             break;       
         case QSM_SIGNAL_EXIT:
             puts("exiting from thridstate");
@@ -294,7 +301,7 @@ qSM_Status_t thridstate(qSM_Handler_t fsm){
         default:
             break;
     }    
-    return qSM_EXIT_SUCCESS;
+    return qSM_STATUS_EXIT_SUCCESS;
 }
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
@@ -514,8 +521,18 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, qHigh_Priority, T100MSEC, &statemachine, firststate, NULL, qEnabled, "smtask") );   
-    qStateMachine_SignalQueueSetup( &statemachine, &sigqueue, fsmsigarea, qFLM_ArraySize(fsmsigarea) );
+
+
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_Setup( &statemachine, statetop_callback, &statefirst, NULL, NULL ) ) ;
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statefirst, NULL, statefirst_callback, NULL, qFalse ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statesecond, NULL, statesecond_callback, NULL, qFalse ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statethird, NULL, statethird_callback, NULL, qFalse ) );
+
+    #if ( Q_QUEUES == 1 )
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &sigqueue, fsmsigarea, sizeof(qSM_Signal_t), qFLM_ArraySize(fsmsigarea) ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_InstallSignalQueue( &statemachine, &sigqueue ) );
+    #endif
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, &statemachine, qHigh_Priority, T100MSEC, qEnabled, "smtask" ) ) ;
     qOS_Run();
 }
 

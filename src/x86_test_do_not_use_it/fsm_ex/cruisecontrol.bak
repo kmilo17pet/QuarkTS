@@ -1,0 +1,258 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
+#include "QuarkTS.h"
+#include <signal.h>
+
+#define  SIGNAL_ENGINE_ON           ((qSM_Signal_t)(1))   
+#define  SIGNAL_ACCEL               ((qSM_Signal_t)(2))
+#define  SIGNAL_RESUME              ((qSM_Signal_t)(3))
+#define  SIGNAL_OFF                 ((qSM_Signal_t)(4))
+#define  SIGNAL_BRAKE_PRESSED       ((qSM_Signal_t)(5))
+#define  SIGNAL_CRUISE              ((qSM_Signal_t)(6))     
+#define  SIGNAL_REACHED_CRUISING    ((qSM_Signal_t)(7))
+#define  SIGNAL_ENGINE_OFF          ((qSM_Signal_t)(8))
+
+qSM_Status_t Top_Idle_State( qSM_Handler_t h );
+qSM_Status_t Top_Initial_State( qSM_Handler_t h );
+qSM_Status_t Top_CruisingOff_State( qSM_Handler_t h );
+qSM_Status_t Top_AutomatedControl_State( qSM_Handler_t h );
+
+qSM_Status_t AutomatedControl_Accelerating_State( qSM_Handler_t h );
+qSM_Status_t AutomatedControl_Resuming_State( qSM_Handler_t h );
+qSM_Status_t AutomatedControl_Cruising_State( qSM_Handler_t h );
+
+qSM_Status_t AutomatedControl_Sub_LEDON( qSM_Handler_t h );
+qSM_Status_t AutomatedControl_Sub_LEDOFF( qSM_Handler_t h );
+
+qBool_t SigAct_ClearDesiredSpeed( qSM_Handler_t h );
+qBool_t SigAct_BrakeOff( qSM_Handler_t h );
+
+qTask_t CruiseControlTask;
+qSM_t Top_SM;
+qSM_State_t state_idle, state_initial, state_cruisingoff, state_automatedcontrol;
+qSM_State_t state_accelerating, state_cruising, state_resuming;
+
+qQueue_t top_sigqueue;
+qSM_Signal_t topsm_sig_stack[10];
+
+
+qBool_t SigAct_BrakeOff( qSM_Handler_t h );
+qBool_t SigAct_ClearDesiredSpeed( qSM_Handler_t h );
+qSM_Status_t state_top_callback( qSM_Handler_t h );
+qSM_Status_t state_idle_callback( qSM_Handler_t h );
+qSM_Status_t state_initial_callback( qSM_Handler_t h );
+qSM_Status_t state_cruisingoff_callback( qSM_Handler_t h );
+qSM_Status_t state_automatedcontrol_callback( qSM_Handler_t h );
+qSM_Status_t state_accelerating_callback( qSM_Handler_t h );
+qSM_Status_t state_resuming_callback( qSM_Handler_t h );
+qSM_Status_t state_cruising_callback( qSM_Handler_t h );
+
+qSM_Transition_t table[] =
+{
+    { &state_idle,              SIGNAL_ENGINE_ON,       SigAct_ClearDesiredSpeed,   &state_initial },
+    { &state_initial,           SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating },
+    { &state_accelerating,      SIGNAL_CRUISE,          NULL,                       &state_cruising },    
+    { &state_cruising,          SIGNAL_OFF,             NULL,                       &state_cruisingoff },    
+    { &state_cruising,          SIGNAL_ACCEL,           NULL,                       &state_accelerating },    
+    { &state_resuming,          SIGNAL_ACCEL,           NULL,                       &state_accelerating },       
+    { &state_cruisingoff,       SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating },       
+    { &state_cruisingoff,       SIGNAL_RESUME,          SigAct_BrakeOff,            &state_resuming },              
+    { &state_cruisingoff,       SIGNAL_ENGINE_OFF,      NULL,                       &state_idle },           
+    { &state_automatedcontrol,  SIGNAL_BRAKE_PRESSED,   NULL,                       &state_cruisingoff },   
+};
+
+/*============================================================================*/
+void putcharfcn(void* stp, char c){
+    (void)stp;
+    putchar(c);
+}
+/*===========================Reference clock for the kernel===================*/
+qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+    struct timespec ts;
+    clock_gettime( CLOCK_MONOTONIC, &ts );
+    return (qClock_t)(ts.tv_nsec / (qClock_t)1000000uL) + ((qClock_t)ts.tv_sec * (qClock_t)1000uL);
+}
+/*============================================================================*/
+void IdleTaskCallback( qEvent_t e ){
+    (void)e;
+}
+/*============================================================================*/
+qBool_t SigAct_BrakeOff( qSM_Handler_t h ){
+    (void)h;
+    puts("SigAct_BrakeOff");
+    return qTrue;
+} 
+/*============================================================================*/
+qBool_t SigAct_ClearDesiredSpeed( qSM_Handler_t h ){
+    (void)h;
+    puts("SigAct_ClearDesiredSpeed");
+    return qTrue;
+}
+/*============================================================================*/
+qSM_Status_t state_top_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("->top");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("x-top");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_idle_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->idle");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-idle");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_initial_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->initial");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-initial");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_cruisingoff_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->cruisingoff");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-cruisingoff");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_automatedcontrol_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->automatedcontrol");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-automatedcontrol");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_accelerating_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->accelerating");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-accelerating");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_resuming_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->resuming");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-resuming");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+qSM_Status_t state_cruising_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->cruising");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-cruising");
+            break;           
+    } 
+    return RetVal;
+}
+/*============================================================================*/
+void Sig_Handler(int signum ){
+    switch( signum){
+        case SIGUSR1:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_ENGINE_ON, qFalse );
+            break;
+        case SIGUSR2:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_ACCEL, qFalse );
+            break;        
+        case SIGQUIT:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_RESUME, qFalse );
+            break;         
+        case SIGALRM:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_OFF, qFalse );
+            break;
+        case SIGTRAP:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_BRAKE_PRESSED, qFalse );     
+            break;
+        case SIGSYS:
+            qStateMachine_SendSignal( &Top_SM, SIGNAL_CRUISE, qFalse );     
+            break;
+        default:
+            break;
+    }
+}
+/*============================================================================*/
+int main(int argc, char** argv) {     
+    qTrace_Set_OutputFcn(putcharfcn); 
+    printf("CruiseControl = %d\r\n", getpid() );
+    signal( SIGUSR1, Sig_Handler );
+    signal( SIGUSR2, Sig_Handler );
+    signal( SIGQUIT, Sig_Handler );
+    signal( SIGALRM, Sig_Handler );
+    signal( SIGTRAP, Sig_Handler );
+    signal( SIGSYS, Sig_Handler );
+
+    qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); 
+
+    qStateMachine_Setup( &Top_SM, state_top_callback, &state_idle, NULL, NULL );
+        qStateMachine_StateSubscribe( &Top_SM, &state_idle, NULL, state_idle_callback, NULL, qFalse ); 
+        qStateMachine_StateSubscribe( &Top_SM, &state_initial, NULL, state_initial_callback, NULL, qFalse ); 
+        qStateMachine_StateSubscribe( &Top_SM, &state_cruisingoff, NULL, state_cruisingoff_callback, NULL, qFalse );
+        qStateMachine_StateSubscribe( &Top_SM, &state_automatedcontrol, NULL, state_automatedcontrol_callback, NULL, qFalse );
+            qStateMachine_StateSubscribe( &Top_SM, &state_accelerating, &state_automatedcontrol, state_accelerating_callback, NULL, qFalse );
+            qStateMachine_StateSubscribe( &Top_SM, &state_resuming, &state_automatedcontrol, state_resuming_callback, NULL, qFalse );
+            qStateMachine_StateSubscribe( &Top_SM, &state_cruising, &state_automatedcontrol, state_cruising_callback, NULL, qFalse );
+
+    qQueue_Setup( &top_sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
+    qStateMachine_InstallSignalQueue( &Top_SM, &top_sigqueue );
+    qStateMachine_InstallTransitionTable( &Top_SM, table, qFLM_ArraySize(table) );
+
+
+
+    qOS_Add_StateMachineTask(  &CruiseControlTask, &Top_SM, qMedium_Priority, 0.1f, qEnabled, NULL  );           
+    qOS_Run();
+    (void)argc;
+    (void)argv;
+    
+    return EXIT_SUCCESS;
+}
