@@ -220,9 +220,9 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c ){
     
     if( NULL != cli ){
         qBool_t ReadyInput = cli->qPrivate.Input.Ready;
-        /*cstat -MISRAC2012-Rule-13.5 */ /*isgraph is known to have no side effects*/
+        /*cstat -MISRAC2012-Rule-13.5 -MISRAC2012-Dir-4.11_h*/ /*isgraph is known to have no side effects*/
         if( ( qFalse == ReadyInput ) && ( 0 != isgraph( (int)c ) ) ){ /*check if the input is available and incoming chars are valid*/
-        /*cstat +MISRAC2012-Rule-13.5 */  
+        /*cstat +MISRAC2012-Rule-13.5 +MISRAC2012-Dir-4.11_h*/  
             qIndex_t CurrentIndex = cli->qPrivate.Input.index; /*to avoid undefined order of volatile accesses*/
 
             cli->qPrivate.Input.Buffer[ CurrentIndex++ ] = c; /*insert char*/
@@ -266,7 +266,9 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n
                 RetValue = qATCLI_ISRHandler( cli, Data[ 0 ] );
             }
             else{
+                /*cstat -MISRAC2012-Dir-4.11_h*/
                 if( 0 != isgraph( (int)Data[ 0 ] ) ){
+                /*cstat +MISRAC2012-Dir-4.11_h*/  
                     if( NULL != qIOUtil_StrChr( Data, (int)'\r', MaxToInsert ) ){ /*find the end of line safely*/
                         (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, Data, MaxToInsert ); /*safe string copy*/
                         RetValue = qATCLI_Notify( cli );
@@ -286,14 +288,16 @@ static char* qATCLI_Input_Fix( char *s, size_t maxlen ){
     int NoL = 0;
     
     for( i = 0; ( (char)'\0' != s[ i ] ) && ( maxlen > 0u ) ; ++i ){
-        if( '=' == s[ i ] || '?' == s[ i ] ){
+        if( ( '=' == s[ i ] ) || ( '?' == s[ i ] ) ){
             NoL = 1;    
         }
         if( '\r' == s[ i ] ){
             s[ i ] = (char)'\0';
             break;    
         } 
+        /*cstat -MISRAC2012-Dir-4.11_h*/
         if( 0 != isgraph( (int)s[ i ]) ){
+        /*cstat +MISRAC2012-Dir-4.11_h*/  
             if( 0 == NoL ){
                 s[ j++ ] = (char)tolower( (int)s[ i ] );
             }

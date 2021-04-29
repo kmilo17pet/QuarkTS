@@ -39,7 +39,7 @@
 
 
     void qClock_SetTimeBase( const qTimingBase_t tb );
-    void qClock_SetTickProvider( qGetTickFcn_t provider );
+    void qClock_SetTickProvider( const qGetTickFcn_t provider );
     qTime_t qClock_Convert2Time( const qClock_t t );
     qClock_t qClock_Convert2Clock( const qTime_t t );
     void qClock_SysTick( void );

@@ -88,7 +88,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
         else{
             qBool_t CurrentPinValue;
             qEdgeCheck_IONode_t *Node;
-            qCoreRegSize_t PinReader = Instance->qPrivate.Reader;
+            const qCoreRegSize_t PinReader = Instance->qPrivate.Reader;
             
             for( Node = Instance->qPrivate.Head ; NULL != Node ; Node = Node->qPrivate.Next ){ /*iterate through all the input-nodes*/
                 CurrentPinValue = PinReader( Node->qPrivate.Port, Node->qPrivate.Pin ); /*read the pin level*/        
@@ -135,10 +135,10 @@ Parameters:
   
 Return value:
 
-    The status of the input node : qTrue, qFalse, qRising, qFalling or qUnknown
+    The status of the input node : qTrue, qFalse, qRising, qFalling or qUNKNOWN
 */
 qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node ){
-    qBool_t RetValue = (qBool_t)qUnknown;
+    qBool_t RetValue = qUNKNOWN;
 
     if( NULL != Node ){
         RetValue = Node->qPrivate.Status;

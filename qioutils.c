@@ -7,9 +7,9 @@ static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen );
 static const char * qIOUtil_CheckStrSign( const char *s, int *sgn );
 
 static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen ){
-    /*cstat -MISRAC2012-Rule-13.5 */ 
+    /*cstat -MISRAC2012-Rule-13.5 -MISRAC2012-Dir-4.11_h*/ 
     while( ( maxlen > (size_t)0 ) && ( 0 != isspace( (int)*s ) ) ){ /*isspace is known to have no side effects*/  
-    /*cstat +MISRAC2012-Rule-13.5 */  
+    /*cstat +MISRAC2012-Rule-13.5 +MISRAC2012-Dir-4.11_h*/  
         s++; /*discard whitespaces*/ /*MISRAC2004-17.4_a deviation allowed*/ 
         --maxlen;
     }    
@@ -352,6 +352,7 @@ qUINT32_t qIOUtil_XtoU32( const char *s ) {
 
         while ( ( (char)'\0' != *s ) && ( nparsed < 8u) ) { /*loop until the end of the string or the number of parsed chars exceeds the 32bit notation*/
             xByte = (qUINT8_t)toupper( (int)*s++ ); /*get the hex char, considerate only upper case*/ /*MISRAC2004-17.4_a deviation allowed*/ 
+            /*cstat -MISRAC2012-Dir-4.11_h*/
             if( 0 != isxdigit( (int)xByte ) ){ /*if is a valid hex digit*/
                 ++nparsed; /*increase the parsed char count*/
                 if ( ( (char)xByte >= '0' ) && ( (char)xByte <= '9') ){
@@ -366,6 +367,7 @@ qUINT32_t qIOUtil_XtoU32( const char *s ) {
                 val = (qUINT32_t)((qUINT32_t)(val << 4uL) | ((qUINT32_t)xByte & 0xFuL) );  /*add the corresponding nibble to the output*/                
             }
             else if( 0 != isspace( (int)xByte ) ){
+            /*cstat +MISRAC2012-Dir-4.11_h*/  
                 /*discard any white-space char*/
             } 
             else{
@@ -418,11 +420,13 @@ qFloat64_t qIOUtil_AtoF( const char *s ){
         if( '.' == c ){
             point_seen = qTrue; 
         }
+        /*cstat -MISRAC2012-Dir-4.11_h*/
         else if( 0 != isdigit( (int)c ) ){
+        /*cstat +MISRAC2012-Dir-4.11_h*/  
             if( qTrue == point_seen ){
                 fact *= 0.1;
             }
-            rez = rez * 10.0 + ( (double)c ) - ( (double)'0' ); /*CERT-FLP36-C deviation allowed*/
+            rez = ( rez * 10.0 ) + ( (double)c ) - 48.0; /*CERT-FLP36-C deviation allowed*/
         }
         else{
             break;
@@ -560,7 +564,7 @@ int qIOUtil_AtoI( const char *s ){
             if ( ( *s < '0' ) || ( *s > '9' ) ){
                 break; 
             }
-            res = res * 10 + ( (int)*s) - ((int)'0' ); /*if the char is digit, compute the resulting integer*/
+            res = ( res * 10 ) + ( (int)*s) - ((int)'0' ); /*if the char is digit, compute the resulting integer*/
             ++s; /*MISRAC2004-17.4_a deviation allowed*/ 
         }
         RetValue =  sgn * res; /*return the computed integer with sign*/

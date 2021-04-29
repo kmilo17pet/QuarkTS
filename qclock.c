@@ -37,7 +37,7 @@ Parameters:
                  qUINT32_t fcn(void)
 
 */
-void qClock_SetTickProvider( qGetTickFcn_t provider ){
+void qClock_SetTickProvider( const qGetTickFcn_t provider ){
     if( NULL != provider ){
         qClock_GetTick = provider;
     }

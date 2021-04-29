@@ -93,7 +93,7 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
         }
         else if( qSTimer_Expired( &obj->qPrivate.timeout) ){
             qResponse_Reset( obj ); /*re-initialize the response handler*/
-            RetValue = (qBool_t)qResponseTimeout;
+            RetValue = qRESPONSETIMEOUT;
         }        
         else if( obj->qPrivate.ResponseReceived ){ /*if response received from ISR match the expected*/
             qResponse_Reset( obj ); /*re-initialize the response handler*/

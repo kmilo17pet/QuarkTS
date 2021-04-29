@@ -72,7 +72,7 @@
         pAttrib void *Data;\
         pAttrib qSM_Signal_t Signal;\
         pAttrib qSM_Status_t Status;\
-    };\
+    }\
 
     /*< h->StartState : Used to set the initial state if the current state its a parent*/    
     /*< h->Next : Used to produce a transition to the desired state*/

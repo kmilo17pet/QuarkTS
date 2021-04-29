@@ -46,9 +46,6 @@
     typedef qBool_t (*qList_NodeFcn_t)( qList_ForEachHandle_t h );
     typedef qINT32_t qList_Position_t;
 
-    typedef void* (*qList_MemAllocator_t)( size_t size );
-    typedef void (*qList_MemFree_t)( void *ptr );
-
     #define qList_AtFront           ((qList_Position_t)(-1))
     #define qList_AtBack            ((qList_Position_t)(2147483647))
     #define QLIST_ATFRONT           ( qList_AtFront )
@@ -90,6 +87,8 @@
 
 
     #ifdef QLIST_D_HANDLING  /*use only if strictly necessary*/
+        typedef void* (*qList_MemAllocator_t)( size_t size );
+        typedef void (*qList_MemFree_t)( void *ptr );
         void qList_SetMemoryAllocation( qList_MemAllocator_t mallocFcn, qList_MemFree_t freeFcn );
         qBool_t qList_DInsert( qList_t *const list, void *Data, size_t Size, qList_Position_t position );
         void* qList_DRemove( qList_t * const list, void * const node, const qList_Position_t position );

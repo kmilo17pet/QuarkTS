@@ -32,7 +32,7 @@
         /*Signed types*/
         typedef int8_t qINT8_t;
         typedef int16_t qINT16_t;
-        typedef int32_t qINT32_t;      
+        typedef int32_t qINT32_t;
     #else   
         /*Unsigned types*/
         typedef unsigned char qUINT8_t; 
@@ -81,14 +81,5 @@
     #define qRISING                 ( (qBool_t)0x03u )
     #define qFALLING                ( (qBool_t)0x04u )
     #define qUNKNOWN                ( (qBool_t)0xFFu )
-
-    typedef enum{
-        qOff                = qOFF,
-        qOn                 = qON,
-        qResponseTimeout    = qRESPONSETIMEOUT,           
-        qRising             = qRISING,
-        qFalling            = qFALLING,  
-        qUnknown            = qUNKNOWN     
-    }qIOStatus_t;  
 
 #endif
