@@ -27,6 +27,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
 
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
+
 /*============================================================================*/
 static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target ){ /*wrapper*/
     if( NULL == m->qPrivate.next ){
@@ -45,16 +46,13 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM
         qSM_State_t *s, *t;
         qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
         qSM_LCA_t n = 0u; 
-        for( s = m->qPrivate.source; NULL != s; s = s->qPrivate.parent ) {
+        for( s = m->qPrivate.source; ( NULL != s ) && ( qFalse == xBreak ) ; s = s->qPrivate.parent ) {
             for( t = target; NULL != t; t = t->qPrivate.parent ) {
                 if( s == t ){
                     toLca = n;
                     xBreak = qTrue;
                     break;
                 }
-            }
-            if( qTrue == xBreak ){ /*also break the outer loop*/
-                break;
             }
             ++n;
         }        
@@ -621,7 +619,7 @@ void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
     }    
 }
 /*============================================================================*/
-void* qStateMachine_Get( qSM_t * const m, const qSM_Attribute_t attr ){
+void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t attr ){
     void *Attribute = NULL;
     if( NULL != m ){
         switch ( attr ){
@@ -650,10 +648,38 @@ void* qStateMachine_Get( qSM_t * const m, const qSM_Attribute_t attr ){
     return Attribute;
 }
 /*============================================================================*/
+void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t attr ){
+    void *Attribute = NULL;
+    if( NULL != s ){
+        switch ( attr ){
+            case qSM_ATTRIB_COMPOSITE_INITSTATE:
+                Attribute = s->qPrivate.ChildStart;    
+                break;
+            case qSM_ATTRIB_COMPOSITE_LASTSTATE:   
+                Attribute = s->qPrivate.lastRunningChild;        
+                break;
+            case qSM_ATTRIB_COMPOSITE_PARENT:    
+                Attribute = s->qPrivate.parent;              
+                break;            
+            default:
+                break;
+        }
+    }
+    return Attribute;
+}
+/*============================================================================*/
 qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t StateFcn ){
     qBool_t RetValue = qFalse;
     if( NULL != state ){
         state->qPrivate.sCallback = StateFcn;
+    }
+    return RetValue;
+}
+/*============================================================================*/
+qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCallback_t surrounding ){
+    qBool_t RetValue = qFalse;
+    if( NULL != m ){
+        m->qPrivate.surrounding = surrounding;
     }
     return RetValue;
 }

@@ -142,12 +142,15 @@
     }qSM_Transition_t;
     
     typedef enum{
-        qSM_ATTRIB_STATE_TOP,
-        qSM_ATTRIB_STATE_CURRENT,
-        qSM_ATTRIB_SIGNAL_QUEUE,
-        qSM_ATTRIB_TIMESPEC,
-        qSM_ATTRIB_TRANSITION_TABLE,
-        qSM_ATTRIB_DATA,
+        qSM_ATTRIB_STATE_TOP,                               /*< Only for qStateMachine_Get_Machine : Get a pointer to the top running*/
+        qSM_ATTRIB_STATE_CURRENT,                           /*< Only for qStateMachine_Get_Machine : Get a pointer to the current running state*/
+        qSM_ATTRIB_SIGNAL_QUEUE,                            /*< Only for qStateMachine_Get_Machine : Get a pointer to the signal-queue object if installed*/
+        qSM_ATTRIB_TIMESPEC,                                /*< Only for qStateMachine_Get_Machine : Get a pointer to the timeout specification object if installed*/
+        qSM_ATTRIB_TRANSITION_TABLE,                        /*< Only for qStateMachine_Get_Machine : Get a pointer to the transition table if installed*/
+        qSM_ATTRIB_DATA,                                    /*< Only for qStateMachine_Get_Machine : Get the user storage-pointer*/
+        qSM_ATTRIB_COMPOSITE_INITSTATE,                     /*< Only for qStateMachine_Get_State : Get the initial default or initial state, if input is composite*/
+        qSM_ATTRIB_COMPOSITE_LASTSTATE,                     /*< Only for qStateMachine_Get_State : Get the last state, if input is composite*/
+        qSM_ATTRIB_COMPOSITE_PARENT,                        /*< Only for qStateMachine_Get_State : Get the parent state, if input is a child*/
     }qSM_Attribute_t;
 
     qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data );
@@ -161,9 +164,11 @@
     qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time );
     void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
 
-    
-    void* qStateMachine_Get( qSM_t * const m, const qSM_Attribute_t attr );
+    /*helper functions to retrieve some attributes of the qSM_t and qSM_State_t objects*/
+    void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t attr );
+    void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t attr );
     qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t StateFcn );
+    qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCallback_t surrounding );
     
     #ifdef __cplusplus
     }
