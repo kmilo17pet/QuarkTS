@@ -882,10 +882,10 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
 }
 /*========================== Shared Private Method ===========================*/
 qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag ){
-	qUINT32_t xBit;
+    qUINT32_t xBit;
 
-	xBit = Task->qPrivate.Flags & flag;
-	return (( 0uL != xBit )? qTrue : qFalse );
+    xBit = Task->qPrivate.Flags & flag;
+    return (( 0uL != xBit )? qTrue : qFalse );
 }
 /*========================== Shared Private Method ===========================*/
 void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value ){

@@ -13,9 +13,9 @@
         #define Q_ATCLI     ( 1 )
     #endif
 
-    #define		QATCLI_DEFAULT_AT_COMMAND	            "at"
-    #define		QATCLI_DEFAULT_ID_COMMAND	            "atid"
-    #define		QATCLI_DEFAULT_ATSET_DELIM	            ','
+    #define     QATCLI_DEFAULT_AT_COMMAND               "at"
+    #define     QATCLI_DEFAULT_ID_COMMAND               "atid"
+    #define     QATCLI_DEFAULT_ATSET_DELIM              ','
     #define     QATCLI_DEFAULT_ERROR_RSP_STRING         "ERROR"
     #define     QATCLI_DEFAULT_OK_RSP_STRING            "OK"
     #define     QATCLI_DEFAULT_NOTFOUND_RSP_STRING      "UNKNOWN"

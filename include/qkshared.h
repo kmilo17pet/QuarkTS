@@ -18,12 +18,12 @@
     #define QTASK_COREBITS_WMASK        ( 0xFFFFFF00uL )
     #define QTASK_COREBITS_OFFSET       ( 0 )
 
-    #define QTASK_STATEBITS_RMASK	    ( 0x00000F00uL )
-    #define QTASK_STATEBITS_WMASK	    ( 0xFFFFF0FFuL )
+    #define QTASK_STATEBITS_RMASK       ( 0x00000F00uL )
+    #define QTASK_STATEBITS_WMASK       ( 0xFFFFF0FFuL )
     #define QTASK_STATEBITS_OFFSET      ( 8 )
 
-    #define QTASK_EVENTFLAGS_RMASK	    ( 0xFFFFF000uL )
-    #define QTASK_EVENTFLAGS_WMASK	    ( 0x00000FFFuL )
+    #define QTASK_EVENTFLAGS_RMASK      ( 0xFFFFF000uL )
+    #define QTASK_EVENTFLAGS_WMASK      ( 0x00000FFFuL )
     #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
     
     #define QTASK_QUEUEFLAGS_MASK       ( 0x0000003CuL )

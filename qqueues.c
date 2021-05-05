@@ -178,16 +178,18 @@ void* qQueue_Peek( const qQueue_t * const obj ){
     qUINT8_t *RetValue = NULL;
 
     if( NULL != obj ){
-        if( obj->qPrivate.ItemsWaiting > 0u ){
-            qCritical_Enter();
+        size_t ItemsWaiting;
+        qCritical_Enter(); 
+        ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
+        if( ItemsWaiting > 0u ){ 
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             RetValue = (void*)( obj->qPrivate.reader + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if( RetValue >= obj->qPrivate.tail ){
                 RetValue = obj->qPrivate.head;
             }
-            qCritical_Exit();
         }
+        qCritical_Exit();
     }
     return (void*)RetValue;
 }
@@ -208,13 +210,15 @@ qBool_t qQueue_RemoveFront( qQueue_t * const obj ){
     qBool_t RetValue = qFalse;
 
     if( NULL != obj ){
-        if( obj->qPrivate.ItemsWaiting > 0u ){
-            qCritical_Enter();
+        size_t ItemsWaiting;
+        qCritical_Enter(); 
+        ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
+        if( ItemsWaiting > 0u ){ 
             qQueue_MoveReader( obj );
             --obj->qPrivate.ItemsWaiting; /* remove the data. */
-            qCritical_Exit();
             RetValue = qTrue;
         }
+        qCritical_Exit();
     }
     return RetValue;
 }
@@ -268,14 +272,15 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest ){
     qBool_t RetValue = qFalse;
     
     if( NULL != obj ){
-        size_t ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
-        if( ItemsWaiting > 0u ){
-            qCritical_Enter(); 
+        size_t ItemsWaiting;
+        qCritical_Enter(); 
+        ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
+        if( ItemsWaiting > 0u ){ 
             qQueue_CopyDataFromQueue( obj, dest ); /* items available, remove one of them. */
             --obj->qPrivate.ItemsWaiting; /* remove the data. */
-            qCritical_Exit();
             RetValue = qTrue;
         }        
+        qCritical_Exit();
     }
     return RetValue;
 }
@@ -303,12 +308,12 @@ qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode
     qBool_t RetValue = qFalse;
     
     if( ( NULL != obj ) && ( InsertMode <= 1u ) ){
+        qCritical_Enter();
         if( obj->qPrivate.ItemsWaiting < obj->qPrivate.ItemsCount ){ /* Is there room on the queue?*/
-            qCritical_Enter();
             qQueue_CopyDataToQueue( obj, ItemToQueue, (qBool_t)InsertMode );
-            qCritical_Exit();
             RetValue = qTrue;
         }
+        qCritical_Exit();
     }
     return RetValue;   
 }

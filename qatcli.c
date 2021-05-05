@@ -34,13 +34,13 @@ static qBool_t qATCLI_Notify( qATCLI_t * const cli ){
 }
 /*============================================================================*/
 static void qATCLI_Putc_Wrapper( const char c ){
-	cli_OutCharFcn( NULL, c );
+    cli_OutCharFcn( NULL, c );
 }
 /*============================================================================*/
 static void qATCLI_Puts_Wrapper( const char *s ){
-	qIndex_t i = 0u;
-    
-	while( (char)'\0' != s[ i ] ){
+    qIndex_t i = 0u;
+
+    while( (char)'\0' != s[ i ] ){
         cli_OutCharFcn( NULL, s[ i++ ] );
     }
 }
@@ -478,7 +478,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
     if( NULL != cli ){
         qATCLI_Input_t *Input =  &cli->qPrivate.Input;
         /*cstat -CERT-STR32-C*/
-		if( Input->Ready ){ /*a new input has arrived*/
+        if( Input->Ready ){ /*a new input has arrived*/
             qATCLI_Response_t OutputRetval, CLIRetVal;
             char *InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
 
@@ -501,22 +501,22 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
                 OutputRetval = QATCLI_NORESPONSE;  /*nothing to do*/
             }
             /*cstat +CERT-STR32-C*/
-			if( NULL != cli->qPrivate.xPublic.Output ){ /*show the user output if available*/
-				if( '\0' != cli->qPrivate.xPublic.Output[ 0 ] ){
+            if( NULL != cli->qPrivate.xPublic.Output ){ /*show the user output if available*/
+            	if( '\0' != cli->qPrivate.xPublic.Output[ 0 ] ){
                     qATCLI_HandleCommandResponse( cli, QATCLI_OUTPUT );
                 }
-			}
-			qATCLI_HandleCommandResponse( cli, OutputRetval ); /*print out the command output*/
-			qATCLI_Input_Flush( cli ); /*flush buffers*/
-			cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
-			RetValue = qTrue;
-		}
+            }
+            qATCLI_HandleCommandResponse( cli, OutputRetval ); /*print out the command output*/
+            qATCLI_Input_Flush( cli ); /*flush buffers*/
+            cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
+            RetValue = qTrue;
+        }
     }
     return RetValue;
 }
 /*============================================================================*/
 static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval ){
-	if( QATCLI_NORESPONSE != retval ){
+    if( QATCLI_NORESPONSE != retval ){
         qPutchFcn_t PutChar = cli->qPrivate.xPublic.putch;
         qPutsFcn_t PutString = cli->qPrivate.xPublic.puts;
 
@@ -556,14 +556,14 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
 }
 /*============================================================================*/
 static size_t qATCLI_NumOfArgs( const char *str ){
-	size_t count = 0u;
+    size_t count = 0u;
     
-	while( '\0' != *str ){
+    while( '\0' != *str ){
         if ( (char)QATCLI_DEFAULT_ATSET_DELIM == (char)*str++ ){
             ++count;
         }
     }
-	return ( count + 1u );
+    return ( count + 1u );
 }
 /*============================================================================*/
 /*char* p->GetArgPtr( qIndex_t n )
@@ -582,7 +582,7 @@ Return value:
 static char* GetArgPtr( qIndex_t n ){
     char *RetPtr = NULL;
 
-	if( ( NULL != cli_CurrentCmdHelper ) && ( n > 0u ) ) {
+    if( ( NULL != cli_CurrentCmdHelper ) && ( n > 0u ) ) {
         qATCLI_Handler_t param = cli_CurrentCmdHelper;
 
         if( qATCLI_CMDTYPE_PARA == param->Type ) {
@@ -590,17 +590,16 @@ static char* GetArgPtr( qIndex_t n ){
                 RetPtr = param->StrData;
             } 
             else{
-                qIndex_t i, argc = 0;
-
+                qIndex_t i, argc = 0;        
                 --n;
-	            for( i = 0 ; '\0' != param->StrData[i] ; ++i ){
-		            if( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
-			            if( ++argc >= (qIndex_t)n ){
+                for( i = 0 ; '\0' != param->StrData[i] ; ++i ){
+                    if( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ){
+        	            if( ++argc >= (qIndex_t)n ){
                             RetPtr = param->StrData + i + 1;        
                             break;
                         }
-		            }
-	            }
+                    }
+                }
             }
         }
     }
@@ -725,7 +724,7 @@ static char* GetArgString( qIndex_t n, char* out ){
             }
         }
     }
-	return RetPtr;
+    return RetPtr;
 }
 /*============================================================================*/
 #endif /* #if ( Q_ATCLI == 1) */
