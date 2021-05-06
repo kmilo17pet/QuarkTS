@@ -161,7 +161,7 @@
     qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t xSignal, const qBool_t isUrgent );
     
     qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
-    qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time );
+    qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime );
     void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
 
     /*helper functions to retrieve some attributes of the qSM_t and qSM_State_t objects*/

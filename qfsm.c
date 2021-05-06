@@ -557,7 +557,7 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * 
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time )
+/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime )
 
 Set the time for the selected built-in timeout inside the target FSM
 <Requirements> : 
@@ -567,25 +567,25 @@ Set the time for the selected built-in timeout inside the target FSM
 Parameters:
     - m : a pointer to the target FSM object.
     - xTimeout : the index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
-    - time : the specified time
+    - XTime : the specified time
 
 Return value:
 
     Returns qTrue on success, otherwise returns qFalse;
 */ 
-qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time ){
+qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime ){
     qBool_t RetValue = qFalse;
 
     if( ( NULL != m ) && ( xTimeout <= (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){
         if( NULL != m->qPrivate.TimeSpec ){
-            RetValue = qSTimer_Set( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], time  );
+            RetValue = qSTimer_Set( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ], xTime  );
         }
     }
 
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t time )
+/*qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout )
 
 Stop the time count for the selected built-in timeout inside the target FSM
 <Requirements> : 
