@@ -83,8 +83,8 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
     
     if( NULL != obj ){
         if( ( qFalse == obj->qPrivate.ResponseReceived ) && ( 0u == obj->qPrivate.PatternLength ) ){ /*handler no configured yet*/
-            (void)strncpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength - (size_t)1 ) ; /*set the expected response pattern*/
-            obj->qPrivate.PatternLength = ( 0u == n )? strlen( Pattern ) : n; /*set the number of chars to match*/
+            (void)qIOUtil_StrlCpy( obj->qPrivate.Pattern2Match, (const char*)Pattern, obj->qPrivate.MaxStrLength ) ; /*set the expected response pattern*/
+            obj->qPrivate.PatternLength = ( 0u == n )? qIOUtil_StrLen( Pattern, obj->qPrivate.MaxStrLength ) : n; /*set the number of chars to match*/
             obj->qPrivate.MatchedCount = 0u; /*reinitialize the chars match count*/
             obj->qPrivate.ResponseReceived = qFalse; /*clear the ready flag*/
             if( t > qTimeImmediate ){

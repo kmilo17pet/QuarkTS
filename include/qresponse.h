@@ -4,6 +4,7 @@
 
     #include "qtypes.h"
     #include "qstimers.h"
+    #include "qioutils.h"
 
     #include <string.h>
 
