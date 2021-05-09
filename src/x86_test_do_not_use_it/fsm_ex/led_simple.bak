@@ -29,11 +29,11 @@ qSM_Status_t Baking_State( qSM_Handler_t h );
 
 
 qSM_Transition_t LED_FSM_TransEntries[] = {
-    { &State_LEDOff,   SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn },
-    { &State_LEDOn,    SIGNAL_TIMEOUT,        NULL, &State_LEDOff },
-    { &State_LEDOn,    SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink },
-    { &State_LEDBlink, SIGNAL_TIMEOUT,        NULL, &State_LEDOff },
-    { &State_LEDBlink, SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff }
+    { &State_LEDOff,   SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn    ,0},
+    { &State_LEDOn,    SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
+    { &State_LEDOn,    SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink ,0},
+    { &State_LEDBlink, SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
+    { &State_LEDBlink, SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff   ,0}
 };
 
 qSM_TimeoutStateDefinition_t LED_timeouts[]={

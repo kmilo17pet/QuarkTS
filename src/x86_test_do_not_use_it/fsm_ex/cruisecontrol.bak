@@ -53,16 +53,16 @@ qSM_Status_t state_cruising_callback( qSM_Handler_t h );
 
 qSM_Transition_t table[] =
 {
-    { &state_idle,              SIGNAL_ENGINE_ON,       SigAct_ClearDesiredSpeed,   &state_initial },
-    { &state_initial,           SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating },
-    { &state_accelerating,      SIGNAL_CRUISE,          NULL,                       &state_cruising },    
-    { &state_cruising,          SIGNAL_OFF,             NULL,                       &state_cruisingoff },    
-    { &state_cruising,          SIGNAL_ACCEL,           NULL,                       &state_accelerating },    
-    { &state_resuming,          SIGNAL_ACCEL,           NULL,                       &state_accelerating },       
-    { &state_cruisingoff,       SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating },       
-    { &state_cruisingoff,       SIGNAL_RESUME,          SigAct_BrakeOff,            &state_resuming },              
-    { &state_cruisingoff,       SIGNAL_ENGINE_OFF,      NULL,                       &state_idle },           
-    { &state_automatedcontrol,  SIGNAL_BRAKE_PRESSED,   NULL,                       &state_cruisingoff },   
+    { &state_idle,              SIGNAL_ENGINE_ON,       SigAct_ClearDesiredSpeed,   &state_initial      ,0 },
+    { &state_initial,           SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating ,0 },
+    { &state_accelerating,      SIGNAL_CRUISE,          NULL,                       &state_cruising     ,0 },    
+    { &state_cruising,          SIGNAL_OFF,             NULL,                       &state_cruisingoff  ,0 },    
+    { &state_cruising,          SIGNAL_ACCEL,           NULL,                       &state_accelerating ,0 },    
+    { &state_resuming,          SIGNAL_ACCEL,           NULL,                       &state_accelerating ,0 },       
+    { &state_cruisingoff,       SIGNAL_ACCEL,           SigAct_BrakeOff,            &state_accelerating ,0 },       
+    { &state_cruisingoff,       SIGNAL_RESUME,          SigAct_BrakeOff,            &state_resuming     ,0 },              
+    { &state_cruisingoff,       SIGNAL_ENGINE_OFF,      NULL,                       &state_idle         ,0 },           
+    { &state_automatedcontrol,  SIGNAL_BRAKE_PRESSED,   NULL,                       &state_cruisingoff  ,0 },   
 };
 
 /*============================================================================*/
@@ -235,13 +235,13 @@ int main(int argc, char** argv) {
     qOS_Setup(GetTickCountMs, 0.001f, IdleTaskCallback ); 
 
     qStateMachine_Setup( &Top_SM, state_top_callback, &state_idle, NULL, NULL );
-        qStateMachine_StateSubscribe( &Top_SM, &state_idle, NULL, state_idle_callback, NULL, qFalse ); 
-        qStateMachine_StateSubscribe( &Top_SM, &state_initial, NULL, state_initial_callback, NULL, qFalse ); 
-        qStateMachine_StateSubscribe( &Top_SM, &state_cruisingoff, NULL, state_cruisingoff_callback, NULL, qFalse );
-        qStateMachine_StateSubscribe( &Top_SM, &state_automatedcontrol, NULL, state_automatedcontrol_callback, NULL, qFalse );
-            qStateMachine_StateSubscribe( &Top_SM, &state_accelerating, &state_automatedcontrol, state_accelerating_callback, NULL, qFalse );
-            qStateMachine_StateSubscribe( &Top_SM, &state_resuming, &state_automatedcontrol, state_resuming_callback, NULL, qFalse );
-            qStateMachine_StateSubscribe( &Top_SM, &state_cruising, &state_automatedcontrol, state_cruising_callback, NULL, qFalse );
+        qStateMachine_StateSubscribe( &Top_SM, &state_idle, NULL, state_idle_callback, NULL, NULL ); 
+        qStateMachine_StateSubscribe( &Top_SM, &state_initial, NULL, state_initial_callback, NULL, NULL ); 
+        qStateMachine_StateSubscribe( &Top_SM, &state_cruisingoff, NULL, state_cruisingoff_callback, NULL, NULL );
+        qStateMachine_StateSubscribe( &Top_SM, &state_automatedcontrol, NULL, state_automatedcontrol_callback, NULL, NULL );
+            qStateMachine_StateSubscribe( &Top_SM, &state_accelerating, &state_automatedcontrol, state_accelerating_callback, NULL, NULL );
+            qStateMachine_StateSubscribe( &Top_SM, &state_resuming, &state_automatedcontrol, state_resuming_callback, NULL, NULL );
+            qStateMachine_StateSubscribe( &Top_SM, &state_cruising, &state_automatedcontrol, state_cruising_callback, NULL, NULL );
 
     qQueue_Setup( &top_sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
     qStateMachine_InstallSignalQueue( &Top_SM, &top_sigqueue );

@@ -1,0 +1,213 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
+#include "QuarkTS.h"
+
+
+#define SIGNAL_A        ((qSM_Signal_t)(1))
+#define SIGNAL_B        ((qSM_Signal_t)(2))
+#define SIGNAL_C        ((qSM_Signal_t)(3))
+#define SIGNAL_D        ((qSM_Signal_t)(4))
+#define SIGNAL_E        ((qSM_Signal_t)(5))
+
+qSM_t super;
+qSM_State_t state1, state2, state2a, state2b, state3, state4 ;
+
+
+qSM_Status_t state1_callback( qSM_Handler_t h );
+qSM_Status_t state2_callback( qSM_Handler_t h );
+
+qSM_Status_t state3_callback( qSM_Handler_t h );
+qSM_Status_t state4_callback( qSM_Handler_t h );
+
+qSM_Status_t state2a_callback( qSM_Handler_t h );
+qSM_Status_t state2b_callback( qSM_Handler_t h );
+
+qTask_t SMTask;
+
+qSM_Transition_t table[] = {
+    { &state3,              SIGNAL_A,        NULL,           &state4, qSM_TRANSITION_SHALLOW_HISTORY  },  
+    { &state3,              SIGNAL_E,        NULL,           &state4, qSM_TRANSITION_NO_HISTORY  },  
+    { &state4,              SIGNAL_B,        NULL,           &state3, 0 }, 
+    { &state1,              SIGNAL_C,        NULL,           &state2, 0 }, 
+    { &state2a,             SIGNAL_D,        NULL,           &state2b, 0 },  
+};
+
+
+qSM_Status_t state_top_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            puts("->top");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("x-top");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state3_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("   *state3");
+            break;          
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->state3");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-state3");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state4_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("   *state4");
+            break;          
+        case QSM_SIGNAL_ENTRY:
+            puts("   ->state4");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("   x-state4");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state1_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("       *state1");
+            break;         
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->state1");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-state1");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state2_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("       *state2");
+            break;        
+        case QSM_SIGNAL_ENTRY:
+            puts("       ->state2");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("       x-state2");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state2a_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("           *state2a");
+            break;          
+        case QSM_SIGNAL_ENTRY:
+            puts("           ->state2a");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("           x-state2a");
+            break;           
+    } 
+    return RetVal;
+}
+qSM_Status_t state2b_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    switch( h->Signal ) {
+        case QSM_SIGNAL_START:
+            puts("           *state2b");
+            break;            
+        case QSM_SIGNAL_ENTRY:
+            puts("           ->state2b");
+            break;
+        case QSM_SIGNAL_EXIT:
+            puts("           x-state2b");
+            break;           
+    } 
+    return RetVal;
+}
+/*=============================================================================*/
+void Sig_Handler(int signum ){
+    switch( signum){
+        case SIGUSR1:
+            qStateMachine_SendSignal( &super, SIGNAL_A, qFalse );
+            break;
+        case SIGUSR2:
+            qStateMachine_SendSignal( &super, SIGNAL_B, qFalse );
+            break;        
+        case SIGQUIT:
+            qStateMachine_SendSignal( &super, SIGNAL_C, qFalse );
+            break;         
+        case SIGALRM:
+            qStateMachine_SendSignal( &super, SIGNAL_D, qFalse );
+            break;
+        case SIGTRAP:
+            qStateMachine_SendSignal( &super, SIGNAL_E, qFalse );
+            break;            
+        default:
+            break;
+    }
+}
+/*===========================Reference clock for the kernel===================*/
+qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (qClock_t)(ts.tv_nsec / (qClock_t)1000000uL) + ((qClock_t)ts.tv_sec * (qClock_t)1000uL);
+}
+
+/*=============================================================================*/
+int main(int argc, char** argv) {  
+    qQueue_t sigqueue;
+    qSM_Signal_t topsm_sig_stack[10];
+    printf("OvenControl = %d\r\n", getpid() );
+
+    signal( SIGUSR1, Sig_Handler );
+    signal( SIGUSR2, Sig_Handler );
+    signal( SIGQUIT, Sig_Handler );
+    signal( SIGALRM, Sig_Handler );
+    signal( SIGTRAP, Sig_Handler );
+    signal( SIGSYS, Sig_Handler );
+
+    qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
+
+    printf("state1 %p \r\n", &state1 );
+    printf("state2 %p \r\n", &state2 );
+    printf("state3 %p \r\n", &state3 );
+    printf("state4 %p \r\n", &state4 );
+    printf("state2a %p \r\n", &state2a );
+    printf("state2b %p \r\n", &state2b );
+
+
+    qStateMachine_Setup( &super, state_top_callback, &state3, NULL, NULL );
+    qStateMachine_InstallTransitionTable( &super, table, sizeof(table)/sizeof(table[0]) );
+        qStateMachine_StateSubscribe( &super, &state3, NULL, state3_callback, NULL, NULL ); 
+        qStateMachine_StateSubscribe( &super, &state4, NULL, state4_callback, &state1, NULL ); 
+            qStateMachine_StateSubscribe( &super, &state1, &state4, state1_callback, NULL, NULL ); 
+            qStateMachine_StateSubscribe( &super, &state2, &state4, state2_callback, &state2a, NULL ); 
+                qStateMachine_StateSubscribe( &super, &state2a, &state2, state2a_callback, NULL, NULL ); 
+                qStateMachine_StateSubscribe( &super, &state2b, &state2, state2b_callback, NULL, NULL ); 
+
+    qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
+    qStateMachine_InstallSignalQueue( &super, &sigqueue );
+    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
+          
+    qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
+    qOS_Run();
+    (void)argc;
+    (void)argv;
+    
+    return EXIT_SUCCESS;
+}
