@@ -64,14 +64,22 @@
         qSM_STATUS_SIGNAL_HANDLED = -32763
     }qSM_Status_t; 
 
+    typedef enum {
+        qSM_TRANSITION_NO_HISTORY = 0,
+        qSM_TRANSITION_SHALLOW_HISTORY,        
+        qSM_TRANSITION_DEEP_HISTORY,
+    }qSM_TransitionHistoryMode_t;
+
     /*fields for the qSM_Handler_t pointer*/
     #define _qSM_HANDLER_FIELDS( pAttrib ) struct{\
         void *StartState;\
         void *NextState;\
         pAttrib void *machine;\
         pAttrib void *Data;\
+        pAttrib void *StateData;\
         pAttrib qSM_Signal_t Signal;\
         pAttrib qSM_Status_t Status;\
+        qSM_TransitionHistoryMode_t TransitionHistory;\
     }\
 
     /*< h->StartState : Used to set the initial state if the current state its a parent*/    
@@ -98,7 +106,7 @@
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
             struct _qSM_State_s *ChildStart;                /*< The initial state of this parent*/
             qSM_StateCallback_t sCallback;                  /*< The state callback function*/
-            qBool_t keephistory;                            /*< Indicate if this state should keep the shallow history*/
+            void* Data;                                     /*< State data. Storage pointer*/
         }qPrivate;
     }qSM_State_t;
     
@@ -139,6 +147,7 @@
         qSM_Signal_t xSignal;                               /*< The signal that will produce the transition*/
         qSM_SignalAction_t Guard;                           /*< The signal guard*/
         qSM_State_t *NextState;                             /*< The next state after the transition*/
+        qSM_TransitionHistoryMode_t HistoryMode;
     }qSM_Transition_t;
     
     typedef enum{
@@ -154,7 +163,7 @@
     }qSM_Attribute_t;
 
     qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data );
-    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, const qBool_t KeepHistory );
+    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data );
     qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal );
     qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n );
     qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue );

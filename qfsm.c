@@ -9,7 +9,7 @@ static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target );
 
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal );
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s );
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
 
 
@@ -64,7 +64,7 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
     qSM_State_t *s = m->qPrivate.current;
     while( s != m->qPrivate.source ){
         (void)qStateMachine_StateOnExit( m, s );
-        s->qPrivate.parent->qPrivate.lastRunningChild  = s;
+        s->qPrivate.parent->qPrivate.lastRunningChild  = s; 
         s = s->qPrivate.parent;   
     }
     while( 0u != lca-- ) {
@@ -75,11 +75,13 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
     m->qPrivate.current = s;    
 }
 /*============================================================================*/
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal ){
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s ){
     h->Signal = xSignal;
     h->NextState = NULL;
     h->StartState = NULL;
     h->Status = qSM_STATUS_NULL;    
+    h->TransitionHistory = qSM_TRANSITION_NO_HISTORY;
+    h->StateData = s->qPrivate.Data;
 }
 /*============================================================================*/
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * const s, qSM_UnprotectedHandler_t h ){
@@ -113,7 +115,7 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * c
 static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){ 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     
-    qStateMachine_PrepareHandler( h, QSM_SIGNAL_EXIT );
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_EXIT, s );
     (void)qStateMachine_InvokeStateCallback( m, s, h);
     
     qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
@@ -122,7 +124,7 @@ static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s ){ 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     
-    qStateMachine_PrepareHandler( h, QSM_SIGNAL_ENTRY );
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_ENTRY, s );
     (void)qStateMachine_InvokeStateCallback( m, s, h );
     qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_ENTRY );
 }
@@ -130,23 +132,19 @@ static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s )
 static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s ){
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
 
-    qStateMachine_PrepareHandler( h, QSM_SIGNAL_START );
+    qStateMachine_PrepareHandler( h, QSM_SIGNAL_START, s );
     (void)qStateMachine_InvokeStateCallback( m, s, h );
-
-    if( qTrue == s->qPrivate.keephistory ){
-        if( NULL != s->qPrivate.lastRunningChild ){
-            m->qPrivate.next = s->qPrivate.lastRunningChild; 
-        }
-    }
-    else{
-        m->qPrivate.next = s->qPrivate.ChildStart;
-    }
     
     if( NULL != h->StartState ){ /*changes from callback takes more precedence*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         m->qPrivate.next = (qSM_State_t*)h->StartState ;
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    }   
+    }
+    else{
+        if( NULL != s->qPrivate.lastRunningChild ){
+            m->qPrivate.next = s->qPrivate.lastRunningChild;  /*try to preserve history*/
+        }
+    }
     return m->qPrivate.next;
 }
 /*============================================================================*/
@@ -154,7 +152,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     qSM_Status_t status;
     
-    qStateMachine_PrepareHandler( h, xSignal );
+    qStateMachine_PrepareHandler( h, xSignal, s );
     if( NULL != m->qPrivate.tTable ){
         qStateMachine_SweepTransitionTable( m, s, h ); 
     }
@@ -162,8 +160,25 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * 
  
     if( NULL != h->NextState ){ /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qStateMachine_Transition( m, (qSM_State_t*)h->NextState );
+        qSM_State_t *target = (qSM_State_t *)h->NextState;
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+        if( qSM_TRANSITION_SHALLOW_HISTORY == h->TransitionHistory ){
+            if( NULL != target->qPrivate.lastRunningChild ){
+                target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.ChildStart;
+            }   
+        }
+        else if ( qSM_TRANSITION_NO_HISTORY == h->TransitionHistory ){
+            target->qPrivate.lastRunningChild = target->qPrivate.ChildStart;
+        }
+        else if ( qSM_TRANSITION_DEEP_HISTORY == h->TransitionHistory ) {
+            /*nothing to do : deep history handled by default*/
+        }
+        else{
+            /*nothing to do*/
+        }
+
+        qStateMachine_Transition( m, target );
+
         status = qSM_STATUS_SIGNAL_HANDLED; /*the signal is assumed to be handled if the transition occurs*/
     }
     
@@ -289,7 +304,7 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, q
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, const qBool_t KeepHistory )
+/*qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data )
 
 This function subscribes the FSM instance to a specific state with an associated 
 callback function. 
@@ -305,17 +320,17 @@ Parameters:
     - ChildStart : The first child-state to be executed if the 
                     subscribed state its a parent in an hierarchical pattern,
                    To ignore pass NULL as argument.
-    - KeepHistory : <qTrue> to keep the shallow history of the subscribed state.
+    - Data : State data. Storage pointer. To ignore pass NULL.
 
 Return value:
 
     qTrue on success, otherwise return qFalse
 */
-qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, const qBool_t KeepHistory ){
+qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data ){
     qBool_t RetValue = qFalse;
     if( NULL != state ){
-        state->qPrivate.keephistory = KeepHistory;
-        state->qPrivate.lastRunningChild = ( qTrue == KeepHistory )? ChildStart : NULL;
+        state->qPrivate.Data = Data;
+        state->qPrivate.lastRunningChild = ChildStart;
         state->qPrivate.ChildStart = ChildStart;
         state->qPrivate.sCallback = StateFcn;
         if( NULL == parent ){
@@ -404,6 +419,7 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
             if( qTrue == TransitionAllowed ){
                 if( NULL != iTransition->NextState ){
                     h->NextState = iTransition->NextState; /*set the transition from the table*/    
+                    h->TransitionHistory = iTransition->HistoryMode;
                     break;
                 }
             }
