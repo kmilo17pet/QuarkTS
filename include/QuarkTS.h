@@ -1,5 +1,5 @@
 /*
-QuarkTS V7.0.1- An open-source OS for small embedded applications.
+QuarkTS V7.0.2- An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant    
 
@@ -35,7 +35,7 @@ Download the user manual here : https://github.com/kmilo17pet/quarkts-usermanual
 #ifndef QuarkTS_H
     #define	QuarkTS_H
 
-    #define QUARKTS_VERSION         "7.0.1"
+    #define QUARKTS_VERSION         "7.0.2"
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"

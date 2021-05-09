@@ -64,10 +64,12 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
     qSM_State_t *s = m->qPrivate.current;
     while( s != m->qPrivate.source ){
         (void)qStateMachine_StateOnExit( m, s );
+        s->qPrivate.parent->qPrivate.lastRunningChild  = s;
         s = s->qPrivate.parent;   
     }
     while( 0u != lca-- ) {
         (void)qStateMachine_StateOnExit( m, s ); 
+        s->qPrivate.parent->qPrivate.lastRunningChild  = s;
         s = s->qPrivate.parent;
     }
     m->qPrivate.current = s;    
@@ -113,7 +115,7 @@ static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){
     
     qStateMachine_PrepareHandler( h, QSM_SIGNAL_EXIT );
     (void)qStateMachine_InvokeStateCallback( m, s, h);
-    s->qPrivate.lastRunningChild = m->qPrivate.current; /*remember the last running child*/
+    
     qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
 }
 /*============================================================================*/
