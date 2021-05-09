@@ -132,16 +132,16 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * c
 
     qStateMachine_PrepareHandler( h, QSM_SIGNAL_START );
     (void)qStateMachine_InvokeStateCallback( m, s, h );
-    if( NULL != s->qPrivate.ChildStart ){ /*set the start transition if available*/
-        if( qTrue == s->qPrivate.keephistory ){
-            if( NULL != s->qPrivate.lastRunningChild ){
-                m->qPrivate.next = s->qPrivate.lastRunningChild; 
-            }
-        }
-        else{
-            m->qPrivate.next = s->qPrivate.ChildStart;
+
+    if( qTrue == s->qPrivate.keephistory ){
+        if( NULL != s->qPrivate.lastRunningChild ){
+            m->qPrivate.next = s->qPrivate.lastRunningChild; 
         }
     }
+    else{
+        m->qPrivate.next = s->qPrivate.ChildStart;
+    }
+    
     if( NULL != h->StartState ){ /*changes from callback takes more precedence*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         m->qPrivate.next = (qSM_State_t*)h->StartState ;
