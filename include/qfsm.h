@@ -80,7 +80,7 @@
         pAttrib qSM_Signal_t Signal;\
         pAttrib qSM_Status_t Status;\
         qSM_TransitionHistoryMode_t TransitionHistory;\
-    }\
+    };\
 
     /*< h->StartState : Used to set the initial state if the current state its a parent*/    
     /*< h->Next : Used to produce a transition to the desired state*/
@@ -90,8 +90,8 @@
     /*< h->Status : the status-stage of the current state. Only available in the surrounding callback*/
 
 
-    typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS(/*none*/); }_qSM_UnprotectedPublicData_t;
-    typedef struct _qSM_pPublicData_s{ _qSM_HANDLER_FIELDS( const  ); }_qSM_ProtectedPublicData_t;
+    typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS(/*none*/) }_qSM_UnprotectedPublicData_t;
+    typedef struct _qSM_pPublicData_s{ _qSM_HANDLER_FIELDS( const  ) }_qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;    
     typedef _qSM_ProtectedPublicData_t* const qSM_Handler_t;  
 
@@ -147,7 +147,7 @@
         qSM_Signal_t xSignal;                               /*< The signal that will produce the transition*/
         qSM_SignalAction_t Guard;                           /*< The signal guard*/
         qSM_State_t *NextState;                             /*< The next state after the transition*/
-        qSM_TransitionHistoryMode_t HistoryMode;
+        qSM_TransitionHistoryMode_t HistoryMode;            /*< To set the history mode for a transition*/
     }qSM_Transition_t;
     
     typedef enum{

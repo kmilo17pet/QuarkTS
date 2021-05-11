@@ -1,11 +1,20 @@
 #include "qfsm.h"
 
+/*
+Inspired from :
+- State Oriented Programming - Hierarchical State Machines in C/C++",
+Miro Samek and Paul Y. Montgomery, Embedded Systems Programming,  August 2000
+- Practical Statecharts in C/C++" by Miro Samek (CMP Books, 2002). 
+- github.com/kiishor/UML-State-Machine-in-C
+- github.com/howard-chan/HSM
+*/
+
 #if ( Q_FSM == 1 )
 
 
 typedef qByte_t qSM_LCA_t;
 
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target );
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory );
 
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
@@ -27,15 +36,42 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
 
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
-
 /*============================================================================*/
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target ){ /*wrapper*/
-    if( NULL == m->qPrivate.next ){
-        qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
-        m->qPrivate.next = target;
+/*When a transition its performed, all exit actions must precede any actions
+associated with the transition, which must precede any entry actions associated
+with the newly entered state(s). To discover which exit actions to execute, it
+is necessary to find the Least Common Ancestor (LCA) of the source and target
+states. History mode is also handled here.
+*/
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory ){ /*wrapper*/
+    /*handle first the required history mode*/
+    if ( qSM_TRANSITION_NO_HISTORY == mHistory){
+        target->qPrivate.lastRunningChild = target->qPrivate.ChildStart; /*just restore the default transition*/
     }
+    else if( qSM_TRANSITION_SHALLOW_HISTORY == mHistory ){
+        if( NULL != target->qPrivate.lastRunningChild ){
+            /*restore the default transition in the last running nested state*/
+            target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.ChildStart;
+        }   
+    }
+    else{ 
+        /*
+        nothing to do : qSM_TRANSITION_DEEP_HISTORY handled by default
+        all deep history its preserved in the "lastRunningChild" attribute,
+        so there is not need to change it. The qStateMachine_StateOnStart will 
+        assign this by default.
+        */
+    }
+    /*now, perform the exit actions by first finding the LCA*/
+    qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
+    m->qPrivate.next = target; /*notify the state machine that there was indeed a transition*/
 }
 /*============================================================================*/
+/*
+To discover which exit actions to execute, it is necessary to find the LCA(Least
+Common Ancestor) of the source and target states. So this function returns the
+number of levels from the current state to the LCA.
+*/
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target ){
     qSM_LCA_t toLca = 0u;
 
@@ -60,6 +96,9 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM
     return toLca;  
 }
 /*============================================================================*/
+/*
+This function its used to exit current states and all superstates up to LCA
+*/
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca ){
     qSM_State_t *s = m->qPrivate.current;
     while( s != m->qPrivate.source ){
@@ -75,6 +114,10 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
     m->qPrivate.current = s;    
 }
 /*============================================================================*/
+/*
+This function fills the qSM_Handler_t argument with the common data for all the
+required actions.
+*/
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s ){
     h->Signal = xSignal;
     h->NextState = NULL;
@@ -84,6 +127,9 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal
     h->StateData = s->qPrivate.Data;
 }
 /*============================================================================*/
+/*
+This function invokes the state callback including the surrounding callback if available
+*/
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * const s, qSM_UnprotectedHandler_t h ){
     if( NULL != m->qPrivate.surrounding ){
         h->Status = qSM_STATUS_BEFORE_ANY;
@@ -160,36 +206,27 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * 
  
     if( NULL != h->NextState ){ /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qSM_State_t *target = (qSM_State_t *)h->NextState;
+        qStateMachine_Transition( m, h->NextState, h->TransitionHistory );
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        if( qSM_TRANSITION_SHALLOW_HISTORY == h->TransitionHistory ){
-            if( NULL != target->qPrivate.lastRunningChild ){
-                target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.ChildStart;
-            }   
-        }
-        else if ( qSM_TRANSITION_NO_HISTORY == h->TransitionHistory ){
-            target->qPrivate.lastRunningChild = target->qPrivate.ChildStart;
-        }
-        else if ( qSM_TRANSITION_DEEP_HISTORY == h->TransitionHistory ) {
-            /*nothing to do : deep history handled by default*/
-        }
-        else{
-            /*nothing to do*/
-        }
-
-        qStateMachine_Transition( m, target );
-
         status = qSM_STATUS_SIGNAL_HANDLED; /*the signal is assumed to be handled if the transition occurs*/
     }
     
     return status;
 }
 /*============================================================================*/
+/*
+Entry actions must be executed in order form the least deeply nested to the 
+most deeply nested state. This is opposite to the normal navigability of the 
+module data-structure design. So this is solved by first recording the entry
+path from the LCA to the target, then playing it  backwards. with execution
+of entry actions. qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart
+are used to handle this after the transition perform all the required exit actions.
+*/
 static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **trace ){
     qSM_State_t *s;
 
     *trace = NULL;
-    for(s = m->qPrivate.next; s != m->qPrivate.current; s = s->qPrivate.parent ) {
+    for( s = m->qPrivate.next; s != m->qPrivate.current; s = s->qPrivate.parent ) {
         *(++trace) = s;  /* trace path to target */
     }
     while( NULL != ( s = *trace-- ) ) {  /* retrace entry from LCA */
@@ -225,6 +262,7 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
         qSM_State_t *entryPath[ Q_FSM_MAX_NEST_DEPTH ];
         qSM_State_t *s;
         
+        /*check for signals first*/
         qStateMachine_TimeoutCheckSignals( m );
         #if ( Q_QUEUES == 1 )
             if( NULL != m->qPrivate.queue ){
@@ -239,17 +277,19 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
             m->qPrivate.SignalNot = QSM_SIGNAL_NONE; 
         }
 
-        if( NULL == m->qPrivate.current  ){ /*Enter only once to start the top state*/
+        /*Enter here only once to start the top state*/
+        if( NULL == m->qPrivate.current  ){ 
             m->qPrivate.current = &m->qPrivate.top;
             m->qPrivate.next = NULL;
             qStateMachine_StateOnEntry( m, m->qPrivate.current );
             qStateMachine_TraceOnStart( m, entryPath );
         }
-        
+        /*evaluate the hierarchy until the signal is handled*/
         for( s = m->qPrivate.current; NULL != s; s = s->qPrivate.parent ){
             m->qPrivate.source = s; /* level of outermost event handler */
             if( qSM_STATUS_SIGNAL_HANDLED == qStateMachine_StateOnSignal( m, s, xSignal ) ) {
                 if( NULL != m->qPrivate.next) {  /* state transition taken? */
+                    /*execute entry/start actions in the rest of the hierarchy after transition*/
                     qStateMachine_TracePathandRetraceEntry( m, entryPath );
                     qStateMachine_TraceOnStart( m, entryPath );
                 }
@@ -297,7 +337,7 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, q
         m->qPrivate.TimeSpec = NULL;
         m->qPrivate.tTable = NULL;
         m->qPrivate.tEntries = 0u;
-
+        /*subscribe the built-in top state*/
         RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, childstart, qFalse );
         m->qPrivate.top.qPrivate.parent = NULL;
     }
@@ -388,7 +428,7 @@ qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue ){
     #if ( Q_QUEUES == 1 )
         if( ( NULL != m ) && ( NULL != queue) ){
             if( ( qTrue == qQueue_IsReady( queue ) )  &&  ( sizeof(qSM_Signal_t) == queue->qPrivate.ItemSize )  ){
-                m->qPrivate.queue = queue;
+                m->qPrivate.queue = queue; /*install the queue*/
                 RetValue = qTrue;
             }
         }
@@ -408,18 +448,18 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = m->qPrivate.tEntries;
     for( i = 0; i < n; ++i ){
-        iTransition = &table[ i ];
+        iTransition = &table[ i ];  /*get the i-element from the table*/
         TransitionAllowed = qTrue; /*if no signal-guard available, allow the transition by default*/
         if( ( CurrentState == iTransition->CurrentState ) && ( h->Signal == iTransition->xSignal ) ){ /*table entry match*/
-            if( NULL != iTransition->Guard ){
+            if( NULL != iTransition->Guard ){ /*if signal-guard available, just run the guard function*/
                 /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
                 TransitionAllowed = iTransition->Guard( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
                 /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             }
-            if( qTrue == TransitionAllowed ){
-                if( NULL != iTransition->NextState ){
+            if( qTrue == TransitionAllowed ){ 
+                if( NULL != iTransition->NextState ){ /*target state available?*/
                     h->NextState = iTransition->NextState; /*set the transition from the table*/    
-                    h->TransitionHistory = iTransition->HistoryMode;
+                    h->TransitionHistory = iTransition->HistoryMode; /*set the history mode form the table*/
                     break;
                 }
             }
@@ -678,7 +718,10 @@ void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t attr
                 break;
             case qSM_ATTRIB_COMPOSITE_PARENT:    
                 Attribute = s->qPrivate.parent;              
-                break;            
+                break;     
+            case qSM_ATTRIB_DATA:
+                Attribute = s->qPrivate.Data;
+                break;                            
             default:
                 break;
         }
