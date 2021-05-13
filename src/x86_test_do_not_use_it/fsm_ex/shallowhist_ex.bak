@@ -12,6 +12,7 @@
 #define SIGNAL_C        ((qSM_Signal_t)(3))
 #define SIGNAL_D        ((qSM_Signal_t)(4))
 #define SIGNAL_E        ((qSM_Signal_t)(5))
+#define SIGNAL_F        ((qSM_Signal_t)(6))
 
 qSM_t super;
 qSM_State_t state1, state2, state2a, state2b, state3, state4 ;
@@ -31,6 +32,7 @@ qTask_t SMTask;
 qSM_Transition_t table[] = {
     { &state3,              SIGNAL_A,        NULL,           &state4, qSM_TRANSITION_SHALLOW_HISTORY  },  
     { &state3,              SIGNAL_E,        NULL,           &state4, qSM_TRANSITION_NO_HISTORY  },  
+    { &state3,              SIGNAL_F,        NULL,           &state4, qSM_TRANSITION_DEEP_HISTORY  },      
     { &state4,              SIGNAL_B,        NULL,           &state3, 0 }, 
     { &state1,              SIGNAL_C,        NULL,           &state2, 0 }, 
     { &state2a,             SIGNAL_D,        NULL,           &state2b, 0 },  
@@ -156,7 +158,10 @@ void Sig_Handler(int signum ){
             break;
         case SIGTRAP:
             qStateMachine_SendSignal( &super, SIGNAL_E, qFalse );
-            break;            
+            break;       
+        case SIGSYS:
+            qStateMachine_SendSignal( &super, SIGNAL_F, qFalse );
+            break;                     
         default:
             break;
     }
@@ -192,7 +197,6 @@ int main(int argc, char** argv) {
 
 
     qStateMachine_Setup( &super, state_top_callback, &state3, NULL, NULL );
-    qStateMachine_InstallTransitionTable( &super, table, sizeof(table)/sizeof(table[0]) );
         qStateMachine_StateSubscribe( &super, &state3, NULL, state3_callback, NULL, NULL ); 
         qStateMachine_StateSubscribe( &super, &state4, NULL, state4_callback, &state1, NULL ); 
             qStateMachine_StateSubscribe( &super, &state1, &state4, state1_callback, NULL, NULL ); 
