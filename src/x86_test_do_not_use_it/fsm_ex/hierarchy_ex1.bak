@@ -1,0 +1,183 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <math.h>
+#include "QuarkTS.h"
+
+
+#define SIGNAL_A        ((qSM_Signal_t)(1))
+#define SIGNAL_B        ((qSM_Signal_t)(2))
+#define SIGNAL_C        ((qSM_Signal_t)(3))
+#define SIGNAL_D        ((qSM_Signal_t)(4))
+#define SIGNAL_E        ((qSM_Signal_t)(5))
+#define SIGNAL_F        ((qSM_Signal_t)(6))
+#define SIGNAL_G        ((qSM_Signal_t)(7))
+#define SIGNAL_H        ((qSM_Signal_t)(8))
+#define SIGNAL_I        ((qSM_Signal_t)(9))
+
+qSM_t super;
+qSM_State_t s, s1, s11, s2, s21, s211;
+
+
+qSM_Status_t statex_callback( qSM_Handler_t h );
+
+qTask_t SMTask;
+
+static int foo = 0; 
+
+qBool_t fsmguard1( qSM_Handler_t h ){
+    qBool_t guard = qFalse;
+    puts("guard1");
+    if( 1 == foo ){
+        foo  = 0;
+        puts("foo  = 0");
+        guard = qTrue;
+    }
+    return guard;
+}
+
+qBool_t fsmguard2( qSM_Handler_t h ){
+    qBool_t guard = qFalse;
+    puts("guard2");
+    if( 0 == foo ){
+        foo  = 1;
+        puts("foo  = 1");
+        guard = qTrue;
+    }
+    return guard;
+}
+
+
+qSM_Transition_t table[] = {
+    { &s,               SIGNAL_E,        NULL,           &s11,      0  },   
+    { &s1,              SIGNAL_B,        NULL,           &s11,      0  },  
+    { &s1,              SIGNAL_A,        NULL,           &s1,      0  },  
+    { &s11,             SIGNAL_D,        fsmguard1,      &s1,      0  },    
+    { &s1,              SIGNAL_D,        fsmguard2,      &s,      0  },  
+    { &s11,             SIGNAL_H,        NULL,           &s,      0  },
+    { &s1,              SIGNAL_C,        NULL,           &s2,      0  },
+    { &s1,              SIGNAL_F,        NULL,           &s211,      0  },
+    { &s11,             SIGNAL_G,        NULL,           &s211,      0  },
+    { &s2,              SIGNAL_C,        NULL,           &s1,      0  },
+    { &s2,              SIGNAL_F,        NULL,           &s11,      0  },
+    { &s21,             SIGNAL_G,        NULL,           &s1,      0  },
+    { &s21,             SIGNAL_B,        NULL,           &s211,      0  },
+    { &s21,             SIGNAL_A,        NULL,           &s21,      0  },
+    { &s211,            SIGNAL_H,        NULL,           &s,      0  },
+    { &s211,            SIGNAL_D,        NULL,           &s21,      0  },
+    { &s,               SIGNAL_I,        fsmguard1,      NULL,      0  },
+    { &s2,              SIGNAL_I,        fsmguard2,      NULL,      0  },
+};
+
+/*=============================================================================*/
+qSM_Status_t statex_callback( qSM_Handler_t h ) {
+    qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
+    char *sdata = (char*)h->StateData;
+    uint8_t level = sdata[0]-48;
+    char *sname = sdata+1;  
+
+    switch( h->Signal ) {
+        case QSM_SIGNAL_ENTRY:
+            printf("%*s%s\r\n", 2*level, "-> ", sname);
+            break;
+        case QSM_SIGNAL_START:
+            printf("%*s%s\r\n", 2*level, "-* ", sname);
+            break;    
+        case QSM_SIGNAL_EXIT:
+            printf("%*s%s\r\n", 2*level, "-x ", sname);
+            if( &s == h->state ){
+                foo = 0;
+            }
+            break;               
+    } 
+    return RetVal;
+}
+/*=============================================================================*/
+void Sig_Handler(int signum ){
+    switch( signum){
+        case SIGUSR1:
+            qStateMachine_SendSignal( &super, SIGNAL_A, qFalse );
+            break;
+        case SIGUSR2:
+            qStateMachine_SendSignal( &super, SIGNAL_B, qFalse );
+            break;        
+        case SIGQUIT:
+            qStateMachine_SendSignal( &super, SIGNAL_C, qFalse );
+            break;         
+        case SIGALRM:
+            qStateMachine_SendSignal( &super, SIGNAL_D, qFalse );
+            break;
+        case SIGTRAP:
+            qStateMachine_SendSignal( &super, SIGNAL_E, qFalse );
+            break;       
+        case SIGSYS:
+            qStateMachine_SendSignal( &super, SIGNAL_F, qFalse );
+            break;              
+        case SIGTSTP:
+            qStateMachine_SendSignal( &super, SIGNAL_G, qFalse );   
+            break;     
+        case SIGCHLD:
+            qStateMachine_SendSignal( &super, SIGNAL_H, qFalse );   
+            break;             
+        case SIGSEGV:
+            qStateMachine_SendSignal( &super, SIGNAL_I, qFalse );   
+            break;                    
+        default:
+            break;
+    }
+}
+/*===========================Reference clock for the kernel===================*/
+qClock_t GetTickCountMs(void){ /*get system background timer (1mS tick)*/
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (qClock_t)(ts.tv_nsec / (qClock_t)1000000uL) + ((qClock_t)ts.tv_sec * (qClock_t)1000uL);
+}
+
+/*=============================================================================*/
+int main(int argc, char** argv) {  
+    qQueue_t sigqueue;
+    qSM_Signal_t topsm_sig_stack[10];
+    printf("hierarchy_ex1 = %d\r\n", getpid() );
+
+    signal( SIGUSR1, Sig_Handler );
+    signal( SIGUSR2, Sig_Handler );
+    signal( SIGQUIT, Sig_Handler );
+    signal( SIGALRM, Sig_Handler );
+    signal( SIGTRAP, Sig_Handler );
+    signal( SIGSYS, Sig_Handler );
+    signal( SIGTSTP, Sig_Handler );
+    signal( SIGCHLD, Sig_Handler );
+    signal( SIGSEGV , Sig_Handler );
+
+    qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
+
+    printf("s  %p \r\n", &s );
+    printf("s1  %p \r\n", &s1 );
+    printf("s11  %p \r\n", &s11 );
+    printf("s2  %p \r\n", &s2 );
+    printf("s21  %p \r\n", &s21 );
+    printf("s211  %p \r\n", &s211 );
+
+    qStateMachine_Setup( &super, statex_callback, &s2, NULL, NULL );
+    super.qPrivate.top.qPrivate.Data = "0top";
+
+        qStateMachine_StateSubscribe( &super, &s, NULL, statex_callback, &s1, "1s" ); 
+            qStateMachine_StateSubscribe( &super, &s1, &s, statex_callback, &s11, "2s1" ); 
+                qStateMachine_StateSubscribe( &super, &s11, &s1, statex_callback, NULL, "3s11" ); 
+            qStateMachine_StateSubscribe( &super, &s2, &s, statex_callback, &s21, "2s2" ); 
+                qStateMachine_StateSubscribe( &super, &s21, &s2, statex_callback, &s211, "3s21" ); 
+                    qStateMachine_StateSubscribe( &super, &s211, &s21, statex_callback, NULL, "4s211" ); 
+
+    qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
+    qStateMachine_InstallSignalQueue( &super, &sigqueue );
+    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
+          
+    qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
+    qOS_Run();
+    (void)argc;
+    (void)argv;
+    
+    return EXIT_SUCCESS;
+}
