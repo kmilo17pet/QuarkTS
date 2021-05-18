@@ -75,6 +75,7 @@
         void *StartState;\
         void *NextState;\
         pAttrib void *machine;\
+        pAttrib void *state;\
         pAttrib void *Data;\
         pAttrib void *StateData;\
         pAttrib qSM_Signal_t Signal;\

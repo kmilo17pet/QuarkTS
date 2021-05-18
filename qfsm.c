@@ -44,7 +44,9 @@ is necessary to find the Least Common Ancestor (LCA) of the source and target
 states. History mode is also handled here.
 */
 static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory ){ /*wrapper*/
-    /*handle first the required history mode*/
+    /*now, perform the exit actions by first finding the LCA*/
+    qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
+    /*then, handle the required history mode*/
     if ( qSM_TRANSITION_NO_HISTORY == mHistory){
         target->qPrivate.lastRunningChild = target->qPrivate.ChildStart; /*just restore the default transition*/
     }
@@ -62,8 +64,6 @@ static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_Transit
         assign this by default.
         */
     }
-    /*now, perform the exit actions by first finding the LCA*/
-    qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
     m->qPrivate.next = target; /*notify the state machine that there was indeed a transition*/
 }
 /*============================================================================*/
@@ -103,12 +103,10 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
     qSM_State_t *s = m->qPrivate.current;
     while( s != m->qPrivate.source ){
         (void)qStateMachine_StateOnExit( m, s );
-        s->qPrivate.parent->qPrivate.lastRunningChild  = s; 
         s = s->qPrivate.parent;   
     }
     while( 0u != lca-- ) {
         (void)qStateMachine_StateOnExit( m, s ); 
-        s->qPrivate.parent->qPrivate.lastRunningChild  = s;
         s = s->qPrivate.parent;
     }
     m->qPrivate.current = s;    
@@ -125,6 +123,7 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal
     h->Status = qSM_STATUS_NULL;    
     h->TransitionHistory = qSM_TRANSITION_NO_HISTORY;
     h->StateData = s->qPrivate.Data;
+    h->state = s;
 }
 /*============================================================================*/
 /*
@@ -165,6 +164,7 @@ static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){
     (void)qStateMachine_InvokeStateCallback( m, s, h);
     
     qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
+    s->qPrivate.parent->qPrivate.lastRunningChild  = s; 
 }
 /*============================================================================*/
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s ){ 
@@ -386,7 +386,7 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state
 /*============================================================================*/
 /*qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n )
 
-Installs a transition table in to the supplied state machine
+Install a transition table on the provided state machine
 
 Parameters:
 
@@ -410,7 +410,7 @@ qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t 
 /*============================================================================*/
 /*qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue )
 
-Installs a signal queue of qSM_Signal_t in to the supplied state machine
+Install a signal queue on the provided state machine.
 Note: Queue object should be previously initialized by using "qQueue_Setup"
 Note: Queue itemsize == qSM_Signal_t. 
 
@@ -469,7 +469,7 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
 /*============================================================================*/
 /*qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, const qBool_t isUrgent )
 
-Send a signal to the specified state machine.
+Send a signal to the provided state machine.
 
 Note : If the signal queue is not available, an exclusion variable will be used.
        This means that the signal cannot be sent until the variable is empty. 
