@@ -1,4 +1,10 @@
-/*This file is part of the QuarkTS distribution.*/
+/*!
+ * @file qkshared.h
+ * @author J. Camilo Gomez C.
+ * @version 1.02
+ * @note This file is part of the QuarkTS distribution.
+ * @brief Kernel shared interfaces
+ **/
 #ifndef QKSHARED_H
     #define QKSHARED_H
 

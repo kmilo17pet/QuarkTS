@@ -18,16 +18,6 @@ static qList_MemFree_t qListFree = NULL;
 #endif
 
 /*============================================================================*/
-/*void qList_Initialize( qList_t * const list )
- 
-Must be called before a list is used!  This initialises all the members of the 
-list structure.
-
-Parameters:
-
-    - list : Pointer to the list being initialised.   
-
-*/
 void qList_Initialize( qList_t * const list ){
     if( NULL != list ){
         list->head = NULL;
@@ -96,23 +86,6 @@ static qList_Node_t* qList_GetiNode( const qList_t *const list, const qList_Posi
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_Insert( qList_t * const list, void * const node, const qList_Position_t position )
- 
-Insert an item into the list.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - node : A pointer to the node to be inserted
-    - position : The position where the node will be inserted. Could be 
-                 qList_AtFront, qList_AtBack or any other index number 
-                 where the node will be inserted after.
-
-Return value:
-
-    qTrue if the item was successfully added to the list, othewise returns qFalse   
-
-*/
 qBool_t qList_Insert( qList_t *const list, void * const node, const qList_Position_t position ){
     qBool_t RetValue = qFalse;
  
@@ -127,7 +100,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qList_Positi
                 list->tail = newnode;
             }
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            else if( qList_AtFront == position ){
+            else if( QLIST_ATFRONT == position ){
                 qList_InsertAtFront( list, node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             else if( position >= ( (qList_Position_t)list->size - 1 ) ){
@@ -149,21 +122,7 @@ qBool_t qList_Insert( qList_t *const list, void * const node, const qList_Positi
     }
     return RetValue;  
 }
-/*=========================================================*/           
-/*void* qList_RemoveItself( void * const node )
- 
-If the node is member of a list, the node will be removed from it.
-
-Parameters:
-
-    - node : A pointer to the node
-
-Return value:
-
-    qTrue on Success. qFalse if removal can't be performed.  
-
-*/ 
-/*=========================================================*/           
+/*=========================================================*/                     
 qBool_t qList_RemoveItself( void * const node ){
     qBool_t RetValue = qFalse;
     
@@ -196,24 +155,6 @@ qBool_t qList_RemoveItself( void * const node ){
     return RetValue;
 }
 /*=========================================================*/           
-/*void* qList_Remove( qList_t * const list, void * const node, const qList_Position_t position )
- 
-Remove an item from the list.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - node : A pointer to the node to be deleted (to ignore pass NULL )
-             If the node is member or the list, use qList_RemoveItself
-             to avoid overhead
-    - position : The position of the node that will be removed. Could be 
-                 qList_AtFront, qList_AtBack or any other index number.
-
-Return value:
-
-    A pointer to the removed node. NULL if removal can't be performed.  
-
-*/ 
 void* qList_Remove( qList_t * const list, void * const node, const qList_Position_t position ){
     qList_Node_t *removed = NULL;
 
@@ -250,27 +191,6 @@ void* qList_Remove( qList_t * const list, void * const node, const qList_Positio
     return removed;
 }
 /*=========================================================*/           
-/*qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qList_Position_t position )
-
-Moves(or merge) the entire list pointed by <source> to the list pointed by 
-<destination> at location specified by <position>. 
-After the move operation, this function leaves empty the list pointed 
-by <source>.
-
-Parameters:
-
-    - destination : Pointer to the list where the <source> nodes are to be moved.
-    - source : Pointer to the source list to be moved.
-    - position : The position where <source> list will be inserted. Could be 
-                 qList_AtFront, qList_AtBack or any other index number 
-                 where the list will be inserted after.
-
-Return value:
-
-    qTrue if the move operation is performed successfully, otherwise 
-    returns qFalse   
-
-*/
 qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qList_Position_t position ){
     qBool_t RetValue = qFalse;
 
@@ -282,7 +202,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
                 destination->head = source->head;
                 destination->tail = source->tail;
             }
-            else if( qList_AtFront == position ){
+            else if( QLIST_ATFRONT == position ){
                 source->tail->next = destination->head;
                 destination->head->prev = source->tail;
                 destination->head = source->head;
@@ -319,20 +239,6 @@ static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h ){
     return qFalse;
 }
 /*=========================================================*/
-/*qBool_t qList_IsMember( qList_t * const list,  void * const node )
- 
-Check if the node is member of the list.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - node : A pointer to the node
-
-Return value:
-
-    qTrue if the node belongs to the list, qFalse if it is not.  
-
-*/ 
 qBool_t qList_IsMember( qList_t * const list, void * const node ){
     qBool_t RetValue = qFalse;
 
@@ -348,19 +254,6 @@ qBool_t qList_IsMember( qList_t * const list, void * const node ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_GetFront( const qList_t * const list )
- 
-Get a pointer to the front item of the list
-
-Parameters:
-
-    - list : Pointer to the list.
-
-Return value:
-
-    A pointer to the front node. NULL if the list is empty  
-
-*/ 
 void* qList_GetFront( const qList_t *const list ){
     void *RetValue = NULL;
 
@@ -370,19 +263,6 @@ void* qList_GetFront( const qList_t *const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_GetBack( const qList_t * const list )
- 
-Get a pointer to the back item of the list
-
-Parameters:
-
-    - list : Pointer to the list.
-
-Return value:
-
-    A pointer to the back node. NULL if the list is empty  
-
-*/ 
 void* qList_GetBack( const qList_t *const list ){
     void *RetValue = NULL;
 
@@ -392,19 +272,6 @@ void* qList_GetBack( const qList_t *const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IsEmpty( const qList_t * const list )
- 
-Check if the list is empty.
-
-Parameters:
-
-    - list : Pointer to the list.
-
-Return value:
-
-    qTrue if the list is empty, qFalse if it is not.  
-
-*/ 
 qBool_t qList_IsEmpty( const qList_t * const list ){
     qBool_t RetValue = qTrue;
     
@@ -414,19 +281,6 @@ qBool_t qList_IsEmpty( const qList_t * const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_Length( const qList_t * const list )
- 
-Get the number of items inside the list
-
-Parameters:
-
-    - list : Pointer to the list.
-
-Return value:
-
-    The number of items of the list. 
-
-*/ 
 size_t qList_Length( const qList_t * const list ){
     size_t RetValue = 0u;
 
@@ -436,37 +290,6 @@ size_t qList_Length( const qList_t * const list ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ) 
-
-Sort the double linked list using the <CompareFcn> function to 
-determine the order.
-The sorting algorithm used by this function compares pairs of 
-adjacent nodes by calling the specified <CompareFcn> function 
-with pointers to them as arguments. The sort is performed only 
-modifying node's links without data swapping, improving performance 
-if nodes have a large storage.
-
-Note: The function modifies the content of the list by reordering its 
-elements as defined by <CompareFcn>.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - CompareFcn :  Pointer to a function that compares two nodes.
-                    This function is called repeatedly by qList_Sort
-                    to compare two nodes. It shall follow the 
-                    following prototype:
-                    qBool_t (*CompareFcn)(void *node1, void *node2)
-                    Taking two pointers as arguments (both converted
-                    to const void*). The function defines the order
-                    of the elements by returning a Boolean data, where
-                    a <qTrue> value indicates that element pointed by 
-                    <node1> goes after the element pointed to by <node2>
-
-Return value:
-
-    qTrue if at least one reordering is performed over the list. 
-*/
 qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     qBool_t RetValue = qFalse;
 
@@ -521,24 +344,6 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
     return RetValue;
 }
 /*=========================================================*/
-/*qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir ){
-
-Setup an instance of the given iterator to traverse the list.
-
-Parameters:
-
-    - iterator : Pointer to the iterator instance
-    - list : Pointer to the list.
-    - NodeOffset :  The start offset-node. To ignore, pass NULL-
-    - dir : Use one of the following options:
-               QLIST_FORWARD  : to go in forward direction.
-               QLIST_BACKWARD :  to go in backward direction.
-
-
-Return value:
-
-    qTrue on success. Otherwise returns qFalse. 
-*/
 qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir ){
     qBool_t RetValue = qFalse;
 
@@ -563,20 +368,6 @@ qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void
     return RetValue;
 }
 /*=========================================================*/
-/*void* qList_IteratorGetNext( qList_Iterator_t *iterator )
-
-Get the current node available in the iterator. After invoked, 
-iterator will be updated to the next node.
-
-Parameters:
-
-    - iterator : Pointer to the iterator instance
-
-Return value:
-
-    Return the next node or NULL when no more nodes remain in the list.
-
-*/
 void* qList_IteratorGetNext( qList_Iterator_t *iterator ){
     void *iNode = NULL;
 
@@ -589,32 +380,6 @@ void* qList_IteratorGetNext( qList_Iterator_t *iterator ){
     return iNode;
 }
 /*=========================================================*/
-/*qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset )
- 
-Operate on each element of the list.
-
-Parameters:
-
-    - list : Pointer to the list.
-    - Fcn : The function to perform over the node. 
-            Should have this prototype:
-            qBool_t Function( void* Node, void *arg, qList_WalkStage_t stage )
-            
-            If <Function> returns qTrue, the walk-through loop
-            will be terminated.
-
-    - arg : Argument passed to <Fcn>
-    - dir : Use one of the following options:
-               QLIST_FORWARD  : to walk through the list forwards.
-               QLIST_BACKWARD : to walk through the list backwards.
-    - NodeOffset : If available, the list walk through will start from this node.  
-                   To ignore, pass NULL.       
-
-Return value:
-
-    qTrue if the walk through was early terminated, otherwise returns qFalse.
-
-*/ 
 qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset ){
     qBool_t RetValue = qFalse;
     
@@ -663,25 +428,6 @@ qList_Node_t* _qNode_Backward( const qList_Node_t *const node){
     return node->prev;
 }
 /*=========================================================*/
-/*qBool_t qList_Swap( void *node1, void *node2 )
- 
-Swap two nodes that belongs to the same list by changing its
-own links.
-
-Note: The list containing nodes will be updated if any node 
-is part of the boundaries.
-
-
-Parameters:
-
-    - node1 : Pointer to the first node.
-    - node2 : Pointer to the second node.
-
-Return value:
-
-    qTrue if the swap operation is performed. Otherwise returns qFalse.
-
-*/ 
 qBool_t qList_Swap( void *node1, void *node2 ){
     qBool_t RetValue = qFalse;
 

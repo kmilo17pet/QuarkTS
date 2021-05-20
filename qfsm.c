@@ -242,20 +242,6 @@ static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath
     }
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal )
-
-Execute the Finite State Machine (FSM).
-
-Parameters:
-
-    - m : a pointer to the FSM object.
-    - xSignal : User-defined signal (this value will be ignored if the installed queue 
-                has items available)
-
-Return value: 
-
-    qTrue if the signal was successfully handled, otherwise returns qFalse.
-*/
 qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
     qBool_t RetValue = qFalse;
     if( NULL != m ){
@@ -301,26 +287,6 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data )
-
-Initializes a finite state machine (FSM) object.
-(this API also initializes the top state)
-
-Parameters:
-
-    - m : a pointer to the FSM object.
-    - topCallback : the callback for the "Top" state
-    - childstart : The first state to be executed (init-state). 
-    - Surrounding : The surrounding callback. To ignore pass NULL      
-    - Data : Represents the FSM arguments. All arguments must be passed by 
-             reference and cast to (void *). Only one argument is allowed, so,
-             for multiple arguments, create a structure that contains all of 
-             the arguments and pass a pointer to that structure.           
-
-Return value:
-
-    Returns qTrue on Success, otherwise returns qFalse
-*/
 qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data ){
     qBool_t RetValue = qFalse;
     if( ( NULL != m ) ){
@@ -344,28 +310,6 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, q
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data )
-
-This function subscribes the FSM instance to a specific state with an associated 
-callback function. 
-
-Parameters:
-
-    - m : a pointer to the FSM object.
-    - state : A pointer to the state object.
-    - parent : A pointer to the parent state. 
-              ( pass NULL if this state its a child of the "Top" state)
-    - StateFcn: The handler function associated to the state.
-    			Prototype: qSM_Status_t xCallback( qSM_Handler_t h )
-    - ChildStart : The first child-state to be executed if the 
-                    subscribed state its a parent in an hierarchical pattern,
-                   To ignore pass NULL as argument.
-    - Data : State data. Storage pointer. To ignore pass NULL.
-
-Return value:
-
-    qTrue on success, otherwise return qFalse
-*/
 qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data ){
     qBool_t RetValue = qFalse;
     if( NULL != state ){
@@ -384,20 +328,6 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n )
-
-Install a transition table on the provided state machine
-
-Parameters:
-
-    - m : a pointer to the FSM object.
-    - table : An array of transitions that describes the state-machine behavior.
-    - n : The number of transitions available within the table
-
-Return value:
-
-    qTrue on success, otherwise return qFalse
-*/
 qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n ){
     qBool_t RetValue = qFalse;
     if( ( NULL != m ) && ( NULL != table) && ( n > 0u ) ){
@@ -408,21 +338,6 @@ qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t 
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue )
-
-Install a signal queue on the provided state machine.
-Note: Queue object should be previously initialized by using "qQueue_Setup"
-Note: Queue itemsize == qSM_Signal_t. 
-
-Parameters:
-
-    - m : a pointer to the FSM object.
-    - queue: a pointer to the queue object.
-
-Return value:
-
-    qTrue on success, otherwise return qFalse
-*/
 qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue ){
     qBool_t RetValue = qFalse;
     #if ( Q_QUEUES == 1 )
@@ -467,26 +382,6 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
     }
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_SendSignal( qSM_t * const obj, qSM_Signal_t signal, const qBool_t isUrgent )
-
-Send a signal to the provided state machine.
-
-Note : If the signal queue is not available, an exclusion variable will be used.
-       This means that the signal cannot be sent until the variable is empty. 
-       (the signal was handled by the state-machine engine).
-Note: The signal-queue has the highest precedence.       
-
-Parameters:
-    - obj : a pointer to the FSM object.
-    - signal : The user-defined signal
-    - isUrgent : If qTrue, the signal will be sent to the front of the queue. (only if the
-                 there is a signal-queue available)
-
-Return value:
-
-    qTrue if the provided signal was successfully delivered to the FSM, otherwise return qFalse.
-    qFalse if there is a queue, and the signal cannot be inserted because it is full.
-*/
 qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t xSignal, const qBool_t isUrgent ){
     qBool_t RetValue = qFalse;
 
@@ -571,27 +466,6 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
     }
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n )
-
-Install the Timeout specification object to use the FSM built-in timeouts.
-This methods also set fixed timeouts for specific states using a lookup-table. 
-Note : This feature its only available if the FSM has a signal queue installed.
-Note : The lookup table will be an array of type <qSM_TimeoutStateDefinition_t> with 
-      <nEntries> elements matching { state, time, options }. 
-Note : You can increse the number of available timeouts instances by changing 
-        the Q_FSM_MAX_TIMEOUTS configuration macro inside qconfig.h      
-
-Parameters:
-
-    - m : a pointer to the target FSM object.
-    - ts : a pointer to the timeout specification object
-    - tdef : the lookup table matching the target state and the requested timeout.
-    - n: the number of elements inside <tdef>. 
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/ 
 qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n ){
     qBool_t RetValue = qFalse;
 
@@ -615,22 +489,6 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * 
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime )
-
-Set the time for the selected built-in timeout inside the target FSM
-<Requirements> : 
-   *> An installed time specification. For this use <qStateMachine_InstallTimeoutSpec>
-   *> An installed signal queue. For this use <qStateMachine_InstallSignalQueue>
-
-Parameters:
-    - m : a pointer to the target FSM object.
-    - xTimeout : the index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
-    - XTime : the specified time
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/ 
 qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime ){
     qBool_t RetValue = qFalse;
 
@@ -643,21 +501,6 @@ qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, cons
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout )
-
-Stop the time count for the selected built-in timeout inside the target FSM
-<Requirements> : 
-   *> An installed time specification. For this use <qStateMachine_InstallTimeoutSpec>
-   *> An installed signal queue. For this use <qStateMachine_InstallSignalQueue>
-
-Parameters:
-    - m : a pointer to the target FSM object.
-    - xTimeout : the index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/ 
 void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
     if( ( NULL != m->qPrivate.TimeSpec ) && ( xTimeout < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){
         #if ( Q_QUEUES == 1 )

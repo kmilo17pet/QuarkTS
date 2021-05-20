@@ -2,21 +2,11 @@
 
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
+#define QEDGECHECK_WAIT         ( (qUINT8_t)0u )
+#define QEDGECHECK_UPDATE       ( (qUINT8_t)1u )
+#define QEDGECHECK_CHECK        ( (qUINT8_t)2u )
+
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime )
- 
-Initialize a I/O Edge-Check instance 
-
-Parameters:
-
-    - Instance : A pointer to the I/O Edge-Check object
-    - RegisterSize: The specific-core register size: QREG_8BIT, QREG_16BIT or QREG_32BIT(Default)
-    - DebounceTime : The specified time to bypass the bounce of the input nodes
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime ){
     qBool_t RetValue = qFalse;
 
@@ -31,21 +21,6 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t Re
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber )
- 
-Initialize an I/O Edge-Check instance 
-
-Parameters:
-
-    - Instance : A pointer to the I/O Edge-Check object
-    - Node: A pointer to the Input-Node object
-    - PortAddress : The address of the core PORTx-register to read the levels of the specified PinNumber
-    - PinNumber : The specified Pin to read from PortAddress 
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber ){
     qBool_t RetValue = qFalse;
 
@@ -61,19 +36,6 @@ qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t 
     }
     return RetValue;
 }
-/*============================================================================*/
-/*qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance )
- 
-Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
-
-Parameters:
-
-    - Instance : A pointer to the I/O Edge-Check object
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 /*============================================================================*/
 qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
     qBool_t RetValue = qFalse;   
@@ -125,18 +87,6 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qEdgeCheck_GetNodeStatus( const qEdgeCheck_IONode_t * const Node ) 
- 
-Query the status of the specified input-node.
-
-Parameters:
-
-    - Node : Node: A pointer to the Input-Node object
-  
-Return value:
-
-    The status of the input node : qTrue, qFalse, qRising, qFalling or qUNKNOWN
-*/
 qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node ){
     qBool_t RetValue = qUNKNOWN;
 

@@ -11,12 +11,14 @@
 #define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/
+/*! @cond PRIVATE */
 typedef struct{
     qTask_t *Task;      /*< A pointer to the task. */
     void *QueueData;    /*< The data to queue. */
 }qQueueStack_t;  
 
 typedef qUINT32_t qCoreFlags_t;
+
 
 typedef struct{
     qTask_NotifyMode_t mode;
@@ -44,6 +46,7 @@ typedef struct{ /*KCB(Kernel Control Block) definition*/
         size_t TaskEntries;                             /*< Used to hold the number of task entries*/
     #endif
 }qKernelControlBlock_t;
+/*! @endcond PRIVATE */
 
 /*=========================== Kernel Control Block ===========================*/
 static qKernelControlBlock_t kernel;
@@ -86,25 +89,6 @@ void qOS_DummyTask_Callback( qEvent_t e ){
     Q_UNUSED( e ); 
 }
 /*============================================================================*/
-/*void qOS_Setup( const qGetTickFcn_t TickProviderFcn, const qTimingBase_type BaseTimming, qTaskFcn_t IdleCallback )
-        
-Task Scheduler Setup. This function is required and must be called once in 
-the application main thread before any task is being added to the OS.
-
-Parameters:
-
-    - TickProviderFcn :  The function that provides the tick value. If the user application 
-                        uses the <qClock_SysTick> from the ISR, this parameter can be NULL.
-                        Note: Function should take void and return a 32bit value. 
-
-    - BaseTimming (Optional) : This parameter specifies the ISR background timer base time.
-                    This can be the period in seconds(Floating-point format) or frequency 
-                    in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
-
-    - IdleCallback : Callback function to the Idle Task. To disable the 
-                    Idle Task activities, pass NULL as argument.
-
-*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
     void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
 #else
@@ -147,58 +131,19 @@ qTask_t* qOS_Get_TaskRunning( void ){
     return kernel.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
-/*void qOS_Set_IdleTask( qTaskFcn_t Callback )
-
-Establish the IDLE Task Callback
-
-Parameters:
-
-    - Callback : A pointer to a void callback method with a qEvent_t 
-                      parameter as input argument.
-*/
 void qOS_Set_IdleTask( qTaskFcn_t Callback ){
     kernel.IDLECallback = Callback;
 }
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 /*============================================================================*/
-/*void qOS_Scheduler_Release( void )
-
-Disables the kernel scheduling. The main thread will continue after the
-<qOS_Run> call.
-*/
 void qOS_Scheduler_Release( void ){
     QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_RELEASESCHED );
 }
 /*============================================================================*/
-/*void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback )
-
-Set/Change the scheduler release callback function
-
-Parameters:
-
-    - Callback : A pointer to a void callback method with a qEvent_t parameter 
-                 as input argument.
-*/
 void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback ){
     kernel.ReleaseSchedCallback = Callback;
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
-/*============================================================================*/
-/*qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode )
-
-Try to spread a notification among all the tasks in the scheduling scheme
-Note: Operation will be performed in the next scheduling cycle. 
-
-Parameters:
-
-    - eventdata : Specific event user-data.
-    - mode : the method used to spread the event:
-              qTask_NotifySimple or qTask_NotifyQueued.
-
-Return value:
-
-    qTrue if success. qFalse if any other spread operation is in progress.
-*/ 
 /*============================================================================*/
 qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode ){
     qBool_t RetValue = qFalse;
@@ -327,37 +272,6 @@ size_t qOS_PriorityQueue_GetCount( void ){
 /*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */
 /*============================================================================*/
-/*qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg )
-
-Add a task to the scheduling scheme. The task is scheduled to run every <Time> 
-seconds, <nExecutions> times and executing <CallbackFcn> method on every pass.
-
-Parameters:
-    - Task : A pointer to the task node.
-    - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter 
-                 as input argument.
-    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    - Time : Execution interval defined in seconds (floating-point format). 
-               For immediate execution (tValue = qTimeImmediate).
-    - nExecutions : Number of task executions (Integer value). For indefinite 
-               execution (nExecutions = qPeriodic or qIndefinite). Tasks do not 
-               remember the number of iteration set initially. After the 
-               iterations are done, internal iteration counter is 0. To perform 
-               another set of iterations, set the number of iterations again.
-                >Note 1: Tasks which performed all their iterations put their own 
-                        state to qDisabled.
-                >Note 2: Asynchronous triggers do not affect the iteration counter.
-    - InitialState : Specifies the initial operational state of the task 
-                    (qEnabled, qDisabled, qASleep or qAwake(implies qEnabled)).
-    - arg : Represents the task arguments. All arguments must be passed by
-            reference and cast to (void *). Only one argument is allowed, 
-            so, for multiple arguments, create a structure that contains 
-            all of the arguments and pass a pointer to that structure.
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/
 qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
     qBool_t RetValue = qFalse;
 
@@ -391,62 +305,16 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
         #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
             Task->qPrivate.Entry = kernel.TaskEntries++;
         #endif
-        RetValue = qList_Insert( WaitingList, Task, qList_AtBack ); 
+        RetValue = qList_Insert( WaitingList, Task, QLIST_ATBACK ); 
     }
     return RetValue;  
 }
 /*============================================================================*/
-/*qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg )
-
-Add a task to the scheduling scheme.  This API creates a task with qDisabled 
-state by default , so this task will be oriented to be executed only, when 
-asynchronous events occurs. However, this behavior can be changed in execution
-time using <qTask_Set_Time> or <qTask_Set_Iterations>.
-
-Parameters:
-
-    - Task : A pointer to the task node.
-    - CallbackFcn : A pointer to a void callback method with a qEvent_t parameter
-                 as input argument.
-    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    - arg :      Represents the task arguments. All arguments must be passed by
-                 reference and cast to (void *). Only one argument is allowed, 
-                 so, for multiple arguments, create a structure that contains 
-                 all of the arguments and pass a pointer to that structure.
-     
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-     */
 qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
     return qOS_Add_Task( Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
 #if ( Q_FSM == 1)
 /*============================================================================*/
-/*qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, 
-                                    qTime_t Time, qState_t InitialTaskState, void *arg )
-
-Add a task to the scheduling scheme running a dedicated state-machine. 
-The task is scheduled to run every <Time> seconds in qPeriodic mode. The event info
-will be available as a generic pointer inside the <Data> field of the qSM_Handler_t argument.
-
-Parameters:
-    - Task : A pointer to the task node.
-    - m: A pointer to the Finite State-Machine (FSM) object    
-    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    - Time : Execution interval defined in seconds (floating-point format). 
-               For immediate execution (tValue = qTimeImmediate).
-    - InitialState : Specifies the initial operational state of the task 
-                    (qEnabled, qDisabled, qASleep or qAwake(implies qEnabled)).
-    - arg : Represents the task arguments. All arguments must be passed by
-                     reference and cast to (void *). Only one argument is allowed, 
-                     so, for multiple arguments, create a structure that contains 
-                     all of the arguments and pass a pointer to that structure.
- 
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/
 qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, qTime_t Time, qState_t InitialTaskState, void *arg ){
     qBool_t RetValue = qFalse;
 
@@ -466,21 +334,6 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Pr
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-/*qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority )
-
-Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
-as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.
-
-Parameters:
-
-    - Task : A pointer to the task node.
-    - cli: A pointer to the AT Command Line Inteface instance.
-    - Priority : Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-
-Return value:
-
-    Returns qTrue on success, otherwise returns qFalse;
-*/
 qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority ){    
     qBool_t RetValue = qFalse;
 
@@ -507,18 +360,6 @@ static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
 }
 #endif /* #if ( Q_ATCLI == 1) */
 /*============================================================================*/
-/*qBool_t qOS_Remove_Task( qTask_t * const Task )
-
-Remove the task from the scheduling scheme.
-
-Parameters:
-
-    - Task : A pointer to the task node.
-     
-Return value:
-
-    Returns qTrue if success, otherwise returns qFalse.;     
-    */
 qBool_t qOS_Remove_Task( qTask_t * const Task ){
     qBool_t RetValue = qFalse;
 
@@ -581,13 +422,6 @@ static void qOS_TriggerReleaseSchedEvent( void ){
 }
 #endif
 /*============================================================================*/
-/*void qOS_Run( void )
-    
-Executes the scheduling scheme. It must be called once after the task
-pool has been defined.
-
-  Note : This call keeps the application in an endless loop
-*/
 void qOS_Run( void ){
     do{           
         if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ){ /*check for ready tasks in the waiting-list*/
@@ -607,7 +441,7 @@ void qOS_Run( void ){
             }
         }
         if( SuspendedList->size > (size_t)0 ){  /*check for a non-empty suspended-list*/
-            (void)qList_Move( WaitingList, SuspendedList, qList_AtBack ); /*move the remaining suspended tasks to the waiting-list*/
+            (void)qList_Move( WaitingList, SuspendedList, QLIST_ATBACK ); /*move the remaining suspended tasks to the waiting-list*/
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
                 (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver ); /*preseve the entry order by sorting the new waiting-list layout*/
             #endif
@@ -639,7 +473,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
     static qBool_t xReady = qFalse;
     qBool_t RetValue = qFalse;
 
-    if( QLIST_WALKINIT == h->stage ){
+    if( qList_WalkInit == h->stage ){
         xReady = qFalse;
         #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
@@ -649,7 +483,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
             }     
         #endif          
     }
-    else if( QLIST_WALKTHROUGH == h->stage ){
+    else if( qList_WalkThrough == h->stage ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -712,7 +546,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
             (void)qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
-    else if( QLIST_WALKEND == h->stage ){ 
+    else if( qList_WalkEnd == h->stage ){ 
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             /*spread operation done, clean-up*/
             kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
@@ -780,7 +614,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
 /*============================================================================*/
 static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){    
     /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
-    if( QLIST_WALKTHROUGH == h->stage ){ /*#!OK: false-positive can be reported here*/
+    if( qList_WalkThrough == h->stage ){ /*#!OK: false-positive can be reported here*/
         qList_t *xList = (qList_t*)h->arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         qTaskFcn_t TaskActivities;
         qTrigger_t Event = byNoReadyTasks;
@@ -807,7 +641,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
                 }     
             #endif
             kernel.CurrentRunningTask = NULL;
-            (void)qList_Remove( xList, NULL, qList_AtFront ); /*remove the task from the ready-list*/
+            (void)qList_Remove( xList, NULL, QLIST_ATFRONT ); /*remove the task from the ready-list*/
             (void)qList_Insert( WaitingList, Task, QLIST_ATBACK );  /*and insert the task back to the waiting-list*/
             #if ( Q_QUEUES == 1) 
                 if( byQueueReceiver == Event ){
@@ -896,3 +730,4 @@ void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value ){
         Task->qPrivate.Flags &= ~flags; /*Clear bits*/
     }
 }
+/*============================================================================*/

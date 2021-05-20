@@ -32,15 +32,6 @@ void _qtrace_func( const char *loc, const char* fcn, const char *varname, const 
     }
 }
 /*============================================================================*/
-/*void qTrace_Set_OutputFcn( qPutChar_t fcn )
-
-This macro set the output method for debug/trace messages.
-
-Parameters:
-
-    - fcn : The basic output byte function
-
-*/ 
 void qTrace_Set_OutputFcn( qPutChar_t fcn ){
     qDebug = fcn;
 }

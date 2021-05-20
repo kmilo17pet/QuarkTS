@@ -3,18 +3,6 @@
 #if ( Q_RESPONSE_HANDLER == 1 )
 
 /*============================================================================*/
-/*void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax)
-
-Initialize the instance of the response handler object
-
-Parameters:
-
-    - obj : A pointer to the Response Handler object
-    - xLocBuff : A pointer to the memory block where the desired response
-                 will remain.
-    - nMax : The size of <xLocBuff>
-  
-*/
 void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
     if( NULL != obj ){
         obj->qPrivate.Pattern2Match = xLocBuff;
@@ -23,15 +11,6 @@ void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
     }
 }   
 /*============================================================================*/
-/*void qResponse_Reset( qResponse_t * const obj )
-
-Reset the Response Handler
-
-Parameters:
-
-    - obj : A pointer to the Response Handler object
-  
-*/
 void qResponse_Reset( qResponse_t * const obj ){
     if( NULL != obj ){
         obj->qPrivate.PatternLength = 0u;
@@ -41,43 +20,10 @@ void qResponse_Reset( qResponse_t * const obj ){
     }
 }
 /*============================================================================*/
-/*qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n )
- 
-Non-Blocking Response check
-
-Parameters:
-
-    - obj : A pointer to the Response Handler object
-    - Pattern: The data checked in the receiver ISR
-    - n : The length of the data pointer by <Pattern> 
-          (if Pattern is string, set <n> to 0 to auto-compute the length)
-  
-Return value:
-
-    qTrue if there is a response acknowledge, otherwise returns qFalse
-*/
 qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n ){
     return qResponse_ReceivedWithTimeout( obj, Pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
-/*qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t )
- 
-Non-Blocking Response check with timeout
-
-Parameters:
-
-    - obj : A pointer to the Response Handler object
-    - Pattern: The data checked in the receiver ISR
-    - n : The length of the data pointed by <Pattern> 
-          (if Pattern is string, set <n> to 0 to auto-compute the length)
-    - t : The timeout value
-  
-Return value:
-
-    qTrue if there is a response acknowledge,
-    qTimeoutReached if timeout t expires
-    otherwise returns qFalse
-*/
 qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t ){
     qBool_t RetValue = qFalse;
     
@@ -106,19 +52,6 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar )
-
-ISR receiver for the response handler
-
-Parameters:
-
-    - obj : A pointer to the Response Handler object
-    - rxchar: The byte-data from the receiver 
-
-Return value:
-
-    qTrue when the Response handler match the request from "qResponseReceived"
-*/
 qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar ){
     qBool_t RetValue = qFalse;
     

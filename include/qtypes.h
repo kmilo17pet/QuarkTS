@@ -1,4 +1,10 @@
-/*This file is part of the QuarkTS OS distribution.*/
+/*!
+* @file qtypes.h
+* @author J. Camilo Gomez C.
+* @version 1.45
+* @note This file is part of the QuarkTS distribution.
+* @brief type definitions for all OS interfaces
+*/
 #ifndef QTYPES_H
     #define QTYPES_H
 
@@ -22,6 +28,10 @@
     #endif
 
     #define     Q_UNUSED(arg)     (void)(arg)
+
+    /** @addtogroup  qtypes Base types and macros
+    *  @{
+    */
 
     #if ( Q_USE_STDINT_H  == 1 )
         #include <stdint.h>
@@ -81,5 +91,7 @@
     #define qRISING                 ( (qBool_t)0x03u )
     #define qFALLING                ( (qBool_t)0x04u )
     #define qUNKNOWN                ( (qBool_t)0xFFu )
+
+    /** @}*/
 
 #endif

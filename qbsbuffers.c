@@ -22,18 +22,6 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k ){
     return ( k < r )? ( k*2u ) : k;
 }
 /*============================================================================*/
-/*size_t qBSBuffer_Count( const qBSBuffer_t * const obj )
- 
-Query the number of elements in the BSBuffer(Byte-sized Buffer)
- 
-Parameters:
-
-    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
-  
-Return value:
-
-    Number of elements in the BSBuffer(Byte-sized Buffer)
-*/
 size_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     size_t RetValue = 0u;
     
@@ -46,18 +34,6 @@ size_t qBSBuffer_Count( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj )
- 
-Query the the full status of the BSBuffer(Byte-sized Buffer)
- 
-Parameters:
-
-    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
-  
-Return value:
-
-    qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
-*/
 qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qFalse;
     
@@ -67,18 +43,6 @@ qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj )
- 
-Query the the empty status of the BSBuffer(Byte-sized Buffer)
- 
-Parameters:
-
-    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
-  
-Return value:
-
-    qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
-*/
 qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj ){
     qBool_t RetValue = qTrue;
 
@@ -88,18 +52,6 @@ qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*uint8_t qBSBuffer_Peek( const qBSBuffer_t * const obj )
- 
-Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it
- 
-Parameters:
-
-    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
-  
-Return value:
-
-    byte of data, or zero if nothing in the list
-*/
 qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     qUINT8_t RetValue = 0x0u;
 
@@ -110,19 +62,6 @@ qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest )
- 
-Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
- 
-Parameters:
-
-    - obj : a pointer to the qBSBuffer(Byte-sized Buffer) object
-    - dest: the location where the data-byte will be written
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest ){
     qBool_t RetValue = qFalse;
 
@@ -135,19 +74,6 @@ qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n )
- 
-Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
- 
-Parameters:
-
-    - obj : A pointer to the qBSBuffer(Byte-sized Buffer) object
-    - dest: The location where the data will be written
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     qBool_t RetValue = qFalse;
 
@@ -164,19 +90,6 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n ){
     return RetValue;
 }
 /*============================================================================*/
-/*qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t data ){
- 
-Adds an element of data to the BSBuffer(Byte-sized Buffer)
-
-Parameters:
-
-    - obj : A pointer to the qBSBuffer(Byte-sized Buffer) object
-    - data: The data to be added
-  
-Return value:
-
-    qTrue on success, otherwise returns qFalse
-*/
 qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data ){
     qBool_t status = qFalse;
     if( NULL != obj ){ 
@@ -189,17 +102,6 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data ){
     return status;
 }
 /*============================================================================*/
-/*void qBSBuffer_Setup( qBSBuffer_t *const obj, volatile uint8_t *buffer, const size_t length ){
- 
-Initialize the BSBuffer(Byte-sized Buffer)
- 
-Parameters:
-
-    - obj : A pointer to the qBSBuffer(Byte-sized Buffer) object
-    - buffer: Block of memory or array of data
-    - length: The size of the buffer(Must be a power of two)
-  
-*/
 void qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length ){
     if( NULL != obj ){
         obj->qPrivate.head = 0u;
