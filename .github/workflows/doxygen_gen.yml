@@ -22,8 +22,8 @@ jobs:
       uses: mattnotmitt/doxygen-action@v1.3.1
       with:
         doxyfile-path: './doc/Doxygen'
-    - name: list dirs
-      run: ls -l          
+    - name: rm gitignore
+      run: rm .gitignore  
     - name: Deploy doc
       uses: peaceiris/actions-gh-pages@v3
       with:
