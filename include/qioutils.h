@@ -71,7 +71,7 @@
 
     /**
     * @brief Returns a pointer to the first occurrence of character in the C string 
-    * <s>s</b>.
+    * <b>s</b>.
     * The terminating null-character is considered part of the C string. Therefore, 
     * it can also be located in order to retrieve a pointer to the end of a string.
     * @param s Pointer to the null-terminated byte string to be examined
