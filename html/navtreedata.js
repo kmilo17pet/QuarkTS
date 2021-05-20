@@ -24,12 +24,24 @@
 */
 var NAVTREE =
 [
-  [ "API Reference", "index.html", ]
+  [ "API Reference", "index.html", [
+    [ "QuarkTS OS", "index.html", null ],
+    [ "Modules", "modules.html", "modules" ],
+    [ "Data Structures", "annotated.html", [
+      [ "Data Structures", "annotated.html", "annotated_dup" ],
+      [ "Data Structure Index", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
+    ] ]
+  ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"annotated.html",
+"group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
