@@ -2845,9 +2845,6 @@
             <name>$PROJ_DIR$\..\src\os\include\qatcli.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\src\os\include\qbackward.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\..\src\os\include\qbsbuffers.h</name>
         </file>
         <file>

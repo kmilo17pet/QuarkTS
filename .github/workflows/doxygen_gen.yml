@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        
+    - name: install arm-none-eabi-gcc
+      uses: fiam/arm-none-eabi-gcc@v1
+      with:
+        release: '10-2020-q4'
+    - name: check arm-none-eabi-gcc version
+      run: arm-none-eabi-gcc -v        
+    - name: make
+      run: make
+    - name: make test
+      run: make test
+  doxygen:
+    - name: Doxygen Action
+      uses: mattnotmitt/doxygen-action@v1.3.1
+      with:
+        working-directory: 'docout/'
+        doxyfile-path: 'doc/Doxygen'
+    - name: Deploy doc
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docout    

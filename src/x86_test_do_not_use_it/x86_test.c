@@ -87,7 +87,7 @@ qBool_t mylist_binremove( qList_ForEachHandle_t h ){
         case qList_WalkThrough:
             if( xnode->value & 1 ){
                 TEST_ASSERT_NOT_NULL( qList_Remove( h->arg, h->node, 0 ) );
-                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, h->node, qList_AtBack ) );
+                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, h->node, QLIST_ATBACK ) );
             }
             break;
         case qList_WalkEnd:
@@ -143,27 +143,27 @@ void test_qList_API(void){
     qList_SetMemoryAllocation( qMalloc, qFree );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_IsMember(&mylist, &n1) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n2, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n3, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n4, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n5, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n6, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n7, qList_AtBack ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n8, qList_AtBack ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n2, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n3, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n4, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n5, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n6, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n7, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n8, QLIST_ATBACK ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_IsMember(&mylist, &n1) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n9, qList_AtBack )  );
-    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, qList_AtBack ) ); /*node n9 its already a member*/
-    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, qList_AtBack ) ); 
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n9, QLIST_ATBACK )  );
+    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, QLIST_ATBACK ) ); /*node n9 its already a member*/
+    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, QLIST_ATBACK ) ); 
     xn.value = 50;
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), QLIST_ATBACK ) );
     xn.value =88;
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), qList_AtBack ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), QLIST_ATBACK ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Sort( &mylist, comparator ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
-    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, qList_AtBack ) );
-    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, qList_AtBack ) );
+    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, QLIST_ATBACK ) );
+    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, QLIST_ATBACK ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_binremove, &mylist, QLIST_FORWARD, NULL ) );
