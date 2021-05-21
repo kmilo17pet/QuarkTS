@@ -13,9 +13,7 @@ jobs:
     - name: Checkout repository and submodules
       uses: actions/checkout@v2
       with:
-        submodules: recursive
-    - name: list dirs
-      run: ls -l        
+        submodules: recursive      
     - name: create dirs
       run: mkdir docout
     - name: Doxygen Action

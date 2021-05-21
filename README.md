@@ -30,7 +30,7 @@ QuarkTS is an operating system that provides a modern environment to build stabl
 - Co-routines.
 - AT Command Line Interface (CLI)
 
-QuarkTS is developed using a formal and rigorous process framed in compliance of the MISRA C 2012 and CERT coding standard guidelines and complemented with multiple static-analysis checks targered to safe critical applications. 
+QuarkTS is developed using a formal and rigorous process framed in compliance of the MISRA C 2012 and CERT coding standard guidelines and complemented with multiple static-analysis checks targeted to safe critical applications. 
 
 ### Why cooperative?
 
@@ -42,7 +42,7 @@ The design goal of QuarkTS is to achieve its stated functionality using a small,
 
 ### Why should I choose it?
 
-QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer yet want to avoid the space and complexity of a full RTOS, but keeping the taste of a robust and safe one. 
+QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer, but want to avoid the space and complexity of a full RTOS, keeping the taste of a robust and safe one. 
 
 ## Cloning QuarkTS
 
