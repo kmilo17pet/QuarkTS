@@ -26,7 +26,7 @@ qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, siz
         obj->qPrivate.ItemSize = ItemSize;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /* Set the head to the start of the storage area */
-        obj->qPrivate.head = DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        obj->qPrivate.head = (qUINT8_t*)DataArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         qQueue_Reset( obj );
         RetValue = qTrue;
@@ -97,7 +97,7 @@ void* qQueue_Peek( const qQueue_t * const obj ){
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if( ItemsWaiting > 0u ){ 
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            RetValue = (void*)( obj->qPrivate.reader + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            RetValue = (qUINT8_t *)( obj->qPrivate.reader + obj->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if( RetValue >= obj->qPrivate.tail ){
                 RetValue = obj->qPrivate.head;

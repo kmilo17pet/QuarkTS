@@ -419,14 +419,14 @@
     #define qTask_Disable( Task )     qTask_Set_State( (Task), qDisabled )
 
     /**
-    * @brief Put the task into a enabled state.    
+    * @brief Put the task into an enabled state.    
     * @param Task Pointer to the task node.
     * @return none.
     */    
     #define qTask_Resume( Task )      qTask_Set_State( (Task), qEnabled )
 
     /**
-    * @brief Put the task into a enabled state.    
+    * @brief Put the task into an enabled state.    
     * @param Task Pointer to the task node.
     * @return none.
     */     

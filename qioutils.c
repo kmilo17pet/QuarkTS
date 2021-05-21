@@ -108,7 +108,7 @@ static char qIOUtil_NibbleToX( qUINT8_t value ){
 /*============================================================================*/
 void qIOUtil_SwapBytes( void *Data, const size_t n ){
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qUINT8_t *p = Data, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    qUINT8_t *p = (qUINT8_t*)Data, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     size_t lo, hi;
 
@@ -130,7 +130,7 @@ qBool_t qIOUtil_CheckEndianness( void ){
 void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP ){
     size_t i = 0u;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    char *xPtr = pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *xPtr = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
         while( (char)'\0' != *s ){
@@ -163,8 +163,8 @@ void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n ){
 void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP ){
     size_t i;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    char *cdata = Data; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-    char *xPtr = pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *cdata = (char*)Data; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *xPtr = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; ++i ){
@@ -181,8 +181,8 @@ void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t
 void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP ){
     size_t i;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    char *cdata = Data; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-    char *xPtr = pStorage; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *cdata = (char*)Data; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+    char *xPtr = (char*)pStorage; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     if( qTrue == AIP ){
         for( i = 0u ; i < n ; ++i ){

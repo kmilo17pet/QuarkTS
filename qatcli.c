@@ -102,7 +102,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Comm
                 Command->qPrivate.CommandCallback = Callback; /*install the callback*/
                 Command->qPrivate.CmdOpt = 0x0FFFu & CmdOpt; /*high nibble not used yet*/
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-                Command->qPrivate.Next = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+                Command->qPrivate.Next = (qATCLI_Command_t*)cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                 Command->param = param;
                 cli->qPrivate.First = Command; /*command inserted at the beginning of the list*/
@@ -120,7 +120,7 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload ){
     if( NULL != cli ){
         if( qTrue == reload ){
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-            Iterator = cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+            Iterator = (qATCLI_Command_t*)cli->qPrivate.First; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         } 
         else{ 

@@ -73,7 +73,7 @@
     #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1u ) )
 
     /** @brief A directive indicating that the task will run periodically every time its time has expired. */
-    #define qPeriodic               ( (qIteration_t)(-2147483648) )
+    #define qPeriodic               ( (qIteration_t)(-2147483647-1) )
 
     /** @brief Same as qPeriodic. A directive indicating that the task will run periodically every time its time has expired. */
     #define qIndefinite             ( qPeriodic )

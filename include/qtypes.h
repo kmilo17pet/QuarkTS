@@ -28,6 +28,7 @@
     #endif
 
     #define     Q_UNUSED(arg)     (void)(arg)
+    #define     Q_NONE
 
     /** @addtogroup  qtypes Base types and macros
     *  @{

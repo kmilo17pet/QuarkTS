@@ -168,7 +168,7 @@
     /*! @endcond */
 
     /*! @cond PRIVATE */
-    typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS(/*none*/) }_qSM_UnprotectedPublicData_t;
+    typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS( Q_NONE ) }_qSM_UnprotectedPublicData_t;
     typedef struct _qSM_pPublicData_s{ _qSM_HANDLER_FIELDS( const  ) }_qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;    
     typedef _qSM_ProtectedPublicData_t* const qSM_Handler_t;  

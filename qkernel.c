@@ -694,7 +694,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
    
     if( NULL != Task ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-         qList_t *xList = Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        qList_t *xList = (qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if( kernel.CurrentRunningTask == Task ){
             RetValue = qRunning;

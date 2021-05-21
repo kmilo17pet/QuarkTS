@@ -206,7 +206,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * 
  
     if( NULL != h->NextState ){ /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qStateMachine_Transition( m, h->NextState, h->TransitionHistory );
+        qStateMachine_Transition( m, (qSM_State_t*)h->NextState, h->TransitionHistory );
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         status = qSM_STATUS_SIGNAL_HANDLED; /*the signal is assumed to be handled if the transition occurs*/
     }
@@ -304,7 +304,7 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, q
         m->qPrivate.tTable = NULL;
         m->qPrivate.tEntries = 0u;
         /*subscribe the built-in top state*/
-        RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, childstart, qFalse );
+        RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, childstart, NULL );
         m->qPrivate.top.qPrivate.parent = NULL;
     }
     return RetValue;
