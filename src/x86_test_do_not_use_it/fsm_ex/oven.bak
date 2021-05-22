@@ -60,7 +60,7 @@ qSM_Status_t state_doorclosed_callback( qSM_Handler_t h ) {
     qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
     switch( h->Signal ) {
         case QSM_SIGNAL_START:
-            puts("   *dooropen");
+            puts("   *doorclosed");
             break;        
         case QSM_SIGNAL_ENTRY:
             puts("   ->doorclosed");
