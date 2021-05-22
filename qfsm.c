@@ -48,12 +48,12 @@ static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_Transit
     qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
     /*then, handle the required history mode*/
     if ( qSM_TRANSITION_NO_HISTORY == mHistory){
-        target->qPrivate.lastRunningChild = target->qPrivate.ChildStart; /*just restore the default transition*/
+        target->qPrivate.lastRunningChild = target->qPrivate.initState; /*just restore the default transition*/
     }
     else if( qSM_TRANSITION_SHALLOW_HISTORY == mHistory ){
         if( NULL != target->qPrivate.lastRunningChild ){
             /*restore the default transition in the last running nested state*/
-            target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.ChildStart;
+            target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.initState;
         }   
     }
     else{ 
@@ -287,7 +287,7 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
     return RetValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data ){
+qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const initState, qSM_SurroundingCallback_t surrounding, void *Data ){
     qBool_t RetValue = qFalse;
     if( ( NULL != m ) ){
         m->qPrivate.current = NULL;
@@ -304,18 +304,18 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, q
         m->qPrivate.tTable = NULL;
         m->qPrivate.tEntries = 0u;
         /*subscribe the built-in top state*/
-        RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, childstart, NULL );
+        RetValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topCallback, initState, NULL );
         m->qPrivate.top.qPrivate.parent = NULL;
     }
     return RetValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data ){
+qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const initState, void *Data ){
     qBool_t RetValue = qFalse;
     if( NULL != state ){
         state->qPrivate.Data = Data;
-        state->qPrivate.lastRunningChild = ChildStart;
-        state->qPrivate.ChildStart = ChildStart;
+        state->qPrivate.lastRunningChild = initState;
+        state->qPrivate.initState = initState;
         state->qPrivate.sCallback = StateFcn;
         if( NULL == parent ){
             state->qPrivate.parent = &m->qPrivate.top;
@@ -554,7 +554,7 @@ void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t attr
     if( NULL != s ){
         switch ( attr ){
             case qSM_ATTRIB_COMPOSITE_INITSTATE:
-                Attribute = s->qPrivate.ChildStart;    
+                Attribute = s->qPrivate.initState;    
                 break;
             case qSM_ATTRIB_COMPOSITE_LASTSTATE:   
                 Attribute = s->qPrivate.lastRunningChild;        

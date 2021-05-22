@@ -30,10 +30,13 @@ This file is part of the QuarkTS OS distribution.
 
 /* 
 Download the user manual here : https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf
+Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 */
 
 /** @mainpage QuarkTS OS
 * An open-source OS for small embedded applications.
+*
+* <a href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download user manual</a> 
 *
 * QuarkTS is an operating system that provides a modern environment to build stable 
 * and predictable event-driven multitasking embedded software. The OS is built on 
@@ -80,7 +83,7 @@ Download the user manual here : https://github.com/kmilo17pet/quarkts-usermanual
 * already available today, for example FreeRTOS or MicroC/OS-II, in fact, you should check 
 * these options first. However, due to its size and features, is intended to play in the 
 * space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want
-* more functionality than what existing task schedulers offer yet want to avoid the space
+* more functionality than what existing task schedulers offer, but want to avoid the space
 * and complexity of a full RTOS, but keeping the taste of a robust and safe one.
 */ 
 

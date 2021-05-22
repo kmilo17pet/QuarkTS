@@ -268,7 +268,7 @@
         struct _qSM_State_Private_s{
             struct _qSM_State_s *parent;                    /*< A pointer to the parent state*/
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
-            struct _qSM_State_s *ChildStart;                /*< The initial state of this parent*/
+            struct _qSM_State_s *initState;                 /*< The initial state of this parent*/
             qSM_StateCallback_t sCallback;                  /*< The state callback function*/
             void* Data;                                     /*< State data. Storage pointer*/
         }qPrivate;
@@ -362,12 +362,12 @@
     * @note This API also initializes the top state.
     * @param m A pointer to the FSM object.
     * @param topCallback The callback for the "Top" state
-    * @param childstart The first state to be executed (init-state or default transition). 
+    * @param initState The first state to be executed (init-state or default transition). 
     * @param surrounding The surrounding callback. To ignore pass NULL      
     * @param Data Represents the FSM arguments. User storage pointer. To ignore pass NULL.
     * @return Returns qTrue on Success, otherwise returns qFalse.
     */   
-    qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const childstart, qSM_SurroundingCallback_t surrounding, void *Data );
+    qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const initState, qSM_SurroundingCallback_t surrounding, void *Data );
     
     /**
     * @brief This function subscribes the FSM instance to a specific state with an associated 
@@ -378,13 +378,13 @@
     * @param StateFcn The handler function associated to the state.
     *
     * Prototype: <pre>qSM_Status_t xCallback( qSM_Handler_t h )</pre>
-    * @param ChildStart The first child-state to be executed if the subscribed 
+    * @param initState The first child-state to be executed if the subscribed 
     * state its a parent in an hierarchical pattern. (default transition).
     * To ignore pass NULL as argument.
     * @param Data State data. Storage pointer. To ignore pass NULL.
     * @return qTrue on success, otherwise return qFalse.
     */     
-    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const ChildStart, void *Data );
+    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const initState, void *Data );
        
     /**
     * @brief Install a transition table on the provided state machine.
