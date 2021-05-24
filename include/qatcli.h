@@ -47,7 +47,7 @@
 
 
     /*! @cond PRIVATE */
-    typedef volatile struct{
+    typedef volatile struct qATCLI_Input_s{
         char *Buffer;                       /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;            /*< Used to hold the index of the current input-buffer. */
         qIndex_t MaxIndex;                  /*< Max index  = (Size - 1) */

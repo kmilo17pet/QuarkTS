@@ -358,6 +358,7 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
     size_t i, n;
     qBool_t TransitionAllowed;
     qSM_Transition_t *iTransition;
+    qSM_State_t *iCurrent;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     qSM_Transition_t *table = (qSM_Transition_t *)m->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -365,7 +366,8 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
     for( i = 0; i < n; ++i ){
         iTransition = &table[ i ];  /*get the i-element from the table*/
         TransitionAllowed = qTrue; /*if no signal-guard available, allow the transition by default*/
-        if( ( CurrentState == iTransition->CurrentState ) && ( h->Signal == iTransition->xSignal ) ){ /*table entry match*/
+        iCurrent = ( NULL != iTransition->CurrentState )? iTransition->CurrentState : &m->qPrivate.top; 
+        if( ( CurrentState == iCurrent ) && ( h->Signal == iTransition->xSignal ) ){ /*table entry match*/
             if( NULL != iTransition->Guard ){ /*if signal-guard available, just run the guard function*/
                 /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
                 TransitionAllowed = iTransition->Guard( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
