@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('qatcli_8h_source.html',''); initResiza
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a">   46</a></span>&#160;<span class="preprocessor">    #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">volatile</span> <span class="keyword">struct</span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">volatile</span> <span class="keyword">struct </span>qATCLI_Input_s{</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">char</span> *Buffer;                       <span class="comment">/*&lt; Points to the user-defined storage area for the input. */</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">volatile</span> qIndex_t index;            <span class="comment">/*&lt; Used to hold the index of the current input-buffer. */</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        qIndex_t MaxIndex;                  <span class="comment">/*&lt; Max index  = (Size - 1) */</span></div>
