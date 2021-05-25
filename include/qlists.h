@@ -52,7 +52,7 @@
     * @brief A list object (Generic double-linked)
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qList_s{
         /*! @cond PRIVATE */
         qNode_MinimalFields;        /*< to allow "list of lists" aka "nested-lists"*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
@@ -80,7 +80,7 @@
     * @note The user must verify the members of this structure to operate 
     * correctly at each stage of the cycle.
     */
-    typedef struct{
+    typedef struct _qList_ForEachHandle_s{
         void *node;                     /**< Points to the node that is currently being processed*/   
         void *arg;                      /**< User storage pointer */
         qList_WalkStage_t stage;        /**< Member that indicates the stage of the iterative cycle*/
@@ -98,7 +98,7 @@
     * @note The user must verify the input nodes to return a boolean value
     * that determines the order in which the nodes should be ordered
     */
-    typedef struct{
+    typedef struct _qList_CompareHandle_s{
         const void *n1, *n2;
     }
     #ifdef DOXYGEN
@@ -304,7 +304,7 @@
     /**
     * @brief Typedef to hold a list-iterator instance.
     */
-    typedef struct{
+    typedef struct _qList_Iterator_s{
         /*! @cond PRIVATE */
         qList_Node_t *next;             /*< Where the iterator is currently pointing. */
         qList_Direction_t direction;    /*< How the iterator scrolls through the list, QLIST_FORWARD or QLIST_BACKWARD. */

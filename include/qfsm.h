@@ -278,7 +278,7 @@
     /**
     * @brief This structure should be used to define an item in a timeout-specification table. 
     */
-    typedef struct{
+    typedef struct _qSM_TimeoutStateDefinition_s{
         qSM_State_t *xState;                                /**< A pointer to the state where the timeout will operate*/
         qTime_t xTimeout;                                   /**< The value that the timeout will use*/
         qSM_TimeoutSpecOptions_t options;                   /**< Timeout options. This includes the index of the timeout to be used */
@@ -288,7 +288,7 @@
     * @brief A FSM Timeout specification object
     * @note Do not access any member of this structure directly. 
     */    
-    typedef struct{
+    typedef struct _qSM_TimeoutSpec_s{
         /*! @cond PRIVATE */
         qSM_TimeoutStateDefinition_t *spec;                 /*< a pointer to the state-timeout lookup table*/
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/     
@@ -325,7 +325,7 @@
     /**
     * @brief This structure should be used to define an item in the state transition table. 
     */
-    typedef struct{
+    typedef struct _qSM_Transition_s{
         qSM_State_t *CurrentState;                          /**< A pointer to the state where this transition takes place*/
         qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
         qSM_SignalAction_t Guard;                           /**< The signal guard/action*/

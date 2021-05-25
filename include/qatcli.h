@@ -47,7 +47,7 @@
 
 
     /*! @cond PRIVATE */
-    typedef volatile struct qATCLI_Input_s{
+    typedef volatile struct _qATCLI_Input_s{
         char *Buffer;                       /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;            /*< Used to hold the index of the current input-buffer. */
         qIndex_t MaxIndex;                  /*< Max index  = (Size - 1) */
@@ -86,7 +86,7 @@
     * @note Should be used only in command-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct{ /*public data only available inside the command callback*/
+    typedef struct _qATCLI_PublicData_s{ /*public data only available inside the command callback*/
         /**
         * @brief  A pointer to the calling AT Command object. 
         */  

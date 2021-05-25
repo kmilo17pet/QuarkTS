@@ -55,7 +55,7 @@
     * @brief A Memory Pool object
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qMemMang_Pool_s{
         /*! @cond PRIVATE */
         struct _qMemMang_Pool_Private_s{
             qMemMang_BlockConnect_t *End;           /*< Points to the last block of the list. */

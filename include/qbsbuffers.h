@@ -27,7 +27,7 @@
     * @brief A BSBuffer(Byte-sized buffer) object
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qBSBuffer_s{
         /*! @cond PRIVATE */
         struct _qBSBuffer_Private_s{
             volatile qUINT8_t *buffer;  /*< Points to the begining of the buffer storage area. */

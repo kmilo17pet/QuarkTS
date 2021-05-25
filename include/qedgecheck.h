@@ -59,7 +59,7 @@
     * @brief An I/O edge check object.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qEdgeCheck_s{
         /*! @cond PRIVATE */
         struct _qEdgeCheck_Private_s{
             qEdgeCheck_IONode_t *Head;          /*< The first ionode in the list. */

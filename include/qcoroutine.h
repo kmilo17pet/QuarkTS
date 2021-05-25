@@ -30,7 +30,7 @@
     
     /* Please don't access any members of this structure directly */
     /*! @cond PRIVATE */
-    typedef struct{
+    typedef struct _qCR_Instance_s{
         _qCR_TaskPC_t instr;    /*< Used to hold the local continuation. */
         _qCR_TaskPC_t prev;     /*< Temporally holds the local continuation during a coroutine suspension*/
         qSTimer_t crdelay;      /*< Used to hold the required delay for <b>qCR_Delay</b>. */
@@ -41,7 +41,7 @@
     typedef _qCR_Instance_t *qCR_Handle_t;
 
     /** @brief A typedef to instantiate a Co-Routine Semaphore*/
-    typedef struct { 
+    typedef struct _qCR_Semaphore_s{ 
         /*! @cond PRIVATE */
         size_t count; 
         /*! @endcond PRIVATE */

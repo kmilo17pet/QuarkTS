@@ -151,7 +151,7 @@
     * @note Should be used only in task-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct{
+    typedef struct _qEvent_s{
         /** 
         * @brief Task arguments defined at the time of its creation. (Storage-Pointer) 
         */
@@ -211,7 +211,7 @@
     * @brief A task node object
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{ /*Task node definition*/
+    typedef struct _qTask_s{ /*Task node definition*/
         /*! @cond PRIVATE */
         struct _qTask_Private_s{    /*Task control block - TCB*/
             qNode_MinimalFields;

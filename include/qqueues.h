@@ -31,7 +31,7 @@
     * @brief A Queue object
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qQueue_s{
         /*! @cond PRIVATE */
         struct _qQueue_Private_s{
             qUINT8_t *head;			        /*< Points to the beginning of the queue storage area. */

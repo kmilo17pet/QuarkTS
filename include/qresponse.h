@@ -31,7 +31,7 @@
     * @brief A Response Handler object.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct{
+    typedef struct _qResponse_s{
         /*! @cond PRIVATE */
         struct _qResponse_Private_s{
             char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */

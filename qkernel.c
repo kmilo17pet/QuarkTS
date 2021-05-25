@@ -12,7 +12,7 @@
 
 /*an item of the priority-queue*/
 /*! @cond PRIVATE */
-typedef struct{
+typedef struct _qQueueStack_s{
     qTask_t *Task;      /*< A pointer to the task. */
     void *QueueData;    /*< The data to queue. */
 }qQueueStack_t;  
@@ -20,12 +20,12 @@ typedef struct{
 typedef qUINT32_t qCoreFlags_t;
 
 
-typedef struct{
+typedef struct _qNotificationSpreader_s{
     qTask_NotifyMode_t mode;
     void *eventdata;
 }qNotificationSpreader_t;
 
-typedef struct{ /*KCB(Kernel Control Block) definition*/
+typedef struct _qKernelControlBlock_s{ /*KCB(Kernel Control Block) definition*/
     qList_t CoreLists[ Q_PRIORITY_LEVELS + 2 ];
     qTaskFcn_t IDLECallback;                            /*< The callback function that represents the idle-task activities. */
     qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */    
