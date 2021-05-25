@@ -98,36 +98,60 @@ $(document).ready(function(){initNavTree('qflm_8h_source.html',''); initResizabl
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="comment">/*General purpose Function-like Macros */</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #define qFLM_BitsSet(Register, Bits)                    (Register) |= (Bits)</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">    #define qFLM_BitsClear(Register, Bits)                  (Register) &amp;= ~(Bits)</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">    #define qFLM_BitSet(Register, Bit)                      (Register) |= (1 &lt;&lt; (Bit))</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    #define qFLM_BitClear(Register, Bit)                    (Register) &amp;= (~(1&lt;&lt; (Bit)))</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">    #define qFLM_BitRead(Register,Bit)                      ((qFalse == ((Register)&amp; (1&lt;&lt;(Bit))))? qFalse : qTrue)</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">    #define qFLM_BitToggle(Register,Bit)                    ((Register)^= (1&lt;&lt;(Bit)))</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">    #define qFLM_BitWrite(Register, Bit, Value)             ((Value) ? qFLM_BitSet((Register),(Bit)) : qFLM_BitClear((Register),(Bit)))</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    #define qFLM_BitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)       (qUINT8_t)( ((b7)&lt;&lt;7) + ((b6)&lt;&lt;6) + ((b5)&lt;&lt;5) + ((b4)&lt;&lt;4) + ((b3)&lt;&lt;3) + ((b2)&lt;&lt;2) + ((b1)&lt;&lt;1) + ((b0)&lt;&lt;0) )</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">    #define qFLM_ByteHighNibble(Register)                   ((qUINT8_t)((Register)&gt;&gt;4))</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">    #define qFLM_ByteLowNibble(Register)                    ((qUINT8_t)((Register)&amp;0x0F))</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">    #define qFLM_ByteMergeNibbles(H,L)                      ((qUINT8_t)(((H)&lt;&lt;4)|(0x0F&amp;(L))))    </span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">    #define qFLM_WordHighByte(Register)                     ((qUINT8_t)((Register)&gt;&gt;8))</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">    #define qFLM_WordLowByte(Register)                      ((qUINT8_t)((Register)&amp;0x00FF))</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    #define qFLM_WordMergeBytes(H,L)                        ((qUINT16_t)(((H)&lt;&lt;8)|(L)))</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">    #define qFLM_DWordHighWord(Register)                    ((qUINT16_t)((Register) &gt;&gt; 16))</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    #define qFLM_DWordLowWord(Register)                     ((qUINT16_t)((Register) &amp; 0xFFFF))</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #define qFLM_DWordMergeWords(H,L)                       ((qUINT32_t)(((qUINT32_t)(H) &lt;&lt; 16 ) | (L) ) )</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">    #define qFLM_Clip(X, Max, Min)                          (((X) &lt; (Min)) ? (Min) : (((X) &gt; (Max)) ? (Max) : (X)))</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">    #define qFLM_ClipUpper(X, Max)                          (((X) &gt; (Max)) ? (Max) : (X))</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">    #define qFLM_ClipLower(X, Min)                          (((X) &lt; (Min)) ? (Min) : (X))</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">    #define qFLM_IsBetween(X, Low, High)                    ((qBool_t)((X) &gt;= (Low) &amp;&amp; (X) &lt;= (High)))</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">    #define qFLM_Min(a,b)                                   (((a)&lt;(b))?(a):(b))</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">    #define qFLM_Max(a,b)                                   (((a)&gt;(b))?(a):(b))</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">    #define qFLM_ArraySize(x)                               (sizeof(x) / sizeof((x)[0]))</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    #define qFLM_BitsSet(Register, Bits)                    (Register) |= (Bits)</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    #define qFLM_BitsClear(Register, Bits)                  (Register) &amp;= ~(Bits)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">    #define qFLM_BitSet(Register, Bit)                      (Register) |= (1 &lt;&lt; (Bit))</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">    #define qFLM_BitClear(Register, Bit)                    (Register) &amp;= (~(1&lt;&lt; (Bit)))</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">    #define qFLM_BitRead(Register,Bit)                      ((qFalse == ((Register)&amp; (1&lt;&lt;(Bit))))? qFalse : qTrue)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">    #define qFLM_BitToggle(Register,Bit)                    ((Register)^= (1&lt;&lt;(Bit)))</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">    #define qFLM_BitWrite(Register, Bit, Value)             ((Value) ? qFLM_BitSet((Register),(Bit)) : qFLM_BitClear((Register),(Bit)))</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">    #define qFLM_BitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)       (qUINT8_t)( ((b7)&lt;&lt;7) + ((b6)&lt;&lt;6) + ((b5)&lt;&lt;5) + ((b4)&lt;&lt;4) + ((b3)&lt;&lt;3) + ((b2)&lt;&lt;2) + ((b1)&lt;&lt;1) + ((b0)&lt;&lt;0) )</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    #define qFLM_ByteHighNibble(Register)                   ((qUINT8_t)((Register)&gt;&gt;4))</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">    #define qFLM_ByteLowNibble(Register)                    ((qUINT8_t)((Register)&amp;0x0F))</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">    #define qFLM_ByteMergeNibbles(H,L)                      ((qUINT8_t)(((H)&lt;&lt;4)|(0x0F&amp;(L))))    </span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">    #define qFLM_WordHighByte(Register)                     ((qUINT8_t)((Register)&gt;&gt;8))</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">    #define qFLM_WordLowByte(Register)                      ((qUINT8_t)((Register)&amp;0x00FF))</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">    #define qFLM_WordMergeBytes(H,L)                        ((qUINT16_t)(((H)&lt;&lt;8)|(L)))</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">    #define qFLM_DWordHighWord(Register)                    ((qUINT16_t)((Register) &gt;&gt; 16))</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">    #define qFLM_DWordLowWord(Register)                     ((qUINT16_t)((Register) &amp; 0xFFFF))</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">    #define qFLM_DWordMergeWords(H,L)                       ((qUINT32_t)(((qUINT32_t)(H) &lt;&lt; 16 ) | (L) ) )</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">    #define qFLM_Clip(X, Min, Max)                          (((X) &lt; (Min)) ? (Min) : (((X) &gt; (Max)) ? (Max) : (X)))</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">    #define qFLM_ClipUpper(X, Max)                          (((X) &gt; (Max)) ? (Max) : (X))</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">    #define qFLM_ClipLower(X, Min)                          (((X) &lt; (Min)) ? (Min) : (X))</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">    #define qFLM_IsBetween(X, Low, High)                    ((qBool_t)((X) &gt;= (Low) &amp;&amp; (X) &lt;= (High)))</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">    #define qFLM_Min(a,b)                                   (((a)&lt;(b))?(a):(b))</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="preprocessor">    #define qFLM_Max(a,b)                                   (((a)&gt;(b))?(a):(b))</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">    #define qFLM_ArraySize(x)                               (sizeof(x) / sizeof((x)[0]))</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -103,14 +103,14 @@ $(document).ready(function(){initNavTree('qcoroutine_8h_source.html',''); initRe
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="group___co-_routines.html#gacd57e0fda0a5e65cc208419f1c36d7f9">   29</a></span>&#160;<span class="preprocessor">    #define qCR_Position_t static _qCR_TaskPC_t</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">/* Please don&#39;t access any members of this structure directly */</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qCR_Instance_s{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        _qCR_TaskPC_t instr;    <span class="comment">/*&lt; Used to hold the local continuation. */</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        _qCR_TaskPC_t prev;     <span class="comment">/*&lt; Temporally holds the local continuation during a coroutine suspension*/</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="structq_s_timer__t.html">qSTimer_t</a> crdelay;      <span class="comment">/*&lt; Used to hold the required delay for &lt;b&gt;qCR_Delay&lt;/b&gt;. */</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }_qCR_Instance_t;</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="group___co-_routines.html#gafc285a882ecb225cffa4f5dee1479aa5">   41</a></span>&#160;    <span class="keyword">typedef</span> _qCR_Instance_t *<a class="code" href="group___co-_routines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structq_c_r___semaphore__t.html">   44</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>{ </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structq_c_r___semaphore__t.html">   44</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qCR_Semaphore_s{ </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">size_t</span> count; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }<a class="code" href="structq_c_r___semaphore__t.html">qCR_Semaphore_t</a>; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    </div>
