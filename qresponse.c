@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qresponse.h"
 
 #if ( Q_RESPONSE_HANDLER == 1 )

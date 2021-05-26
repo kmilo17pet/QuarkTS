@@ -15,7 +15,7 @@
     #endif
 
 
-    /** @addtogroup  Clock
+    /** @addtogroup qclock
     * @brief Clock and time manipulation interface used by the entire OS.
     * @{
     */

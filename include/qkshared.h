@@ -1,7 +1,7 @@
 /*!
  * @file qkshared.h
  * @author J. Camilo Gomez C.
- * @version 1.02
+ * @version 1.03
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel shared interfaces
  **/
@@ -15,23 +15,14 @@
     extern "C" {
     #endif
    
+    /** @cond */ 
+
     /* Task flags
     MSB---------------------------------------------------------------------------------------------------------------------------------------------------------LSB
     | (31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
     |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    #define QTASK_COREBITS_RMASK        ( 0x000000FFuL )	 
-    #define QTASK_COREBITS_WMASK        ( 0xFFFFFF00uL )
-    #define QTASK_COREBITS_OFFSET       ( 0 )
-
-    #define QTASK_STATEBITS_RMASK       ( 0x00000F00uL )
-    #define QTASK_STATEBITS_WMASK       ( 0xFFFFF0FFuL )
-    #define QTASK_STATEBITS_OFFSET      ( 8 )
-
-    #define QTASK_EVENTFLAGS_RMASK      ( 0xFFFFF000uL )
-    #define QTASK_EVENTFLAGS_WMASK      ( 0x00000FFFuL )
-    #define QTASK_EVENTFLAGS_OFFSET     ( 12 )
-    
+    #define QTASK_EVENTFLAGS_RMASK      ( 0xFFFFF000uL )   
     #define QTASK_QUEUEFLAGS_MASK       ( 0x0000003CuL )
 
     #define QTASK_BIT_INIT              ( 0x00000001uL )  
@@ -56,6 +47,8 @@
 
     extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag );
     extern void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value );
+
+    /** @endcond */
 
     #ifdef __cplusplus
     }

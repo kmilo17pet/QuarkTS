@@ -16,7 +16,7 @@
     #endif
 
 
-    /** @addtogroup  Critical
+    /** @addtogroup qcritical
     * @brief APIs to handle entry/exit actions in critical sections.
     *  @{
     */

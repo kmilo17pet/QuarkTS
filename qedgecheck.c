@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qedgecheck.h"
 
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )

@@ -15,7 +15,7 @@
     extern "C" {
     #endif
 
-    /** @addtogroup  Lists
+    /** @addtogroup qlists
      * @brief API to create and manage double-linked generic lists.
      *  @{
      */
@@ -99,7 +99,8 @@
     * that determines the order in which the nodes should be ordered
     */
     typedef struct _qList_CompareHandle_s{
-        const void *n1, *n2;
+        const void *n1;                 /**< Points to the node that is currently being processed*/  
+        const void *n2;                 /**< Points to the node that is currently being processed*/ 
     }
     #ifdef DOXYGEN
     qList_CompareHandle_t;

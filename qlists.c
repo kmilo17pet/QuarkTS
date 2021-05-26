@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qlists.h"
 
 static qList_Node_t* qList_NodeInit( void * const node );

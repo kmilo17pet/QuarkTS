@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qkernel.h"
 #include "qkshared.h" /*kernel shared methods*/
 
@@ -97,7 +102,7 @@ void qOS_DummyTask_Callback( qEvent_t e ){
     qIndex_t i;
     qList_Initialize( SuspendedList );
     qList_Initialize( WaitingList );
-    for( i = (qIndex_t)0; i< (qIndex_t)Q_PRIORITY_LEVELS; i++ ){
+    for( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ){
         qList_Initialize( &ReadyList[ i ] );
     }
     #if ( Q_SETUP_TIME_CANONICAL != 1 )

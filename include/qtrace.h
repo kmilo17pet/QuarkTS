@@ -64,7 +64,7 @@
 
     #define _qAT() ":" _qTOSTRING(__LINE__) " "
 
-    /** @addtogroup  Trace
+    /** @addtogroup qtrace
     * @brief API interfaces to print out trace and debug messages.
     *  @{
     */

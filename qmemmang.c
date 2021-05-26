@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qmemmang.h"
 
 #if ( Q_MEMORY_MANAGER == 1)

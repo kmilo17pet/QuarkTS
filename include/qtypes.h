@@ -30,10 +30,6 @@
     #define     Q_UNUSED(arg)     (void)(arg)
     #define     Q_NONE
 
-    /** @addtogroup  qtypes Base types and macros
-    *  @{
-    */
-
     #if ( Q_USE_STDINT_H  == 1 )
         #include <stdint.h>
         /*Unsigned types*/
@@ -57,40 +53,129 @@
 
     #endif
 
+    /** \addtogroup  qtypes
+    *  @{
+    */
+
+    /** 
+    * @brief A type-def to instantiate a byte variable
+    */
     typedef qUINT8_t qByte_t;
+
+    /** 
+    * @brief A type-def to instantiate a integer-base variable
+    * @note Compiler implementation-defined
+    */    
     typedef int qBase_t;
-    /*Floating-point types*/
+
+    /** 
+    * @brief A type-def to instantiate a single-precision variable of 32-bits.
+    */   
     typedef float qFloat32_t;  /*this is not always true in some compilers*/   
+
+    /** 
+    * @brief A type-def to instantiate a double-precision variable of 64-bits.
+    */       
     typedef double qFloat64_t; /*this is not always true in some compilers*/   
     
+    /** 
+    * @brief A type-def to instantiate a variable to hold the priority value of a task.
+    */     
     typedef qUINT8_t qPriority_t;
+
+    /** 
+    * @brief A type-def to instantiate a variable that hold the number of task iterations.
+    */       
     typedef qINT32_t qIteration_t;
+
+    /** 
+    * @brief A type-def to instantiate an OS state value.
+    */  
     typedef qUINT8_t qState_t;
+ 
+    /** 
+    * @brief A type-def to instantiate an OS boolean variable.
+    */  
     typedef qUINT8_t qBool_t;
+
+    /** 
+    * @brief A type-def to instantiate an OS index variable.
+    */  
     typedef size_t qIndex_t; /*better portability*/
+
+    /** 
+    * @brief A type-def to instantiate a variable that hold the number of task cycles.
+    */        
     typedef qUINT32_t qCycles_t;
     
+    /** 
+    * @brief A boolean value that represents false/Off/Low.
+    */     
     #define qFalse                  ( (qBool_t)0x00u )
+
+    /** 
+    * @brief A boolean value that represents true/On/High.
+    */     
     #define qTrue                   ( (qBool_t)0x01u )
+
+    /** 
+    * @brief A state value that enables a task.
+    */      
     #define qEnabled                ( (qState_t)0x01u )
+
+    /** 
+    * @brief A state value that disables a task.
+    */     
     #define qDisabled               ( (qState_t)0x00u )
+
+    /** 
+    * @brief A state value that awakes a task.
+    */      
     #define qAwake                  ( 2u )
+
+    /** 
+    * @brief A state value that put a task in sleep mode.
+    */  
     #define qAsleep                 ( 3u )
+
+    /** 
+    * @brief An operation value that links an object to a task.
+    */  
+    #define qLink                   ( qTrue )
+
+    /** 
+    * @brief An operation value that unlink an object from a task.
+    */       
+    #define qUnLink                 ( qFalse )
+
+    /** @cond */ 
     #define qIgnore                 ( (qBool_t)0xFE )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )  
-    #define qLink                   ( qTrue )
     #define qATTACH                 ( qTrue )
     #define qDETACH                 ( qFalse )
     #define qAttach                 ( qTrue )
-    #define qDetach                 ( qFalse )    
-    #define qUnLink                 ( qFalse )
-    #define qON                     ( qTrue )
-    #define qOFF                    ( qFalse )
-    
+    #define qDetach                 ( qFalse )   
+    /** @endcond */ 
+
+    /** 
+    * @brief A status value that indicates a response timeout.
+    */     
     #define qRESPONSETIMEOUT        ( (qBool_t)0x02u )
+
+    /** 
+    * @brief A status value that indicates a rising-edge condition.
+    */         
     #define qRISING                 ( (qBool_t)0x03u )
+
+    /** 
+    * @brief A status value that indicates a falling-edge condition.
+    */        
     #define qFALLING                ( (qBool_t)0x04u )
+
+    /** 
+    * @brief A status value that indicates an unknown condition.
+    */       
     #define qUNKNOWN                ( (qBool_t)0xFFu )
 
     /** @}*/

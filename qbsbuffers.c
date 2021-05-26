@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qbsbuffers.h"
 
 #if ( Q_BYTE_SIZED_BUFFERS ==1 )

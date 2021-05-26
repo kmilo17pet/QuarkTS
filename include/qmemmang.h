@@ -38,7 +38,7 @@
     #endif    
 
 
-    /** @addtogroup  qmemmang Memory management
+    /** @addtogroup qmemmang
     * @brief API interface for the Memory Management module.
     *  @{
     */
@@ -144,7 +144,7 @@
     * be performed in the selected memory pool.
     * If <b>ptr</b> is a null pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.
-    * The behavior is undefined if the value of ptr does not equal a value returned 
+    * The behavior is undefined if the value of <b>ptr</b>  does not equal a value returned 
     * earlier by <b>qMalloc</b>.
     * The behavior is undefined if the memory area referred to by <b>ptr</b> has already been
     * deallocated, that is, <b>qFree</b> has already been called with <b>ptr</b> as the argument 

@@ -28,7 +28,7 @@
     extern "C" {
     #endif
 
-    /** @addtogroup  Tasks
+    /** @addtogroup qtaskmanip
     * @brief API interface to manage tasks.
     *  @{
     */
@@ -252,6 +252,11 @@
         }qQueueLinkMode_t;
     #endif
 
+    /** @addtogroup qnot
+    * @brief API interface for task notifications
+    *  @{
+    */
+
     /**
     * @brief An enum to define the notification modes for a task.
     */
@@ -297,6 +302,8 @@
     * @return qTrue if the function asserts, otherwise returns qFalse.
     */  
     qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
+
+    /** @}*/
 
     /**
     * @brief Retrieve the task operational state.
@@ -493,6 +500,11 @@
     #endif 
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
+        /** @addtogroup qeventflags
+        * @brief API interface for the built-in-task Event-Flags.
+        *  @{
+        */
+
         /**
         * @brief Modify the EventFlags for the provided task.  
         * @note Any EventFlag set will cause a task activation.
@@ -533,6 +545,8 @@
         * @return qTrue if the condition is meet, otherwise return qFalse.
         */           
         qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
+
+        /** @}*/
     #endif
     
     /** @}*/

@@ -1,3 +1,8 @@
+/*!
+ * @author J. Camilo Gomez C.
+ * @note This file is part of the QuarkTS distribution.
+ **/
+
 #include "qtrace.h"
 
 #if ( Q_TRACE_VARIABLES ==1 )

@@ -18,7 +18,7 @@
         #define Q_BYTE_SIZED_BUFFERS    ( 1 )
     #endif
 
-    /** @addtogroup  bsbuffers Byte-Sized Buffers
+    /** @addtogroup qbsbuffers Byte-Sized Buffers
      * @brief An interrupt-safe byte-sized ring buffer interface.
      *  @{
      */

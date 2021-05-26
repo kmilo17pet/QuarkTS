@@ -15,7 +15,7 @@
     extern "C" {
     #endif
     
-    /** @addtogroup  qstimer Software Timers (STimers)
+    /** @addtogroup qstimers Software Timers (STimers)
     * @brief API interface for the Software-Timers module.
     *  @{
     */

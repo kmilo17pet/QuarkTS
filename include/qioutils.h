@@ -30,7 +30,7 @@
 
     #define Q_IOUTIL_MAX_STRLEN      ( (size_t)512 )
 
-    /** @addtogroup  ioutils I/O Utils
+    /** @addtogroup qioutils I/O Utils
     * @brief API for input/output utilities and safe string interfaces.
     *  @{
     */   

@@ -56,7 +56,7 @@
         #error Q_PRIORITY_LEVELS must be defined to be greater than or equal to 1.
     #endif    
 
-    /** @addtogroup  Kernel
+    /** @addtogroup qtaskcreation
      * @brief Kernel API interface to create/remove tasks and perform special OS operations.
      *  @{
      */
@@ -125,6 +125,10 @@
         void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback );
     #endif       
 
+    /** @addtogroup qnot
+    *  @{
+    */
+
     /**
     * @brief Try to spread a notification among all the tasks in the scheduling scheme
     * @note Operation will be performed in the next scheduling cycle. 
@@ -133,6 +137,7 @@
     * @return qTrue if success. qFalse if any other spread operation is in progress.
     */
     qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode );
+    /** @}*/
 
     /**
     * @brief Add a task to the scheduling scheme. The task is scheduled to run every <b>Time</b> 

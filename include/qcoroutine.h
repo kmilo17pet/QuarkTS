@@ -15,7 +15,7 @@
     extern "C" {
     #endif
 
-    /** \addtogroup  Co-Routines
+    /** \addtogroup  qcoroutines
     * @brief API interface for the Co-Routine module.
     *  @{
     */

@@ -20,7 +20,7 @@
         #define Q_EDGE_CHECK_IOGROUPS       ( 1 )
     #endif
 
-    /** @addtogroup  qedgecheck I/O Groups for edge checking
+    /** @addtogroup qedgecheck I/O Groups for edge checking
     * @brief An interface to manage and simplify the value(with edge-checking) of incoming digital-signal groups.
     *  @{
     */

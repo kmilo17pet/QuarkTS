@@ -1,9 +1,17 @@
+/*!
+ * @file QuarkTS.h
+ * @author J. Camilo Gomez C.
+ * @version 2.03
+ * @note This file is part of the QuarkTS distribution.
+ * @brief Global inclusion header 
+ **/
+
 /*
 QuarkTS V7.0.4- An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant    
 
-Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+Copyright (C) 2012 Eng. Juan Camilo Gómez Cadavid MSc. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -131,3 +139,122 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
     #endif
 
 #endif
+
+/**
+*  @defgroup qos Operative System
+*  This is the second group
+*/
+ 
+/**
+*  @defgroup qtaskcreation Scheduler Interface
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qtaskmanip Managing tasks
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qpriv Inter-Task communication
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qqueues Queues
+*  @ingroup qpriv 
+*/
+
+/**
+*  @defgroup qnot Notifications
+*  @ingroup qpriv 
+*/
+
+/**
+*  @defgroup qeventflags Event Flags
+*  @ingroup qpriv 
+*/
+
+/**
+*  @defgroup qclock Clock
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qcritical Critical
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qtypes Types and macros
+*  @ingroup qos 
+*/
+
+/**
+*  @defgroup qmodules Kernel Modules
+*  This is the second group
+*/
+
+/**
+*  @defgroup qfsm Finite State Machines
+*  @ingroup qmodules
+*/
+
+/**
+*  @defgroup qstimers Software-Timers
+*  @ingroup qmodules
+*/
+
+/**
+*  @defgroup qcoroutines Co-Routines
+*  @ingroup qmodules
+*/
+
+/**
+*  @defgroup qatcli AT Command Line Interface
+*  @ingroup qmodules
+*/
+
+/**
+*  @defgroup qmemmang Memory Management
+*  @ingroup qmodules
+*/
+
+/**
+*  @defgroup qutility Utilities
+*/
+
+/**
+*  @defgroup qlists Generic double-linked lists
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qbsbuffers Byte-Sized buffers
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qedgecheck I/O Groups for edge checking
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qioutils I/O Utils
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qresponse Response handler
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qtrace Trace
+*  @ingroup qutility
+*/
+
+/**
+*  @defgroup qflm General purpose macros
+*  @ingroup qutility
+*/

@@ -22,7 +22,7 @@
         #define Q_QUEUES        ( 1 )
     #endif
 
-    /** @addtogroup  Queues
+    /** @addtogroup qqueues
     * @brief API interface to create and handle queues.
     * @{
     */

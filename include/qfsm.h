@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.25
+ * @version 5.26
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -334,7 +334,7 @@
     }qSM_Transition_t;
     
     /**
-    * @brief This enumeration defines the attributes that can be acquired for an FSM or a state.
+    * @brief This enumeration defines the attributes that can be acquired for a FSM or a state.
     */
     typedef enum{
         qSM_ATTRIB_STATE_TOP,                               /**< Only for qStateMachine_Get_Machine : Get a pointer to the top state*/

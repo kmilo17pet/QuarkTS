@@ -1,4 +1,10 @@
-/*This file is part of the QuarkTS distribution.*/
+/*!
+ * @file qflm.h
+ * @author J. Camilo Gomez C.
+ * @version 1.41
+ * @note This file is part of the QuarkTS distribution.
+ * @brief General purpose Function-like Macros 
+ **/
 #ifndef QFLM_H
     #define QFLM_H
 
@@ -8,12 +14,15 @@
     extern "C" {
     #endif
 
-    /*General purpose Function-like Macros */
+    /** @addtogroup qflm
+    * @brief General purpose Function-like Macros 
+    * @{
+    */
 
     /**
     * @brief Uses the bitwise OR operator to set bits into <b>Register</b> 
     * @param Register The variable where the operation will be applied
-    * @param Indicates which bits are to be set
+    * @param Bits Indicates which bits are to be set
     * @return none.
     */       
     #define qFLM_BitsSet(Register, Bits)                    (Register) |= (Bits)
@@ -21,7 +30,7 @@
     /**
     * @brief Uses the bitwise AND operator to clear  bits into <b>Register</b> 
     * @param Register The variable where the operation will be applied
-    * @param Indicates which bits are to be cleared
+    * @param Bits Indicates which bits are to be cleared
     * @return none.
     */        
     #define qFLM_BitsClear(Register, Bits)                  (Register) &= ~(Bits)
@@ -70,7 +79,6 @@
     /**
     * @brief Build a byte value from independent bits 
     * @param b7...b0 
-    * @param Bit The bit-index 
     * @return The value of the byte formed
     */   
     #define qFLM_BitMakeByte(b7,b6,b5,b4,b3,b2,b1,b0)       (qUINT8_t)( ((b7)<<7) + ((b6)<<6) + ((b5)<<5) + ((b4)<<4) + ((b3)<<3) + ((b2)<<2) + ((b1)<<1) + ((b0)<<0) )
@@ -198,6 +206,8 @@
     * @return The number of elements in <b>x</b>.
     */        
     #define qFLM_ArraySize(x)                               (sizeof(x) / sizeof((x)[0]))
+
+    /** @}*/
 
     #ifdef __cplusplus
     }
