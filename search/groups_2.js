@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['clock_714',['Clock',['../group___clock.html',1,'']]],
-  ['co_2droutines_715',['Co-Routines',['../group___co-_routines.html',1,'']]],
-  ['critical_716',['Critical',['../group___critical.html',1,'']]]
+  ['clock_780',['Clock',['../group__qclock.html',1,'']]],
+  ['co_2droutines_781',['Co-Routines',['../group__qcoroutines.html',1,'']]],
+  ['critical_782',['Critical',['../group__qcritical.html',1,'']]]
 ];

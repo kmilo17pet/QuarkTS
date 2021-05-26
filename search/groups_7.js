@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['memory_20management_722',['Memory management',['../group__qmemmang.html',1,'']]]
+  ['kernel_20modules_790',['Kernel Modules',['../group__qmodules.html',1,'']]]
 ];

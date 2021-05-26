@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['queues_723',['Queues',['../group___queues.html',1,'']]]
+  ['managing_20tasks_791',['Managing tasks',['../group__qtaskmanip.html',1,'']]],
+  ['memory_20management_792',['Memory Management',['../group__qmemmang.html',1,'']]]
 ];

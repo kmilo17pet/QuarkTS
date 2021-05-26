@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>API Reference: Tasks</title>
+<title>API Reference: Managing tasks</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('group___tasks.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('group__qtaskmanip.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -84,19 +84,29 @@ $(document).ready(function(){initNavTree('group___tasks.html',''); initResizable
 
 <div class="header">
   <div class="summary">
+<a href="#groups">Modules</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Tasks</div>  </div>
+<div class="title">Managing tasks<div class="ingroups"><a class="el" href="group__qos.html">Operative System</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p>API interface to manage tasks.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group__qnot"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html">Notifications</a></td></tr>
+<tr class="memdesc:group__qnot"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface for task notifications. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__qeventflags"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qeventflags.html">Event Flags</a></td></tr>
+<tr class="memdesc:group__qeventflags"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface for the built-in-task Event-Flags. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_event__t.html">qEvent_t</a></td></tr>
@@ -109,154 +119,130 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga777c5313fa5c748c2335b693da62c43e"><td class="memItemLeft" align="right" valign="top"><a id="ga777c5313fa5c748c2335b693da62c43e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga777c5313fa5c748c2335b693da62c43e">QMAX_NOTIFICATION_VALUE</a></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga777c5313fa5c748c2335b693da62c43e">QMAX_NOTIFICATION_VALUE</a></td></tr>
 <tr class="memdesc:ga777c5313fa5c748c2335b693da62c43e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max allowed notification value. <br /></td></tr>
 <tr class="separator:ga777c5313fa5c748c2335b693da62c43e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa439991cf29879ac4ec1a65f47eedef4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gaa439991cf29879ac4ec1a65f47eedef4">QEVENTFLAG_CLEAR</a></td></tr>
-<tr class="memdesc:gaa439991cf29879ac4ec1a65f47eedef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro directive to indicate if the eventflags should be cleared.  <a href="group___tasks.html#gaa439991cf29879ac4ec1a65f47eedef4">More...</a><br /></td></tr>
+<tr class="memitem:gaa439991cf29879ac4ec1a65f47eedef4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gaa439991cf29879ac4ec1a65f47eedef4">QEVENTFLAG_CLEAR</a></td></tr>
+<tr class="memdesc:gaa439991cf29879ac4ec1a65f47eedef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro directive to indicate if the eventflags should be cleared.  <a href="group__qtaskmanip.html#gaa439991cf29879ac4ec1a65f47eedef4">More...</a><br /></td></tr>
 <tr class="separator:gaa439991cf29879ac4ec1a65f47eedef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaba32d62c0da0e1fb394f5f406202c535"><td class="memItemLeft" align="right" valign="top"><a id="gaba32d62c0da0e1fb394f5f406202c535"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a></td></tr>
 <tr class="memdesc:gaba32d62c0da0e1fb394f5f406202c535"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro directive to indicate if the eventflags should be set. <br /></td></tr>
 <tr class="separator:gaba32d62c0da0e1fb394f5f406202c535"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1211609f7dba8749ae31aa73a8b072e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a>(Task)</td></tr>
-<tr class="memdesc:ga1211609f7dba8749ae31aa73a8b072e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a disabled state.  <a href="group___tasks.html#ga1211609f7dba8749ae31aa73a8b072e6">More...</a><br /></td></tr>
+<tr class="memitem:ga1211609f7dba8749ae31aa73a8b072e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a>(Task)</td></tr>
+<tr class="memdesc:ga1211609f7dba8749ae31aa73a8b072e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a disabled state.  <a href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">More...</a><br /></td></tr>
 <tr class="separator:ga1211609f7dba8749ae31aa73a8b072e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae6a5d46741694d47d7a521a6360b960b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gae6a5d46741694d47d7a521a6360b960b">qTask_Disable</a>(Task)</td></tr>
-<tr class="memdesc:gae6a5d46741694d47d7a521a6360b960b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a disabled state.  <a href="group___tasks.html#gae6a5d46741694d47d7a521a6360b960b">More...</a><br /></td></tr>
+<tr class="memitem:gae6a5d46741694d47d7a521a6360b960b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gae6a5d46741694d47d7a521a6360b960b">qTask_Disable</a>(Task)</td></tr>
+<tr class="memdesc:gae6a5d46741694d47d7a521a6360b960b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a disabled state.  <a href="group__qtaskmanip.html#gae6a5d46741694d47d7a521a6360b960b">More...</a><br /></td></tr>
 <tr class="separator:gae6a5d46741694d47d7a521a6360b960b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae5b5bcd7257f31ec290b600fe306adbe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gae5b5bcd7257f31ec290b600fe306adbe">qTask_Resume</a>(Task)</td></tr>
-<tr class="memdesc:gae5b5bcd7257f31ec290b600fe306adbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into an enabled state.  <a href="group___tasks.html#gae5b5bcd7257f31ec290b600fe306adbe">More...</a><br /></td></tr>
+<tr class="memitem:gae5b5bcd7257f31ec290b600fe306adbe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">qTask_Resume</a>(Task)</td></tr>
+<tr class="memdesc:gae5b5bcd7257f31ec290b600fe306adbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into an enabled state.  <a href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">More...</a><br /></td></tr>
 <tr class="separator:gae5b5bcd7257f31ec290b600fe306adbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e627c1487e57b485f9d1b7252c80dc3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga3e627c1487e57b485f9d1b7252c80dc3">qTask_Enable</a>(Task)</td></tr>
-<tr class="memdesc:ga3e627c1487e57b485f9d1b7252c80dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into an enabled state.  <a href="group___tasks.html#ga3e627c1487e57b485f9d1b7252c80dc3">More...</a><br /></td></tr>
+<tr class="memitem:ga3e627c1487e57b485f9d1b7252c80dc3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga3e627c1487e57b485f9d1b7252c80dc3">qTask_Enable</a>(Task)</td></tr>
+<tr class="memdesc:ga3e627c1487e57b485f9d1b7252c80dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into an enabled state.  <a href="group__qtaskmanip.html#ga3e627c1487e57b485f9d1b7252c80dc3">More...</a><br /></td></tr>
 <tr class="separator:ga3e627c1487e57b485f9d1b7252c80dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5daf7435704726af13127c87bb2f43c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gac5daf7435704726af13127c87bb2f43c">qTask_ASleep</a>(Task)</td></tr>
-<tr class="memdesc:gac5daf7435704726af13127c87bb2f43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a qSLEEP state. The task can't be triggered by the lower precedence events.  <a href="group___tasks.html#gac5daf7435704726af13127c87bb2f43c">More...</a><br /></td></tr>
+<tr class="memitem:gac5daf7435704726af13127c87bb2f43c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gac5daf7435704726af13127c87bb2f43c">qTask_ASleep</a>(Task)</td></tr>
+<tr class="memdesc:gac5daf7435704726af13127c87bb2f43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a qSLEEP state. The task can't be triggered by the lower precedence events.  <a href="group__qtaskmanip.html#gac5daf7435704726af13127c87bb2f43c">More...</a><br /></td></tr>
 <tr class="separator:gac5daf7435704726af13127c87bb2f43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2bd9c2e2584a627a824099eaaa3062b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga2bd9c2e2584a627a824099eaaa3062b6">qTask_Awake</a>(Task)</td></tr>
-<tr class="memdesc:ga2bd9c2e2584a627a824099eaaa3062b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a normal operation state. Here the task will be able to catch any kind of events.  <a href="group___tasks.html#ga2bd9c2e2584a627a824099eaaa3062b6">More...</a><br /></td></tr>
+<tr class="memitem:ga2bd9c2e2584a627a824099eaaa3062b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga2bd9c2e2584a627a824099eaaa3062b6">qTask_Awake</a>(Task)</td></tr>
+<tr class="memdesc:ga2bd9c2e2584a627a824099eaaa3062b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the task into a normal operation state. Here the task will be able to catch any kind of events.  <a href="group__qtaskmanip.html#ga2bd9c2e2584a627a824099eaaa3062b6">More...</a><br /></td></tr>
 <tr class="separator:ga2bd9c2e2584a627a824099eaaa3062b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6d966e86daeae3bbef9fe770c5f97c83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga6d966e86daeae3bbef9fe770c5f97c83">qTask_IsEnabled</a>(Task)</td></tr>
-<tr class="memdesc:ga6d966e86daeae3bbef9fe770c5f97c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the enabled/disabled state.  <a href="group___tasks.html#ga6d966e86daeae3bbef9fe770c5f97c83">More...</a><br /></td></tr>
+<tr class="memitem:ga6d966e86daeae3bbef9fe770c5f97c83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga6d966e86daeae3bbef9fe770c5f97c83">qTask_IsEnabled</a>(Task)</td></tr>
+<tr class="memdesc:ga6d966e86daeae3bbef9fe770c5f97c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the enabled/disabled state.  <a href="group__qtaskmanip.html#ga6d966e86daeae3bbef9fe770c5f97c83">More...</a><br /></td></tr>
 <tr class="separator:ga6d966e86daeae3bbef9fe770c5f97c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga7a0424005455a88f8452e4f8d4ca0734"><td class="memItemLeft" align="right" valign="top"><a id="ga7a0424005455a88f8452e4f8d4ca0734"></a>
-typedef qUINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga7a0424005455a88f8452e4f8d4ca0734">qNotifier_t</a></td></tr>
+typedef qUINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga7a0424005455a88f8452e4f8d4ca0734">qNotifier_t</a></td></tr>
 <tr class="memdesc:ga7a0424005455a88f8452e4f8d4ca0734"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 32-bit unsigned integer type to hold a notification value. <br /></td></tr>
 <tr class="separator:ga7a0424005455a88f8452e4f8d4ca0734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabfaeec714c50c26881ba1d2411b0a7dd"><td class="memItemLeft" align="right" valign="top"><a id="gabfaeec714c50c26881ba1d2411b0a7dd"></a>
-typedef qUINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a></td></tr>
+typedef qUINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a></td></tr>
 <tr class="memdesc:gabfaeec714c50c26881ba1d2411b0a7dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 32-bit unsigned integer type to hold the task flags. <br /></td></tr>
 <tr class="separator:gabfaeec714c50c26881ba1d2411b0a7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4ef3d3efb0a0379f677f8a5744ebb9b4"><td class="memItemLeft" align="right" valign="top"><a id="ga4ef3d3efb0a0379f677f8a5744ebb9b4"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a>) (<a class="el" href="structq_event__t.html">qEvent_t</a> arg)</td></tr>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a>) (<a class="el" href="structq_event__t.html">qEvent_t</a> arg)</td></tr>
 <tr class="memdesc:ga4ef3d3efb0a0379f677f8a5744ebb9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a task callback. <br /></td></tr>
 <tr class="separator:ga4ef3d3efb0a0379f677f8a5744ebb9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gaf68e9306308b42db48932211e1c40334"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a> { <br />
-&#160;&#160;<a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9">qTriggerNULL</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>
+<tr class="memitem:gaf68e9306308b42db48932211e1c40334"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a> { <br />
+&#160;&#160;<a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9">qTriggerNULL</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>
 , <br />
-&#160;&#160;<a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7">byQueueReceiver</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b">byQueueFull</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb">byQueueCount</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a>
+&#160;&#160;<a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7">byQueueReceiver</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b">byQueueFull</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb">byQueueCount</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a>
 , <br />
-&#160;&#160;<a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244">byEventFlags</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084">bySchedulingRelease</a>
-, <a class="el" href="group___tasks.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">byNoReadyTasks</a>
+&#160;&#160;<a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244">byEventFlags</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084">bySchedulingRelease</a>
+, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">byNoReadyTasks</a>
 <br />
  }</td></tr>
-<tr class="memdesc:gaf68e9306308b42db48932211e1c40334"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum with all the possible values for the Trigger member of <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> task argument.  <a href="group___tasks.html#gaf68e9306308b42db48932211e1c40334">More...</a><br /></td></tr>
+<tr class="memdesc:gaf68e9306308b42db48932211e1c40334"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum with all the possible values for the Trigger member of <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> task argument.  <a href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">More...</a><br /></td></tr>
 <tr class="separator:gaf68e9306308b42db48932211e1c40334"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40a8db6d8907f27b81a8b43572ba319a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> { <br />
-&#160;&#160;<a class="el" href="group___tasks.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a>
-, <a class="el" href="group___tasks.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">qReady</a>
-, <a class="el" href="group___tasks.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">qWaiting</a>
-, <a class="el" href="group___tasks.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">qSuspended</a>
+<tr class="memitem:ga40a8db6d8907f27b81a8b43572ba319a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> { <br />
+&#160;&#160;<a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a>
+, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">qReady</a>
+, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">qWaiting</a>
+, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">qSuspended</a>
 , <br />
-&#160;&#160;<a class="el" href="group___tasks.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">qRunning</a>
+&#160;&#160;<a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">qRunning</a>
 <br />
  }</td></tr>
-<tr class="memdesc:ga40a8db6d8907f27b81a8b43572ba319a"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to describe the task global state.  <a href="group___tasks.html#ga40a8db6d8907f27b81a8b43572ba319a">More...</a><br /></td></tr>
+<tr class="memdesc:ga40a8db6d8907f27b81a8b43572ba319a"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to describe the task global state.  <a href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">More...</a><br /></td></tr>
 <tr class="separator:ga40a8db6d8907f27b81a8b43572ba319a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> { <a class="el" href="group___tasks.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">qQueueMode_Receiver</a>
-, <a class="el" href="group___tasks.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">qQueueMode_Full</a>
-, <a class="el" href="group___tasks.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a>
-, <a class="el" href="group___tasks.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a>
+<tr class="memitem:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> { <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">qQueueMode_Receiver</a>
+, <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">qQueueMode_Full</a>
+, <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a>
+, <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a>
  }</td></tr>
-<tr class="memdesc:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to define the task link modes for a queue.  <a href="group___tasks.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">More...</a><br /></td></tr>
+<tr class="memdesc:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to define the task link modes for a queue.  <a href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">More...</a><br /></td></tr>
 <tr class="separator:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c4db20c03003d10e10b617abcb2cf28"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a> { <a class="el" href="group___tasks.html#gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2">qTask_NotifyNULL</a>
-, <a class="el" href="group___tasks.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a>
-, <a class="el" href="group___tasks.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>
- }</td></tr>
-<tr class="memdesc:ga9c4db20c03003d10e10b617abcb2cf28"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to define the notification modes for a task.  <a href="group___tasks.html#ga9c4db20c03003d10e10b617abcb2cf28">More...</a><br /></td></tr>
-<tr class="separator:ga9c4db20c03003d10e10b617abcb2cf28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gace469c30db43a71068dce72404de0e40"><td class="memItemLeft" align="right" valign="top">qBool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gace469c30db43a71068dce72404de0e40">qTask_Notification_Send</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gace469c30db43a71068dce72404de0e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a simple notification generating an asynchronous event. This method marks the task as 'qReady' for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <b>byNotificationSimple</b>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field.  <a href="group___tasks.html#gace469c30db43a71068dce72404de0e40">More...</a><br /></td></tr>
-<tr class="separator:gace469c30db43a71068dce72404de0e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb9df07070eefeccc74552c2cfc70881"><td class="memItemLeft" align="right" valign="top">qBool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gafb9df07070eefeccc74552c2cfc70881">qTask_Notification_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gafb9df07070eefeccc74552c2cfc70881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <b>byNotificationQueued</b>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit.  <a href="group___tasks.html#gafb9df07070eefeccc74552c2cfc70881">More...</a><br /></td></tr>
-<tr class="separator:gafb9df07070eefeccc74552c2cfc70881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7c6b45789367b815f17c1a346014256b"><td class="memItemLeft" align="right" valign="top">qBool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga7c6b45789367b815f17c1a346014256b">qTask_HasPendingNotifications</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:ga7c6b45789367b815f17c1a346014256b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the task has pending notifications.  <a href="group___tasks.html#ga7c6b45789367b815f17c1a346014256b">More...</a><br /></td></tr>
-<tr class="separator:ga7c6b45789367b815f17c1a346014256b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga21c4afe2aee58e88e1a0a22cf4431308"><td class="memItemLeft" align="right" valign="top">qState_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga21c4afe2aee58e88e1a0a22cf4431308">qTask_Get_State</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:ga21c4afe2aee58e88e1a0a22cf4431308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the task operational state.  <a href="group___tasks.html#ga21c4afe2aee58e88e1a0a22cf4431308">More...</a><br /></td></tr>
+<tr class="memitem:ga21c4afe2aee58e88e1a0a22cf4431308"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308">qTask_Get_State</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:ga21c4afe2aee58e88e1a0a22cf4431308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the task operational state.  <a href="group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308">More...</a><br /></td></tr>
 <tr class="separator:ga21c4afe2aee58e88e1a0a22cf4431308"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0ae8d90f1972bf0573af9aeafd6342d4"><td class="memItemLeft" align="right" valign="top">qCycles_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga0ae8d90f1972bf0573af9aeafd6342d4">qTask_Get_Cycles</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:ga0ae8d90f1972bf0573af9aeafd6342d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the number of task activations.  <a href="group___tasks.html#ga0ae8d90f1972bf0573af9aeafd6342d4">More...</a><br /></td></tr>
+<tr class="memitem:ga0ae8d90f1972bf0573af9aeafd6342d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga0deaa6502f8c26904a4d2fe6755806b8">qCycles_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4">qTask_Get_Cycles</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:ga0ae8d90f1972bf0573af9aeafd6342d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the number of task activations.  <a href="group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4">More...</a><br /></td></tr>
 <tr class="separator:ga0ae8d90f1972bf0573af9aeafd6342d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafee29dfbdfaf03969ce74ace0c8d78cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___tasks.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gafee29dfbdfaf03969ce74ace0c8d78cc">qTask_Get_GlobalState</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:gafee29dfbdfaf03969ce74ace0c8d78cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the task global-state.  <a href="group___tasks.html#gafee29dfbdfaf03969ce74ace0c8d78cc">More...</a><br /></td></tr>
+<tr class="memitem:gafee29dfbdfaf03969ce74ace0c8d78cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc">qTask_Get_GlobalState</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:gafee29dfbdfaf03969ce74ace0c8d78cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the task global-state.  <a href="group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc">More...</a><br /></td></tr>
 <tr class="separator:gafee29dfbdfaf03969ce74ace0c8d78cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac2dd409cad58a90b89f65e64f862928d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gac2dd409cad58a90b89f65e64f862928d">qTask_Set_Time</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group___clock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> Value)</td></tr>
-<tr class="memdesc:gac2dd409cad58a90b89f65e64f862928d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the Task execution interval.  <a href="group___tasks.html#gac2dd409cad58a90b89f65e64f862928d">More...</a><br /></td></tr>
+<tr class="memitem:gac2dd409cad58a90b89f65e64f862928d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gac2dd409cad58a90b89f65e64f862928d">qTask_Set_Time</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> Value)</td></tr>
+<tr class="memdesc:gac2dd409cad58a90b89f65e64f862928d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the Task execution interval.  <a href="group__qtaskmanip.html#gac2dd409cad58a90b89f65e64f862928d">More...</a><br /></td></tr>
 <tr class="separator:gac2dd409cad58a90b89f65e64f862928d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4819ade68f755968df6b415b06baa8ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga4819ade68f755968df6b415b06baa8ac">qTask_Set_Iterations</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const qIteration_t Value)</td></tr>
-<tr class="memdesc:ga4819ade68f755968df6b415b06baa8ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the number of task iterations.  <a href="group___tasks.html#ga4819ade68f755968df6b415b06baa8ac">More...</a><br /></td></tr>
+<tr class="memitem:ga4819ade68f755968df6b415b06baa8ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga4819ade68f755968df6b415b06baa8ac">qTask_Set_Iterations</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a> Value)</td></tr>
+<tr class="memdesc:ga4819ade68f755968df6b415b06baa8ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the number of task iterations.  <a href="group__qtaskmanip.html#ga4819ade68f755968df6b415b06baa8ac">More...</a><br /></td></tr>
 <tr class="separator:ga4819ade68f755968df6b415b06baa8ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0cb96ad64f8877698feec389402555a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga0cb96ad64f8877698feec389402555a4">qTask_Set_Priority</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const qPriority_t Value)</td></tr>
-<tr class="memdesc:ga0cb96ad64f8877698feec389402555a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the task priority value.  <a href="group___tasks.html#ga0cb96ad64f8877698feec389402555a4">More...</a><br /></td></tr>
+<tr class="memitem:ga0cb96ad64f8877698feec389402555a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga0cb96ad64f8877698feec389402555a4">qTask_Set_Priority</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Value)</td></tr>
+<tr class="memdesc:ga0cb96ad64f8877698feec389402555a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the task priority value.  <a href="group__qtaskmanip.html#ga0cb96ad64f8877698feec389402555a4">More...</a><br /></td></tr>
 <tr class="separator:ga0cb96ad64f8877698feec389402555a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga185cde5755a9c432221111e488a74d07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga185cde5755a9c432221111e488a74d07">qTask_Set_Callback</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group___tasks.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> CallbackFcn)</td></tr>
-<tr class="memdesc:ga185cde5755a9c432221111e488a74d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the task callback function.  <a href="group___tasks.html#ga185cde5755a9c432221111e488a74d07">More...</a><br /></td></tr>
+<tr class="memitem:ga185cde5755a9c432221111e488a74d07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga185cde5755a9c432221111e488a74d07">qTask_Set_Callback</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> CallbackFcn)</td></tr>
+<tr class="memdesc:ga185cde5755a9c432221111e488a74d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the task callback function.  <a href="group__qtaskmanip.html#ga185cde5755a9c432221111e488a74d07">More...</a><br /></td></tr>
 <tr class="separator:ga185cde5755a9c432221111e488a74d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3a3eb7441f738b448ff085fd23c645b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gab3a3eb7441f738b448ff085fd23c645b">qTask_Set_State</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const qState_t State)</td></tr>
-<tr class="memdesc:gab3a3eb7441f738b448ff085fd23c645b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task operational state (Enabled or Disabled)  <a href="group___tasks.html#gab3a3eb7441f738b448ff085fd23c645b">More...</a><br /></td></tr>
+<tr class="memitem:gab3a3eb7441f738b448ff085fd23c645b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b">qTask_Set_State</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> State)</td></tr>
+<tr class="memdesc:gab3a3eb7441f738b448ff085fd23c645b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task operational state (Enabled or Disabled)  <a href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b">More...</a><br /></td></tr>
 <tr class="separator:gab3a3eb7441f738b448ff085fd23c645b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf869decdf319173b7ca95304a9f0c742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gaf869decdf319173b7ca95304a9f0c742">qTask_Set_Data</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *arg)</td></tr>
-<tr class="memdesc:gaf869decdf319173b7ca95304a9f0c742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task data.  <a href="group___tasks.html#gaf869decdf319173b7ca95304a9f0c742">More...</a><br /></td></tr>
+<tr class="memitem:gaf869decdf319173b7ca95304a9f0c742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gaf869decdf319173b7ca95304a9f0c742">qTask_Set_Data</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *arg)</td></tr>
+<tr class="memdesc:gaf869decdf319173b7ca95304a9f0c742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task data.  <a href="group__qtaskmanip.html#gaf869decdf319173b7ca95304a9f0c742">More...</a><br /></td></tr>
 <tr class="separator:gaf869decdf319173b7ca95304a9f0c742"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga31ffbfbcd03fdc92a34c9134cd8990f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga31ffbfbcd03fdc92a34c9134cd8990f8">qTask_ClearTimeElapsed</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:ga31ffbfbcd03fdc92a34c9134cd8990f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the elapsed time of the task. Restart the internal task tick;.  <a href="group___tasks.html#ga31ffbfbcd03fdc92a34c9134cd8990f8">More...</a><br /></td></tr>
+<tr class="memitem:ga31ffbfbcd03fdc92a34c9134cd8990f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga31ffbfbcd03fdc92a34c9134cd8990f8">qTask_ClearTimeElapsed</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:ga31ffbfbcd03fdc92a34c9134cd8990f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the elapsed time of the task. Restart the internal task tick;.  <a href="group__qtaskmanip.html#ga31ffbfbcd03fdc92a34c9134cd8990f8">More...</a><br /></td></tr>
 <tr class="separator:ga31ffbfbcd03fdc92a34c9134cd8990f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae48cb3c880e716d9336250027ecd4924"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_task__t.html">qTask_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a> (void)</td></tr>
-<tr class="memdesc:gae48cb3c880e716d9336250027ecd4924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current running-task handle.  <a href="group___tasks.html#gae48cb3c880e716d9336250027ecd4924">More...</a><br /></td></tr>
+<tr class="memitem:gae48cb3c880e716d9336250027ecd4924"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_task__t.html">qTask_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a> (void)</td></tr>
+<tr class="memdesc:gae48cb3c880e716d9336250027ecd4924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current running-task handle.  <a href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">More...</a><br /></td></tr>
 <tr class="separator:gae48cb3c880e716d9336250027ecd4924"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga79393924bae115e1048b220f12807d40"><td class="memItemLeft" align="right" valign="top">qBool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga79393924bae115e1048b220f12807d40">qTask_Attach_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_queue__t.html">qQueue_t</a> *const Queue, const <a class="el" href="group___tasks.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> Mode, const qUINT16_t arg)</td></tr>
-<tr class="memdesc:ga79393924bae115e1048b220f12807d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a Queue to the Task.  <a href="group___tasks.html#ga79393924bae115e1048b220f12807d40">More...</a><br /></td></tr>
+<tr class="memitem:ga79393924bae115e1048b220f12807d40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga79393924bae115e1048b220f12807d40">qTask_Attach_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_queue__t.html">qQueue_t</a> *const Queue, const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> Mode, const qUINT16_t arg)</td></tr>
+<tr class="memdesc:ga79393924bae115e1048b220f12807d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a Queue to the Task.  <a href="group__qtaskmanip.html#ga79393924bae115e1048b220f12807d40">More...</a><br /></td></tr>
 <tr class="separator:ga79393924bae115e1048b220f12807d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga687e15bc18928cfbdbfde92e22b3d8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga687e15bc18928cfbdbfde92e22b3d8a4">qTask_EventFlags_Modify</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> flags, qBool_t action)</td></tr>
-<tr class="memdesc:ga687e15bc18928cfbdbfde92e22b3d8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the EventFlags for the provided task.  <a href="group___tasks.html#ga687e15bc18928cfbdbfde92e22b3d8a4">More...</a><br /></td></tr>
-<tr class="separator:ga687e15bc18928cfbdbfde92e22b3d8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ff86473ecbab720beb77745566c1cb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#ga4ff86473ecbab720beb77745566c1cb7">qTask_EventFlags_Read</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
-<tr class="memdesc:ga4ff86473ecbab720beb77745566c1cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current value of the task's EventFlags.  <a href="group___tasks.html#ga4ff86473ecbab720beb77745566c1cb7">More...</a><br /></td></tr>
-<tr class="separator:ga4ff86473ecbab720beb77745566c1cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="memItemLeft" align="right" valign="top">qBool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___tasks.html#gaf4dfdea3ef149309bd2e8eb0bc89039b">qTask_EventFlags_Check</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll)</td></tr>
-<tr class="memdesc:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for flags set to qTrue inside the task Event-Flags.  <a href="group___tasks.html#gaf4dfdea3ef149309bd2e8eb0bc89039b">More...</a><br /></td></tr>
-<tr class="separator:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API interface to manage tasks. </p>
@@ -476,7 +462,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group___tasks.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a></td>
+          <td class="memname">enum <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -502,7 +488,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group___tasks.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a></td>
+          <td class="memname">enum <a class="el" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -523,30 +509,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga9c4db20c03003d10e10b617abcb2cf28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9c4db20c03003d10e10b617abcb2cf28">&#9670;&nbsp;</a></span>qTask_NotifyMode_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="group___tasks.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An enum to define the notification modes for a task. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2"></a>qTask_NotifyNULL&#160;</td><td class="fielddoc"><p>Do not use this value. Used only internally. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e"></a>qTask_NotifySimple&#160;</td><td class="fielddoc"><p>To notify a task using the simple approach. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b"></a>qTask_NotifyQueued&#160;</td><td class="fielddoc"><p>To notify a task using the FIFO priority queue. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 <a id="gaf68e9306308b42db48932211e1c40334"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf68e9306308b42db48932211e1c40334">&#9670;&nbsp;</a></span>qTrigger_t</h2>
 
@@ -554,7 +516,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group___tasks.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a></td>
+          <td class="memname">enum <a class="el" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -595,7 +557,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qBool_t qTask_Attach_Queue </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qTask_Attach_Queue </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
           <td class="paramname"><em>Task</em>, </td>
@@ -609,7 +571,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group___tasks.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a>&#160;</td>
           <td class="paramname"><em>Mode</em>, </td>
         </tr>
         <tr>
@@ -675,132 +637,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaf4dfdea3ef149309bd2e8eb0bc89039b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf4dfdea3ef149309bd2e8eb0bc89039b">&#9670;&nbsp;</a></span>qTask_EventFlags_Check()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qBool_t qTask_EventFlags_Check </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a>&#160;</td>
-          <td class="paramname"><em>FlagsToCheck</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">qBool_t&#160;</td>
-          <td class="paramname"><em>ClearOnExit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">qBool_t&#160;</td>
-          <td class="paramname"><em>CheckForAll</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check for flags set to qTrue inside the task Event-Flags. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">FlagsToCheck</td><td>A bitwise value that indicates the flags to test inside the EventFlags. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
-    <tr><td class="paramname">ClearOnExit</td><td>If is set to qTrue then any flags set in the value passed as the <b>FlagsToCheck</b> parameter will be cleared in the event group before this function returns only when the condition is meet. </td></tr>
-    <tr><td class="paramname">CheckForAll</td><td>Used to create either a logical AND test (where all flags must be set) or a logical OR test (where one or more flags must be set) as follows:</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>If is set to qTrue this API will return qTrue when either all the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags.</p>
-<p>If is set to qFalse this API will return qTrue when any of the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags. </p><dl class="section return"><dt>Returns</dt><dd>qTrue if the condition is meet, otherwise return qFalse. </dd></dl>
-
-</div>
-</div>
-<a id="ga687e15bc18928cfbdbfde92e22b3d8a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga687e15bc18928cfbdbfde92e22b3d8a4">&#9670;&nbsp;</a></span>qTask_EventFlags_Modify()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void qTask_EventFlags_Modify </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a>&#160;</td>
-          <td class="paramname"><em>flags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">qBool_t&#160;</td>
-          <td class="paramname"><em>action</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Modify the EventFlags for the provided task. </p>
-<dl class="section note"><dt>Note</dt><dd>Any EventFlag set will cause a task activation. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">flags</td><td>The flags to modify. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
-    <tr><td class="paramname">action</td><td>QEVENTFLAG_SET or QEVENTFLAG_CLEAR </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
-
-</div>
-</div>
-<a id="ga4ff86473ecbab720beb77745566c1cb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4ff86473ecbab720beb77745566c1cb7">&#9670;&nbsp;</a></span>qTask_EventFlags_Read()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group___tasks.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> qTask_EventFlags_Read </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the current value of the task's EventFlags. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The EventFlag value of the task. </dd></dl>
-
-</div>
-</div>
 <a id="ga0ae8d90f1972bf0573af9aeafd6342d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0ae8d90f1972bf0573af9aeafd6342d4">&#9670;&nbsp;</a></span>qTask_Get_Cycles()</h2>
 
@@ -808,7 +644,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qCycles_t qTask_Get_Cycles </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga0deaa6502f8c26904a4d2fe6755806b8">qCycles_t</a> qTask_Get_Cycles </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
           <td class="paramname"><em>Task</em></td><td>)</td>
@@ -835,7 +671,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group___tasks.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> qTask_Get_GlobalState </td>
+          <td class="memname"><a class="el" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> qTask_Get_GlobalState </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
           <td class="paramname"><em>Task</em></td><td>)</td>
@@ -862,7 +698,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qState_t qTask_Get_State </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> qTask_Get_State </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
           <td class="paramname"><em>Task</em></td><td>)</td>
@@ -879,109 +715,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Enabled or qDisabled if the task is qAwaken. qAsleep if the task is in a Sleep operational state. </dd></dl>
-
-</div>
-</div>
-<a id="ga7c6b45789367b815f17c1a346014256b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7c6b45789367b815f17c1a346014256b">&#9670;&nbsp;</a></span>qTask_HasPendingNotifications()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qBool_t qTask_HasPendingNotifications </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if the task has pending notifications. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the function asserts, otherwise returns qFalse. </dd></dl>
-
-</div>
-</div>
-<a id="gafb9df07070eefeccc74552c2cfc70881"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb9df07070eefeccc74552c2cfc70881">&#9670;&nbsp;</a></span>qTask_Notification_Queue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qBool_t qTask_Notification_Queue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>eventdata</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <b>byNotificationQueued</b>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue if the event has been inserted in the queue, or qFalse if an error occurred (The queue exceeds the size). </dd></dl>
-
-</div>
-</div>
-<a id="gace469c30db43a71068dce72404de0e40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gace469c30db43a71068dce72404de0e40">&#9670;&nbsp;</a></span>qTask_Notification_Send()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">qBool_t qTask_Notification_Send </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>eventdata</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sends a simple notification generating an asynchronous event. This method marks the task as 'qReady' for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <b>byNotificationSimple</b>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success. Otherwise qFalse. </dd></dl>
 
 </div>
 </div>
@@ -1021,7 +754,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group___tasks.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a>&#160;</td>
           <td class="paramname"><em>CallbackFcn</em>&#160;</td>
         </tr>
         <tr>
@@ -1098,7 +831,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const qIteration_t&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a>&#160;</td>
           <td class="paramname"><em>Value</em>&#160;</td>
         </tr>
         <tr>
@@ -1136,7 +869,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const qPriority_t&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a>&#160;</td>
           <td class="paramname"><em>Value</em>&#160;</td>
         </tr>
         <tr>
@@ -1174,7 +907,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const qState_t&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a>&#160;</td>
           <td class="paramname"><em>State</em>&#160;</td>
         </tr>
         <tr>
@@ -1215,7 +948,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group___clock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a>&#160;</td>
           <td class="paramname"><em>Value</em>&#160;</td>
         </tr>
         <tr>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernel_33',['Kernel',['../group___kernel.html',1,'']]]
+  ['kernel_20modules_36',['Kernel Modules',['../group__qmodules.html',1,'']]]
 ];
