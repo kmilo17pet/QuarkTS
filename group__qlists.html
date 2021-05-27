@@ -118,7 +118,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga4e8a2d40891d2463b41fcf02ce482d11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></td></tr>
-<tr class="memdesc:ga4e8a2d40891d2463b41fcf02ce482d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to create custom data to be used as nodes in the lists. User should locate this macro as the first member of the custom structure.  <a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">More...</a><br /></td></tr>
+<tr class="memdesc:ga4e8a2d40891d2463b41fcf02ce482d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to create custom data that can be used as node of a list. User should locate this macro as the first member of the custom structure.  <a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">More...</a><br /></td></tr>
 <tr class="separator:ga4e8a2d40891d2463b41fcf02ce482d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0281056dbf82517b975635ed7553498e"><td class="memItemLeft" align="right" valign="top"><a id="ga0281056dbf82517b975635ed7553498e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga0281056dbf82517b975635ed7553498e">QLIST_INITIALIZER</a></td></tr>
@@ -169,7 +169,7 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga6b1d179a64607ffc9be26ff4c1e2f6e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga6b1d179a64607ffc9be26ff4c1e2f6e8">qList_Initialize</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const list)</td></tr>
-<tr class="memdesc:ga6b1d179a64607ffc9be26ff4c1e2f6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Must be called before a list is used! This initialises all the members of the list structure.  <a href="group__qlists.html#ga6b1d179a64607ffc9be26ff4c1e2f6e8">More...</a><br /></td></tr>
+<tr class="memdesc:ga6b1d179a64607ffc9be26ff4c1e2f6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Must be called before a list is used. This initialises all the members of the list structure.  <a href="group__qlists.html#ga6b1d179a64607ffc9be26ff4c1e2f6e8">More...</a><br /></td></tr>
 <tr class="separator:ga6b1d179a64607ffc9be26ff4c1e2f6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f024e50edb3d576331dd2bf6fc1474a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga2f024e50edb3d576331dd2bf6fc1474a">qList_Insert</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const list, void *const node, const <a class="el" href="group__qlists.html#ga0ac18ce58031e0c1a42b7bb5f06cca35">qList_Position_t</a> position)</td></tr>
 <tr class="memdesc:ga2f024e50edb3d576331dd2bf6fc1474a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert an item into the list.  <a href="group__qlists.html#ga2f024e50edb3d576331dd2bf6fc1474a">More...</a><br /></td></tr>
@@ -229,14 +229,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This macro can be used to create custom data to be used as nodes in the lists. User should locate this macro as the first member of the custom structure. </p>
+<p>This macro can be used to create custom data that can be used as node of a list. User should locate this macro as the first member of the custom structure. </p>
 <p>Example : </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
 <div class="line">      <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;</div>
 <div class="line">      <span class="keywordtype">int</span> x;</div>
 <div class="line">      <span class="keywordtype">float</span> y;</div>
 <div class="line">      <span class="keywordtype">char</span> str[10];  </div>
 <div class="line">}mydata_t;</div>
-<div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data to be used as nodes in the lists. User should locate thi...</div><div class="ttdef"><b>Definition:</b> qlists.h:49</div></div>
+<div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:49</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -254,15 +254,14 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function used by the <b>qList_Sort</b> API to compare nodes of a list. </p>
-<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myNode_CompareFcn( <a class="code" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h );</div>
+<p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myNode_CompareFcn( <a class="code" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h );</div>
 <div class="line">      mydata_t *n1 = (mydata_t *)h-&gt;n1;</div>
 <div class="line">      mydata_t *n2 = (mydata_t *)h-&gt;n2;</div>
 <div class="line">      <span class="keywordflow">return</span> (<a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>)( n1-&gt;x &gt; n2-&gt;x );</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type-def to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:99</div></div>
 <div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:101</div></div>
-</div><!-- fragment --> </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">arg</td><td>The current interrupt configuration </td></tr>
   </table>
@@ -498,7 +497,7 @@ qBool_t Function( qList_ForEachHandle_t h )
       </table>
 </div><div class="memdoc">
 
-<p>Must be called before a list is used! This initialises all the members of the list structure. </p>
+<p>Must be called before a list is used. This initialises all the members of the list structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">list</td><td>Pointer to the list being initialised. </td></tr>

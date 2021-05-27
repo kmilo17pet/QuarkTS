@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('group__qtaskmanip.html',''); initResiz
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
@@ -98,15 +97,6 @@ $(document).ready(function(){initNavTree('group__qtaskmanip.html',''); initResiz
 <p>API interface to manage tasks.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:group__qnot"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html">Notifications</a></td></tr>
-<tr class="memdesc:group__qnot"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface for task notifications. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__qeventflags"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qeventflags.html">Event Flags</a></td></tr>
-<tr class="memdesc:group__qeventflags"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface for the built-in-task Event-Flags. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_event__t.html">qEvent_t</a></td></tr>
@@ -240,9 +230,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gae48cb3c880e716d9336250027ecd4924"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_task__t.html">qTask_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a> (void)</td></tr>
 <tr class="memdesc:gae48cb3c880e716d9336250027ecd4924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current running-task handle.  <a href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">More...</a><br /></td></tr>
 <tr class="separator:gae48cb3c880e716d9336250027ecd4924"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga79393924bae115e1048b220f12807d40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga79393924bae115e1048b220f12807d40">qTask_Attach_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_queue__t.html">qQueue_t</a> *const Queue, const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> Mode, const qUINT16_t arg)</td></tr>
-<tr class="memdesc:ga79393924bae115e1048b220f12807d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a Queue to the Task.  <a href="group__qtaskmanip.html#ga79393924bae115e1048b220f12807d40">More...</a><br /></td></tr>
-<tr class="separator:ga79393924bae115e1048b220f12807d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API interface to manage tasks. </p>
@@ -550,66 +537,6 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga79393924bae115e1048b220f12807d40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga79393924bae115e1048b220f12807d40">&#9670;&nbsp;</a></span>qTask_Attach_Queue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qTask_Attach_Queue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
-          <td class="paramname"><em>Task</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structq_queue__t.html">qQueue_t</a> *const&#160;</td>
-          <td class="paramname"><em>Queue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a>&#160;</td>
-          <td class="paramname"><em>Mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const qUINT16_t&#160;</td>
-          <td class="paramname"><em>arg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Attach a Queue to the Task. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">Queue</td><td>A pointer to a Queue object </td></tr>
-    <tr><td class="paramname">Mode</td><td>Attach mode. This implies the event that will trigger the task according to one of the following modes:</td></tr>
-  </table>
-  </dd>
-</dl>
-<p><b>qQUEUE_DEQUEUE</b>: The task will be triggered if there are elements in the Queue. Data will be extracted automatically in every trigger and will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_FULL</b>: the task will be triggered if the Queue is full. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_COUNT</b>: the task will be triggered if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_EMPTY</b>: the task will be triggered if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">arg</td><td>This argument defines if the queue will be attached (qATTACH) or detached (qDETACH) from the task. If the <b>qQUEUE_COUNT</b> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a qDETACH action. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
-
-</div>
-</div>
 <a id="ga31ffbfbcd03fdc92a34c9134cd8990f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga31ffbfbcd03fdc92a34c9134cd8990f8">&#9670;&nbsp;</a></span>qTask_ClearTimeElapsed()</h2>
 

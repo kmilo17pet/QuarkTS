@@ -164,6 +164,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf917202516511672cb2c0a2db0464de3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gaf917202516511672cb2c0a2db0464de3">qQueue_SendGeneric</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const obj, void *ItemToQueue, <a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a> InsertMode)</td></tr>
 <tr class="memdesc:gaf917202516511672cb2c0a2db0464de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Post an item to the back of the queue. The item is queued by copy, not by reference.  <a href="group__qqueues.html#gaf917202516511672cb2c0a2db0464de3">More...</a><br /></td></tr>
 <tr class="separator:gaf917202516511672cb2c0a2db0464de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga79393924bae115e1048b220f12807d40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#ga79393924bae115e1048b220f12807d40">qTask_Attach_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_queue__t.html">qQueue_t</a> *const Queue, const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> Mode, const qUINT16_t arg)</td></tr>
+<tr class="memdesc:ga79393924bae115e1048b220f12807d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a Queue to the Task.  <a href="group__qqueues.html#ga79393924bae115e1048b220f12807d40">More...</a><br /></td></tr>
+<tr class="separator:ga79393924bae115e1048b220f12807d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API interface to create and handle queues. </p>
@@ -631,6 +634,66 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>qTrue on success, otherwise returns qFalse. </dd></dl>
+
+</div>
+</div>
+<a id="ga79393924bae115e1048b220f12807d40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga79393924bae115e1048b220f12807d40">&#9670;&nbsp;</a></span>qTask_Attach_Queue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qTask_Attach_Queue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
+          <td class="paramname"><em>Task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structq_queue__t.html">qQueue_t</a> *const&#160;</td>
+          <td class="paramname"><em>Queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a>&#160;</td>
+          <td class="paramname"><em>Mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const qUINT16_t&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attach a Queue to the Task. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramname">Queue</td><td>A pointer to a Queue object </td></tr>
+    <tr><td class="paramname">Mode</td><td>Attach mode. This implies the event that will trigger the task according to one of the following modes:</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>qQUEUE_DEQUEUE</b>: The task will be triggered if there are elements in the Queue. Data will be extracted automatically in every trigger and will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><b>qQUEUE_FULL</b>: the task will be triggered if the Queue is full. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><b>qQUEUE_COUNT</b>: the task will be triggered if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><b>qQUEUE_EMPTY</b>: the task will be triggered if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td>This argument defines if the queue will be attached (qATTACH) or detached (qDETACH) from the task. If the <b>qQUEUE_COUNT</b> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a qDETACH action. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
 
 </div>
 </div>

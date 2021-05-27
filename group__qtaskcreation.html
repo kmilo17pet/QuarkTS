@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('group__qtaskcreation.html',''); initRe
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -95,12 +94,6 @@ $(document).ready(function(){initNavTree('group__qtaskcreation.html',''); initRe
 <p>Kernel API interface to create/remove tasks and perform special OS operations.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
-Modules</h2></td></tr>
-<tr class="memitem:group__qnot"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html">Notifications</a></td></tr>
-<tr class="memdesc:group__qnot"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface for task notifications. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga33bd7afc6bdd5e8a995d2cb50e006e3a"><td class="memItemLeft" align="right" valign="top"><a id="ga33bd7afc6bdd5e8a995d2cb50e006e3a"></a>
@@ -149,7 +142,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga9d747397e555d252dc9fa0da04a01d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme. This API creates a task with qDisabled state by default , so this task will be oriented to be executed only, when asynchronous events occurs. However, this behavior can be changed in execution time using <b>qTask_Set_Time</b> or <b>qTask_Set_Iterations</b>.  <a href="group__qtaskcreation.html#ga9d747397e555d252dc9fa0da04a01d6f">More...</a><br /></td></tr>
 <tr class="separator:ga9d747397e555d252dc9fa0da04a01d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaadaa6b0192ebad11103849f5305f389a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a">qOS_Add_StateMachineTask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_s_m__t.html">qSM_t</a> *m, <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Priority, <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> Time, <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> InitialTaskState, void *arg)</td></tr>
-<tr class="memdesc:gaadaa6b0192ebad11103849f5305f389a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info will be available as a generic pointer inside the <b>Data</b> field of the <a class="el" href="structq_s_m___handler__t.html" title="The state callback argument to handle the state-machine dinamics and provide execution information....">qSM_Handler_t</a> argument.  <a href="group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a">More...</a><br /></td></tr>
+<tr class="memdesc:gaadaa6b0192ebad11103849f5305f389a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info will be available as a generic pointer inside the <b>Data</b> field of the <a class="el" href="structq_s_m___handler__t.html" title="The state callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument.  <a href="group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a">More...</a><br /></td></tr>
 <tr class="separator:gaadaa6b0192ebad11103849f5305f389a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a55cf73aad1c9980bbc425b074bb7c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1">qOS_Add_ATCLITask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *cli, <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Priority)</td></tr>
 <tr class="memdesc:ga3a55cf73aad1c9980bbc425b074bb7c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.  <a href="group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1">More...</a><br /></td></tr>
@@ -311,14 +304,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info will be available as a generic pointer inside the <b>Data</b> field of the <a class="el" href="structq_s_m___handler__t.html" title="The state callback argument to handle the state-machine dinamics and provide execution information....">qSM_Handler_t</a> argument. </p>
+<p>Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info will be available as a generic pointer inside the <b>Data</b> field of the <a class="el" href="structq_s_m___handler__t.html" title="The state callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
     <tr><td class="paramname">m</td><td>A pointer to the Finite State-Machine (FSM) object. </td></tr>
     <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
     <tr><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = qTimeImmediate). </td></tr>
-    <tr><td class="paramname">InitialTaskState</td><td>: Specifies the initial operational state of the task (qEnabled, qDisabled, qASleep or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake(implies qEnabled)</a>). </td></tr>
+    <tr><td class="paramname">InitialTaskState</td><td>Specifies the initial operational state of the task (qEnabled, qDisabled, qASleep or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake(implies qEnabled)</a>). </td></tr>
     <tr><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
@@ -390,7 +383,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">CallbackFcn</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
     <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
     <tr><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = qTimeImmediate). </td></tr>
-    <tr><td class="paramname">nExecutions</td><td>: Number of task executions (Integer value). For indefinite execution (nExecutions = qPeriodic or qIndefinite). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. To perform another set of iterations, set the number of iterations again. </td></tr>
+    <tr><td class="paramname">nExecutions</td><td>Number of task executions (Integer value). For indefinite execution (nExecutions = qPeriodic or qIndefinite). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. To perform another set of iterations, set the number of iterations again. </td></tr>
   </table>
   </dd>
 </dl>
@@ -399,7 +392,7 @@ Functions</h2></td></tr>
 Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">InitialState</td><td>: Specifies the initial operational state of the task (qEnabled, qDisabled, qASleep or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake(implies qEnabled)</a>). </td></tr>
+    <tr><td class="paramname">InitialState</td><td>Specifies the initial operational state of the task (qEnabled, qDisabled, qASleep or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake(implies qEnabled)</a>). </td></tr>
     <tr><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>

@@ -1,7 +1,5 @@
 var group__qtaskmanip =
 [
-    [ "Notifications", "group__qnot.html", "group__qnot" ],
-    [ "Event Flags", "group__qeventflags.html", "group__qeventflags" ],
     [ "qEvent_t", "structq_event__t.html", [
       [ "EventData", "structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74", null ],
       [ "FirstCall", "structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04", null ],
@@ -51,7 +49,6 @@ var group__qtaskmanip =
       [ "bySchedulingRelease", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084", null ],
       [ "byNoReadyTasks", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212", null ]
     ] ],
-    [ "qTask_Attach_Queue", "group__qtaskmanip.html#ga79393924bae115e1048b220f12807d40", null ],
     [ "qTask_ClearTimeElapsed", "group__qtaskmanip.html#ga31ffbfbcd03fdc92a34c9134cd8990f8", null ],
     [ "qTask_Get_Cycles", "group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4", null ],
     [ "qTask_Get_GlobalState", "group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc", null ],

@@ -1,6 +1,5 @@
 var group__qtaskcreation =
 [
-    [ "Notifications", "group__qnot.html", "group__qnot" ],
     [ "qHigh_Priority", "group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a", null ],
     [ "qIndefinite", "group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23", null ],
     [ "qLowest_Priority", "group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a", null ],

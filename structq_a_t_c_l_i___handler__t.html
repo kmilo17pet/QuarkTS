@@ -149,7 +149,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The command argument with all the regarding information of the incoming AT command. </p>
-<dl class="section note"><dt>Note</dt><dd>Should be used only in command-callbacks as the only input argument. </dd>
+<p>The type it's just a pointer to public data of the CLI instance where the command it subscribed to. From the callback context, can be used to print out extra information as a command response, parse the command parameters, and query properties with crucial information about the detected command, like the type, the number of arguments, and the subsequent string after the command text. </p><dl class="section note"><dt>Note</dt><dd>Should be used only in command-callbacks as the only input argument. </dd>
 <dd>
 The members of this structure must be read as if it were a pointer. </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>

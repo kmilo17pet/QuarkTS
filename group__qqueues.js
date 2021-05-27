@@ -17,5 +17,6 @@ var group__qqueues =
     [ "qQueue_RemoveFront", "group__qqueues.html#ga26a5df33893013866d659508406019df", null ],
     [ "qQueue_Reset", "group__qqueues.html#ga3b4884f98d9abd5e747cda077742ba76", null ],
     [ "qQueue_SendGeneric", "group__qqueues.html#gaf917202516511672cb2c0a2db0464de3", null ],
-    [ "qQueue_Setup", "group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54", null ]
+    [ "qQueue_Setup", "group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54", null ],
+    [ "qTask_Attach_Queue", "group__qqueues.html#ga79393924bae115e1048b220f12807d40", null ]
 ];
