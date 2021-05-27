@@ -209,6 +209,38 @@
 
     /** 
     * @brief A task node object
+    * @details Like many operating systems, the basic unit of work is the task.
+    * Tasks can perform certain functions, which could require periodic or one-time execution, update of 
+    * specific variables or waiting for specific events. Tasks also could be controlling specific hardware 
+    * or be triggered by hardware interrupts. In the QuarkTS OS, a task is seen as a node concept that links together:
+    * 
+    * - Program code performing specific task activities (callback function)
+    * - Execution interval (time)
+    * - Number of execution (iterations)
+    * - Event-based data
+    * 
+    * The OS uses a Task Control Block(TCB) to represent each task, storing essential information about
+    * task management and execution. Part of this information also includes link-pointers that allows 
+    * it to be part of one of the lists available in the Kernel Control Block (KCB).
+    * 
+    * Each task performs its activities via a callback function and each of them is responsible for supporting 
+    * cooperative multitasking by being “good neighbors”, i.e., running their callback methods quickly in a 
+    * non-blocking way and releasing control back to the scheduler as soon as possible (returning). 
+    * Every task node, must be defined using the qTask_t data-type and the callback is defined as a function 
+    * that returns void and takes a qEvent_t data structure as its only parameter (This input argument can 
+    * be used later to get event information.
+    *
+    * Example :
+    * @code{.c}
+    * qTask_t UserTask;
+    * 
+    * void UserTask_Callback( qEvent_t e ){
+    * 
+    * }
+    * @endcode
+    * 
+    * All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler,
+    * otherwise, the scheduler will hold the execution-state for that task, preventing the activation of other tasks.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qTask_s{ /*Task node definition*/
@@ -251,6 +283,8 @@
             qQueueMode_Empty = 32,      /**< This mode will trigger the task if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the qEvent_t structure.*/
         }qQueueLinkMode_t;
     #endif
+
+    /** @}*/
 
     /** @addtogroup qnot
     * @brief API interface for task notifications
@@ -304,6 +338,11 @@
     qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
 
     /** @}*/
+
+    /** @addtogroup qtaskmanip
+    * @brief API interface to manage tasks.
+    *  @{
+    */
 
     /**
     * @brief Retrieve the task operational state.
@@ -464,7 +503,13 @@
     */       
     #define qTask_IsEnabled( Task )   ( qEnabled == qTask_Get_State( (Task) ) )
 
+    /** @}*/
+
     #if ( Q_QUEUES == 1 )
+        /** @addtogroup qqueues
+        * @brief API interface to create and handle queues.
+        * @{
+        */
 
         /**
         * @brief Attach a Queue to the Task.    
@@ -497,7 +542,11 @@
         * @return Returns qTrue on success, otherwise returns qFalse.
         */       
         qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );
+
+         /** @}*/
     #endif 
+
+    
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /** @addtogroup qeventflags
@@ -549,7 +598,6 @@
         /** @}*/
     #endif
     
-    /** @}*/
 
     #ifdef __cplusplus
     }

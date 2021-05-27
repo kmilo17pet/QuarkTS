@@ -29,6 +29,22 @@
 
     /** 
     * @brief A Queue object
+    * @details A queue is a linear data structure with simple operations based on the FIFO (First In First Out) 
+    * principle. It is capable to hold a finite number of fixed-size data items. The maximum number of items
+    * that a queue can hold is called its length. Both the length and the size of each data item are set when 
+    * the queue is created. 
+    * 
+    * In general, this kind of data structure is used to serialize data between tasks, allowing some elasticity
+    * in time. In many cases, the queue is used as a data buffer in interrupt service routines. 
+    * This buffer will collect the data so, at some later time, another task can fetch the data for further processing. 
+    * This use case is the single "task to task" buffering case. There are also other applications for queues as 
+    * serializing  many data streams into one receiving streams (multiple tasks to a single task) or vice-versa
+    *  (single task to multiple tasks).
+    * 
+    * These objects are referenced by handles, which are variables of type qQueue_t. The qQueue_Setup() API function
+    * configures the queue and initialize the instance. 
+    * The required RAM for the queue data should be provided by the application writer and could be statically 
+    * allocated at compile time or in run-time using the memory management module.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qQueue_s{

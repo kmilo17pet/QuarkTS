@@ -22,6 +22,8 @@
 
     /** 
     * @brief A STimer(Software Timer) object
+    * @details A STimer is referenced by a handle, an object of type qSTimer_t and preferably, 
+    * should be initialized by the QSTIMER_INITIALIZER constant before any usage. 
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSTimer_s{ 

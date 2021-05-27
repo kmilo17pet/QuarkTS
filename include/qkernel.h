@@ -125,6 +125,8 @@
         void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback );
     #endif       
 
+    /** @}*/
+
     /** @addtogroup qnot
     *  @{
     */
@@ -139,6 +141,11 @@
     qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode );
     /** @}*/
 
+    /** @addtogroup qtaskcreation
+     * @brief Kernel API interface to create/remove tasks and perform special OS operations.
+     *  @{
+     */
+
     /**
     * @brief Add a task to the scheduling scheme. The task is scheduled to run every <b>Time</b> 
     * seconds, <b>nExecutions</b> times and executing <b>CallbackFcn</b> method on every pass.
@@ -148,14 +155,14 @@
     * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     * @param Time Execution interval defined in seconds (floating-point format). 
     * For immediate execution (tValue = qTimeImmediate).
-    * @param nExecutions : Number of task executions (Integer value). For indefinite 
+    * @param nExecutions Number of task executions (Integer value). For indefinite 
     * execution (nExecutions = qPeriodic or qIndefinite). Tasks do not 
     * remember the number of iteration set initially. After the 
     * iterations are done, internal iteration counter is 0. To perform 
     * another set of iterations, set the number of iterations again.
     * @note Tasks which performed all their iterations put their own state to qDisabled.
     * @note Asynchronous triggers do not affect the iteration counter.
-    * @param InitialState : Specifies the initial operational state of the task 
+    * @param InitialState Specifies the initial operational state of the task 
     * (qEnabled, qDisabled, qASleep or qAwake(implies qEnabled)).
     * @param arg Represents the task arguments. All arguments must be passed by
     * reference and cast to (void *). Only one argument is allowed, 
@@ -191,7 +198,7 @@
         * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
         * @param Time Execution interval defined in seconds (floating-point format). 
         * For immediate execution (tValue = qTimeImmediate).
-        * @param InitialTaskState : Specifies the initial operational state of the task 
+        * @param InitialTaskState Specifies the initial operational state of the task 
         * (qEnabled, qDisabled, qASleep or qAwake(implies qEnabled)).
         * @param arg Represents the task arguments. All arguments must be passed by
         * reference and cast to (void *). Only one argument is allowed, 
@@ -206,8 +213,8 @@
         /**
         * @brief Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
         * as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.
-        * @param Task  A pointer to the task node.
-        * @param cli  A pointer to the AT Command Line Inteface instance.
+        * @param Task A pointer to the task node.
+        * @param cli A pointer to the AT Command Line Inteface instance.
         * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
         * @return Returns qTrue on success, otherwise returns qFalse.
         */       
@@ -216,7 +223,7 @@
 
     /**
     * @brief Remove the task from the scheduling scheme.
-    * @param Task  A pointer to the task node.
+    * @param Task A pointer to the task node.
     * @return Returns qTrue if success, otherwise returns qFalse.
     */  
     qBool_t qOS_Remove_Task( qTask_t * const Task );

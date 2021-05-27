@@ -53,6 +53,18 @@
 
     /** 
     * @brief A Memory Pool object
+    * @details A memory pool its a special resource that allows memory blocks to be dynamically allocated
+    * from a user-designated memory region. Instead of typical pools with fixed-size block allocation, 
+    * the pools in QuarkTS can be of any size, thereby the user is responsible for selecting the appropriate
+    * memory pool to allocate data with the same size. 
+    * 
+    * The default memory management unit resides in a memory pool object. Also called the default-pool. 
+    * The total amount of available heap space in the default memory pool is set by Q_DEFAULT_HEAP_SIZE, 
+    * which is defined in qconfig.h.
+    *
+    * Besides the default pool, any number of additional memory pools can be defined. Like any other 
+    * object in QuarkTS, memory pools are referenced by handles, a variable of type qMemMang_Pool_t and
+    * should be initialized before use with the qMemMang_Pool_Setup() API.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qMemMang_Pool_s{

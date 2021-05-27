@@ -83,6 +83,11 @@
 
     /** 
     * @brief The command argument with all the regarding information of the incoming AT command.
+    * @details The type it's just a pointer to public data of the CLI instance where the command 
+    * it subscribed to. From the callback context, can be used to print out extra information 
+    * as a command response, parse the command parameters, and query properties with crucial 
+    * information about the detected command, like the type, the number of arguments, and the 
+    * subsequent string after the command text.
     * @note Should be used only in command-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
     */
@@ -173,6 +178,10 @@
 
     /** 
     * @brief An AT Command Line Interface (CLI) object
+    * @details Before starting the CLI development, the corresponding instance must be defined; 
+    * a data structure of type qATCLI_t.
+    *  
+    * The instance should be initialized using the qATCLI_Setup() API.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qATCLI_ControlBlock_s{

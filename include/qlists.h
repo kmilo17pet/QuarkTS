@@ -32,7 +32,7 @@
     }qList_Node_t;
 
     /**
-    * @brief This macro can be used to create custom  data to be used as nodes in the lists.
+    * @brief This macro can be used to create custom data that can be used as node of a list.
     *  User should locate this macro as the first member of the custom structure.
     * 
     * Example :
@@ -152,7 +152,7 @@
 
 
     /**
-    * @brief Must be called before a list is used!  This initialises all the members of the 
+    * @brief Must be called before a list is used. This initialises all the members of the 
     * list structure.
     * @param list Pointer to the list being initialised.
     * @return none
@@ -243,7 +243,6 @@
     * @brief Pointer to a function used by the <b>qList_Sort</b> API to compare 
     * nodes of a list.
     * 
-    *@note  User should use bare-metal code to implement this function.
     * Example :
     * @code{.c}
     * qBool_t myNode_CompareFcn( qList_CompareHandle_t h );

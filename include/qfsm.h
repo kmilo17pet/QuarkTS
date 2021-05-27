@@ -176,7 +176,7 @@
     
     #ifdef DOXYGEN
     /** 
-    * @brief The state callback argument to handle the state-machine dinamics and provide execution information.
+    * @brief The state callback argument to handle the state-machine dynamics and provide execution information.
     * Some members can be written to perform state-transtions.
     * @note Should be used only in state-callbacks as the only input argument. 
     * @note The members of this structure must be accessed as a pointer.
@@ -261,6 +261,20 @@
 
     /** 
     * @brief A state object
+    * @details  States are represented as instances of the qSM_State_t object.
+    * One important attribute of this object is the callback function, which is used to describe
+    * the behavior specific to the state. Also there is a pointer to the parent state to define
+    * nesting of the state and its place in the hierarchical topology.
+    * 
+    * So concrete state machine are built by adding an arbitrary number states and defining 
+    * callback functions. 
+    * 
+    * State  machines  are constructed by composition, therefore, the topology of a state machine 
+    * is determined upon construction. In this module implementation, there are not distinction between
+    *  composite states(states containing substates) and leaf states. All states are potentially composite. 
+    * 
+    * The API qStateMachine_StateSubscribe() should be used to initialize the state and define its
+    * position in the topology.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_State_s{
@@ -299,6 +313,11 @@
 
     /** 
     * @brief A FSM(Finite State Machine) object
+    * @details In QuarkTS, a state-machine must be instantiated with an object of type qSM_t. 
+    * 
+    * Like any other OS object, a Finite State Machine (FSM) must be explicitly initialized before it can be used.
+    * The qStateMachine_Setup() initializes the instance, sets the callback for the top state, sets the initial
+    * state and the surrounding callback function.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_s{
