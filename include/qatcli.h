@@ -33,7 +33,7 @@
         qATCLI_NORESPONSE = 0,          /**< To indicate that no response will be printed out.*/
         qATCLI_OK = 1,                  /**< To indicate an successfull operation. The CLI will print the  OK_String to the output.*/
         qATCLI_DEVID = 32765,           /**< To indicate that the Device Identifier should be print out.*/
-        qATCLI_NOTFOUND = 32766,        /**< To indicate that the command was not found. The CLI will print the NOTFOUND_strint to the output*/
+        qATCLI_NOTFOUND = 32766,        /**< To indicate that the command was not found. The CLI will print the NOTFOUND_string to the output*/
         qATCLI_OUTPUT = 32767           /**< To indicate that only the output buffer will be print out*/
     }qATCLI_Response_t; 
 
@@ -41,7 +41,7 @@
     * @brief Used to indicate an error code as return value inside a command-callback.
     * This code is defined by the application writer and should be a value between 1 and 32766. 
     * 
-    * For example, a return value of QATCLI_ERRORCODE(15), will print out the string "ERROR:15".
+    * For example, a return value of #qATCLI_ERRORCODE(15), will print out the string "ERROR:15".
     */ 
     #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )
 
@@ -109,24 +109,24 @@
         /**
         * @brief  Helper method to get the <b>n</b> argument parsed as integer from the
         * incoming AT command.
-        * @note see <b>qIOUtil_AtoI</b>
+        * @note see <b>qIOUtil_AtoI()</b>
         * @param n The number of the argument
-        * @return  The argument parsed as integer. Same behavior of <b>qIOUtil_AtoI</b>. If argument not found returns 0.
+        * @return  The argument parsed as integer. Same behavior of <b>qIOUtil_AtoI()</b>. If argument not found returns 0.
         */            
         int (*GetArgInt)( qIndex_t n );                         
         /**
         * @brief  Helper method to get the <b>n</b> argument parsed as float from the
         * incoming AT command.
-        * @note see <b>qIOUtil_AtoF</b>
+        * @note see <b>qIOUtil_AtoF()</b>
         * @param n The number of the argument
-        * @return  The argument parsed as Float. Same behavior of <b>qIOUtil_AtoF</b>. If argument not found returns 0.0f
+        * @return  The argument parsed as Float. Same behavior of <b>qIOUtil_AtoF()</b>. If argument not found returns 0.0f
         */         
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
         * @brief  Helper method to get the <b>n</b> HEX argument parsed qUINT32_t from the incoming AT command.
-        * @note see <b>qIOUtil_XtoU32</b>
+        * @note see <b>qIOUtil_XtoU32()</b>
         * @param n The number of the argument
-        * @return  The HEX argument parsed as qUINT32_t. Same behavior of <b>qIOUtil_XtoU32</b>. If argument not found returns 0.
+        * @return  The HEX argument parsed as qUINT32_t. Same behavior of <b>qIOUtil_XtoU32()</b>. If argument not found returns 0.
         */          
         qUINT32_t (*GetArgHex)( qIndex_t n );
         /**
@@ -162,7 +162,7 @@
         */           
         size_t StrLen;
         /**
-        * @brief Number of arguments, only available if Type = <b>QATCMDTYPE_SET</b>.
+        * @brief Number of arguments, only available if Type = ::qATCLI_CMDTYPE_PARA
         */             
         size_t NumArgs;       
         /**
@@ -257,13 +257,13 @@
     * @param SizeOutput The size of the memory allocated in <b>Output</b> 
     * @param Identifier The device identifier string. This string will be printed-out
     * after a call to the ATCLI_DEFAULT_ID_COMMAND
-    * @param OK_Response The output message when a command callback returns QATCLI_OK.  
-    * @param ERROR_Response  The output message when a command callback returns QATCLI_ERROR 
-    * or any QATCLI_ERRORCODE(#)
+    * @param OK_Response The output message when a command callback returns ::qATCLI_OK.  
+    * @param ERROR_Response  The output message when a command callback returns ::qATCLI_ERROR 
+    * or any #qATCLI_ERRORCODE(#)
     * @param NOTFOUND_Response The output message when input doesn't match with any of 
     * the available commands
     * @param term_EOL The End-Of-Line string printed out after any of the CLI messages 
-    * @return qTrue on success, otherwise return qFalse.
+    * @return #qTrue on success, otherwise return #qFalse.
     */   
     qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t OutputFcn, char *Input, const size_t SizeInput, char *Output, const size_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
 
@@ -281,27 +281,27 @@
     * Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t )
     * @param CmdOpt This flag combines with a bitwise OR the following information:
     * 
-    * <b>qATCLI_CMDTYPE_PARA</b>  : "AT+cmd=x,y" is allowed. The execution of the callback
+    * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
     * function also depends on whether the number of argument  is valid or not. Information 
-    * about number of arguments is combined with a bitwise 'OR' : QATCMDTYPE_PARA | 0xXY , 
+    * about number of arguments is combined with a bitwise 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY , 
     * where X which defines maximum argument number for incoming command and Y which 
     * defines minimum argument number for incoming command
     * 
-    * <b>qATCLI_CMDTYPE_TEST</b>  : "AT+cmd=?" is allowed. 
+    * ::qATCLI_CMDTYPE_TEST  : "AT+cmd=?" is allowed. 
     * 
-    * <b>qATCLI_CMDTYPE_READ</b>  : "AT+cmd?" is allowed.
+    * ::qATCLI_CMDTYPE_READ  : "AT+cmd?" is allowed.
     * 
-    * <b>qATCLI_CMDTYPE_ACT</b>   : "AT+cmd" is allowed.  
+    * ::qATCLI_CMDTYPE_ACT   : "AT+cmd" is allowed.  
     * 
     * @param param User storage pointer.
-    * @return qTrue on success, otherwise return qFalse.
+    * @return #qTrue on success, otherwise return #qFalse.
     */ 
     qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Command, char *TextCommand, const qATCLI_CommandCallback_t Callback, qATCLI_Options_t CmdOpt, void *param );
     
     /**
     * @brief Iterate between the commands available inside the AT-CLI instance.
     * @param cli A pointer to the AT Command Line Interface instance
-    * @param reload If qTrue, the iterator will set their position at the beginning.
+    * @param reload If #qTrue, the iterator will set their position at the beginning.
     * @return The current iterated command. NULL when no more commands are available.
     */ 
     qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload );
@@ -309,21 +309,21 @@
     /**
     * @brief Feed the CLI input with a single character. This call is mandatory 
     * from an interrupt context. Put it inside the desired peripheral's ISR.
-    * If your ISR get a block of data, use instead <b>qATCLI_ISRHandlerBlock</b>
+    * If your ISR get a block of data, use instead <b>qATCLI_ISRHandlerBlock()</b>
     * @param cli A pointer to the AT Command Line Interface instance
     * @param c The incoming byte/char to the input. 
-    * @return qTrue when the CLI is ready to process the input, otherwise return qFalse
+    * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
     qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c );
 
     /**
     * @brief Feed the CLI input with a string. This call is mandatory 
     * from an interrupt context. Put it inside the desired peripheral's ISR.
-    * If your ISR only get a single char, use instead <b>qATCLI_ISRHandler</b>
+    * If your ISR only get a single char, use instead <b>qATCLI_ISRHandler()</b>
     * @param cli A pointer to the AT Command Line Interface instance
     * @param Data The incoming string.
     * @param n The length of the string.
-    * @return qTrue when the CLI is ready to process the input, otherwise return qFalse
+    * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
     qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n );
 
@@ -331,7 +331,7 @@
     * @brief Sends a command to the specified AT Command Line Interface instance.
     * @param cli A pointer to the AT Command Line Interface instance
     * @param cmd The command string, including arguments if required.
-    * @return qTrue when the CLI accepts the input. If busy, return qFalse
+    * @return #qTrue when the CLI accepts the input. If busy, return #qFalse
     */         
     qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd );
 
@@ -346,14 +346,14 @@
     /**
     * @brief Flush the CLI input buffer.
     * @param cli A pointer to the AT Command Line Interface instance
-    * @return qTrue on success, otherwise return qFalse
+    * @return #qTrue on success, otherwise return #qFalse
     */   
     void qATCLI_Input_Flush( qATCLI_t * const cli );
 
     /**
     * @brief Run the AT Command Line Interface when the input is ready.
     * @param cli A pointer to the AT Command Line Interface instance
-    * @return qTrue on success, otherwise return qFalse
+    * @return #qTrue on success, otherwise return #qFalse
     */       
     qBool_t qATCLI_Run( qATCLI_t * const cli );
 

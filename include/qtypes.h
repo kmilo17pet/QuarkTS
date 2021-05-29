@@ -109,12 +109,12 @@
     typedef qUINT32_t qCycles_t;
     
     /** 
-    * @brief A boolean value that represents false/Off/Low.
+    * @brief A boolean value that represents false/failure/Off or Low.
     */     
     #define qFalse                  ( (qBool_t)0x00u )
 
     /** 
-    * @brief A boolean value that represents true/On/High.
+    * @brief A boolean value that represents true/success/On/High.
     */     
     #define qTrue                   ( (qBool_t)0x01u )
 
@@ -139,12 +139,12 @@
     #define qAsleep                 ( 3u )
 
     /** 
-    * @brief An operation value that links an object to a task.
+    * @brief An operation directive that links an object to a task.
     */  
     #define qLink                   ( qTrue )
 
     /** 
-    * @brief An operation value that unlink an object from a task.
+    * @brief An operation directive that unlinks an object from a task.
     */       
     #define qUnLink                 ( qFalse )
 
@@ -161,23 +161,30 @@
     /** 
     * @brief A status value that indicates a response timeout.
     */     
-    #define qRESPONSETIMEOUT        ( (qBool_t)0x02u )
+    #define qResponseTimeout        ( (qBool_t)0x02u )
 
     /** 
     * @brief A status value that indicates a rising-edge condition.
     */         
-    #define qRISING                 ( (qBool_t)0x03u )
+    #define qRising                 ( (qBool_t)0x03u )
 
     /** 
     * @brief A status value that indicates a falling-edge condition.
     */        
-    #define qFALLING                ( (qBool_t)0x04u )
+    #define qFalling                ( (qBool_t)0x04u )
 
     /** 
     * @brief A status value that indicates an unknown condition.
     */       
-    #define qUNKNOWN                ( (qBool_t)0xFFu )
+    #define qUnknown                ( (qBool_t)0xFFu )
 
     /** @}*/
+
+    /** @cond */ 
+    #define qRESPONSETIMEOUT        ( qResponseTimeout )
+    #define qRISING                 ( qRising )
+    #define qFALLING                ( qFalling )  
+    #define qUNKNOWN                ( qUnknown )
+    /** @endcond */ 
 
 #endif

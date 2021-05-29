@@ -304,14 +304,14 @@
     /**
     * @brief Determines if the given floating point number arg is positive or negative infinity.
     * @param f Floating point value(32bits).
-    * @return qTrue is argument has an infinite value, otherwise qFalse.
+    * @return #qTrue is argument has an infinite value, otherwise #qFalse.
     */      
     qBool_t qIOUtil_IsInf( qFloat32_t f );
 
     /**
     * @brief Determines if the given floating point number arg is a not-a-number (NaN) value. 
     * @param f Floating point value(32bits).
-    * @return qTrue is argument is NaN, otherwise qFalse
+    * @return #qTrue is argument is NaN, otherwise #qFalse
     */       
     qBool_t qIOUtil_IsNan( qFloat32_t f );
 

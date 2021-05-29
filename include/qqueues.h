@@ -67,7 +67,7 @@
     /** @brief A macro directive to indicate whether the item in the queue should be sent to the front. */
     #define QUEUE_SEND_TO_FRONT    ( 1u )
 
-    /** @brief A typedef to indicate the queue send mode : QUEUE_SEND_TO_BACK or QUEUE_SEND_TO_FRONT*/
+    /** @brief A typedef to indicate the queue send mode : #QUEUE_SEND_TO_BACK or #QUEUE_SEND_TO_FRONT*/
     typedef qUINT8_t qQueue_Mode_t;
 
     /**
@@ -75,8 +75,8 @@
     * @param obj A pointer to the Queue object
     * @param ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from ItemToQueue into the queue storage area.
-    * @return qTrue on successful add, qFalse if not added.
+    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * @return #qTrue on successful add, #qFalse if not added.
     */      
     #define qQueue_SendToBack( obj, ItemToQueue )      qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_BACK )
 
@@ -85,8 +85,8 @@
     * @param obj A pointer to the Queue object
     * @param ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from ItemToQueue into the queue storage area.
-    * @return qTrue on successful add, qFalse if not added.
+    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * @return #qTrue on successful add, #qFalse if not added.
     */     
     #define qQueue_Send( obj, ItemToQueue )            qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_BACK )
 
@@ -95,15 +95,15 @@
     * @param obj A pointer to the Queue object
     * @param ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from ItemToQueue into the queue storage area.
-    * @return qTrue on successful add, qFalse if not added.
+    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * @return #qTrue on successful add, #qFalse if not added.
     */         
     #define qQueue_SendToFront( obj, ItemToQueue )     qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_FRONT )
 
     /**
-    * @brief Check if the queue is already initialized by using qQueue_Setup API.
-    * @param obj a pointer to the Queue object
-    * @return qTrue if the queue is initialized, qFalse if not.
+    * @brief Check if the queue is already initialized by using qQueue_Setup() API.
+    * @param obj A pointer to the Queue object
+    * @return #qTrue if the queue is initialized, #qFalse if not.
     */   
     qBool_t qQueue_IsReady( const qQueue_t * const obj );
 
@@ -114,7 +114,7 @@
     * @param DataArea Data block or array of data.
     * @param ItemSize The size, in bytes, of one single item in the queue.
     * @param ItemsCount The maximum number of items the queue can hold.
-    * @return qTrue on success, otherwise returns qFalse.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */       
     qBool_t qQueue_Setup( qQueue_t * const obj, void* DataArea, size_t ItemSize, size_t ItemsCount );
    
@@ -128,7 +128,7 @@
     /**
     * @brief Returns the empty status of the Queue
     * @param obj A pointer to the Queue object
-    * @return qTrue if the Queue is empty, qFalse if it is not.
+    * @return #qTrue if the Queue is empty, #qFalse if it is not.
     */       
     qBool_t qQueue_IsEmpty( const qQueue_t * const obj );
 
@@ -149,7 +149,7 @@
     /**
     * @brief Returns the full status of the Queue
     * @param obj A pointer to the Queue object
-    * @return qTrue if the Queue is full, qFalse if it is not.
+    * @return #qTrue if the Queue is full, #qFalse if it is not.
     */     
     qBool_t qQueue_IsFull( const qQueue_t * const obj );
 
@@ -163,7 +163,7 @@
     /**
     * @brief Remove the data located at the front of the Queue
     * @param obj A pointer to the Queue object
-    * @return qTrue if data was removed from the Queue, otherwise returns qFalse
+    * @return #qTrue if data was removed from the Queue, otherwise returns #qFalse
     */       
     qBool_t qQueue_RemoveFront( qQueue_t * const obj );
 
@@ -173,7 +173,7 @@
     * was defined when the queue was created.
     * @param obj A pointer to the Queue object
     * @param dest Pointer to the buffer into which the received item will be copied.
-    * @return qTrue if data was retrieved from the Queue, otherwise returns qFalse
+    * @return #qTrue if data was retrieved from the Queue, otherwise returns #qFalse
     */         
     qBool_t qQueue_Receive( qQueue_t * const obj, void *dest );
 
@@ -184,10 +184,10 @@
     * the items the queue will hold was defined when the queue was created, 
     * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage
     * area.
-    * @param InsertMode Can take the value QUEUE_SEND_TO_BACK to place the item at the back 
-    * of the queue, or QUEUE_SEND_TO_FRONT to place the item at the front of 
+    * @param InsertMode Can take the value #QUEUE_SEND_TO_BACK to place the item at the back 
+    * of the queue, or #QUEUE_SEND_TO_FRONT to place the item at the front of 
     * the queue (for high priority messages).
-    * @return qTrue on successful add, qFalse if not added
+    * @return #qTrue on successful add, #qFalse if not added
     */      
     qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode_t InsertMode );
     

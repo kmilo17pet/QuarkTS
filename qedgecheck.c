@@ -61,7 +61,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
                 CurrentPinValue = PinReader( Node->qPrivate.Port, Node->qPrivate.Pin ); /*read the pin level*/        
                 if( Instance->qPrivate.State >= QEDGECHECK_CHECK ){ /*check state*/
                     if( Node->qPrivate.PreviousPinValue != CurrentPinValue ){ /*check if the input level change since the last inputs-sweep*/
-                        Node->qPrivate.Status = (qBool_t)qUNKNOWN; /*change detected, put the node on unknown status until the debounce wait finish*/
+                        Node->qPrivate.Status = (qBool_t)qUnknown; /*change detected, put the node on unknown status until the debounce wait finish*/
                         Instance->qPrivate.State++; /* just to know that at least one node changed its state(count of nodes subject to the range of qUINT8_t)*/
                     }
                     else{
@@ -70,7 +70,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
                 }
                 else if( QEDGECHECK_UPDATE == Instance->qPrivate.State ){ /*update state*/
                     if( Node->qPrivate.PreviousPinValue != CurrentPinValue ){ /*if the level change is effective*/
-                        Node->qPrivate.Status = ( CurrentPinValue )? qRISING : qFALLING; /*set the edge status*/
+                        Node->qPrivate.Status = ( CurrentPinValue )? qRising : qFalling; /*set the edge status*/
                     }      
                     Node->qPrivate.PreviousPinValue = CurrentPinValue; /*keep the previous level*/
                 }
@@ -93,7 +93,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance ){
 }
 /*============================================================================*/
 qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node ){
-    qBool_t RetValue = qUNKNOWN;
+    qBool_t RetValue = qUnknown;
 
     if( NULL != Node ){
         RetValue = Node->qPrivate.Status;

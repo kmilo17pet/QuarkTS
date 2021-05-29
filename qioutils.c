@@ -429,13 +429,13 @@ char* qIOUtil_QBtoA( qBool_t num, char *str ){
             case qFalse:
                 str[0]='f'; str[1]='a'; str[2]='l'; str[3]='s'; str[4]='e'; str[5]='\0';  /*MISRAC2004-17.4_b deviation allowed*/
                 break;
-            case qRESPONSETIMEOUT:
+            case qResponseTimeout:
                 str[0]='t'; str[1]='i'; str[2]='m'; str[3]='e'; str[4]='o'; str[5]='u';str[6]='t';str[7]='\0'; /*MISRAC2004-17.4_b deviation allowed*/
                 break;
-            case qRISING:
+            case qRising:
                 str[0]='r'; str[1]='i'; str[2]='s'; str[3]='i'; str[4]='n'; str[5]='g';str[6]='\0'; /*MISRAC2004-17.4_b deviation allowed*/
                 break;
-            case qFALLING:
+            case qFalling:
                 str[0]='f'; str[1]='a'; str[2]='l'; str[3]='l'; str[4]='i'; str[5]='n';str[6]='g';str[7]='\0'; /*MISRAC2004-17.4_b deviation allowed*/
                 break;
             default:

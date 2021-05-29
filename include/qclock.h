@@ -130,8 +130,8 @@
     *  and checks if the result is greather than <b>td</b>. 
     * @param ti Init timestamp in epochs
     * @param td Elapsed time to check in epochs
-    * @return  qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
-    returns qFalse
+    * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
+    returns #qFalse
     */       
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
 

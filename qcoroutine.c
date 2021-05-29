@@ -1,4 +1,5 @@
-/*!
+/**
+ * @file qcoroutine.c
  * @author J. Camilo Gomez C.
  * @note This file is part of the QuarkTS distribution.
  **/

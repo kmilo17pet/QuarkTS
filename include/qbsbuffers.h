@@ -48,14 +48,14 @@
     /**
     * @brief Query the the full status of the BSBuffer(Byte-sized Buffer)
     * @param obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @return qTrue if the BSBuffer(Byte-sized Buffer) is full, qFalse if it is not.
+    * @return #qTrue if the BSBuffer(Byte-sized Buffer) is full, #qFalse if it is not.
     */    
     qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj );
 
     /**
     * @brief Query the the empty status of the BSBuffer(Byte-sized Buffer)
     * @param obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @return qTrue if the BSBuffer(Byte-sized Buffer) is empty, qFalse if it is not.
+    * @return #qTrue if the BSBuffer(Byte-sized Buffer) is empty, #qFalse if it is not.
     */      
     qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj );
 
@@ -70,7 +70,7 @@
     * @brief Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
     * @param obj a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param dest the location where the data-byte will be written
-    * @return qTrue on success, otherwise returns qFalse
+    * @return #qTrue on success, otherwise returns #qFalse
     */ 
     qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest );
 
@@ -79,7 +79,7 @@
     * @param obj a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param dest the location where the data-byte will be written
     * @param n The number of bytes to read
-    * @return qTrue on success, otherwise returns qFalse
+    * @return #qTrue on success, otherwise returns #qFalse
     */     
     qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n );
 
@@ -87,7 +87,7 @@
     * @brief Adds an element of data to the BSBuffer(Byte-sized Buffer)
     * @param obj a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param Data The data to be added
-    * @return qTrue on success, otherwise returns qFalse
+    * @return #qTrue on success, otherwise returns #qFalse
     */     
     qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data );
 

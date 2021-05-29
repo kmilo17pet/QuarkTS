@@ -23,7 +23,7 @@
     /** 
     * @brief A STimer(Software Timer) object
     * @details A STimer is referenced by a handle, an object of type qSTimer_t and preferably, 
-    * should be initialized by the QSTIMER_INITIALIZER constant before any usage. 
+    * should be initialized by the #QSTIMER_INITIALIZER constant before any usage. 
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSTimer_s{ 
@@ -60,15 +60,15 @@
     * the clock-Tick.
     * @param obj A pointer to the STimer object.
     * @param Time The expiration time(Must be specified in seconds).
-    * @return Returns qTrue on success, otherwise, returns qFalse.
+    * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */        
     qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time );
 
     /**
     * @brief Non-Blocking STimer check
     * @param obj A pointer to the STimer object.
-    * @return Returns qTrue when STimer expires, otherwise, returns qFalse.
-    * @note A disarmed STimer also returns false.
+    * @return Returns #qTrue when STimer expires, otherwise, returns #qFalse.
+    * @note A disarmed STimer also returns #qFalse.
     */         
     qBool_t qSTimer_Expired( const qSTimer_t * const obj ); 
 
@@ -80,14 +80,14 @@
     * 
     * If armed, the time argument is ignored and the API only checks for expiration.
     * When the time expires, the STimer gets armed immediately taking the specified time.
-    * @note After the STimer expiration,  qSTimerFreeRun re-arms the STimer
+    * @note After the STimer expiration, qSTimer_FreeRun() re-arms the STimer
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 
     * the clock-Tick.
     * @param obj A pointer to the STimer object.
     * @param Time The expiration time(Must be specified in seconds).
-    * @return Returns qTrue on success, otherwise, returns qFalse.
-    * @note A disarmed STimer also returns false.
+    * @return Returns #qTrue on success, otherwise, returns #qFalse.
+    * @note A disarmed STimer also returns #qFalse.
     */          
     qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time );
 
@@ -114,7 +114,7 @@
     /**
     * @brief Get the current status of the STimer (Armed or Disarmed)
     * @param obj A pointer to the STimer object.
-    * @return qTrue when armed, otherwise qFalse when disarmed.
+    * @return #qTrue when armed, otherwise #qFalse when disarmed.
     */        
     qBool_t qSTimer_Status( const qSTimer_t * const obj );
 

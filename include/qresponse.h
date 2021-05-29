@@ -66,7 +66,7 @@
     * @param Pattern The data checked in the receiver ISR
     * @param n The length of the data pointer by <b>Pattern</b> 
     * (if Pattern is string, set <b>n</b> to 0 to auto-compute the length)
-    * @return  qTrue if there is a response acknowledge, otherwise returns qFalse.
+    * @return #qTrue if there is a response acknowledge, otherwise returns #qFalse.
     */     
     qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n );
     
@@ -77,7 +77,7 @@
     * @param n The length of the data pointer by <b>Pattern</b> 
     * (if Pattern is string, set <b>n</b> to 0 to auto-compute the length)
     * @param t The timeout value given in seconds
-    * @return qTrue if there is a response acknowledge, qTimeoutReached if timeout t expires otherwise returns qFalse
+    * @return #qTrue if there is a response acknowledge, #qResponseTimeout if timeout expires otherwise returns #qFalse
     */      
     qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t );
     
@@ -85,7 +85,7 @@
     * @brief ISR receiver for the response handler
     * @param obj A pointer to the Response Handler object.
     * @param rxchar The byte-data from the receiver 
-    * @return  qTrue when the Response handler match the request from "qResponseReceived"
+    * @return #qTrue when the Response handler match the request from qResponse_Received()
     */      
     qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar );
 

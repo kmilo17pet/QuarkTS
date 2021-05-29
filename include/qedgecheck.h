@@ -79,9 +79,9 @@
     /**
     * @brief Initialize a I/O Edge-Check instance 
     * @param Instance A pointer to the I/O Edge-Check object
-    * @param RegisterSize The specific-core register size: QREG_8BIT, QREG_16BIT or QREG_32BIT(Default)
+    * @param RegisterSize The specific-core register size: #QREG_8BIT, #QREG_16BIT or #QREG_32BIT(Default)
     * @param DebounceTime The specified time to bypass the bounce of the input nodes
-    * @return qTrue on success. Otherwise qFalse.
+    * @return #qTrue on success. Otherwise #qFalse.
     */   
     qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime );
 
@@ -91,20 +91,20 @@
     * @param Node A pointer to the Input-Node object
     * @param PortAddress The address of the core PORTx-register to read the levels of the specified PinNumber
     * @param PinNumber  The specified Pin to read from PortAddress 
-    * @return qTrue on success. Otherwise qFalse.
+    * @return #qTrue on success. Otherwise #qFalse.
     */     
     qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber );    
    
     /**
     * @brief Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
-    * @return qTrue on success. Otherwise qFalse.
+    * @return #qTrue on success. Otherwise #qFalse.
     */        
     qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance );
 
     /**
     * @brief Query the status of the specified input-node.
     * @param Node A pointer to the Input-Node object
-    * @return The status of the input node : qTrue, qFalse, qRising, qFalling or qUNKNOWN.
+    * @return The status of the input node : #qTrue, #qFalse, #qRising, #qFalling or #qUnknown.
     */         
     qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node );
 

@@ -24,9 +24,10 @@ typedef struct _qQueueStack_s{
 
 typedef qUINT32_t qCoreFlags_t;
 
+typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task, void* eventdata );
 
 typedef struct _qNotificationSpreader_s{
-    qTask_NotifyMode_t mode;
+    qNotificationSpreaderFcn_t mode;
     void *eventdata;
 }qNotificationSpreader_t;
 
@@ -118,7 +119,7 @@ void qOS_DummyTask_Callback( qEvent_t e ){
         kernel.QueueData = NULL;
     #endif
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
+        kernel.NotificationSpreadRequest.mode = NULL;
         kernel.NotificationSpreadRequest.eventdata = NULL;
     #endif    
     kernel.Flag = 0uL; /*clear all the core flags*/
@@ -155,9 +156,9 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
     
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         /*do not proceed if any previous operation is in progress*/
-        if( qTask_NotifyNULL ==  kernel.NotificationSpreadRequest.mode ){ 
+        if( NULL ==  kernel.NotificationSpreadRequest.mode ){ 
             if( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ){
-                kernel.NotificationSpreadRequest.mode = mode;
+                kernel.NotificationSpreadRequest.mode = ( qTask_NotifySimple == mode )? &qTask_Notification_Send : &qTask_Notification_Queue;
                 kernel.NotificationSpreadRequest.eventdata = eventdata;
                 RetValue = qTrue;
             }
@@ -478,28 +479,13 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
     static qBool_t xReady = qFalse;
     qBool_t RetValue = qFalse;
 
-    if( qList_WalkInit == h->stage ){
-        xReady = qFalse;
-        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-            xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
-            if( NULL != xTask ){  /*if we got a task from the priority queue,*/
-                xTask->qPrivate.Trigger = byNotificationQueued; 
-                qOS_Set_TaskFlags( xTask, QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
-            }     
-        #endif          
-    }
-    else if( qList_WalkThrough == h->stage ){
+    if( qList_WalkThrough == h->stage ){
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
-            if( qTask_NotifyNULL != kernel.NotificationSpreadRequest.mode ){
-                if( qTask_NotifySimple == kernel.NotificationSpreadRequest.mode ){
-                    (void)qTask_Notification_Send( xTask, kernel.NotificationSpreadRequest.eventdata );
-                }
-                else{
-                    (void)qTask_Notification_Queue( xTask, kernel.NotificationSpreadRequest.eventdata );
-                }
+            if( NULL != kernel.NotificationSpreadRequest.mode ){
+                kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
                 RetValue = qTrue;
             }
         #endif
@@ -551,10 +537,20 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
             (void)qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
+    else if( qList_WalkInit == h->stage ){
+        xReady = qFalse;
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )  
+            xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
+            if( NULL != xTask ){  /*if we got a task from the priority queue,*/
+                xTask->qPrivate.Trigger = byNotificationQueued; 
+                qOS_Set_TaskFlags( xTask, QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
+            }     
+        #endif          
+    }
     else if( qList_WalkEnd == h->stage ){ 
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             /*spread operation done, clean-up*/
-            kernel.NotificationSpreadRequest.mode = qTask_NotifyNULL;
+            kernel.NotificationSpreadRequest.mode = NULL;
             kernel.NotificationSpreadRequest.eventdata = NULL;
         #endif
         RetValue = xReady; 
