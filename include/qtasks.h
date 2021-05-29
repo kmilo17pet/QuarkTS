@@ -158,9 +158,9 @@
         */
         void *TaskData;
         /** 
-        * @brief Associated data of the event. Specific data will reside here according to 
-        * the event source. This field will only have a NULL value when the trigger 
-        * is ::byTimeElapsed or ::byNoReadyTasks.
+        * @brief Associated data of the event. Specific data will reside here according 
+        * to the event source. This field will have a NULL value when the trigger gets
+        * one of this values: ::byTimeElapsed, ::byEventFlags and ::byNoReadyTasks.
         */
         void *EventData;
         /** 
