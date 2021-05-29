@@ -140,7 +140,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <tr class="separator:aa0d42278e492e50a660824c4b1ddaa7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0dcf7af0c2eddf1d9e3e88adda2ff2"><td class="memItemLeft" align="right" valign="top"><a id="a4e0dcf7af0c2eddf1d9e3e88adda2ff2"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a4e0dcf7af0c2eddf1d9e3e88adda2ff2">NumArgs</a></td></tr>
-<tr class="memdesc:a4e0dcf7af0c2eddf1d9e3e88adda2ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arguments, only available if Type = <b>QATCMDTYPE_SET</b>. <br /></td></tr>
+<tr class="memdesc:a4e0dcf7af0c2eddf1d9e3e88adda2ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of arguments, only available if Type = <a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e">qATCLI_CMDTYPE_PARA</a>. <br /></td></tr>
 <tr class="separator:a4e0dcf7af0c2eddf1d9e3e88adda2ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace2594f0621470e85de85c9c5ee9c06d"><td class="memItemLeft" align="right" valign="top"><a id="ace2594f0621470e85de85c9c5ee9c06d"></a>
 <a class="el" href="group__qatcli.html#ga5e73b1b723c5a2d924eb0221f76e288f">qATCLI_CommandType_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ace2594f0621470e85de85c9c5ee9c06d">Type</a></td></tr>
@@ -166,14 +166,14 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 </div><div class="memdoc">
 
 <p>Helper method to get the <b>n</b> argument parsed as float from the incoming AT command. </p>
-<dl class="section note"><dt>Note</dt><dd>see <b>qIOUtil_AtoF</b> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>see <b><a class="el" href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3" title="Parses the C string, interpreting its content as a floating point number and returns its value as a d...">qIOUtil_AtoF()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>The number of the argument </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The argument parsed as Float. Same behavior of <b>qIOUtil_AtoF</b>. If argument not found returns 0.0f </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The argument parsed as Float. Same behavior of <b><a class="el" href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3" title="Parses the C string, interpreting its content as a floating point number and returns its value as a d...">qIOUtil_AtoF()</a></b>. If argument not found returns 0.0f </dd></dl>
 
 </div>
 </div>
@@ -190,14 +190,14 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 </div><div class="memdoc">
 
 <p>Helper method to get the <b>n</b> HEX argument parsed qUINT32_t from the incoming AT command. </p>
-<dl class="section note"><dt>Note</dt><dd>see <b>qIOUtil_XtoU32</b> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>see <b><a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57" title="Converts the input string consisting of hexadecimal digits into an unsigned integer value....">qIOUtil_XtoU32()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>The number of the argument </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The HEX argument parsed as qUINT32_t. Same behavior of <b>qIOUtil_XtoU32</b>. If argument not found returns 0. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The HEX argument parsed as qUINT32_t. Same behavior of <b><a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57" title="Converts the input string consisting of hexadecimal digits into an unsigned integer value....">qIOUtil_XtoU32()</a></b>. If argument not found returns 0. </dd></dl>
 
 </div>
 </div>
@@ -214,14 +214,14 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 </div><div class="memdoc">
 
 <p>Helper method to get the <b>n</b> argument parsed as integer from the incoming AT command. </p>
-<dl class="section note"><dt>Note</dt><dd>see <b>qIOUtil_AtoI</b> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>see <b><a class="el" href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a" title="Parses the C-string s interpreting its content as an integral number, which is returned as a value of...">qIOUtil_AtoI()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>The number of the argument </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The argument parsed as integer. Same behavior of <b>qIOUtil_AtoI</b>. If argument not found returns 0. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The argument parsed as integer. Same behavior of <b><a class="el" href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a" title="Parses the C-string s interpreting its content as an integral number, which is returned as a value of...">qIOUtil_AtoI()</a></b>. If argument not found returns 0. </dd></dl>
 
 </div>
 </div>

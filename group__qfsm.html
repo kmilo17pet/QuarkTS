@@ -122,7 +122,7 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ga07476c08b51bd61cdb87e161ae717d6c"><td class="memItemLeft" align="right" valign="top"><a id="ga07476c08b51bd61cdb87e161ae717d6c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a></td></tr>
-<tr class="memdesc:ga07476c08b51bd61cdb87e161ae717d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to reference the top state when using the <b>qStateMachine_StateSubscribe</b> API. <br /></td></tr>
+<tr class="memdesc:ga07476c08b51bd61cdb87e161ae717d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to reference the top state when using the <b><a class="el" href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932" title="This function subscribes the FSM instance to a specific state with an associated callback function.">qStateMachine_StateSubscribe()</a></b> API. <br /></td></tr>
 <tr class="separator:ga07476c08b51bd61cdb87e161ae717d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8ddab447f500ece9fc2c0264b9af7368"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a></td></tr>
 <tr class="memdesc:ga8ddab447f500ece9fc2c0264b9af7368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal to indicate that can be used to set nested initial transitions (or default transitions) by using the <b>StartState</b> member.  <a href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">More...</a><br /></td></tr>
@@ -141,7 +141,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga53dd98439f50052d457f50f0fccccec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal to indicate that a timeout expiration event occurs.  <a href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4">More...</a><br /></td></tr>
 <tr class="separator:ga53dd98439f50052d457f50f0fccccec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab629172b64616333ffd6c69206a52538"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">QSM_TSOPT_INDEX</a>(index)</td></tr>
-<tr class="memdesc:gab629172b64616333ffd6c69206a52538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timeout specification option should be used to specify the timeout index. by using the <b>StartState</b> member.  <a href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">More...</a><br /></td></tr>
+<tr class="memdesc:gab629172b64616333ffd6c69206a52538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timeout specification option. Should be used to specify the timeout index.  <a href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">More...</a><br /></td></tr>
 <tr class="separator:gab629172b64616333ffd6c69206a52538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae435e391de4b3994106042603697b663"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gae435e391de4b3994106042603697b663">QSM_TSOPT_SET_ENTRY</a></td></tr>
 <tr class="memdesc:gae435e391de4b3994106042603697b663"><td class="mdescLeft">&#160;</td><td class="mdescRight">This Timeout specification option its used to specify that the engine should set the timeout when the specified state its entering.  <a href="group__qfsm.html#gae435e391de4b3994106042603697b663">More...</a><br /></td></tr>
@@ -368,7 +368,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Timeout specification option should be used to specify the timeout index. by using the <b>StartState</b> member. </p>
+<p>Timeout specification option. Should be used to specify the timeout index. </p>
 <dl class="section note"><dt>Note</dt><dd>Can be combined with a bitwise OR </dd></dl>
 
 </div>
@@ -498,9 +498,9 @@ Functions</h2></td></tr>
 <div class="line">      <span class="keywordflow">return</span> retVal;</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type-def to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:99</div></div>
-<div class="ttc" id="agroup__qtypes_html_ga9cd31c446d7a5ead8f65aa28e4d1f2cd"><div class="ttname"><a href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a></div><div class="ttdeci">#define qTrue</div><div class="ttdoc">A boolean value that represents true/On/High.</div><div class="ttdef"><b>Definition:</b> qtypes.h:119</div></div>
-<div class="ttc" id="agroup__qtypes_html_gabcfc51cee68e399f81b5c109c8e615c7"><div class="ttname"><a href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div><div class="ttdeci">#define qFalse</div><div class="ttdoc">A boolean value that represents false/Off/Low.</div><div class="ttdef"><b>Definition:</b> qtypes.h:114</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The state callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:184</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga9cd31c446d7a5ead8f65aa28e4d1f2cd"><div class="ttname"><a href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a></div><div class="ttdeci">#define qTrue</div><div class="ttdoc">A boolean value that represents true/success/On/High.</div><div class="ttdef"><b>Definition:</b> qtypes.h:119</div></div>
+<div class="ttc" id="agroup__qtypes_html_gabcfc51cee68e399f81b5c109c8e615c7"><div class="ttname"><a href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div><div class="ttdeci">#define qFalse</div><div class="ttdoc">A boolean value that represents false/failure/Off or Low.</div><div class="ttdef"><b>Definition:</b> qtypes.h:114</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The state callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:183</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -540,10 +540,10 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qfsm_html_ga66ead48ca76fb2f583f2c7aef8371062"><div class="ttname"><a href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a></div><div class="ttdeci">#define QSM_SIGNAL_ENTRY</div><div class="ttdoc">Built-in signal to indicate if the current state has just entered from another state.</div><div class="ttdef"><b>Definition:</b> qfsm.h:67</div></div>
 <div class="ttc" id="agroup__qfsm_html_ga79160319d03d53c51e372bf6c8319e33"><div class="ttname"><a href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a></div><div class="ttdeci">#define QSM_SIGNAL_EXIT</div><div class="ttdoc">Built-in signal to indicate if the current state has just exit to another state.</div><div class="ttdef"><b>Definition:</b> qfsm.h:62</div></div>
-<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as a return valu...</div><div class="ttdef"><b>Definition:</b> qfsm.h:137</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:141</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:142</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_af9ba73bb4b2088f86d19a0ade45975b6"><div class="ttname"><a href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_Signal_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:191</div></div>
+<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as a return valu...</div><div class="ttdef"><b>Definition:</b> qfsm.h:136</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:140</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:141</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_af9ba73bb4b2088f86d19a0ade45975b6"><div class="ttname"><a href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_Signal_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:190</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -578,9 +578,9 @@ Functions</h2></td></tr>
 <div class="line">          <span class="keywordflow">default</span>:</div>
 <div class="line">              <span class="keywordflow">break</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a></div><div class="ttdeci">@ qSM_STATUS_BEFORE_ANY</div><div class="ttdef"><b>Definition:</b> qfsm.h:138</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e">qSM_STATUS_EXIT_FAILURE</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_FAILURE</div><div class="ttdef"><b>Definition:</b> qfsm.h:140</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:192</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a></div><div class="ttdeci">@ qSM_STATUS_BEFORE_ANY</div><div class="ttdef"><b>Definition:</b> qfsm.h:137</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e">qSM_STATUS_EXIT_FAILURE</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_FAILURE</div><div class="ttdef"><b>Definition:</b> qfsm.h:139</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:191</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -606,23 +606,23 @@ Functions</h2></td></tr>
 
 <p>This enumeration defines the attributes that can be acquired for a FSM or a state. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ab6752da4ca41e4f1448bc06dc21a7481"></a>qSM_ATTRIB_STATE_TOP&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get a pointer to the top state </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ab6752da4ca41e4f1448bc06dc21a7481"></a>qSM_ATTRIB_STATE_TOP&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the top state </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a1c684d25672c95f958ba10295fe5422b"></a>qSM_ATTRIB_STATE_CURRENT&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get a pointer to the current running state </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a1c684d25672c95f958ba10295fe5422b"></a>qSM_ATTRIB_STATE_CURRENT&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the current running state </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a791bb25790b7de2256ae010a747b40f1"></a>qSM_ATTRIB_SIGNAL_QUEUE&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get a pointer to the signal-queue object if installed </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a791bb25790b7de2256ae010a747b40f1"></a>qSM_ATTRIB_SIGNAL_QUEUE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the signal-queue object if installed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ad6f74aae5e45943fb8327ad57fb62bb6"></a>qSM_ATTRIB_TIMESPEC&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get a pointer to the timeout specification object if installed </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ad6f74aae5e45943fb8327ad57fb62bb6"></a>qSM_ATTRIB_TIMESPEC&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the timeout specification object if installed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a65d3b1a576312716fc07c8551769ce88"></a>qSM_ATTRIB_TRANSITION_TABLE&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get a pointer to the transition table if installed </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a65d3b1a576312716fc07c8551769ce88"></a>qSM_ATTRIB_TRANSITION_TABLE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the transition table if installed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a388c4c533e0e99411b8a0c91dbe7c007"></a>qSM_ATTRIB_DATA&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_Machine : Get the user storage-pointer </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a388c4c533e0e99411b8a0c91dbe7c007"></a>qSM_ATTRIB_DATA&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get the user storage-pointer </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91aea1e918301f391b03cf2bf6f7f818dc1"></a>qSM_ATTRIB_COMPOSITE_INITSTATE&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_State : Get the initial default or initial state, if input is composite </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91aea1e918301f391b03cf2bf6f7f818dc1"></a>qSM_ATTRIB_COMPOSITE_INITSTATE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd" title="Get attributes from the provided state object.">qStateMachine_Get_State()</a> : Get the initial default or initial state, if input is composite </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a71dfeedf17410a8022d3a6135aad4036"></a>qSM_ATTRIB_COMPOSITE_LASTSTATE&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_State : Get the last state, if input is composite </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a71dfeedf17410a8022d3a6135aad4036"></a>qSM_ATTRIB_COMPOSITE_LASTSTATE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd" title="Get attributes from the provided state object.">qStateMachine_Get_State()</a> : Get the last state, if input is composite </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ad5cd70819450d8a338cfff4bcfed1071"></a>qSM_ATTRIB_COMPOSITE_PARENT&#160;</td><td class="fielddoc"><p>Only for qStateMachine_Get_State : Get the parent state, if input is a child </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ad5cd70819450d8a338cfff4bcfed1071"></a>qSM_ATTRIB_COMPOSITE_PARENT&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd" title="Get attributes from the provided state object.">qStateMachine_Get_State()</a> : Get the parent state, if input is a child </p>
 </td></tr>
 </table>
 
@@ -784,7 +784,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Install a signal queue to the provided state machine. </p>
-<dl class="section note"><dt>Note</dt><dd>Queue object should be previously initialized by using <b>qQueue_Setup</b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Queue object should be previously initialized by using <b><a class="el" href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54" title="Configures a Queue. Here, the RAM used to hold the queue data DataArea is statically allocated at com...">qQueue_Setup()</a></b> </dd>
 <dd>
 Queue <b>itemsize == qSM_Signal_t</b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -794,7 +794,7 @@ Queue <b>itemsize == qSM_Signal_t</b> </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success, otherwise return qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -851,7 +851,7 @@ You can increse the number of available timeouts instances by changing the <b>Q_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -896,7 +896,7 @@ You can increse the number of available timeouts instances by changing the <b>Q_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success, otherwise return qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -934,7 +934,7 @@ You can increse the number of available timeouts instances by changing the <b>Q_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the signal was successfully handled, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the signal was successfully handled, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -982,7 +982,7 @@ The signal-queue has the highest precedence. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the provided signal was successfully delivered to the FSM, otherwise return qFalse. qFalse if there is a queue, and the signal cannot be inserted because it is full. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the provided signal was successfully delivered to the FSM, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if there is a queue, and the signal cannot be inserted because it is full. </dd></dl>
 
 </div>
 </div>
@@ -1020,7 +1020,7 @@ The signal-queue has the highest precedence. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1058,7 +1058,7 @@ The signal-queue has the highest precedence. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1118,7 +1118,7 @@ The signal-queue has the highest precedence. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on Success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on Success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1177,7 +1177,7 @@ The signal-queue has the highest precedence. </dd></dl>
   <table class="params">
     <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
     <tr><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramname">parent</td><td>A pointer to the parent state (Use QSM_STATE_TOP) if the parent is the top state. </td></tr>
+    <tr><td class="paramname">parent</td><td>A pointer to the parent state (Use <a class="el" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c" title="This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.">QSM_STATE_TOP</a>) if the parent is the top state. </td></tr>
     <tr><td class="paramname">StateFcn</td><td>The handler function associated to the state.</td></tr>
   </table>
   </dd>
@@ -1189,7 +1189,7 @@ The signal-queue has the highest precedence. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success, otherwise return qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1226,9 +1226,9 @@ The signal-queue has the highest precedence. </dd></dl>
 </div><div class="memdoc">
 
 <p>Set the time for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b>qStateMachine_InstallTimeoutSpec</b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixe...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
 <dd>
-Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQueue</b> </dd></dl>
+Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
@@ -1237,7 +1237,7 @@ Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQ
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1268,9 +1268,9 @@ Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQ
 </div><div class="memdoc">
 
 <p>Stop the time count for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b>qStateMachine_InstallTimeoutSpec</b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixe...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
 <dd>
-Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQueue</b> </dd></dl>
+Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
@@ -1278,7 +1278,7 @@ Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQ
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

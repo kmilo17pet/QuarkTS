@@ -126,13 +126,13 @@ Macros</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga4df3615b8cf11f36f7c7d368f24040cc"><td class="memItemLeft" align="right" valign="top"><a id="ga4df3615b8cf11f36f7c7d368f24040cc"></a>
 typedef qUINT8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a></td></tr>
-<tr class="memdesc:ga4df3615b8cf11f36f7c7d368f24040cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A typedef to indicate the queue send mode : QUEUE_SEND_TO_BACK or QUEUE_SEND_TO_FRONT. <br /></td></tr>
+<tr class="memdesc:ga4df3615b8cf11f36f7c7d368f24040cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A typedef to indicate the queue send mode : <a class="el" href="group__qqueues.html#ga0fe9dfcef13b8664e79c240fe3b93fcf" title="A macro directive to indicate whether the item in the queue should be sent to the back.">QUEUE_SEND_TO_BACK</a> or <a class="el" href="group__qqueues.html#gaa7336de06f0a222e7d0eab149efda44c" title="A macro directive to indicate whether the item in the queue should be sent to the front.">QUEUE_SEND_TO_FRONT</a>. <br /></td></tr>
 <tr class="separator:ga4df3615b8cf11f36f7c7d368f24040cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaf57a0e8f835ed03fcdd8f5372a80ad21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gaf57a0e8f835ed03fcdd8f5372a80ad21">qQueue_IsReady</a> (const <a class="el" href="structq_queue__t.html">qQueue_t</a> *const obj)</td></tr>
-<tr class="memdesc:gaf57a0e8f835ed03fcdd8f5372a80ad21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the queue is already initialized by using qQueue_Setup API.  <a href="group__qqueues.html#gaf57a0e8f835ed03fcdd8f5372a80ad21">More...</a><br /></td></tr>
+<tr class="memdesc:gaf57a0e8f835ed03fcdd8f5372a80ad21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54" title="Configures a Queue. Here, the RAM used to hold the queue data DataArea is statically allocated at com...">qQueue_Setup()</a> API.  <a href="group__qqueues.html#gaf57a0e8f835ed03fcdd8f5372a80ad21">More...</a><br /></td></tr>
 <tr class="separator:gaf57a0e8f835ed03fcdd8f5372a80ad21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeb0e240ce13f9c76b3bb8bac85ddaf54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54">qQueue_Setup</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const obj, void *DataArea, size_t ItemSize, size_t ItemsCount)</td></tr>
 <tr class="memdesc:gaeb0e240ce13f9c76b3bb8bac85ddaf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures a Queue. Here, the RAM used to hold the queue data <b>DataArea</b> is statically allocated at compile time by the application writer.  <a href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54">More...</a><br /></td></tr>
@@ -201,11 +201,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from ItemToQueue into the queue storage area. </td></tr>
+    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on successful add, qFalse if not added. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on successful add, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if not added. </dd></dl>
 
 </div>
 </div>
@@ -239,11 +239,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from ItemToQueue into the queue storage area. </td></tr>
+    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on successful add, qFalse if not added. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on successful add, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if not added. </dd></dl>
 
 </div>
 </div>
@@ -277,11 +277,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from ItemToQueue into the queue storage area. </td></tr>
+    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on successful add, qFalse if not added. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on successful add, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if not added. </dd></dl>
 
 </div>
 </div>
@@ -336,7 +336,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the Queue is empty, qFalse if it is not. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the Queue is empty, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if it is not. </dd></dl>
 
 </div>
 </div>
@@ -363,7 +363,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the Queue is full, qFalse if it is not. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the Queue is full, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if it is not. </dd></dl>
 
 </div>
 </div>
@@ -383,14 +383,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Check if the queue is already initialized by using qQueue_Setup API. </p>
+<p>Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54" title="Configures a Queue. Here, the RAM used to hold the queue data DataArea is statically allocated at com...">qQueue_Setup()</a> API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the Queue object </td></tr>
+    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the queue is initialized, qFalse if not. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the queue is initialized, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if not. </dd></dl>
 
 </div>
 </div>
@@ -482,7 +482,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if data was retrieved from the Queue, otherwise returns qFalse </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if data was retrieved from the Queue, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> </dd></dl>
 
 </div>
 </div>
@@ -509,7 +509,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if data was removed from the Queue, otherwise returns qFalse </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if data was removed from the Queue, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> </dd></dl>
 
 </div>
 </div>
@@ -577,11 +577,11 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
     <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
-    <tr><td class="paramname">InsertMode</td><td>Can take the value QUEUE_SEND_TO_BACK to place the item at the back of the queue, or QUEUE_SEND_TO_FRONT to place the item at the front of the queue (for high priority messages). </td></tr>
+    <tr><td class="paramname">InsertMode</td><td>Can take the value <a class="el" href="group__qqueues.html#ga0fe9dfcef13b8664e79c240fe3b93fcf" title="A macro directive to indicate whether the item in the queue should be sent to the back.">QUEUE_SEND_TO_BACK</a> to place the item at the back of the queue, or <a class="el" href="group__qqueues.html#gaa7336de06f0a222e7d0eab149efda44c" title="A macro directive to indicate whether the item in the queue should be sent to the front.">QUEUE_SEND_TO_FRONT</a> to place the item at the front of the queue (for high priority messages). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on successful add, qFalse if not added </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on successful add, <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if not added </dd></dl>
 
 </div>
 </div>
@@ -633,7 +633,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -684,16 +684,16 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p><b>qQUEUE_DEQUEUE</b>: The task will be triggered if there are elements in the Queue. Data will be extracted automatically in every trigger and will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_FULL</b>: the task will be triggered if the Queue is full. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_COUNT</b>: the task will be triggered if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
-<p><b>qQUEUE_EMPTY</b>: the task will be triggered if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure. </p><dl class="params"><dt>Parameters</dt><dd>
+<p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">qQueueMode_Receiver</a> : The task will be triggered if there are elements in the Queue. Data will be extracted automatically in every trigger and will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">qQueueMode_Full</a> : The task will be triggered if the Queue is full. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> : The task will be triggered if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure.</p>
+<p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a> : The task will be triggered if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> structure. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td>This argument defines if the queue will be attached (qATTACH) or detached (qDETACH) from the task. If the <b>qQUEUE_COUNT</b> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a qDETACH action. </td></tr>
+    <tr><td class="paramname">arg</td><td>This argument defines if the queue will be attached (<a class="el" href="group__qtypes.html#ga80c5824c1fe206f5d1073857875ec7ca" title="An operation directive that links an object to a task.">qLink</a>) or detached (<a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a>) from the task. If the <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a <a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a> action. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

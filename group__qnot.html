@@ -109,10 +109,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:gad1ac6cbe8d1646f096f5d3fdc0473eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to spread a notification among all the tasks in the scheduling scheme.  <a href="group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb">More...</a><br /></td></tr>
 <tr class="separator:gad1ac6cbe8d1646f096f5d3fdc0473eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gace469c30db43a71068dce72404de0e40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gace469c30db43a71068dce72404de0e40">qTask_Notification_Send</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gace469c30db43a71068dce72404de0e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a simple notification generating an asynchronous event. This method marks the task as 'qReady' for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <b>byNotificationSimple</b>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field.  <a href="group__qnot.html#gace469c30db43a71068dce72404de0e40">More...</a><br /></td></tr>
+<tr class="memdesc:gace469c30db43a71068dce72404de0e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field.  <a href="group__qnot.html#gace469c30db43a71068dce72404de0e40">More...</a><br /></td></tr>
 <tr class="separator:gace469c30db43a71068dce72404de0e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafb9df07070eefeccc74552c2cfc70881"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881">qTask_Notification_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gafb9df07070eefeccc74552c2cfc70881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <b>byNotificationQueued</b>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit.  <a href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881">More...</a><br /></td></tr>
+<tr class="memdesc:gafb9df07070eefeccc74552c2cfc70881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispacher perfo...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit.  <a href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881">More...</a><br /></td></tr>
 <tr class="separator:gafb9df07070eefeccc74552c2cfc70881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7c6b45789367b815f17c1a346014256b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">qTask_HasPendingNotifications</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
 <tr class="memdesc:ga7c6b45789367b815f17c1a346014256b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the task has pending notifications.  <a href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">More...</a><br /></td></tr>
@@ -177,11 +177,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
-    <tr><td class="paramname">mode</td><td>the method used to spread the event: <b>qTask_NotifySimple</b> or <b>qTask_NotifyQueued</b>. </td></tr>
+    <tr><td class="paramname">mode</td><td>the method used to spread the event: <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a> or <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if success. qFalse if any other spread operation is in progress. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if success. <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if any other spread operation is in progress. </dd></dl>
 
 </div>
 </div>
@@ -208,7 +208,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if the function asserts, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the function asserts, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -238,7 +238,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <b>byNotificationQueued</b>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
+<p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set Trigger flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispacher perfo...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the EventData field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -246,7 +246,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns qTrue if the event has been inserted in the queue, or qFalse if an error occurred (The queue exceeds the size). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the event has been inserted in the queue, or <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> if an error occurred (The queue exceeds the size). </dd></dl>
 
 </div>
 </div>
@@ -276,7 +276,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sends a simple notification generating an asynchronous event. This method marks the task as 'qReady' for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <b>byNotificationSimple</b>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field. </p>
+<p>Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the Trigger flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <b>EventData</b> field. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -284,7 +284,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>qTrue on success. Otherwise qFalse.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success. Otherwise <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>J. Camilo Gomez C. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This file is part of the QuarkTS distribution. </dd></dl>
 

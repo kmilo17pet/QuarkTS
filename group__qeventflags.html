@@ -102,7 +102,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga4ff86473ecbab720beb77745566c1cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current value of the task's EventFlags.  <a href="group__qeventflags.html#ga4ff86473ecbab720beb77745566c1cb7">More...</a><br /></td></tr>
 <tr class="separator:ga4ff86473ecbab720beb77745566c1cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qeventflags.html#gaf4dfdea3ef149309bd2e8eb0bc89039b">qTask_EventFlags_Check</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> FlagsToCheck, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ClearOnExit, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> CheckForAll)</td></tr>
-<tr class="memdesc:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for flags set to qTrue inside the task Event-Flags.  <a href="group__qeventflags.html#gaf4dfdea3ef149309bd2e8eb0bc89039b">More...</a><br /></td></tr>
+<tr class="memdesc:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for flags set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> inside the task Event-Flags.  <a href="group__qeventflags.html#gaf4dfdea3ef149309bd2e8eb0bc89039b">More...</a><br /></td></tr>
 <tr class="separator:gaf4dfdea3ef149309bd2e8eb0bc89039b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -146,18 +146,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Check for flags set to qTrue inside the task Event-Flags. </p>
+<p>Check for flags set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> inside the task Event-Flags. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
     <tr><td class="paramname">FlagsToCheck</td><td>A bitwise value that indicates the flags to test inside the EventFlags. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
-    <tr><td class="paramname">ClearOnExit</td><td>If is set to qTrue then any flags set in the value passed as the <b>FlagsToCheck</b> parameter will be cleared in the event group before this function returns only when the condition is meet. </td></tr>
+    <tr><td class="paramname">ClearOnExit</td><td>If is set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> then any flags set in the value passed as the <b>FlagsToCheck</b> parameter will be cleared in the event group before this function returns only when the condition is meet. </td></tr>
     <tr><td class="paramname">CheckForAll</td><td>Used to create either a logical AND test (where all flags must be set) or a logical OR test (where one or more flags must be set) as follows:</td></tr>
   </table>
   </dd>
 </dl>
-<p>If is set to qTrue this API will return qTrue when either all the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags.</p>
-<p>If is set to qFalse this API will return qTrue when any of the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags. </p><dl class="section return"><dt>Returns</dt><dd>qTrue if the condition is meet, otherwise return qFalse. </dd></dl>
+<p>If is set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, this API will return <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> when either all the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags.</p>
+<p>If is set to <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>, this API will return <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> when any of the flags set in the value passed as the <b>FlagsToCheck</b> parameter are set in the task's EventFlags. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the condition is meet, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
