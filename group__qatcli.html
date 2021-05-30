@@ -164,10 +164,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga3aa265d9b7596bb43d5e826fe8775589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga3aa265d9b7596bb43d5e826fe8775589">More...</a><br /></td></tr>
 <tr class="separator:ga3aa265d9b7596bb43d5e826fe8775589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad1ef1060c9574a8dff57e8a048c5803c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c">qATCLI_ISRHandler</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, char c)</td></tr>
-<tr class="memdesc:gad1ef1060c9574a8dff57e8a048c5803c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <b><a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a></b>  <a href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c">More...</a><br /></td></tr>
+<tr class="memdesc:gad1ef1060c9574a8dff57e8a048c5803c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a>  <a href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c">More...</a><br /></td></tr>
 <tr class="separator:gad1ef1060c9574a8dff57e8a048c5803c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabff9dbdbf7a96d42ba797015afa537c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0">qATCLI_ISRHandlerBlock</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, char *Data, const size_t n)</td></tr>
-<tr class="memdesc:gabff9dbdbf7a96d42ba797015afa537c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <b><a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a></b>  <a href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0">More...</a><br /></td></tr>
+<tr class="memdesc:gabff9dbdbf7a96d42ba797015afa537c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a>  <a href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0">More...</a><br /></td></tr>
 <tr class="separator:gabff9dbdbf7a96d42ba797015afa537c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga21fa53455d7bfaedcff0269ae7e1e455"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga21fa53455d7bfaedcff0269ae7e1e455">qATCLI_Raise</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const char *cmd)</td></tr>
 <tr class="memdesc:ga21fa53455d7bfaedcff0269ae7e1e455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a command to the specified AT Command Line Interface instance.  <a href="group__qatcli.html#ga21fa53455d7bfaedcff0269ae7e1e455">More...</a><br /></td></tr>
@@ -406,7 +406,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
     <tr><td class="paramname">Command</td><td>A pointer to the AT command object. </td></tr>
     <tr><td class="paramname">TextCommand</td><td>The string (name) of the command we want to subscribe to. Since this service only handles AT commands, this string has to begin by the "at" characters and should be in lower case. </td></tr>
-    <tr><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t ) </td></tr>
+    <tr><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre> </td></tr>
     <tr><td class="paramname">CmdOpt</td><td>This flag combines with a bitwise OR the following information:</td></tr>
   </table>
   </dd>
@@ -516,7 +516,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <b><a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a></b> </p>
+<p>Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
@@ -560,7 +560,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <b><a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a></b> </p>
+<p>Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>

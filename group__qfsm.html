@@ -122,10 +122,10 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ga07476c08b51bd61cdb87e161ae717d6c"><td class="memItemLeft" align="right" valign="top"><a id="ga07476c08b51bd61cdb87e161ae717d6c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a></td></tr>
-<tr class="memdesc:ga07476c08b51bd61cdb87e161ae717d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to reference the top state when using the <b><a class="el" href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932" title="This function subscribes the FSM instance to a specific state with an associated callback function.">qStateMachine_StateSubscribe()</a></b> API. <br /></td></tr>
+<tr class="memdesc:ga07476c08b51bd61cdb87e161ae717d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to reference the top state when using the <a class="el" href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932" title="This function subscribes the FSM instance to a specific state with an associated callback function.">qStateMachine_StateSubscribe()</a> API. <br /></td></tr>
 <tr class="separator:ga07476c08b51bd61cdb87e161ae717d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8ddab447f500ece9fc2c0264b9af7368"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a></td></tr>
-<tr class="memdesc:ga8ddab447f500ece9fc2c0264b9af7368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <b>StartState</b> member.  <a href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">More...</a><br /></td></tr>
+<tr class="memdesc:ga8ddab447f500ece9fc2c0264b9af7368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <a class="el" href="structq_s_m___handler__t.html#a10e59c21e0e6763803fcb9f4414858ef">qSM_Handler_t::StartState</a> member.  <a href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">More...</a><br /></td></tr>
 <tr class="separator:ga8ddab447f500ece9fc2c0264b9af7368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga79160319d03d53c51e372bf6c8319e33"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a></td></tr>
 <tr class="memdesc:ga79160319d03d53c51e372bf6c8319e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal to indicate if the current state has just exit to another state.  <a href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">More...</a><br /></td></tr>
@@ -321,8 +321,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <b>StartState</b> member. </p>
-<dl class="section note"><dt>Note</dt><dd>Transitions by setting the <b>NextState</b> member are not allowed here </dd></dl>
+<p>Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <a class="el" href="structq_s_m___handler__t.html#a10e59c21e0e6763803fcb9f4414858ef">qSM_Handler_t::StartState</a> member. </p>
+<dl class="section note"><dt>Note</dt><dd>Transitions by setting the <a class="el" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">qSM_Handler_t::NextState</a> member are not allowed here </dd></dl>
 
 </div>
 </div>
@@ -1226,9 +1226,9 @@ The signal-queue has the highest precedence. </dd></dl>
 </div><div class="memdoc">
 
 <p>Set the time for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
-Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
+Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
@@ -1268,9 +1268,9 @@ Requires an installed signal queue. For this use <b><a class="el" href="group__q
 </div><div class="memdoc">
 
 <p>Stop the time count for the selected built-in timeout for the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
-Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
+Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
