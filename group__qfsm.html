@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('group__qfsm.html',''); initResizable()
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___handler__t.html">qSM_Handler_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The state callback argument to handle the state-machine dynamics and provide execution information. Some members can be written to perform state-transtions.  <a href="structq_s_m___handler__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback argument to handle the state-machine dynamics and provide execution information. Some members can be written to perform state-transtions.  <a href="structq_s_m___handler__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___state__t.html">qSM_State_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A state object.  <a href="structq_s_m___state__t.html#details">More...</a><br /></td></tr>
@@ -125,7 +125,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga07476c08b51bd61cdb87e161ae717d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to reference the top state when using the <b><a class="el" href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932" title="This function subscribes the FSM instance to a specific state with an associated callback function.">qStateMachine_StateSubscribe()</a></b> API. <br /></td></tr>
 <tr class="separator:ga07476c08b51bd61cdb87e161ae717d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8ddab447f500ece9fc2c0264b9af7368"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a></td></tr>
-<tr class="memdesc:ga8ddab447f500ece9fc2c0264b9af7368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal to indicate that can be used to set nested initial transitions (or default transitions) by using the <b>StartState</b> member.  <a href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">More...</a><br /></td></tr>
+<tr class="memdesc:ga8ddab447f500ece9fc2c0264b9af7368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <b>StartState</b> member.  <a href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">More...</a><br /></td></tr>
 <tr class="separator:ga8ddab447f500ece9fc2c0264b9af7368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga79160319d03d53c51e372bf6c8319e33"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a></td></tr>
 <tr class="memdesc:ga79160319d03d53c51e372bf6c8319e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Built-in signal to indicate if the current state has just exit to another state.  <a href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">More...</a><br /></td></tr>
@@ -205,7 +205,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a>
 <br />
  }</td></tr>
-<tr class="memdesc:gae3b8425bb28440f3b2d9decfb65ec5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This enumeration defines the built-in state-execution status values that can be used as a return value in a state callback.  <a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">More...</a><br /></td></tr>
+<tr class="memdesc:gae3b8425bb28440f3b2d9decfb65ec5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This enumeration defines the built-in state-execution status values that can be used as return value in a state callback.  <a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">More...</a><br /></td></tr>
 <tr class="separator:gae3b8425bb28440f3b2d9decfb65ec5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa410ec930ead4964eaf0d75fc24d230b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gaa410ec930ead4964eaf0d75fc24d230b">qSM_TransitionHistoryMode_t</a> { <a class="el" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7">qSM_TRANSITION_NO_HISTORY</a>
 , <a class="el" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a>
@@ -248,16 +248,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga2aae0de4e0850942d0526c126773c901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install a signal queue to the provided state machine.  <a href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901">More...</a><br /></td></tr>
 <tr class="separator:ga2aae0de4e0850942d0526c126773c901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c">qStateMachine_SendSignal</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> xSignal, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> isUrgent)</td></tr>
-<tr class="memdesc:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a signal to the provided state machine.  <a href="group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c">More...</a><br /></td></tr>
+<tr class="memdesc:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a signal to the provided state machine.  <a href="group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c">More...</a><br /></td></tr>
 <tr class="separator:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga803c45fec0154efce96c559748e9f722"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722">qStateMachine_InstallTimeoutSpec</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> *const ts, <a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> *tdef, const size_t n)</td></tr>
-<tr class="memdesc:ga803c45fec0154efce96c559748e9f722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixed timeouts for specific states using a lookup-table.  <a href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722">More...</a><br /></td></tr>
+<tr class="memdesc:ga803c45fec0154efce96c559748e9f722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). This methods also set fixed timeouts for specific states using a lookup-table.  <a href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722">More...</a><br /></td></tr>
 <tr class="separator:ga803c45fec0154efce96c559748e9f722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33102ce4c39020cb183a1006683d1b08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga33102ce4c39020cb183a1006683d1b08">qStateMachine_TimeoutSet</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> xTimeout, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> xTime)</td></tr>
 <tr class="memdesc:ga33102ce4c39020cb183a1006683d1b08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the time for the selected built-in timeout inside the target FSM.  <a href="group__qfsm.html#ga33102ce4c39020cb183a1006683d1b08">More...</a><br /></td></tr>
 <tr class="separator:ga33102ce4c39020cb183a1006683d1b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab45cd840eaf1364294a13ea6543790e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">qStateMachine_TimeoutStop</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> xTimeout)</td></tr>
-<tr class="memdesc:gab45cd840eaf1364294a13ea6543790e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the time count for the selected built-in timeout inside the target FSM.  <a href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">More...</a><br /></td></tr>
+<tr class="memdesc:gab45cd840eaf1364294a13ea6543790e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the time count for the selected built-in timeout for the target FSM.  <a href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">More...</a><br /></td></tr>
 <tr class="separator:gab45cd840eaf1364294a13ea6543790e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga47013763cf646d09cbff646a4d692a8a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a">qStateMachine_Get_Machine</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qfsm.html#ga1b1fbda0bf0e715aa1986e21235c6e91">qSM_Attribute_t</a> attr)</td></tr>
 <tr class="memdesc:ga47013763cf646d09cbff646a4d692a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get attributes from the provided FSM object.  <a href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a">More...</a><br /></td></tr>
@@ -321,8 +321,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Built-in signal to indicate that can be used to set nested initial transitions (or default transitions) by using the <b>StartState</b> member. </p>
-<dl class="section note"><dt>Note</dt><dd>Transitions by seting the <b>NextState</b> member are not allowed here </dd></dl>
+<p>Built-in signal that can be used to set nested initial-transitions (aka default transitions) by changing the <b>StartState</b> member. </p>
+<dl class="section note"><dt>Note</dt><dd>Transitions by setting the <b>NextState</b> member are not allowed here </dd></dl>
 
 </div>
 </div>
@@ -500,7 +500,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type-def to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:99</div></div>
 <div class="ttc" id="agroup__qtypes_html_ga9cd31c446d7a5ead8f65aa28e4d1f2cd"><div class="ttname"><a href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a></div><div class="ttdeci">#define qTrue</div><div class="ttdoc">A boolean value that represents true/success/On/High.</div><div class="ttdef"><b>Definition:</b> qtypes.h:119</div></div>
 <div class="ttc" id="agroup__qtypes_html_gabcfc51cee68e399f81b5c109c8e615c7"><div class="ttname"><a href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div><div class="ttdeci">#define qFalse</div><div class="ttdoc">A boolean value that represents false/failure/Off or Low.</div><div class="ttdef"><b>Definition:</b> qtypes.h:114</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The state callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:183</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:183</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -540,7 +540,7 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qfsm_html_ga66ead48ca76fb2f583f2c7aef8371062"><div class="ttname"><a href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a></div><div class="ttdeci">#define QSM_SIGNAL_ENTRY</div><div class="ttdoc">Built-in signal to indicate if the current state has just entered from another state.</div><div class="ttdef"><b>Definition:</b> qfsm.h:67</div></div>
 <div class="ttc" id="agroup__qfsm_html_ga79160319d03d53c51e372bf6c8319e33"><div class="ttname"><a href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a></div><div class="ttdeci">#define QSM_SIGNAL_EXIT</div><div class="ttdoc">Built-in signal to indicate if the current state has just exit to another state.</div><div class="ttdef"><b>Definition:</b> qfsm.h:62</div></div>
-<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as a return valu...</div><div class="ttdef"><b>Definition:</b> qfsm.h:136</div></div>
+<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as return value ...</div><div class="ttdef"><b>Definition:</b> qfsm.h:136</div></div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:140</div></div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:141</div></div>
 <div class="ttc" id="astructq_s_m___handler__t_html_af9ba73bb4b2088f86d19a0ade45975b6"><div class="ttname"><a href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_Signal_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:190</div></div>
@@ -616,7 +616,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a65d3b1a576312716fc07c8551769ce88"></a>qSM_ATTRIB_TRANSITION_TABLE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the transition table if installed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a388c4c533e0e99411b8a0c91dbe7c007"></a>qSM_ATTRIB_DATA&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get the user storage-pointer </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a388c4c533e0e99411b8a0c91dbe7c007"></a>qSM_ATTRIB_DATA&#160;</td><td class="fielddoc"><p>Get the user data ( storage-pointer ) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91aea1e918301f391b03cf2bf6f7f818dc1"></a>qSM_ATTRIB_COMPOSITE_INITSTATE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd" title="Get attributes from the provided state object.">qStateMachine_Get_State()</a> : Get the initial default or initial state, if input is composite </p>
 </td></tr>
@@ -640,7 +640,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This enumeration defines the built-in state-execution status values that can be used as a return value in a state callback. </p>
+<p>This enumeration defines the built-in state-execution status values that can be used as return value in a state callback. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"></a>qSM_STATUS_BEFORE_ANY&#160;</td><td class="fielddoc"><p>(Only available in the surrounding callback) Indicates an execution of the surrounding callback before launching the state callback. </p>
 </td></tr>
@@ -836,7 +836,7 @@ Queue <b>itemsize == qSM_Signal_t</b> </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixed timeouts for specific states using a lookup-table. </p>
+<p>Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). This methods also set fixed timeouts for specific states using a lookup-table. </p>
 <dl class="section note"><dt>Note</dt><dd>This feature its only available if the FSM has a signal queue installed. </dd>
 <dd>
 The lookup table will be an array of type <b><a class="el" href="structq_s_m___timeout_state_definition__t.html" title="This structure should be used to define an item in a timeout-specification table.">qSM_TimeoutStateDefinition_t</a></b> with <b>nEntries</b> elements matching { state, time, options }. </dd>
@@ -970,7 +970,7 @@ You can increse the number of available timeouts instances by changing the <b>Q_
       </table>
 </div><div class="memdoc">
 
-<p>Send a signal to the provided state machine. </p>
+<p>Sends a signal to the provided state machine. </p>
 <dl class="section note"><dt>Note</dt><dd>If the signal queue is not available, an exclusion variable will be used. This means that the signal cannot be sent until the variable is empty. (the signal was handled by the state-machine engine). </dd>
 <dd>
 The signal-queue has the highest precedence. </dd></dl>
@@ -1226,7 +1226,7 @@ The signal-queue has the highest precedence. </dd></dl>
 </div><div class="memdoc">
 
 <p>Set the time for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixe...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
 <dd>
 Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1267,8 +1267,8 @@ Requires an installed signal queue. For this use <b><a class="el" href="group__q
       </table>
 </div><div class="memdoc">
 
-<p>Stop the time count for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to use the FSM built-in timeouts. This methods also set fixe...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
+<p>Stop the time count for the selected built-in timeout for the target FSM. </p>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <b><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a></b> </dd>
 <dd>
 Requires an installed signal queue. For this use <b><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a></b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
