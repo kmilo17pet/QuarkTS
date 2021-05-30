@@ -44,7 +44,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 /** @mainpage QuarkTS OS
 * An open-source OS for small embedded applications.
 *
-* <a href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download user manual</a> 
+* <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download user manual</a> 
 *
 * QuarkTS is an operating system that provides a modern environment to build stable 
 * and predictable event-driven multitasking embedded software. The OS is built on 

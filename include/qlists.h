@@ -75,7 +75,7 @@
      }qList_WalkStage_t;
  
     /**
-    * @brief Handle of the <b>qList_ForEach()</b> API that is passed as an argument to 
+    * @brief Handle of the qList_ForEach() API that is passed as an argument to 
     * the function that operates on each node. 
     * @note The user must verify the members of this structure to operate 
     * correctly at each stage of the cycle.
@@ -93,7 +93,7 @@
     #endif
 
     /**
-    * @brief Handle of the <b>qList_Sort()</b> API that is passed as an argument to 
+    * @brief Handle of the qList_Sort() API that is passed as an argument to 
     * the compare function. 
     * @note The user must verify the input nodes to return a boolean value
     * that determines the order in which the nodes should be ordered
@@ -111,7 +111,7 @@
 
     /**
     * @brief Pointer to a function that operates on every node when using
-    * the <b>qList_ForEach()</b> API.
+    * the qList_ForEach() API.
     * 
     * Example :
     * @code{.c}
@@ -180,7 +180,7 @@
     * @brief Remove an item from the list.
     * @param list Pointer to the list.
     * @param node  A pointer to the node to be deleted (to ignore pass NULL ). 
-    * If the node is member or the list, use <b>qList_RemoveItself()</b> to avoid overhead
+    * If the node is member or the list, use qList_RemoveItself() to avoid overhead
     * @param position The position of the node that will be removed. Could be
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number.
     * @return A pointer to the removed node. NULL if removal can't be performed. 
@@ -268,10 +268,9 @@
     * elements as defined by <b>CompareFcn</b>.
     * @param list Pointer to the list.
     * @param CompareFcn Pointer to a function that compares two nodes.
-    * This function is called repeatedly by <b>qList_Sort</b> to compare two nodes. 
+    * This function is called repeatedly by qList_Sort() to compare two nodes. 
     * It shall follow the following prototype:
-    * 
-    * qBool_t (*CompareFcn)(void *node1, void *node2)
+    * <pre> qBool_t CompareFcn(void *node1, void *node2) </pre>
     * 
     * Taking two pointers as arguments (both converted to const void*). 
     * The function defines the order of the elements by returning a Boolean data, 

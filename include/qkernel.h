@@ -72,10 +72,10 @@
     /** @brief A macro directive to indicate the highest priority level. */
     #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1u ) )
 
-    /** @brief A directive indicating that the task will run periodically every time its time has expired. */
+    /** @brief A directive indicating that the task will run every time its timeout has expired. */
     #define qPeriodic               ( (qIteration_t)(-2147483647-1) )
 
-    /** @brief Same as #qPeriodic. A directive indicating that the task will run periodically every time its time has expired. */
+    /** @brief Same as #qPeriodic. A directive indicating that the task will run every time its timeout has expired.*/
     #define qIndefinite             ( qPeriodic )
 
     /** @brief A directive that indicates that the task will be executed only once after its time has expired.*/
@@ -88,7 +88,7 @@
         * @brief Task Scheduler Setup. This function is required and must be called once in 
         * the application main thread before any task is being added to the OS.
         * @param TickProvider The function that provides the tick value. If the user application 
-        * uses the <b>qClock_SysTick()</b> from the ISR, this parameter can be NULL.
+        * uses the qClock_SysTick() from the ISR, this parameter can be NULL.
         * @note Function should take void and return a 32bit value. 
         * @param BaseTimming (Optional) This parameter specifies the ISR background timer base time.
         * This can be the period in seconds(Floating-point format) or frequency 
@@ -173,12 +173,12 @@
     qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg );
 
     /**
-    * @brief Add a task to the scheduling scheme.  This API creates a task with qDisabled 
-    * state by default , so this task will be oriented to be executed only, when 
-    * asynchronous events occurs. However, this behavior can be changed in execution
-    * time using <b>qTask_Set_Time()</b> or <b>qTask_Set_Iterations()</b>.
+    * @brief Add a task to the scheduling scheme.  This API creates a task with a #qDisabled 
+    * state by default , so this task will be executed only, when asynchronous events occurs.
+    * However, this behavior can be changed in execution time using qTask_Set_Time() 
+    * or qTask_Set_Iterations().
     * @param Task  A pointer to the task node.
-    * @param CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
+    * @param CallbackFcn A pointer to a the task callback method with a qEvent_t parameter 
     * as input argument.
     * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     * @param arg Represents the task arguments. All arguments must be passed by
@@ -192,7 +192,7 @@
         /**
         * @brief Add a task to the scheduling scheme running a dedicated state-machine. 
         * The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info
-        * will be available as a generic pointer inside the <b>Data</b> field of the qSM_Handler_t argument.
+        * will be available as a generic pointer inside the qSM_Handler_t::Data field.
         * @param Task  A pointer to the task node.
         * @param m  A pointer to the Finite State-Machine (FSM) object.    
         * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
@@ -211,8 +211,9 @@
 
     #if ( Q_ATCLI == 1)
         /**
-        * @brief Add a task to the scheduling scheme running an AT Command Parser. Task will be scheduled
-        * as an event-triggered task. The parser address will be stored in the TaskData storage-Pointer.
+        * @brief Add a task to the scheduling scheme running an AT Command Line Interface.
+        * Task will be scheduled as an event-triggered task. The parser address will be 
+        * stored in the qEvent_t::TaskData storage-Pointer.
         * @param Task A pointer to the task node.
         * @param cli A pointer to the AT Command Line Inteface instance.
         * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]

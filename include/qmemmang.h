@@ -111,7 +111,7 @@
     * @brief Allocate a block of memory that is <b>Size</b> bytes large. Allocation will be performed
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
-    * @note <b>qMemMang_Allocate()</b> its NOT interrupt-safe. 
+    * @note qMemMang_Allocate() its NOT interrupt-safe. 
     * @param mPool A pointer to the memory pool instance.
     * @param Size Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
@@ -125,13 +125,13 @@
     * If <b>ptr</b> is a null pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.
     * The behavior is undefined if the value of ptr does not equal a value returned 
-    * earlier by <b>qMalloc()</b>.
+    * earlier by qMalloc().
     * The behavior is undefined if the memory area referred to by <b>ptr</b> has already been
-    * deallocated, that is, <b>qFree()</b> has already been called with <b>ptr</b> as the argument 
-    * and no calls to <b>qMalloc()</b> resulted in a pointer equal to <b>ptr</b> afterwards.
-    * The behavior is undefined if after <b>qFree()</b> returns, an access is made through 
+    * deallocated, that is, qFree() has already been called with <b>ptr</b> as the argument 
+    * and no calls to qMalloc() resulted in a pointer equal to <b>ptr</b> afterwards.
+    * The behavior is undefined if after qFree() returns, an access is made through 
     * the pointer <b>ptr</b>.
-    * @note <b>qMemMang_Free()</b> its NOT interrupt-safe. 
+    * @note qMemMang_Free() its NOT interrupt-safe. 
     * @param mPool A pointer to the memory pool instance.
     * @param ptr to the memory to deallocate
     * @return none.
@@ -143,7 +143,7 @@
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
     * @note The behavior is undefined if selected memory pool has not been initialized.
-    * @note <b>qMalloc()</b> its NOT interrupt-safe. 
+    * @note qMalloc() its NOT interrupt-safe. 
     * @param Size Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
     * If the function failed to allocate the requested block of memory, a NULL
@@ -152,16 +152,16 @@
     void* qMalloc( size_t Size );
 
     /**
-    * @brief Deallocates the space previously allocated by <b>qMalloc()</b>. Deallocation will 
+    * @brief Deallocates the space previously allocated by qMalloc(). Deallocation will 
     * be performed in the selected memory pool.
     * If <b>ptr</b> is a null pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.
     * The behavior is undefined if the value of <b>ptr</b>  does not equal a value returned 
-    * earlier by <b>qMalloc()</b>.
+    * earlier by qMalloc().
     * The behavior is undefined if the memory area referred to by <b>ptr</b> has already been
-    * deallocated, that is, <b>qFree()</b> has already been called with <b>ptr</b> as the argument 
-    * and no calls to <b>qMalloc()</b> resulted in a pointer equal to <b>ptr</b> afterwards.
-    * The behavior is undefined if after <b>qFree()</b> returns, an access is made through 
+    * deallocated, that is, qFree() has already been called with <b>ptr</b> as the argument 
+    * and no calls to qMalloc() resulted in a pointer equal to <b>ptr</b> afterwards.
+    * The behavior is undefined if after qFree() returns, an access is made through 
     * the pointer <b>ptr</b>.
     * @note <b>qFree</b> its NOT interrupt-safe. 
     * @param ptr to the memory to deallocate

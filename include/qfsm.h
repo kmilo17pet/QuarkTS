@@ -43,7 +43,7 @@
      */
 
     /**
-    * @brief This macro can be used to reference the top state when using the <b>qStateMachine_StateSubscribe()</b> API.
+    * @brief This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.
     */ 
     #define QSM_STATE_TOP               ( NULL )   
 
@@ -51,8 +51,8 @@
 
     /**
     * @brief Built-in signal that can be used to set nested initial-transitions (aka default transitions) 
-    * by changing the <b>StartState</b> member.
-    * @note Transitions by setting the <b>NextState</b> member are not allowed here
+    * by changing the qSM_Handler_t::StartState member.
+    * @note Transitions by setting the qSM_Handler_t::NextState member are not allowed here
     */
     #define QSM_SIGNAL_START            ( (qSM_Signal_t)0xFFFFFFFFuL )
     /**
@@ -457,8 +457,8 @@
    
     /**
     * @brief Set the time for the selected built-in timeout inside the target FSM.
-    * @note Requires an installed time specification. For this use <b>qStateMachine_InstallTimeoutSpec()</b>
-    * @note Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQueue()</b>      
+    * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
+    * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
     * @param m A pointer to the FSM object.
     * @param xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @param xTime The specified time usually given in seconds.
@@ -468,8 +468,8 @@
 
     /**
     * @brief Stop the time count for the selected built-in timeout for the target FSM.
-    * @note Requires an installed time specification. For this use <b>qStateMachine_InstallTimeoutSpec()</b>
-    * @note Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQueue()</b>        
+    * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
+    * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
     * @param m A pointer to the FSM object.
     * @param xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return  Returns #qTrue on success, otherwise returns #qFalse.

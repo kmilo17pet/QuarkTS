@@ -109,24 +109,24 @@
         /**
         * @brief  Helper method to get the <b>n</b> argument parsed as integer from the
         * incoming AT command.
-        * @note see <b>qIOUtil_AtoI()</b>
+        * @note see qIOUtil_AtoI()
         * @param n The number of the argument
-        * @return  The argument parsed as integer. Same behavior of <b>qIOUtil_AtoI()</b>. If argument not found returns 0.
+        * @return  The argument parsed as integer. Same behavior of qIOUtil_AtoI(). If argument not found returns 0.
         */            
         int (*GetArgInt)( qIndex_t n );                         
         /**
         * @brief  Helper method to get the <b>n</b> argument parsed as float from the
         * incoming AT command.
-        * @note see <b>qIOUtil_AtoF()</b>
+        * @note see qIOUtil_AtoF()
         * @param n The number of the argument
-        * @return  The argument parsed as Float. Same behavior of <b>qIOUtil_AtoF()</b>. If argument not found returns 0.0f
+        * @return  The argument parsed as Float. Same behavior of qIOUtil_AtoF(). If argument not found returns 0.0f
         */         
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
         * @brief  Helper method to get the <b>n</b> HEX argument parsed qUINT32_t from the incoming AT command.
-        * @note see <b>qIOUtil_XtoU32()</b>
+        * @note see qIOUtil_XtoU32()
         * @param n The number of the argument
-        * @return  The HEX argument parsed as qUINT32_t. Same behavior of <b>qIOUtil_XtoU32()</b>. If argument not found returns 0.
+        * @return  The HEX argument parsed as qUINT32_t. Same behavior of qIOUtil_XtoU32(). If argument not found returns 0.
         */          
         qUINT32_t (*GetArgHex)( qIndex_t n );
         /**
@@ -278,7 +278,7 @@
     * service only handles AT commands, this string has  to begin by the "at" characters and 
     * should be in lower case.
     * @param Callback The handler of the callback function associated to the command. 
-    * Prototype: qATCLI_Response_t xCallback( qATCLI_Handler_t )
+    * Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre>
     * @param CmdOpt This flag combines with a bitwise OR the following information:
     * 
     * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
@@ -309,7 +309,7 @@
     /**
     * @brief Feed the CLI input with a single character. This call is mandatory 
     * from an interrupt context. Put it inside the desired peripheral's ISR.
-    * If your ISR get a block of data, use instead <b>qATCLI_ISRHandlerBlock()</b>
+    * If your ISR get a block of data, use instead qATCLI_ISRHandlerBlock()
     * @param cli A pointer to the AT Command Line Interface instance
     * @param c The incoming byte/char to the input. 
     * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
@@ -319,7 +319,7 @@
     /**
     * @brief Feed the CLI input with a string. This call is mandatory 
     * from an interrupt context. Put it inside the desired peripheral's ISR.
-    * If your ISR only get a single char, use instead <b>qATCLI_ISRHandler()</b>
+    * If your ISR only get a single char, use instead qATCLI_ISRHandler()
     * @param cli A pointer to the AT Command Line Interface instance
     * @param Data The incoming string.
     * @param n The length of the string.

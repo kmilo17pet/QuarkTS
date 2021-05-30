@@ -58,7 +58,7 @@
   
     /**
     * @brief Enter a critical section. This function invokes the <b>Disabler</b> if available.
-    * @note  Please see <b>qCritical_SetInterruptsED()</b>
+    * @note  Please see qCritical_SetInterruptsED()
     * @return none.
     */   
     void qCritical_Enter( void );
@@ -66,7 +66,7 @@
 
     /**
     * @brief Exit a critical section. This function invokes the <b>Enabler</b> if available.
-    * @note  Please see <b>qCritical_SetInterruptsED()</b>
+    * @note  Please see qCritical_SetInterruptsED()
     * @return none.
     */      
     void qCritical_Exit( void );

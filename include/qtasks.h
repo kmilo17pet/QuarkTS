@@ -34,7 +34,7 @@
     */
 
     /**
-    * @brief An enum with all the possible values for the Trigger member of qEvent_t task argument
+    * @brief An enum with all the possible values for the qEvent_t::Trigger member available as the task argument
     */
     typedef enum {  
         /**
@@ -49,37 +49,38 @@
         * @brief When there is a queued notification in the FIFO
         * priority queue. For this trigger, the dispacher performs 
         * a dequeue operation automatically. A pointer to the 
-        * extracted event data will be available in the <b>EventData</b> field. 
+        * extracted event data will be available in the qEvent_t::EventData 
+        * field. 
         */ 
         byNotificationQueued,
         /**
         * @brief When the execution chain does, according to a 
         * requirement of asynchronous notification event prompted 
-        * by <b>qTask_Notification_Send()</b>. A pointer to the notified
-        * data will be available in the <b>EventData</b> field.
+        * by qTask_Notification_Send(). A pointer to the notified
+        * data will be available in the qEvent_t::EventData field.
         */                     
         byNotificationSimple, 
         /**
         * @brief When there are elements available in the attached qQueue,
         * the scheduler make a data dequeue (auto-receive) from the
         * front. A pointer to the received data will be available in 
-        * the <b>EventData</b> field.
+        * the qEvent_t::EventData field.
         */                     
         byQueueReceiver, 
         /**
         * @brief When the attached queue is full. A pointer to the 
-        * queue will be available in the <b>EventData</b> field.
+        * queue will be available in the qEvent_t::EventData field.
         */                      
         byQueueFull, 
         /**
         * @brief When the element-count of the attached queue reaches
         * the specified value. A pointer to the queue will 
-        * be available in the <b>EventData</b> field.
+        * be available in the qEvent_t::EventData field.
         */                   
         byQueueCount, 
         /**
         * @brief When the attached queue is empty. A pointer to the 
-        * queue will be available in the <b>EventData</b> field.
+        * queue will be available in the qEvent_t::EventData field.
         */                         
         byQueueEmpty, 
         /**
@@ -106,18 +107,18 @@
     #define QMAX_NOTIFICATION_VALUE         ( 0xFFFFFFFFuL )
 
     /**
-    * @brief An enum to describe the task global state.
+    * @brief An enum to describe the task global states.
     */
     typedef enum{
-        qUndefinedGlobalState,  /**< A task should never reach this state(only used internally) */
+        qUndefinedGlobalState,  /**< A task should never reach this state(Reserved for internal use) */
         qReady,                 /**< The task has completed preparations for running, but cannot run because a task with a higher precedence is running. */
         qWaiting,               /**< The task cannot run because the conditions for running are not in place. */
-        qSuspended,             /**< The task doesn't take part in what is going on. Normally this state is taken after the qRunning state or when the task doesn't reach the qReady state*/
+        qSuspended,             /**< The task doesn't take part in what is going on. Normally this state is taken after the ::qRunning state or when the task doesn't reach the ::qReady state*/
         qRunning                /**< The task is currently being executed. */
     }qTask_GlobalState_t;
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
-        /*! @cond PRIVATE */
+        /*! @cond  */
         /*The task Bit-Flag definitions*/
         #define QEVENTFLAG_01               ( 0x00001000uL )
         #define QEVENTFLAG_02               ( 0x00002000uL )
@@ -139,11 +140,11 @@
         #define QEVENTFLAG_18               ( 0x20000000uL )
         #define QEVENTFLAG_19               ( 0x40000000uL )
         #define QEVENTFLAG_20               ( 0x80000000uL )
-        /*! @endcond PRIVATE */
-        /** @brief A macro directive to indicate if the eventflags should be cleared. */
+        /*! @endcond  */
+        /** @brief A macro directive to indicate that the eventflags should be cleared. */
         #define QEVENTFLAG_CLEAR            ( qFalse )
 
-        /** @brief A macro directive to indicate if the eventflags should be set. */
+        /** @brief A macro directive to indicate that the eventflags should be set. */
         #define QEVENTFLAG_SET              ( qTrue )
     #endif
 
@@ -278,10 +279,10 @@
         * @brief An enum to define the task link modes for a queue.
         */
         typedef enum {
-            qQueueMode_Receiver  = 4,   /**< This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the <b>EventData</b> field of the qEvent_t structure.*/
-            qQueueMode_Full = 8,        /**< This mode will trigger the task if the queue is full. A pointer to the queue will be available in the <b>EventData</b> field of the qEvent_t structure.*/
-            qQueueMode_Count = 16,      /**< This mode will trigger the task if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <b>EventData</b> field of the qEvent_t structure.*/
-            qQueueMode_Empty = 32,      /**< This mode will trigger the task if the queue is empty. A pointer to the queue will be available in the <b>EventData</b> field of the qEvent_t structure.*/
+            qQueueMode_Receiver  = 4,   /**< This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the qEvent_t::EventData field.*/
+            qQueueMode_Full = 8,        /**< This mode will trigger the task if the queue is full. A pointer to the queue will be available in the qEvent_t::EventData field.*/
+            qQueueMode_Count = 16,      /**< This mode will trigger the task if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the qEvent_t::EventData field.*/
+            qQueueMode_Empty = 32,      /**< This mode will trigger the task if the queue is empty. A pointer to the queue will be available in the qEvent_t::EventData field.*/
         }qQueueLinkMode_t;
     #endif
 
@@ -306,8 +307,8 @@
     * @brief Sends a simple notification generating an asynchronous event. 
     * This method marks the task as ready for execution, therefore, the planner will 
     * launch the task immediately according to the scheduling rules (even if task is disabled) and 
-    * setting the Trigger flag to ::byNotificationSimple. Specific user-data can be passed 
-    * through, and will be available in the respective callback inside the <b>EventData</b> 
+    * setting the qEvent_t::Trigger flag to ::byNotificationSimple. Specific user-data can be passed 
+    * through, and will be available in the respective callback inside the qEvent_t::EventData 
     * field.
     * @param Task Pointer to the task node.
     * @param eventdata Specific event user-data.
@@ -319,9 +320,9 @@
     * @brief Insert a notification in the FIFO priority queue. The scheduler get this notification
     * as an asynchronous event, therefor, the task will be ready for execution according to 
     * the queue order (determined by priority), even if task is in a disabled or sleep 
-    * operational state. When extracted, the scheduler will set Trigger flag to  
+    * operational state. When extracted, the scheduler will set qEvent_t::Trigger flag to  
     * ::byNotificationQueued. Specific user-data can be passed through, and will be 
-    * available inside the EventData field, only in corresponding launch.
+    * available inside the qEvent_t::EventData field, only in corresponding launch.
     * If the task is in a qSleep operation state, the scheduler will change the operational 
     * state to qAwaken setting the SHUTDOWN bit.
     * @param Task Pointer to the task node.
@@ -348,7 +349,7 @@
     /**
     * @brief Retrieve the task operational state.
     * @param Task Pointer to the task node.
-    * @return Enabled or #qDisabled if the task is qAwaken. #qAsleep if the task is 
+    * @return Enabled or #qDisabled if the task is Awaken. #qAsleep if the task is 
     * in a Sleep operational state.
     */     
     qState_t qTask_Get_State( const qTask_t * const Task);
@@ -420,7 +421,7 @@
     * #qDisabled : Time events will be discarded. The task can catch asynchronous events.
     * (ENABLE Bit = 0)
     * 
-    * #qAsleep : Put the task into a qSLEEP operability state. The task can't be triggered
+    * #qAsleep : Put the task into a sleep operability state. The task can't be triggered
     * by the lower precedence events. ( SHUTDOWN Bit = 0)
     * 
     * #qAwake : Put the task into the previous state before it was put in the sleep state.
@@ -480,7 +481,7 @@
     #define qTask_Enable( Task )      qTask_Set_State( (Task), qEnabled )
  
     /**
-    * @brief Put the task into a qSLEEP state. The task can't be triggered
+    * @brief Put the task into a sleep state. The task can't be triggered
     * by the lower precedence events.    
     * @note Only the higher precedence events (Queued Notifications) can
     * wake up the task.
@@ -521,21 +522,20 @@
         * 
         * ::qQueueMode_Receiver : The task will be triggered if there are elements 
         * in the Queue. Data will be extracted automatically in 
-        * every trigger and will be available in the <b>EventData</b> field 
-        * of the qEvent_t structure.
+        * every trigger and will be available in the qEvent_t::EventData field.
         * 
         * ::qQueueMode_Full : The task will be triggered if the Queue
         * is full. A pointer to the queue will be available in the
-        * <b>EventData</b> field of the qEvent_t structure.
+        * qEvent_t::EventData field.
         * 
         * ::qQueueMode_Count : The task will be triggered if the count of 
         * elements in the queue reach the specified value. 
         * A pointer to the queue will be available in the
-        * <b>EventData</b> field of the qEvent_t structure.
+        * qEvent_t::EventData field.
         * 
         * ::qQueueMode_Empty : The task will be triggered if the queue
         * is empty. A pointer to the queue will be available in the
-        * <b>EventData</b> field of the qEvent_t structure.
+        * qEvent_t::EventData field.
         * @param arg This argument defines if the queue will be attached (#qLink) or 
         * detached (#qUnLink) from the task.
         * If the ::qQueueMode_Count mode is specified, this value will be used to check
