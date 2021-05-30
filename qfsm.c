@@ -27,7 +27,7 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
 
 
-static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
+static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s );
 static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s );
 static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t xSignal );
@@ -107,12 +107,10 @@ This function its used to exit current states and all superstates up to LCA
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca ){
     qSM_State_t *s = m->qPrivate.current;
     while( s != m->qPrivate.source ){
-        (void)qStateMachine_StateOnExit( m, s );
-        s = s->qPrivate.parent;   
+        s = qStateMachine_StateOnExit( m, s );  
     }
     while( 0u != lca-- ) {
-        (void)qStateMachine_StateOnExit( m, s ); 
-        s = s->qPrivate.parent;
+        s = qStateMachine_StateOnExit( m, s ); 
     }
     m->qPrivate.current = s;    
 }
@@ -156,13 +154,13 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * c
             h->Status = qSM_STATUS_EXIT_FAILURE;
         }
         /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
-        m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
+        m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout compatible*/
         /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
     }
     return h->Status;
 }
 /*============================================================================*/
-static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){ 
+static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){ 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     
     qStateMachine_PrepareHandler( h, QSM_SIGNAL_EXIT, s );
@@ -170,6 +168,7 @@ static void qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s ){
     
     qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
     s->qPrivate.parent->qPrivate.lastRunningChild  = s; 
+    return s->qPrivate.parent;
 }
 /*============================================================================*/
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s ){ 
@@ -322,12 +321,7 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state
         state->qPrivate.lastRunningChild = initState;
         state->qPrivate.initState = initState;
         state->qPrivate.sCallback = StateFcn;
-        if( NULL == parent ){
-            state->qPrivate.parent = &m->qPrivate.top;
-        }
-        else{
-            state->qPrivate.parent = parent;
-        }
+        state->qPrivate.parent = ( NULL == parent )? &m->qPrivate.top : parent ;
         RetValue = qTrue;
     }
     return RetValue;
@@ -375,7 +369,7 @@ static void qStateMachine_SweepTransitionTable( qSM_t * const m, qSM_State_t * c
         if( ( CurrentState == iCurrent ) && ( h->Signal == iTransition->xSignal ) ){ /*table entry match*/
             if( NULL != iTransition->Guard ){ /*if signal-guard available, just run the guard function*/
                 /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
-                TransitionAllowed = iTransition->Guard( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
+                TransitionAllowed = iTransition->Guard( (qSM_Handler_t)h ); /*cast allowed, struct layout compatible*/
                 /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             }
             if( qTrue == TransitionAllowed ){ 
@@ -422,7 +416,7 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m ){
                     (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
                 }
                 else{
-                    (void)qSTimer_Disarm( &ts->builtin_timeout[ i ] );
+                    qSTimer_Disarm( &ts->builtin_timeout[ i ] );
                 }
             } 
         }
@@ -465,7 +459,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
                         }
                     }   
                     if( 0uL != ( opt & ResetCheck ) ){
-                        (void)qSTimer_Disarm( tmr );
+                        qSTimer_Disarm( tmr );
                     }     
                 }
             }

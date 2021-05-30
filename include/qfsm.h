@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.26
+ * @version 5.27
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -50,9 +50,9 @@
     /*FSM internal signals*/
 
     /**
-    * @brief Built-in signal to indicate that can be used to set nested initial transitions (or default transitions) 
-    * by using the <b>StartState</b> member.
-    * @note Transitions by seting the <b>NextState</b> member are not allowed here
+    * @brief Built-in signal that can be used to set nested initial-transitions (aka default transitions) 
+    * by changing the <b>StartState</b> member.
+    * @note Transitions by setting the <b>NextState</b> member are not allowed here
     */
     #define QSM_SIGNAL_START            ( (qSM_Signal_t)0xFFFFFFFFuL )
     /**
@@ -131,7 +131,7 @@
 
     /**
     * @brief This enumeration defines the built-in state-execution status values 
-    * that can be used as a return value in a state callback.
+    * that can be used as return value in a state callback.
     */    
     typedef enum {
         qSM_STATUS_BEFORE_ANY = -32767,         /**< (Only available in the surrounding callback) Indicates an execution of the surrounding callback before launching the state callback.*/
@@ -175,7 +175,7 @@
     
     #ifdef DOXYGEN
     /** 
-    * @brief The state callback argument to handle the state-machine dynamics and provide execution information.
+    * @brief The callback argument to handle the state-machine dynamics and provide execution information.
     * Some members can be written to perform state-transtions.
     * @note Should be used only in state-callbacks as the only input argument. 
     * @note The members of this structure must be accessed as a pointer.
@@ -360,7 +360,7 @@
         qSM_ATTRIB_SIGNAL_QUEUE,                            /**< Only for qStateMachine_Get_Machine() : Get a pointer to the signal-queue object if installed*/
         qSM_ATTRIB_TIMESPEC,                                /**< Only for qStateMachine_Get_Machine() : Get a pointer to the timeout specification object if installed*/
         qSM_ATTRIB_TRANSITION_TABLE,                        /**< Only for qStateMachine_Get_Machine() : Get a pointer to the transition table if installed*/
-        qSM_ATTRIB_DATA,                                    /**< Only for qStateMachine_Get_Machine() : Get the user storage-pointer*/
+        qSM_ATTRIB_DATA,                                    /**< Get the user data ( storage-pointer ) */
         qSM_ATTRIB_COMPOSITE_INITSTATE,                     /**< Only for qStateMachine_Get_State() : Get the initial default or initial state, if input is composite*/
         qSM_ATTRIB_COMPOSITE_LASTSTATE,                     /**< Only for qStateMachine_Get_State() : Get the last state, if input is composite*/
         qSM_ATTRIB_COMPOSITE_PARENT,                        /**< Only for qStateMachine_Get_State() : Get the parent state, if input is a child*/
@@ -424,7 +424,7 @@
     qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue );
 
     /**
-    * @brief Send a signal to the provided state machine.
+    * @brief Sends a signal to the provided state machine.
     * @note If the signal queue is not available, an exclusion variable will be used.
     * This means that the signal cannot be sent until the variable is empty. 
     * (the signal was handled by the state-machine engine).
@@ -439,7 +439,8 @@
     qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t xSignal, const qBool_t isUrgent );
 
     /**
-    * @brief Install the Timeout specification object to use the FSM built-in timeouts.
+    * @brief Install the Timeout specification object to target FSM to allow timed 
+    * signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ). 
     * This methods also set fixed timeouts for specific states using a lookup-table. 
     * @note This feature its only available if the FSM has a signal queue installed.
     * @note The lookup table will be an array of type <b>qSM_TimeoutStateDefinition_t</b>
@@ -466,7 +467,7 @@
     qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime );
 
     /**
-    * @brief Stop the time count for the selected built-in timeout inside the target FSM.
+    * @brief Stop the time count for the selected built-in timeout for the target FSM.
     * @note Requires an installed time specification. For this use <b>qStateMachine_InstallTimeoutSpec()</b>
     * @note Requires an installed signal queue. For this use <b>qStateMachine_InstallSignalQueue()</b>        
     * @param m A pointer to the FSM object.
