@@ -310,8 +310,8 @@
     * setting the qEvent_t::Trigger flag to ::byNotificationSimple. Specific user-data can be passed 
     * through, and will be available in the respective callback inside the qEvent_t::EventData 
     * field.
-    * @param Task Pointer to the task node.
-    * @param eventdata Specific event user-data.
+    * @param[in] Task Pointer to the task node.
+    * @param[in] eventdata Specific event user-data.
     * @return #qTrue on success. Otherwise #qFalse.
     */       
     qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata );
@@ -325,8 +325,8 @@
     * available inside the qEvent_t::EventData field, only in corresponding launch.
     * If the task is in a qSleep operation state, the scheduler will change the operational 
     * state to qAwaken setting the SHUTDOWN bit.
-    * @param Task Pointer to the task node.
-    * @param eventdata Specific event user-data.
+    * @param[in] Task Pointer to the task node.
+    * @param[in] eventdata Specific event user-data.
     * @return Returns #qTrue if the event has been inserted in the queue, or #qFalse if an error 
     * occurred (The queue exceeds the size).
     */        
@@ -334,7 +334,7 @@
 
     /**
     * @brief Check if the task has pending notifications.
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return #qTrue if the function asserts, otherwise returns #qFalse.
     */  
     qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
@@ -348,7 +348,7 @@
 
     /**
     * @brief Retrieve the task operational state.
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return Enabled or #qDisabled if the task is Awaken. #qAsleep if the task is 
     * in a Sleep operational state.
     */     
@@ -356,7 +356,7 @@
     #if ( Q_TASK_COUNT_CYCLES == 1 )
         /**
         * @brief Retrieve the number of task activations.
-        * @param Task Pointer to the task node.
+        * @param[in] Task Pointer to the task node.
         * @return An unsigned long value containing the number of task activations.
         */      
         qCycles_t qTask_Get_Cycles( const qTask_t * const Task );   
@@ -364,7 +364,7 @@
 
     /**
     * @brief Retrieve the task global-state.
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return One of the available global states : ::qWaiting, ::qSuspended, ::qRunning, ::qReady.
     * Return ::qUndefinedGlobalState if the current task its passing through a 
     * current kernel transaction
@@ -373,8 +373,8 @@
 
     /**
     * @brief Set/Change the Task execution interval
-    * @param Task Pointer to the task node.
-    * @param Value Execution interval defined in seconds (floating-point format). 
+    * @param[in] Task Pointer to the task node.
+    * @param[in] Value Execution interval defined in seconds (floating-point format). 
     * For immediate execution (tValue = #qTimeImmediate).
     * @return none.
     */  
@@ -382,8 +382,8 @@
 
     /**
     * @brief Set/Change the number of task iterations
-    * @param Task Pointer to the task node.
-    * @param Value Number of task executions (Integer value). For indefinite 
+    * @param[in] Task Pointer to the task node.
+    * @param[in] Value Number of task executions (Integer value). For indefinite 
     * execution (iValue = #qPeriodic or #qIndefinite). Tasks do not remember 
     * the number of iteration set initially. After the iterations are 
     * done, internal iteration counter is 0. If you need to perform
@@ -395,8 +395,8 @@
 
     /**
     * @brief Set/Change the task priority value
-    * @param Task Pointer to the task node.
-    * @param Value Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] Task Pointer to the task node.
+    * @param[in] Value Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     * @return none.
     */    
     void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value );
@@ -404,8 +404,8 @@
     /**
     * @brief Set/Change the task callback function.
     * @note This function can be used to detach a state-machine from a task
-    * @param Task Pointer to the task node.
-    * @param CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
+    * @param[in] Task Pointer to the task node.
+    * @param[in] CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
     * as input argument.
     * @return none.
     */       
@@ -413,8 +413,8 @@
 
     /**
     * @brief Set the task operational state (Enabled or Disabled)
-    * @param Task Pointer to the task node.
-    * @param State Use one of the following values:
+    * @param[in] Task Pointer to the task node.
+    * @param[in] State Use one of the following values:
     * 
     * #qEnabled : Task will be able to catch all the events. (ENABLE Bit = 1 )
     * 
@@ -432,15 +432,15 @@
 
     /**
     * @brief Set the task data
-    * @param Task Pointer to the task node.
-    * @param arg The task storage pointer. User data.
+    * @param[in] Task Pointer to the task node.
+    * @param[in] arg The task storage pointer. User data.
     * @return none.
     */  
     void qTask_Set_Data( qTask_t * const Task, void* arg );
 
     /**
     * @brief Clear the elapsed time of the task. Restart the internal task tick;
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */      
     void qTask_ClearTimeElapsed( qTask_t * const Task );
@@ -454,28 +454,28 @@
 
     /**
     * @brief Put the task into a disabled state.    
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */     
     #define qTask_Suspend( Task )     qTask_Set_State( (Task), qDisabled )
 
     /**
     * @brief Put the task into a disabled state.    
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */        
     #define qTask_Disable( Task )     qTask_Set_State( (Task), qDisabled )
 
     /**
     * @brief Put the task into an enabled state.    
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */    
     #define qTask_Resume( Task )      qTask_Set_State( (Task), qEnabled )
 
     /**
     * @brief Put the task into an enabled state.    
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */     
     #define qTask_Enable( Task )      qTask_Set_State( (Task), qEnabled )
@@ -485,7 +485,7 @@
     * by the lower precedence events.    
     * @note Only the higher precedence events (Queued Notifications) can
     * wake up the task.
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */    
     #define qTask_ASleep( Task )      qTask_Set_State( (Task), qAsleep )
@@ -493,14 +493,14 @@
     /**
     * @brief Put the task into a normal operation state. Here the task
     * will be able to catch any kind of events.   
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return none.
     */      
     #define qTask_Awake( Task )       qTask_Set_State( (Task), qAwake )
 
     /**
     * @brief Retrieve the enabled/disabled state 
-    * @param Task Pointer to the task node.
+    * @param[in] Task Pointer to the task node.
     * @return #qTrue if the task in on Enabled state, otherwise returns #qFalse.
     */       
     #define qTask_IsEnabled( Task )   ( qEnabled == qTask_Get_State( (Task) ) )
@@ -515,9 +515,9 @@
 
         /**
         * @brief Attach a Queue to the Task.    
-        * @param Task Pointer to the task node.
-        * @param Queue A pointer to a Queue object
-        * @param Mode Attach mode. This implies the event that will trigger the task according
+        * @param[in] Task Pointer to the task node.
+        * @param[in] Queue A pointer to a Queue object
+        * @param[in] Mode Attach mode. This implies the event that will trigger the task according
         * to one of the following modes:
         * 
         * ::qQueueMode_Receiver : The task will be triggered if there are elements 
@@ -536,7 +536,7 @@
         * ::qQueueMode_Empty : The task will be triggered if the queue
         * is empty. A pointer to the queue will be available in the
         * qEvent_t::EventData field.
-        * @param arg This argument defines if the queue will be attached (#qLink) or 
+        * @param[in] arg This argument defines if the queue will be attached (#qLink) or 
         * detached (#qUnLink) from the task.
         * If the ::qQueueMode_Count mode is specified, this value will be used to check
         * the element count of the queue. A zero value will act as a #qUnLink action. 
@@ -558,10 +558,10 @@
         /**
         * @brief Modify the EventFlags for the provided task.  
         * @note Any EventFlag set will cause a task activation.
-        * @param Task Pointer to the task node.
-        * @param flags The flags to modify. Can be combined with a bitwise OR. 
+        * @param[in] Task Pointer to the task node.
+        * @param[in] flags The flags to modify. Can be combined with a bitwise OR. 
         * QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20  
-        * @param action QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
+        * @param[in] action QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
         * @return none.
         */     
         void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
@@ -575,14 +575,14 @@
 
         /**
         * @brief Check for flags set to #qTrue inside the task Event-Flags.
-        * @param Task Pointer to the task node.
-        * @param FlagsToCheck A bitwise value that indicates the flags to test inside the EventFlags.
+        * @param[in] Task Pointer to the task node.
+        * @param[in] FlagsToCheck A bitwise value that indicates the flags to test inside the EventFlags.
         * Can be combined with a bitwise OR.
         * QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20   
-        * @param ClearOnExit If is set to #qTrue then any flags set in the value passed as the 
+        * @param[in] ClearOnExit If is set to #qTrue then any flags set in the value passed as the 
         * <b>FlagsToCheck</b> parameter will be cleared in the event group before this
         * function returns only when the condition is meet.
-        * @param CheckForAll Used to create either a logical AND test (where all flags must be set)
+        * @param[in] CheckForAll Used to create either a logical AND test (where all flags must be set)
         * or a logical OR test (where one or more flags must be set) as follows:
         * 
         * If is set to #qTrue, this API will return #qTrue when either all the flags 

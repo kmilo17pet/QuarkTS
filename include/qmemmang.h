@@ -83,18 +83,18 @@
     /**
     * @brief Initializes a memory pool instance. This function should be called once 
     * before any heap memory request.
-    * @param mPool A pointer to the memory pool instance
-    * @param Area A pointer to a memory block (uint8_t) statically allocated 
+    * @param[in] mPool A pointer to the memory pool instance
+    * @param[in] Area A pointer to a memory block (uint8_t) statically allocated 
     * to act as Heap of the memory pool. The size of this block should match 
     * the <b>Size</b> argument.
-    * @param Size The size of the memory block pointed by <b>Area</b>
+    * @param[in] Size The size of the memory block pointed by <b>Area</b>
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */      
     qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t Size );
 
     /**
     * @brief Select the memory pool to perform heap memory requests with <b>qMalloc()</b> and <b>qFree()</b>.
-    * @param mPool A pointer to the memory pool instance
+    * @param[in] mPool A pointer to the memory pool instance
     * @return none.
     */     
     void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool );
@@ -102,7 +102,7 @@
     /**
     * @brief Returns the total amount of heap space that remains unallocated for the selected
     * memory pool.
-    * @param mPool A pointer to the memory pool instance. Pass NULL to select the default memory pool.
+    * @param[in] mPool A pointer to the memory pool instance. Pass NULL to select the default memory pool.
     * @return The size of the unallocated heap.
     */     
     size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool );    
@@ -112,8 +112,8 @@
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
     * @note qMemMang_Allocate() its NOT interrupt-safe. 
-    * @param mPool A pointer to the memory pool instance.
-    * @param Size Size of the memory block in bytes.
+    * @param[in] mPool A pointer to the memory pool instance.
+    * @param[in] Size Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
     * If the function failed to allocate the requested block of memory, a NULL
     * pointer is returned.
@@ -132,8 +132,8 @@
     * The behavior is undefined if after qFree() returns, an access is made through 
     * the pointer <b>ptr</b>.
     * @note qMemMang_Free() its NOT interrupt-safe. 
-    * @param mPool A pointer to the memory pool instance.
-    * @param ptr to the memory to deallocate
+    * @param[in] mPool A pointer to the memory pool instance.
+    * @param[in] ptr to the memory to deallocate
     * @return none.
     */      
     void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr );
@@ -144,7 +144,7 @@
     * is returned to the beginning of the memory block.
     * @note The behavior is undefined if selected memory pool has not been initialized.
     * @note qMalloc() its NOT interrupt-safe. 
-    * @param Size Size of the memory block in bytes.
+    * @param[in] Size Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
     * If the function failed to allocate the requested block of memory, a NULL
     * pointer is returned.
@@ -164,7 +164,7 @@
     * The behavior is undefined if after qFree() returns, an access is made through 
     * the pointer <b>ptr</b>.
     * @note <b>qFree</b> its NOT interrupt-safe. 
-    * @param ptr to the memory to deallocate
+    * @param[in] ptr to the memory to deallocate
     * @return none.
     */       
     void qFree(void *ptr);

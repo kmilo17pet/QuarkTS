@@ -368,8 +368,8 @@
 
     /**
     * @brief Execute the Finite State Machine (FSM).
-    * @param m A pointer to the FSM object.
-    * @param xSignal User-defined signal (this value will be ignored if the installed queue 
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] xSignal User-defined signal (this value will be ignored if the installed queue 
     * has items available)
     * @return #qTrue if the signal was successfully handled, otherwise returns #qFalse.
     */        
@@ -378,11 +378,11 @@
     /**
     * @brief Initializes a finite state machine (FSM) object.
     * @note This API also initializes the top state.
-    * @param m A pointer to the FSM object.
-    * @param topCallback The callback for the "Top" state
-    * @param initState The first state to be executed (init-state or default transition). 
-    * @param surrounding The surrounding callback. To ignore pass NULL      
-    * @param Data Represents the FSM arguments. User storage pointer. To ignore pass NULL.
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] topCallback The callback for the "Top" state
+    * @param[in] initState The first state to be executed (init-state or default transition). 
+    * @param[in] surrounding The surrounding callback. To ignore pass NULL      
+    * @param[in] Data Represents the FSM arguments. User storage pointer. To ignore pass NULL.
     * @return Returns #qTrue on Success, otherwise returns #qFalse.
     */   
     qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topCallback, qSM_State_t * const initState, qSM_SurroundingCallback_t surrounding, void *Data );
@@ -390,25 +390,25 @@
     /**
     * @brief This function subscribes the FSM instance to a specific state with an associated 
     * callback function. 
-    * @param m A pointer to the FSM object.
-    * @param state A pointer to the state object.
-    * @param parent A pointer to the parent state (Use #QSM_STATE_TOP) if the parent is the top state.
-    * @param StateFcn The handler function associated to the state.
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] state A pointer to the state object.
+    * @param[in] parent A pointer to the parent state (Use #QSM_STATE_TOP) if the parent is the top state.
+    * @param[in] StateFcn The handler function associated to the state.
     *
     * Prototype: <pre>qSM_Status_t xCallback( qSM_Handler_t h )</pre>
-    * @param initState The first child-state to be executed if the subscribed 
+    * @param[in] initState The first child-state to be executed if the subscribed 
     * state its a parent in an hierarchical pattern. (default transition).
     * To ignore pass NULL as argument.
-    * @param Data State data. Storage pointer. To ignore pass NULL.
+    * @param[in] Data State data. Storage pointer. To ignore pass NULL.
     * @return #qTrue on success, otherwise return #qFalse.
     */     
     qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const state, qSM_State_t * const parent, qSM_StateCallback_t StateFcn, qSM_State_t * const initState, void *Data );
        
     /**
     * @brief Install a transition table on the provided state machine.
-    * @param m A pointer to the FSM object.
-    * @param table An array of transitions that describes the state-machine behavior.
-    * @param n The number of transitions available within the table.
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] table An array of transitions that describes the state-machine behavior.
+    * @param[in] n The number of transitions available within the table.
     * @return #qTrue on success, otherwise return #qFalse.
     */        
     qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n );
@@ -417,8 +417,8 @@
     * @brief Install a signal queue to the provided state machine.
     * @note Queue object should be previously initialized by using <b>qQueue_Setup()</b>
     * @note Queue <b>itemsize == qSM_Signal_t</b> 
-    * @param m A pointer to the FSM object.
-    * @param queue A pointer to the queue object.
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] queue A pointer to the queue object.
     * @return #qTrue on success, otherwise return #qFalse.
     */      
     qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *queue );
@@ -429,9 +429,9 @@
     * This means that the signal cannot be sent until the variable is empty. 
     * (the signal was handled by the state-machine engine).
     * @note The signal-queue has the highest precedence.    
-    * @param m A pointer to the FSM object.
-    * @param xSignal  The user-defined signal.
-    * @param isUrgent If qTrue, the signal will be sent to the front of the queue. (only if the
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] xSignal  The user-defined signal.
+    * @param[in] isUrgent If qTrue, the signal will be sent to the front of the queue. (only if the
     * there is a signal-queue available)
     * @return #qTrue if the provided signal was successfully delivered to the FSM, otherwise 
     * return #qFalse. #qFalse if there is a queue, and the signal cannot be inserted because it is full.
@@ -447,10 +447,10 @@
     *  with <b>nEntries</b> elements matching { state, time, options }. 
     * @note You can increse the number of available timeouts instances by changing 
     * the <b>Q_FSM_MAX_TIMEOUTS</b> configuration macro inside <b>qconfig.h</b>          
-    * @param m A pointer to the FSM object.
-    * @param ts A pointer to the timeout specification object.
-    * @param tdef The lookup table matching the target state and the requested timeout.
-    * @param n The number of elements inside <b>tdef</b>. 
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] ts A pointer to the timeout specification object.
+    * @param[in] tdef The lookup table matching the target state and the requested timeout.
+    * @param[in] n The number of elements inside <b>tdef</b>. 
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */    
     qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
@@ -459,9 +459,9 @@
     * @brief Set the time for the selected built-in timeout inside the target FSM.
     * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
     * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
-    * @param m A pointer to the FSM object.
-    * @param xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
-    * @param xTime The specified time usually given in seconds.
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param[in] xTime The specified time usually given in seconds.
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */     
     qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime );
@@ -470,40 +470,40 @@
     * @brief Stop the time count for the selected built-in timeout for the target FSM.
     * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
     * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
-    * @param m A pointer to the FSM object.
-    * @param xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */       
     void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
 
     /**
     * @brief Get attributes from the provided FSM object     
-    * @param m A pointer to the FSM object.
-    * @param attr The requested attribute
+    * @param[in] m A pointer to the FSM object.
+    * @param[in] attr The requested attribute
     * @return  Returns a pointer to the requested attribute. Otherwise returns NULL.
     */  
     void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t attr );
 
     /**
     * @brief Get attributes from the provided state object     
-    * @param s A pointer to the state object.
-    * @param attr The requested attribute
+    * @param[in] s A pointer to the state object.
+    * @param[in] attr The requested attribute
     * @return  Returns a pointer to the requested attribute. Otherwise returns NULL.
     */     
     void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t attr );
 
     /**
     * @brief Set/Change the state callback in run-time     
-    * @param state A pointer to the state object.
-    * @param StateFcn The new state callback
+    * @param[in] state A pointer to the state object.
+    * @param[in] StateFcn The new state callback
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */         
     qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t StateFcn );
 
     /**
     * @brief Set/Change the FSM surrounding callback in run-time     
-    * @param m A pointer to the state object.
-    * @param surrounding The new surrounding callback
+    * @param[in] m A pointer to the state object.
+    * @param[in] surrounding The new surrounding callback
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */     
     qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCallback_t surrounding );

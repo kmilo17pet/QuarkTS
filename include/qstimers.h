@@ -47,7 +47,7 @@
     /**
     * @brief Reload the STimer with the previous specified time.
     * @note STimer should be armed before this operation
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     * @return Returns qTrue on success, otherwise, returns qFalse.
     */     
     qBool_t qSTimer_Reload( qSTimer_t * const obj );
@@ -58,15 +58,15 @@
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 
     * the clock-Tick.
-    * @param obj A pointer to the STimer object.
-    * @param Time The expiration time(Must be specified in seconds).
+    * @param[in] obj A pointer to the STimer object.
+    * @param[in] Time The expiration time(Must be specified in seconds).
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */        
     qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time );
 
     /**
     * @brief Non-Blocking STimer check
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     * @return Returns #qTrue when STimer expires, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */         
@@ -84,8 +84,8 @@
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 
     * the clock-Tick.
-    * @param obj A pointer to the STimer object.
-    * @param Time The expiration time(Must be specified in seconds).
+    * @param[in] obj A pointer to the STimer object.
+    * @param[in] Time The expiration time(Must be specified in seconds).
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */          
@@ -93,27 +93,27 @@
 
     /**
     * @brief Retrieve the elapsed time in epochs
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     * @return The Elapsed time specified in epochs.
     */         
     qClock_t qSTimer_Elapsed( const qSTimer_t * const obj );
 
     /**
     * @brief Retrieve the remaining time in epochs
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     * @return The remaining time specified in epochs.
     */           
     qClock_t qSTimer_Remaining( const qSTimer_t * const obj );
 
     /**
     * @brief Disarms the STimer object
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     */         
     void qSTimer_Disarm( qSTimer_t * const obj );
 
     /**
     * @brief Get the current status of the STimer (Armed or Disarmed)
-    * @param obj A pointer to the STimer object.
+    * @param[in] obj A pointer to the STimer object.
     * @return #qTrue when armed, otherwise #qFalse when disarmed.
     */        
     qBool_t qSTimer_Status( const qSTimer_t * const obj );

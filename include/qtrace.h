@@ -119,7 +119,7 @@
 
         /**
         * @brief This API set the output method for debug/trace messages.
-        * @param fcn The basic output byte function.
+        * @param[in] fcn The basic output byte function.
         * @return none.
         */            
         void qTrace_Set_OutputFcn(qPutChar_t fcn);
@@ -175,16 +175,16 @@
         /**
         * @brief Output a trace message for the memory from the specified address (HEX output)
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Pointer The target memory address
-        * @param BlockSize Number of bytes
+        * @param[in] Pointer The target memory address
+        * @param[in] BlockSize Number of bytes
         * @return none.
         */          
         #define qTrace_Mem(Pointer, BlockSize)       qTrace_Memory( (Pointer), (BlockSize) )
 
         /**
         * @brief Same behavior of #qTrace_Mem
-        * @param Pointer The target memory address
-        * @param BlockSize Number of bytes
+        * @param[in] Pointer The target memory address
+        * @param[in] BlockSize Number of bytes
         * @return none.
         */           
         #define qTrace_Memory(Pointer, BlockSize)    _qtrace_func ( _qAT(), _QTRACE_FUNC, #Pointer "=", NULL, (Pointer), (BlockSize) )
@@ -192,8 +192,8 @@
         /**
         * @brief Output a debug message for the memory from the specified address (HEX output)
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Pointer The target memory address
-        * @param BlockSize Number of bytes
+        * @param[in] Pointer The target memory address
+        * @param[in] BlockSize Number of bytes
         * @return none.
         */              
         #define qDebug_Mem(Pointer, BlockSize)       qDebug_Memory( (Pointer), (BlockSize) ) 
@@ -201,8 +201,8 @@
         /**
         * @brief Same behavior of #qDebug_Mem
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Pointer The target memory address
-        * @param BlockSize Number of bytes
+        * @param[in] Pointer The target memory address
+        * @param[in] BlockSize Number of bytes
         * @return none.
         */          
         #define qDebug_Memory(Pointer, BlockSize)    _qtrace_func ( "", NULL, #Pointer "=", NULL, (Pointer), (BlockSize) )
@@ -210,8 +210,8 @@
         /**
         * @brief Output a trace message for the supplied variable (up to 32bit data) 
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Var The target variable
-        * @param DISP_TYPE_MODE Visualization mode. It must be one of the following parameters:
+        * @param[in] Var The target variable
+        * @param[in] DISP_TYPE_MODE Visualization mode. It must be one of the following parameters:
         * - Bool
         * - qBool
         * - Float
@@ -232,8 +232,8 @@
         /**
         * @brief Same behavior of #qTrace_Var
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Var The target variable
-        * @param DISP_TYPE_MODE Visualization mode. 
+        * @param[in] Var The target variable
+        * @param[in] DISP_TYPE_MODE Visualization mode. 
         * @return none.
         */         
         #define qTrace_Variable(Var, DISP_TYPE_MODE) qTrace_##DISP_TYPE_MODE(Var)
@@ -263,8 +263,8 @@
         /**
         * @brief Same behavior of #qDebug_Var
         * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
-        * @param Var The target variable
-        * @param DISP_TYPE_MODE Visualization mode.
+        * @param[in] Var The target variable
+        * @param[in] DISP_TYPE_MODE Visualization mode.
         * @return none.
         */             
         #define qDebug_Variable(Var, DISP_TYPE_MODE) qDebug_##DISP_TYPE_MODE(Var)  

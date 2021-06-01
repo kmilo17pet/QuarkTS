@@ -150,7 +150,7 @@
     * a Coroutine. It should be placed at the start of the function in which the 
     * Coroutine runs. #qCR_End declare the end of the Coroutine. 
     * @note It must always be used together with a matching #qCR_End statement.
-    * @param handle The handle of a coroutine (qCR_Handle_t)
+    * @param[in] handle The handle of a coroutine (qCR_Handle_t)
     * 
     * Example:
     * @code{.c}
@@ -200,7 +200,7 @@
 
     /**
     * @brief Yields until the logical condition being true
-    * @param bCondition The logical condition to be evaluated
+    * @param[in] bCondition The logical condition to be evaluated
     * <pre>
     * Action sequence : [Save progress] 
     *                 IF ( condition == False ){
@@ -212,8 +212,8 @@
 
     /**
     * @brief  Yields until the logical condition being true or the specified timeout expires.
-    * @param bCondition The logical condition to be evaluated.
-    * @param tValue The specific amount of time to wait given in seconds.
+    * @param[in] bCondition The logical condition to be evaluated.
+    * @param[in] tValue The specific amount of time to wait given in seconds.
     * <pre>
     * Action sequence : [Save progress] 
     *                 IF ( condition == False || NOT_EXPIRED(timeout) )
@@ -237,7 +237,7 @@
 
     /**
     * @brief  This statement ends a blocking Job segment starting with the #qCR_Do statement.   
-    * @param bCondition The logical condition to be evaluated.
+    * @param[in] bCondition The logical condition to be evaluated.
     * The condition determines if the blocking job ends (if condition is True)
     * or continue yielding (if false)
     * @note Must be used together with a matching #qCR_Do statement.  
@@ -254,8 +254,8 @@
     * @brief Initializes a semaphore with a value for the counter. Internally, the semaphores
     * use an "unsigned int" to represent the counter,  therefore the <b>sValue</b> 
     * argument should be within range of an "unsigned int".
-    * @param pSem A pointer to the qCR_Semaphore_t representing the semaphore
-    * @param sValue The initial count of the semaphore.
+    * @param[in] pSem A pointer to the qCR_Semaphore_t representing the semaphore
+    * @param[in] sValue The initial count of the semaphore.
     * @return none.
     */     
     #define qCR_SemInit( pSem, sValue )                 Q_UNUSED( _qCR_Sem( pSem, sValue ) )
@@ -264,7 +264,7 @@
     * @brief Carries out the "wait" operation on the semaphore. The wait operation causes 
     * the Co-routine to block while the counter is zero. When the counter reaches a 
     * value larger than zero, the Co-routine will continue.
-    * @param pSem A pointer to the qCR_Semaphore_t object in which the 
+    * @param[in] pSem A pointer to the qCR_Semaphore_t object in which the 
     * operation is executed
     * @return none.
     */    
@@ -274,7 +274,7 @@
     * @brief Carries out the "signal" operation on the semaphore. The signal operation increments
     * the counter inside the semaphore, which eventually will cause waiting Co-routines
     * to continue executing.
-    * @param pSem A pointer to the qCR_Semaphore_t object in which the 
+    * @param[in] pSem A pointer to the qCR_Semaphore_t object in which the 
     * operation is executed
     * @return none.
     */     
@@ -283,38 +283,38 @@
     /**
     * @brief Labels the current position and saves it to <b>CRPos</b> so it can be later 
     * restored by #qCR_PositionRestore
-    * @param CRPos The variable of type qCR_Position_t where the current position will be saved.
+    * @param[out] CRPos The variable of type qCR_Position_t where the current position will be saved.
     * @return none.
     */        
     #define qCR_PositionGet( CRPos )                    _qCR_GetPosition( CRPos )
    
     /**
     * @brief Restores the Co-Routine position saved in <b>CRPos</b>
-    * @param CRPos The variable of type qCR_Position_t that contains the position to be restored.
+    * @param[in] CRPos The variable of type qCR_Position_t that contains the position to be restored.
     * @return none.
     */     
     #define qCR_PositionRestore( CRPos )                _qCR_RestoreFromPosition( CRPos )
 
     /**
     * @brief Resets the <b>CRPos</b> variable to the begining of the Co-Routine
-    * @param CRPos The variable of type qCR_Position_t to reset.
+    * @param[in,out] CRPos The variable of type qCR_Position_t to reset.
     * @return none.
     */     
     #define qCR_PositionReset( CRPos )                  _qCR_PositionReset( CRPos )
 
     /**
     * @brief Delay a coroutine for a given number of time
-    * @param tValue The amount of time (In seconds), that the calling coroutine should yield.
+    * @param[in] tValue The amount of time (In seconds), that the calling coroutine should yield.
     * @return none.
     */       
     #define qCR_Delay( tValue )                         _qCR_Delay( tValue )
 
     /**
     * @brief Perform an external action over the requested Co-routine
-    * @param h The Co-routine handle.
-    * @param action The specific action to perform, should be one of the following: 
+    * @param[in] h The Co-routine handle.
+    * @param[in] action The specific action to perform, should be one of the following: 
     * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITIONSET.
-    * @param pos The required position if <b>action</b> = ::qCR_POSITIONSET. For other actions
+    * @param[in] pos The required position if <b>action</b> = ::qCR_POSITIONSET. For other actions
     * this argument its ignored. 
     * @return none.
     */   

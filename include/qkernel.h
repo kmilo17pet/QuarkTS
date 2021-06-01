@@ -87,13 +87,13 @@
         /**
         * @brief Task Scheduler Setup. This function is required and must be called once in 
         * the application main thread before any task is being added to the OS.
-        * @param TickProvider The function that provides the tick value. If the user application 
+        * @param[in] TickProvider The function that provides the tick value. If the user application 
         * uses the qClock_SysTick() from the ISR, this parameter can be NULL.
         * @note Function should take void and return a 32bit value. 
-        * @param BaseTimming (Optional) This parameter specifies the ISR background timer base time.
+        * @param[in] BaseTimming (Optional) This parameter specifies the ISR background timer base time.
         * This can be the period in seconds(Floating-point format) or frequency 
         * in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
-        * @param IdleCallback  Callback function to the Idle Task. To disable the 
+        * @param[in] IdleCallback  Callback function to the Idle Task. To disable the 
         * Idle Task activities, pass NULL as argument.
         * @return none.
         */      
@@ -102,7 +102,7 @@
 
     /**
     * @brief Set/Change the callback for the Idle-task
-    * @param Callback A pointer to a void callback method with a qEvent_t parameter 
+    * @param[in] Callback A pointer to a void callback method with a qEvent_t parameter 
     * as input argument. To disable pass NULL as argument.
     * @return none.
     */
@@ -118,7 +118,7 @@
 
         /**
         * @brief Set/Change the scheduler release callback function
-        * @param Callback A pointer to a void callback method with a qEvent_t parameter 
+        * @param[in] Callback A pointer to a void callback method with a qEvent_t parameter 
         * as input argument.
         * @return none.
         */     
@@ -134,8 +134,8 @@
     /**
     * @brief Try to spread a notification among all the tasks in the scheduling scheme
     * @note Operation will be performed in the next scheduling cycle. 
-    * @param eventdata Specific event user-data.
-    * @param mode the method used to spread the event: ::qTask_NotifySimple or ::qTask_NotifyQueued.
+    * @param[in] eventdata Specific event user-data.
+    * @param[in] mode the method used to spread the event: ::qTask_NotifySimple or ::qTask_NotifyQueued.
     * @return #qTrue if success. #qFalse if any other spread operation is in progress.
     */
     qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode );
@@ -149,22 +149,22 @@
     /**
     * @brief Add a task to the scheduling scheme. The task is scheduled to run every <b>Time</b> 
     * seconds, <b>nExecutions</b> times and executing <b>CallbackFcn</b> method on every pass.
-    * @param Task  A pointer to the task node.
-    * @param CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
+    * @param[in] Task  A pointer to the task node.
+    * @param[in] CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
     * as input argument.
-    * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    * @param Time Execution interval defined in seconds (floating-point format). 
+    * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] Time Execution interval defined in seconds (floating-point format). 
     * For immediate execution (tValue = #qTimeImmediate).
-    * @param nExecutions Number of task executions (Integer value). For indefinite 
+    * @param[in] nExecutions Number of task executions (Integer value). For indefinite 
     * execution (nExecutions = #qPeriodic or #qIndefinite). Tasks do not 
     * remember the number of iteration set initially. After the 
     * iterations are done, internal iteration counter is 0. To perform 
     * another set of iterations, set the number of iterations again.
     * @note Tasks which performed all their iterations put their own state to #qDisabled.
     * @note Asynchronous triggers do not affect the iteration counter.
-    * @param InitialState Specifies the initial operational state of the task 
+    * @param[in] InitialState Specifies the initial operational state of the task 
     * (#qEnabled, #qDisabled, #qAsleep or #qAwake(implies #qEnabled)).
-    * @param arg Represents the task arguments. All arguments must be passed by
+    * @param[in] arg Represents the task arguments. All arguments must be passed by
     * reference and cast to (void *). Only one argument is allowed, 
     * so, for multiple arguments, create a structure that contains 
     * all of the arguments and pass a pointer to that structure.
@@ -177,11 +177,11 @@
     * state by default , so this task will be executed only, when asynchronous events occurs.
     * However, this behavior can be changed in execution time using qTask_Set_Time() 
     * or qTask_Set_Iterations().
-    * @param Task  A pointer to the task node.
-    * @param CallbackFcn A pointer to a the task callback method with a qEvent_t parameter 
+    * @param[in] Task  A pointer to the task node.
+    * @param[in] CallbackFcn A pointer to a the task callback method with a qEvent_t parameter 
     * as input argument.
-    * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    * @param arg Represents the task arguments. All arguments must be passed by
+    * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] arg Represents the task arguments. All arguments must be passed by
     * reference and cast to (void *). Only one argument is allowed, 
     * so, for multiple arguments, create a structure that contains 
     * all of the arguments and pass a pointer to that structure.
@@ -193,14 +193,14 @@
         * @brief Add a task to the scheduling scheme running a dedicated state-machine. 
         * The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info
         * will be available as a generic pointer inside the qSM_Handler_t::Data field.
-        * @param Task  A pointer to the task node.
-        * @param m  A pointer to the Finite State-Machine (FSM) object.    
-        * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-        * @param Time Execution interval defined in seconds (floating-point format). 
+        * @param[in] Task  A pointer to the task node.
+        * @param[in] m  A pointer to the Finite State-Machine (FSM) object.    
+        * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+        * @param[in] Time Execution interval defined in seconds (floating-point format). 
         * For immediate execution (tValue = #qTimeImmediate).
-        * @param InitialTaskState Specifies the initial operational state of the task 
+        * @param[in] InitialTaskState Specifies the initial operational state of the task 
         * (#qEnabled, #qDisabled, #qAsleep or #qAwake(implies #qEnabled)).
-        * @param arg Represents the task arguments. All arguments must be passed by
+        * @param[in] arg Represents the task arguments. All arguments must be passed by
         * reference and cast to (void *). Only one argument is allowed, 
         * so, for multiple arguments, create a structure that contains 
         * all of the arguments and pass a pointer to that structure.
@@ -214,9 +214,9 @@
         * @brief Add a task to the scheduling scheme running an AT Command Line Interface.
         * Task will be scheduled as an event-triggered task. The parser address will be 
         * stored in the qEvent_t::TaskData storage-Pointer.
-        * @param Task A pointer to the task node.
-        * @param cli A pointer to the AT Command Line Inteface instance.
-        * @param Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+        * @param[in] Task A pointer to the task node.
+        * @param[in] cli A pointer to the AT Command Line Inteface instance.
+        * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */       
         qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority );
@@ -224,7 +224,7 @@
 
     /**
     * @brief Remove the task from the scheduling scheme.
-    * @param Task A pointer to the task node.
+    * @param[in] Task A pointer to the task node.
     * @return Returns #qTrue if success, otherwise returns #qFalse.
     */  
     qBool_t qOS_Remove_Task( qTask_t * const Task );

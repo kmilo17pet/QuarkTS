@@ -47,8 +47,8 @@
 
     /** 
      * @brief A macro to perform time conversions.
-     * @param _xTime_   The input time in seconds. 
-     * @param _qUnit_   The target unit. Use on of the  provied factors prefixed with QTUNIT_XXX. 
+     * @param[in] _xTime_   The input time in seconds. 
+     * @param[in] _qUnit_   The target unit. Use on of the  provied factors prefixed with QTUNIT_XXX. 
      * @return The time converted to the specified unit.
     */
     #define QTUNIT_TOTIME( _xTime_ , _qUnit_ )      ( (qTime_t)( _xTime_ ) *  (qTime_t)( _qUnit_ ) )
@@ -79,28 +79,28 @@
 
     /**
     * @brief Set the system time-base for time conversions
-    * @param  tb Time base
+    * @param[in]  tb Time base
     * @return none.
     */     
     void qClock_SetTimeBase( const qTimingBase_t tb );
     
     /**
     * @brief Set the clock-tick provider function.
-    * @param  provider A pointer to the tick provider function  
+    * @param[in]  provider A pointer to the tick provider function  
     * @return none.
     */    
     void qClock_SetTickProvider( const qGetTickFcn_t provider );
 
     /**
     * @brief Convert the specified input time(epochs) to time(seconds)
-    * @param  t Time in epochs
+    * @param[in]  t Time in epochs
     * @return time (t) in seconds
     */      
     qTime_t qClock_Convert2Time( const qClock_t t );
 
     /**
     * @brief Convert the specified input time(seconds) to time(epochs)
-    * @param  t Time in seconds
+    * @param[in]  t Time in seconds
     * @return time (t) in epochs
     */     
     qClock_t qClock_Convert2Clock( const qTime_t t );
@@ -128,8 +128,8 @@
     * @brief Perform a timestamp check. This function computes the amount
     *  of time elapsed between the current instant and the init timestamp <b>ti</b> 
     *  and checks if the result is greather than <b>td</b>. 
-    * @param ti Init timestamp in epochs
-    * @param td Elapsed time to check in epochs
+    * @param[in] ti Init timestamp in epochs
+    * @param[in] td Elapsed time to check in epochs
     * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
     returns #qFalse
     */       
