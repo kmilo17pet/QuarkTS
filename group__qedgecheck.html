@@ -189,10 +189,10 @@ Functions</h2></td></tr>
 <p>Add an input node to the Edge-Check instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Instance</td><td>A pointer to the I/O Edge-Check object </td></tr>
-    <tr><td class="paramname">Node</td><td>A pointer to the Input-Node object </td></tr>
-    <tr><td class="paramname">PortAddress</td><td>The address of the core PORTx-register to read the levels of the specified PinNumber </td></tr>
-    <tr><td class="paramname">PinNumber</td><td>The specified Pin to read from PortAddress </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Instance</td><td>A pointer to the I/O Edge-Check object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Node</td><td>A pointer to the Input-Node object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">PortAddress</td><td>The address of the core PORTx-register to read the levels of the specified PinNumber </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">PinNumber</td><td>The specified Pin to read from PortAddress </td></tr>
   </table>
   </dd>
 </dl>
@@ -219,7 +219,7 @@ Functions</h2></td></tr>
 <p>Query the status of the specified input-node. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Node</td><td>A pointer to the Input-Node object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Node</td><td>A pointer to the Input-Node object </td></tr>
   </table>
   </dd>
 </dl>
@@ -256,8 +256,8 @@ Functions</h2></td></tr>
 <p>Set/Change the pin number for the provided node. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Node</td><td>A pointer to the Input-Node object. </td></tr>
-    <tr><td class="paramname">PinNumber</td><td>The specified Pin to read from PortAddress </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Node</td><td>A pointer to the Input-Node object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">PinNumber</td><td>The specified Pin to read from PortAddress </td></tr>
   </table>
   </dd>
 </dl>
@@ -301,9 +301,9 @@ Functions</h2></td></tr>
 <p>PRIVATE</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Instance</td><td>A pointer to the I/O Edge-Check object </td></tr>
-    <tr><td class="paramname">RegisterSize</td><td>The specific-core register size: <a class="el" href="group__qedgecheck.html#ga7aada7293fd14196c0253629a015f522" title="To define a register size of 8-bits for an Edge-Check instance.">QREG_8BIT</a>, <a class="el" href="group__qedgecheck.html#ga2837ae4e46ca6e3d523e9226c28d536a" title="To define a register size of 16-bits for an Edge-Check instance.">QREG_16BIT</a> or <a class="el" href="group__qedgecheck.html#ga590679f802e6ebe7adb7ab06cb3105df" title="To define a register size of 32-bits for an Edge-Check instance.">QREG_32BIT(Default)</a> </td></tr>
-    <tr><td class="paramname">DebounceTime</td><td>The specified time to bypass the bounce of the input nodes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Instance</td><td>A pointer to the I/O Edge-Check object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">RegisterSize</td><td>The specific-core register size: <a class="el" href="group__qedgecheck.html#ga7aada7293fd14196c0253629a015f522" title="To define a register size of 8-bits for an Edge-Check instance.">QREG_8BIT</a>, <a class="el" href="group__qedgecheck.html#ga2837ae4e46ca6e3d523e9226c28d536a" title="To define a register size of 16-bits for an Edge-Check instance.">QREG_16BIT</a> or <a class="el" href="group__qedgecheck.html#ga590679f802e6ebe7adb7ab06cb3105df" title="To define a register size of 32-bits for an Edge-Check instance.">QREG_32BIT(Default)</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">DebounceTime</td><td>The specified time to bypass the bounce of the input nodes </td></tr>
   </table>
   </dd>
 </dl>

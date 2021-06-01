@@ -255,7 +255,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Only the higher precedence events (Queued Notifications) can wake up the task. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -282,7 +282,7 @@ Functions</h2></td></tr>
 <p>Put the task into a normal operation state. Here the task will be able to catch any kind of events. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -309,7 +309,7 @@ Functions</h2></td></tr>
 <p>Put the task into a disabled state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -336,7 +336,7 @@ Functions</h2></td></tr>
 <p>Put the task into an enabled state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -363,7 +363,7 @@ Functions</h2></td></tr>
 <p>Retrieve the enabled/disabled state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -390,7 +390,7 @@ Functions</h2></td></tr>
 <p>Put the task into an enabled state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -417,7 +417,7 @@ Functions</h2></td></tr>
 <p>Put the task into a disabled state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -540,7 +540,7 @@ Functions</h2></td></tr>
 <p>Clear the elapsed time of the task. Restart the internal task tick;. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -567,7 +567,7 @@ Functions</h2></td></tr>
 <p>Retrieve the number of task activations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -594,7 +594,7 @@ Functions</h2></td></tr>
 <p>Retrieve the task global-state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -621,7 +621,7 @@ Functions</h2></td></tr>
 <p>Retrieve the task operational state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -680,8 +680,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This function can be used to detach a state-machine from a task </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">CallbackFcn</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CallbackFcn</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -718,8 +718,8 @@ Functions</h2></td></tr>
 <p>Set the task data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">arg</td><td>The task storage pointer. User data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>The task storage pointer. User data. </td></tr>
   </table>
   </dd>
 </dl>
@@ -756,8 +756,8 @@ Functions</h2></td></tr>
 <p>Set/Change the number of task iterations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">Value</td><td>Number of task executions (Integer value). For indefinite execution (iValue = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. If you need to perform another set of iterations, you need to set the number of iterations again and resume. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Value</td><td>Number of task executions (Integer value). For indefinite execution (iValue = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. If you need to perform another set of iterations, you need to set the number of iterations again and resume. </td></tr>
   </table>
   </dd>
 </dl>
@@ -794,8 +794,8 @@ Functions</h2></td></tr>
 <p>Set/Change the task priority value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">Value</td><td>Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Value</td><td>Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
   </table>
   </dd>
 </dl>
@@ -832,8 +832,8 @@ Functions</h2></td></tr>
 <p>Set the task operational state (Enabled or Disabled) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">State</td><td>Use one of the following values:</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">State</td><td>Use one of the following values:</td></tr>
   </table>
   </dd>
 </dl>
@@ -873,8 +873,8 @@ Functions</h2></td></tr>
 <p>Set/Change the Task execution interval. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">Value</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Value</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
   </table>
   </dd>
 </dl>

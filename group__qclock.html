@@ -203,8 +203,8 @@ Variables</h2></td></tr>
 <p>A macro to perform time conversions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">_xTime_</td><td>The input time in seconds. </td></tr>
-    <tr><td class="paramname">_qUnit_</td><td>The target unit. Use on of the provied factors prefixed with QTUNIT_XXX. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_xTime_</td><td>The input time in seconds. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_qUnit_</td><td>The target unit. Use on of the provied factors prefixed with QTUNIT_XXX. </td></tr>
   </table>
   </dd>
 </dl>
@@ -254,7 +254,7 @@ Variables</h2></td></tr>
 <p>Convert the specified input time(seconds) to time(epochs) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">t</td><td>Time in seconds </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time in seconds </td></tr>
   </table>
   </dd>
 </dl>
@@ -281,7 +281,7 @@ Variables</h2></td></tr>
 <p>Convert the specified input time(epochs) to time(seconds) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">t</td><td>Time in epochs </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Time in epochs </td></tr>
   </table>
   </dd>
 </dl>
@@ -308,7 +308,7 @@ Variables</h2></td></tr>
 <p>Set the clock-tick provider function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">provider</td><td>A pointer to the tick provider function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">provider</td><td>A pointer to the tick provider function </td></tr>
   </table>
   </dd>
 </dl>
@@ -335,7 +335,7 @@ Variables</h2></td></tr>
 <p>Set the system time-base for time conversions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tb</td><td>Time base </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tb</td><td>Time base </td></tr>
   </table>
   </dd>
 </dl>
@@ -398,8 +398,8 @@ Variables</h2></td></tr>
 <p>Perform a timestamp check. This function computes the amount of time elapsed between the current instant and the init timestamp <b>ti</b> and checks if the result is greather than <b>td</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ti</td><td>Init timestamp in epochs </td></tr>
-    <tr><td class="paramname">td</td><td>Elapsed time to check in epochs </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ti</td><td>Init timestamp in epochs </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">td</td><td>Elapsed time to check in epochs </td></tr>
   </table>
   </dd>
 </dl>

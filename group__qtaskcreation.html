@@ -192,9 +192,9 @@ Functions</h2></td></tr>
 <p>Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Inteface instance. </td></tr>
-    <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Inteface instance. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
   </table>
   </dd>
 </dl>
@@ -243,10 +243,10 @@ Functions</h2></td></tr>
 <p>Add a task to the scheduling scheme. This API creates a task with a <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a> state by default , so this task will be executed only, when asynchronous events occurs. However, this behavior can be changed in execution time using <a class="el" href="group__qtaskmanip.html#gac2dd409cad58a90b89f65e64f862928d" title="Set/Change the Task execution interval.">qTask_Set_Time()</a> or <a class="el" href="group__qtaskmanip.html#ga4819ade68f755968df6b415b06baa8ac" title="Set/Change the number of task iterations.">qTask_Set_Iterations()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
-    <tr><td class="paramname">CallbackFcn</td><td>A pointer to a the task callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
-    <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
-    <tr><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CallbackFcn</td><td>A pointer to a the task callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -307,12 +307,12 @@ Functions</h2></td></tr>
 <p>Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info will be available as a generic pointer inside the <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a> field. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
-    <tr><td class="paramname">m</td><td>A pointer to the Finite State-Machine (FSM) object. </td></tr>
-    <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
-    <tr><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
-    <tr><td class="paramname">InitialTaskState</td><td>Specifies the initial operational state of the task (<a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>, <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a>, <a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a>(implies <a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>)). </td></tr>
-    <tr><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the Finite State-Machine (FSM) object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">InitialTaskState</td><td>Specifies the initial operational state of the task (<a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>, <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a>, <a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a>(implies <a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>)). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -379,11 +379,11 @@ Functions</h2></td></tr>
 <p>Add a task to the scheduling scheme. The task is scheduled to run every <b>Time</b> seconds, <b>nExecutions</b> times and executing <b>CallbackFcn</b> method on every pass. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
-    <tr><td class="paramname">CallbackFcn</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
-    <tr><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
-    <tr><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
-    <tr><td class="paramname">nExecutions</td><td>Number of task executions (Integer value). For indefinite execution (nExecutions = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. To perform another set of iterations, set the number of iterations again. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CallbackFcn</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Time</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nExecutions</td><td>Number of task executions (Integer value). For indefinite execution (nExecutions = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. To perform another set of iterations, set the number of iterations again. </td></tr>
   </table>
   </dd>
 </dl>
@@ -392,8 +392,8 @@ Functions</h2></td></tr>
 Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">InitialState</td><td>Specifies the initial operational state of the task (<a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>, <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a>, <a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a>(implies <a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>)). </td></tr>
-    <tr><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">InitialState</td><td>Specifies the initial operational state of the task (<a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>, <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a>, <a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a>(implies <a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>)). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -420,7 +420,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <p>Remove the task from the scheduling scheme. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -490,7 +490,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <p>Set/Change the callback for the Idle-task. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Callback</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. To disable pass NULL as argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Callback</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. To disable pass NULL as argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -517,7 +517,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <p>Set/Change the scheduler release callback function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Callback</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Callback</td><td>A pointer to a void callback method with a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> parameter as input argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -560,15 +560,15 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <p>Task Scheduler Setup. This function is required and must be called once in the application main thread before any task is being added to the OS. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">TickProvider</td><td>The function that provides the tick value. If the user application uses the <a class="el" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53" title="Feed the system tick.">qClock_SysTick()</a> from the ISR, this parameter can be NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">TickProvider</td><td>The function that provides the tick value. If the user application uses the <a class="el" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53" title="Feed the system tick.">qClock_SysTick()</a> from the ISR, this parameter can be NULL. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Function should take void and return a 32bit value. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">BaseTimming</td><td>(Optional) This parameter specifies the ISR background timer base time. This can be the period in seconds(Floating-point format) or frequency in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled). </td></tr>
-    <tr><td class="paramname">IdleCallback</td><td>Callback function to the Idle Task. To disable the Idle Task activities, pass NULL as argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">BaseTimming</td><td>(Optional) This parameter specifies the ISR background timer base time. This can be the period in seconds(Floating-point format) or frequency in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">IdleCallback</td><td>Callback function to the Idle Task. To disable the Idle Task activities, pass NULL as argument. </td></tr>
   </table>
   </dd>
 </dl>

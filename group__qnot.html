@@ -176,8 +176,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Operation will be performed in the next scheduling cycle. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
-    <tr><td class="paramname">mode</td><td>the method used to spread the event: <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a> or <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>the method used to spread the event: <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a> or <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -204,7 +204,7 @@ Functions</h2></td></tr>
 <p>Check if the task has pending notifications. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -241,8 +241,8 @@ Functions</h2></td></tr>
 <p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispacher perfo...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
   </table>
   </dd>
 </dl>
@@ -279,8 +279,8 @@ Functions</h2></td></tr>
 <p>Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
   </table>
   </dd>
 </dl>

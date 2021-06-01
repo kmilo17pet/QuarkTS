@@ -190,7 +190,7 @@ Macros</h2></td></tr>
 <p>Returns the number of elements in an array <b>x</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>The input array </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>The input array </td></tr>
   </table>
   </dd>
 </dl>
@@ -227,8 +227,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise AND operator to clear a single bit into <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bit</td><td>The bit-index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bit</td><td>The bit-index </td></tr>
   </table>
   </dd>
 </dl>
@@ -301,7 +301,7 @@ Macros</h2></td></tr>
 <p>Build a byte value from independent bits. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b7...b0</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b7...b0</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -338,8 +338,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise AND operator to read the value of a single bit from <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bit</td><td>The bit-index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bit</td><td>The bit-index </td></tr>
   </table>
   </dd>
 </dl>
@@ -376,8 +376,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise AND operator to clear bits into <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bits</td><td>Indicates which bits are to be cleared </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bits</td><td>Indicates which bits are to be cleared </td></tr>
   </table>
   </dd>
 </dl>
@@ -414,8 +414,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise OR operator to set a single bit into <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bit</td><td>The bit-index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bit</td><td>The bit-index </td></tr>
   </table>
   </dd>
 </dl>
@@ -452,8 +452,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise OR operator to set bits into <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bits</td><td>Indicates which bits are to be set </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bits</td><td>Indicates which bits are to be set </td></tr>
   </table>
   </dd>
 </dl>
@@ -490,8 +490,8 @@ Macros</h2></td></tr>
 <p>Uses the bitwise XOR operator to toggle the value of a single bit from <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bit</td><td>The bit-index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bit</td><td>The bit-index </td></tr>
   </table>
   </dd>
 </dl>
@@ -534,9 +534,9 @@ Macros</h2></td></tr>
 <p>Write the <b>Value</b> in a single bit of the <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
-    <tr><td class="paramname">Bit</td><td>The bit-index </td></tr>
-    <tr><td class="paramname">Value</td><td>The boolean value to write </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Bit</td><td>The bit-index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Value</td><td>The boolean value to write </td></tr>
   </table>
   </dd>
 </dl>
@@ -563,7 +563,7 @@ Macros</h2></td></tr>
 <p>Read the high-nibble from <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -590,7 +590,7 @@ Macros</h2></td></tr>
 <p>Read the low-nibble from <b>Register</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -627,8 +627,8 @@ Macros</h2></td></tr>
 <p>Merges two nibbles to form one byte. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">H</td><td>The high nibble </td></tr>
-    <tr><td class="paramname">L</td><td>The low nibble </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">H</td><td>The high nibble </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>The low nibble </td></tr>
   </table>
   </dd>
 </dl>
@@ -672,9 +672,9 @@ Macros</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>If <b>Min</b> is greater than <b>Max</b> the result is undefined. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">X</td><td>The value to clamp </td></tr>
-    <tr><td class="paramname">Min</td><td>The minimum value allowed. </td></tr>
-    <tr><td class="paramname">Max</td><td>The maximum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>The value to clamp </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Min</td><td>The minimum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Max</td><td>The maximum value allowed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -711,8 +711,8 @@ Macros</h2></td></tr>
 <p>Ensures that <b>X</b> is above the value set by <b>Min</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">X</td><td>The value to clamp </td></tr>
-    <tr><td class="paramname">Min</td><td>The minimum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>The value to clamp </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Min</td><td>The minimum value allowed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -749,8 +749,8 @@ Macros</h2></td></tr>
 <p>Ensures that <b>X</b> is bellow the limits set by <b>Max</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">X</td><td>The value to clamp </td></tr>
-    <tr><td class="paramname">Max</td><td>The maximum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>The value to clamp </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Max</td><td>The maximum value allowed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -777,7 +777,7 @@ Macros</h2></td></tr>
 <p>Read the high-word from <b>Register</b> assuming it as a DWord. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -804,7 +804,7 @@ Macros</h2></td></tr>
 <p>Read the low-word from <b>Register</b> assuming it as a DWord. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -841,8 +841,8 @@ Macros</h2></td></tr>
 <p>Merges two words to form one DWord. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">H</td><td>The high word </td></tr>
-    <tr><td class="paramname">L</td><td>The low word </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">H</td><td>The high word </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>The low word </td></tr>
   </table>
   </dd>
 </dl>
@@ -885,9 +885,9 @@ Macros</h2></td></tr>
 <p>Check if the value of <b>X</b> is within the limits defined by <b>Low</b> and <b>High</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">X</td><td>The value to check </td></tr>
-    <tr><td class="paramname">Low</td><td>The minimum value allowed. </td></tr>
-    <tr><td class="paramname">High</td><td>The maximum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>The value to check </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Low</td><td>The minimum value allowed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">High</td><td>The maximum value allowed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -924,8 +924,8 @@ Macros</h2></td></tr>
 <p>Calculates the maximum of <b>a</b> and <b>b</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a</td><td>A numeric value </td></tr>
-    <tr><td class="paramname">b</td><td>A numeric value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>A numeric value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>A numeric value </td></tr>
   </table>
   </dd>
 </dl>
@@ -962,8 +962,8 @@ Macros</h2></td></tr>
 <p>Calculates the minimum of <b>a</b> and <b>b</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a</td><td>A numeric value </td></tr>
-    <tr><td class="paramname">b</td><td>A numeric value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>A numeric value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>A numeric value </td></tr>
   </table>
   </dd>
 </dl>
@@ -990,7 +990,7 @@ Macros</h2></td></tr>
 <p>Read the high-byte from <b>Register</b> assuming it as a Word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -1017,7 +1017,7 @@ Macros</h2></td></tr>
 <p>Read the low-byte from <b>Register</b> assuming it as a Word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Register</td><td>The variable where the operation will be applied </td></tr>
   </table>
   </dd>
 </dl>
@@ -1054,8 +1054,8 @@ Macros</h2></td></tr>
 <p>Merges two bytes to form one Word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">H</td><td>The high byte </td></tr>
-    <tr><td class="paramname">L</td><td>The low byte </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">H</td><td>The high byte </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">L</td><td>The low byte </td></tr>
   </table>
   </dd>
 </dl>

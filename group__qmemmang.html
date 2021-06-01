@@ -147,7 +147,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><b>qFree</b> its NOT interrupt-safe. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ptr</td><td>to the memory to deallocate </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>to the memory to deallocate </td></tr>
   </table>
   </dd>
 </dl>
@@ -177,7 +177,7 @@ Functions</h2></td></tr>
 <a class="el" href="group__qmemmang.html#ga4b6d1abe30360b388db8ad08c8805d35" title="Allocate a block of memory that is Size bytes large. Allocation will be performed in the selected mem...">qMalloc()</a> its NOT interrupt-safe. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Size</td><td>Size of the memory block in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Size</td><td>Size of the memory block in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -215,8 +215,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="group__qmemmang.html#ga832677794068710f8c77158b64ec4bac" title="Allocate a block of memory that is Size bytes large. Allocation will be performed in the selected mem...">qMemMang_Allocate()</a> its NOT interrupt-safe. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mPool</td><td>A pointer to the memory pool instance. </td></tr>
-    <tr><td class="paramname">Size</td><td>Size of the memory block in bytes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mPool</td><td>A pointer to the memory pool instance. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Size</td><td>Size of the memory block in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -254,8 +254,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="group__qmemmang.html#ga27ac6466c04ea87d6f638291792ebea6" title="Deallocates previously allocated space from the memory pool. If ptr is a null pointer,...">qMemMang_Free()</a> its NOT interrupt-safe. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mPool</td><td>A pointer to the memory pool instance. </td></tr>
-    <tr><td class="paramname">ptr</td><td>to the memory to deallocate </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mPool</td><td>A pointer to the memory pool instance. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ptr</td><td>to the memory to deallocate </td></tr>
   </table>
   </dd>
 </dl>
@@ -282,7 +282,7 @@ Functions</h2></td></tr>
 <p>Returns the total amount of heap space that remains unallocated for the selected memory pool. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mPool</td><td>A pointer to the memory pool instance. Pass NULL to select the default memory pool. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mPool</td><td>A pointer to the memory pool instance. Pass NULL to select the default memory pool. </td></tr>
   </table>
   </dd>
 </dl>
@@ -309,7 +309,7 @@ Functions</h2></td></tr>
 <p>Select the memory pool to perform heap memory requests with <b><a class="el" href="group__qmemmang.html#ga4b6d1abe30360b388db8ad08c8805d35" title="Allocate a block of memory that is Size bytes large. Allocation will be performed in the selected mem...">qMalloc()</a></b> and <b><a class="el" href="group__qmemmang.html#ga3e181f0109a557d2466895b5ea44bc98" title="Deallocates the space previously allocated by qMalloc(). Deallocation will be performed in the select...">qFree()</a></b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mPool</td><td>A pointer to the memory pool instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mPool</td><td>A pointer to the memory pool instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -352,9 +352,9 @@ Functions</h2></td></tr>
 <p>Initializes a memory pool instance. This function should be called once before any heap memory request. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mPool</td><td>A pointer to the memory pool instance </td></tr>
-    <tr><td class="paramname">Area</td><td>A pointer to a memory block (uint8_t) statically allocated to act as Heap of the memory pool. The size of this block should match the <b>Size</b> argument. </td></tr>
-    <tr><td class="paramname">Size</td><td>The size of the memory block pointed by <b>Area</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mPool</td><td>A pointer to the memory pool instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Area</td><td>A pointer to a memory block (uint8_t) statically allocated to act as Heap of the memory pool. The size of this block should match the <b>Size</b> argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Size</td><td>The size of the memory block pointed by <b>Area</b> </td></tr>
   </table>
   </dd>
 </dl>

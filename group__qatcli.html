@@ -341,8 +341,8 @@ Functions</h2></td></tr>
 <p>Iterate between the commands available inside the AT-CLI instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">reload</td><td>If <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, the iterator will set their position at the beginning. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reload</td><td>If <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, the iterator will set their position at the beginning. </td></tr>
   </table>
   </dd>
 </dl>
@@ -403,11 +403,11 @@ Functions</h2></td></tr>
 <p>This function subscribes the CLI instance to a specific command with an associated Callback function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI module only analyze commands that follows the extended AT-Commands syntax (+ can be ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">Command</td><td>A pointer to the AT command object. </td></tr>
-    <tr><td class="paramname">TextCommand</td><td>The string (name) of the command we want to subscribe to. Since this service only handles AT commands, this string has to begin by the "at" characters and should be in lower case. </td></tr>
-    <tr><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre> </td></tr>
-    <tr><td class="paramname">CmdOpt</td><td>This flag combines with a bitwise OR the following information:</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Command</td><td>A pointer to the AT command object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">TextCommand</td><td>The string (name) of the command we want to subscribe to. Since this service only handles AT commands, this string has to begin by the "at" characters and should be in lower case. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CmdOpt</td><td>This flag combines with a bitwise OR the following information:</td></tr>
   </table>
   </dd>
 </dl>
@@ -417,7 +417,7 @@ Functions</h2></td></tr>
 <p><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246">qATCLI_CMDTYPE_ACT</a> : "AT+cmd" is allowed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">param</td><td>User storage pointer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>User storage pointer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -454,8 +454,8 @@ Functions</h2></td></tr>
 <p>Try to execute the requested command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">cmd</td><td>The command string, including arguments if required. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmd</td><td>The command string, including arguments if required. </td></tr>
   </table>
   </dd>
 </dl>
@@ -482,7 +482,7 @@ Functions</h2></td></tr>
 <p>Flush the CLI input buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -519,8 +519,8 @@ Functions</h2></td></tr>
 <p>Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#gabff9dbdbf7a96d42ba797015afa537c0" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">c</td><td>The incoming byte/char to the input. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The incoming byte/char to the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -563,9 +563,9 @@ Functions</h2></td></tr>
 <p>Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">Data</td><td>The incoming string. </td></tr>
-    <tr><td class="paramname">n</td><td>The length of the string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>The incoming string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The length of the string. </td></tr>
   </table>
   </dd>
 </dl>
@@ -602,8 +602,8 @@ Functions</h2></td></tr>
 <p>Sends a command to the specified AT Command Line Interface instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">cmd</td><td>The command string, including arguments if required. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cmd</td><td>The command string, including arguments if required. </td></tr>
   </table>
   </dd>
 </dl>
@@ -630,7 +630,7 @@ Functions</h2></td></tr>
 <p>Run the AT Command Line Interface when the input is ready. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -721,17 +721,17 @@ Functions</h2></td></tr>
 <p>Setup an instance of the AT Command Command Line Interface. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramname">OutputFcn</td><td>The basic output-char wrapper function. All the CLI responses will be printed-out through this function. </td></tr>
-    <tr><td class="paramname">Input</td><td>A memory location to store the cli input (Mandatory) </td></tr>
-    <tr><td class="paramname">SizeInput</td><td>The size of the memory allocated in <b>Input</b> </td></tr>
-    <tr><td class="paramname">Output</td><td>A memory location to store the CLI output </td></tr>
-    <tr><td class="paramname">SizeOutput</td><td>The size of the memory allocated in <b>Output</b> </td></tr>
-    <tr><td class="paramname">Identifier</td><td>The device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </td></tr>
-    <tr><td class="paramname">OK_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>. </td></tr>
-    <tr><td class="paramname">ERROR_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a> or any <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE</a>(#) </td></tr>
-    <tr><td class="paramname">NOTFOUND_Response</td><td>The output message when input doesn't match with any of the available commands </td></tr>
-    <tr><td class="paramname">term_EOL</td><td>The End-Of-Line string printed out after any of the CLI messages </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">OutputFcn</td><td>The basic output-char wrapper function. All the CLI responses will be printed-out through this function. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Input</td><td>A memory location to store the cli input (Mandatory) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">SizeInput</td><td>The size of the memory allocated in <b>Input</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Output</td><td>A memory location to store the CLI output </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">SizeOutput</td><td>The size of the memory allocated in <b>Output</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Identifier</td><td>The device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">OK_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ERROR_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a> or any <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE</a>(#) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">NOTFOUND_Response</td><td>The output message when input doesn't match with any of the available commands </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">term_EOL</td><td>The End-Of-Line string printed out after any of the CLI messages </td></tr>
   </table>
   </dd>
 </dl>

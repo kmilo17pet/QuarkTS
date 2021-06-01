@@ -149,10 +149,10 @@ Functions</h2></td></tr>
 <p>Check for flags set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> inside the task Event-Flags. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">FlagsToCheck</td><td>A bitwise value that indicates the flags to test inside the EventFlags. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
-    <tr><td class="paramname">ClearOnExit</td><td>If is set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> then any flags set in the value passed as the <b>FlagsToCheck</b> parameter will be cleared in the event group before this function returns only when the condition is meet. </td></tr>
-    <tr><td class="paramname">CheckForAll</td><td>Used to create either a logical AND test (where all flags must be set) or a logical OR test (where one or more flags must be set) as follows:</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FlagsToCheck</td><td>A bitwise value that indicates the flags to test inside the EventFlags. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ClearOnExit</td><td>If is set to <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> then any flags set in the value passed as the <b>FlagsToCheck</b> parameter will be cleared in the event group before this function returns only when the condition is meet. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CheckForAll</td><td>Used to create either a logical AND test (where all flags must be set) or a logical OR test (where one or more flags must be set) as follows:</td></tr>
   </table>
   </dd>
 </dl>
@@ -197,9 +197,9 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Any EventFlag set will cause a task activation. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">flags</td><td>The flags to modify. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
-    <tr><td class="paramname">action</td><td>QEVENTFLAG_SET or QEVENTFLAG_CLEAR </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">flags</td><td>The flags to modify. Can be combined with a bitwise OR. QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">action</td><td>QEVENTFLAG_SET or QEVENTFLAG_CLEAR </td></tr>
   </table>
   </dd>
 </dl>

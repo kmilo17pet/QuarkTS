@@ -150,8 +150,8 @@ Functions</h2></td></tr>
 <p>ISR receiver for the response handler. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
-    <tr><td class="paramname">rxchar</td><td>The byte-data from the receiver </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rxchar</td><td>The byte-data from the receiver </td></tr>
   </table>
   </dd>
 </dl>
@@ -194,9 +194,9 @@ Functions</h2></td></tr>
 <p>Non-Blocking Response check. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
-    <tr><td class="paramname">Pattern</td><td>The data checked in the receiver ISR </td></tr>
-    <tr><td class="paramname">n</td><td>The length of the data pointer by <b>Pattern</b> (if Pattern is string, set <b>n</b> to 0 to auto-compute the length) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pattern</td><td>The data checked in the receiver ISR </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The length of the data pointer by <b>Pattern</b> (if Pattern is string, set <b>n</b> to 0 to auto-compute the length) </td></tr>
   </table>
   </dd>
 </dl>
@@ -245,10 +245,10 @@ Functions</h2></td></tr>
 <p>Non-Blocking Response check with timeout. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
-    <tr><td class="paramname">Pattern</td><td>The data checked in the receiver ISR </td></tr>
-    <tr><td class="paramname">n</td><td>The length of the data pointer by <b>Pattern</b> (if Pattern is string, set <b>n</b> to 0 to auto-compute the length) </td></tr>
-    <tr><td class="paramname">t</td><td>The timeout value given in seconds </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Pattern</td><td>The data checked in the receiver ISR </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The length of the data pointer by <b>Pattern</b> (if Pattern is string, set <b>n</b> to 0 to auto-compute the length) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>The timeout value given in seconds </td></tr>
   </table>
   </dd>
 </dl>
@@ -275,7 +275,7 @@ Functions</h2></td></tr>
 <p>Reset the Response Handler. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
   </table>
   </dd>
 </dl>
@@ -318,9 +318,9 @@ Functions</h2></td></tr>
 <p>Initialize the instance of the response handler object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
-    <tr><td class="paramname">xLocBuff</td><td>A pointer to the memory block where the desired response will remain. </td></tr>
-    <tr><td class="paramname">nMax</td><td>The size of <b>xLocBuff</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Response Handler object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xLocBuff</td><td>A pointer to the memory block where the desired response will remain. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nMax</td><td>The size of <b>xLocBuff</b> </td></tr>
   </table>
   </dd>
 </dl>

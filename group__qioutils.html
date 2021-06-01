@@ -220,10 +220,10 @@ Functions</h2></td></tr>
 <p>Macro interface to write RAW datathrough <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes to print out. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to print out. </td></tr>
   </table>
   </dd>
 </dl>
@@ -266,9 +266,9 @@ Functions</h2></td></tr>
 <p>Macro interface to write a string through <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">s</td><td>The string to be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string to be written </td></tr>
   </table>
   </dd>
 </dl>
@@ -297,7 +297,7 @@ Functions</h2></td></tr>
 </div><!-- fragment --> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -325,8 +325,8 @@ Functions</h2></td></tr>
 </div><!-- fragment --> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
-    <tr><td class="paramname">c</td><td>The character to write out. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The character to write out. </td></tr>
   </table>
   </dd>
 </dl>
@@ -354,7 +354,7 @@ Functions</h2></td></tr>
 <p>Parses the C string, interpreting its content as a floating point number and returns its value as a double(qFloat64_t). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>The string beginning with the representation of a floating-point number. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a floating-point number. </td></tr>
   </table>
   </dd>
 </dl>
@@ -381,7 +381,7 @@ Functions</h2></td></tr>
 <p>Parses the C-string <b>s</b> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <b>s</b> is not a valid integral number, or if no such sequence exists because either <b>s</b> is empty or it contains only whitespace characters, no conversion is performed and zero is returned. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>The string beginning with the representation of a integer number. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a integer number. </td></tr>
   </table>
   </dd>
 </dl>
@@ -418,8 +418,8 @@ Functions</h2></td></tr>
 <p>Converts a boolean value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <b>str</b> should be an array long enough to contain the output. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
   </table>
   </dd>
 </dl>
@@ -444,7 +444,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check the system endianess. </p>
-<dl class="section return"><dt>Returns</dt><dd>qTrue if Little-Endian, otherwise returns qFalse. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if Little-Endian, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -483,9 +483,9 @@ Functions</h2></td></tr>
 <p>Converts a float value to a formatted string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
-    <tr><td class="paramname">precision</td><td>Desired number of significant fractional digits in the string. (The max allowed precision is MAX_FTOA_PRECISION=10) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">precision</td><td>Desired number of significant fractional digits in the string. (The max allowed precision is MAX_FTOA_PRECISION=10) </td></tr>
   </table>
   </dd>
 </dl>
@@ -540,11 +540,11 @@ Functions</h2></td></tr>
 <p>API interface to get n RAW data through <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">Data</td><td>A pointer to the block where the read data will be saved </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes to get </td></tr>
-    <tr><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">Data</td><td>A pointer to the block where the read data will be saved </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to get </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
   </table>
   </dd>
 </dl>
@@ -571,7 +571,7 @@ Functions</h2></td></tr>
 <p>Determines if the given floating point number arg is positive or negative infinity. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
   </table>
   </dd>
 </dl>
@@ -598,7 +598,7 @@ Functions</h2></td></tr>
 <p>Determines if the given floating point number arg is a not-a-number (NaN) value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
   </table>
   </dd>
 </dl>
@@ -641,9 +641,9 @@ Functions</h2></td></tr>
 <p>Converts an integer value to a null-terminated string using the specified base and stores the result in the array given by <b>str</b> parameter. If base is 10 and value is negative, the resulting string is preceded with a minus sign (-). With any other base, value is always considered unsigned. </p>
 <p>The argument <b>str&gt;</b> should be an array long enough to contain any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
-    <tr><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
   </table>
   </dd>
 </dl>
@@ -698,11 +698,11 @@ Functions</h2></td></tr>
 <p>API interface to write n RAW data through <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes that will be transferred to the output </td></tr>
-    <tr><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes that will be transferred to the output </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
   </table>
   </dd>
 </dl>
@@ -751,10 +751,10 @@ Functions</h2></td></tr>
 <p>API interface to write a string through <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">s</td><td>The string to be written </td></tr>
-    <tr><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string to be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
   </table>
   </dd>
 </dl>
@@ -803,10 +803,10 @@ Functions</h2></td></tr>
 <p>API interface to write data in HEX notation through <b>fcn</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
-    <tr><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
-    <tr><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes to print out </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <b>fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to print out </td></tr>
   </table>
   </dd>
 </dl>
@@ -843,8 +843,8 @@ Functions</h2></td></tr>
 <p>Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <b>str</b> should be an array long enough to contain the output. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
   </table>
   </dd>
 </dl>
@@ -887,9 +887,9 @@ Functions</h2></td></tr>
 <p>Returns a pointer to the first occurrence of character in the C string <b>s</b>. The terminating null-character is considered part of the C string. Therefore, it can also be located in order to retrieve a pointer to the end of a string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
-    <tr><td class="paramname">c</td><td>Character to be located. It is passed as its int promotion, but it is internally converted back to char for the comparison. </td></tr>
-    <tr><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>Character to be located. It is passed as its int promotion, but it is internally converted back to char for the comparison. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
   </table>
   </dd>
 </dl>
@@ -932,9 +932,9 @@ Functions</h2></td></tr>
 <p>Copies up to <b>maxlen</b> - 1 characters from the null-terminated string <b>src</b> to <b>dst</b>, null-terminating the result. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dst</td><td>The destination string </td></tr>
-    <tr><td class="paramname">src</td><td>The source string </td></tr>
-    <tr><td class="paramname">maxlen</td><td>Maximum number of characters to copy </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>The destination string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>The source string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to copy </td></tr>
   </table>
   </dd>
 </dl>
@@ -971,8 +971,8 @@ Functions</h2></td></tr>
 <p>Returns the length of the given null-terminated byte string, that is, the number of characters in a character array whose first element is pointed to by <b>str</b> up to and not including the first null character. The function returns zero if <b>str</b> is a null pointer and returns <b>maxlen</b> if the null character was not found in the first <b>maxlen</b> bytes of <b>str</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
-    <tr><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
   </table>
   </dd>
 </dl>
@@ -1009,8 +1009,8 @@ Functions</h2></td></tr>
 <p>Invert the endianess for n bytes of the specified memory location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Data</td><td>A pointer to block of data </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes to swap </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">Data</td><td>A pointer to block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to swap </td></tr>
   </table>
   </dd>
 </dl>
@@ -1053,9 +1053,9 @@ Functions</h2></td></tr>
 <p>Converts an unsigned integer value to a null-terminated string using the 16 base and stores the result in the array given by <b>str</b> parameter. <b>str</b> should be an array long enough to contain any possible value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
-    <tr><td class="paramname">n</td><td>The number of chars used to represent the value in <b>str</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of chars used to represent the value in <b>str</b> </td></tr>
   </table>
   </dd>
 </dl>
@@ -1098,9 +1098,9 @@ Functions</h2></td></tr>
 <p>Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <b>str</b> parameter. The argument <b>str</b> should be an array long enough to contain any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
-    <tr><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
-    <tr><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1127,7 +1127,7 @@ Functions</h2></td></tr>
 <p>Converts the input string consisting of hexadecimal digits into an unsigned integer value. The input parameter should consist exclusively of hexadecimal digits, with optional whitespaces. The string will be processed one character at a time, until the function reaches a character which it doesn't recognize (including a null character). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>The hex string to be converted. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The hex string to be converted. </td></tr>
   </table>
   </dd>
 </dl>

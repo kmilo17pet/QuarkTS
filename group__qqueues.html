@@ -200,8 +200,8 @@ Functions</h2></td></tr>
 <p>Post an item to the back of the queue. The item is queued by copy, not by reference. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
@@ -238,8 +238,8 @@ Functions</h2></td></tr>
 <p>Post an item to the back of the queue. The item is queued by copy, not by reference. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
@@ -276,8 +276,8 @@ Functions</h2></td></tr>
 <p>Post an item in the front of the queue. The item is queued by copy, not by reference. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
   </table>
   </dd>
 </dl>
@@ -305,7 +305,7 @@ Functions</h2></td></tr>
 <p>Returns the number of items in the Queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -332,7 +332,7 @@ Functions</h2></td></tr>
 <p>Returns the empty status of the Queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -359,7 +359,7 @@ Functions</h2></td></tr>
 <p>Returns the full status of the Queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -386,7 +386,7 @@ Functions</h2></td></tr>
 <p>Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#gaeb0e240ce13f9c76b3bb8bac85ddaf54" title="Configures a Queue. Here, the RAM used to hold the queue data DataArea is statically allocated at com...">qQueue_Setup()</a> API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -413,7 +413,7 @@ Functions</h2></td></tr>
 <p>Returns the number of available slots to hold items inside the Queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -440,7 +440,7 @@ Functions</h2></td></tr>
 <p>Looks at the data from the front of the Queue without removing it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -477,8 +477,8 @@ Functions</h2></td></tr>
 <p>Receive an item from a queue (and removes it). The item is received by copy so a buffer of adequate size must be provided. The number of bytes copied into the buffer was defined when the queue was created. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">dest</td><td>Pointer to the buffer into which the received item will be copied. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dest</td><td>Pointer to the buffer into which the received item will be copied. </td></tr>
   </table>
   </dd>
 </dl>
@@ -505,7 +505,7 @@ Functions</h2></td></tr>
 <p>Remove the data located at the front of the Queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -532,7 +532,7 @@ Functions</h2></td></tr>
 <p>Resets a queue to its original empty state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
   </table>
   </dd>
 </dl>
@@ -575,9 +575,9 @@ Functions</h2></td></tr>
 <p>Post an item to the back of the queue. The item is queued by copy, not by reference. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
-    <tr><td class="paramname">InsertMode</td><td>Can take the value <a class="el" href="group__qqueues.html#ga0fe9dfcef13b8664e79c240fe3b93fcf" title="A macro directive to indicate whether the item in the queue should be sent to the back.">QUEUE_SEND_TO_BACK</a> to place the item at the back of the queue, or <a class="el" href="group__qqueues.html#gaa7336de06f0a222e7d0eab149efda44c" title="A macro directive to indicate whether the item in the queue should be sent to the front.">QUEUE_SEND_TO_FRONT</a> to place the item at the front of the queue (for high priority messages). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemToQueue</td><td>A pointer to the item that is to be placed on the queue. The size of the items the queue will hold was defined when the queue was created, so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">InsertMode</td><td>Can take the value <a class="el" href="group__qqueues.html#ga0fe9dfcef13b8664e79c240fe3b93fcf" title="A macro directive to indicate whether the item in the queue should be sent to the back.">QUEUE_SEND_TO_BACK</a> to place the item at the back of the queue, or <a class="el" href="group__qqueues.html#gaa7336de06f0a222e7d0eab149efda44c" title="A macro directive to indicate whether the item in the queue should be sent to the front.">QUEUE_SEND_TO_FRONT</a> to place the item at the front of the queue (for high priority messages). </td></tr>
   </table>
   </dd>
 </dl>
@@ -626,10 +626,10 @@ Functions</h2></td></tr>
 <p>Configures a Queue. Here, the RAM used to hold the queue data <b>DataArea</b> is statically allocated at compile time by the application writer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
-    <tr><td class="paramname">DataArea</td><td>Data block or array of data. </td></tr>
-    <tr><td class="paramname">ItemSize</td><td>The size, in bytes, of one single item in the queue. </td></tr>
-    <tr><td class="paramname">ItemsCount</td><td>The maximum number of items the queue can hold. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>A pointer to the Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">DataArea</td><td>Data block or array of data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemSize</td><td>The size, in bytes, of one single item in the queue. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ItemsCount</td><td>The maximum number of items the queue can hold. </td></tr>
   </table>
   </dd>
 </dl>
@@ -678,9 +678,9 @@ Functions</h2></td></tr>
 <p>Attach a Queue to the Task. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramname">Queue</td><td>A pointer to a Queue object </td></tr>
-    <tr><td class="paramname">Mode</td><td>Attach mode. This implies the event that will trigger the task according to one of the following modes:</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Queue</td><td>A pointer to a Queue object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Mode</td><td>Attach mode. This implies the event that will trigger the task according to one of the following modes:</td></tr>
   </table>
   </dd>
 </dl>
@@ -689,7 +689,7 @@ Functions</h2></td></tr>
 <p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> : The task will be triggered if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field.</p>
 <p><a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a> : The task will be triggered if the queue is empty. A pointer to the queue will be available in the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td>This argument defines if the queue will be attached (<a class="el" href="group__qtypes.html#ga80c5824c1fe206f5d1073857875ec7ca" title="An operation directive that links an object to a task.">qLink</a>) or detached (<a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a>) from the task. If the <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a <a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a> action. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>This argument defines if the queue will be attached (<a class="el" href="group__qtypes.html#ga80c5824c1fe206f5d1073857875ec7ca" title="An operation directive that links an object to a task.">qLink</a>) or detached (<a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a>) from the task. If the <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> mode is specified, this value will be used to check the element count of the queue. A zero value will act as a <a class="el" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525" title="An operation directive that unlinks an object from a task.">qUnLink</a> action. </td></tr>
   </table>
   </dd>
 </dl>

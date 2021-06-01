@@ -149,7 +149,7 @@ Functions</h2></td></tr>
 <p>Query the number of elements in the BSBuffer(Byte-sized Buffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
   </table>
   </dd>
 </dl>
@@ -176,7 +176,7 @@ Functions</h2></td></tr>
 <p>Query the the empty status of the BSBuffer(Byte-sized Buffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
   </table>
   </dd>
 </dl>
@@ -213,8 +213,8 @@ Functions</h2></td></tr>
 <p>Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
-    <tr><td class="paramname">dest</td><td>the location where the data-byte will be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dest</td><td>the location where the data-byte will be written </td></tr>
   </table>
   </dd>
 </dl>
@@ -241,7 +241,7 @@ Functions</h2></td></tr>
 <p>Query the the full status of the BSBuffer(Byte-sized Buffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
   </table>
   </dd>
 </dl>
@@ -268,7 +268,7 @@ Functions</h2></td></tr>
 <p>Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
   </table>
   </dd>
 </dl>
@@ -305,8 +305,8 @@ Functions</h2></td></tr>
 <p>Adds an element of data to the BSBuffer(Byte-sized Buffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
-    <tr><td class="paramname">Data</td><td>The data to be added </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>The data to be added </td></tr>
   </table>
   </dd>
 </dl>
@@ -349,9 +349,9 @@ Functions</h2></td></tr>
 <p>Gets n data from the BSBuffer(Byte-sized Buffer) and removes them. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
-    <tr><td class="paramname">dest</td><td>the location where the data-byte will be written </td></tr>
-    <tr><td class="paramname">n</td><td>The number of bytes to read </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dest</td><td>the location where the data-byte will be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to read </td></tr>
   </table>
   </dd>
 </dl>
@@ -394,9 +394,9 @@ Functions</h2></td></tr>
 <p>Initialize the BSBuffer(Byte-sized Buffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
-    <tr><td class="paramname">buffer</td><td>Block of memory or array of data </td></tr>
-    <tr><td class="paramname">length</td><td>The size of the buffer(Must be a power of two) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj</td><td>a pointer to the qBSBuffer(Byte-sized Buffer) object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>Block of memory or array of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The size of the buffer(Must be a power of two) </td></tr>
   </table>
   </dd>
 </dl>

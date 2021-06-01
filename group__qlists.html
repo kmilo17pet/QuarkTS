@@ -263,7 +263,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort() API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:101</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td>The current interrupt configuration </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The handler object containing the objects being compared. </td></tr>
   </table>
   </dd>
 </dl>
@@ -321,7 +321,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructq_list___for_each_handle__t_html"><div class="ttname"><a href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a></div><div class="ttdoc">Handle of the qList_ForEach() API that is passed as an argument to the function that operates on each...</div><div class="ttdef"><b>Definition:</b> qlists.h:83</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg1</td><td>h THe forEach handle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>THe for-Each handle. </td></tr>
   </table>
   </dd>
 </dl>
@@ -402,8 +402,8 @@ Functions</h2></td></tr>
 <p>Operate on each element of the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramname">Fcn</td><td>The function to perform over the node. Should have this prototype: <pre>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Fcn</td><td>The function to perform over the node. Should have this prototype: <pre>
 qBool_t Function( qList_ForEachHandle_t h )
 </pre></td></tr>
   </table>
@@ -411,8 +411,8 @@ qBool_t Function( qList_ForEachHandle_t h )
 </dl>
 <p>If <b>Function</b> returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, the walk-through loop will be terminated. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">arg</td><td>Argument passed to <b>Fcn</b> </td></tr>
-    <tr><td class="paramname">dir</td><td>Use one of the following options:</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Argument passed to <b>Fcn</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dir</td><td>Use one of the following options:</td></tr>
   </table>
   </dd>
 </dl>
@@ -446,7 +446,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Get a pointer to the back item of the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
   </table>
   </dd>
 </dl>
@@ -473,7 +473,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Get a pointer to the front item of the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
   </table>
   </dd>
 </dl>
@@ -500,7 +500,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Must be called before a list is used. This initialises all the members of the list structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list being initialised. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list being initialised. </td></tr>
   </table>
   </dd>
 </dl>
@@ -543,9 +543,9 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Insert an item into the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list </td></tr>
-    <tr><td class="paramname">node</td><td>A pointer to the node to be inserted </td></tr>
-    <tr><td class="paramname">position</td><td>The position where the node will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the node will be inserted after. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be inserted </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The position where the node will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the node will be inserted after. </td></tr>
   </table>
   </dd>
 </dl>
@@ -572,7 +572,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Check if the list is empty. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
   </table>
   </dd>
 </dl>
@@ -609,8 +609,8 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Check if the node is member of the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramname">node</td><td>A pointer to the node </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node </td></tr>
   </table>
   </dd>
 </dl>
@@ -637,7 +637,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Get the current node available in the iterator. After invoked, iterator will be updated to the next node. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">iterator</td><td>Pointer to the iterator instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">iterator</td><td>Pointer to the iterator instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -664,7 +664,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Get the number of items inside the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
   </table>
   </dd>
 </dl>
@@ -707,9 +707,9 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Moves(or merge) the entire list pointed by <b>source</b> to the list pointed by <b>destination</b> at location specified by <b>position</b>. After the move operation, this function leaves empty the list pointed by <b>source</b>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">destination</td><td>Pointer to the list where the <b>source</b> nodes are to be moved. </td></tr>
-    <tr><td class="paramname">source</td><td>Pointer to the source list to be moved. </td></tr>
-    <tr><td class="paramname">position</td><td>The position where <b>source</b> list will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the list will be inserted after. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">destination</td><td>Pointer to the list where the <b>source</b> nodes are to be moved. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>Pointer to the source list to be moved. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The position where <b>source</b> list will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the list will be inserted after. </td></tr>
   </table>
   </dd>
 </dl>
@@ -752,9 +752,9 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>Remove an item from the list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramname">node</td><td>A pointer to the node to be deleted (to ignore pass NULL ). If the node is member or the list, use <a class="el" href="group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a" title="If the node is member of a list, the node will be removed from it.">qList_RemoveItself()</a> to avoid overhead </td></tr>
-    <tr><td class="paramname">position</td><td>The position of the node that will be removed. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be deleted (to ignore pass NULL ). If the node is member or the list, use <a class="el" href="group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a" title="If the node is member of a list, the node will be removed from it.">qList_RemoveItself()</a> to avoid overhead </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The position of the node that will be removed. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number. </td></tr>
   </table>
   </dd>
 </dl>
@@ -781,7 +781,7 @@ qBool_t Function( qList_ForEachHandle_t h )
 <p>If the node is member of a list, the node will be removed from it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">node</td><td>A pointer to the node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node. </td></tr>
   </table>
   </dd>
 </dl>
@@ -819,8 +819,8 @@ qBool_t Function( qList_ForEachHandle_t h )
 <dl class="section note"><dt>Note</dt><dd>The function modifies the content of the list by reordering its elements as defined by <b>CompareFcn</b>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramname">CompareFcn</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <pre> qBool_t CompareFcn(void *node1, void *node2) </pre></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CompareFcn</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <pre> qBool_t CompareFcn(void *node1, void *node2) </pre></td></tr>
   </table>
   </dd>
 </dl>
@@ -858,8 +858,8 @@ qBool_t Function( qList_ForEachHandle_t h )
 <dl class="section note"><dt>Note</dt><dd>The list containing nodes will be updated if any node is part of the boundaries. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">node1</td><td>Pointer to the first node. </td></tr>
-    <tr><td class="paramname">node2</td><td>Pointer to the second node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node1</td><td>Pointer to the first node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node2</td><td>Pointer to the second node. </td></tr>
   </table>
   </dd>
 </dl>

@@ -710,8 +710,8 @@ Functions</h2></td></tr>
 <p>Get attributes from the provided FSM object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">attr</td><td>The requested attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attr</td><td>The requested attribute </td></tr>
   </table>
   </dd>
 </dl>
@@ -748,8 +748,8 @@ Functions</h2></td></tr>
 <p>Get attributes from the provided state object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramname">attr</td><td>The requested attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attr</td><td>The requested attribute </td></tr>
   </table>
   </dd>
 </dl>
@@ -789,8 +789,8 @@ Functions</h2></td></tr>
 Queue <b>itemsize == qSM_Signal_t</b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">queue</td><td>A pointer to the queue object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">queue</td><td>A pointer to the queue object. </td></tr>
   </table>
   </dd>
 </dl>
@@ -844,10 +844,10 @@ The lookup table will be an array of type <b><a class="el" href="structq_s_m___t
 You can increse the number of available timeouts instances by changing the <b>Q_FSM_MAX_TIMEOUTS</b> configuration macro inside <b>qconfig.h</b> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">ts</td><td>A pointer to the timeout specification object. </td></tr>
-    <tr><td class="paramname">tdef</td><td>The lookup table matching the target state and the requested timeout. </td></tr>
-    <tr><td class="paramname">n</td><td>The number of elements inside <b>tdef</b>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ts</td><td>A pointer to the timeout specification object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tdef</td><td>The lookup table matching the target state and the requested timeout. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of elements inside <b>tdef</b>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -890,9 +890,9 @@ You can increse the number of available timeouts instances by changing the <b>Q_
 <p>Install a transition table on the provided state machine. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">table</td><td>An array of transitions that describes the state-machine behavior. </td></tr>
-    <tr><td class="paramname">n</td><td>The number of transitions available within the table. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of transitions that describes the state-machine behavior. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of transitions available within the table. </td></tr>
   </table>
   </dd>
 </dl>
@@ -929,8 +929,8 @@ You can increse the number of available timeouts instances by changing the <b>Q_
 <p>Execute the Finite State Machine (FSM). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">xSignal</td><td>User-defined signal (this value will be ignored if the installed queue has items available) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xSignal</td><td>User-defined signal (this value will be ignored if the installed queue has items available) </td></tr>
   </table>
   </dd>
 </dl>
@@ -976,9 +976,9 @@ You can increse the number of available timeouts instances by changing the <b>Q_
 The signal-queue has the highest precedence. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">xSignal</td><td>The user-defined signal. </td></tr>
-    <tr><td class="paramname">isUrgent</td><td>If qTrue, the signal will be sent to the front of the queue. (only if the there is a signal-queue available) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xSignal</td><td>The user-defined signal. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">isUrgent</td><td>If qTrue, the signal will be sent to the front of the queue. (only if the there is a signal-queue available) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1015,8 +1015,8 @@ The signal-queue has the highest precedence. </dd></dl>
 <p>Set/Change the FSM surrounding callback in run-time. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramname">surrounding</td><td>The new surrounding callback </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">surrounding</td><td>The new surrounding callback </td></tr>
   </table>
   </dd>
 </dl>
@@ -1053,8 +1053,8 @@ The signal-queue has the highest precedence. </dd></dl>
 <p>Set/Change the state callback in run-time. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramname">StateFcn</td><td>The new state callback </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">StateFcn</td><td>The new state callback </td></tr>
   </table>
   </dd>
 </dl>
@@ -1110,11 +1110,11 @@ The signal-queue has the highest precedence. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This API also initializes the top state. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">topCallback</td><td>The callback for the "Top" state </td></tr>
-    <tr><td class="paramname">initState</td><td>The first state to be executed (init-state or default transition). </td></tr>
-    <tr><td class="paramname">surrounding</td><td>The surrounding callback. To ignore pass NULL </td></tr>
-    <tr><td class="paramname">Data</td><td>Represents the FSM arguments. User storage pointer. To ignore pass NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topCallback</td><td>The callback for the "Top" state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">initState</td><td>The first state to be executed (init-state or default transition). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">surrounding</td><td>The surrounding callback. To ignore pass NULL </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>Represents the FSM arguments. User storage pointer. To ignore pass NULL. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1175,17 +1175,17 @@ The signal-queue has the highest precedence. </dd></dl>
 <p>This function subscribes the FSM instance to a specific state with an associated callback function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramname">parent</td><td>A pointer to the parent state (Use <a class="el" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c" title="This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.">QSM_STATE_TOP</a>) if the parent is the top state. </td></tr>
-    <tr><td class="paramname">StateFcn</td><td>The handler function associated to the state.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>A pointer to the parent state (Use <a class="el" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c" title="This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.">QSM_STATE_TOP</a>) if the parent is the top state. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">StateFcn</td><td>The handler function associated to the state.</td></tr>
   </table>
   </dd>
 </dl>
 <p>Prototype: </p><pre>qSM_Status_t xCallback( qSM_Handler_t h )</pre> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">initState</td><td>The first child-state to be executed if the subscribed state its a parent in an hierarchical pattern. (default transition). To ignore pass NULL as argument. </td></tr>
-    <tr><td class="paramname">Data</td><td>State data. Storage pointer. To ignore pass NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">initState</td><td>The first child-state to be executed if the subscribed state its a parent in an hierarchical pattern. (default transition). To ignore pass NULL as argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>State data. Storage pointer. To ignore pass NULL. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1231,9 +1231,9 @@ The signal-queue has the highest precedence. </dd></dl>
 Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">xTimeout</td><td>The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
-    <tr><td class="paramname">xTime</td><td>The specified time usually given in seconds. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xTimeout</td><td>The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xTime</td><td>The specified time usually given in seconds. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1273,8 +1273,8 @@ Requires an installed signal queue. For this use <a class="el" href="group__qfsm
 Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramname">xTimeout</td><td>The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xTimeout</td><td>The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
   </table>
   </dd>
 </dl>
