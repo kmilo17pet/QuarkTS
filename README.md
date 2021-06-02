@@ -49,7 +49,7 @@ QuarkTS is not intended to replace o compete with the other great and proven RTO
 Make sure to use the recursive flag to fetch the kernel submodule into src/os
 
 ```
-git clone -b kernel_only https://github.com/kmilo17pet/QuarkTS.git --recursive
+git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git --recursive
 ```
 
 
