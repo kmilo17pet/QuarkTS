@@ -4,4 +4,4 @@
 [submodule "src/os"]
 	path = src/os
 	url = https://github.com/TECREA/QuarkTS.git
-	branch = kernel_only
+	branch = kernel
