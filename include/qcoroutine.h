@@ -59,7 +59,7 @@
     */
     typedef enum{
         qCR_RESTART = QCR_RESTART,          /**< Restart the coroutine execution at the place of the #qCR_BeginWithHandle statement.*/ 
-        qCR_POSITIONSET = QCR_POSITIONSET,  /**< Force the coroutine execution at the position specified in <b>pos</b>. If a non-valid position is supplied, the Co-routine segment will be suspended.*/ 
+        qCR_POSITIONSET = QCR_POSITIONSET,  /**< Force the coroutine execution at the position specified in qCR_ExternControl(). If a non-valid position is supplied, the Co-routine segment will be suspended.*/ 
         qCR_SUSPEND = QCR_SUSPEND,          /**< Suspend the entire coroutine segment. The task will still running instructions outside the segment. */ 
         qCR_RESUME = QCR_RESUME             /**< Resume the entire coroutine segment at the point where it had been left before the suspension. */ 
     }qCR_ExternAction_t;
@@ -183,30 +183,26 @@
     * return the CPU control back to the scheduler but saving the execution progress. 
     * With the next task activation, the Coroutine will resume the execution after 
     * the last #qCR_Yield statement.
-    * <pre>
-    * Action sequence : [Save progress] then [Yield]
-    * </pre>
+    * @verbatim Action sequence : [Save progress] then [Yield] @endverbatim
     */        
     #define qCR_Yield                                   _qCR_Yield
 
     /**
     * @brief This statement cause the running Coroutine to restart its execution at the 
     * place of the #qCR_Begin statement.
-    * <pre>
-    * Action sequence : [Reload progress] then [Yield]
-    * </pre>
+    * @verbatim Action sequence : [Reload progress] then [Yield] @endverbatim
     */     
     #define qCR_Restart                                 _qCR_Restart   
 
     /**
     * @brief Yields until the logical condition being true
     * @param[in] bCondition The logical condition to be evaluated
-    * <pre>
-    * Action sequence : [Save progress] 
-    *                 IF ( condition == False ){
-    *                     [Yield]      
-    *                 }
-    * </pre>  
+    * @verbatim
+     Action sequence : [Save progress] 
+                     IF ( condition == False ){
+                         [Yield]      
+                     }
+      @endverbatim 
     */      
     #define qCR_WaitUntil( bCondition )                 _qCR_wu_Assert( bCondition )
 
@@ -214,12 +210,12 @@
     * @brief  Yields until the logical condition being true or the specified timeout expires.
     * @param[in] bCondition The logical condition to be evaluated.
     * @param[in] tValue The specific amount of time to wait given in seconds.
-    * <pre>
-    * Action sequence : [Save progress] 
-    *                 IF ( condition == False || NOT_EXPIRED(timeout) )
-    *                     [Yield]      
-    *                 }
-    * </pre>  
+    * @verbatim
+     Action sequence : [Save progress] 
+                     IF ( condition == False || NOT_EXPIRED(timeout) )
+                         [Yield]      
+                     }
+     @endverbatim 
     */    
     #define qCR_TimedWaitUntil( bCondition, tValue )    _qCR_wu_TmrAssert( bCondition, tValue )
 
@@ -252,7 +248,7 @@
      
     /**
     * @brief Initializes a semaphore with a value for the counter. Internally, the semaphores
-    * use an "unsigned int" to represent the counter,  therefore the <b>sValue</b> 
+    * use an "unsigned int" to represent the counter,  therefore the @a sValue 
     * argument should be within range of an "unsigned int".
     * @param[in] pSem A pointer to the qCR_Semaphore_t representing the semaphore
     * @param[in] sValue The initial count of the semaphore.
@@ -281,7 +277,7 @@
     #define qCR_SemSignal( pSem )                       Q_UNUSED( _qCR_Sem( pSem, _qCR_SEM_SIGNAL ) )
 
     /**
-    * @brief Labels the current position and saves it to <b>CRPos</b> so it can be later 
+    * @brief Labels the current position and saves it to @a CRPos so it can be later 
     * restored by #qCR_PositionRestore
     * @param[out] CRPos The variable of type qCR_Position_t where the current position will be saved.
     * @return none.
@@ -289,14 +285,14 @@
     #define qCR_PositionGet( CRPos )                    _qCR_GetPosition( CRPos )
    
     /**
-    * @brief Restores the Co-Routine position saved in <b>CRPos</b>
-    * @param[in] CRPos The variable of type qCR_Position_t that contains the position to be restored.
+    * @brief Restores the Co-Routine position saved in @a CRPos
+    * @param[in,out] CRPos The variable of type qCR_Position_t that contains the position to be restored.
     * @return none.
     */     
     #define qCR_PositionRestore( CRPos )                _qCR_RestoreFromPosition( CRPos )
 
     /**
-    * @brief Resets the <b>CRPos</b> variable to the begining of the Co-Routine
+    * @brief Resets the @a CRPos variable to the begining of the Co-Routine
     * @param[in,out] CRPos The variable of type qCR_Position_t to reset.
     * @return none.
     */     
@@ -314,7 +310,7 @@
     * @param[in] h The Co-routine handle.
     * @param[in] action The specific action to perform, should be one of the following: 
     * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITIONSET.
-    * @param[in] pos The required position if <b>action</b> = ::qCR_POSITIONSET. For other actions
+    * @param[in] pos The required position if @a action = ::qCR_POSITIONSET. For other actions
     * this argument its ignored. 
     * @return none.
     */   

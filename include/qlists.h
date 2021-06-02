@@ -25,10 +25,10 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qList_Node_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qList_Node_s *next, *prev;  /*< Pointers to adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qList_Node_t;
 
     /**
@@ -53,11 +53,11 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qList_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         qNode_MinimalFields;        /*< To allow "list of lists" aka "nested-lists"*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
         size_t size;                /*< Used to hold the current size of the list. */
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qList_t;
 
     /**
@@ -188,13 +188,13 @@
     void* qList_Remove( qList_t * const list, void * const node, const qList_Position_t position );
 
     /**
-    * @brief Moves(or merge) the entire list pointed by <b>source</b> to the list pointed by 
-    * <b>destination</b> at location specified by <b>position</b>. 
+    * @brief Moves(or merge) the entire list pointed by @a source to the list pointed by 
+    * @a destination at location specified by @a position. 
     * After the move operation, this function leaves empty the list pointed 
-    * by <b>source</b>.
-    * @param[in,out] destination Pointer to the list where the <b>source</b> nodes are to be moved.
+    * by @a source.
+    * @param[in,out] destination Pointer to the list where the @a source nodes are to be moved.
     * @param[in] source  Pointer to the source list to be moved.
-    * @param[in] position The position where <b>source</b> list will be inserted. Could be 
+    * @param[in] position The position where @a source list will be inserted. Could be 
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number  where the list will 
     * be inserted after.
     * @return #qTrue if the move operation is performed successfully, otherwise 
@@ -240,7 +240,7 @@
 
 
     /**
-    * @brief Pointer to a function used by the <b>qList_Sort</b> API to compare 
+    * @brief Pointer to a function used by the qList_Sort() API to compare 
     * nodes of a list.
     * 
     * Example :
@@ -252,38 +252,38 @@
     * }
     * @endcode
     * @param[in] h The handler object containing the objects being compared.
-    * @return  #qTrue value indicates that element pointed by <b>node1</b> goes
-    * after the element pointed to by <b>node2</b>
+    * @return  #qTrue value indicates that element pointed by @a node1 goes
+    * after the element pointed to by @a node2
     */
     typedef qBool_t (*qList_CompareFcn_t)( qList_CompareHandle_t h );
 
     /**
-    * @brief Sort the double linked list using the <b>CompareFcn</b> function to 
+    * @brief Sort the double linked list using the @a CompareFcn function to 
     * determine the order. The sorting algorithm used by this function compares 
-    * pairs of adjacent nodes by calling the specified <b>CompareFcn</b> function 
+    * pairs of adjacent nodes by calling the specified @a CompareFcn function 
     * with pointers to them as arguments. The sort is performed only 
     * modifying node's links without data swapping, improving performance if 
     * nodes have a large storage.
     * @note The function modifies the content of the list by reordering its 
-    * elements as defined by <b>CompareFcn</b>.
+    * elements as defined by @a CompareFcn.
     * @param[in] list Pointer to the list.
     * @param[in] CompareFcn Pointer to a function that compares two nodes.
     * This function is called repeatedly by qList_Sort() to compare two nodes. 
     * It shall follow the following prototype:
-    * <pre> qBool_t CompareFcn(void *node1, void *node2) </pre>
+    * @code qBool_t CompareFcn(void *node1, void *node2) @endcode
     * 
     * Taking two pointers as arguments (both converted to const void*). 
     * The function defines the order of the elements by returning a Boolean data, 
-    * where a #qTrue value indicates that element pointed by <b>node1</b> goes
-    * after the element pointed to by <b>node2</b>.
+    * where a #qTrue value indicates that element pointed by @a node1 goes
+    * after the element pointed to by @a node2.
     * @return #qTrue if at least one reordering is performed over the list.   
     */      
     qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ) ;
 
-    /*! @cond PRIVATE */
+    /*! @cond  */
     qList_Node_t* _qNode_Backward( const qList_Node_t *const node ); /*This function are not intended for the user usage*/
     qList_Node_t* _qNode_Forward( const qList_Node_t *const node ); /*This function are not intended for the user usage*/
-    /*! @endcond PRIVATE */
+    /*! @endcond  */
 
     /**
     * @brief Typedef to hold the direction in which the list should be traversed.
@@ -304,10 +304,10 @@
     * @brief Typedef to hold a list-iterator instance.
     */
     typedef struct _qList_Iterator_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         qList_Node_t *next;             /*< Where the iterator is currently pointing. */
         qList_Direction_t direction;    /*< How the iterator scrolls through the list, #QLIST_FORWARD or #QLIST_BACKWARD. */
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qList_Iterator_t;
 
     /**
@@ -315,11 +315,7 @@
     * @param[in] iterator Pointer to the iterator instance
     * @param[in] list Pointer to the list.
     * @param[in] NodeOffset The start offset-node. To ignore, pass NULL.
-    * @dir Use one of the following options:
-    *     
-    * #QLIST_FORWARD  : to go in forward direction.
-    *
-    * #QLIST_BACKWARD :  to go in backward direction.
+    * @dir Use one of the following options: #QLIST_FORWARD or #QLIST_BACKWARD.
     * @return #qTrue on success. Otherwise returns #qFalse.  
     */       
     qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir );
@@ -336,17 +332,11 @@
     * @brief Operate on each element of the list.
     * @param[in] list Pointer to the list.
     * @param[in] Fcn The function to perform over the node. Should have this prototype:
-    * <pre>
-    * qBool_t Function( qList_ForEachHandle_t h )
-    * </pre>
+    * @code qBool_t Function( qList_ForEachHandle_t h ) @endcode
     * 
-    * If <b>Function</b> returns #qTrue, the walk-through loop will be terminated.
-    * @param[in] arg Argument passed to <b>Fcn</b>
-    * @param[in] dir Use one of the following options:
-    *     
-    * #QLIST_FORWARD  : to go in forward direction.
-    *
-    * #QLIST_BACKWARD :  to go in backward direction.
+    * If @a Function returns #qTrue, the walk-through loop will be terminated.
+    * @param[in] arg Argument passed to @a Fcn
+    * @param[in] dir Use one of the following options: #QLIST_FORWARD or #QLIST_BACKWARD.
     * @param NodeOffset If available, the list walk through will start from this node.  
     * To ignore, pass NULL. 
     * @return #qTrue if the walk through was early terminated, otherwise returns #qFalse.

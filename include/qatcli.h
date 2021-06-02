@@ -46,7 +46,7 @@
     #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )
 
 
-    /*! @cond PRIVATE */
+    /*! @cond  */
     typedef volatile struct _qATCLI_Input_s{
         char *Buffer;                       /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;            /*< Used to hold the index of the current input-buffer. */
@@ -68,7 +68,7 @@
     #define QATCLI_CMDTYPE_SET      ( QATCLI_CMDTYPE_PARA )
     #define QATCLI_CMDTYPE_CHECK    ( QATCLI_CMDTYPE_ACT )
 
-    /*! @endcond PRIVATE */    
+    /*! @endcond  */    
 
     /**
     * @brief An enum to describe the available AT command types.
@@ -107,33 +107,33 @@
         */            
         char* (*GetArgPtr)( qIndex_t n );
         /**
-        * @brief  Helper method to get the <b>n</b> argument parsed as integer from the
+        * @brief  Helper method to get the @a n argument parsed as integer from the
         * incoming AT command.
-        * @note see qIOUtil_AtoI()
+        * @see qIOUtil_AtoI()
         * @param[in] n The number of the argument
         * @return  The argument parsed as integer. Same behavior of qIOUtil_AtoI(). If argument not found returns 0.
         */            
         int (*GetArgInt)( qIndex_t n );                         
         /**
-        * @brief  Helper method to get the <b>n</b> argument parsed as float from the
+        * @brief  Helper method to get the @a n argument parsed as float from the
         * incoming AT command.
-        * @note see qIOUtil_AtoF()
+        * @see qIOUtil_AtoF()
         * @param[in] n The number of the argument
         * @return  The argument parsed as Float. Same behavior of qIOUtil_AtoF(). If argument not found returns 0.0f
         */         
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
-        * @brief  Helper method to get the <b>n</b> HEX argument parsed qUINT32_t from the incoming AT command.
-        * @note see qIOUtil_XtoU32()
+        * @brief  Helper method to get the @a n HEX argument parsed qUINT32_t from the incoming AT command.
+        * @see qIOUtil_XtoU32()
         * @param[in] n The number of the argument
         * @return  The HEX argument parsed as qUINT32_t. Same behavior of qIOUtil_XtoU32(). If argument not found returns 0.
         */          
         qUINT32_t (*GetArgHex)( qIndex_t n );
         /**
-        * @brief  Helper method to get the <b>n</b> argument parsed as string from the incoming AT command.
+        * @brief  Helper method to get the @a n argument parsed as string from the incoming AT command.
         * @param[in] n The number of the argument
         * @param[out] out Array in memory where to store the resulting null-terminated string.
-        * @return  Same as <b>out</b> on success, otherwise returns NULL.
+        * @return  Same as @a out on success, otherwise returns NULL.
         */          
         char* (*GetArgString)( qIndex_t n, char* out );
         /**
@@ -158,7 +158,7 @@
         */             
         void *UserData;
         /**
-        * @brief The length of <b>StrData</b>.
+        * @brief The length of @a StrData.
         */           
         size_t StrLen;
         /**
@@ -185,7 +185,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qATCLI_ControlBlock_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qATCLI_Private_s{
             void *First;                                                    /*< Points to the first command*/
             const char *OK_Response;                                        /*< The response printed when OK is needed. */
@@ -199,7 +199,7 @@
             qATCLI_Input_t Input;                                           /*< The input of the CLI. */  
             _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qATCLI_t;  
 
     /**
@@ -236,25 +236,26 @@
     typedef struct _qATCLI_Command_s{
         void *param;                                            /**< User parameters. */
         char *Text;                                             /**< The command string. Used to match to the input*/
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qATCLI_Command_Private_s{                      
             qATCLI_CommandCallback_t CommandCallback;           /*< The command callback. */
             struct _qATCLI_Command_s *Next;                     /*< Points to the next command in the list. */
             qATCLI_Options_t CmdOpt;                            /*< The command options. */
             size_t CmdLen;                                      /*< The command length. */
         }qPrivate;      
-        /*! @endcond PRIVATE */ 
+        /*! @endcond  */ 
     }qATCLI_Command_t;
 
     /**
     * @brief Setup an instance of the AT Command Command Line Interface.
+    * @see qOS_Add_ATCLITask()
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] OutputFcn The basic output-char wrapper function. All the CLI responses will be 
     * printed-out through this function.
     * @param[in] Input A memory location to store the cli input (Mandatory)
-    * @param[in] SizeInput The size of the memory allocated in <b>Input</b> 
+    * @param[in] SizeInput The size of the memory allocated in @a Input 
     * @param[in] Output A memory location to store the CLI output
-    * @param[in] SizeOutput The size of the memory allocated in <b>Output</b> 
+    * @param[in] SizeOutput The size of the memory allocated in @a Output 
     * @param[in] Identifier The device identifier string. This string will be printed-out
     * after a call to the ATCLI_DEFAULT_ID_COMMAND
     * @param[in] OK_Response The output message when a command callback returns ::qATCLI_OK.  
@@ -278,7 +279,7 @@
     * service only handles AT commands, this string has  to begin by the "at" characters and 
     * should be in lower case.
     * @param[in] Callback The handler of the callback function associated to the command. 
-    * Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre>
+    * Prototype: @code qATCLI_Response_t xCallback( qATCLI_Handler_t ) @endcode
     * @param[in] CmdOpt This flag combines with a bitwise OR the following information:
     * 
     * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback

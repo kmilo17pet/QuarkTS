@@ -126,8 +126,8 @@
 
      /**
     * @brief Perform a timestamp check. This function computes the amount
-    *  of time elapsed between the current instant and the init timestamp <b>ti</b> 
-    *  and checks if the result is greather than <b>td</b>. 
+    *  of time elapsed between the current instant and the init timestamp @a ti 
+    *  and checks if the result is greather than @a td. 
     * @param[in] ti Init timestamp in epochs
     * @param[in] td Elapsed time to check in epochs
     * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 

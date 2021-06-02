@@ -246,7 +246,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qTask_s{ /*Task node definition*/
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qTask_Private_s{    /*Task control block - TCB*/
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /**< internalThe task storage pointers. */
@@ -271,7 +271,7 @@
             qTrigger_t Trigger;                     /**< The event source that put the task in a qReady state. */
             qPriority_t Priority;                   /**< The task priority. */
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qTask_t;
 
     #if ( Q_QUEUES == 1 )
@@ -580,17 +580,17 @@
         * Can be combined with a bitwise OR.
         * QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20   
         * @param[in] ClearOnExit If is set to #qTrue then any flags set in the value passed as the 
-        * <b>FlagsToCheck</b> parameter will be cleared in the event group before this
+        * @a FlagsToCheck parameter will be cleared in the event group before this
         * function returns only when the condition is meet.
         * @param[in] CheckForAll Used to create either a logical AND test (where all flags must be set)
         * or a logical OR test (where one or more flags must be set) as follows:
         * 
         * If is set to #qTrue, this API will return #qTrue when either all the flags 
-        * set in  the value passed as the <b>FlagsToCheck</b> parameter are set in 
+        * set in  the value passed as the @a FlagsToCheck parameter are set in 
         * the task's EventFlags.
         * 
         * If is set to #qFalse, this API will return #qTrue when any of the flags set in 
-        * the value passed as the <b>FlagsToCheck</b> parameter are set in the task's
+        * the value passed as the @a FlagsToCheck parameter are set in the task's
         * EventFlags.
         * @return #qTrue if the condition is meet, otherwise return #qFalse.
         */           

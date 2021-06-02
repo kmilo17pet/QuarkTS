@@ -30,15 +30,28 @@
     #define     Q_UNUSED(arg)     (void)(arg)
     #define     Q_NONE
 
+    /** @addtogroup  qtypes
+    * @brief Sets of types having specified widths used to design the entire OS.
+    * It also define macros directives to perform specific actions and options for some OS APIs.
+    * @{
+    */
+
     #if ( Q_USE_STDINT_H  == 1 )
         #include <stdint.h>
         /*Unsigned types*/
+        
+        /**  @brief Unsigned integer type with width of exactly 8 bits respectively.*/         
         typedef uint8_t qUINT8_t;
+        /**  @brief Unsigned integer type with width of exactly 16 bits respectively.*/   
         typedef uint16_t qUINT16_t;
+        /**  @brief Unsigned integer type with width of exactly 32 bits respectively. */   
         typedef uint32_t qUINT32_t;
         /*Signed types*/
+        /**  @brief Signed integer type with width of exactly 8 bits respectively.*/   
         typedef int8_t qINT8_t;
+        /**  @brief Signed integer type with width of exactly 16 bits respectively.*/   
         typedef int16_t qINT16_t;
+        /**  @brief Signed integer type with width of exactly 32 bits respectively.*/   
         typedef int32_t qINT32_t;
     #else   
         /*Unsigned types*/
@@ -53,58 +66,54 @@
 
     #endif
 
-    /** \addtogroup  qtypes
-    *  @{
-    */
-
     /** 
-    * @brief A type-def to instantiate a byte variable
+    * @brief A type to instantiate a byte variable
     */
     typedef qUINT8_t qByte_t;
 
     /** 
-    * @brief A type-def to instantiate a integer-base variable
-    * @note Compiler implementation-defined
+    * @brief A type to instantiate a integer-base variable. This type is compiler implementation-defined.
     */    
     typedef int qBase_t;
 
     /** 
-    * @brief A type-def to instantiate a single-precision variable of 32-bits.
+    * @brief A type to instantiate a single-precision variable of 32-bits IEEE 754.
     */   
     typedef float qFloat32_t;  /*this is not always true in some compilers*/   
 
     /** 
-    * @brief A type-def to instantiate a double-precision variable of 64-bits.
+    * @brief A type to instantiate a double-precision variable of 64-bits IEEE 754.
     */       
     typedef double qFloat64_t; /*this is not always true in some compilers*/   
     
     /** 
-    * @brief A type-def to instantiate a variable to hold the priority value of a task.
+    * @brief A type to instantiate a variable to hold the priority value of a task.
     */     
     typedef qUINT8_t qPriority_t;
 
     /** 
-    * @brief A type-def to instantiate a variable that hold the number of task iterations.
+    * @brief A type to instantiate a variable that hold the number of task iterations.
     */       
     typedef qINT32_t qIteration_t;
 
     /** 
-    * @brief A type-def to instantiate an OS state value.
+    * @brief A type to instantiate an OS state value.
     */  
     typedef qUINT8_t qState_t;
  
     /** 
-    * @brief A type-def to instantiate an OS boolean variable.
+    * @brief A type to instantiate an OS boolean variable.
     */  
     typedef qUINT8_t qBool_t;
 
     /** 
-    * @brief A type-def to instantiate an OS index variable.
+    * @brief A type to instantiate an OS index variable. Can store the maximum size of a theoretically possible object of any type (including array).
+    * Should be used for array indexing and loop counting.
     */  
     typedef size_t qIndex_t; /*better portability*/
 
     /** 
-    * @brief A type-def to instantiate a variable that hold the number of task cycles.
+    * @brief A type to instantiate a variable that hold the number of task cycles.
     */        
     typedef qUINT32_t qCycles_t;
     

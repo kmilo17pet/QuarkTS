@@ -28,14 +28,14 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qBSBuffer_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qBSBuffer_Private_s{
             volatile qUINT8_t *buffer;  /*< Points to the begining of the buffer storage area. */
             volatile qIndex_t head;     /*< Used to hold the index of the head. */
             volatile qIndex_t tail;     /*< Used to hold the index of the tail. */
             size_t length;              /*< The length of the buffer(a valid power of two). */ 
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qBSBuffer_t;
 
     /**

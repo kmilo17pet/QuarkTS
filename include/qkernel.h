@@ -111,7 +111,7 @@
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         /**
         * @brief Disables the kernel scheduling. The main thread will continue after the
-        * <b>qOS_Run()</b> call.
+        * qOS_Run() call.
         * @return none.
         */          
         void qOS_Scheduler_Release( void );
@@ -147,8 +147,8 @@
      */
 
     /**
-    * @brief Add a task to the scheduling scheme. The task is scheduled to run every <b>Time</b> 
-    * seconds, <b>nExecutions</b> times and executing <b>CallbackFcn</b> method on every pass.
+    * @brief Add a task to the scheduling scheme. The task is scheduled to run every @a Time 
+    * seconds, @a nExecutions times and executing @a CallbackFcn method on every pass.
     * @param[in] Task  A pointer to the task node.
     * @param[in] CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
     * as input argument.
@@ -174,7 +174,7 @@
 
     /**
     * @brief Add a task to the scheduling scheme.  This API creates a task with a #qDisabled 
-    * state by default , so this task will be executed only, when asynchronous events occurs.
+    * state by default, so this task will be executed only, when asynchronous events occurs.
     * However, this behavior can be changed in execution time using qTask_Set_Time() 
     * or qTask_Set_Iterations().
     * @param[in] Task  A pointer to the task node.
@@ -191,8 +191,9 @@
     #if ( Q_FSM == 1)
         /**
         * @brief Add a task to the scheduling scheme running a dedicated state-machine. 
-        * The task is scheduled to run every <b>Time</b> seconds in qPeriodic mode. The event info
+        * The task is scheduled to run every @a Time seconds in #qPeriodic mode. The event info
         * will be available as a generic pointer inside the qSM_Handler_t::Data field.
+        * @see qStateMachine_Setup()
         * @param[in] Task  A pointer to the task node.
         * @param[in] m  A pointer to the Finite State-Machine (FSM) object.    
         * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
@@ -214,6 +215,7 @@
         * @brief Add a task to the scheduling scheme running an AT Command Line Interface.
         * Task will be scheduled as an event-triggered task. The parser address will be 
         * stored in the qEvent_t::TaskData storage-Pointer.
+        * @see qATCLI_Setup()
         * @param[in] Task A pointer to the task node.
         * @param[in] cli A pointer to the AT Command Line Inteface instance.
         * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]

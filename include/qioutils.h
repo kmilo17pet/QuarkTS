@@ -71,38 +71,38 @@
 
     /**
     * @brief Returns a pointer to the first occurrence of character in the C string 
-    * <b>s</b>.
+    * @a s.
     * The terminating null-character is considered part of the C string. Therefore, 
     * it can also be located in order to retrieve a pointer to the end of a string.
     * @param[in] s Pointer to the null-terminated byte string to be examined
     * @param[in] c Character to be located. It is passed as its int promotion, but it 
     * is internally converted back to char for the comparison.
     * @param[in] maxlen Maximum number of characters to examine
-    * @return A pointer to the first occurrence of character in <b>str</b>. 
+    * @return A pointer to the first occurrence of character in @a s. 
     * If the character is not found, the function returns a null pointer.
     */     
     char* qIOUtil_StrChr( const char *s, int c, size_t maxlen );
 
     /**
     * @brief Returns the length of the given null-terminated byte string, that is, the number 
-    * of characters in a character array whose first element is pointed to by <b>str</b> up 
+    * of characters in a character array whose first element is pointed to by @a str up 
     * to and not including the first null character.
-    * The function returns zero if <b>str</b> is a null pointer and returns <b>maxlen</b> if the 
-    * null character was not found in the first <b>maxlen</b> bytes of <b>str</b>.
+    * The function returns zero if @a str is a null pointer and returns @a maxlen if the 
+    * null character was not found in the first @a maxlen bytes of @a str.
     * @param[in] str Pointer to the null-terminated byte string to be examined
     * @param[in] maxlen Maximum number of characters to examine
-    * @return The length of the null-terminated byte string <b>str</b> on success, zero if <b>str</b> 
-    * is a null pointer, <b>maxlen</b> if the null character was not found.
+    * @return The length of the null-terminated byte string @a str on success, zero if @a str 
+    * is a null pointer, @a maxlen if the null character was not found.
     */  
     size_t qIOUtil_StrLen( const char* str, size_t maxlen);
 
     /**
-    * @brief Copies up to <b>maxlen</b> - 1 characters from the null-terminated string <b>src</b> to 
-    * <b>dst</b>, null-terminating the result.
+    * @brief Copies up to @a (maxlen - 1) characters from the null-terminated string @a src to 
+    * @a dst, null-terminating the result.
     * @param[out] dst The destination string
     * @param[in] src The source string
     * @param[in] maxlen Maximum number of characters to copy
-    * @return The length of <b>src</b>
+    * @return The length of @a src
     */      
     size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen );
 
@@ -121,9 +121,9 @@
     qBool_t qIOUtil_CheckEndianness( void );
 
     /**
-    * @brief API interface to write a string through <b>fcn</b> 
+    * @brief API interface to write a string through @a fcn 
     * @param[in] fcn The basic output byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] s The string to be written
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return none.
@@ -131,9 +131,9 @@
     void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
 
     /**
-    * @brief API interface to write data in HEX notation through <b>fcn</b> 
+    * @brief API interface to write data in HEX notation through @a fcn 
     * @param[in] fcn The basic output byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] Data A pointer to the block of data
     * @param[in] n The number of bytes to print out
     * @return none.
@@ -141,9 +141,9 @@
     void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n );
 
     /**
-    * @brief API interface to write n RAW data through <b>fcn</b>
+    * @brief API interface to write n RAW data through @a fcn
     * @param[in] fcn The basic output byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] Data A pointer to the block of data
     * @param[in] n The number of bytes that will be transferred to the output
     * @param[in] AIP Auto-Increment the storage-pointer
@@ -152,9 +152,9 @@
     void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
 
     /**
-    * @brief API interface to get n RAW data through <b>fcn</b>
+    * @brief API interface to get n RAW data through @a fcn
     * @param[in] fcn The basic input byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[out] Data A pointer to the block where the read data will be saved
     * @param[in] n The number of bytes to get
     * @param[in] AIP Auto-Increment the storage-pointer
@@ -163,18 +163,18 @@
     void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
       
     /**
-    * @brief Macro interface to write a string through <b>fcn</b>
+    * @brief Macro interface to write a string through @a fcn
     * @param[in] fcn The basic input byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] s The string to be written
     * @return none.
     */      
     #define qIOUtil_PrintString( fcn, pStorage, s )          qIOUtil_OutputString( (fcn), (void*)(pStorage), (const char *)(s), qFalse )
    
     /**
-    * @brief Macro interface to write RAW datathrough <b>fcn</b>
+    * @brief Macro interface to write RAW datathrough @a fcn
     * @param[in] fcn The basic input byte function
-    * @param[in] pStorage The storage pointer passed to <b>fcn</b>
+    * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] Data A pointer to the block of data
     * @param[in] n The number of bytes to print out.
     * @return none.
@@ -183,12 +183,12 @@
 
     /**
     * @brief Converts an unsigned integer value to a null-terminated string using the 16 base
-    * and stores the result in the array given by <b>str</b> parameter.
-    * <b>str</b> should be an array long enough to contain any possible value.
+    * and stores the result in the array given by @a str parameter.
+    * @a str should be an array long enough to contain any possible value.
     * @param[in] value Value to be converted to a string.
     * @param[out] str Array in memory where to store the resulting null-terminated string.
-    * @param[in] n The number of chars used to represent the value in <b>str</b> 
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * @param[in] n The number of chars used to represent the value in @a str
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */ 
     char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n );
 
@@ -204,7 +204,7 @@
     qUINT32_t qIOUtil_XtoU32( const char *s );
 
     /**
-    * @brief Parses the C string, interpreting its content as a floating point number and 
+    * @brief Parses the C string @a s, interpreting its content as a floating point number and 
     * returns its value as a double(qFloat64_t). The function first discards as many 
     * whitespace characters (as in isspace) as necessary until the first non-whitespace 
     * character is found. Then, starting from this character, takes as many characters 
@@ -227,12 +227,12 @@
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @param[in] precision Desired number of significant fractional digits in the string.
     * (The max allowed precision is MAX_FTOA_PRECISION=10)
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */     
     char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision );
 
     /**
-    * @brief Parses the C-string <b>s</b> interpreting its content as an integral number, which is 
+    * @brief Parses the C-string @a s interpreting its content as an integral number, which is 
     * returned as a value of type int. The function first discards as many whitespace
     * characters (as in isspace) as necessary until the first non-whitespace character 
     * is found. Then, starting from this character, takes an optional initial plus or
@@ -240,8 +240,8 @@
     * as a numerical value.
     * The string can contain additional characters after those that form the integral
     * number, which are ignored and have no effect on the behavior of this function.
-    * If the first sequence of non-whitespace characters in <b>s</b> is not a valid integral 
-    * number, or if no such sequence exists because either <b>s</b> is empty or it contains 
+    * If the first sequence of non-whitespace characters in @a s is not a valid integral 
+    * number, or if no such sequence exists because either @a s is empty or it contains 
     * only whitespace characters, no conversion is performed and zero is returned.
     * @param[in] s The string beginning with the representation of a integer number.
     * @return On success, the function returns the converted integral number as an int value.
@@ -252,52 +252,52 @@
 
     /**
     * @brief Converts an unsigned value to a null-terminated string using the specified base 
-    * and stores the result in the array given by <b>str</b> parameter. 
-    * The argument <b>str</b> should be an array long enough to contain any possible value: 
+    * and stores the result in the array given by @a str parameter. 
+    * The argument @a str should be an array long enough to contain any possible value: 
     * (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
     * 32-bits platforms.
     * @param[in] num Value to be converted to a string.
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @param[in] base Numerical base used to represent the value as a string, between 2 
-            and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */       
     char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base );
 
     /**
     * @brief Converts an integer value to a null-terminated string using the specified base 
-    * and stores the result in the array given by <b>str</b> parameter. If base is 10 and 
+    * and stores the result in the array given by @a str parameter. If base is 10 and 
     * value is negative, the resulting string is preceded with a minus sign (-). 
     * With any other base, value is always considered unsigned.
     * 
-    * The argument <b>str></b> should be an array long enough to contain any possible value: 
+    * The argument @a str should be an array long enough to contain any possible value: 
     * (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 
     * 32-bits platforms.
     * @param[in] num Value to be converted to a string.
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @param[in] base Numerical base used to represent the value as a string, between 2 
-            and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */      
     char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base );
 
     /**
     * @brief Converts a boolean value to a null-terminated string. Input is considered true
     * with any value different to zero (0).
-    * The argument <b>str</b> should be an array long enough to contain the output
+    * The argument @a str should be an array long enough to contain the output
     * @param[in] num Value to be converted to a string.
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */      
     char* qIOUtil_BtoA( qBool_t num, char *str );
 
     /**
     * @brief Converts a qBool_t value to a null-terminated string. Input is considered true
     * with any value different to zero (0).
-    * The argument <b>str</b> should be an array long enough to contain the output
+    * The argument @a str should be an array long enough to contain the output
     * @param[in] num Value to be converted to a string.
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
-    * @return A pointer to the resulting null-terminated string, same as parameter <b>str</b>.
+    * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */     
     char* qIOUtil_QBtoA( qBool_t num, char *str );
 

@@ -17,7 +17,7 @@
 #define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/
-/*! @cond PRIVATE */
+/*! @cond  */
 typedef struct _qQueueStack_s{
     qTask_t *Task;      /*< A pointer to the task. */
     void *QueueData;    /*< The data to queue. */
@@ -53,7 +53,7 @@ typedef struct _qKernelControlBlock_s{ /*KCB(Kernel Control Block) definition*/
         size_t TaskEntries;                             /*< Used to hold the number of task entries*/
     #endif
 }qKernelControlBlock_t;
-/*! @endcond PRIVATE */
+/*! @endcond  */
 
 /*=========================== Kernel Control Block ===========================*/
 static qKernelControlBlock_t kernel;

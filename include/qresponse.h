@@ -32,7 +32,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qResponse_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qResponse_Private_s{
             char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
             qSTimer_t timeout;                  /*< The timeout used to wait the requested response. */
@@ -41,14 +41,14 @@
             volatile size_t MatchedCount;       /*< To hold the current number of response matches. */
             volatile qBool_t ResponseReceived;  /*< A flag that indicates when the response matches the request. */
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qResponse_t;
 
     /**
     * @brief Initialize the instance of the response handler object
     * @param[in] obj A pointer to the Response Handler object.
     * @param[in] xLocBuff A pointer to the memory block where the desired response will remain.
-    * @param[in] nMax The size of <b>xLocBuff</b>
+    * @param[in] nMax The size of @a xLocBuff
     * @return none.
     */ 
     void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ); 
@@ -64,8 +64,8 @@
     * @brief Non-Blocking Response check
     * @param[in] obj A pointer to the Response Handler object.
     * @param[in] Pattern The data checked in the receiver ISR
-    * @param[in] n The length of the data pointer by <b>Pattern</b> 
-    * (if Pattern is string, set <b>n</b> to 0 to auto-compute the length)
+    * @param[in] n The length of the data pointer by @a Pattern 
+    * (if Pattern is string, set @a n to 0 to auto-compute the length)
     * @return #qTrue if there is a response acknowledge, otherwise returns #qFalse.
     */     
     qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n );
@@ -74,8 +74,8 @@
     * @brief Non-Blocking Response check with timeout
     * @param[in] obj A pointer to the Response Handler object.
     * @param[in] Pattern The data checked in the receiver ISR
-    * @param[in] n The length of the data pointer by <b>Pattern</b> 
-    * (if Pattern is string, set <b>n</b> to 0 to auto-compute the length)
+    * @param[in] n The length of the data pointer by @a Pattern 
+    * (if Pattern is string, set @a n to 0 to auto-compute the length)
     * @param[in] t The timeout value given in seconds
     * @return #qTrue if there is a response acknowledge, #qResponseTimeout if timeout expires otherwise returns #qFalse
     */      

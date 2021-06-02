@@ -48,7 +48,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qQueue_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qQueue_Private_s{
             qUINT8_t *head;			        /*< Points to the beginning of the queue storage area. */
             qUINT8_t *tail;			        /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
@@ -58,7 +58,7 @@
             size_t ItemsCount;		        /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
             size_t ItemSize;		        /*< The size of each items that the queue will hold. */
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qQueue_t;
 
     /** @brief A macro directive to indicate whether the item in the queue should be sent to the back. */
@@ -75,7 +75,7 @@
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * so this many bytes will be copied from @a ItemToQueue into the queue storage area.
     * @return #qTrue on successful add, #qFalse if not added.
     */      
     #define qQueue_SendToBack( obj, ItemToQueue )      qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_BACK )
@@ -85,7 +85,7 @@
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * so this many bytes will be copied from @a ItemToQueue into the queue storage area.
     * @return #qTrue on successful add, #qFalse if not added.
     */     
     #define qQueue_Send( obj, ItemToQueue )            qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_BACK )
@@ -95,7 +95,7 @@
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage area.
+    * so this many bytes will be copied from @a ItemToQueue into the queue storage area.
     * @return #qTrue on successful add, #qFalse if not added.
     */         
     #define qQueue_SendToFront( obj, ItemToQueue )     qQueue_SendGeneric( (obj), (ItemToQueue), QUEUE_SEND_TO_FRONT )
@@ -108,7 +108,7 @@
     qBool_t qQueue_IsReady( const qQueue_t * const obj );
 
     /**
-    * @brief Configures a Queue. Here, the RAM used to hold the queue data <b>DataArea</b>
+    * @brief Configures a Queue. Here, the RAM used to hold the queue data @a DataArea
     * is statically allocated at compile time by the application writer.
     * @param[in] obj A pointer to the Queue object
     * @param[in] DataArea Data block or array of data.
@@ -182,7 +182,7 @@
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from <b>ItemToQueue</b> into the queue storage
+    * so this many bytes will be copied from @ItemToQueue into the queue storage
     * area.
     * @param[in] InsertMode Can take the value #QUEUE_SEND_TO_BACK to place the item at the back 
     * of the queue, or #QUEUE_SEND_TO_FRONT to place the item at the front of 

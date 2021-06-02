@@ -69,7 +69,7 @@
     *  @{
     */
   
-    /*! @cond PRIVATE */
+    /*! @cond  */
     #ifndef Message
         #define Message             Message
     #endif
@@ -139,7 +139,7 @@
         */               
         #define qDebug_Caller()                  _qtrace_func( "",_QTRACE_FUNC, "", "", NULL, 0 )   
 
-        /*! @cond PRIVATE */
+        /*! @cond  */
         #define qDebug_Message(Var)              _qtrace_func( "", NULL, "", (char*)(Var), NULL, 0)
         #define qDebug_String(Var)               _qtrace_func( "", NULL, #Var "="  , (char*)(Var), NULL, 0)
         #define qDebug_Bool(Var)                 _qtrace_func( "", NULL, #Var "="  , qIOUtil_BtoA(( qBool_t)(Var), qTrace_PublicBuffer    ), NULL, 0 )
@@ -170,7 +170,7 @@
         #define qTrace_UnsignedOctal(Var)        _qtrace_func( _qAT(), _QTRACE_FUNC, #Var "=0" , qIOUtil_UtoA((qUINT32_t)(Var), qTrace_PublicBuffer,  8), NULL, 0 )
         #define qTrace_UnsignedHexadecimal(Var)  _qtrace_func( _qAT(), _QTRACE_FUNC, #Var "=0x", qIOUtil_UtoA((qUINT32_t)(Var), qTrace_PublicBuffer, 16), NULL, 0 )
         #define qTrace_UnsignedDecimal(Var)      _qtrace_func( _qAT(), _QTRACE_FUNC, #Var "="  , qIOUtil_UtoA((qUINT32_t)(Var), qTrace_PublicBuffer, 10), NULL, 0 )
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
         
         /**
         * @brief Output a trace message for the memory from the specified address (HEX output)

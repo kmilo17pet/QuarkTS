@@ -27,10 +27,10 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSTimer_s{ 
-        /*! @cond PRIVATE */
+        /*! @cond  */
         qClock_t Start;     /*< The time(epochs) taken at the arming moment. */
         qClock_t TV;        /*< The required time in epochs. */
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qSTimer_t;
 
     /** @brief Macro that defines the value of a disarmed STimer*/

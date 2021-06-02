@@ -152,7 +152,7 @@
 
     /*fields for the qSM_Handler_t pointer*/
     
-    /*! @cond PRIVATE */
+    /*! @cond  */
     #define _qSM_HANDLER_FIELDS( pAttrib ) struct{\
         void *StartState;\
         void *NextState;\
@@ -166,7 +166,7 @@
     };\
     /*! @endcond */
 
-    /*! @cond PRIVATE */
+    /*! @cond  */
     typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS( Q_NONE ) }_qSM_UnprotectedPublicData_t;
     typedef struct _qSM_pPublicData_s{ _qSM_HANDLER_FIELDS( const  ) }_qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;    
@@ -277,7 +277,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_State_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qSM_State_Private_s{
             struct _qSM_State_s *parent;                    /*< A pointer to the parent state*/
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
@@ -285,7 +285,7 @@
             qSM_StateCallback_t sCallback;                  /*< The state callback function*/
             void* Data;                                     /*< State data. Storage pointer*/
         }qPrivate;
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qSM_State_t;
     
     /**
@@ -302,12 +302,12 @@
     * @note Do not access any member of this structure directly. 
     */    
     typedef struct _qSM_TimeoutSpec_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         qSM_TimeoutStateDefinition_t *spec;                 /*< a pointer to the state-timeout lookup table*/
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/     
         qUINT32_t isPeriodic;                               /*< witch one is periodic*/
         size_t n;                                           /*< the number of entries inside the <spec> field*/
-        /*! @endcond PRIVATE */
+        /*! @endcond  */
     }qSM_TimeoutSpec_t;
 
     /** 
@@ -320,7 +320,7 @@
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_s{
-        /*! @cond PRIVATE */
+        /*! @cond  */
         struct _qSM_Private_s{
             qSM_State_t *current;                           /*< A pointer to the current state.*/
             qSM_State_t *next;                              /*< The next state to execute. */
@@ -337,7 +337,7 @@
             _qSM_UnprotectedPublicData_t handler;           /*< The FSM handler argument*/    
             qSM_Signal_t SignalNot;                         /*< Signal exclusion variable*/
         }qPrivate;   
-        /*! @endcond PRIVATE */      
+        /*! @endcond  */      
     }qSM_t;
 
     /**
@@ -377,6 +377,7 @@
 
     /**
     * @brief Initializes a finite state machine (FSM) object.
+    * @see qOS_Add_StateMachineTask()
     * @note This API also initializes the top state.
     * @param[in] m A pointer to the FSM object.
     * @param[in] topCallback The callback for the "Top" state
@@ -395,7 +396,7 @@
     * @param[in] parent A pointer to the parent state (Use #QSM_STATE_TOP) if the parent is the top state.
     * @param[in] StateFcn The handler function associated to the state.
     *
-    * Prototype: <pre>qSM_Status_t xCallback( qSM_Handler_t h )</pre>
+    * Prototype: @code qSM_Status_t xCallback( qSM_Handler_t h ) @endcode
     * @param[in] initState The first child-state to be executed if the subscribed 
     * state its a parent in an hierarchical pattern. (default transition).
     * To ignore pass NULL as argument.
@@ -415,8 +416,8 @@
 
     /**
     * @brief Install a signal queue to the provided state machine.
-    * @note Queue object should be previously initialized by using <b>qQueue_Setup()</b>
-    * @note Queue <b>itemsize == qSM_Signal_t</b> 
+    * @note Queue object should be previously initialized by using qQueue_Setup()
+    * @attention Queue itemsize == qSM_Signal_t 
     * @param[in] m A pointer to the FSM object.
     * @param[in] queue A pointer to the queue object.
     * @return #qTrue on success, otherwise return #qFalse.
@@ -442,15 +443,15 @@
     * @brief Install the Timeout specification object to target FSM to allow timed 
     * signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ). 
     * This methods also set fixed timeouts for specific states using a lookup-table. 
-    * @note This feature its only available if the FSM has a signal queue installed.
-    * @note The lookup table will be an array of type <b>qSM_TimeoutStateDefinition_t</b>
-    *  with <b>nEntries</b> elements matching { state, time, options }. 
+    * @attention This feature its only available if the FSM has a signal queue installed.
+    * @note The lookup table should be an array of type qSM_TimeoutStateDefinition_t
+    *  with @a nEntries elements matching { state, time, options }. 
     * @note You can increse the number of available timeouts instances by changing 
-    * the <b>Q_FSM_MAX_TIMEOUTS</b> configuration macro inside <b>qconfig.h</b>          
+    * the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h          
     * @param[in] m A pointer to the FSM object.
     * @param[in] ts A pointer to the timeout specification object.
     * @param[in] tdef The lookup table matching the target state and the requested timeout.
-    * @param[in] n The number of elements inside <b>tdef</b>. 
+    * @param[in] n The number of elements inside @a tdef. 
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */    
     qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
