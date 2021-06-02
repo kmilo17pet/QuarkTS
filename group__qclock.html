@@ -137,7 +137,7 @@ typedef <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e
 <tr class="memdesc:gac7b81fb14df7cba7c4bc212c6226e1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The typedef that specified an time quantity, usually expressed in seconds. <br /></td></tr>
 <tr class="separator:gac7b81fb14df7cba7c4bc212c6226e1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga166565f14c43c0fb055b6f1f73f8b910"><td class="memItemLeft" align="right" valign="top"><a id="ga166565f14c43c0fb055b6f1f73f8b910"></a>
-typedef qUINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a></td></tr>
+typedef <a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a></td></tr>
 <tr class="memdesc:ga166565f14c43c0fb055b6f1f73f8b910"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 32-bit unsigned integer to hold ticks count. Epochs counter. <br /></td></tr>
 <tr class="separator:ga166565f14c43c0fb055b6f1f73f8b910"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab5aa8bbf739e2c7b181761ff93d20951"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a>) (void)</td></tr>
@@ -162,7 +162,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gacdc3d27983dcc08e28d9eb9844a55c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the system tick.  <a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">More...</a><br /></td></tr>
 <tr class="separator:gacdc3d27983dcc08e28d9eb9844a55c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab83fba69406f6772b050ee9107c7232f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#gab83fba69406f6772b050ee9107c7232f">qClock_TimeDeadlineCheck</a> (const <a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a> ti, const <a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a> td)</td></tr>
-<tr class="memdesc:gab83fba69406f6772b050ee9107c7232f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a timestamp check. This function computes the amount of time elapsed between the current instant and the init timestamp <b>ti</b> and checks if the result is greather than <b>td</b>.  <a href="group__qclock.html#gab83fba69406f6772b050ee9107c7232f">More...</a><br /></td></tr>
+<tr class="memdesc:gab83fba69406f6772b050ee9107c7232f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a timestamp check. This function computes the amount of time elapsed between the current instant and the init timestamp <em>ti</em> and checks if the result is greather than <em>td</em>.  <a href="group__qclock.html#gab83fba69406f6772b050ee9107c7232f">More...</a><br /></td></tr>
 <tr class="separator:gab83fba69406f6772b050ee9107c7232f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -226,9 +226,10 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to Function type qGetTickFcn_t : function to get the hardware tick. </p>
-<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line">qUINT32_t OSInterface_GetTick( <span class="keywordtype">void</span> ){</div>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> OSInterface_GetTick( <span class="keywordtype">void</span> ){</div>
 <div class="line">      <span class="keywordflow">return</span> HAL_GetTick();</div>
 <div class="line">}</div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
 </div><!-- fragment --> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of ticks provided by the system HAL. </dd></dl>
 
@@ -395,7 +396,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Perform a timestamp check. This function computes the amount of time elapsed between the current instant and the init timestamp <b>ti</b> and checks if the result is greather than <b>td</b>. </p>
+<p>Perform a timestamp check. This function computes the amount of time elapsed between the current instant and the init timestamp <em>ti</em> and checks if the result is greather than <em>td</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ti</td><td>Init timestamp in epochs </td></tr>

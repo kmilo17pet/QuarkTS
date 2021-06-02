@@ -19,7 +19,13 @@ var group__qtypes =
     [ "qFloat32_t", "group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1", null ],
     [ "qFloat64_t", "group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2", null ],
     [ "qIndex_t", "group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9", null ],
+    [ "qINT16_t", "group__qtypes.html#ga78d656703073680cd9fa871b3c8d0dc5", null ],
+    [ "qINT32_t", "group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe", null ],
+    [ "qINT8_t", "group__qtypes.html#ga903e6b3909103df27f390f45f34d5885", null ],
     [ "qIteration_t", "group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020", null ],
     [ "qPriority_t", "group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2", null ],
-    [ "qState_t", "group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f", null ]
+    [ "qState_t", "group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f", null ],
+    [ "qUINT16_t", "group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b", null ],
+    [ "qUINT32_t", "group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed", null ],
+    [ "qUINT8_t", "group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54", null ]
 ];

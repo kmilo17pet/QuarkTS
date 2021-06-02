@@ -147,14 +147,15 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:gad42c79d2d75a2cdfa3fb15043561f836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#ga3d5d599e617deaa9970da008022522e3" title="Operate on each element of the list.">qList_ForEach()</a> API.  <a href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">More...</a><br /></td></tr>
 <tr class="separator:gad42c79d2d75a2cdfa3fb15043561f836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0ac18ce58031e0c1a42b7bb5f06cca35"><td class="memItemLeft" align="right" valign="top"><a id="ga0ac18ce58031e0c1a42b7bb5f06cca35"></a>
-typedef qINT32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga0ac18ce58031e0c1a42b7bb5f06cca35">qList_Position_t</a></td></tr>
+typedef <a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga0ac18ce58031e0c1a42b7bb5f06cca35">qList_Position_t</a></td></tr>
 <tr class="memdesc:ga0ac18ce58031e0c1a42b7bb5f06cca35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef to hold the target position of a node in a list. <br /></td></tr>
 <tr class="separator:ga0ac18ce58031e0c1a42b7bb5f06cca35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3728aea0a10627dc0fde9024f73bf2a7"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga3728aea0a10627dc0fde9024f73bf2a7">qList_CompareFcn_t</a>) (<a class="el" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h)</td></tr>
-<tr class="memdesc:ga3728aea0a10627dc0fde9024f73bf2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a function used by the <b>qList_Sort</b> API to compare nodes of a list.  <a href="group__qlists.html#ga3728aea0a10627dc0fde9024f73bf2a7">More...</a><br /></td></tr>
+<tr class="memdesc:ga3728aea0a10627dc0fde9024f73bf2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a function used by the <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> API to compare nodes of a list.  <a href="group__qlists.html#ga3728aea0a10627dc0fde9024f73bf2a7">More...</a><br /></td></tr>
 <tr class="separator:ga3728aea0a10627dc0fde9024f73bf2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7d8158482f1c3dea8a0dbeb52f49e1f8"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="structq_list___node__t.html">qList_Node_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga7d8158482f1c3dea8a0dbeb52f49e1f8">qList_Direction_t</a>) (const <a class="el" href="structq_list___node__t.html">qList_Node_t</a> *const node)</td></tr>
-<tr class="memdesc:ga7d8158482f1c3dea8a0dbeb52f49e1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef to hold the direction in which the list should be traversed.  <a href="group__qlists.html#ga7d8158482f1c3dea8a0dbeb52f49e1f8">More...</a><br /></td></tr>
+<tr class="memitem:ga7d8158482f1c3dea8a0dbeb52f49e1f8"><td class="memItemLeft" align="right" valign="top"><a id="ga7d8158482f1c3dea8a0dbeb52f49e1f8"></a>
+typedef <a class="el" href="structq_list___node__t.html">qList_Node_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga7d8158482f1c3dea8a0dbeb52f49e1f8">qList_Direction_t</a>) (const <a class="el" href="structq_list___node__t.html">qList_Node_t</a> *const node)</td></tr>
+<tr class="memdesc:ga7d8158482f1c3dea8a0dbeb52f49e1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef to hold the direction in which the list should be traversed. <br /></td></tr>
 <tr class="separator:ga7d8158482f1c3dea8a0dbeb52f49e1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -181,7 +182,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gae6605680a8bd893e99e77f115d5f527b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an item from the list.  <a href="group__qlists.html#gae6605680a8bd893e99e77f115d5f527b">More...</a><br /></td></tr>
 <tr class="separator:gae6605680a8bd893e99e77f115d5f527b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9b044c718efc68e6608a2079a27688e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga9b044c718efc68e6608a2079a27688e9">qList_Move</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const destination, <a class="el" href="structq_list__t.html">qList_t</a> *const source, const <a class="el" href="group__qlists.html#ga0ac18ce58031e0c1a42b7bb5f06cca35">qList_Position_t</a> position)</td></tr>
-<tr class="memdesc:ga9b044c718efc68e6608a2079a27688e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves(or merge) the entire list pointed by <b>source</b> to the list pointed by <b>destination</b> at location specified by <b>position</b>. After the move operation, this function leaves empty the list pointed by <b>source</b>.  <a href="group__qlists.html#ga9b044c718efc68e6608a2079a27688e9">More...</a><br /></td></tr>
+<tr class="memdesc:ga9b044c718efc68e6608a2079a27688e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves(or merge) the entire list pointed by <em>source</em> to the list pointed by <em>destination</em> at location specified by <em>position</em>. After the move operation, this function leaves empty the list pointed by <em>source</em>.  <a href="group__qlists.html#ga9b044c718efc68e6608a2079a27688e9">More...</a><br /></td></tr>
 <tr class="separator:ga9b044c718efc68e6608a2079a27688e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab2121d1e8fcb07e7d9a7219bc9526ca6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#gab2121d1e8fcb07e7d9a7219bc9526ca6">qList_IsMember</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const list, void *const node)</td></tr>
 <tr class="memdesc:gab2121d1e8fcb07e7d9a7219bc9526ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the node is member of the list.  <a href="group__qlists.html#gab2121d1e8fcb07e7d9a7219bc9526ca6">More...</a><br /></td></tr>
@@ -199,7 +200,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga7003d74f20bc55c95c54e61a187d0a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of items inside the list.  <a href="group__qlists.html#ga7003d74f20bc55c95c54e61a187d0a2f">More...</a><br /></td></tr>
 <tr class="separator:ga7003d74f20bc55c95c54e61a187d0a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga040c54c6e00f31c8c058d0c21371582f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f">qList_Sort</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const list, <a class="el" href="group__qlists.html#ga3728aea0a10627dc0fde9024f73bf2a7">qList_CompareFcn_t</a> CompareFcn)</td></tr>
-<tr class="memdesc:ga040c54c6e00f31c8c058d0c21371582f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort the double linked list using the <b>CompareFcn</b> function to determine the order. The sorting algorithm used by this function compares pairs of adjacent nodes by calling the specified <b>CompareFcn</b> function with pointers to them as arguments. The sort is performed only modifying node's links without data swapping, improving performance if nodes have a large storage.  <a href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f">More...</a><br /></td></tr>
+<tr class="memdesc:ga040c54c6e00f31c8c058d0c21371582f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort the double linked list using the <em>CompareFcn</em> function to determine the order. The sorting algorithm used by this function compares pairs of adjacent nodes by calling the specified <em>CompareFcn</em> function with pointers to them as arguments. The sort is performed only modifying node's links without data swapping, improving performance if nodes have a large storage.  <a href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f">More...</a><br /></td></tr>
 <tr class="separator:ga040c54c6e00f31c8c058d0c21371582f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d353142ce862160569e83de6b5f7f9f"><td class="memItemLeft" align="right" valign="top"><a id="ga9d353142ce862160569e83de6b5f7f9f"></a>
 <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>qList_IteratorSet</b> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *iterator, <a class="el" href="structq_list__t.html">qList_t</a> *const list, void *NodeOffset, <a class="el" href="group__qlists.html#ga7d8158482f1c3dea8a0dbeb52f49e1f8">qList_Direction_t</a> dir)</td></tr>
@@ -253,13 +254,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Pointer to a function used by the <b>qList_Sort</b> API to compare nodes of a list. </p>
+<p>Pointer to a function used by the <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> API to compare nodes of a list. </p>
 <p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myNode_CompareFcn( <a class="code" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h );</div>
 <div class="line">      mydata_t *n1 = (mydata_t *)h-&gt;n1;</div>
 <div class="line">      mydata_t *n2 = (mydata_t *)h-&gt;n2;</div>
 <div class="line">      <span class="keywordflow">return</span> (<a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>)( n1-&gt;x &gt; n2-&gt;x );</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type-def to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:99</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:107</div></div>
 <div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort() API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:101</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -267,24 +268,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> value indicates that element pointed by <b>node1</b> goes after the element pointed to by <b>node2</b> </dd></dl>
-
-</div>
-</div>
-<a id="ga7d8158482f1c3dea8a0dbeb52f49e1f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7d8158482f1c3dea8a0dbeb52f49e1f8">&#9670;&nbsp;</a></span>qList_Direction_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="structq_list___node__t.html">qList_Node_t</a>*(* qList_Direction_t) (const <a class="el" href="structq_list___node__t.html">qList_Node_t</a> *const node)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef to hold the direction in which the list should be traversed. </p>
-<p>PRIVATE </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> value indicates that element pointed by <em>node1</em> goes after the element pointed to by <em>node2</em> </dd></dl>
 
 </div>
 </div>
@@ -403,23 +387,16 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Fcn</td><td>The function to perform over the node. Should have this prototype: <pre>
-qBool_t Function( qList_ForEachHandle_t h )
-</pre></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Fcn</td><td>The function to perform over the node. Should have this prototype: <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> Function( <a class="code" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h ) </div>
+</div><!-- fragment --></td></tr>
   </table>
   </dd>
 </dl>
-<p>If <b>Function</b> returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, the walk-through loop will be terminated. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>If <em>Function</em> returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a>, the walk-through loop will be terminated. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Argument passed to <b>Fcn</b> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dir</td><td>Use one of the following options:</td></tr>
-  </table>
-  </dd>
-</dl>
-<p><a class="el" href="group__qlists.html#ga5365ab050c7da9fb0b835f48d042ad61" title="This macro should be used to define the direction of travel of the list forward.">QLIST_FORWARD</a> : to go in forward direction.</p>
-<p><a class="el" href="group__qlists.html#ga2446c3162503fa5f1a078fbbd2519fab" title="This macro should be used to define the direction of travel of the list backwards.">QLIST_BACKWARD</a> : to go in backward direction. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">NodeOffset</td><td>If available, the list walk through will start from this node. To ignore, pass NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Argument passed to <em>Fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dir</td><td>Use one of the following options: <a class="el" href="group__qlists.html#ga5365ab050c7da9fb0b835f48d042ad61" title="This macro should be used to define the direction of travel of the list forward.">QLIST_FORWARD</a> or <a class="el" href="group__qlists.html#ga2446c3162503fa5f1a078fbbd2519fab" title="This macro should be used to define the direction of travel of the list backwards.">QLIST_BACKWARD</a>. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">NodeOffset</td><td>If available, the list walk through will start from this node. To ignore, pass NULL. </td></tr>
   </table>
   </dd>
 </dl>
@@ -704,12 +681,12 @@ qBool_t Function( qList_ForEachHandle_t h )
       </table>
 </div><div class="memdoc">
 
-<p>Moves(or merge) the entire list pointed by <b>source</b> to the list pointed by <b>destination</b> at location specified by <b>position</b>. After the move operation, this function leaves empty the list pointed by <b>source</b>. </p>
+<p>Moves(or merge) the entire list pointed by <em>source</em> to the list pointed by <em>destination</em> at location specified by <em>position</em>. After the move operation, this function leaves empty the list pointed by <em>source</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">destination</td><td>Pointer to the list where the <b>source</b> nodes are to be moved. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">destination</td><td>Pointer to the list where the <em>source</em> nodes are to be moved. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>Pointer to the source list to be moved. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The position where <b>source</b> list will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the list will be inserted after. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The position where <em>source</em> list will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the list will be inserted after. </td></tr>
   </table>
   </dd>
 </dl>
@@ -815,16 +792,17 @@ qBool_t Function( qList_ForEachHandle_t h )
       </table>
 </div><div class="memdoc">
 
-<p>Sort the double linked list using the <b>CompareFcn</b> function to determine the order. The sorting algorithm used by this function compares pairs of adjacent nodes by calling the specified <b>CompareFcn</b> function with pointers to them as arguments. The sort is performed only modifying node's links without data swapping, improving performance if nodes have a large storage. </p>
-<dl class="section note"><dt>Note</dt><dd>The function modifies the content of the list by reordering its elements as defined by <b>CompareFcn</b>. </dd></dl>
+<p>Sort the double linked list using the <em>CompareFcn</em> function to determine the order. The sorting algorithm used by this function compares pairs of adjacent nodes by calling the specified <em>CompareFcn</em> function with pointers to them as arguments. The sort is performed only modifying node's links without data swapping, improving performance if nodes have a large storage. </p>
+<dl class="section note"><dt>Note</dt><dd>The function modifies the content of the list by reordering its elements as defined by <em>CompareFcn</em>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">list</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">CompareFcn</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <pre> qBool_t CompareFcn(void *node1, void *node2) </pre></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CompareFcn</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga040c54c6e00f31c8c058d0c21371582f" title="Sort the double linked list using the CompareFcn function to determine the order. The sorting algorit...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> CompareFcn(<span class="keywordtype">void</span> *node1, <span class="keywordtype">void</span> *node2) </div>
+</div><!-- fragment --></td></tr>
   </table>
   </dd>
 </dl>
-<p>Taking two pointers as arguments (both converted to const void*). The function defines the order of the elements by returning a Boolean data, where a <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> value indicates that element pointed by <b>node1</b> goes after the element pointed to by <b>node2</b>. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if at least one reordering is performed over the list. </dd></dl>
+<p>Taking two pointers as arguments (both converted to const void*). The function defines the order of the elements by returning a Boolean data, where a <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> value indicates that element pointed by <em>node1</em> goes after the element pointed to by <em>node2</em>. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if at least one reordering is performed over the list. </dd></dl>
 
 </div>
 </div>

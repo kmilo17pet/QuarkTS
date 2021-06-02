@@ -121,7 +121,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ga3985464bdb30735d016eb56745622f94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function : An AT-Command callback.  <a href="group__qatcli.html#ga3985464bdb30735d016eb56745622f94">More...</a><br /></td></tr>
 <tr class="separator:ga3985464bdb30735d016eb56745622f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad23954e8b3b150ccd8507152b3c6f144"><td class="memItemLeft" align="right" valign="top"><a id="gad23954e8b3b150ccd8507152b3c6f144"></a>
-typedef qUINT16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144">qATCLI_Options_t</a></td></tr>
+typedef <a class="el" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144">qATCLI_Options_t</a></td></tr>
 <tr class="memdesc:gad23954e8b3b150ccd8507152b3c6f144"><td class="mdescLeft">&#160;</td><td class="mdescRight">A typedef that holds the options for an AT-Command object. <br /></td></tr>
 <tr class="separator:gad23954e8b3b150ccd8507152b3c6f144"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -263,7 +263,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>An enum to describe the available AT command types. </p>
-<p>PRIVATE </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa960ac3e1ee09752d7d4a3beda70034e2"></a>qATCLI_CMDTYPE_UNDEF&#160;</td><td class="fielddoc"><p>Was not able to detected a correct input command </p>
 </td></tr>
@@ -406,7 +405,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Command</td><td>A pointer to the AT command object. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">TextCommand</td><td>The string (name) of the command we want to subscribe to. Since this service only handles AT commands, this string has to begin by the "at" characters and should be in lower case. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype: <pre> qATCLI_Response_t xCallback( qATCLI_Handler_t ) </pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Callback</td><td>The handler of the callback function associated to the command. Prototype:<div class="fragment"><div class="line"><a class="code" href="group__qatcli.html#gac5402443a477397530af4e9b7140ebca">qATCLI_Response_t</a> xCallback( <a class="code" href="structq_a_t_c_l_i___handler__t.html">qATCLI_Handler_t</a> ) </div>
+</div><!-- fragment --> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">CmdOpt</td><td>This flag combines with a bitwise OR the following information:</td></tr>
   </table>
   </dd>
@@ -719,14 +719,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Setup an instance of the AT Command Command Line Interface. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1" title="Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as a...">qOS_Add_ATCLITask()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">OutputFcn</td><td>The basic output-char wrapper function. All the CLI responses will be printed-out through this function. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Input</td><td>A memory location to store the cli input (Mandatory) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">SizeInput</td><td>The size of the memory allocated in <b>Input</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">SizeInput</td><td>The size of the memory allocated in <em>Input</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Output</td><td>A memory location to store the CLI output </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">SizeOutput</td><td>The size of the memory allocated in <b>Output</b> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">SizeOutput</td><td>The size of the memory allocated in <em>Output</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Identifier</td><td>The device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">OK_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ERROR_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a> or any <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE</a>(#) </td></tr>

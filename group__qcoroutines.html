@@ -143,7 +143,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:gad3c43098c3c7da786fd0dec0e3714da7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This statement ends a blocking Job segment starting with the <a class="el" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224" title="This statement start a blocking Job segment.">qCR_Do</a> statement.  <a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">More...</a><br /></td></tr>
 <tr class="separator:gad3c43098c3c7da786fd0dec0e3714da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacddf33244c5a11f79ae40eaf6d57ab34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">qCR_SemInit</a>(pSem,  sValue)</td></tr>
-<tr class="memdesc:gacddf33244c5a11f79ae40eaf6d57ab34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a semaphore with a value for the counter. Internally, the semaphores use an "unsigned int" to represent the counter, therefore the <b>sValue</b> argument should be within range of an "unsigned int".  <a href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">More...</a><br /></td></tr>
+<tr class="memdesc:gacddf33244c5a11f79ae40eaf6d57ab34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a semaphore with a value for the counter. Internally, the semaphores use an "unsigned int" to represent the counter, therefore the <em>sValue</em> argument should be within range of an "unsigned int".  <a href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">More...</a><br /></td></tr>
 <tr class="separator:gacddf33244c5a11f79ae40eaf6d57ab34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga48a737b34a6764159b2f1109f4543f99"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga48a737b34a6764159b2f1109f4543f99">qCR_SemWait</a>(pSem)</td></tr>
 <tr class="memdesc:ga48a737b34a6764159b2f1109f4543f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Carries out the "wait" operation on the semaphore. The wait operation causes the Co-routine to block while the counter is zero. When the counter reaches a value larger than zero, the Co-routine will continue.  <a href="group__qcoroutines.html#ga48a737b34a6764159b2f1109f4543f99">More...</a><br /></td></tr>
@@ -152,13 +152,13 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga1d8e6eae9ea20351034545a918b0f692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Carries out the "signal" operation on the semaphore. The signal operation increments the counter inside the semaphore, which eventually will cause waiting Co-routines to continue executing.  <a href="group__qcoroutines.html#ga1d8e6eae9ea20351034545a918b0f692">More...</a><br /></td></tr>
 <tr class="separator:ga1d8e6eae9ea20351034545a918b0f692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeb7949c7d0234404532780387779a538"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#gaeb7949c7d0234404532780387779a538">qCR_PositionGet</a>(CRPos)</td></tr>
-<tr class="memdesc:gaeb7949c7d0234404532780387779a538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Labels the current position and saves it to <b>CRPos</b> so it can be later restored by <a class="el" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c" title="Restores the Co-Routine position saved in CRPos">qCR_PositionRestore</a>.  <a href="group__qcoroutines.html#gaeb7949c7d0234404532780387779a538">More...</a><br /></td></tr>
+<tr class="memdesc:gaeb7949c7d0234404532780387779a538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Labels the current position and saves it to <em>CRPos</em> so it can be later restored by <a class="el" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c" title="Restores the Co-Routine position saved in CRPos.">qCR_PositionRestore</a>.  <a href="group__qcoroutines.html#gaeb7949c7d0234404532780387779a538">More...</a><br /></td></tr>
 <tr class="separator:gaeb7949c7d0234404532780387779a538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2d819dd66c7499050d35da8c95d5df3c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c">qCR_PositionRestore</a>(CRPos)</td></tr>
-<tr class="memdesc:ga2d819dd66c7499050d35da8c95d5df3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the Co-Routine position saved in <b>CRPos</b>  <a href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c">More...</a><br /></td></tr>
+<tr class="memdesc:ga2d819dd66c7499050d35da8c95d5df3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the Co-Routine position saved in <em>CRPos</em>.  <a href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c">More...</a><br /></td></tr>
 <tr class="separator:ga2d819dd66c7499050d35da8c95d5df3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6b7a8e1b9d3ca7e3f744d99de525041"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#gad6b7a8e1b9d3ca7e3f744d99de525041">qCR_PositionReset</a>(CRPos)</td></tr>
-<tr class="memdesc:gad6b7a8e1b9d3ca7e3f744d99de525041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <b>CRPos</b> variable to the begining of the Co-Routine.  <a href="group__qcoroutines.html#gad6b7a8e1b9d3ca7e3f744d99de525041">More...</a><br /></td></tr>
+<tr class="memdesc:gad6b7a8e1b9d3ca7e3f744d99de525041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <em>CRPos</em> variable to the begining of the Co-Routine.  <a href="group__qcoroutines.html#gad6b7a8e1b9d3ca7e3f744d99de525041">More...</a><br /></td></tr>
 <tr class="separator:gad6b7a8e1b9d3ca7e3f744d99de525041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f93776d66aefb50a0bc97090d5f2f2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga6f93776d66aefb50a0bc97090d5f2f2c">qCR_Delay</a>(tValue)</td></tr>
 <tr class="memdesc:ga6f93776d66aefb50a0bc97090d5f2f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay a coroutine for a given number of time.  <a href="group__qcoroutines.html#ga6f93776d66aefb50a0bc97090d5f2f2c">More...</a><br /></td></tr>
@@ -285,8 +285,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Must be used together with a matching <a class="el" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7" title="This statement ends a blocking Job segment starting with the qCR_Do statement.">qCR_Until</a> statement. Example: <div class="fragment"><div class="line"><a class="code" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a>{</div>
 <div class="line">    </div>
 <div class="line">}<a class="code" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a>( Condition );</div>
-<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:236</div></div>
-<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:251</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:232</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:247</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -327,7 +327,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Labels the current position and saves it to <b>CRPos</b> so it can be later restored by <a class="el" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c" title="Restores the Co-Routine position saved in CRPos">qCR_PositionRestore</a>. </p>
+<p>Labels the current position and saves it to <em>CRPos</em> so it can be later restored by <a class="el" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c" title="Restores the Co-Routine position saved in CRPos.">qCR_PositionRestore</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">CRPos</td><td>The variable of type qCR_Position_t where the current position will be saved. </td></tr>
@@ -354,7 +354,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Resets the <b>CRPos</b> variable to the begining of the Co-Routine. </p>
+<p>Resets the <em>CRPos</em> variable to the begining of the Co-Routine. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">CRPos</td><td>The variable of type qCR_Position_t to reset. </td></tr>
@@ -381,10 +381,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Restores the Co-Routine position saved in <b>CRPos</b> </p>
+<p>Restores the Co-Routine position saved in <em>CRPos</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">CRPos</td><td>The variable of type qCR_Position_t that contains the position to be restored. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">CRPos</td><td>The variable of type qCR_Position_t that contains the position to be restored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -405,9 +405,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This statement cause the running Coroutine to restart its execution at the place of the <a class="el" href="group__qcoroutines.html#gac742b61272ef52115b85293aebc933b1" title="Defines a Coroutine segment. Only one segment is allowed inside a task; The qCR_Begin statement is us...">qCR_Begin</a> statement. </p>
-<pre>
-Action sequence : [Reload progress] then [Yield]
-</pre> 
+<pre class="fragment">Action sequence : [Reload progress] then [Yield] </pre> 
 </div>
 </div>
 <a id="gacddf33244c5a11f79ae40eaf6d57ab34"></a>
@@ -436,7 +434,7 @@ Action sequence : [Reload progress] then [Yield]
       </table>
 </div><div class="memdoc">
 
-<p>Initializes a semaphore with a value for the counter. Internally, the semaphores use an "unsigned int" to represent the counter, therefore the <b>sValue</b> argument should be within range of an "unsigned int". </p>
+<p>Initializes a semaphore with a value for the counter. Internally, the semaphores use an "unsigned int" to represent the counter, therefore the <em>sValue</em> argument should be within range of an "unsigned int". </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pSem</td><td>A pointer to the <a class="el" href="structq_c_r___semaphore__t.html" title="A typedef to instantiate a Co-Routine Semaphore.">qCR_Semaphore_t</a> representing the semaphore </td></tr>
@@ -532,8 +530,7 @@ Action sequence : [Reload progress] then [Yield]
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>The specific amount of time to wait given in seconds. <pre>
-Action sequence : [Save progress] 
+    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>The specific amount of time to wait given in seconds. <pre class="fragment">Action sequence : [Save progress] 
                 IF ( condition == False || NOT_EXPIRED(timeout) )
                     [Yield]      
                 }
@@ -640,12 +637,10 @@ Action sequence : [Save progress]
 <p>Yields until the logical condition being true. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated <pre>
-Action sequence : [Save progress] 
+    <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated <pre class="fragment">Action sequence : [Save progress] 
                 IF ( condition == False ){
                     [Yield]      
-                }
-</pre> </td></tr>
+                }</pre> </td></tr>
   </table>
   </dd>
 </dl>
@@ -665,9 +660,7 @@ Action sequence : [Save progress]
 </div><div class="memdoc">
 
 <p>This statement is only allowed inside a Coroutine segment. <a class="el" href="group__qcoroutines.html#ga6501ee13abbc4bf144b4819112ee592f" title="This statement is only allowed inside a Coroutine segment. qCR_Yield return the CPU control back to t...">qCR_Yield</a> return the CPU control back to the scheduler but saving the execution progress. With the next task activation, the Coroutine will resume the execution after the last <a class="el" href="group__qcoroutines.html#ga6501ee13abbc4bf144b4819112ee592f" title="This statement is only allowed inside a Coroutine segment. qCR_Yield return the CPU control back to t...">qCR_Yield</a> statement. </p>
-<pre>
-Action sequence : [Save progress] then [Yield]
-</pre> 
+<pre class="fragment">Action sequence : [Save progress] then [Yield] </pre> 
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -687,7 +680,7 @@ Action sequence : [Save progress] then [Yield]
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc"></a>qCR_RESTART&#160;</td><td class="fielddoc"><p>Restart the coroutine execution at the place of the <a class="el" href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8" title="Defines a Coroutine segment with a supplied external handle. Only one segment is allowed inside a tas...">qCR_BeginWithHandle</a> statement. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf"></a>qCR_POSITIONSET&#160;</td><td class="fielddoc"><p>Force the coroutine execution at the position specified in <b>pos</b>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
+<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf"></a>qCR_POSITIONSET&#160;</td><td class="fielddoc"><p>Force the coroutine execution at the position specified in <a class="el" href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba" title="Perform an external action over the requested Co-routine.">qCR_ExternControl()</a>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf"></a>qCR_SUSPEND&#160;</td><td class="fielddoc"><p>Suspend the entire coroutine segment. The task will still running instructions outside the segment. </p>
 </td></tr>
@@ -735,7 +728,7 @@ Action sequence : [Save progress] then [Yield]
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The Co-routine handle. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">action</td><td>The specific action to perform, should be one of the following: <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc">qCR_RESTART</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf">qCR_SUSPEND</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749">qCR_RESUME</a> or <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pos</td><td>The required position if <b>action</b> = <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>. For other actions this argument its ignored. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pos</td><td>The required position if <em>action</em> = <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>. For other actions this argument its ignored. </td></tr>
   </table>
   </dd>
 </dl>

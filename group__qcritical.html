@@ -96,10 +96,10 @@ $(document).ready(function(){initNavTree('group__qcritical.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga64adddc1db2a59fcea764d0f27ae5a07"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a>) (qUINT32_t arg1)</td></tr>
+<tr class="memitem:ga64adddc1db2a59fcea764d0f27ae5a07"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a>) (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> arg1)</td></tr>
 <tr class="memdesc:ga64adddc1db2a59fcea764d0f27ae5a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called by <a class="el" href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca" title="Exit a critical section. This function invokes the Enabler function if available.">qCritical_Exit()</a> to restore interrupts.  <a href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">More...</a><br /></td></tr>
 <tr class="separator:ga64adddc1db2a59fcea764d0f27ae5a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b75a2121f1f84d643873bfe48a6b7cb"><td class="memItemLeft" align="right" valign="top">typedef qUINT32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a>) (void)</td></tr>
+<tr class="memitem:ga0b75a2121f1f84d643873bfe48a6b7cb"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a>) (void)</td></tr>
 <tr class="memdesc:ga0b75a2121f1f84d643873bfe48a6b7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called by <a class="el" href="group__qcritical.html#gafebe530014dc778c3d005405bdac21cd" title="Enter a critical section. This function invokes the Disabler function if available.">qCritical_Enter()</a> to disable interrupts.  <a href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">More...</a><br /></td></tr>
 <tr class="separator:ga0b75a2121f1f84d643873bfe48a6b7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -125,7 +125,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef qUINT32_t(* qInt_Disabler_t) (void)</td>
+          <td class="memname">typedef <a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>(* qInt_Disabler_t) (void)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -133,12 +133,13 @@ Functions</h2></td></tr>
 <p>Function called by <a class="el" href="group__qcritical.html#gafebe530014dc778c3d005405bdac21cd" title="Enter a critical section. This function invokes the Disabler function if available.">qCritical_Enter()</a> to disable interrupts. </p>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. </dd>
 <dd>
-User should return the current interrupt configuration to be saved by the kernel. Example : <div class="fragment"><div class="line">qUINT32_t BSP_InterruptDisabler( <span class="keywordtype">void</span> ){</div>
-<div class="line">      qUINT32_t currentmask;</div>
+User should return the current interrupt configuration to be saved by the kernel. Example : <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> BSP_InterruptDisabler( <span class="keywordtype">void</span> ){</div>
+<div class="line">      <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> currentmask;</div>
 <div class="line">      currentmask = HAL_InteruptGetMask( savedmask );    </div>
 <div class="line">      HAL_DisableInterrupts();</div>
 <div class="line">      <span class="keywordflow">return</span> currentmask;</div>
 <div class="line">}</div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
 </div><!-- fragment --> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The current interrupt configuration (mask). The kernel will retain this value until the critical section is exited </dd></dl>
 
@@ -151,7 +152,7 @@ User should return the current interrupt configuration to be saved by the kernel
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* qInt_Restorer_t) (qUINT32_t arg1)</td>
+          <td class="memname">typedef void(* qInt_Restorer_t) (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> arg1)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -159,7 +160,7 @@ User should return the current interrupt configuration to be saved by the kernel
 <p>Function called by <a class="el" href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca" title="Exit a critical section. This function invokes the Enabler function if available.">qCritical_Exit()</a> to restore interrupts. </p>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. </dd>
 <dd>
-The kernel passes the previously saved interrupt configuration as input argument. The user is responsible for taking this argument to restore the saved interrupt setup. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_InterruptRestorer( qUINT32_t savedmask ){</div>
+The kernel passes the previously saved interrupt configuration as input argument. The user is responsible for taking this argument to restore the saved interrupt setup. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_InterruptRestorer( <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> savedmask ){</div>
 <div class="line">      HAL_InteruptSetMask( savedmask );    </div>
 <div class="line">      HAL_EnableInterrupts();</div>
 <div class="line">}</div>
