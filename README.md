@@ -58,7 +58,7 @@ git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git --recursive
 ### Creating
 
 ```
-git submodule add -b kernel_only https://github.com/kmilo17pet/QuarkTS.git <destination path>
+git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git <destination path>
 ```
 
 Then, run the initialize command to fetch the code for the first time:
