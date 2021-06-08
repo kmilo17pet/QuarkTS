@@ -258,6 +258,15 @@
     */        
     typedef qUINT32_t qSM_TimeoutSpecOptions_t;
 
+
+    /**
+    * @brief This structure should be used to define an item in a timeout-specification table. 
+    */
+    typedef struct _qSM_TimeoutStateDefinition_s{
+        qTime_t xTimeout;                                   /**< The value that the timeout will use*/
+        qSM_TimeoutSpecOptions_t options;                   /**< Timeout options. This includes the index of the timeout to be used */
+    }qSM_TimeoutStateDefinition_t;
+
     /** 
     * @brief A state object
     * @details  States are represented as instances of the qSM_State_t object.
@@ -283,30 +292,24 @@
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
             struct _qSM_State_s *initState;                 /*< The initial state of this parent*/
             qSM_StateCallback_t sCallback;                  /*< The state callback function*/
+            qSM_TimeoutStateDefinition_t *tdef;             /*< The timeout state definition*/
+            void *tTable;                                   /*< A pointer to the transition table.*/
             void* Data;                                     /*< State data. Storage pointer*/
+            size_t tEntries;                                /*< Number of entries on <tTable>*/
+            size_t nTm;
+
         }qPrivate;
         /*! @endcond  */
     }qSM_State_t;
-    
-    /**
-    * @brief This structure should be used to define an item in a timeout-specification table. 
-    */
-    typedef struct _qSM_TimeoutStateDefinition_s{
-        qSM_State_t *xState;                                /**< A pointer to the state where the timeout will operate*/
-        qTime_t xTimeout;                                   /**< The value that the timeout will use*/
-        qSM_TimeoutSpecOptions_t options;                   /**< Timeout options. This includes the index of the timeout to be used */
-    }qSM_TimeoutStateDefinition_t;
-    
+      
     /** 
     * @brief A FSM Timeout specification object
     * @note Do not access any member of this structure directly. 
     */    
     typedef struct _qSM_TimeoutSpec_s{
         /*! @cond  */
-        qSM_TimeoutStateDefinition_t *spec;                 /*< a pointer to the state-timeout lookup table*/
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/     
         qUINT32_t isPeriodic;                               /*< witch one is periodic*/
-        size_t n;                                           /*< the number of entries inside the <spec> field*/
         /*! @endcond  */
     }qSM_TimeoutSpec_t;
 
@@ -326,12 +329,10 @@
             qSM_State_t *next;                              /*< The next state to execute. */
             qSM_State_t *source;                            /*< Source state during the last transition*/
             void *Data;                                     /*< The user storage-pointer*/
-            void *tTable;                                   /*< A pointer to the transition table.*/
             #if ( Q_QUEUES == 1 )
                 qQueue_t *queue;                            /*< A pointer to the signal queue.*/
             #endif
             qSM_TimeoutSpec_t *TimeSpec;                    /*< A pointer to the timeout specification object*/
-            size_t tEntries;                                /*< Number of entries on <tTable>*/
             qSM_SurroundingCallback_t surrounding;          /*< An callback to handle actions after and before any state. */
             qSM_State_t top;                                /*< The top most state*/
             _qSM_UnprotectedPublicData_t handler;           /*< The FSM handler argument*/    
@@ -344,7 +345,6 @@
     * @brief This structure should be used to define an item in the state transition table. 
     */
     typedef struct _qSM_Transition_s{
-        qSM_State_t *CurrentState;                          /**< A pointer to the state where this transition takes place*/
         qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
         qSM_SignalAction_t Guard;                           /**< The signal guard/action*/
         qSM_State_t *NextState;                             /**< A pointer to the next state after the transition*/
@@ -359,7 +359,7 @@
         qSM_ATTRIB_STATE_CURRENT,                           /**< Only for qStateMachine_Get_Machine() : Get a pointer to the current running state*/
         qSM_ATTRIB_SIGNAL_QUEUE,                            /**< Only for qStateMachine_Get_Machine() : Get a pointer to the signal-queue object if installed*/
         qSM_ATTRIB_TIMESPEC,                                /**< Only for qStateMachine_Get_Machine() : Get a pointer to the timeout specification object if installed*/
-        qSM_ATTRIB_TRANSITION_TABLE,                        /**< Only for qStateMachine_Get_Machine() : Get a pointer to the transition table if installed*/
+        qSM_ATTRIB_TRANSITION_TABLE,                        /**< Only for qStateMachine_Get_State() : Get a pointer to the transition table if available*/
         qSM_ATTRIB_DATA,                                    /**< Get the user data ( storage-pointer ) */
         qSM_ATTRIB_COMPOSITE_INITSTATE,                     /**< Only for qStateMachine_Get_State() : Get the initial default or initial state, if input is composite*/
         qSM_ATTRIB_COMPOSITE_LASTSTATE,                     /**< Only for qStateMachine_Get_State() : Get the last state, if input is composite*/
@@ -407,12 +407,12 @@
        
     /**
     * @brief Install a transition table on the provided state machine.
-    * @param[in] m A pointer to the FSM object.
+    * @param[in] state A pointer to the state object.
     * @param[in] table An array of transitions that describes the state-machine behavior.
     * @param[in] n The number of transitions available within the table.
     * @return #qTrue on success, otherwise return #qFalse.
     */        
-    qBool_t qStateMachine_InstallTransitionTable( qSM_t * const m, qSM_Transition_t * const table, const size_t n );
+    qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const state, qSM_Transition_t * const table, const size_t n );
 
     /**
     * @brief Install a signal queue to the provided state machine.
@@ -442,20 +442,31 @@
     /**
     * @brief Install the Timeout specification object to target FSM to allow timed 
     * signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ). 
-    * This methods also set fixed timeouts for specific states using a lookup-table. 
     * @attention This feature its only available if the FSM has a signal queue installed.
-    * @note The lookup table should be an array of type qSM_TimeoutStateDefinition_t
-    *  with @a nEntries elements matching { state, time, options }. 
     * @note You can increse the number of available timeouts instances by changing 
     * the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h          
+    * @see qStateMachine_InstallSignalQueue()  
     * @param[in] m A pointer to the FSM object.
     * @param[in] ts A pointer to the timeout specification object.
+    * @return  Returns #qTrue on success, otherwise returns #qFalse.
+    */    
+    qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts );
+   
+    /**
+    * @brief Setup fixed timeouts for the specified state using a lookup-table. 
+    * @attention This feature its only available if the FSM has a signal queue installed.
+    * @note The container state-machine must have a timeout-specification installed.
+    * @note The lookup table should be an array of type qSM_TimeoutStateDefinition_t
+    *  with @a nEntries elements matching { time, options }. 
+    * @see qStateMachine_InstallSignalQueue()  
+    * @see qStateMachine_InstallTimeoutSpec()       
+    * @param[in] state A pointer to the state object.
     * @param[in] tdef The lookup table matching the target state and the requested timeout.
     * @param[in] n The number of elements inside @a tdef. 
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */    
-    qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
-   
+    qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const state, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
+
     /**
     * @brief Set the time for the selected built-in timeout inside the target FSM.
     * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
@@ -468,9 +479,9 @@
     qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t xTime );
 
     /**
-    * @brief Stop the time count for the selected built-in timeout for the target FSM.
-    * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
-    * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
+    * @brief Stop the time count for the selected built-in timeout.
+    * @note Requires an installed timeout-specification. For this use qStateMachine_InstallTimeoutSpec()
+    * @note Requires an installed signal-queue. For this use qStateMachine_InstallSignalQueue()      
     * @param[in] m A pointer to the FSM object.
     * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
