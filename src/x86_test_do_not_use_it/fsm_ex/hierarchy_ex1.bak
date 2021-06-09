@@ -29,6 +29,7 @@ static int foo = 0;
 
 qBool_t fsmguard1( qSM_Handler_t h ){
     qBool_t guard = qFalse;
+    (void)h;
     puts("guard1");
     if( 1 == foo ){
         foo  = 0;
@@ -40,6 +41,7 @@ qBool_t fsmguard1( qSM_Handler_t h ){
 
 qBool_t fsmguard2( qSM_Handler_t h ){
     qBool_t guard = qFalse;
+    (void)h;
     puts("guard2");
     if( 0 == foo ){
         foo  = 1;
@@ -49,33 +51,47 @@ qBool_t fsmguard2( qSM_Handler_t h ){
     return guard;
 }
 
+qSM_Transition_t s_transitions[] = {
+    { SIGNAL_E,        NULL,           &s11,        0  },   
+    { SIGNAL_I,        fsmguard1,      NULL,        0  },
+};
 
-qSM_Transition_t table[] = {
-    { &s,               SIGNAL_E,        NULL,           &s11,      0  },   
-    { &s1,              SIGNAL_B,        NULL,           &s11,      0  },  
-    { &s1,              SIGNAL_A,        NULL,           &s1,      0  },  
-    { &s11,             SIGNAL_D,        fsmguard1,      &s1,      0  },    
-    { &s1,              SIGNAL_D,        fsmguard2,      &s,      0  },  
-    { &s11,             SIGNAL_H,        NULL,           &s,      0  },
-    { &s1,              SIGNAL_C,        NULL,           &s2,      0  },
-    { &s1,              SIGNAL_F,        NULL,           &s211,      0  },
-    { &s11,             SIGNAL_G,        NULL,           &s211,      0  },
-    { &s2,              SIGNAL_C,        NULL,           &s1,      0  },
-    { &s2,              SIGNAL_F,        NULL,           &s11,      0  },
-    { &s21,             SIGNAL_G,        NULL,           &s1,      0  },
-    { &s21,             SIGNAL_B,        NULL,           &s211,      0  },
-    { &s21,             SIGNAL_A,        NULL,           &s21,      0  },
-    { &s211,            SIGNAL_H,        NULL,           &s,      0  },
-    { &s211,            SIGNAL_D,        NULL,           &s21,      0  },
-    { &s,               SIGNAL_I,        fsmguard1,      NULL,      0  },
-    { &s2,              SIGNAL_I,        fsmguard2,      NULL,      0  },
+qSM_Transition_t s1_transitions[] = { 
+    { SIGNAL_B,        NULL,           &s11,        0  },  
+    { SIGNAL_A,        NULL,           &s1,         0  },   
+    { SIGNAL_D,        fsmguard2,      &s,          0  },  
+    { SIGNAL_C,        NULL,           &s2,         0  },
+    { SIGNAL_F,        NULL,           &s211,       0  },
+};
+
+qSM_Transition_t s11_transitions[] = {
+    { SIGNAL_D,        fsmguard1,      &s1,         0  },    
+    { SIGNAL_H,        NULL,           &s,          0  },
+    { SIGNAL_G,        NULL,           &s211,       0  },
+};
+
+qSM_Transition_t s2_transitions[] = {
+    { SIGNAL_C,        NULL,           &s1,         0  },
+    { SIGNAL_F,        NULL,           &s11,        0  },
+    { SIGNAL_I,        fsmguard2,      NULL,        0  },
+};
+
+qSM_Transition_t s21_transitions[] = {
+    { SIGNAL_G,        NULL,           &s1,         0  },
+    { SIGNAL_B,        NULL,           &s211,       0  },
+    { SIGNAL_A,        NULL,           &s21,        0  },
+};
+
+qSM_Transition_t s211_transitions[] = {
+    { SIGNAL_H,        NULL,           &s,          0  },
+    { SIGNAL_D,        NULL,           &s21,        0  },
 };
 
 /*=============================================================================*/
 qSM_Status_t statex_callback( qSM_Handler_t h ) {
     qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
     char *sdata = (char*)h->StateData;
-    uint8_t level = sdata[0]-48;
+    uint8_t level = sdata[0]-48u;
     char *sname = sdata+1;  
 
     switch( h->Signal ) {
@@ -172,7 +188,13 @@ int main(int argc, char** argv) {
 
     qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
     qStateMachine_InstallSignalQueue( &super, &sigqueue );
-    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
+
+    qStateMachine_Set_StateTransitions( &s, s_transitions, qFLM_ArraySize(s_transitions) );
+    qStateMachine_Set_StateTransitions( &s1, s1_transitions, qFLM_ArraySize(s1_transitions) );
+    qStateMachine_Set_StateTransitions( &s11, s11_transitions, qFLM_ArraySize(s11_transitions) );
+    qStateMachine_Set_StateTransitions( &s2, s2_transitions, qFLM_ArraySize(s2_transitions) );
+    qStateMachine_Set_StateTransitions( &s21, s21_transitions, qFLM_ArraySize(s21_transitions) );
+    qStateMachine_Set_StateTransitions( &s211, s211_transitions, qFLM_ArraySize(s211_transitions) );
           
     qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
     qOS_Run();

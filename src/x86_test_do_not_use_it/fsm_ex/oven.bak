@@ -31,16 +31,23 @@ qSM_Status_t Baking_State( qSM_Handler_t h );
 
 qTask_t SMTask;
 
-qSM_Transition_t table[] = {
-    { &state_doorclosed,              SIGNAL_OPEN,              NULL,           &state_dooropen, 0 },  
-    { &state_dooropen,                SIGNAL_CLOSE,             NULL,           &state_doorclosed, qSM_TRANSITION_DEEP_HISTORY }, 
-    { &state_doorclosed,              QSM_SIGNAL_TIMEOUT(0),    NULL,           &state_off, 0 }, 
-    { &state_doorclosed,              SIGNAL_TOAST,             NULL,           &state_toasting, 0 }, 
-    { &state_doorclosed,              SIGNAL_BAKE,              NULL,           &state_baking, 0 }, 
+
+qSM_Transition_t doorclosed_ttable[] = {
+    { SIGNAL_OPEN,              NULL,           &state_dooropen,        0 },  
+    { QSM_SIGNAL_TIMEOUT(0),    NULL,           &state_off,             0 }, 
+    { SIGNAL_TOAST,             NULL,           &state_toasting,        0 }, 
+    { SIGNAL_BAKE,              NULL,           &state_baking,          0 }, 
 };
 
+qSM_Transition_t dooropen_ttable[] = {
+    { SIGNAL_CLOSE,             NULL,           &state_doorclosed,      qSM_TRANSITION_DEEP_HISTORY }, 
+};
+
+
+
+
 qSM_TimeoutStateDefinition_t Oven_timeouts[]={
-    { &state_heating, 10.0f, QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
+    { 10.0f, QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
 };
 
 qSM_Status_t state_top_callback( qSM_Handler_t h ) {
@@ -205,7 +212,6 @@ int main(int argc, char** argv) {
     qOS_Setup(GetTickCountMs, 0.001f, NULL ); 
 
     qStateMachine_Setup( &super, state_top_callback, &state_doorclosed, NULL, NULL );
-    qStateMachine_InstallTransitionTable( &super, table, sizeof(table)/sizeof(table[0]) );
         qStateMachine_StateSubscribe( &super, &state_doorclosed, NULL, state_doorclosed_callback, &state_off, NULL ); 
         qStateMachine_StateSubscribe( &super, &state_dooropen, NULL, state_dooropen_callback, NULL, NULL ); 
             qStateMachine_StateSubscribe( &super, &state_off, &state_doorclosed, state_off_callback, NULL, NULL ); 
@@ -215,9 +221,12 @@ int main(int argc, char** argv) {
 
     qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
     qStateMachine_InstallSignalQueue( &super, &sigqueue );
-    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
-    qStateMachine_InstallTimeoutSpec( &super, &tm_spectimeout, Oven_timeouts, 1  );
-          
+   
+    qStateMachine_InstallTimeoutSpec( &super, &tm_spectimeout );
+    qStateMachine_Set_StateTimeouts( &state_heating, Oven_timeouts, 1 );
+    qStateMachine_Set_StateTransitions( &state_doorclosed, doorclosed_ttable, qFLM_ArraySize(doorclosed_ttable) );
+    qStateMachine_Set_StateTransitions( &state_dooropen, dooropen_ttable, qFLM_ArraySize(dooropen_ttable) );
+
     qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
     qOS_Run();
     (void)argc;

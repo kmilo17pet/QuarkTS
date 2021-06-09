@@ -29,15 +29,23 @@ qSM_Status_t state2b_callback( qSM_Handler_t h );
 
 qTask_t SMTask;
 
-qSM_Transition_t table[] = {
-    { &state3,              SIGNAL_A,        NULL,           &state4, qSM_TRANSITION_SHALLOW_HISTORY  },  
-    { &state3,              SIGNAL_E,        NULL,           &state4, qSM_TRANSITION_NO_HISTORY  },  
-    { &state3,              SIGNAL_F,        NULL,           &state4, qSM_TRANSITION_DEEP_HISTORY  },      
-    { &state4,              SIGNAL_B,        NULL,           &state3, 0 }, 
-    { &state1,              SIGNAL_C,        NULL,           &state2, 0 }, 
-    { &state2a,             SIGNAL_D,        NULL,           &state2b, 0 },  
+qSM_Transition_t state3_transitions[] = {
+    { SIGNAL_A,        NULL,           &state4,     qSM_TRANSITION_SHALLOW_HISTORY  },  
+    { SIGNAL_E,        NULL,           &state4,     qSM_TRANSITION_NO_HISTORY  },  
+    { SIGNAL_F,        NULL,           &state4,     qSM_TRANSITION_DEEP_HISTORY  },      
 };
 
+qSM_Transition_t state4_transitions[] = {
+    { SIGNAL_B,        NULL,           &state3,     0 }, 
+};
+
+qSM_Transition_t state1_transitions[] = {
+    { SIGNAL_C,        NULL,           &state2,     0 },  
+};
+
+qSM_Transition_t state2a_transitions[] = {
+    { SIGNAL_D,        NULL,           &state2b,    0 },  
+};
 
 qSM_Status_t state_top_callback( qSM_Handler_t h ) {
     qSM_Status_t RetVal = qSM_STATUS_EXIT_SUCCESS;
@@ -206,7 +214,11 @@ int main(int argc, char** argv) {
 
     qQueue_Setup( &sigqueue, topsm_sig_stack, sizeof(qSM_Signal_t), qFLM_ArraySize(topsm_sig_stack) );
     qStateMachine_InstallSignalQueue( &super, &sigqueue );
-    qStateMachine_InstallTransitionTable( &super, table, qFLM_ArraySize(table) );
+    
+    qStateMachine_Set_StateTransitions( &state3, state3_transitions, qFLM_ArraySize(state3_transitions) );
+    qStateMachine_Set_StateTransitions( &state4, state4_transitions, qFLM_ArraySize(state4_transitions) );
+    qStateMachine_Set_StateTransitions( &state1, state1_transitions, qFLM_ArraySize(state1_transitions) );
+    qStateMachine_Set_StateTransitions( &state2a, state2a_transitions, qFLM_ArraySize(state2a_transitions) );
           
     qOS_Add_StateMachineTask(  &SMTask, &super, qMedium_Priority, 0.1f, qEnabled, NULL  );     
     qOS_Run();
