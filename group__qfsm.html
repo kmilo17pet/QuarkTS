@@ -103,11 +103,11 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___handler__t.html">qSM_Handler_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback argument to handle the state-machine dynamics and provide execution information. Some members can be written to perform state-transtions.  <a href="structq_s_m___handler__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___state__t.html">qSM_State_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A state object.  <a href="structq_s_m___state__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This structure should be used to define an item in a timeout-specification table.  <a href="structq_s_m___timeout_state_definition__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___state__t.html">qSM_State_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A state object.  <a href="structq_s_m___state__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A FSM Timeout specification object.  <a href="structq_s_m___timeout_spec__t.html#details">More...</a><br /></td></tr>
@@ -242,23 +242,26 @@ Functions</h2></td></tr>
 <tr class="memitem:ga43ed8d178e96b2dd914355f18e7c7932"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932">qStateMachine_StateSubscribe</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const state, <a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const parent, <a class="el" href="group__qfsm.html#gaaa9971018b89acab7942d851ce860faa">qSM_StateCallback_t</a> StateFcn, <a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const initState, void *Data)</td></tr>
 <tr class="memdesc:ga43ed8d178e96b2dd914355f18e7c7932"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function subscribes the FSM instance to a specific state with an associated callback function.  <a href="group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932">More...</a><br /></td></tr>
 <tr class="separator:ga43ed8d178e96b2dd914355f18e7c7932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga680fadc90add1890f1a65df308e652b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga680fadc90add1890f1a65df308e652b1">qStateMachine_InstallTransitionTable</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_s_m___transition__t.html">qSM_Transition_t</a> *const table, const size_t n)</td></tr>
-<tr class="memdesc:ga680fadc90add1890f1a65df308e652b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install a transition table on the provided state machine.  <a href="group__qfsm.html#ga680fadc90add1890f1a65df308e652b1">More...</a><br /></td></tr>
-<tr class="separator:ga680fadc90add1890f1a65df308e652b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39e0e027ed282a9869322533e79fc4b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga39e0e027ed282a9869322533e79fc4b2">qStateMachine_Set_StateTransitions</a> (<a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const state, <a class="el" href="structq_s_m___transition__t.html">qSM_Transition_t</a> *const table, const size_t n)</td></tr>
+<tr class="memdesc:ga39e0e027ed282a9869322533e79fc4b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install a transition table on the provided state machine.  <a href="group__qfsm.html#ga39e0e027ed282a9869322533e79fc4b2">More...</a><br /></td></tr>
+<tr class="separator:ga39e0e027ed282a9869322533e79fc4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2aae0de4e0850942d0526c126773c901"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901">qStateMachine_InstallSignalQueue</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_queue__t.html">qQueue_t</a> *queue)</td></tr>
 <tr class="memdesc:ga2aae0de4e0850942d0526c126773c901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install a signal queue to the provided state machine.  <a href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901">More...</a><br /></td></tr>
 <tr class="separator:ga2aae0de4e0850942d0526c126773c901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c">qStateMachine_SendSignal</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> xSignal, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> isUrgent)</td></tr>
 <tr class="memdesc:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a signal to the provided state machine.  <a href="group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c">More...</a><br /></td></tr>
 <tr class="separator:gaf7833ab0ac37e9b67a4fa10b31a7d43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga803c45fec0154efce96c559748e9f722"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722">qStateMachine_InstallTimeoutSpec</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> *const ts, <a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> *tdef, const size_t n)</td></tr>
-<tr class="memdesc:ga803c45fec0154efce96c559748e9f722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). This methods also set fixed timeouts for specific states using a lookup-table.  <a href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722">More...</a><br /></td></tr>
-<tr class="separator:ga803c45fec0154efce96c559748e9f722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81a3c55cd5811420bdbb4383eabd542a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a">qStateMachine_InstallTimeoutSpec</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, <a class="el" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> *const ts)</td></tr>
+<tr class="memdesc:ga81a3c55cd5811420bdbb4383eabd542a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ).  <a href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a">More...</a><br /></td></tr>
+<tr class="separator:ga81a3c55cd5811420bdbb4383eabd542a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95f179c8ff8273a7676bac3f0ac9baa7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga95f179c8ff8273a7676bac3f0ac9baa7">qStateMachine_Set_StateTimeouts</a> (<a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const state, <a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> *tdef, const size_t n)</td></tr>
+<tr class="memdesc:ga95f179c8ff8273a7676bac3f0ac9baa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup fixed timeouts for the specified state using a lookup-table.  <a href="group__qfsm.html#ga95f179c8ff8273a7676bac3f0ac9baa7">More...</a><br /></td></tr>
+<tr class="separator:ga95f179c8ff8273a7676bac3f0ac9baa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33102ce4c39020cb183a1006683d1b08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga33102ce4c39020cb183a1006683d1b08">qStateMachine_TimeoutSet</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> xTimeout, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> xTime)</td></tr>
 <tr class="memdesc:ga33102ce4c39020cb183a1006683d1b08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the time for the selected built-in timeout inside the target FSM.  <a href="group__qfsm.html#ga33102ce4c39020cb183a1006683d1b08">More...</a><br /></td></tr>
 <tr class="separator:ga33102ce4c39020cb183a1006683d1b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab45cd840eaf1364294a13ea6543790e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">qStateMachine_TimeoutStop</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> xTimeout)</td></tr>
-<tr class="memdesc:gab45cd840eaf1364294a13ea6543790e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the time count for the selected built-in timeout for the target FSM.  <a href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">More...</a><br /></td></tr>
+<tr class="memdesc:gab45cd840eaf1364294a13ea6543790e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the time count for the selected built-in timeout.  <a href="group__qfsm.html#gab45cd840eaf1364294a13ea6543790e2">More...</a><br /></td></tr>
 <tr class="separator:gab45cd840eaf1364294a13ea6543790e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga47013763cf646d09cbff646a4d692a8a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a">qStateMachine_Get_Machine</a> (<a class="el" href="structq_s_m__t.html">qSM_t</a> *const m, const <a class="el" href="group__qfsm.html#ga1b1fbda0bf0e715aa1986e21235c6e91">qSM_Attribute_t</a> attr)</td></tr>
 <tr class="memdesc:ga47013763cf646d09cbff646a4d692a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get attributes from the provided FSM object.  <a href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a">More...</a><br /></td></tr>
@@ -615,7 +618,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91ad6f74aae5e45943fb8327ad57fb62bb6"></a>qSM_ATTRIB_TIMESPEC&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the timeout specification object if installed </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a65d3b1a576312716fc07c8551769ce88"></a>qSM_ATTRIB_TRANSITION_TABLE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a" title="Get attributes from the provided FSM object.">qStateMachine_Get_Machine()</a> : Get a pointer to the transition table if installed </p>
+<tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a65d3b1a576312716fc07c8551769ce88"></a>qSM_ATTRIB_TRANSITION_TABLE&#160;</td><td class="fielddoc"><p>Only for <a class="el" href="group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd" title="Get attributes from the provided state object.">qStateMachine_Get_State()</a> : Get a pointer to the transition table if available </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga1b1fbda0bf0e715aa1986e21235c6e91a388c4c533e0e99411b8a0c91dbe7c007"></a>qSM_ATTRIB_DATA&#160;</td><td class="fielddoc"><p>Get the user data ( storage-pointer ) </p>
 </td></tr>
@@ -798,8 +801,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga803c45fec0154efce96c559748e9f722"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga803c45fec0154efce96c559748e9f722">&#9670;&nbsp;</a></span>qStateMachine_InstallTimeoutSpec()</h2>
+<a id="ga81a3c55cd5811420bdbb4383eabd542a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga81a3c55cd5811420bdbb4383eabd542a">&#9670;&nbsp;</a></span>qStateMachine_InstallTimeoutSpec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -814,19 +817,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> *const&#160;</td>
-          <td class="paramname"><em>ts</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> *&#160;</td>
-          <td class="paramname"><em>tdef</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
+          <td class="paramname"><em>ts</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -836,66 +827,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). This methods also set fixed timeouts for specific states using a lookup-table. </p>
+<p>Install the Timeout specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). </p>
 <dl class="section attention"><dt>Attention</dt><dd>This feature its only available if the FSM has a signal queue installed. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The lookup table should be an array of type <a class="el" href="structq_s_m___timeout_state_definition__t.html" title="This structure should be used to define an item in a timeout-specification table.">qSM_TimeoutStateDefinition_t</a> with <em>nEntries</em> elements matching { state, time, options }. </dd>
-<dd>
-You can increse the number of available timeouts instances by changing the <b>Q_FSM_MAX_TIMEOUTS</b> configuration macro inside <b>qconfig.h</b> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>You can increse the number of available timeouts instances by changing the <b>Q_FSM_MAX_TIMEOUTS</b> configuration macro inside <b>qconfig.h</b> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ts</td><td>A pointer to the timeout specification object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tdef</td><td>The lookup table matching the target state and the requested timeout. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of elements inside <em>tdef</em>. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga680fadc90add1890f1a65df308e652b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga680fadc90add1890f1a65df308e652b1">&#9670;&nbsp;</a></span>qStateMachine_InstallTransitionTable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qStateMachine_InstallTransitionTable </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_s_m__t.html">qSM_t</a> *const&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structq_s_m___transition__t.html">qSM_Transition_t</a> *const&#160;</td>
-          <td class="paramname"><em>table</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Install a transition table on the provided state machine. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of transitions that describes the state-machine behavior. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of transitions available within the table. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1058,6 +1001,103 @@ The signal-queue has the highest precedence. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga95f179c8ff8273a7676bac3f0ac9baa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga95f179c8ff8273a7676bac3f0ac9baa7">&#9670;&nbsp;</a></span>qStateMachine_Set_StateTimeouts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qStateMachine_Set_StateTimeouts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> *&#160;</td>
+          <td class="paramname"><em>tdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setup fixed timeouts for the specified state using a lookup-table. </p>
+<dl class="section attention"><dt>Attention</dt><dd>This feature its only available if the FSM has a signal queue installed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The container state-machine must have a timeout-specification installed. </dd>
+<dd>
+The lookup table should be an array of type <a class="el" href="structq_s_m___timeout_state_definition__t.html" title="This structure should be used to define an item in a timeout-specification table.">qSM_TimeoutStateDefinition_t</a> with <em>nEntries</em> elements matching { time, options }. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd>
+<dd>
+<a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tdef</td><td>The lookup table matching the target state and the requested timeout. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of elements inside <em>tdef</em>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga39e0e027ed282a9869322533e79fc4b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga39e0e027ed282a9869322533e79fc4b2">&#9670;&nbsp;</a></span>qStateMachine_Set_StateTransitions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qStateMachine_Set_StateTransitions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_s_m___state__t.html">qSM_State_t</a> *const&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structq_s_m___transition__t.html">qSM_Transition_t</a> *const&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Install a transition table on the provided state machine. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of transitions that describes the state-machine behavior. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of transitions available within the table. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1227,7 +1267,7 @@ The signal-queue has the highest precedence. </dd></dl>
 </div><div class="memdoc">
 
 <p>Set the time for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
 Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1268,10 +1308,10 @@ Requires an installed signal queue. For this use <a class="el" href="group__qfsm
       </table>
 </div><div class="memdoc">
 
-<p>Stop the time count for the selected built-in timeout for the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed time specification. For this use <a class="el" href="group__qfsm.html#ga803c45fec0154efce96c559748e9f722" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
+<p>Stop the time count for the selected built-in timeout. </p>
+<dl class="section note"><dt>Note</dt><dd>Requires an installed timeout-specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
-Requires an installed signal queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
+Requires an installed signal-queue. For this use <a class="el" href="group__qfsm.html#ga2aae0de4e0850942d0526c126773c901" title="Install a signal queue to the provided state machine.">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>

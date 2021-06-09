@@ -1,6 +1,5 @@
 var structq_s_m___transition__t =
 [
-    [ "CurrentState", "structq_s_m___transition__t.html#aa12bd624e17a3748af5f3870bed7bc1e", null ],
     [ "Guard", "structq_s_m___transition__t.html#a402490b4f35f2d8bf14b721a883f727e", null ],
     [ "HistoryMode", "structq_s_m___transition__t.html#a6fa7d1e2edd86354c0849ad8cd0d8ae5", null ],
     [ "NextState", "structq_s_m___transition__t.html#ae50f357d0d26b62eb50ce7478fc26542", null ],

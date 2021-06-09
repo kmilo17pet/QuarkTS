@@ -11,16 +11,14 @@ var group__qfsm =
       [ "Status", "structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a", null ],
       [ "TransitionHistory", "structq_s_m___handler__t.html#acde5467a47c845d8f84629204ffb0a9d", null ]
     ] ],
-    [ "qSM_State_t", "structq_s_m___state__t.html", null ],
     [ "qSM_TimeoutStateDefinition_t", "structq_s_m___timeout_state_definition__t.html", [
       [ "options", "structq_s_m___timeout_state_definition__t.html#a84fd6c1f3959fda6b8cc73aa5b4fd118", null ],
-      [ "xState", "structq_s_m___timeout_state_definition__t.html#a533e3573a6d92283a72c523b22451d61", null ],
       [ "xTimeout", "structq_s_m___timeout_state_definition__t.html#afb96f6137915206759987e4003c2138d", null ]
     ] ],
+    [ "qSM_State_t", "structq_s_m___state__t.html", null ],
     [ "qSM_TimeoutSpec_t", "structq_s_m___timeout_spec__t.html", null ],
     [ "qSM_t", "structq_s_m__t.html", null ],
     [ "qSM_Transition_t", "structq_s_m___transition__t.html", [
-      [ "CurrentState", "structq_s_m___transition__t.html#aa12bd624e17a3748af5f3870bed7bc1e", null ],
       [ "Guard", "structq_s_m___transition__t.html#a402490b4f35f2d8bf14b721a883f727e", null ],
       [ "HistoryMode", "structq_s_m___transition__t.html#a6fa7d1e2edd86354c0849ad8cd0d8ae5", null ],
       [ "NextState", "structq_s_m___transition__t.html#ae50f357d0d26b62eb50ce7478fc26542", null ],
@@ -73,12 +71,13 @@ var group__qfsm =
     [ "qStateMachine_Get_Machine", "group__qfsm.html#ga47013763cf646d09cbff646a4d692a8a", null ],
     [ "qStateMachine_Get_State", "group__qfsm.html#ga228a7c01ac1a3044e65690b48c3c9cfd", null ],
     [ "qStateMachine_InstallSignalQueue", "group__qfsm.html#ga2aae0de4e0850942d0526c126773c901", null ],
-    [ "qStateMachine_InstallTimeoutSpec", "group__qfsm.html#ga803c45fec0154efce96c559748e9f722", null ],
-    [ "qStateMachine_InstallTransitionTable", "group__qfsm.html#ga680fadc90add1890f1a65df308e652b1", null ],
+    [ "qStateMachine_InstallTimeoutSpec", "group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a", null ],
     [ "qStateMachine_Run", "group__qfsm.html#ga4ac913ee781884dfdd5fed72e2786bb2", null ],
     [ "qStateMachine_SendSignal", "group__qfsm.html#gaf7833ab0ac37e9b67a4fa10b31a7d43c", null ],
     [ "qStateMachine_Set_MachineSurrounding", "group__qfsm.html#ga5468a6c50e97c90d801f72f67762e386", null ],
     [ "qStateMachine_Set_StateCallback", "group__qfsm.html#ga4d0ee76dbf994b71ce271f18c1033bbc", null ],
+    [ "qStateMachine_Set_StateTimeouts", "group__qfsm.html#ga95f179c8ff8273a7676bac3f0ac9baa7", null ],
+    [ "qStateMachine_Set_StateTransitions", "group__qfsm.html#ga39e0e027ed282a9869322533e79fc4b2", null ],
     [ "qStateMachine_Setup", "group__qfsm.html#ga02734ed55d7aaf5f9e4e9e10df52ba49", null ],
     [ "qStateMachine_StateSubscribe", "group__qfsm.html#ga43ed8d178e96b2dd914355f18e7c7932", null ],
     [ "qStateMachine_TimeoutSet", "group__qfsm.html#ga33102ce4c39020cb183a1006683d1b08", null ],
