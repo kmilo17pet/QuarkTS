@@ -182,7 +182,7 @@
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 
-    * so this many bytes will be copied from @ItemToQueue into the queue storage
+    * so this many bytes will be copied from @a ItemToQueue into the queue storage
     * area.
     * @param[in] InsertMode Can take the value #QUEUE_SEND_TO_BACK to place the item at the back 
     * of the queue, or #QUEUE_SEND_TO_FRONT to place the item at the front of 

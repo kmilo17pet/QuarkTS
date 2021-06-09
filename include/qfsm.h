@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.28
+ * @version 5.29
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -408,7 +408,10 @@
     /**
     * @brief Install a transition table on the provided state machine.
     * @param[in] state A pointer to the state object.
-    * @param[in] table An array of transitions that describes the state-machine behavior.
+    * @param[in] table An array of entries of type qSM_Transition_t with the outgoing 
+    * transitions. Each entry relates signals, actions and the target state using the 
+    * following layout: 
+    * @verbatim { [Signal], [Action/Guard],  [Target state],  [History Mode] } @endverbatim
     * @param[in] n The number of transitions available within the table.
     * @return #qTrue on success, otherwise return #qFalse.
     */        
@@ -461,7 +464,9 @@
     * @see qStateMachine_InstallSignalQueue()  
     * @see qStateMachine_InstallTimeoutSpec()       
     * @param[in] state A pointer to the state object.
-    * @param[in] tdef The lookup table matching the target state and the requested timeout.
+    * @param[in] tdef  The lookup table matching the requested timeout values with their 
+    * respective options.
+    * @verbatim { [Timeout value], [Options(Combined with a bitwise OR)] } @endverbatim
     * @param[in] n The number of elements inside @a tdef. 
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */    
@@ -472,7 +477,7 @@
     * @note Requires an installed time specification. For this use qStateMachine_InstallTimeoutSpec()
     * @note Requires an installed signal queue. For this use qStateMachine_InstallSignalQueue()      
     * @param[in] m A pointer to the FSM object.
-    * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param[in] xTimeout The index of the requested timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @param[in] xTime The specified time usually given in seconds.
     * @return  Returns #qTrue on success, otherwise returns #qFalse.
     */     
