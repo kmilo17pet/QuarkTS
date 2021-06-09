@@ -1047,7 +1047,7 @@ The lookup table should be an array of type <a class="el" href="structq_s_m___ti
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tdef</td><td>The lookup table matching the target state and the requested timeout. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tdef</td><td>The lookup table matching the requested timeout values with their respective options. <pre class="fragment">{ [Timeout value], [Options(Combined with a bitwise OR)] } </pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of elements inside <em>tdef</em>. </td></tr>
   </table>
   </dd>
@@ -1092,7 +1092,7 @@ The lookup table should be an array of type <a class="el" href="structq_s_m___ti
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of transitions that describes the state-machine behavior. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of entries of type <a class="el" href="structq_s_m___transition__t.html" title="This structure should be used to define an item in the state transition table.">qSM_Transition_t</a> with the outgoing transitions. Each entry relates signals, actions and the target state using the following layout: <pre class="fragment">{ [Signal], [Action/Guard],  [Target state],  [History Mode] } </pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of transitions available within the table. </td></tr>
   </table>
   </dd>
@@ -1273,7 +1273,7 @@ Requires an installed signal queue. For this use <a class="el" href="group__qfsm
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">xTimeout</td><td>The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xTimeout</td><td>The index of the requested timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) ) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">xTime</td><td>The specified time usually given in seconds. </td></tr>
   </table>
   </dd>
