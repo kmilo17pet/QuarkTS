@@ -1,7 +1,7 @@
 /*!
 * @file qtypes.h
 * @author J. Camilo Gomez C.
-* @version 1.45
+* @version 1.46
 * @note This file is part of the QuarkTS distribution.
 * @brief type definitions for all OS interfaces
 */
@@ -123,7 +123,7 @@
     #define qFalse                  ( (qBool_t)0x00u )
 
     /** 
-    * @brief A boolean value that represents true/success/On/High.
+    * @brief A boolean value that represents true/success/On or High.
     */     
     #define qTrue                   ( (qBool_t)0x01u )
 

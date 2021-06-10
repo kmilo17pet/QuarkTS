@@ -1,7 +1,7 @@
 /*!
  * @file qcoroutine.h
  * @author J. Camilo Gomez C.
- * @version 3.70
+ * @version 3.71
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface for the Co-Routine module.
  **/
@@ -196,6 +196,7 @@
 
     /**
     * @brief Yields until the logical condition being true
+    * @see #qCR_TimedWaitUntil
     * @param[in] bCondition The logical condition to be evaluated
     * @verbatim
      Action sequence : [Save progress] 
@@ -208,6 +209,7 @@
 
     /**
     * @brief  Yields until the logical condition being true or the specified timeout expires.
+    * @see #qCR_WaitUntil
     * @param[in] bCondition The logical condition to be evaluated.
     * @param[in] tValue The specific amount of time to wait given in seconds.
     * @verbatim
@@ -307,6 +309,7 @@
 
     /**
     * @brief Perform an external action over the requested Co-routine
+    * @see #qCR_BeginWithHandle
     * @param[in] h The Co-routine handle.
     * @param[in] action The specific action to perform, should be one of the following: 
     * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITIONSET.

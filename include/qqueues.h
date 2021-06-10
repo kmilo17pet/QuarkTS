@@ -1,7 +1,7 @@
 /*!
  * @file qqueues.h
  * @author J. Camilo Gomez C.
- * @version 2.02
+ * @version 2.03
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to create and handle queues.
  **/
@@ -179,6 +179,7 @@
 
     /**
     * @brief Post an item to the back of the queue. The item is queued by copy, not by reference
+    * @see #qQueue_Send, #qQueue_SendToFront, #qQueue_SendToBack
     * @param[in] obj A pointer to the Queue object
     * @param[in] ItemToQueue A pointer to the item that is to be placed on the queue. The size of 
     * the items the queue will hold was defined when the queue was created, 

@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.27
+ * @version 3.28
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS operations.
  **/
@@ -134,6 +134,7 @@
     /**
     * @brief Try to spread a notification among all the tasks in the scheduling scheme
     * @note Operation will be performed in the next scheduling cycle. 
+    * @see qTask_Notification_Send(), qTask_Notification_Queue()
     * @param[in] eventdata Specific event user-data.
     * @param[in] mode the method used to spread the event: ::qTask_NotifySimple or ::qTask_NotifyQueued.
     * @return #qTrue if success. #qFalse if any other spread operation is in progress.
@@ -193,6 +194,7 @@
         * @brief Add a task to the scheduling scheme running a dedicated state-machine. 
         * The task is scheduled to run every @a Time seconds in #qPeriodic mode. The event info
         * will be available as a generic pointer inside the qSM_Handler_t::Data field.
+        * @note The State-machine object should be previously configured
         * @see qStateMachine_Setup()
         * @param[in] Task  A pointer to the task node.
         * @param[in] m  A pointer to the Finite State-Machine (FSM) object.    
@@ -215,6 +217,7 @@
         * @brief Add a task to the scheduling scheme running an AT Command Line Interface.
         * Task will be scheduled as an event-triggered task. The parser address will be 
         * stored in the qEvent_t::TaskData storage-Pointer.
+        * @note The AT-CLI object should be previously configured.
         * @see qATCLI_Setup()
         * @param[in] Task A pointer to the task node.
         * @param[in] cli A pointer to the AT Command Line Inteface instance.

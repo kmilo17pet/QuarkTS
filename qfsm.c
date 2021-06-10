@@ -17,26 +17,21 @@ Miro Samek and Paul Y. Montgomery, Embedded Systems Programming,  August 2000
 
 #if ( Q_FSM == 1 )
 
-
 typedef qByte_t qSM_LCA_t;
 
 static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory );
-
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s );
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
-
-
 static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s );
 static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s );
 static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t xSignal );
 static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **entryPath );
 static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath );
-
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, qSM_Signal_t fin );
 static void qStateMachine_SweepTransitionTable( qSM_State_t * const CurrentState, qSM_UnprotectedHandler_t h );
-
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
 static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, qSM_Signal_t xSignal );
 
@@ -117,7 +112,7 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
 }
 /*============================================================================*/
 /*
-This function fills the qSM_Handler_t argument with the common data for all the
+This function fill the qSM_Handler_t argument with the common data for all the
 required actions.
 */
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s ){
@@ -219,7 +214,6 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * 
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         status = qSM_STATUS_SIGNAL_HANDLED; /*the signal is assumed to be handled if the transition occurs*/
     }
-    
     return status;
 }
 /*============================================================================*/
@@ -251,26 +245,45 @@ static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath
     }
 }
 /*============================================================================*/
+/*
+This function checks for available signals. It initially checks for time signals 
+if the state machine has a timeout-specification object installed. If any timeout expires, 
+the signal is put on the available recipient.
+If the state machine has the signal-queue installed, the signal that is in front of the 
+queue is obtained. In case of there is no signal-queue or the queue its empty, 
+the input argument and the exclusion variable are verified.
+Rules: 
+- A signal coming from the signal-queue has the higher precedence.
+- A valid input argument overides the exclusion variable.
+*/
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, qSM_Signal_t fin ){
+    qSM_Signal_t xSignal = fin;
+    
+    if( NULL != m->qPrivate.TimeSpec ){
+        qStateMachine_TimeoutCheckSignals( m ); /*use the available recipient: signal-queue or the EV*/
+    }
+    #if ( Q_QUEUES == 1 )
+        if( NULL != m->qPrivate.queue ){
+            qSM_Signal_t ReceivedSignal;
+            if( qTrue == qQueue_Receive( m->qPrivate.queue, &ReceivedSignal ) ){
+                xSignal = ReceivedSignal; 
+            }
+        }
+    #endif
+    if ( ( QSM_SIGNAL_NONE == xSignal ) && ( QSM_SIGNAL_NONE != m->qPrivate.SignalNot ) ){ 
+        xSignal = m->qPrivate.SignalNot;
+        m->qPrivate.SignalNot = QSM_SIGNAL_NONE; 
+    }
+    return xSignal;
+}
+/*============================================================================*/
 qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t xSignal ){
     qBool_t RetValue = qFalse;
     if( NULL != m ){
         qSM_State_t *entryPath[ Q_FSM_MAX_NEST_DEPTH ];
         qSM_State_t *s;
-        
-        /*check for signals first*/
-        qStateMachine_TimeoutCheckSignals( m );
-        #if ( Q_QUEUES == 1 )
-            if( NULL != m->qPrivate.queue ){
-                qSM_Signal_t ReceivedSignal;
-                if( qTrue == qQueue_Receive( m->qPrivate.queue, &ReceivedSignal ) ){
-                    xSignal = ReceivedSignal; 
-                }
-            }
-        #endif
-        if ( ( QSM_SIGNAL_NONE == xSignal ) && ( QSM_SIGNAL_NONE != m->qPrivate.SignalNot ) ){ 
-            xSignal = m->qPrivate.SignalNot;
-            m->qPrivate.SignalNot = QSM_SIGNAL_NONE; 
-        }
+      
+        xSignal = qStateMachine_CheckForSignals( m, xSignal );
 
         /*Enter here only once to start the top state*/
         if( NULL == m->qPrivate.current  ){ 
@@ -413,21 +426,20 @@ qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t xSignal, const q
 /*============================================================================*/
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m ){
     qSM_TimeoutSpec_t *ts = m->qPrivate.TimeSpec;
-    if( NULL != ts ) {
-        size_t i;
-        for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
-            if( qTrue == qSTimer_Expired( &ts->builtin_timeout[ i ] ) ) {
-                #if ( Q_QUEUES == 1 )
-                    (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT(i), qFalse );   
-                #endif
-                if( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ){
-                    (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
-                }
-                else{
-                    qSTimer_Disarm( &ts->builtin_timeout[ i ] );
-                }
-            } 
-        }
+    size_t i;
+
+    for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
+        if( qTrue == qSTimer_Expired( &ts->builtin_timeout[ i ] ) ) {
+            #if ( Q_QUEUES == 1 )
+                (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT(i), qFalse );   
+            #endif
+            if( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ){
+                (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
+            }
+            else{
+                qSTimer_Disarm( &ts->builtin_timeout[ i ] );
+            }
+        } 
     }
 }
 /*============================================================================*/
@@ -469,7 +481,6 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
             }
         }
     }
-    
 }
 /*============================================================================*/
 qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts ){
@@ -597,6 +608,5 @@ qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCa
     return RetValue;
 }
 /*============================================================================*/
-
 
 #endif /*#if ( Q_FSM == 1 )*/

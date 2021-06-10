@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.26
+ * @version 3.27
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -34,7 +34,7 @@
     */
 
     /**
-    * @brief An enum with all the possible values for the qEvent_t::Trigger member available as the task argument
+    * @brief An enum with all the possible values for the qEvent_t::Trigger member.
     */
     typedef enum {  
         /**
@@ -241,7 +241,7 @@
     * }
     * @endcode
     * 
-    * All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler,
+    * @attention All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler,
     * otherwise, the scheduler will hold the execution-state for that task, preventing the activation of other tasks.
     * @note Do not access any member of this structure directly. 
     */
@@ -276,7 +276,7 @@
 
     #if ( Q_QUEUES == 1 )
         /**
-        * @brief An enum to define the task link modes for a queue.
+        * @brief An enum that defines the modes in which a queue can be linked to a task
         */
         typedef enum {
             qQueueMode_Receiver  = 4,   /**< This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the qEvent_t::EventData field.*/
@@ -294,7 +294,7 @@
     */
 
     /**
-    * @brief An enum to define the notification modes for a task.
+    * @brief An enum that defines the modes in which a notification can be spread
     */
     typedef enum{
         qTask_NotifyNULL,               /**< Do not use this value. Used only internally.*/
@@ -310,6 +310,7 @@
     * setting the qEvent_t::Trigger flag to ::byNotificationSimple. Specific user-data can be passed 
     * through, and will be available in the respective callback inside the qEvent_t::EventData 
     * field.
+    * @see qTask_Notification_Queue(), qOS_Notification_Spread()
     * @param[in] Task Pointer to the task node.
     * @param[in] eventdata Specific event user-data.
     * @return #qTrue on success. Otherwise #qFalse.
@@ -325,6 +326,7 @@
     * available inside the qEvent_t::EventData field, only in corresponding launch.
     * If the task is in a qSleep operation state, the scheduler will change the operational 
     * state to qAwaken setting the SHUTDOWN bit.
+    * @see qTask_Notification_Send(), qOS_Notification_Spread()
     * @param[in] Task Pointer to the task node.
     * @param[in] eventdata Specific event user-data.
     * @return Returns #qTrue if the event has been inserted in the queue, or #qFalse if an error 
@@ -413,6 +415,7 @@
 
     /**
     * @brief Set the task operational state (Enabled or Disabled)
+    * @see #qTask_Suspend, #qTask_Disable, #qTask_Resume, #qTask_Enable, #qTask_ASleep, #qTask_Awake
     * @param[in] Task Pointer to the task node.
     * @param[in] State Use one of the following values:
     * 
@@ -454,6 +457,7 @@
 
     /**
     * @brief Put the task into a disabled state.    
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */     
@@ -461,6 +465,7 @@
 
     /**
     * @brief Put the task into a disabled state.    
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */        
@@ -468,6 +473,7 @@
 
     /**
     * @brief Put the task into an enabled state.    
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */    
@@ -475,6 +481,7 @@
 
     /**
     * @brief Put the task into an enabled state.    
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */     
@@ -485,6 +492,7 @@
     * by the lower precedence events.    
     * @note Only the higher precedence events (Queued Notifications) can
     * wake up the task.
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */    
@@ -493,6 +501,7 @@
     /**
     * @brief Put the task into a normal operation state. Here the task
     * will be able to catch any kind of events.   
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return none.
     */      
@@ -500,6 +509,7 @@
 
     /**
     * @brief Retrieve the enabled/disabled state 
+    * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
     * @return #qTrue if the task in on Enabled state, otherwise returns #qFalse.
     */       

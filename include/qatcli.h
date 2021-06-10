@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.53
+ * @version 2.54
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -270,13 +270,13 @@
 
     /**
     * @brief This function subscribes the CLI instance to a specific command with an associated 
-    * Callback function, so that next time the required command is sent to the CLI input, the 
+    * @a Callback function, so that next time the required command is sent to the CLI input, the 
     * callback function will be executed. The CLI module only analyze commands that follows the 
-    * extended AT-Commands syntax (+ can be ignored).
+    * extended AT-Commands syntax (the + char can be ignored).
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] Command A pointer to the AT command object.
     * @param[in] TextCommand The string (name) of the command we want to subscribe to. Since this 
-    * service only handles AT commands, this string has  to begin by the "at" characters and 
+    * service only handles AT commands, this string has to begin by the "at" characters and 
     * should be in lower case.
     * @param[in] Callback The handler of the callback function associated to the command. 
     * Prototype: @code qATCLI_Response_t xCallback( qATCLI_Handler_t ) @endcode
@@ -302,7 +302,8 @@
     /**
     * @brief Iterate between the commands available inside the AT-CLI instance.
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] reload If #qTrue, the iterator will set their position at the beginning.
+    * @param[in] reload If #qTrue, the iterator will set their position at the beginning of
+    * the list of subscribed commands.
     * @return The current iterated command. NULL when no more commands are available.
     */ 
     qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload );
@@ -353,6 +354,7 @@
 
     /**
     * @brief Run the AT Command Line Interface when the input is ready.
+    * @see qOS_Add_ATCLITask()
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @return #qTrue on success, otherwise return #qFalse
     */       
