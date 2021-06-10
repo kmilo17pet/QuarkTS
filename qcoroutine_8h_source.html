@@ -185,36 +185,36 @@ $(document).ready(function(){initNavTree('qcoroutine_8h_source.html',''); initRe
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
 <div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga983d59730989a954845bab0cdc1155a9">  195</a></span>&#160;<span class="preprocessor">    #define qCR_Restart                                 _qCR_Restart   </span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga0605e4d3163a374c51073896903d2ea7">  207</a></span>&#160;<span class="preprocessor">    #define qCR_WaitUntil( bCondition )                 _qCR_wu_Assert( bCondition )</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga3b15b3de92651cdc83dbc50bf1c4fe04">  220</a></span>&#160;<span class="preprocessor">    #define qCR_TimedWaitUntil( bCondition, tValue )    _qCR_wu_TmrAssert( bCondition, tValue )</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">  232</a></span>&#160;<span class="preprocessor">    #define qCR_Do                                      _qCR_do   </span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">  247</a></span>&#160;<span class="preprocessor">    #define qCR_Until( bCondition )                     _qCR_until( bCondition )</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;     </div>
-<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">  257</a></span>&#160;<span class="preprocessor">    #define qCR_SemInit( pSem, sValue )                 Q_UNUSED( _qCR_Sem( pSem, sValue ) )</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    </div>
-<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga48a737b34a6764159b2f1109f4543f99">  267</a></span>&#160;<span class="preprocessor">    #define qCR_SemWait( pSem )                         _qCR_wu_Assert( _qCR_Sem( pSem, _qCR_SEM_TRYLOCK ) ) </span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga1d8e6eae9ea20351034545a918b0f692">  277</a></span>&#160;<span class="preprocessor">    #define qCR_SemSignal( pSem )                       Q_UNUSED( _qCR_Sem( pSem, _qCR_SEM_SIGNAL ) )</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gaeb7949c7d0234404532780387779a538">  285</a></span>&#160;<span class="preprocessor">    #define qCR_PositionGet( CRPos )                    _qCR_GetPosition( CRPos )</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;   </div>
-<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c">  292</a></span>&#160;<span class="preprocessor">    #define qCR_PositionRestore( CRPos )                _qCR_RestoreFromPosition( CRPos )</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gad6b7a8e1b9d3ca7e3f744d99de525041">  299</a></span>&#160;<span class="preprocessor">    #define qCR_PositionReset( CRPos )                  _qCR_PositionReset( CRPos )</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga6f93776d66aefb50a0bc97090d5f2f2c">  306</a></span>&#160;<span class="preprocessor">    #define qCR_Delay( tValue )                         _qCR_Delay( tValue )</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba">qCR_ExternControl</a>( <a class="code" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a> h, <span class="keyword">const</span> <a class="code" href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a> action,  <span class="keyword">const</span> qCR_ExtPosition_t pos );</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> _qCR_Sem( <a class="code" href="structq_c_r___semaphore__t.html">qCR_Semaphore_t</a> * <span class="keyword">const</span> sem,  <span class="keyword">const</span> _qCR_Oper_t oper );</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    }</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga0605e4d3163a374c51073896903d2ea7">  208</a></span>&#160;<span class="preprocessor">    #define qCR_WaitUntil( bCondition )                 _qCR_wu_Assert( bCondition )</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga3b15b3de92651cdc83dbc50bf1c4fe04">  222</a></span>&#160;<span class="preprocessor">    #define qCR_TimedWaitUntil( bCondition, tValue )    _qCR_wu_TmrAssert( bCondition, tValue )</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">  234</a></span>&#160;<span class="preprocessor">    #define qCR_Do                                      _qCR_do   </span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">  249</a></span>&#160;<span class="preprocessor">    #define qCR_Until( bCondition )                     _qCR_until( bCondition )</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;     </div>
+<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">  259</a></span>&#160;<span class="preprocessor">    #define qCR_SemInit( pSem, sValue )                 Q_UNUSED( _qCR_Sem( pSem, sValue ) )</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    </div>
+<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga48a737b34a6764159b2f1109f4543f99">  269</a></span>&#160;<span class="preprocessor">    #define qCR_SemWait( pSem )                         _qCR_wu_Assert( _qCR_Sem( pSem, _qCR_SEM_TRYLOCK ) ) </span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga1d8e6eae9ea20351034545a918b0f692">  279</a></span>&#160;<span class="preprocessor">    #define qCR_SemSignal( pSem )                       Q_UNUSED( _qCR_Sem( pSem, _qCR_SEM_SIGNAL ) )</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gaeb7949c7d0234404532780387779a538">  287</a></span>&#160;<span class="preprocessor">    #define qCR_PositionGet( CRPos )                    _qCR_GetPosition( CRPos )</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;   </div>
+<div class="line"><a name="l00294"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga2d819dd66c7499050d35da8c95d5df3c">  294</a></span>&#160;<span class="preprocessor">    #define qCR_PositionRestore( CRPos )                _qCR_RestoreFromPosition( CRPos )</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#gad6b7a8e1b9d3ca7e3f744d99de525041">  301</a></span>&#160;<span class="preprocessor">    #define qCR_PositionReset( CRPos )                  _qCR_PositionReset( CRPos )</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="group__qcoroutines.html#ga6f93776d66aefb50a0bc97090d5f2f2c">  308</a></span>&#160;<span class="preprocessor">    #define qCR_Delay( tValue )                         _qCR_Delay( tValue )</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba">qCR_ExternControl</a>( <a class="code" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a> h, <span class="keyword">const</span> <a class="code" href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a> action,  <span class="keyword">const</span> qCR_ExtPosition_t pos );</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> _qCR_Sem( <a class="code" href="structq_c_r___semaphore__t.html">qCR_Semaphore_t</a> * <span class="keyword">const</span> sem,  <span class="keyword">const</span> _qCR_Oper_t oper );</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    }</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__qcoroutines_html_ga41bc1776480c04cd5b78b6c2f5ce54ba"><div class="ttname"><a href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba">qCR_ExternControl</a></div><div class="ttdeci">void qCR_ExternControl(qCR_Handle_t h, const qCR_ExternAction_t action, const qCR_ExtPosition_t pos)</div><div class="ttdoc">Perform an external action over the requested Co-routine.</div><div class="ttdef"><b>Definition:</b> qcoroutine.c:10</div></div>
 <div class="ttc" id="agroup__qcoroutines_html_ga9f8cd9253ebd062b2b6d18eb6125d9dd"><div class="ttname"><a href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a></div><div class="ttdeci">qCR_ExternAction_t</div><div class="ttdoc">An enumeration to define the possible actions that can be performed outside the context of a Co-Routi...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:60</div></div>
 <div class="ttc" id="agroup__qcoroutines_html_gafc285a882ecb225cffa4f5dee1479aa5"><div class="ttname"><a href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a></div><div class="ttdeci">_qCR_Instance_t * qCR_Handle_t</div><div class="ttdoc">A typedef to instantiate a Co-Routine handle.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:41</div></div>

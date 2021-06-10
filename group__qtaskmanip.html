@@ -176,7 +176,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">byNoReadyTasks</a>
 <br />
  }</td></tr>
-<tr class="memdesc:gaf68e9306308b42db48932211e1c40334"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum with all the possible values for the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> member available as the task argument.  <a href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">More...</a><br /></td></tr>
+<tr class="memdesc:gaf68e9306308b42db48932211e1c40334"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum with all the possible values for the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> member.  <a href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">More...</a><br /></td></tr>
 <tr class="separator:gaf68e9306308b42db48932211e1c40334"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga40a8db6d8907f27b81a8b43572ba319a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> { <br />
 &#160;&#160;<a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a>
@@ -194,7 +194,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a>
 , <a class="el" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a>
  }</td></tr>
-<tr class="memdesc:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to define the task link modes for a queue.  <a href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">More...</a><br /></td></tr>
+<tr class="memdesc:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum that defines the modes in which a queue can be linked to a task.  <a href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">More...</a><br /></td></tr>
 <tr class="separator:ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -254,6 +254,7 @@ Functions</h2></td></tr>
 
 <p>Put the task into a sleep state. The task can't be triggered by the lower precedence events. </p>
 <dl class="section note"><dt>Note</dt><dd>Only the higher precedence events (Queued Notifications) can wake up the task. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -281,6 +282,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a normal operation state. Here the task will be able to catch any kind of events. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -308,6 +310,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a disabled state. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -335,6 +338,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into an enabled state. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -362,13 +366,14 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieve the enabled/disabled state. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if the task in on Enabled state, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if the task in on Enabled state, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -389,6 +394,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into an enabled state. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -416,6 +422,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a disabled state. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -439,7 +446,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>An enum to define the task link modes for a queue. </p>
+<p>An enum that defines the modes in which a queue can be linked to a task. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628"></a>qQueueMode_Receiver&#160;</td><td class="fielddoc"><p>This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field. </p>
 </td></tr>
@@ -493,7 +500,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>An enum with all the possible values for the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> member available as the task argument. </p>
+<p>An enum with all the possible values for the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> member. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9"></a>qTriggerNULL&#160;</td><td class="fielddoc"><p>To indicate the abscense of trigger. Reserved for internal use. </p>
 </td></tr>
@@ -831,6 +838,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the task operational state (Enabled or Disabled) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6" title="Put the task into a disabled state.">qTask_Suspend</a>, <a class="el" href="group__qtaskmanip.html#gae6a5d46741694d47d7a521a6360b960b" title="Put the task into a disabled state.">qTask_Disable</a>, <a class="el" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe" title="Put the task into an enabled state.">qTask_Resume</a>, <a class="el" href="group__qtaskmanip.html#ga3e627c1487e57b485f9d1b7252c80dc3" title="Put the task into an enabled state.">qTask_Enable</a>, <a class="el" href="group__qtaskmanip.html#gac5daf7435704726af13127c87bb2f43c" title="Put the task into a sleep state. The task can&#39;t be triggered by the lower precedence events.">qTask_ASleep</a>, <a class="el" href="group__qtaskmanip.html#ga2bd9c2e2584a627a824099eaaa3062b6" title="Put the task into a normal operation state. Here the task will be able to catch any kind of events.">qTask_Awake</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>

@@ -191,6 +191,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer. </p>
+<dl class="section note"><dt>Note</dt><dd>The AT-CLI object should be previously configured. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qatcli.html#ga30ed076d0f588ca47fb07851bbafee68" title="Setup an instance of the AT Command Command Line Interface.">qATCLI_Setup()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -200,7 +201,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -252,7 +253,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -307,7 +308,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <em>Time</em> seconds in <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> mode. The event info will be available as a generic pointer inside the <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a> field. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga02734ed55d7aaf5f9e4e9e10df52ba49" title="Initializes a finite state machine (FSM) object.">qStateMachine_Setup()</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The State-machine object should be previously configured </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga02734ed55d7aaf5f9e4e9e10df52ba49" title="Initializes a Finite State Machine (FSM).">qStateMachine_Setup()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
@@ -319,7 +321,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -400,7 +402,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -427,7 +429,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> if success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

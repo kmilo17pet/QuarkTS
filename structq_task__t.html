@@ -111,7 +111,8 @@ $(document).ready(function(){initNavTree('structq_task__t.html',''); initResizab
 <div class="line">}</div>
 <div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:156</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:248</div></div>
-</div><!-- fragment --><p>All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler, otherwise, the scheduler will hold the execution-state for that task, preventing the activation of other tasks. </p><dl class="section note"><dt>Note</dt><dd>Do not access any member of this structure directly. </dd></dl>
+</div><!-- fragment --><dl class="section attention"><dt>Attention</dt><dd>All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler, otherwise, the scheduler will hold the execution-state for that task, preventing the activation of other tasks. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Do not access any member of this structure directly. </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

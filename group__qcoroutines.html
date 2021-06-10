@@ -286,8 +286,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Must be used together with a matching <a class="el" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7" title="This statement ends a blocking Job segment starting with the qCR_Do statement.">qCR_Until</a> statement. Example: <div class="fragment"><div class="line"><a class="code" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a>{</div>
 <div class="line">    </div>
 <div class="line">}<a class="code" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a>( Condition );</div>
-<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:232</div></div>
-<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:247</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:234</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:249</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -528,6 +528,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Yields until the logical condition being true or the specified timeout expires. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qcoroutines.html#ga0605e4d3163a374c51073896903d2ea7" title="Yields until the logical condition being true.">qCR_WaitUntil</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated. </td></tr>
@@ -558,7 +559,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Check if the internal Co-routine timeout expires. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On/High.">qTrue</a> when STimer expires, otherwise, returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> when STimer expires, otherwise, returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -636,6 +637,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Yields until the logical condition being true. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qcoroutines.html#ga3b15b3de92651cdc83dbc50bf1c4fe04" title="Yields until the logical condition being true or the specified timeout expires.">qCR_TimedWaitUntil</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated <pre class="fragment">Action sequence : [Save progress] 
@@ -725,6 +727,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform an external action over the requested Co-routine. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8" title="Defines a Coroutine segment with a supplied external handle. Only one segment is allowed inside a tas...">qCR_BeginWithHandle</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The Co-routine handle. </td></tr>
