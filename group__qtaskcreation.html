@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -577,8 +578,34 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
-
+<dl class="section return"><dt>Returns</dt><dd>none.</dd></dl>
+<p>Example : When tick is already provided </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;HAL.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001 </span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
+<div class="line">    HAL_Init(); </div>
+<div class="line">    <a class="code" href="group__qtaskcreation.html#gaa56cdd54d47ff41d77ca2526516fdf1d">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__qtaskcreation_html_gaa56cdd54d47ff41d77ca2526516fdf1d"><div class="ttname"><a href="group__qtaskcreation.html#gaa56cdd54d47ff41d77ca2526516fdf1d">qOS_Setup</a></div><div class="ttdeci">void qOS_Setup(const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:102</div></div>
+</div><!-- fragment --><p>Example : When the tick is not provided </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;DeviceHeader.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> Interrupt_Timer0( <span class="keywordtype">void</span> ){</div>
+<div class="line">    <a class="code" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
+<div class="line">    MCU_Init();</div>
+<div class="line">    BSP_Setup_Timer0(); </div>
+<div class="line">    <a class="code" href="group__qtaskcreation.html#gaa56cdd54d47ff41d77ca2526516fdf1d">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback ); </div>
+<div class="line">    </div>
+<div class="line">} </div>
+<div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:66</div></div>
+</div><!-- fragment --> 
 </div>
 </div>
 </div><!-- contents -->

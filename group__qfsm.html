@@ -18,6 +18,7 @@
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -493,7 +494,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that represents a signal guard/action. </p>
-<div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myState_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> signalAction_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
 <div class="line">      <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retVal = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div>
 <div class="line">      <span class="keywordflow">if</span> ( ConditionGuard ){</div>
 <div class="line">          performSomeAction();</div>
@@ -571,7 +572,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that represents a surrounding callback. </p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> myState_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> surrounding_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
 <div class="line">      <span class="keywordflow">switch</span>( h-&gt;<a class="code" href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">Status</a> ){</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a>:</div>
 <div class="line">              <span class="keywordflow">break</span>;</div>
