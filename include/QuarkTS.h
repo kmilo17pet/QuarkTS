@@ -157,6 +157,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qpriv Inter-Task communication
+*  @brief Inter-Task communication primitives : Queues, Notifications and Event-flags
 *  @ingroup qos 
 */
 

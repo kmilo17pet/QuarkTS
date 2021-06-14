@@ -219,7 +219,7 @@
     /**
     * @brief Pointer to a function that represents a surrounding callback
     * @code{.c}
-    * void myState_Callback( qSM_Handler_t h ){
+    * void surrounding_Callback( qSM_Handler_t h ){
     *       switch( h->Status ){
     *           case qSM_STATUS_BEFORE_ANY:
     *               break;
@@ -239,7 +239,7 @@
     /**
     * @brief Pointer to a function that represents a signal guard/action
     * @code{.c}
-    * qBool_t myState_Callback( qSM_Handler_t h ){
+    * qBool_t signalAction_Callback( qSM_Handler_t h ){
     *       qBool_t retVal = qFalse
     *       if ( ConditionGuard ){
     *           performSomeAction();

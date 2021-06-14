@@ -96,6 +96,38 @@
         * @param[in] IdleCallback  Callback function to the Idle Task. To disable the 
         * Idle Task activities, pass NULL as argument.
         * @return none.
+        * 
+        * Example : When tick is already provided 
+        * @code{.c}
+        * #include "QuarkTS.h"
+        * #include "HAL.h"
+        * 
+        * #define TIMER_TICK   0.001 
+        * 
+        * void main( void ){
+        *     HAL_Init(); 
+        *     qOS_Setup( HAL_GetTick, TIMER_TICK, IdleTask_Callback );
+        * }
+        * @endcode
+        *
+        * Example : When the tick is not provided
+        * @code{.c}
+        * #include "QuarkTS.h"
+        * #include "DeviceHeader.h"
+        * 
+        * #define TIMER_TICK   0.001
+        * 
+        * void Interrupt_Timer0( void ){
+        *     qClock_SysTick();
+        * }
+        * 
+        * void main( void ){
+        *     MCU_Init();
+        *     BSP_Setup_Timer0(); 
+        *     qOS_Setup( NULL, TIMER_TICK, IdleTask_Callback ); 
+        *     
+        * } 
+        * @endcode
         */      
         void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback );
     #endif
