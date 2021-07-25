@@ -14,7 +14,7 @@ var group__qclock =
     [ "qClock_Convert2Clock", "group__qclock.html#ga382e2c5dd5d1dfcf36d6f87188956c5f", null ],
     [ "qClock_Convert2Time", "group__qclock.html#gaf8730635571dafb04092366b3064db0d", null ],
     [ "qClock_SetTickProvider", "group__qclock.html#ga72b12de93d62080fe4633c7a011ffd9b", null ],
-    [ "qClock_SetTimeBase", "group__qclock.html#ga902d5f31c5b48cdaaf29a7c0bd749936", null ],
+    [ "qClock_SetTimeBase", "group__qclock.html#ga2277cacbb25540c6084cee24a7362ebb", null ],
     [ "qClock_SysTick", "group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53", null ],
     [ "qClock_TimeDeadlineCheck", "group__qclock.html#gab83fba69406f6772b050ee9107c7232f", null ],
     [ "qClock_GetTick", "group__qclock.html#ga79880b62c3e70848faa0ecb315482147", null ]

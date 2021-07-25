@@ -141,24 +141,24 @@ Functions</h2></td></tr>
 <tr class="memitem:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a> (char *dst, const char *src, size_t maxlen)</td></tr>
 <tr class="memdesc:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies up to <em></em>(maxlen - 1) characters from the null-terminated string <em>src</em> to <em>dst</em>, null-terminating the result.  <a href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">More...</a><br /></td></tr>
 <tr class="separator:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1c3675fe7c9d63861a892179c2df448c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga1c3675fe7c9d63861a892179c2df448c">qIOUtil_SwapBytes</a> (void *Data, const size_t n)</td></tr>
-<tr class="memdesc:ga1c3675fe7c9d63861a892179c2df448c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the endianess for n bytes of the specified memory location.  <a href="group__qioutils.html#ga1c3675fe7c9d63861a892179c2df448c">More...</a><br /></td></tr>
-<tr class="separator:ga1c3675fe7c9d63861a892179c2df448c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91d060c57c5bd0af21dafa67c005c77b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga91d060c57c5bd0af21dafa67c005c77b">qIOUtil_SwapBytes</a> (void *Data, const size_t n)</td></tr>
+<tr class="memdesc:ga91d060c57c5bd0af21dafa67c005c77b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the endianess for n bytes of the specified memory location.  <a href="group__qioutils.html#ga91d060c57c5bd0af21dafa67c005c77b">More...</a><br /></td></tr>
+<tr class="separator:ga91d060c57c5bd0af21dafa67c005c77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga6f949b6b5a55df6cbb2ebe783bc95cd9">qIOUtil_CheckEndianness</a> (void)</td></tr>
 <tr class="memdesc:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the system endianess.  <a href="group__qioutils.html#ga6f949b6b5a55df6cbb2ebe783bc95cd9">More...</a><br /></td></tr>
 <tr class="separator:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga24f403434d8c51b77b08ae5aba60f19a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga24f403434d8c51b77b08ae5aba60f19a">qIOUtil_OutputString</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, const char *s, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
-<tr class="memdesc:ga24f403434d8c51b77b08ae5aba60f19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write a string through <em>fcn</em>.  <a href="group__qioutils.html#ga24f403434d8c51b77b08ae5aba60f19a">More...</a><br /></td></tr>
-<tr class="separator:ga24f403434d8c51b77b08ae5aba60f19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9612864b2472cd08ece734e5253af354"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga9612864b2472cd08ece734e5253af354">qIOUtil_PrintXData</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *Data, size_t n)</td></tr>
-<tr class="memdesc:ga9612864b2472cd08ece734e5253af354"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write data in HEX notation through <em>fcn</em>.  <a href="group__qioutils.html#ga9612864b2472cd08ece734e5253af354">More...</a><br /></td></tr>
-<tr class="separator:ga9612864b2472cd08ece734e5253af354"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8b0d1768e0b1b0efd7826740dab70d2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga8b0d1768e0b1b0efd7826740dab70d2c">qIOUtil_OutputRaw</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *Data, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
-<tr class="memdesc:ga8b0d1768e0b1b0efd7826740dab70d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#ga8b0d1768e0b1b0efd7826740dab70d2c">More...</a><br /></td></tr>
-<tr class="separator:ga8b0d1768e0b1b0efd7826740dab70d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68b2b9bcabef76ffb5e605af677b2c55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga68b2b9bcabef76ffb5e605af677b2c55">qIOUtil_InputRaw</a> (const <a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a> fcn, void *pStorage, void *Data, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
-<tr class="memdesc:ga68b2b9bcabef76ffb5e605af677b2c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to get n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#ga68b2b9bcabef76ffb5e605af677b2c55">More...</a><br /></td></tr>
-<tr class="separator:ga68b2b9bcabef76ffb5e605af677b2c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga5bdd96cb8c361417efb8d318cebc42ad">qIOUtil_OutputString</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, const char *s, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
+<tr class="memdesc:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write a string through <em>fcn</em>.  <a href="group__qioutils.html#ga5bdd96cb8c361417efb8d318cebc42ad">More...</a><br /></td></tr>
+<tr class="separator:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb60c78eccf47c6e51a86af4a850b8fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gadb60c78eccf47c6e51a86af4a850b8fd">qIOUtil_PrintXData</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *Data, size_t n)</td></tr>
+<tr class="memdesc:gadb60c78eccf47c6e51a86af4a850b8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write data in HEX notation through <em>fcn</em>.  <a href="group__qioutils.html#gadb60c78eccf47c6e51a86af4a850b8fd">More...</a><br /></td></tr>
+<tr class="separator:gadb60c78eccf47c6e51a86af4a850b8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga162a8e53ce5c96bf3564ae14d3501cda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga162a8e53ce5c96bf3564ae14d3501cda">qIOUtil_OutputRaw</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *Data, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
+<tr class="memdesc:ga162a8e53ce5c96bf3564ae14d3501cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#ga162a8e53ce5c96bf3564ae14d3501cda">More...</a><br /></td></tr>
+<tr class="separator:ga162a8e53ce5c96bf3564ae14d3501cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff6b7a7882c4c29d712a62400ad07a4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaff6b7a7882c4c29d712a62400ad07a4e">qIOUtil_InputRaw</a> (const <a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a> fcn, void *pStorage, void *Data, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
+<tr class="memdesc:gaff6b7a7882c4c29d712a62400ad07a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to get n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gaff6b7a7882c4c29d712a62400ad07a4e">More...</a><br /></td></tr>
+<tr class="separator:gaff6b7a7882c4c29d712a62400ad07a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">qIOUtil_U32toX</a> (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> value, char *str, <a class="el" href="group__qtypes.html#ga903e6b3909103df27f390f45f34d5885">qINT8_t</a> n)</td></tr>
 <tr class="memdesc:ga58569cdb08e25554c4b4556e1ba3520b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned integer value to a null-terminated string using the 16 base and stores the result in the array given by <em>str</em> parameter. <em>str</em> should be an array long enough to contain any possible value.  <a href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">More...</a><br /></td></tr>
 <tr class="separator:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -510,14 +510,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga68b2b9bcabef76ffb5e605af677b2c55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga68b2b9bcabef76ffb5e605af677b2c55">&#9670;&nbsp;</a></span>qIOUtil_InputRaw()</h2>
+<a id="gaff6b7a7882c4c29d712a62400ad07a4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff6b7a7882c4c29d712a62400ad07a4e">&#9670;&nbsp;</a></span>qIOUtil_InputRaw()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qIOUtil_InputRaw </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_InputRaw </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a>&#160;</td>
           <td class="paramname"><em>fcn</em>, </td>
@@ -565,7 +565,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -668,14 +668,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga8b0d1768e0b1b0efd7826740dab70d2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8b0d1768e0b1b0efd7826740dab70d2c">&#9670;&nbsp;</a></span>qIOUtil_OutputRaw()</h2>
+<a id="ga162a8e53ce5c96bf3564ae14d3501cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga162a8e53ce5c96bf3564ae14d3501cda">&#9670;&nbsp;</a></span>qIOUtil_OutputRaw()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qIOUtil_OutputRaw </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_OutputRaw </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
           <td class="paramname"><em>fcn</em>, </td>
@@ -723,18 +723,18 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
-<a id="ga24f403434d8c51b77b08ae5aba60f19a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga24f403434d8c51b77b08ae5aba60f19a">&#9670;&nbsp;</a></span>qIOUtil_OutputString()</h2>
+<a id="ga5bdd96cb8c361417efb8d318cebc42ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5bdd96cb8c361417efb8d318cebc42ad">&#9670;&nbsp;</a></span>qIOUtil_OutputString()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qIOUtil_OutputString </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_OutputString </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
           <td class="paramname"><em>fcn</em>, </td>
@@ -775,18 +775,18 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
-<a id="ga9612864b2472cd08ece734e5253af354"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9612864b2472cd08ece734e5253af354">&#9670;&nbsp;</a></span>qIOUtil_PrintXData()</h2>
+<a id="gadb60c78eccf47c6e51a86af4a850b8fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb60c78eccf47c6e51a86af4a850b8fd">&#9670;&nbsp;</a></span>qIOUtil_PrintXData()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qIOUtil_PrintXData </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_PrintXData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
           <td class="paramname"><em>fcn</em>, </td>
@@ -827,7 +827,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -997,14 +997,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga1c3675fe7c9d63861a892179c2df448c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1c3675fe7c9d63861a892179c2df448c">&#9670;&nbsp;</a></span>qIOUtil_SwapBytes()</h2>
+<a id="ga91d060c57c5bd0af21dafa67c005c77b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91d060c57c5bd0af21dafa67c005c77b">&#9670;&nbsp;</a></span>qIOUtil_SwapBytes()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qIOUtil_SwapBytes </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_SwapBytes </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>Data</em>, </td>
@@ -1031,7 +1031,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

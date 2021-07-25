@@ -27,5 +27,5 @@ var group__qcoroutines =
       [ "qCR_SUSPEND", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf", null ],
       [ "qCR_RESUME", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749", null ]
     ] ],
-    [ "qCR_ExternControl", "group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba", null ]
+    [ "qCR_ExternControl", "group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e", null ]
 ];

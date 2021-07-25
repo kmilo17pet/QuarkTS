@@ -200,9 +200,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga41bc1776480c04cd5b78b6c2f5ce54ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba">qCR_ExternControl</a> (<a class="el" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a> h, const <a class="el" href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a> action, const qCR_ExtPosition_t pos)</td></tr>
-<tr class="memdesc:ga41bc1776480c04cd5b78b6c2f5ce54ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform an external action over the requested Co-routine.  <a href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba">More...</a><br /></td></tr>
-<tr class="separator:ga41bc1776480c04cd5b78b6c2f5ce54ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga528c3a62c9ab72ba87a66c0dcec0329e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e">qCR_ExternControl</a> (<a class="el" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a> h, const <a class="el" href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a> action, const qCR_ExtPosition_t pos)</td></tr>
+<tr class="memdesc:ga528c3a62c9ab72ba87a66c0dcec0329e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform an external action over the requested Co-routine.  <a href="group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e">More...</a><br /></td></tr>
+<tr class="separator:ga528c3a62c9ab72ba87a66c0dcec0329e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API interface for the Co-Routine module. </p>
@@ -699,7 +699,7 @@ Functions</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc"></a>qCR_RESTART&#160;</td><td class="fielddoc"><p>Restart the coroutine execution at the place of the <a class="el" href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8" title="Defines a Coroutine segment with a supplied external handle. Only one segment is allowed inside a tas...">qCR_BeginWithHandle</a> statement. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf"></a>qCR_POSITIONSET&#160;</td><td class="fielddoc"><p>Force the coroutine execution at the position specified in <a class="el" href="group__qcoroutines.html#ga41bc1776480c04cd5b78b6c2f5ce54ba" title="Perform an external action over the requested Co-routine.">qCR_ExternControl()</a>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
+<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf"></a>qCR_POSITIONSET&#160;</td><td class="fielddoc"><p>Force the coroutine execution at the position specified in <a class="el" href="group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e" title="Perform an external action over the requested Co-routine.">qCR_ExternControl()</a>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf"></a>qCR_SUSPEND&#160;</td><td class="fielddoc"><p>Suspend the entire coroutine segment. The task will still running instructions outside the segment. </p>
 </td></tr>
@@ -710,14 +710,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga41bc1776480c04cd5b78b6c2f5ce54ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga41bc1776480c04cd5b78b6c2f5ce54ba">&#9670;&nbsp;</a></span>qCR_ExternControl()</h2>
+<a id="ga528c3a62c9ab72ba87a66c0dcec0329e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga528c3a62c9ab72ba87a66c0dcec0329e">&#9670;&nbsp;</a></span>qCR_ExternControl()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qCR_ExternControl </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qCR_ExternControl </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a>&#160;</td>
           <td class="paramname"><em>h</em>, </td>
@@ -752,7 +752,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

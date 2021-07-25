@@ -8,5 +8,5 @@ var group__qbsbuffers =
     [ "qBSBuffer_Peek", "group__qbsbuffers.html#gac39c4606e5905d4fac62d6a6ca40296d", null ],
     [ "qBSBuffer_Put", "group__qbsbuffers.html#ga4159c325b2afa60221db3c4fac0abe38", null ],
     [ "qBSBuffer_Read", "group__qbsbuffers.html#ga44b91893eea821caee929e242e62df9c", null ],
-    [ "qBSBuffer_Setup", "group__qbsbuffers.html#ga89f7b5f2823b11d709325e1deea79b3a", null ]
+    [ "qBSBuffer_Setup", "group__qbsbuffers.html#ga0eaee8261c01d7e2ebead46f4831414b", null ]
 ];

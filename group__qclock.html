@@ -163,9 +163,9 @@ typedef <a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga902d5f31c5b48cdaaf29a7c0bd749936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#ga902d5f31c5b48cdaaf29a7c0bd749936">qClock_SetTimeBase</a> (const <a class="el" href="group__qclock.html#gae5a941bcd9940c7bc994aadea2fdc927">qTimingBase_t</a> tb)</td></tr>
-<tr class="memdesc:ga902d5f31c5b48cdaaf29a7c0bd749936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the system time-base for time conversions.  <a href="group__qclock.html#ga902d5f31c5b48cdaaf29a7c0bd749936">More...</a><br /></td></tr>
-<tr class="separator:ga902d5f31c5b48cdaaf29a7c0bd749936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2277cacbb25540c6084cee24a7362ebb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#ga2277cacbb25540c6084cee24a7362ebb">qClock_SetTimeBase</a> (const <a class="el" href="group__qclock.html#gae5a941bcd9940c7bc994aadea2fdc927">qTimingBase_t</a> tb)</td></tr>
+<tr class="memdesc:ga2277cacbb25540c6084cee24a7362ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the system time-base for time conversions.  <a href="group__qclock.html#ga2277cacbb25540c6084cee24a7362ebb">More...</a><br /></td></tr>
+<tr class="separator:ga2277cacbb25540c6084cee24a7362ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga72b12de93d62080fe4633c7a011ffd9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#ga72b12de93d62080fe4633c7a011ffd9b">qClock_SetTickProvider</a> (const <a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a> provider)</td></tr>
 <tr class="memdesc:ga72b12de93d62080fe4633c7a011ffd9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clock-tick provider function.  <a href="group__qclock.html#ga72b12de93d62080fe4633c7a011ffd9b">More...</a><br /></td></tr>
 <tr class="separator:ga72b12de93d62080fe4633c7a011ffd9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,7 +246,7 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> OSInterface_GetTick( <span class="keywordtype">void</span> ){</div>
 <div class="line">      <span class="keywordflow">return</span> HAL_GetTick();</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:47</div></div>
 </div><!-- fragment --> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of ticks provided by the system HAL. </dd></dl>
 
@@ -334,14 +334,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga902d5f31c5b48cdaaf29a7c0bd749936"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga902d5f31c5b48cdaaf29a7c0bd749936">&#9670;&nbsp;</a></span>qClock_SetTimeBase()</h2>
+<a id="ga2277cacbb25540c6084cee24a7362ebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2277cacbb25540c6084cee24a7362ebb">&#9670;&nbsp;</a></span>qClock_SetTimeBase()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void qClock_SetTimeBase </td>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qClock_SetTimeBase </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="group__qclock.html#gae5a941bcd9940c7bc994aadea2fdc927">qTimingBase_t</a>&#160;</td>
           <td class="paramname"><em>tb</em></td><td>)</td>
@@ -357,7 +357,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -381,7 +381,7 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This call is mandatory and must be called once inside the dedicated timer interrupt service routine (ISR). Example <div class="fragment"><div class="line"><span class="keywordtype">void</span> interrupt xPeriodicTimer_ISR( <span class="keywordtype">void</span> ){</div>
 <div class="line">      <a class="code" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:66</div></div>
+<div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:71</div></div>
 </div><!-- fragment --> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
 

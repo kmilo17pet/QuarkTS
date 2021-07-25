@@ -57,7 +57,7 @@ var group__qtaskmanip =
     [ "qTask_Set_Callback", "group__qtaskmanip.html#ga185cde5755a9c432221111e488a74d07", null ],
     [ "qTask_Set_Data", "group__qtaskmanip.html#gaf869decdf319173b7ca95304a9f0c742", null ],
     [ "qTask_Set_Iterations", "group__qtaskmanip.html#ga4819ade68f755968df6b415b06baa8ac", null ],
-    [ "qTask_Set_Priority", "group__qtaskmanip.html#ga0cb96ad64f8877698feec389402555a4", null ],
-    [ "qTask_Set_State", "group__qtaskmanip.html#gab3a3eb7441f738b448ff085fd23c645b", null ],
+    [ "qTask_Set_Priority", "group__qtaskmanip.html#ga65a57a81a3e16294907d941bc8fbaf58", null ],
+    [ "qTask_Set_State", "group__qtaskmanip.html#ga4652ea7f26b17b59a8dfd7192f9be766", null ],
     [ "qTask_Set_Time", "group__qtaskmanip.html#gac2dd409cad58a90b89f65e64f862928d", null ]
 ];
