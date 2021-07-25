@@ -140,7 +140,9 @@ void test_qList_API(void){
     n8.value = 7;
     n9.value = 8;
 
+    #if ( Q_MEMORY_MANAGER == 1 )
     qList_SetMemoryAllocation( qMalloc, qFree );
+    #endif   
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_IsMember(&mylist, &n1) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, QLIST_ATBACK ) );
@@ -181,6 +183,7 @@ void test_qList_API(void){
 }
 /*============================================================================*/
 void test_qMemoryManagement_API(void){
+    #if ( Q_MEMORY_MANAGER == 1 )
     void *memtest, *xpooltest;
     qMemMang_Pool_t xpool;
     #define XPOOL_SIZE  ( 512 )
@@ -200,29 +203,34 @@ void test_qMemoryManagement_API(void){
     qFree(memtest);
     TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize( NULL) );    
     TEST_ASSERT_NULL( qMalloc(Q_DEFAULT_HEAP_SIZE) );
+    #endif
 }
 /*============================================================================*/
-qUINT32_t PORTA = 0x0A;
-qEdgeCheck_t INPUTS;
-qEdgeCheck_IONode_t button1, sensor1, button2, sensor2;
-
-qSM_t statemachine;
-qSM_State_t statefirst, statesecond, statethird;
-
-/*============================================================================*/
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
-
-qSM_Status_t statefirst_callback(qSM_Handler_t fsm);
-qSM_Status_t statesecond_callback(qSM_Handler_t fsm);
-qSM_Status_t statethird_callback(qSM_Handler_t fsm);
-qSM_Status_t statetop_callback(qSM_Handler_t h);
-/*============================================================================*/
-void datacapture(qSM_Handler_t fsm){
-    (void)fsm;
-}
 void putcharfcn(void* stp, char c){
     (void)stp;
     putchar(c);
+}
+/*============================================================================*/
+
+qUINT32_t PORTA = 0x0A;
+qEdgeCheck_t INPUTS;
+qEdgeCheck_IONode_t button1, sensor1, button2, sensor2;
+/*============================================================================*/
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
+
+#if ( Q_FSM == 1 )
+    qSM_t statemachine;
+    qSM_State_t statefirst, statesecond, statethird;
+
+
+
+    qSM_Status_t statefirst_callback(qSM_Handler_t fsm);
+    qSM_Status_t statesecond_callback(qSM_Handler_t fsm);
+    qSM_Status_t statethird_callback(qSM_Handler_t fsm);
+    qSM_Status_t statetop_callback(qSM_Handler_t h);
+/*============================================================================*/
+void datacapture(qSM_Handler_t fsm){
+    (void)fsm;
 }
 /*============================================================================*/
 qSM_Status_t statetop_callback(qSM_Handler_t h){
@@ -303,6 +311,7 @@ qSM_Status_t statethird_callback(qSM_Handler_t h){
     }    
     return qSM_STATUS_EXIT_SUCCESS;
 }
+#endif
 /*============================================================================*/
 void Task1Callback(qEvent_t e){
     static qSTimer_t tmr = QSTIMER_INITIALIZER;
@@ -464,15 +473,18 @@ void test_OS_API( void ){
     int x[]={10,20,30,40,50,60,70,80,90,100};
     int queuearea[8];
     #endif
+    #if ( Q_FSM == 1 )
     qSM_Signal_t fsmsigarea[5];
-    
+    #endif
     TEST_MESSAGE( "Executing TEST OS_API.." ); 
 
     qTrace_Set_OutputFcn(putcharfcn); 
     qTrace_Variable( -3.1416, Float);
     qTrace_Variable( "dafdaa", Message );
     qTrace_Variable( sizeof(qTask_t) , UnsignedDecimal );
+    #if ( Q_FSM == 1 )
     qTrace_Variable( sizeof(qSM_t) , UnsignedDecimal );
+    #endif
     qTrace_Variable( sizeof(qSTimer_t) , UnsignedDecimal );
     qTrace_Variable( sizeof(qList_t) , UnsignedDecimal );
     qTrace_Variable( 1.0f/0.0f, Float );
@@ -522,17 +534,19 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
 
-
+    #if ( Q_FSM == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_Setup( &statemachine, statetop_callback, &statefirst, NULL, NULL ) ) ;
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statefirst, NULL, statefirst_callback, NULL, qFalse ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statesecond, NULL, statesecond_callback, NULL, qFalse ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_StateSubscribe( &statemachine, &statethird, NULL, statethird_callback, NULL, qFalse ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, &statemachine, qHigh_Priority, T100MSEC, qEnabled, "smtask" ) ) ;
+    #endif
 
     #if ( Q_QUEUES == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &sigqueue, fsmsigarea, sizeof(qSM_Signal_t), qFLM_ArraySize(fsmsigarea) ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_InstallSignalQueue( &statemachine, &sigqueue ) );
     #endif
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_StateMachineTask(&SMTask, &statemachine, qHigh_Priority, T100MSEC, qEnabled, "smtask" ) ) ;
+    
     qOS_Run();
 }
 
