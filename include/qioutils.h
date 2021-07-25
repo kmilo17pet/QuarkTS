@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.60
+ * @version 4.61
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/
@@ -9,7 +9,6 @@
     #define QIOUTILS_H
 
     #include "qtypes.h"
-    #include "qconfig.h"
     #include "qedgecheck.h"
     
     #include <string.h>
@@ -110,9 +109,9 @@
     * @brief Invert the endianess for n bytes of the specified memory location.
     * @param[in,out] Data A pointer to block of data
     * @param[in] n The number of bytes to swap
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    void qIOUtil_SwapBytes( void *Data, const size_t n );
+    qBool_t qIOUtil_SwapBytes( void *Data, const size_t n );
 
     /**
     * @brief Check the system endianess
@@ -126,9 +125,9 @@
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] s The string to be written
     * @param[in] AIP Auto-Increment the storage-pointer
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    void qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
+    qBool_t qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
 
     /**
     * @brief API interface to write data in HEX notation through @a fcn 
@@ -136,9 +135,9 @@
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] Data A pointer to the block of data
     * @param[in] n The number of bytes to print out
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    void qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n );
+    qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n );
 
     /**
     * @brief API interface to write n RAW data through @a fcn
@@ -147,9 +146,9 @@
     * @param[in] Data A pointer to the block of data
     * @param[in] n The number of bytes that will be transferred to the output
     * @param[in] AIP Auto-Increment the storage-pointer
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    void qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
 
     /**
     * @brief API interface to get n RAW data through @a fcn
@@ -158,9 +157,9 @@
     * @param[out] Data A pointer to the block where the read data will be saved
     * @param[in] n The number of bytes to get
     * @param[in] AIP Auto-Increment the storage-pointer
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    void qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
       
     /**
     * @brief Macro interface to write a string through @a fcn

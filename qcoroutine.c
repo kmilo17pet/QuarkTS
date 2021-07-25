@@ -7,8 +7,11 @@
 #include "qcoroutine.h"
 
 /*============================================================================*/
-void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos ){
+qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos ){
+    qBool_t RetValue = qFalse;
+
     if( NULL != h ){ 
+        RetValue = qTrue;
         switch( action ){
             case qCR_RESTART:
                 h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL; 
@@ -25,9 +28,11 @@ void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const 
                 h->prev = (_qCR_TaskPC_t)_qCR_UNDEFINED;
                 break;                                 
             default:
+                RetValue = qFalse;
                 break;
         }
     }
+    return RetValue;
 }
 /*============================================================================*/
 /* Used to perform the semaphores operations on Coroutines

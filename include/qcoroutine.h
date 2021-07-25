@@ -1,7 +1,7 @@
 /*!
  * @file qcoroutine.h
  * @author J. Camilo Gomez C.
- * @version 3.71
+ * @version 3.72
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface for the Co-Routine module.
  **/
@@ -315,9 +315,9 @@
     * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITIONSET.
     * @param[in] pos The required position if @a action = ::qCR_POSITIONSET. For other actions
     * this argument its ignored. 
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */   
-    void qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos );
+    qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos );
 
     /*! @cond  */
     qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper );

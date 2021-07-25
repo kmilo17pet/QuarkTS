@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.28
+ * @version 3.29
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS operations.
  **/
@@ -36,12 +36,8 @@
         #define Q_PRIO_QUEUE_SIZE           ( 3 )
     #endif
 
-    #ifndef Q_PRIO_QUEUE_SIZE
-        #define Q_PRIO_QUEUE_SIZE           ( 3 )
-    #endif
-
     #ifndef Q_PRESERVE_TASK_ENTRY_ORDER
-        #define Q_PRIO_QUEUE_SIZE           ( 0 )
+        #define Q_PRESERVE_TASK_ENTRY_ORDER ( 0 )
     #endif
 
     #ifndef Q_NOTIFICATION_SPREADER

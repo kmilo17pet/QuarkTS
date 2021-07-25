@@ -9,12 +9,15 @@
 #if ( Q_RESPONSE_HANDLER == 1 )
 
 /*============================================================================*/
-void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
-    if( NULL != obj ){
+qBool_t qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != obj ) && ( NULL != xLocBuff ) && (nMax > 0u ) ){
         obj->qPrivate.Pattern2Match = xLocBuff;
         obj->qPrivate.MaxStrLength = nMax; 
         qResponse_Reset( obj );
+        RetValue = qTrue;
     }
+    return RetValue;
 }   
 /*============================================================================*/
 void qResponse_Reset( qResponse_t * const obj ){

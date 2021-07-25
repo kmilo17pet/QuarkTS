@@ -1,7 +1,7 @@
 /*!
 * @file qclock.h
 * @author J. Camilo Gomez C.
-* @version 3.25
+* @version 3.26
 * @note This file is part of the QuarkTS distribution.
 * @brief Clock and time manipulation interface used by the OS and kernel modules.
 */
@@ -80,9 +80,9 @@
     /**
     * @brief Set the system time-base for time conversions
     * @param[in]  tb Time base
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    void qClock_SetTimeBase( const qTimingBase_t tb );
+    qBool_t qClock_SetTimeBase( const qTimingBase_t tb );
     
     /**
     * @brief Set the clock-tick provider function.

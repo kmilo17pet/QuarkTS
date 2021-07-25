@@ -108,13 +108,17 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data ){
     return status;
 }
 /*============================================================================*/
-void qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length ){
-    if( NULL != obj ){
+qBool_t qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length ){
+    qBool_t RetValue = qFalse;
+
+    if( ( NULL != obj ) && ( NULL != buffer ) && ( length > 0u ) ){
         obj->qPrivate.head = 0u;
         obj->qPrivate.tail = 0u;
         obj->qPrivate.buffer = buffer;
         obj->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );   
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 

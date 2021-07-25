@@ -521,7 +521,9 @@ qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, cons
     return RetValue;
 }
 /*============================================================================*/
-void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
+qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
+    qBool_t RetValue = qFalse;
+
     if( ( NULL != m->qPrivate.TimeSpec ) && ( xTimeout < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ){
         #if ( Q_QUEUES == 1 )
             size_t cnt;
@@ -537,7 +539,9 @@ void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
             }           
         #endif
         qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ] );
+        RetValue = qTrue;
     }    
+    return RetValue;
 }
 /*============================================================================*/
 void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t attr ){

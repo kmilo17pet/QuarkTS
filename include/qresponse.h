@@ -1,7 +1,7 @@
 /*!
  * @file qresponse.h
  * @author J. Camilo Gomez C.
- * @version 1.23
+ * @version 1.24
  * @note This file is part of the QuarkTS distribution.
  * @brief API to simplify the handling of requested responses from terminal interfaces.
  **/
@@ -49,9 +49,9 @@
     * @param[in] obj A pointer to the Response Handler object.
     * @param[in] xLocBuff A pointer to the memory block where the desired response will remain.
     * @param[in] nMax The size of @a xLocBuff
-    * @return none.
+    * @return On success returns #qTrue, otherwise returns #qFalse.
     */ 
-    void qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ); 
+    qBool_t qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ); 
 
     /**
     * @brief Reset the Response Handler

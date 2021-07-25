@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.30
+ * @version 5.31
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -492,7 +492,7 @@
     * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */       
-    void qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
+    qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
 
     /**
     * @brief Get attributes from the provided Finite State Machine object     

@@ -1,7 +1,7 @@
 /*!
  * @file qbsbuffers.h
  * @author J. Camilo Gomez C.
- * @version 1.23
+ * @version 1.24
  * @note This file is part of the QuarkTS distribution.
  * @brief An interrupt-safe byte-sized ring buffer interface.
  **/
@@ -87,7 +87,7 @@
     * @brief Adds an element of data to the BSBuffer(Byte-sized Buffer)
     * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param[in] Data The data to be added
-    * @return #qTrue on success, otherwise returns #qFalse
+    * @return #qTrue on success, otherwise returns #qFalse.
     */     
     qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data );
 
@@ -96,9 +96,9 @@
     * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param[in] buffer Block of memory or array of data
     * @param[in] length The size of the buffer(Must be a power of two)
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    void qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length );
+    qBool_t qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length );
 
     /** @}*/
 

@@ -1,7 +1,7 @@
 /*!
  * @file qqueues.h
  * @author J. Camilo Gomez C.
- * @version 2.03
+ * @version 2.04
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to create and handle queues.
  **/
@@ -121,9 +121,9 @@
     /**
     * @brief Resets a queue to its original empty state.
     * @param[in] obj A pointer to the Queue object
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */   
-    void qQueue_Reset( qQueue_t * const obj );
+    qBool_t qQueue_Reset( qQueue_t * const obj );
 
     /**
     * @brief Returns the empty status of the Queue

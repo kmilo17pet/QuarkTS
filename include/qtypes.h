@@ -1,7 +1,7 @@
 /*!
 * @file qtypes.h
 * @author J. Camilo Gomez C.
-* @version 1.46
+* @version 1.47
 * @note This file is part of the QuarkTS distribution.
 * @brief type definitions for all OS interfaces
 */
@@ -10,10 +10,9 @@
 
     #include <stdlib.h>
 
-    #ifndef  QCONFIG_H          /*if this file available?*/
+    #ifndef QCONFIG_H          /*if this file available?*/
         #include "qconfig.h"
     #endif
-
 
     #ifndef Q_USE_STDINT_H
         #define Q_USE_STDINT_H      ( 1 )     

@@ -1,7 +1,7 @@
 /*!
  * @file QuarkTS.h
  * @author J. Camilo Gomez C.
- * @version 2.04
+ * @version 2.05
  * @note This file is part of the QuarkTS distribution.
  * @brief Global inclusion header 
  **/
@@ -107,10 +107,9 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
     #include "qtasks.h"    
     #include "qcoroutine.h"
     #include "qioutils.h"
+    #include "qtrace.h"
 
-    #if ( Q_TRACE_VARIABLES ==1 )
-        #include "qtrace.h"
-    #endif
+
     
     #if ( Q_MEMORY_MANAGER == 1 )
         #include "qmemmang.h"

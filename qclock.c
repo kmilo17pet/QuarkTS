@@ -15,8 +15,13 @@ static volatile qClock_t qSysTick_Epochs = 0uL;
 static qTimingBase_t TimmingBase;
 
 /*============================================================================*/
-void qClock_SetTimeBase( const qTimingBase_t tb ){
-    TimmingBase = tb;
+qBool_t qClock_SetTimeBase( const qTimingBase_t tb ){
+    qBool_t RetValue = qFalse;
+    if( tb > (qTimingBase_t)0 ){
+        TimmingBase = tb;
+        RetValue = qTrue;
+    }
+    return RetValue;
 } 
 #endif
 /*============================================================================*/

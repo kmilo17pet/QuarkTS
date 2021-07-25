@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.27
+ * @version 3.28
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -399,9 +399,9 @@
     * @brief Set/Change the task priority value
     * @param[in] Task Pointer to the task node.
     * @param[in] Value Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */    
-    void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value );
+    qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value );
 
     /**
     * @brief Set/Change the task callback function.
@@ -429,9 +429,9 @@
     * 
     * #qAwake : Put the task into the previous state before it was put in the sleep state.
     * ( SHUTDOWN Bit = 1 )
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    void qTask_Set_State( qTask_t * const Task, const qState_t State );
+    qBool_t qTask_Set_State( qTask_t * const Task, const qState_t State );
 
     /**
     * @brief Set the task data

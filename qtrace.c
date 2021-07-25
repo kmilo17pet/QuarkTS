@@ -17,20 +17,20 @@ void _qtrace_func( const char *loc, const char* fcn, const char *varname, const 
             char qTrace_EpochsBuffer[ 11 ] = {0};
 
             qDebug( NULL, '[' );
-            qIOUtil_OutputString( qDebug, NULL, qIOUtil_UtoA( qClock_GetTick(), qTrace_EpochsBuffer, 10 ), qFalse ); /*print out the systick*/
+            (void)qIOUtil_OutputString( qDebug, NULL, qIOUtil_UtoA( qClock_GetTick(), qTrace_EpochsBuffer, 10 ), qFalse ); /*print out the systick*/
             qDebug( NULL, ']' );
             qDebug( NULL, ' ' );          
         #endif
         if( NULL != fcn ){ /*print out the function if available*/
-            qIOUtil_OutputString( qDebug, NULL, fcn, qFalse ); 
-            qIOUtil_OutputString( qDebug, NULL, loc, qFalse ); /*print out the line location*/
+            (void)qIOUtil_OutputString( qDebug, NULL, fcn, qFalse ); 
+            (void)qIOUtil_OutputString( qDebug, NULL, loc, qFalse ); /*print out the line location*/
         }
-        qIOUtil_OutputString( qDebug, NULL, varname, qFalse );
+        (void)qIOUtil_OutputString( qDebug, NULL, varname, qFalse );
         if( NULL == varvalue ){ /*if varvalue is not defined, the call must correspond to memory tracing*/
-            qIOUtil_PrintXData( qDebug, NULL, Pointer, BlockSize ); /*print out the memory in hex format*/
+            (void)qIOUtil_PrintXData( qDebug, NULL, Pointer, BlockSize ); /*print out the memory in hex format*/
         }
         else{ /*print out the variable value*/
-            qIOUtil_OutputString( qDebug, NULL, varvalue, qFalse );
+            (void)qIOUtil_OutputString( qDebug, NULL, varvalue, qFalse );
             qDebug( NULL, '\r' );
             qDebug( NULL, '\n' );
         }

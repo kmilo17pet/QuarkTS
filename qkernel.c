@@ -108,7 +108,7 @@ void qOS_DummyTask_Callback( qEvent_t e ){
         qList_Initialize( &ReadyList[ i ] );
     }
     #if ( Q_SETUP_TIME_CANONICAL != 1 )
-        qClock_SetTimeBase( BaseTimming );
+        (void)qClock_SetTimeBase( BaseTimming );
     #endif
     kernel.IDLECallback = IdleCallback;
     #if ( Q_PRIO_QUEUE_SIZE > 0 )    
@@ -298,7 +298,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
                            QTASK_BIT_QUEUE_EMPTY | QTASK_BIT_REMOVE_REQUEST, 
                            qFalse);
         qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN | QTASK_BIT_ENABLED, qTrue );  /*task will be awaken and enabled*/ 
-        qTask_Set_State( Task, InitialState );
+        (void)qTask_Set_State( Task, InitialState );
 
         #if ( Q_TASK_COUNT_CYCLES == 1 )
             Task->qPrivate.Cycles = 0uL;

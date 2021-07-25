@@ -84,10 +84,13 @@ void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value ){
     }      
 }
 /*============================================================================*/
-void qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value ){
-    if( NULL != Task ){
+qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value ){
+    qBool_t RetValue = qFalse;
+    if( ( NULL != Task ) && ( Value < (qPriority_t)Q_PRIORITY_LEVELS ) ){
         Task->qPrivate.Priority = Value; 
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
@@ -99,7 +102,8 @@ void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
     }    
 }
 /*============================================================================*/
-void qTask_Set_State( qTask_t * const Task, const qState_t State ){
+qBool_t qTask_Set_State( qTask_t * const Task, const qState_t State ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
         switch( State ){
             case qDisabled: case qEnabled:
@@ -107,17 +111,21 @@ void qTask_Set_State( qTask_t * const Task, const qState_t State ){
                     qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, (qBool_t)State );
                     (void)qSTimer_Reload( &Task->qPrivate.timer );
                 }
+                RetValue = qTrue;
                 break;
             case qAsleep:
                 qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN, qFalse );
+                RetValue = qTrue;
                 break;
             case qAwake:
                 qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN, qTrue );
+                RetValue = qTrue;
                 break;
             default:
                 break;
         }
     }
+    return RetValue;
 }
 /*============================================================================*/
 void qTask_Set_Data( qTask_t * const Task, void* arg ){
