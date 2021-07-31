@@ -6,7 +6,7 @@ var group__qstimers =
     [ "QSTIMER_DISARMED", "group__qstimers.html#gad33c4dde733572d0ec1a308fb6b00e95", null ],
     [ "QSTIMER_INITIALIZER", "group__qstimers.html#ga7cf1635dc6c882c4db956c25d53f7874", null ],
     [ "QSTIMER_REMAINING_IN_DISARMED_STATE", "group__qstimers.html#ga4014bdc94e6e0e68ea96331c3fa441b8", null ],
-    [ "qSTimer_Disarm", "group__qstimers.html#ga28a28bcd8be184e1cf217e67d5438910", null ],
+    [ "qSTimer_Disarm", "group__qstimers.html#gacb9fe9bba72c8b1ef2e41ccd4cc2f511", null ],
     [ "qSTimer_Elapsed", "group__qstimers.html#ga0657bfab19ae31ca0266426ca5ab16e5", null ],
     [ "qSTimer_Expired", "group__qstimers.html#ga235748d169efd5426c886f1dafb846c1", null ],
     [ "qSTimer_FreeRun", "group__qstimers.html#ga56fa8cc10e114519e2d883312d95dbb9", null ],

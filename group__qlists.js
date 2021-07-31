@@ -30,7 +30,7 @@ var group__qlists =
     [ "qList_ForEach", "group__qlists.html#ga3d5d599e617deaa9970da008022522e3", null ],
     [ "qList_GetBack", "group__qlists.html#gab5d9a8fa4b146de954e93776b151291b", null ],
     [ "qList_GetFront", "group__qlists.html#ga032641ba81997254e10c4c7459b60dd8", null ],
-    [ "qList_Initialize", "group__qlists.html#ga6b1d179a64607ffc9be26ff4c1e2f6e8", null ],
+    [ "qList_Initialize", "group__qlists.html#gafd716b440a8f775c8e354ff44d8f3eb2", null ],
     [ "qList_Insert", "group__qlists.html#ga2f024e50edb3d576331dd2bf6fc1474a", null ],
     [ "qList_IsEmpty", "group__qlists.html#ga78a5d2e5324b4fae1eee5fc12bbeb43c", null ],
     [ "qList_IsMember", "group__qlists.html#gab2121d1e8fcb07e7d9a7219bc9526ca6", null ],

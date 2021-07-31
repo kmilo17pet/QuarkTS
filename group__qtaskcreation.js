@@ -11,9 +11,9 @@ var group__qtaskcreation =
     [ "qOS_Add_StateMachineTask", "group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a", null ],
     [ "qOS_Add_Task", "group__qtaskcreation.html#ga9ee35a45322d97b9895ccee746dd9e94", null ],
     [ "qOS_Remove_Task", "group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765", null ],
-    [ "qOS_Run", "group__qtaskcreation.html#gabb65854f215616a8cdf27b1a01f2ab12", null ],
-    [ "qOS_Scheduler_Release", "group__qtaskcreation.html#ga2ae48d68d34a540d3c50e5673d9c0d3c", null ],
-    [ "qOS_Set_IdleTask", "group__qtaskcreation.html#ga73dd6e3250103b4e3631268f8ce629d2", null ],
-    [ "qOS_Set_SchedulerReleaseCallback", "group__qtaskcreation.html#ga94f71ce6c8563013962d9e470402c529", null ],
-    [ "qOS_Setup", "group__qtaskcreation.html#gaa56cdd54d47ff41d77ca2526516fdf1d", null ]
+    [ "qOS_Run", "group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a", null ],
+    [ "qOS_Scheduler_Release", "group__qtaskcreation.html#ga7ab61e7b82c7d42ec83368c76bcbd9f2", null ],
+    [ "qOS_Set_IdleTask", "group__qtaskcreation.html#ga90a133a0c90b76859ee080a97d87833b", null ],
+    [ "qOS_Set_SchedulerReleaseCallback", "group__qtaskcreation.html#gaea8d1e7c386c6d51ee2d1691886fd347", null ],
+    [ "qOS_Setup", "group__qtaskcreation.html#ga737c7e98817ffb5f628639616061f6cc", null ]
 ];

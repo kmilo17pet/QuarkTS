@@ -49,15 +49,15 @@ var group__qtaskmanip =
       [ "bySchedulingRelease", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084", null ],
       [ "byNoReadyTasks", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212", null ]
     ] ],
-    [ "qTask_ClearTimeElapsed", "group__qtaskmanip.html#ga31ffbfbcd03fdc92a34c9134cd8990f8", null ],
+    [ "qTask_ClearTimeElapsed", "group__qtaskmanip.html#ga517c70795551eeb9c8f1ce583dfeb6f6", null ],
     [ "qTask_Get_Cycles", "group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4", null ],
     [ "qTask_Get_GlobalState", "group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc", null ],
     [ "qTask_Get_State", "group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308", null ],
     [ "qTask_Self", "group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924", null ],
-    [ "qTask_Set_Callback", "group__qtaskmanip.html#ga185cde5755a9c432221111e488a74d07", null ],
-    [ "qTask_Set_Data", "group__qtaskmanip.html#gaf869decdf319173b7ca95304a9f0c742", null ],
-    [ "qTask_Set_Iterations", "group__qtaskmanip.html#ga4819ade68f755968df6b415b06baa8ac", null ],
+    [ "qTask_Set_Callback", "group__qtaskmanip.html#ga917d0f4886542e06923e7f3b29ccc729", null ],
+    [ "qTask_Set_Data", "group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774", null ],
+    [ "qTask_Set_Iterations", "group__qtaskmanip.html#gaeffce78374485f9de425083546f0d0e5", null ],
     [ "qTask_Set_Priority", "group__qtaskmanip.html#ga65a57a81a3e16294907d941bc8fbaf58", null ],
     [ "qTask_Set_State", "group__qtaskmanip.html#ga4652ea7f26b17b59a8dfd7192f9be766", null ],
-    [ "qTask_Set_Time", "group__qtaskmanip.html#gac2dd409cad58a90b89f65e64f862928d", null ]
+    [ "qTask_Set_Time", "group__qtaskmanip.html#gac577ff1a9a4c7adbf79af1e70d05dff7", null ]
 ];
