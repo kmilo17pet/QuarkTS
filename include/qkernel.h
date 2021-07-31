@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.29
+ * @version 3.30
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS operations.
  **/
@@ -69,7 +69,7 @@
     #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1u ) )
 
     /** @brief A directive indicating that the task will run every time its timeout has expired. */
-    #define qPeriodic               ( (qIteration_t)(-2147483647-1) )
+    #define qPeriodic               ( (qIteration_t)(INT32_MIN) )
 
     /** @brief Same as #qPeriodic. A directive indicating that the task will run every time its timeout has expired.*/
     #define qIndefinite             ( qPeriodic )
@@ -78,7 +78,7 @@
     #define qSingleShot             ( (qIteration_t)(1) )
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
+        qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback );
     #else
         /**
         * @brief Task Scheduler Setup. This function is required and must be called once in 
@@ -91,7 +91,7 @@
         * in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled).
         * @param[in] IdleCallback  Callback function to the Idle Task. To disable the 
         * Idle Task activities, pass NULL as argument.
-        * @return none.
+        * @return #qTrue on success. Otherwise return #qFalse.
         * 
         * Example : When tick is already provided 
         * @code{.c}
@@ -125,16 +125,16 @@
         * } 
         * @endcode
         */      
-        void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback );
+        qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback );
     #endif
 
     /**
     * @brief Set/Change the callback for the Idle-task
     * @param[in] Callback A pointer to a void callback method with a qEvent_t parameter 
     * as input argument. To disable pass NULL as argument.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */
-    void qOS_Set_IdleTask( qTaskFcn_t Callback );
+    qBool_t qOS_Set_IdleTask( qTaskFcn_t Callback );
 
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         /**
@@ -142,15 +142,15 @@
         * qOS_Run() call.
         * @return none.
         */          
-        void qOS_Scheduler_Release( void );
+        qBool_t qOS_Scheduler_Release( void );
 
         /**
         * @brief Set/Change the scheduler release callback function
         * @param[in] Callback A pointer to a void callback method with a qEvent_t parameter 
         * as input argument.
-        * @return none.
+        * @return #qTrue on success. Otherwise return #qFalse.
         */     
-        void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback );
+        qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback );
     #endif       
 
     /** @}*/
@@ -266,9 +266,10 @@
     * @brief Executes the scheduling scheme. It must be called once after the task
     * pool has been defined.
     * @note This call keeps the application in an endless loop.
-    * @return none.
+    * @return #qTrue if a release action its performed. In a normal scenario, 
+    * this function never returns.
     */      
-    void qOS_Run( void );
+    qBool_t qOS_Run( void );
 
     /** @}*/
 

@@ -1,7 +1,7 @@
 /*!
  * @file qstimers.h
  * @author J. Camilo Gomez C.
- * @version 1.08
+ * @version 1.09
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Software-Timers module.
  **/
@@ -108,8 +108,9 @@
     /**
     * @brief Disarms the STimer object
     * @param[in] obj A pointer to the STimer object.
+    * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */         
-    void qSTimer_Disarm( qSTimer_t * const obj );
+    qBool_t qSTimer_Disarm( qSTimer_t * const obj );
 
     /**
     * @brief Get the current status of the STimer (Armed or Disarmed)

@@ -24,12 +24,15 @@ static qList_MemFree_t qListFree = NULL;
 #endif
 
 /*============================================================================*/
-void qList_Initialize( qList_t * const list ){
+qBool_t qList_Initialize( qList_t * const list ){
+    qBool_t RetValue = qFalse;
     if( NULL != list ){
         list->head = NULL;
         list->tail = NULL;
         list->size = 0u;
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*=========================================================*/
 static qList_Node_t* qList_NodeInit( void * const node ){
@@ -202,7 +205,6 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
 
     if( ( NULL != destination ) && ( NULL != source ) && ( position >= (qList_Position_t)(-1) )  ) {    
         if( NULL != source->head){ /*source has items*/
-            RetValue = qTrue;
             (void)qList_ForEach( source, qList_ChangeContainer, destination, QLIST_FORWARD, NULL );          
             if( NULL == destination->head ){ /*destination is empty*/
                 destination->head = source->head;
@@ -227,7 +229,7 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
                 iNode->next = source->head;
             }
             destination->size += source->size;
-            qList_Initialize( source ); /*clean up source*/
+            RetValue = qList_Initialize( source ); /*clean up source*/
         }
     }
     return RetValue;
@@ -319,7 +321,7 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
                         before = current->prev;
                         after = current->next;
 
-                        if( NULL != before){
+                        if( NULL != before ){
                             before->next = after;
                         } 
                         else{
@@ -353,7 +355,7 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn ){
 qBool_t qList_IteratorSet( qList_Iterator_t *iterator, qList_t *const list, void *NodeOffset, qList_Direction_t dir ){
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != list ) && ( NULL != iterator ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
+    if( ( NULL != list ) && ( NULL != iterator ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir ) ) ){
         qList_Node_t *Offset;
         
         iterator->direction = dir;
@@ -389,7 +391,7 @@ void* qList_IteratorGetNext( qList_Iterator_t *iterator ){
 qBool_t qList_ForEach( qList_t *const list, const qList_NodeFcn_t Fcn, void *arg, qList_Direction_t dir, void *NodeOffset ){
     qBool_t RetValue = qFalse;
     
-    if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir) ) ){
+    if( ( NULL != list ) && ( NULL != Fcn ) && ( ( &QLIST_FORWARD == dir ) || ( &QLIST_BACKWARD == dir ) ) ){
         if ( NULL != list->head ){  /*walk the list only if it has items*/
             qList_Node_t *iNode;
             qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk throught*/

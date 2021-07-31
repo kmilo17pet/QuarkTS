@@ -1,7 +1,7 @@
 /*!
 * @file qclock.h
 * @author J. Camilo Gomez C.
-* @version 3.26
+* @version 3.27
 * @note This file is part of the QuarkTS distribution.
 * @brief Clock and time manipulation interface used by the OS and kernel modules.
 */
@@ -87,9 +87,9 @@
     /**
     * @brief Set the clock-tick provider function.
     * @param[in]  provider A pointer to the tick provider function  
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */    
-    void qClock_SetTickProvider( const qGetTickFcn_t provider );
+    qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider );
 
     /**
     * @brief Convert the specified input time(epochs) to time(seconds)

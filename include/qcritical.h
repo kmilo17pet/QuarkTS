@@ -1,7 +1,7 @@
 /*!
  * @file qcritical.h
  * @author J. Camilo Gomez C.
- * @version 3.25
+ * @version 3.26
  * @note This file is part of the QuarkTS distribution.
  * @brief API to handle entry/exit actions in critical sections.
  **/
@@ -85,9 +85,9 @@
     * @endcode
     * @param[in] Restorer The function with hardware specific code that enables or restores interrupts.
     * @param[in] Disabler The function with hardware specific code that disables interrupts.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */   
-    void qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler );
+    qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler );
 
     /** @}*/
 

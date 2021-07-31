@@ -1,7 +1,7 @@
 /*!
  * @file qmemmang.h
  * @author J. Camilo Gomez C.
- * @version 2.05
+ * @version 2.06
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Memory Management module.
  **/
@@ -95,9 +95,9 @@
     /**
     * @brief Select the memory pool to perform heap memory requests with qMalloc() and qFree().
     * @param[in] mPool A pointer to the memory pool instance
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */     
-    void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool );
+    qBool_t qMemMang_Pool_Select( qMemMang_Pool_t * const mPool );
 
     /**
     * @brief Returns the total amount of heap space that remains unallocated for the selected
@@ -134,12 +134,13 @@
     * @attention qMemMang_Free() its NOT interrupt-safe. 
     * @param[in] mPool A pointer to the memory pool instance.
     * @param[in] ptr to the memory to deallocate
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr );
+    qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr );
 
     /**
-    * @brief Allocate a block of memory that is @a Size bytes large. Allocation will be performed
+    * @brief Wrapper API for qMemMang_Allocate() in order to be compatible with @a malloc. 
+    * Allocate a block of memory that is @a Size bytes large. Allocation will be performed
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
     * @note The behavior is undefined if selected memory pool has not been initialized.
@@ -152,7 +153,8 @@
     void* qMalloc( size_t Size );
 
     /**
-    * @brief Deallocates the space previously allocated by qMalloc(). Deallocation will 
+    * @brief Wrapper API for qMemMang_Free() in order to be compatible with @a free. 
+    * Deallocates the space previously allocated by qMalloc(). Deallocation will 
     * be performed in the selected memory pool.
     * If @a ptr is a null pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.
@@ -167,7 +169,7 @@
     * @param[in] ptr to the memory to deallocate
     * @return none.
     */       
-    void qFree(void *ptr);
+    void qFree( void *ptr );
 
     /** @}*/
 

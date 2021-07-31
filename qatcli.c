@@ -329,13 +329,16 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
     return RetValue;
 }
 /*============================================================================*/
-void qATCLI_Input_Flush( qATCLI_t * const cli ){
+qBool_t qATCLI_Input_Flush( qATCLI_t * const cli ){
+    qBool_t RetValue = qFalse;
     if( NULL != cli ){
         qATCLI_Input_t *Input = &cli->qPrivate.Input;
         Input->Ready = qFalse;
         Input->index = 0u;
         Input->Buffer[ 0 ] = (char)'\0';
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 qBool_t qATCLI_Run( qATCLI_t * const cli ){
@@ -373,9 +376,8 @@ qBool_t qATCLI_Run( qATCLI_t * const cli ){
                 }
             }
             qATCLI_HandleCommandResponse( cli, OutputRetval ); /*print out the command output*/
-            qATCLI_Input_Flush( cli ); /*flush buffers*/
             cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
-            RetValue = qTrue;
+            RetValue = qATCLI_Input_Flush( cli ); /*flush buffers*/
         }
     }
     return RetValue;

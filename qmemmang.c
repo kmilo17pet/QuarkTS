@@ -37,20 +37,23 @@ qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t S
     return RetValue;
 }
 /*============================================================================*/
-void qMemMang_Pool_Select( qMemMang_Pool_t * const mPool ){
+qBool_t qMemMang_Pool_Select( qMemMang_Pool_t * const mPool ){
     if( NULL != mPool ){ 
         Selected_MemPool = mPool; /*select the default pool*/
     }
     else{
         Selected_MemPool = &DefaultMemPool;
     }
+    return qTrue; /*only for API compatibility*/
 }
 /*============================================================================*/
 void qFree( void *ptr ){
-    qMemMang_Free( Selected_MemPool, ptr );
+    (void)qMemMang_Free( Selected_MemPool, ptr );
 }
 /*============================================================================*/
-void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr ){
+qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr ){
+    qBool_t RetValue = qFalse;
+
     if( NULL != mPool ){
         /*cstat -MISRAC2012-Rule-18.4 -MISRAC2012-Rule-11.3 -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/ 
         qUINT8_t *pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
@@ -67,8 +70,10 @@ void qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr ){
                 mPool->qPrivate.FreeBytesRemaining += Connect->BlockSize; /* Add this block to the list of free blocks. */
                 qMemMang_InsertBlockIntoFreeList( mPool, Connect );
             }
+            RetValue = qTrue;
         }
     }
+    return RetValue;
 }
 /*============================================================================*/
 static void qMemMang_HeapInit( qMemMang_Pool_t *mPool ){

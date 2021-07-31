@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.06
+ * @version 1.07
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.
@@ -112,9 +112,9 @@
     * @brief Set/Change the pin number for the provided node.
     * @param[in] Node A pointer to the Input-Node object.
     * @param[in] PinNumber  The specified Pin to read from PortAddress  
-    * @return none.
+    * @return #qTrue on success. Otherwise #qFalse.
     */     
-    void qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t PinNumber );
+    qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t PinNumber );
 
     /** @}*/
 

@@ -97,58 +97,81 @@ void qOS_DummyTask_Callback( qEvent_t e ){
 }
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    void qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
+    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
 #else
-    void qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback ){
+    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback ){
 #endif
-    qIndex_t i;
-    qList_Initialize( SuspendedList );
-    qList_Initialize( WaitingList );
-    for( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ){
-        qList_Initialize( &ReadyList[ i ] );
-    }
-    #if ( Q_SETUP_TIME_CANONICAL != 1 )
-        (void)qClock_SetTimeBase( BaseTimming );
+    qBool_t RetValue = qFalse;
+    #if (Q_SETUP_TIME_CANONICAL == 1)
+        if( NULL != &kernel ){
+    #else
+        /*cstat -CERT-FLP36-C*/
+        if( BaseTimming > (qTimingBase_t)0){
+        /*cstat +CERT-FLP36-C*/
     #endif
-    kernel.IDLECallback = IdleCallback;
-    #if ( Q_PRIO_QUEUE_SIZE > 0 )    
-        /*init the priority queue*/
-        for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ){
-            kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
+        qIndex_t i;
+
+        (void)qList_Initialize( SuspendedList );
+        (void)qList_Initialize( WaitingList );
+        for( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ){
+            (void)qList_Initialize( &ReadyList[ i ] );
         }
-        kernel.QueueIndex = -1;     
-        kernel.QueueData = NULL;
-    #endif
-    #if ( Q_NOTIFICATION_SPREADER == 1 )
-        kernel.NotificationSpreadRequest.mode = NULL;
-        kernel.NotificationSpreadRequest.eventdata = NULL;
-    #endif    
-    kernel.Flag = 0uL; /*clear all the core flags*/
-    #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        kernel.ReleaseSchedCallback = NULL;
-    #endif
-    #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-        kernel.TaskEntries = (size_t)0;
-    #endif
-    kernel.CurrentRunningTask = NULL;
-    qClock_SetTickProvider( TickProvider );
+        #if ( Q_SETUP_TIME_CANONICAL != 1 )
+            (void)qClock_SetTimeBase( BaseTimming );
+        #endif
+        kernel.IDLECallback = IdleCallback;
+        #if ( Q_PRIO_QUEUE_SIZE > 0 )    
+            /*init the priority queue*/
+            for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ){
+                kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
+            }
+            kernel.QueueIndex = -1;     
+            kernel.QueueData = NULL;
+        #endif
+        #if ( Q_NOTIFICATION_SPREADER == 1 )
+            kernel.NotificationSpreadRequest.mode = NULL;
+            kernel.NotificationSpreadRequest.eventdata = NULL;
+        #endif    
+        kernel.Flag = 0uL; /*clear all the core flags*/
+        #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
+            kernel.ReleaseSchedCallback = NULL;
+        #endif
+        #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
+            kernel.TaskEntries = (size_t)0;
+        #endif
+        kernel.CurrentRunningTask = NULL;
+        (void)qClock_SetTickProvider( TickProvider );
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 /*========================== Shared Private Method ===========================*/
 qTask_t* qOS_Get_TaskRunning( void ){
     return kernel.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
-void qOS_Set_IdleTask( qTaskFcn_t Callback ){
-    kernel.IDLECallback = Callback;
+qBool_t qOS_Set_IdleTask( qTaskFcn_t Callback ){
+    qBool_t RetValue = qFalse;
+    if( Callback != kernel.IDLECallback ){
+        kernel.IDLECallback = Callback;
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 /*============================================================================*/
-void qOS_Scheduler_Release( void ){
+qBool_t qOS_Scheduler_Release( void ){
     QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_RELEASESCHED );
+    return qTrue; /*only for API compatibility*/
 }
 /*============================================================================*/
-void qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback ){
-    kernel.ReleaseSchedCallback = Callback;
+qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback ){
+    qBool_t RetValue = qFalse;
+    if( Callback != kernel.ReleaseSchedCallback ){
+        kernel.ReleaseSchedCallback = Callback;
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
 /*============================================================================*/
@@ -429,7 +452,10 @@ static void qOS_TriggerReleaseSchedEvent( void ){
 }
 #endif
 /*============================================================================*/
-void qOS_Run( void ){
+qBool_t qOS_Run( void ){
+    /*cstat -MISRAC2012-Rule-2.2_c*/
+    qBool_t RetValue = qFalse; /*only for API compatibility*/
+    /*cstat +MISRAC2012-Rule-2.2_c*/
     do{           
         if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ){ /*check for ready tasks in the waiting-list*/
             qIndex_t xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1;
@@ -457,9 +483,11 @@ void qOS_Run( void ){
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
         while( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
+        RetValue = qTrue; 
     #else
         while( qTrue == qTrue);
     #endif
+    return RetValue;
 }
 /*============================================================================*/
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
@@ -584,7 +612,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
             break;
         case byNotificationSimple:
             kernel.EventInfo.EventData = Task->qPrivate.AsyncData; /*Transfer async-data to the eventinfo structure*/
-            --Task->qPrivate.Notification; /* = qFalse */ /*Clear the async flag*/            
+            --Task->qPrivate.Notification;           
             break;
         #if ( Q_QUEUES == 1 )    
             case byQueueReceiver:

@@ -14,19 +14,20 @@ qBool_t qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ){
     if( ( NULL != obj ) && ( NULL != xLocBuff ) && (nMax > 0u ) ){
         obj->qPrivate.Pattern2Match = xLocBuff;
         obj->qPrivate.MaxStrLength = nMax; 
-        qResponse_Reset( obj );
-        RetValue = qTrue;
+        RetValue = qResponse_Reset( obj );
     }
     return RetValue;
 }   
 /*============================================================================*/
-void qResponse_Reset( qResponse_t * const obj ){
+qBool_t qResponse_Reset( qResponse_t * const obj ){
+    qBool_t RetValue = qFalse;
     if( NULL != obj ){
         obj->qPrivate.PatternLength = 0u;
         obj->qPrivate.MatchedCount = 0u;
         obj->qPrivate.ResponseReceived = qFalse;
-        qSTimer_Disarm( &obj->qPrivate.timeout );
+        RetValue = qSTimer_Disarm( &obj->qPrivate.timeout );
     }
+    return RetValue;
 }
 /*============================================================================*/
 qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n ){
@@ -47,12 +48,12 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
             }
         }
         else if( qSTimer_Expired( &obj->qPrivate.timeout) ){
-            qResponse_Reset( obj ); /*re-initialize the response handler*/
+            (void)qResponse_Reset( obj ); /*re-initialize the response handler*/
             RetValue = qResponseTimeout;
         }        
         else if( obj->qPrivate.ResponseReceived ){ /*if response received from ISR match the expected*/
-            qResponse_Reset( obj ); /*re-initialize the response handler*/
-            RetValue = qTrue; /*let it know to the caller that expected response was received*/
+            RetValue = qResponse_Reset( obj ); /*re-initialize the response handler*/
+            /*  = qTrue -> let it know to the caller that expected response was received*/
         } 
         else{
             /*nothing to do*/

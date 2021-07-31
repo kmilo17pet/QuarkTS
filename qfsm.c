@@ -437,7 +437,7 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m ){
                 (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
             }
             else{
-                qSTimer_Disarm( &ts->builtin_timeout[ i ] );
+                (void)qSTimer_Disarm( &ts->builtin_timeout[ i ] );
             }
         } 
     }
@@ -476,7 +476,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
                     }
                 }   
                 if( 0uL != ( opt & ResetCheck ) ){
-                    qSTimer_Disarm( tmr );
+                    (void)qSTimer_Disarm( tmr );
                 }     
             }
         }
@@ -491,7 +491,7 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * 
 
         m->qPrivate.TimeSpec = ts;
         for( i = 0 ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ){
-            qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ i ] );
+            (void)qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ i ] );
         }
         RetValue = qTrue;
     }
@@ -538,8 +538,7 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout ){
                 }
             }           
         #endif
-        qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ] );
-        RetValue = qTrue;
+        RetValue = qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ xTimeout ] );
     }    
     return RetValue;
 }

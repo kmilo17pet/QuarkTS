@@ -33,8 +33,7 @@ qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time ){
     if( NULL != obj ){ 
         if( QSTIMER_ARMED == qSTimer_Status( obj ) ){ 
             if( qSTimer_Expired( obj ) ){
-                qSTimer_Disarm( obj ); 
-                RetValue = qTrue;
+                RetValue = qSTimer_Disarm( obj ); 
             }
         }
         else{
@@ -77,11 +76,14 @@ qClock_t qSTimer_Remaining( const qSTimer_t * const obj ){
     return RetValue;
 }
 /*============================================================================*/
-void qSTimer_Disarm( qSTimer_t * const obj ){
+qBool_t qSTimer_Disarm( qSTimer_t * const obj ){
+    qBool_t RetValue = qFalse;
     if( NULL != obj ){
         obj->TV = QSTIMER_DISARM_VALUE;
         obj->Start = QSTIMER_DISARM_VALUE;
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 qBool_t qSTimer_Status( const qSTimer_t * const obj ){

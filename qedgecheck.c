@@ -102,10 +102,15 @@ qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node ){
     return RetValue;
 }
 /*============================================================================*/
-void qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t PinNumber ){
-    if( NULL != Node ){
+qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t PinNumber ){
+    qBool_t RetValue = qFalse;
+    /*cstat -MISRAC2012-Rule-10.1_R3*/ /*false-positive*/
+    if( ( NULL != Node ) && ( PinNumber < (qBool_t)32u ) ){
+    /*cstat +MISRAC2012-Rule-10.1_R3*/  
         Node->qPrivate.Pin = PinNumber;
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 /*                        PRIVATE METHODS, DONT USE THEM                      */

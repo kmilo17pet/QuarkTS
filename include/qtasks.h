@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.28
+ * @version 3.29
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -378,9 +378,9 @@
     * @param[in] Task Pointer to the task node.
     * @param[in] Value Execution interval defined in seconds (floating-point format). 
     * For immediate execution (tValue = #qTimeImmediate).
-    * @return none.
+    * @return #qTrue on success, otherwise returns #qFalse.
     */  
-    void qTask_Set_Time( qTask_t * const Task, const qTime_t Value );
+    qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t Value );
 
     /**
     * @brief Set/Change the number of task iterations
@@ -391,9 +391,9 @@
     * done, internal iteration counter is 0. If you need to perform
     * another set of iterations, you need to set the number of 
     * iterations again and resume.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */     
-    void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value );
+    qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value );
 
     /**
     * @brief Set/Change the task priority value
@@ -409,9 +409,9 @@
     * @param[in] Task Pointer to the task node.
     * @param[in] CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
     * as input argument.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */       
-    void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
+    qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
 
     /**
     * @brief Set the task operational state (Enabled or Disabled)
@@ -437,16 +437,16 @@
     * @brief Set the task data
     * @param[in] Task Pointer to the task node.
     * @param[in] arg The task storage pointer. User data.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */  
-    void qTask_Set_Data( qTask_t * const Task, void* arg );
+    qBool_t qTask_Set_Data( qTask_t * const Task, void* arg );
 
     /**
     * @brief Clear the elapsed time of the task. Restart the internal task tick;
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    void qTask_ClearTimeElapsed( qTask_t * const Task );
+    qBool_t qTask_ClearTimeElapsed( qTask_t * const Task );
 
     /**
     * @brief Get the current running-task handle.
@@ -459,7 +459,7 @@
     * @brief Put the task into a disabled state.    
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */     
     #define qTask_Suspend( Task )     qTask_Set_State( (Task), qDisabled )
 
@@ -467,7 +467,7 @@
     * @brief Put the task into a disabled state.    
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */        
     #define qTask_Disable( Task )     qTask_Set_State( (Task), qDisabled )
 
@@ -475,7 +475,7 @@
     * @brief Put the task into an enabled state.    
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */    
     #define qTask_Resume( Task )      qTask_Set_State( (Task), qEnabled )
 
@@ -483,7 +483,7 @@
     * @brief Put the task into an enabled state.    
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */     
     #define qTask_Enable( Task )      qTask_Set_State( (Task), qEnabled )
  
@@ -494,7 +494,7 @@
     * wake up the task.
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */    
     #define qTask_ASleep( Task )      qTask_Set_State( (Task), qAsleep )
   
@@ -503,7 +503,7 @@
     * will be able to catch any kind of events.   
     * @see qTask_Set_State()
     * @param[in] Task Pointer to the task node.
-    * @return none.
+    * @return #qTrue on success. Otherwise return #qFalse.
     */      
     #define qTask_Awake( Task )       qTask_Set_State( (Task), qAwake )
 
@@ -572,9 +572,9 @@
         * @param[in] flags The flags to modify. Can be combined with a bitwise OR. 
         * QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20  
         * @param[in] action QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
-        * @return none.
+        * @return #qTrue on success. Otherwise return #qFalse.
         */     
-        void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
+        qBool_t qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
 
         /**
         * @brief Returns the current value of the task's EventFlags. 

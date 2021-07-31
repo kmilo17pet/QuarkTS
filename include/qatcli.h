@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.54
+ * @version 2.55
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -350,7 +350,7 @@
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @return #qTrue on success, otherwise return #qFalse
     */   
-    void qATCLI_Input_Flush( qATCLI_t * const cli );
+    qBool_t qATCLI_Input_Flush( qATCLI_t * const cli );
 
     /**
     * @brief Run the AT Command Line Interface when the input is ready.

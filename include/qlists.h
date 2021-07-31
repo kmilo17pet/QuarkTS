@@ -1,7 +1,7 @@
 /*!
  * @file qlists.h
  * @author J. Camilo Gomez C.
- * @version 1.08
+ * @version 1.09
  * @note This file is part of the QuarkTS distribution.
  * @brief API to create and manage double-linked generic lists.
  **/
@@ -155,9 +155,9 @@
     * @brief Must be called before a list is used. This initialises all the members of the 
     * list structure.
     * @param[in] list Pointer to the list being initialised.
-    * @return none
+    * @return #qTrue on success, #qFalse otherwise.
     */   
-    void qList_Initialize( qList_t * const list );
+    qBool_t qList_Initialize( qList_t * const list );
 
     /**
     * @brief Insert an item into the list.

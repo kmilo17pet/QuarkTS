@@ -1,7 +1,7 @@
 /*!
  * @file qresponse.h
  * @author J. Camilo Gomez C.
- * @version 1.24
+ * @version 1.25
  * @note This file is part of the QuarkTS distribution.
  * @brief API to simplify the handling of requested responses from terminal interfaces.
  **/
@@ -56,9 +56,9 @@
     /**
     * @brief Reset the Response Handler
     * @param[in] obj A pointer to the Response Handler object.
-    * @return none.
+    * @return #qTrue on success. Otherwise returns #qFalse.
     */     
-    void qResponse_Reset( qResponse_t * const obj );
+    qBool_t qResponse_Reset( qResponse_t * const obj );
 
     /**
     * @brief Non-Blocking Response check

@@ -33,8 +33,13 @@ void qCritical_Exit( void ){
     }
 }
 /*============================================================================*/
-void qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
-    Critical.I_Restorer = Restorer;
-    Critical.I_Disable = Disabler;
+qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
+    qBool_t RetValue = qFalse;
+    if( ( Restorer != Critical.I_Restorer ) || ( Disabler != Critical.I_Disable ) ){
+        Critical.I_Restorer = Restorer;
+        Critical.I_Disable = Disabler;
+        RetValue = qTrue;
+    }
+    return RetValue;
 }
 /*============================================================================*/

@@ -29,13 +29,18 @@ static qClock_t qClock_InternalTick( void ){
     return qSysTick_Epochs;
 } 
 /*============================================================================*/
-void qClock_SetTickProvider( const qGetTickFcn_t provider ){
-    if( NULL != provider ){
-        qClock_GetTick = provider;
+qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider ){
+    qBool_t RetValue = qFalse;
+    if ( provider != qClock_GetTick ){
+        if( NULL != provider ){
+            qClock_GetTick = provider;
+        }
+        else{
+            qClock_GetTick = &qClock_InternalTick;
+        }
+        RetValue = qTrue;
     }
-    else{
-        qClock_GetTick = &qClock_InternalTick;
-    }
+    return RetValue;
 }
 /*============================================================================*/
 qTime_t qClock_Convert2Time( const qClock_t t ){

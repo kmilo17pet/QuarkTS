@@ -72,16 +72,30 @@ qTask_GlobalState_t qTask_Get_GlobalState( const qTask_t * const Task ){
     return qOS_GetTaskGlobalState( Task );
 }
 /*============================================================================*/
-void qTask_Set_Time( qTask_t * const Task, const qTime_t Value ){
+qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t Value ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        (void)qSTimer_Set( &Task->qPrivate.timer , Value );
+        RetValue = qSTimer_Set( &Task->qPrivate.timer , Value );
     }
+    return RetValue;
 }
 /*============================================================================*/
-void qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value ){
+qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        Task->qPrivate.Iterations = ( qPeriodic == Value )? qPeriodic : -Value;
+        if( Value >= (qIteration_t)0 ){
+            Task->qPrivate.Iterations = -Value;
+            RetValue = qTrue;
+        }
+        else if ( qPeriodic == Value ){ 
+            Task->qPrivate.Iterations = qPeriodic;
+            RetValue = qTrue;
+        }
+        else{
+            /*nothing to do, return qFalse*/
+        }
     }      
+    return RetValue;
 }
 /*============================================================================*/
 qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value ){
@@ -93,13 +107,18 @@ qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value ){
     return RetValue;
 }
 /*============================================================================*/
-void qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
+qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){ 
-        Task->qPrivate.Callback = CallbackFcn;
-        #if ( Q_FSM == 1 )
-            Task->qPrivate.StateMachine = NULL;    
-        #endif  
+        if( CallbackFcn != Task->qPrivate.Callback ){
+            Task->qPrivate.Callback = CallbackFcn;
+            #if ( Q_FSM == 1 )
+                Task->qPrivate.StateMachine = NULL;    
+            #endif          
+            RetValue = qTrue;
+        }
     }    
+    return RetValue;
 }
 /*============================================================================*/
 qBool_t qTask_Set_State( qTask_t * const Task, const qState_t State ){
@@ -128,16 +147,23 @@ qBool_t qTask_Set_State( qTask_t * const Task, const qState_t State ){
     return RetValue;
 }
 /*============================================================================*/
-void qTask_Set_Data( qTask_t * const Task, void* arg ){
+qBool_t qTask_Set_Data( qTask_t * const Task, void* arg ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        Task->qPrivate.TaskData = arg;
+        if( arg != Task->qPrivate.TaskData ){
+            Task->qPrivate.TaskData = arg;
+            RetValue = qTrue;
+        }
     }
+    return RetValue;
 }
 /*============================================================================*/
-void qTask_ClearTimeElapsed( qTask_t * const Task ){
+qBool_t qTask_ClearTimeElapsed( qTask_t * const Task ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
-        (void)qSTimer_Reload( &Task->qPrivate.timer );
+        RetValue =  qSTimer_Reload( &Task->qPrivate.timer );
     }    
+    return RetValue;
 }
 /*============================================================================*/
 qTask_t* qTask_Self( void ){
@@ -163,11 +189,14 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
 #endif /* #if ( Q_QUEUES == 1) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
-void qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action ){
+qBool_t qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action ){
+    qBool_t RetValue = qFalse;
     if( NULL != Task ){
         qTask_Flag_t FlagsToSet = flags & QTASK_EVENTFLAGS_RMASK;
         qOS_Set_TaskFlags( Task, FlagsToSet, action );
+        RetValue = qTrue;
     }
+    return RetValue;
 }
 /*============================================================================*/
 qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task ){
