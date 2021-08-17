@@ -14,32 +14,36 @@ typedef struct _qCritical_Handler_s{
 }qCritical_Handler_t;
 /*! @endcond */
 
-static qCritical_Handler_t Critical = { NULL, NULL , 0uL};
+static qCritical_Handler_t Critical = { NULL, NULL , 0uL };
 
 /*============================================================================*/
-void qCritical_Enter( void ){
-    if( NULL != Critical.I_Disable ){
+void qCritical_Enter( void )
+{
+    if ( NULL != Critical.I_Disable ) {
         qInt_Disabler_t Disabler = Critical.I_Disable;
 
         Critical.IntFlags = Disabler();
     }
 }
 /*============================================================================*/
-void qCritical_Exit( void ){
-    if( NULL != Critical.I_Restorer ){
+void qCritical_Exit( void )
+{
+    if ( NULL != Critical.I_Restorer ) {
         qInt_Restorer_t Restorer = Critical.I_Restorer;
 
         Restorer( Critical.IntFlags );
     }
 }
 /*============================================================================*/
-qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler ){
+qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler )
+{
     qBool_t RetValue = qFalse;
-    if( ( Restorer != Critical.I_Restorer ) || ( Disabler != Critical.I_Disable ) ){
+    if ( ( Restorer != Critical.I_Restorer ) || ( Disabler != Critical.I_Disable ) ) {
         Critical.I_Restorer = Restorer;
         Critical.I_Disable = Disabler;
         RetValue = qTrue;
     }
+    
     return RetValue;
 }
 /*============================================================================*/

@@ -92,28 +92,30 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 #endif
 
 /*========================== Shared Private Method ===========================*/
-void qOS_DummyTask_Callback( qEvent_t e ){
+void qOS_DummyTask_Callback( qEvent_t e )
+{
     Q_UNUSED( e ); 
 }
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback ){
+    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback )
 #else
-    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback ){
+    qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback )
 #endif
+{
     qBool_t RetValue = qFalse;
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        if( NULL != &kernel ){
+        if ( NULL != &kernel ) {
     #else
         /*cstat -CERT-FLP36-C*/
-        if( BaseTimming > (qTimingBase_t)0){
+        if ( BaseTimming > (qTimingBase_t)0) {
         /*cstat +CERT-FLP36-C*/
     #endif
         qIndex_t i;
 
         (void)qList_Initialize( SuspendedList );
         (void)qList_Initialize( WaitingList );
-        for( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ){
+        for ( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ) {
             (void)qList_Initialize( &ReadyList[ i ] );
         }
         #if ( Q_SETUP_TIME_CANONICAL != 1 )
@@ -122,7 +124,7 @@ void qOS_DummyTask_Callback( qEvent_t e ){
         kernel.IDLECallback = IdleCallback;
         #if ( Q_PRIO_QUEUE_SIZE > 0 )    
             /*init the priority queue*/
-            for( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ){
+            for ( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ) {
                 kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
             }
             kernel.QueueIndex = -1;     
@@ -143,45 +145,56 @@ void qOS_DummyTask_Callback( qEvent_t e ){
         (void)qClock_SetTickProvider( TickProvider );
         RetValue = qTrue;
     }
+    
     return RetValue;
 }
 /*========================== Shared Private Method ===========================*/
-qTask_t* qOS_Get_TaskRunning( void ){
+qTask_t* qOS_Get_TaskRunning( void )
+{
     return kernel.CurrentRunningTask; /*get the handle of the current running task*/
 }
 /*============================================================================*/
-qBool_t qOS_Set_IdleTask( qTaskFcn_t Callback ){
+qBool_t qOS_Set_IdleTask( qTaskFcn_t Callback )
+{
     qBool_t RetValue = qFalse;
-    if( Callback != kernel.IDLECallback ){
+
+    if ( Callback != kernel.IDLECallback ) {
         kernel.IDLECallback = Callback;
         RetValue = qTrue;
     }
+
     return RetValue;
 }
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
 /*============================================================================*/
-qBool_t qOS_Scheduler_Release( void ){
+qBool_t qOS_Scheduler_Release( void )
+{
     QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_RELEASESCHED );
+    
     return qTrue; /*only for API compatibility*/
 }
 /*============================================================================*/
-qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback ){
+qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t Callback )
+{
     qBool_t RetValue = qFalse;
-    if( Callback != kernel.ReleaseSchedCallback ){
+
+    if ( Callback != kernel.ReleaseSchedCallback ) {
         kernel.ReleaseSchedCallback = Callback;
         RetValue = qTrue;
     }
+
     return RetValue;
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
 /*============================================================================*/
-qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode ){
+qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode )
+{
     qBool_t RetValue = qFalse;
     
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         /*do not proceed if any previous operation is in progress*/
-        if( NULL ==  kernel.NotificationSpreadRequest.mode ){ 
-            if( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ){
+        if ( NULL ==  kernel.NotificationSpreadRequest.mode ) { 
+            if ( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ) {
                 kernel.NotificationSpreadRequest.mode = ( qTask_NotifySimple == mode )? &qTask_Notification_Send : &qTask_Notification_Queue;
                 kernel.NotificationSpreadRequest.eventdata = eventdata;
                 RetValue = qTrue;
@@ -191,39 +204,44 @@ qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode 
         Q_UNUSED( eventdata );
         Q_UNUSED( mode );    
     #endif
+
     return RetValue;    
 }
 /*============================================================================*/
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-static void qOS_PriorityQueue_CleanUp( const qTask_t * task ){
+static void qOS_PriorityQueue_CleanUp( const qTask_t * task )
+{
     qIndex_t i;
-    for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; ++i ){ 
-        if( kernel.QueueStack[ i ].Task == task ){
+
+    for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) ; ++i ) { 
+        if ( kernel.QueueStack[ i ].Task == task ) {
             qOS_PriorityQueue_ClearIndex( i );
         }
     }
 }
 /*============================================================================*/
-static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear ){
+static void qOS_PriorityQueue_ClearIndex( qIndex_t IndexToClear )
+{
     qIndex_t j;
     qBase_t QueueIndex;
 
     kernel.QueueStack[ IndexToClear ].Task = NULL; /*set the position in the queue as empty*/  
     QueueIndex = (qBase_t)kernel.QueueIndex; /*to avoid side effects*/
-    for( j = IndexToClear ; (qBase_t)j < QueueIndex ; ++j ){ 
+    for ( j = IndexToClear ; (qBase_t)j < QueueIndex ; ++j ) { 
         kernel.QueueStack[ j ] = kernel.QueueStack[ j + (qIndex_t)1 ]; /*shift the remaining items of the queue*/
     }
     --kernel.QueueIndex;    /*decrease the index*/    
 }
 /*========================== Shared Private Method ===========================*/
-qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
+qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data )
+{
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t RetValue = qFalse;
         qBase_t QueueMaxIndex, CurrentQueueIndex;
 
         QueueMaxIndex = Q_PRIO_QUEUE_SIZE - 1; /*to avoid side effects */
         CurrentQueueIndex = kernel.QueueIndex; /*to avoid side effects */
-        if( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
+        if ( ( NULL != Task )  && ( CurrentQueueIndex < QueueMaxIndex) ) {/*check if data can be queued*/
             qQueueStack_t tmp;
 
             tmp.QueueData = Data;
@@ -237,20 +255,22 @@ qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data ){
     #else
         Q_UNUSED( Task );
         Q_UNUSED( Data );
+
         return qFalse;
     #endif   
 }
 /*========================== Shared Private Method ===========================*/
-qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
+qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task )
+{
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         qBool_t RetValue = qFalse;
         qBase_t CurrentQueueIndex, i;
 
         CurrentQueueIndex = kernel.QueueIndex + 1;
-        if( CurrentQueueIndex > 0 ){ /*check first if the queue has items inside*/
+        if ( CurrentQueueIndex > 0 ) { /*check first if the queue has items inside*/
             qCritical_Enter();
-            for( i = 0 ; i < CurrentQueueIndex; ++i ){ /*loop the queue slots to check if the Task is inside*/
-                if( Task == kernel.QueueStack[ i ].Task ){
+            for ( i = 0 ; i < CurrentQueueIndex; ++i ) { /*loop the queue slots to check if the Task is inside*/
+                if ( Task == kernel.QueueStack[ i ].Task ) {
                     RetValue = qTrue;
                     break;
                 }
@@ -260,14 +280,16 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task ){
         return RetValue;
     #else
         Q_UNUSED( Task );
+
         return qFalse;
     #endif   
 }
 /*============================================================================*/
-static qTask_t* qOS_PriorityQueue_Get( void ){
+static qTask_t* qOS_PriorityQueue_Get( void )
+{
     qTask_t *xTask = NULL;
 
-    if( kernel.QueueIndex >= 0 ){ /*queue has elements*/
+    if ( kernel.QueueIndex >= 0 ) { /*queue has elements*/
         qPriority_t MaxPriorityValue, iPriorityValue;
         qIndex_t IndexTaskToExtract = 0u;
         qIndex_t i;
@@ -276,9 +298,9 @@ static qTask_t* qOS_PriorityQueue_Get( void ){
         MaxPriorityValue = kernel.QueueStack[ 0 ].Task->qPrivate.Priority;
         /*walk through the queue to find the task with the highest priority*/
         /*loop until all items are checked or if the tail is reached*/
-        for( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.QueueStack[i].Task ); ++i ){  
+        for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.QueueStack[i].Task ); ++i ) {  
             iPriorityValue = kernel.QueueStack[i].Task->qPrivate.Priority;
-            if( iPriorityValue > MaxPriorityValue ){ /*check if the queued task has the max priority value*/
+            if ( iPriorityValue > MaxPriorityValue ) { /*check if the queued task has the max priority value*/
                 MaxPriorityValue = iPriorityValue; /*Reassign the max value*/
                 IndexTaskToExtract = i;  /*save the index*/
             }
@@ -288,24 +310,28 @@ static qTask_t* qOS_PriorityQueue_Get( void ){
         qOS_PriorityQueue_ClearIndex( IndexTaskToExtract );
         qCritical_Exit();
     }
+
     return xTask;
 }
 /*========================== Shared Private Method ===========================*/
-size_t qOS_PriorityQueue_GetCount( void ){
+size_t qOS_PriorityQueue_GetCount( void )
+{
     size_t RetValue = (size_t)0;
 
-    if( kernel.QueueIndex >= 0 ){ 
+    if ( kernel.QueueIndex >= 0 ) { 
         RetValue = (size_t)kernel.QueueIndex + (size_t)1;
     }
+
     return RetValue;
 }
 /*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */
 /*============================================================================*/
-qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg ){
+qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, qTime_t Time, qIteration_t nExecutions, qState_t InitialState, void* arg )
+{
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != Task ) ) {
+    if ( ( NULL != Task ) ) {
         Task->qPrivate.Callback = CallbackFcn;
         (void)qSTimer_Set( &Task->qPrivate.timer, Time );
         Task->qPrivate.TaskData = arg;
@@ -337,51 +363,59 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
         #endif
         RetValue = qList_Insert( WaitingList, Task, QLIST_ATBACK ); 
     }
+
     return RetValue;  
 }
 /*============================================================================*/
-qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg ){
+qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t Priority, void* arg )
+{
     return qOS_Add_Task( Task, CallbackFcn, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
 #if ( Q_FSM == 1)
 /*============================================================================*/
-qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, qTime_t Time, qState_t InitialTaskState, void *arg ){
+qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Priority, qTime_t Time, qState_t InitialTaskState, void *arg )
+{
     qBool_t RetValue = qFalse;
 
-    if( ( NULL != m ) ){
-        if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ){
+    if ( ( NULL != m ) ) {
+        if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ) {
             Task->qPrivate.StateMachine = m;
             RetValue = qTrue;
             #if ( Q_QUEUES == 1 )
-                if( NULL != m->qPrivate.queue ){
+                if ( NULL != m->qPrivate.queue ) {
                     RetValue = qTask_Attach_Queue( Task, m->qPrivate.queue, qQueueMode_Count, 1u ); /*to perform the queue connection */
                 }
             #endif
         }
     }
+
     return RetValue;
 }
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority ){    
+qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority )
+{    
     qBool_t RetValue = qFalse;
 
-    if( NULL != cli ){
+    if ( NULL != cli ) {
         cli->qPrivate.xPublic.UserData = Task;
         cli->qPrivate.xNotifyFcn = &qOS_ATCLI_NotifyFcn;
         RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, cli );
     }
+
     return RetValue;
 }
 /*============================================================================*/
-static void qOS_ATCLI_TaskCallback( qEvent_t  e ){ /*wrapper for the task callback */
+static void qOS_ATCLI_TaskCallback( qEvent_t  e )/*wrapper for the task callback */
+{
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     (void)qATCLI_Run( (qATCLI_t*)e->TaskData ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 }
 /*============================================================================*/
-static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
+static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli )
+{
     qTask_t *Task;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
@@ -390,21 +424,24 @@ static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli ){
 }
 #endif /* #if ( Q_ATCLI == 1) */
 /*============================================================================*/
-qBool_t qOS_Remove_Task( qTask_t * const Task ){
+qBool_t qOS_Remove_Task( qTask_t * const Task )
+{
     qBool_t RetValue = qFalse;
 
-    if( NULL != Task ){
+    if ( NULL != Task ) {
         qOS_Set_TaskFlags( Task, QTASK_BIT_REMOVE_REQUEST, qTrue );
         RetValue = qTrue;
     }
+
     return RetValue;
 }
 #if ( Q_QUEUES == 1)
 /*============================================================================*/
-static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
+static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task )
+{
     qTrigger_t RetValue = qTriggerNULL;
 
-    if( NULL != Task->qPrivate.Queue){
+    if ( NULL != Task->qPrivate.Queue ) {
         qBool_t FullFlag, CountFlag, ReceiverFlag, EmptyFlag;
         size_t CurrentQueueCount;
         
@@ -416,64 +453,69 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task ){
         CurrentQueueCount = qQueue_Count( Task->qPrivate.Queue ); /*to avoid side effects*/
         /*check the queue events in the corresponding precedence order*/
         /*cstat -MISRAC2012-Rule-13.5 */ 
-        if( FullFlag && qQueue_IsFull( Task->qPrivate.Queue ) ){ /*qQueue_IsFull is known to have no side effects*/        
+        if ( FullFlag && qQueue_IsFull( Task->qPrivate.Queue ) ) { /*qQueue_IsFull is known to have no side effects*/        
             RetValue =  byQueueFull;
         }
-        else if( ( CountFlag ) && ( CurrentQueueCount >= Task->qPrivate.QueueCount ) ){
+        else if ( ( CountFlag ) && ( CurrentQueueCount >= Task->qPrivate.QueueCount ) ) {
             RetValue =  byQueueCount;
         }
-        else if( ReceiverFlag && ( CurrentQueueCount > 0u ) ){    
+        else if ( ReceiverFlag && ( CurrentQueueCount > 0u ) ) {    
             RetValue = byQueueReceiver; 
         }
-        else if( EmptyFlag && qQueue_IsEmpty( Task->qPrivate.Queue ) ){ /*qQueue_IsEmpty is known to have no side effects*/
+        else if ( EmptyFlag && qQueue_IsEmpty( Task->qPrivate.Queue ) ) { /*qQueue_IsEmpty is known to have no side effects*/
             RetValue =  byQueueEmpty;
         }
-        else{
+        else {
             /*this case does not need to be handled*/
         }
         /*cstat +MISRAC2012-Rule-13.5 */ 
     }
+
     return RetValue;
 }
 #endif
 /*============================================================================*/
 #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-static void qOS_TriggerReleaseSchedEvent( void ){
+static void qOS_TriggerReleaseSchedEvent( void )
+{
     QKERNEL_COREFLAG_CLEAR( kernel.Flag, QKERNEL_BIT_INIT ); 
     QKERNEL_COREFLAG_CLEAR( kernel.Flag, QKERNEL_BIT_RELEASESCHED );  
     kernel.EventInfo.FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_FCALLRELEASED ) )? qTrue : qFalse;    
     kernel.EventInfo.Trigger = bySchedulingRelease;
     kernel.EventInfo.TaskData = NULL;
-    if( NULL != kernel.ReleaseSchedCallback ){
+    if ( NULL != kernel.ReleaseSchedCallback ) {
         qTaskFcn_t Callback = kernel.ReleaseSchedCallback;
+
         Callback( &kernel.EventInfo ); /*some low-end compilers cant deal with function-pointers inside structs*/
     }    
     QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
 #endif
 /*============================================================================*/
-qBool_t qOS_Run( void ){
+qBool_t qOS_Run( void )
+{
     /*cstat -MISRAC2012-Rule-2.2_c*/
     qBool_t RetValue = qFalse; /*only for API compatibility*/
     /*cstat +MISRAC2012-Rule-2.2_c*/
-    do{           
-        if( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ){ /*check for ready tasks in the waiting-list*/
+    do {           
+        if ( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ) { /*check for ready tasks in the waiting-list*/
             qIndex_t xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1;
             qList_t *xList;
-            do{ /*loop every ready-list in descending priority order*/
+            
+            do { /*loop every ready-list in descending priority order*/
                 xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if( xList->size > (size_t)0 ){ /*check for a non-empty target list */
                     (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in the current ready-list*/
                 }
-            }while( (qIndex_t)0 != xPriorityListIndex-- ); /*move to the next ready-list*/
+            } while ( (qIndex_t)0 != xPriorityListIndex-- ); /*move to the next ready-list*/
         }
-        else{ /*no task in the scheme is ready*/
-            if( NULL != kernel.IDLECallback ){ /*check if the idle-task is available*/
+        else { /*no task in the scheme is ready*/
+            if ( NULL != kernel.IDLECallback ) { /*check if the idle-task is available*/
                 _qList_ForEachHandle_t qOS_BuiltIn_IdleTask = { NULL, NULL, qList_WalkThrough };
                 (void)qOS_Dispatch( &qOS_BuiltIn_IdleTask ); /*special call to dispatch idle-task already hardcoded in the kernel*/
             }
         }
-        if( SuspendedList->size > (size_t)0 ){  /*check for a non-empty suspended-list*/
+        if ( SuspendedList->size > (size_t)0 ) {  /*check for a non-empty suspended-list*/
             (void)qList_Move( WaitingList, SuspendedList, QLIST_ATBACK ); /*move the remaining suspended tasks to the waiting-list*/
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
                 (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver ); /*preseve the entry order by sorting the new waiting-list layout*/
@@ -481,26 +523,30 @@ qBool_t qOS_Run( void ){
         }
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        while( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
+        while ( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_RELEASESCHED ) ); /*scheduling end-point*/ 
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
         RetValue = qTrue; 
     #else
         while( qTrue == qTrue);
     #endif
+
     return RetValue;
 }
 /*============================================================================*/
 #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
-static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h ){
+static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h )
+{
     qTask_t *t1, *t2;
 
     t1 = (qTask_t*)h->n1;
     t2 = (qTask_t*)h->n1;
+
     return (qBool_t)( t1->qPrivate.Entry > t2->qPrivate.Entry );
 }
 #endif
 /*============================================================================*/
-static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
+static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
+{
     qTask_t *xTask;
     #if ( Q_QUEUES == 1 )
         qTrigger_t trg;
@@ -508,51 +554,51 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
     static qBool_t xReady = qFalse;
     qBool_t RetValue = qFalse;
 
-    if( qList_WalkThrough == h->stage ){
+    if ( qList_WalkThrough == h->stage ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
-            if( NULL != kernel.NotificationSpreadRequest.mode ){
+            if ( NULL != kernel.NotificationSpreadRequest.mode ) {
                 kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
                 RetValue = qTrue;
             }
         #endif
-        if( qOS_Get_TaskFlag( xTask, QTASK_BIT_SHUTDOWN) ){
+        if ( qOS_Get_TaskFlag( xTask, QTASK_BIT_SHUTDOWN) ) {
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
-            if( byNotificationQueued == xTask->qPrivate.Trigger ){
+            if ( byNotificationQueued == xTask->qPrivate.Trigger ) {
                 xReady = qTrue;
             }
             else
             #endif 
-            if( qOS_TaskDeadLineReached( xTask ) ){ /*nested check for timed task, check the first requirement(the task must be enabled)*/
+            if ( qOS_TaskDeadLineReached( xTask ) ) { /*nested check for timed task, check the first requirement(the task must be enabled)*/
                 (void)qSTimer_Reload( &xTask->qPrivate.timer );
                 xTask->qPrivate.Trigger = byTimeElapsed;      
                 xReady = qTrue;            
             }
             #if ( Q_QUEUES == 1 )  
-            else if( qTriggerNULL != ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ){ /*If the deadline is not met, check if there is a queue-event available*/
+            else if ( qTriggerNULL != ( trg = qOS_AttachedQueue_CheckEvents( xTask ) ) ) { /*If the deadline is not met, check if there is a queue-event available*/
                 xTask->qPrivate.Trigger = trg;      
                 xReady = qTrue;
             }
             #endif
-            else if( xTask->qPrivate.Notification > (qNotifier_t)0 ){   /* task with a pending notification event?*/
+            else if ( xTask->qPrivate.Notification > (qNotifier_t)0 ) {   /* task with a pending notification event?*/
                 xTask->qPrivate.Trigger = byNotificationSimple;  
                 xReady = qTrue;            
             }
             #if ( Q_TASK_EVENT_FLAGS == 1 )
-            else if( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ){ /*task with enabled eventflags?*/
+            else if ( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.Flags ) ) { /*task with enabled eventflags?*/
                 xTask->qPrivate.Trigger = byEventFlags;          
                 xReady = qTrue;        
             }
             #endif
-            else{
+            else {
                 xTask->qPrivate.Trigger = qTriggerNULL;
                 /*the task has no available events, put it into a suspended state*/        
             }
         }
         (void)qList_Remove( WaitingList, NULL, QLIST_ATFRONT ); 
-        if( qOS_Get_TaskFlag( xTask, QTASK_BIT_REMOVE_REQUEST) ){ /*check if the task get a removal request*/
+        if ( qOS_Get_TaskFlag( xTask, QTASK_BIT_REMOVE_REQUEST) ) { /*check if the task get a removal request*/
             #if ( Q_PRIO_QUEUE_SIZE > 0 )  
                 qCritical_Enter(); 
                 qOS_PriorityQueue_CleanUp( xTask ); /*clean any entry of this task from the priority queue */
@@ -560,23 +606,23 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
             #endif
             qOS_Set_TaskFlags( xTask, QTASK_BIT_REMOVE_REQUEST, qFalse );  /*clear the removal request*/
         }
-        else{
+        else {
             qList_t *xList;
             xList = ( qTriggerNULL != xTask->qPrivate.Trigger )? &ReadyList[ xTask->qPrivate.Priority ] : SuspendedList;
             (void)qList_Insert( xList, xTask, QLIST_ATBACK );
         }
     }
-    else if( qList_WalkInit == h->stage ){
+    else if ( qList_WalkInit == h->stage ) {
         xReady = qFalse;
         #if ( Q_PRIO_QUEUE_SIZE > 0 )  
             xTask = qOS_PriorityQueue_Get(); /*try to extract a task from the front of the priority queue*/
-            if( NULL != xTask ){  /*if we got a task from the priority queue,*/
+            if ( NULL != xTask ) {  /*if we got a task from the priority queue,*/
                 xTask->qPrivate.Trigger = byNotificationQueued; 
                 qOS_Set_TaskFlags( xTask, QTASK_BIT_SHUTDOWN, qTrue ); /*wake-up the task!!*/
             }     
         #endif          
     }
-    else if( qList_WalkEnd == h->stage ){ 
+    else if ( qList_WalkEnd == h->stage ) { 
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             /*spread operation done, clean-up*/
             kernel.NotificationSpreadRequest.mode = NULL;
@@ -584,28 +630,30 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h ){
         #endif
         RetValue = xReady; 
     }
-    else{
+    else {
         /*this should never enter here*/
     }
+
     return RetValue;
 }
 /*============================================================================*/
-static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
+static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task )
+{
     qTrigger_t Event;
     qIteration_t TaskIteration;
     
     Event = Task->qPrivate.Trigger;
-    switch( Event ){ /*take the necessary actions before dispatching, depending on the event that triggered the task*/
+    switch ( Event ) { /*take the necessary actions before dispatching, depending on the event that triggered the task*/
         case byTimeElapsed:
             /*handle the iteration value and the FirstIteration flag*/
             TaskIteration = Task->qPrivate.Iterations;
             kernel.EventInfo.FirstIteration = ( ( qPeriodic != TaskIteration ) && ( TaskIteration < 0 ) )? qTrue : qFalse;
             Task->qPrivate.Iterations = ( kernel.EventInfo.FirstIteration )? -Task->qPrivate.Iterations : Task->qPrivate.Iterations;
-            if( qPeriodic != Task->qPrivate.Iterations ){
+            if ( qPeriodic != Task->qPrivate.Iterations ) {
                 --Task->qPrivate.Iterations; /*Decrease the iteration value*/
             }
             kernel.EventInfo.LastIteration = ( 0 == Task->qPrivate.Iterations )? qTrue : qFalse; 
-            if( kernel.EventInfo.LastIteration ) {
+            if ( kernel.EventInfo.LastIteration ) {
                 qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, qFalse ); /*When the iteration value is reached, the task will be disabled*/ 
             }           
             kernel.EventInfo.StartDelay = qClock_GetTick() - Task->qPrivate.timer.Start;
@@ -639,30 +687,31 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task ){
     kernel.EventInfo.FirstCall = ( qFalse == qOS_Get_TaskFlag( Task, QTASK_BIT_INIT) )? qTrue : qFalse;
     kernel.EventInfo.TaskData = Task->qPrivate.TaskData;
     kernel.CurrentRunningTask = Task; /*needed for qTask_Self()*/
+
     return Event;
 }
 /*============================================================================*/
-static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){    
+static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {    
     /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
-    if( qList_WalkThrough == h->stage ){ /*#!OK: false-positive can be reported here*/
+    if ( qList_WalkThrough == h->stage ) { /*#!OK: false-positive can be reported here*/
         qList_t *xList = (qList_t*)h->arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         qTaskFcn_t TaskActivities;
         qTrigger_t Event = byNoReadyTasks;
 
-        if( NULL != xList){ /*#!OK* false-positive can be reported here*/     
+        if ( NULL != xList ) { /*#!OK* false-positive can be reported here*/     
             qTask_t *Task = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task ); /*#!OK : false-positive can be reported here*/
             TaskActivities = Task->qPrivate.Callback; /*#!OK: false-positive can be reported here*/
-            #if ( Q_FSM == 1)
-                if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ){
+            #if ( Q_FSM == 1 )
+                if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ) {
                     Task->qPrivate.StateMachine->qPrivate.handler.Data = &kernel.EventInfo;
                     (void)qStateMachine_Run( Task->qPrivate.StateMachine, QSM_SIGNAL_NONE );  /*If the task has a FSM attached, just run it*/  
                 }
                 else if ( NULL != TaskActivities ) {
                     TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
                 }       
-                else{
+                else {
                     /*this case does not need to be handled*/
                 }
             #else
@@ -674,7 +723,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
             (void)qList_Remove( xList, NULL, QLIST_ATFRONT ); /*remove the task from the ready-list*/
             (void)qList_Insert( WaitingList, Task, QLIST_ATBACK );  /*and insert the task back to the waiting-list*/
             #if ( Q_QUEUES == 1) 
-                if( byQueueReceiver == Event ){
+                if ( byQueueReceiver == Event ) {
                     (void)qQueue_RemoveFront( Task->qPrivate.Queue );  /*remove the data from the Queue, if the event was byQueueDequeue*/
                 } 
             #endif
@@ -689,7 +738,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
             #endif
             Task->qPrivate.Trigger = qTriggerNULL;
         }
-        else{ /*run the idle*/
+        else { /*run the idle*/
             kernel.EventInfo.FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.Flag, QKERNEL_BIT_FCALLIDLE ) )? qTrue : qFalse;
             kernel.EventInfo.TaskData = NULL;
             kernel.EventInfo.Trigger = Event;
@@ -698,65 +747,74 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ){
             QKERNEL_COREFLAG_SET( kernel.Flag, QKERNEL_BIT_FCALLIDLE );
         }
     }
+
     return qFalse;
 }
 /*============================================================================*/
-static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task ){
+static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task )
+{
     qBool_t RetValue = qFalse;
     
-    if( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ){ /*nested-check for timed task, check the first requirement(the task must be enabled)*/
+    if ( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) { /*nested-check for timed task, check the first requirement(the task must be enabled)*/
         qIteration_t TaskIterations = Task->qPrivate.Iterations; /*avoid side efects in the next check*/
-        if( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ){ /*then task should be periodic or must have available iters*/
+
+        if ( ( _qAbs( TaskIterations ) > 0 ) || ( qPeriodic == TaskIterations ) ) { /*then task should be periodic or must have available iters*/
             qClock_t TaskInterval = Task->qPrivate.timer.TV;
             qBool_t DeadLineReached;
 
             DeadLineReached = qSTimer_Expired( &Task->qPrivate.timer );
-            if( ( 0uL == TaskInterval ) || DeadLineReached ){ /*finally, check the time deadline*/
+            if( ( 0uL == TaskInterval ) || DeadLineReached ) { /*finally, check the time deadline*/
                 RetValue = qTrue;                
             }
         }
     }
+
     return RetValue;
 }
 /*========================== Shared Private Method ===========================*/
-qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task ){
+qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
+{
     qTask_GlobalState_t RetValue = qUndefinedGlobalState;
    
-    if( NULL != Task ){
+    if ( NULL != Task ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         qList_t *xList = (qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        if( kernel.CurrentRunningTask == Task ){
+        if ( kernel.CurrentRunningTask == Task ) {
             RetValue = qRunning;
         }
-        else if( WaitingList == xList ){
+        else if ( WaitingList == xList ) {
             RetValue = qWaiting;
         }
-        else if( SuspendedList == xList ){
+        else if ( SuspendedList == xList ) {
             RetValue = qSuspended;
         }
-        else if( NULL == xList ){
+        else if ( NULL == xList ) {
             /*undefined*/  
         }
-        else{
+        else {
             RetValue = qReady;      /*by discard, it must be ready*/
         }
     }
+
     return RetValue;
 }
 /*========================== Shared Private Method ===========================*/
-qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag ){
+qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag )
+{
     qUINT32_t xBit;
 
     xBit = Task->qPrivate.Flags & flag;
+
     return (( 0uL != xBit )? qTrue : qFalse );
 }
 /*========================== Shared Private Method ===========================*/
-void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value ){
-    if( qTrue == value ){
+void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value )
+{
+    if ( qTrue == value ) {
         Task->qPrivate.Flags |= flags; /*Set bits*/
     }
-    else{
+    else {
         Task->qPrivate.Flags &= ~flags; /*Clear bits*/
     }
 }

@@ -104,7 +104,7 @@
     typedef qUINT32_t qTask_Flag_t; 
 
     /** @brief Max allowed notification value*/
-    #define QMAX_NOTIFICATION_VALUE         ( 0xFFFFFFFFuL )
+    #define QMAX_NOTIFICATION_VALUE         ( UINT32_MAX - 1uL )
 
     /**
     * @brief An enum to describe the task global states.

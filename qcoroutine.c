@@ -7,12 +7,13 @@
 #include "qcoroutine.h"
 
 /*============================================================================*/
-qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos ){
+qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos )
+{
     qBool_t RetValue = qFalse;
 
-    if( NULL != h ){ 
+    if ( NULL != h ) { 
         RetValue = qTrue;
-        switch( action ){
+        switch ( action ) {
             case qCR_RESTART:
                 h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL; 
                 break;
@@ -32,6 +33,7 @@ qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  con
                 break;
         }
     }
+
     return RetValue;
 }
 /*============================================================================*/
@@ -39,27 +41,29 @@ qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  con
 Do not use this function explicitly to handle semaphores, use the provided coroutine 
 statements instead : <qCR_SemInit>, <qCR_SemWait> and <qCR_SemSignal>
 */
-qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper ){
+qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper )
+{
     qBool_t RetValue = qFalse;
 
-    if( NULL != sem ){
-        switch( oper ){
+    if ( NULL != sem ) {
+        switch ( oper ) {
             case _qCR_SEM_SIGNAL:
                 ++sem->count;
                 break;
             case _qCR_SEM_TRYLOCK:
-                if( sem->count > (size_t)0 ){
+                if ( sem->count > (size_t)0 ) {
                     RetValue = qTrue; /*break the Wait operation*/
                     --sem->count;
                 }
                 break;
             default:
-                if( oper >= _qCR_UNDEFINED ){
+                if ( oper >= _qCR_UNDEFINED ) {
                     sem->count = (size_t)oper;
                 }
                 break;    
         }
     }
+    
     return RetValue;
 }
 /*============================================================================*/

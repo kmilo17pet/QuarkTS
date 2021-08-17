@@ -137,6 +137,10 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
         #error Q_PRIO_QUEUE_SIZE should be a value greater of equal than zero.
     #endif
 
+    #if ( Q_PRIO_QUEUE_SIZE > 512 )   
+        #error Q_PRIO_QUEUE_SIZE its too large.
+    #endif
+
 #endif
 
 /**
