@@ -9,9 +9,9 @@
         <debug>1</debug>
         <settings>
             <name>C-STAT</name>
-            <archiveVersion>513</archiveVersion>
+            <archiveVersion>515</archiveVersion>
             <data>
-                <version>513</version>
+                <version>515</version>
                 <cstatargs>
                     <useExtraArgs>0</useExtraArgs>
                     <extraArgs></extraArgs>
@@ -22,9 +22,10 @@
                     <enableFalsePositives>1</enableFalsePositives>
                     <messagesLimitEnabled>1</messagesLimitEnabled>
                     <messagesLimit>1000</messagesLimit>
+                    <outputDir>Debug\C-STAT</outputDir>
                 </cstatargs>
                 <cstat_settings>
-                    <cstat_version>2.1.2</cstat_version>
+                    <cstat_version>2.3.1</cstat_version>
                     <checks_tree>
                         <package name="STDCHECKS" enabled="true">
                             <group name="ARR" enabled="true">
@@ -1010,7 +1011,7 @@
                                 <check name="MISRAC2012-Rule-18.2" enabled="true" />
                                 <check name="MISRAC2012-Rule-18.3" enabled="true" />
                                 <check name="MISRAC2012-Rule-18.4" enabled="true" />
-                                <check name="MISRAC2012-Rule-18.5" enabled="false" />
+                                <check name="MISRAC2012-Rule-18.5" enabled="true" />
                                 <check name="MISRAC2012-Rule-18.6_a" enabled="true" />
                                 <check name="MISRAC2012-Rule-18.6_b" enabled="true" />
                                 <check name="MISRAC2012-Rule-18.6_c" enabled="true" />
@@ -1175,8 +1176,7 @@
                             </group>
                             <group name="MISRAC++2008-5-3" enabled="true">
                                 <check name="MISRAC++2008-5-3-1" enabled="true" />
-                                <check name="MISRAC++2008-5-3-2_a" enabled="true" />
-                                <check name="MISRAC++2008-5-3-2_b" enabled="true" />
+                                <check name="MISRAC++2008-5-3-2" enabled="true" />
                                 <check name="MISRAC++2008-5-3-3" enabled="true" />
                                 <check name="MISRAC++2008-5-3-4" enabled="true" />
                             </group>
@@ -1428,9 +1428,9 @@
         <debug>0</debug>
         <settings>
             <name>C-STAT</name>
-            <archiveVersion>513</archiveVersion>
+            <archiveVersion>515</archiveVersion>
             <data>
-                <version>513</version>
+                <version>515</version>
                 <cstatargs>
                     <useExtraArgs>0</useExtraArgs>
                     <extraArgs></extraArgs>
@@ -1441,9 +1441,10 @@
                     <enableFalsePositives>0</enableFalsePositives>
                     <messagesLimitEnabled>1</messagesLimitEnabled>
                     <messagesLimit>100</messagesLimit>
+                    <outputDir>Release\C-STAT</outputDir>
                 </cstatargs>
                 <cstat_settings>
-                    <cstat_version>2.1.2</cstat_version>
+                    <cstat_version>2.3.1</cstat_version>
                     <checks_tree>
                         <package enabled="true" name="STDCHECKS">
                             <group enabled="true" name="ARR">
@@ -2594,8 +2595,7 @@
                             </group>
                             <group enabled="true" name="MISRAC++2008-5-3">
                                 <check enabled="true" name="MISRAC++2008-5-3-1" />
-                                <check enabled="true" name="MISRAC++2008-5-3-2_a" />
-                                <check enabled="true" name="MISRAC++2008-5-3-2_b" />
+                                <check enabled="true" name="MISRAC++2008-5-3-2" />
                                 <check enabled="true" name="MISRAC++2008-5-3-3" />
                                 <check enabled="true" name="MISRAC++2008-5-3-4" />
                             </group>

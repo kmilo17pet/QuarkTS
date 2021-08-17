@@ -57,6 +57,8 @@ Temporary Items
 *.ninja_deps
 *.xcl
 
+*.dep
+
 # gcc code coverage
 *.gcno
 *.gcda
