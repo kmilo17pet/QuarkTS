@@ -49,15 +49,13 @@ qBool_t qQueue_Reset( qQueue_t * const obj )
     qBool_t RetValue = qFalse;
 
     if ( NULL != obj ) {
-        if ( obj->qPrivate.ItemsWaiting >= 1u ) { /*to avoid side effects - MISRAC2012-Rule-13.5*/
-            qCritical_Enter();
-            obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
-            obj->qPrivate.ItemsWaiting = 0u;
-            obj->qPrivate.writer = obj->qPrivate.head;
-            obj->qPrivate.reader = obj->qPrivate.head + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
-            qCritical_Exit();
-            RetValue = qTrue;
-        }
+        qCritical_Enter();
+        obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
+        obj->qPrivate.ItemsWaiting = 0u;
+        obj->qPrivate.writer = obj->qPrivate.head;
+        obj->qPrivate.reader = obj->qPrivate.head + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
+        qCritical_Exit();
+        RetValue = qTrue;
     }
 
     return RetValue;
@@ -120,7 +118,6 @@ void* qQueue_Peek( const qQueue_t * const obj )
 
     if ( NULL != obj ) {
         size_t ItemsWaiting;
-
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -143,7 +140,6 @@ qBool_t qQueue_RemoveFront( qQueue_t * const obj )
 
     if ( NULL != obj ) {
         size_t ItemsWaiting;
-
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -196,7 +192,6 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest )
     
     if ( NULL != obj ) {
         size_t ItemsWaiting;
-        
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -227,4 +222,4 @@ qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode
 }
 /*============================================================================*/
 
-#endif /* #if ( Q_QUEUES == 1 ) */
+#endif /* #if (Q_QUEUES == 1) */
