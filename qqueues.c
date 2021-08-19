@@ -48,14 +48,16 @@ qBool_t qQueue_Reset( qQueue_t * const obj )
 {
     qBool_t RetValue = qFalse;
 
-    if ( ( NULL != obj ) && ( obj->qPrivate.ItemsWaiting >= 1u) ) {
-        qCritical_Enter();
-        obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
-        obj->qPrivate.ItemsWaiting = 0u;
-        obj->qPrivate.writer = obj->qPrivate.head;
-        obj->qPrivate.reader = obj->qPrivate.head + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
-        qCritical_Exit();
-        RetValue = qTrue;
+    if ( NULL != obj ) {
+        if ( obj->qPrivate.ItemsWaiting >= 1u ) { /*to avoid side effects - MISRAC2012-Rule-13.5*/
+            qCritical_Enter();
+            obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
+            obj->qPrivate.ItemsWaiting = 0u;
+            obj->qPrivate.writer = obj->qPrivate.head;
+            obj->qPrivate.reader = obj->qPrivate.head + ( ( obj->qPrivate.ItemsCount - 1u ) * obj->qPrivate.ItemSize );
+            qCritical_Exit();
+            RetValue = qTrue;
+        }
     }
 
     return RetValue;

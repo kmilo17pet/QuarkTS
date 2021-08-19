@@ -12,10 +12,12 @@ qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata )
 {
     qBool_t RetValue = qFalse;
 
-    if ( ( NULL != Task ) && ( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ) ) {
-        ++Task->qPrivate.Notification;
-        Task->qPrivate.AsyncData = eventdata;
-        RetValue = qTrue;
+    if ( ( NULL != Task ) ) {
+        if ( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ) { /*to avoid side effects - MISRAC2012-Rule-13.5*/
+            ++Task->qPrivate.Notification;
+            Task->qPrivate.AsyncData = eventdata;
+            RetValue = qTrue;
+        }
     }
     
     return RetValue;
@@ -202,6 +204,7 @@ qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param )
             case qTask_ClearNotifications:
                 Task->qPrivate.Notification = 0uL;    
                 RetValue = qTrue;
+                break;
             default:
                 break;
         }
