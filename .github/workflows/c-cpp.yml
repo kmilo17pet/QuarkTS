@@ -15,7 +15,5 @@ jobs:
       with:
         submodules: recursive
     
-    - name: make
-      run: make
     - name: test
-      run: make run
+      run: make test
