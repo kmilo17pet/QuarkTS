@@ -459,14 +459,16 @@
     qBool_t qTask_Set_Data( qTask_t * const Task, void* arg );
 
     /**
-    * @brief Clear the specified parameter for the task. Restart the internal task tick;
+    * @brief Clear the specified parameter for the task.
     * @param[in] Task Pointer to the task node.
-    * @param[in] param Use one of the following values
+    * @param[in] param Use one of the following values:
     * ::qTask_ClearIterations : Clear the number of iterations.
     * 
     * ::qTask_ClearTimeElapsed : Clear the time elapsed.
     * 
     * ::qTask_ClearCycles : Clear the number of task activations. 
+    * 
+    * ::qTask_ClearNotification : Clear the notification value.
     * 
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
