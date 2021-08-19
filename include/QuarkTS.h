@@ -1,13 +1,13 @@
 /*!
  * @file QuarkTS.h
  * @author J. Camilo Gomez C.
- * @version 2.06
+ * @version 2.07
  * @note This file is part of the QuarkTS distribution.
  * @brief Global inclusion header 
  **/
 
 /*
-QuarkTS V7.1.2- An open-source OS for small embedded applications.
+QuarkTS V7.1.3- An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant    
 
