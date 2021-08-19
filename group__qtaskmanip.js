@@ -49,7 +49,7 @@ var group__qtaskmanip =
       [ "bySchedulingRelease", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084", null ],
       [ "byNoReadyTasks", "group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212", null ]
     ] ],
-    [ "qTask_ClearTimeElapsed", "group__qtaskmanip.html#ga517c70795551eeb9c8f1ce583dfeb6f6", null ],
+    [ "qTask_Clear", "group__qtaskmanip.html#ga518f2f49aafa6d160b235110f8aca178", null ],
     [ "qTask_Get_Cycles", "group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4", null ],
     [ "qTask_Get_GlobalState", "group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc", null ],
     [ "qTask_Get_State", "group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308", null ],

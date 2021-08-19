@@ -1,5 +1,11 @@
 var group__qnot =
 [
+    [ "qTask_ClrParam_t", "group__qnot.html#ga187184b382e15081e789b3a06732f6e3", [
+      [ "qTask_ClearIterations", "group__qnot.html#gga187184b382e15081e789b3a06732f6e3ac68daffb1b7b942c296eb3c06a028a56", null ],
+      [ "qTask_ClearTimeElapsed", "group__qnot.html#gga187184b382e15081e789b3a06732f6e3aca66fc6400868c473c36664ea6f82ebc", null ],
+      [ "qTask_ClearCycles", "group__qnot.html#gga187184b382e15081e789b3a06732f6e3a8404d81c6e51a040267c6e9727d5aeb0", null ],
+      [ "qTask_ClearNotifications", "group__qnot.html#gga187184b382e15081e789b3a06732f6e3abd11903c541d33a22dc7d6a287f5b4c2", null ]
+    ] ],
     [ "qTask_NotifyMode_t", "group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28", [
       [ "qTask_NotifyNULL", "group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2", null ],
       [ "qTask_NotifySimple", "group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e", null ],
