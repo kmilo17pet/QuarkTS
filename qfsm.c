@@ -84,7 +84,8 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM
     else {
         qSM_State_t *s, *t;
         qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
-        qSM_LCA_t n = 0u; 
+        qSM_LCA_t n = 0u;
+        
         for ( s = m->qPrivate.source; ( NULL != s ) && ( qFalse == xBreak ) ; s = s->qPrivate.parent ) {
             for ( t = target; NULL != t; t = t->qPrivate.parent ) {
                 if ( s == t ) {
@@ -199,7 +200,7 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * c
     
     if ( NULL != h->StartState ) { /*changes from callback takes more precedence*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        m->qPrivate.next = (qSM_State_t*)h->StartState ;
+        m->qPrivate.next = (qSM_State_t*)h->StartState;
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     }
     else {
@@ -283,6 +284,7 @@ static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, qSM_Signal_t
     #if ( Q_QUEUES == 1 )
         if ( NULL != m->qPrivate.queue ) {
             qSM_Signal_t ReceivedSignal;
+
             if ( qTrue == qQueue_Receive( m->qPrivate.queue, &ReceivedSignal ) ) {
                 xSignal = ReceivedSignal; 
             }
@@ -467,7 +469,7 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
             #if ( Q_QUEUES == 1 )
                 (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT(i), qFalse );   
             #endif
-            if ( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ){
+            if ( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ) {
                 (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
             }
             else {

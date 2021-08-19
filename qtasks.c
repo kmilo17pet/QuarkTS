@@ -201,7 +201,7 @@ qTask_t* qTask_Self( void )
 {
     return qOS_Get_TaskRunning();
 }
-#if ( Q_QUEUES == 1)
+#if ( Q_QUEUES == 1 )
 /*============================================================================*/
 qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg )
 {
@@ -220,7 +220,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const 
 
     return RetValue;
 }
-#endif /* #if ( Q_QUEUES == 1) */
+#endif /* #if ( Q_QUEUES == 1 ) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
 qBool_t qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action )

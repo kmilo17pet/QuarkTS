@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.07
+ * @version 1.08
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.
@@ -38,17 +38,19 @@
     * @brief An input node object for edge checking.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qEdgeCheck_IONode_s{
+    typedef struct _qEdgeCheck_IONode_s {
         /*! @cond  */
-        struct _qEdgeCheck_IONode_Private_s{
+        struct _qEdgeCheck_IONode_Private_s {
             struct _qEdgeCheck_IONode_s *Next;  /*< Point to the next node of the IO list. */    
             void *Port;                         /*< Point to the address of the hardware PORT/IO register. */
             qBool_t PreviousPinValue;           /*< The previous value of "Pin". */
             qBool_t Status;                     /*< The status of the pin. */
             qBool_t Pin;                        /*< The specific pin to read. */ 
-        }qPrivate;       
+        }
+        qPrivate;       
         /*! @endcond  */
-    }qEdgeCheck_IONode_t;
+    }
+    qEdgeCheck_IONode_t;
 
     /** 
     * @brief A typedef to specify the I/O register size.
@@ -59,16 +61,18 @@
     * @brief An I/O edge check object.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qEdgeCheck_s{
+    typedef struct _qEdgeCheck_s {
         /*! @cond  */
-        struct _qEdgeCheck_Private_s{
+        struct _qEdgeCheck_Private_s {
             qEdgeCheck_IONode_t *Head;          /*< The first ionode in the list. */
             qClock_t Start, DebounceTime;       /*< Debounce time control*/
             qCoreRegSize_t Reader;              /*< The xBits reg-reader function*/
             qUINT8_t State;                     /*< The node state*/
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qEdgeCheck_t;
+    }
+    qEdgeCheck_t;
 
     /*! @cond  */
     qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber );

@@ -1,7 +1,7 @@
 /*!
 * @file qtypes.h
 * @author J. Camilo Gomez C.
-* @version 1.48
+* @version 1.49
 * @note This file is part of the QuarkTS distribution.
 * @brief type definitions for all OS interfaces
 */
@@ -19,7 +19,7 @@
     #endif
 
     #if( Q_USE_STDINT_H != 1 )
-        #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers. Use this setting at your own risk.
+        #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers and cores. Use this setting at your own risk.
     #endif
 
     #ifndef NULL

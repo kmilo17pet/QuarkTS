@@ -1,7 +1,7 @@
 /*!
  * @file qflm.h
  * @author J. Camilo Gomez C.
- * @version 1.41
+ * @version 1.42
  * @note This file is part of the QuarkTS distribution.
  * @brief General purpose Function-like Macros 
  **/

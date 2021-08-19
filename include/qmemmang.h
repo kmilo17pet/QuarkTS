@@ -1,7 +1,7 @@
 /*!
  * @file qmemmang.h
  * @author J. Camilo Gomez C.
- * @version 2.06
+ * @version 2.07
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Memory Management module.
  **/
@@ -45,10 +45,11 @@
 
     /* Linked list structure to connect the free blocks in order of their memory address. */
     /*! @cond  */
-    typedef struct _qMemMang_BlockConnect_s{
+    typedef struct _qMemMang_BlockConnect_s {
         struct _qMemMang_BlockConnect_s *Next;      /*< Points to the next free block in the list*/
         size_t BlockSize;	                        /*< The size of the free block*/     
-    }qMemMang_BlockConnect_t;
+    }
+    qMemMang_BlockConnect_t;
     /*! @endcond  */
 
     /** 
@@ -67,18 +68,20 @@
     * should be initialized before use with the qMemMang_Pool_Setup() API.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qMemMang_Pool_s{
+    typedef struct _qMemMang_Pool_s {
         /*! @cond  */
-        struct _qMemMang_Pool_Private_s{
+        struct _qMemMang_Pool_Private_s {
             qMemMang_BlockConnect_t *End;           /*< Points to the last block of the list. */
             qUINT8_t *PoolMemory;                   /*< Points to the beginning of the heap area statically allocated. */
             size_t PoolMemSize;                     /*< The size of the memory block pointed by "heap". */
             size_t FreeBytesRemaining;              /*< The number of free bytes in the heap. */
             size_t BlockAllocatedBit;               /*< A bit that is set when the block belongs to the application. Clearead when the block is part of the free space (only the MSB is used) */    
             qMemMang_BlockConnect_t Start;          /*< The first block of the heap. */
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qMemMang_Pool_t;
+    }
+    qMemMang_Pool_t;
     
     /**
     * @brief Initializes a memory pool instance. This function should be called once 

@@ -11,7 +11,7 @@ static qClock_t qClock_InternalTick( void );
 static volatile qClock_t qSysTick_Epochs = 0uL;
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
-#if (Q_SETUP_TIME_CANONICAL != 1)
+#if ( Q_SETUP_TIME_CANONICAL != 1 )
 static qTimingBase_t TimmingBase;
 
 /*============================================================================*/
@@ -74,6 +74,7 @@ qClock_t qClock_Convert2Clock( const qTime_t t )
             return (qClock_t)( t*TimmingBase );
         #else
             qTime_t epochs = qTimeImmediate;
+            
             if ( t > qTimeImmediate ) {
                 epochs = ( t/TimmingBase ) + QFLT_TIME_FIX_VALUE;
             }     

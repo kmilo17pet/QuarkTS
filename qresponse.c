@@ -61,7 +61,6 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Patt
         }        
         else if ( obj->qPrivate.ResponseReceived ) { /*if response received from ISR match the expected*/
             RetValue = qResponse_Reset( obj ); /*re-initialize the response handler*/
-            /*  = qTrue -> let it know to the caller that expected response was received*/
         } 
         else {
             /*nothing to do*/

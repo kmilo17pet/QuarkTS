@@ -6,7 +6,7 @@
 
 #include "qmemmang.h"
 
-#if ( Q_MEMORY_MANAGER == 1)
+#if ( Q_MEMORY_MANAGER == 1 )
 
 typedef size_t qAddress_t;  /*restrict*/
 

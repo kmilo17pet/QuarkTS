@@ -1,7 +1,7 @@
 /*!
  * @file qstimers.h
  * @author J. Camilo Gomez C.
- * @version 1.09
+ * @version 1.10
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Software-Timers module.
  **/
@@ -26,12 +26,13 @@
     * should be initialized by the #QSTIMER_INITIALIZER constant before any usage. 
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qSTimer_s{ 
+    typedef struct _qSTimer_s { 
         /*! @cond  */
         qClock_t Start;     /*< The time(epochs) taken at the arming moment. */
         qClock_t TV;        /*< The required time in epochs. */
         /*! @endcond  */
-    }qSTimer_t;
+    }
+    qSTimer_t;
 
     /** @brief Macro that defines the value of a disarmed STimer*/
     #define QSTIMER_DISARM_VALUE                ( 0uL )

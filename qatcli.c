@@ -354,6 +354,7 @@ qBool_t qATCLI_Input_Flush( qATCLI_t * const cli )
 
     if ( NULL != cli ) {
         qATCLI_Input_t *Input = &cli->qPrivate.Input;
+        
         Input->Ready = qFalse;
         Input->index = 0u;
         Input->Buffer[ 0 ] = (char)'\0';
@@ -436,6 +437,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
             default: /*AT_ERRORCODE(#) */
                 if ( (qBase_t)retval < 0 ) {
                     qINT32_t ErrorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
+
                     (void)qIOUtil_ItoA( ErrorCode, cli->qPrivate.xPublic.Output, 10u );
                     PutString( ( NULL != cli->qPrivate.ERROR_Response)? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING );
                     PutChar( ':' );
@@ -473,7 +475,8 @@ static char* GetArgPtr( qIndex_t n )
                 RetPtr = param->StrData;
             } 
             else {
-                qIndex_t i, argc = 0;        
+                qIndex_t i, argc = 0;
+
                 --n;
                 for ( i = 0 ; '\0' != param->StrData[i] ; ++i ) {
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
@@ -560,4 +563,4 @@ static char* GetArgString( qIndex_t n, char* out )
     return RetPtr;
 }
 /*============================================================================*/
-#endif /* #if ( Q_ATCLI == 1) */
+#endif /* #if ( Q_ATCLI == 1 ) */

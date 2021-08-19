@@ -27,7 +27,7 @@
     /**
     * @brief an enumeration to define the possible values that can be returned from the callback of a command.
     */
-    typedef enum{
+    typedef enum {
         qATCLI_ERROR = -32767,          /**< To indicate an error operation. The CLI will print the  ERROR_String to the output.*/
         qATCLI_NOTALLOWED = -32766,     /**< To indicate an successfull operation. The CLI will print the " string to the output.*/
         qATCLI_NORESPONSE = 0,          /**< To indicate that no response will be printed out.*/
@@ -35,7 +35,8 @@
         qATCLI_DEVID = 32765,           /**< To indicate that the Device Identifier should be print out.*/
         qATCLI_NOTFOUND = 32766,        /**< To indicate that the command was not found. The CLI will print the NOTFOUND_string to the output*/
         qATCLI_OUTPUT = 32767           /**< To indicate that only the output buffer will be print out*/
-    }qATCLI_Response_t; 
+    }
+    qATCLI_Response_t; 
 
     /**
     * @brief Used to indicate an error code as return value inside a command-callback.
@@ -47,13 +48,14 @@
 
 
     /*! @cond  */
-    typedef volatile struct _qATCLI_Input_s{
+    typedef volatile struct _qATCLI_Input_s {
         char *Buffer;                       /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;            /*< Used to hold the index of the current input-buffer. */
         qIndex_t MaxIndex;                  /*< Max index  = (Size - 1) */
         size_t Size;                        /*< The size of the input buffer. */     
         volatile qBool_t Ready;             /*< A flag that indicates when the input is ready to parse. */  
-    }qATCLI_Input_t;
+    }
+    qATCLI_Input_t;
 
 
     typedef void (*qPutchFcn_t)(const char arg);
@@ -73,13 +75,14 @@
     /**
     * @brief An enum to describe the available AT command types.
     */
-    typedef enum{
+    typedef enum {
         qATCLI_CMDTYPE_UNDEF    = QATCLI_CMDTYPE_UNDEF, /**< Was not able to detected a correct input command*/
         qATCLI_CMDTYPE_PARA     = QATCLI_CMDTYPE_PARA,  /**< Command that receives parameters (comma separated arguments after the equal(=) symbol) : AT+cmd=x,y */
         qATCLI_CMDTYPE_TEST     = QATCLI_CMDTYPE_TEST,  /**< Command in test mode (no arguments allowed): AT+cmd=? */
         qATCLI_CMDTYPE_READ     = QATCLI_CMDTYPE_READ,  /**< Command to query information(data allowed after the ? symbol)  : AT+cmd? */
         qATCLI_CMDTYPE_ACT      = QATCLI_CMDTYPE_ACT    /**< Command to perform an action (no arguments allowed) : AT+cmd */     
-    }qATCLI_CommandType_t;
+    }
+    qATCLI_CommandType_t;
 
     /** 
     * @brief The command argument with all the regarding information of the incoming AT command.
@@ -91,7 +94,7 @@
     * @note Should be used only in command-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct _qATCLI_PublicData_s{ /*public data only available inside the command callback*/
+    typedef struct _qATCLI_PublicData_s { /*public data only available inside the command callback*/
         /**
         * @brief  A pointer to the calling AT Command object. 
         */  
@@ -169,10 +172,11 @@
         * @brief The incoming command type. *
         */          
         qATCLI_CommandType_t Type;
+    }    
     #ifdef DOXYGEN    
-    }qATCLI_Handler_t;
+    qATCLI_Handler_t;
     #else
-    }_qATCLI_PublicData_t; 
+    _qATCLI_PublicData_t; 
     typedef _qATCLI_PublicData_t* qATCLI_Handler_t; 
     #endif
 
@@ -184,9 +188,9 @@
     * The instance should be initialized using the qATCLI_Setup() API.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qATCLI_ControlBlock_s{
+    typedef struct _qATCLI_ControlBlock_s {
         /*! @cond  */
-        struct _qATCLI_Private_s{
+        struct _qATCLI_Private_s {
             void *First;                                                    /*< Points to the first command*/
             const char *OK_Response;                                        /*< The response printed when OK is needed. */
             const char *ERROR_Response;                                     /*< The response printed when ERROR is needed. */
@@ -198,9 +202,11 @@
             size_t SizeOutput;                                              /*< The size of Output. */
             qATCLI_Input_t Input;                                           /*< The input of the CLI. */  
             _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qATCLI_t;  
+    }
+    qATCLI_t;  
 
     /**
     * @brief Pointer to function  : An AT-Command callback
@@ -233,18 +239,20 @@
     /** 
     * @brief An AT-Command object
     */
-    typedef struct _qATCLI_Command_s{
+    typedef struct _qATCLI_Command_s {
         void *param;                                            /**< User parameters. */
         char *Text;                                             /**< The command string. Used to match to the input*/
         /*! @cond  */
-        struct _qATCLI_Command_Private_s{                      
+        struct _qATCLI_Command_Private_s {                      
             qATCLI_CommandCallback_t CommandCallback;           /*< The command callback. */
             struct _qATCLI_Command_s *Next;                     /*< Points to the next command in the list. */
             qATCLI_Options_t CmdOpt;                            /*< The command options. */
             size_t CmdLen;                                      /*< The command length. */
-        }qPrivate;      
+        }
+        qPrivate;      
         /*! @endcond  */ 
-    }qATCLI_Command_t;
+    }
+    qATCLI_Command_t;
 
     /**
     * @brief Setup an instance of the AT Command Command Line Interface.

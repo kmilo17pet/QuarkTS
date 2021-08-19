@@ -6,7 +6,7 @@
 
 #include "qbsbuffers.h"
 
-#if ( Q_BYTE_SIZED_BUFFERS ==1 )
+#if ( Q_BYTE_SIZED_BUFFERS == 1 )
 
 static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k );
 
@@ -37,6 +37,7 @@ size_t qBSBuffer_Count( const qBSBuffer_t * const obj )
     if ( NULL != obj ) {
         qIndex_t head = obj->qPrivate.head;
         qIndex_t tail = obj->qPrivate.tail;
+        
         RetValue = (size_t)( head - tail );
     }
 
@@ -71,6 +72,7 @@ qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj )
 
     if ( NULL != obj ) {
         qIndex_t index = obj->qPrivate.tail % obj->qPrivate.length;
+
         RetValue = (qUINT8_t) ( obj->qPrivate.buffer[ index ] ); /*MISRAC2004-17.4_b deviation allowed*/
     }
 
@@ -83,6 +85,7 @@ qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest )
 
     if ( qFalse == qBSBuffer_Empty( obj ) ) {
         qIndex_t index = obj->qPrivate.tail % obj->qPrivate.length;
+
         *dest = obj->qPrivate.buffer[ index ]; /*MISRAC2004-17.4_b deviation allowed*/
         ++obj->qPrivate.tail;
         RetValue = qTrue;
@@ -112,6 +115,7 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n )
 qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data )
 {
     qBool_t status = qFalse;
+
     if ( NULL != obj ) { 
         if ( qFalse == qBSBuffer_IsFull( obj ) ) {/* limit the ring to prevent overwriting */
             obj->qPrivate.buffer[obj->qPrivate.head % obj->qPrivate.length] = Data; /*MISRAC2004-17.4_b deviation allowed*/

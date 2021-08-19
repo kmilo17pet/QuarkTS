@@ -1,7 +1,7 @@
 /*!
  * @file qlists.h
  * @author J. Camilo Gomez C.
- * @version 1.09
+ * @version 1.10
  * @note This file is part of the QuarkTS distribution.
  * @brief API to create and manage double-linked generic lists.
  **/
@@ -24,12 +24,13 @@
     * @brief A list-node object (Used internally)
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qList_Node_s{
+    typedef struct _qList_Node_s { 
         /*! @cond  */
         struct _qList_Node_s *next, *prev;  /*< Pointers to adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
         /*! @endcond  */
-    }qList_Node_t;
+    }
+    qList_Node_t;
 
     /**
     * @brief This macro can be used to create custom data that can be used as node of a list.
@@ -52,13 +53,14 @@
     * @brief A list object (Generic double-linked)
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qList_s{
+    typedef struct _qList_s {
         /*! @cond  */
         qNode_MinimalFields;        /*< To allow "list of lists" aka "nested-lists"*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
         size_t size;                /*< Used to hold the current size of the list. */
         /*! @endcond  */
-    }qList_t;
+    }
+    qList_t;
 
     /**
     * @brief This macro can be used to initialize empty lists. 
@@ -68,11 +70,12 @@
     /**
     * @brief An enum to describe the ForEach stage.
     */
-    typedef enum{ 
+    typedef enum { 
         qList_WalkInit,                 /**< When the loop is about to start. In this case, A NULL value will be passed in the node pointer.*/
         qList_WalkThrough,              /**< When the loop is transversing the list.*/
         qList_WalkEnd,                  /**< When the loop has finished. In this case, A NULL value will be passed in the node pointer.*/
-     }qList_WalkStage_t;
+    } 
+    qList_WalkStage_t;
  
     /**
     * @brief Handle of the qList_ForEach() API that is passed as an argument to 
@@ -80,7 +83,7 @@
     * @note The user must verify the members of this structure to operate 
     * correctly at each stage of the cycle.
     */
-    typedef struct _qList_ForEachHandle_s{
+    typedef struct _qList_ForEachHandle_s {
         void *node;                     /**< Points to the node that is currently being processed*/   
         void *arg;                      /**< User storage pointer */
         qList_WalkStage_t stage;        /**< Member that indicates the stage of the iterative cycle*/
@@ -98,7 +101,7 @@
     * @note The user must verify the input nodes to return a boolean value
     * that determines the order in which the nodes should be ordered
     */
-    typedef struct _qList_CompareHandle_s{
+    typedef struct _qList_CompareHandle_s {
         const void *n1;                 /**< Points to the node that is currently being processed*/  
         const void *n2;                 /**< Points to the node that is currently being processed*/ 
     }
@@ -106,7 +109,7 @@
     qList_CompareHandle_t;
     #else
     _qList_CompareHandle_t;
-        typedef _qList_CompareHandle_t* qList_CompareHandle_t;
+    typedef _qList_CompareHandle_t* qList_CompareHandle_t;
     #endif
 
     /**
@@ -303,12 +306,13 @@
     /**
     * @brief Typedef to hold a list-iterator instance.
     */
-    typedef struct _qList_Iterator_s{
+    typedef struct _qList_Iterator_s {
         /*! @cond  */
         qList_Node_t *next;             /*< Where the iterator is currently pointing. */
         qList_Direction_t direction;    /*< How the iterator scrolls through the list, #QLIST_FORWARD or #QLIST_BACKWARD. */
         /*! @endcond  */
-    }qList_Iterator_t;
+    }
+    qList_Iterator_t;
 
     /**
     * @brief Setup an instance of the given iterator to traverse the list.

@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.31
+ * @version 5.32
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -139,7 +139,8 @@
         qSM_STATUS_EXIT_FAILURE = -32765,       /**< To indicate that the state had a failure or abnormal execution. It can be used to handle exceptions.*/
         qSM_STATUS_EXIT_SUCCESS = -32764,       /**< To indicate that the status was successful.*/
         qSM_STATUS_SIGNAL_HANDLED = -32763      /**< To indicate that the state handled the signal and therefore it is not necessary to continue propagating the signal through the rest of the hierarchy*/
-    }qSM_Status_t; 
+    }
+    qSM_Status_t; 
 
     /**
     * @brief This enumeration defines the possible modes to perform a transistion to history  
@@ -148,12 +149,13 @@
         qSM_TRANSITION_NO_HISTORY = 0,          /**< History is not preserved. Composite states will start according to their default transition.*/
         qSM_TRANSITION_SHALLOW_HISTORY,         /**< History will be kept to allow the return to only the top-most sub-state of the most recent state configuration, which is entered using the default entry rule.*/
         qSM_TRANSITION_DEEP_HISTORY,            /**< History will be kept to allow full state configuration of the most recent visit to the containing region.*/
-    }qSM_TransitionHistoryMode_t;
+    }
+    qSM_TransitionHistoryMode_t;
 
     /*fields for the qSM_Handler_t pointer*/
     
     /*! @cond  */
-    #define _qSM_HANDLER_FIELDS( pAttrib ) struct{\
+    #define _qSM_HANDLER_FIELDS( pAttrib ) struct {\
         void *StartState;\
         void *NextState;\
         pAttrib void *machine;\
@@ -167,8 +169,8 @@
     /*! @endcond */
 
     /*! @cond  */
-    typedef struct _qSM_uPublicData_s{ _qSM_HANDLER_FIELDS( Q_NONE ) }_qSM_UnprotectedPublicData_t;
-    typedef struct _qSM_pPublicData_s{ _qSM_HANDLER_FIELDS( const  ) }_qSM_ProtectedPublicData_t;
+    typedef struct _qSM_uPublicData_s { _qSM_HANDLER_FIELDS( Q_NONE ) } _qSM_UnprotectedPublicData_t;
+    typedef struct _qSM_pPublicData_s { _qSM_HANDLER_FIELDS( const  ) } _qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;    
     typedef _qSM_ProtectedPublicData_t* const qSM_Handler_t;  
     /*! @endcond */
@@ -180,7 +182,7 @@
     * @note Should be used only in state-callbacks as the only input argument. 
     * @note The members of this structure must be accessed as a pointer.
     */    
-    typedef struct{
+    typedef struct {
         void *StartState;                               /**< Used to set the initial state (default transition) if the current state its a parent.*/
         void *NextState;                                /**< Used to produce a transition to the desired state. */
         const void *machine;                            /**< A pointer to the state machine object. */
@@ -190,7 +192,8 @@
         const qSM_Signal_t Signal;                      /**< The signal that its currently evaluated*/
         const qSM_Status_t Status;                      /**< The last state return status. Only available in the surrounding callback. */
         qSM_TransitionHistoryMode_t TransitionHistory;  /**< Used to set the behavior of a transition to history. ::qSM_TRANSITION_NO_HISTORY by default*/
-    }qSM_Handler_t;  
+    } 
+    qSM_Handler_t;  
     #endif
     
     /**
@@ -262,10 +265,11 @@
     /**
     * @brief This structure should be used to define an item for a timeout-specification table. 
     */
-    typedef struct _qSM_TimeoutStateDefinition_s{
+    typedef struct _qSM_TimeoutStateDefinition_s {
         qTime_t xTimeout;                                   /**< The value that the timeout will use*/
         qSM_TimeoutSpecOptions_t options;                   /**< Timeout options. This includes the index of the timeout to be used */
-    }qSM_TimeoutStateDefinition_t;
+    }
+    qSM_TimeoutStateDefinition_t;
 
     /** 
     * @brief A state object
@@ -285,9 +289,9 @@
     * position in the topology.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qSM_State_s{
+    typedef struct _qSM_State_s {
         /*! @cond  */
-        struct _qSM_State_Private_s{
+        struct _qSM_State_Private_s {
             struct _qSM_State_s *parent;                    /*< A pointer to the parent state*/
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
             struct _qSM_State_s *initState;                 /*< The initial state of this parent*/
@@ -297,20 +301,23 @@
             void* Data;                                     /*< State data. Storage pointer*/
             size_t tEntries;                                /*< Number of entries on <tTable>*/
             size_t nTm;                                     /*< Number of entries on <tdef>*/
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qSM_State_t;
+    }
+    qSM_State_t;
       
     /** 
     * @brief A FSM Timeout-specification object
     * @note Do not access any member of this structure directly. 
     */    
-    typedef struct _qSM_TimeoutSpec_s{
+    typedef struct _qSM_TimeoutSpec_s {
         /*! @cond  */
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/     
         qUINT32_t isPeriodic;                               /*< witch one is periodic*/
         /*! @endcond  */
-    }qSM_TimeoutSpec_t;
+    }
+    qSM_TimeoutSpec_t;
 
     /** 
     * @brief A FSM(Finite State Machine) object
@@ -321,9 +328,9 @@
     * state and the surrounding callback function.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qSM_s{
+    typedef struct _qSM_s {
         /*! @cond  */
-        struct _qSM_Private_s{
+        struct _qSM_Private_s {
             qSM_State_t *current;                           /*< A pointer to the current state.*/
             qSM_State_t *next;                              /*< The next state to execute. */
             qSM_State_t *source;                            /*< Source state during the last transition*/
@@ -336,24 +343,27 @@
             qSM_State_t top;                                /*< The top most state*/
             _qSM_UnprotectedPublicData_t handler;           /*< The FSM handler argument*/    
             qSM_Signal_t SignalNot;                         /*< Signal exclusion variable*/
-        }qPrivate;   
+        }
+        qPrivate;   
         /*! @endcond  */      
-    }qSM_t;
+    }
+    qSM_t;
 
     /**
     * @brief This structure should be used to define an item for a state transition table. 
     */
-    typedef struct _qSM_Transition_s{
+    typedef struct _qSM_Transition_s {
         qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
         qSM_SignalAction_t Guard;                           /**< The signal guard/action*/
         qSM_State_t *NextState;                             /**< A pointer to the next state after the transition*/
         qSM_TransitionHistoryMode_t HistoryMode;            /**< To set the history mode for a transition*/
-    }qSM_Transition_t;
+    }
+    qSM_Transition_t;
     
     /**
     * @brief This enumeration defines the attributes that can be acquired for a FSM or a state.
     */
-    typedef enum{
+    typedef enum {
         qSM_ATTRIB_STATE_TOP,                               /**< Only for qStateMachine_Get_Machine() : Get a pointer to the top state*/
         qSM_ATTRIB_STATE_CURRENT,                           /**< Only for qStateMachine_Get_Machine() : Get a pointer to the current running state*/
         qSM_ATTRIB_SIGNAL_QUEUE,                            /**< Only for qStateMachine_Get_Machine() : Get a pointer to the signal-queue object if installed*/
@@ -363,7 +373,8 @@
         qSM_ATTRIB_COMPOSITE_INITSTATE,                     /**< Only for qStateMachine_Get_State() : Get the initial default or initial state, if input is composite*/
         qSM_ATTRIB_COMPOSITE_LASTSTATE,                     /**< Only for qStateMachine_Get_State() : Get the last state, if input is composite*/
         qSM_ATTRIB_COMPOSITE_PARENT,                        /**< Only for qStateMachine_Get_State() : Get the parent state, if input is a child*/
-    }qSM_Attribute_t;
+    }
+    qSM_Attribute_t;
 
     /**
     * @brief Execute the Finite State Machine (FSM).

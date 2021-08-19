@@ -609,7 +609,7 @@ qBool_t qList_DRemoveItself( void * const node )
     qBool_t RetValue = qFalse;
     
     if ( ( NULL != qListMalloc ) && ( NULL != qListFree ) ) {
-        if ( qList_RemoveItself( node ) ){
+        if ( qList_RemoveItself( node ) ) {
             qListFree( node );
             RetValue = qTrue;
         }

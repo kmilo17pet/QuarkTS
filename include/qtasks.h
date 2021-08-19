@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.29
+ * @version 3.30
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -95,7 +95,8 @@
         * @brief Only available when the Idle Task is triggered.
         */                     
         byNoReadyTasks
-    }qTrigger_t;
+    } 
+    qTrigger_t;
 
     /** @brief A 32-bit unsigned integer type to hold a notification value.*/
     typedef qUINT32_t qNotifier_t;       
@@ -109,13 +110,14 @@
     /**
     * @brief An enum to describe the task global states.
     */
-    typedef enum{
+    typedef enum {
         qUndefinedGlobalState,  /**< A task should never reach this state(Reserved for internal use) */
         qReady,                 /**< The task has completed preparations for running, but cannot run because a task with a higher precedence is running. */
         qWaiting,               /**< The task cannot run because the conditions for running are not in place. */
         qSuspended,             /**< The task doesn't take part in what is going on. Normally this state is taken after the ::qRunning state or when the task doesn't reach the ::qReady state*/
         qRunning                /**< The task is currently being executed. */
-    }qTask_GlobalState_t;
+    }
+    qTask_GlobalState_t;
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /*! @cond  */
@@ -153,7 +155,7 @@
     * @note Should be used only in task-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct _qEvent_s{
+    typedef struct _qEvent_s {
         /** 
         * @brief Task arguments defined at the time of its creation. (Storage-Pointer) 
         */
@@ -197,10 +199,11 @@
         * This parameter will be only available on timed tasks. when Trigger == ::byTimeElapsed
         */              
         qClock_t StartDelay;
-    #ifdef DOXYGEN
-    }qEvent_t;
+    }
+    #ifdef DOXYGEN 
+    qEvent_t;
     #else
-    }_qEvent_t_/*, *const qEvent_t*/;  
+    _qEvent_t_/*, *const qEvent_t*/;  
     typedef const _qEvent_t_ *qEvent_t;
     #endif    
 
@@ -245,9 +248,9 @@
     * otherwise, the scheduler will hold the execution-state for that task, preventing the activation of other tasks.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qTask_s{ /*Task node definition*/
+    typedef struct _qTask_s { /*Task node definition*/
         /*! @cond  */
-        struct _qTask_Private_s{    /*Task control block - TCB*/
+        struct _qTask_Private_s {    /*Task control block - TCB*/
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /**< internalThe task storage pointers. */
             qTaskFcn_t Callback;                    /**< The callback function representing the task activities. */
@@ -270,9 +273,11 @@
             volatile qTask_Flag_t Flags;            /**< Task flags (core and eventflags)*/
             qTrigger_t Trigger;                     /**< The event source that put the task in a qReady state. */
             qPriority_t Priority;                   /**< The task priority. */
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qTask_t;
+    }
+    qTask_t;
 
     #if ( Q_QUEUES == 1 )
         /**
@@ -283,7 +288,8 @@
             qQueueMode_Full = 8,        /**< This mode will trigger the task if the queue is full. A pointer to the queue will be available in the qEvent_t::EventData field.*/
             qQueueMode_Count = 16,      /**< This mode will trigger the task if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the qEvent_t::EventData field.*/
             qQueueMode_Empty = 32,      /**< This mode will trigger the task if the queue is empty. A pointer to the queue will be available in the qEvent_t::EventData field.*/
-        }qQueueLinkMode_t;
+        }
+        qQueueLinkMode_t;
     #endif
 
     /** @}*/
@@ -296,7 +302,7 @@
     /**
     * @brief An enum that defines the modes in which a notification can be spread
     */
-    typedef enum{
+    typedef enum {
         qTask_NotifyNULL,               /**< Do not use this value. Used only internally.*/
         qTask_NotifySimple,             /**< To notify a task using the simple approach. */
         qTask_NotifyQueued,             /**< To notify a task using the FIFO priority queue. */

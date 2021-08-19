@@ -6,7 +6,7 @@
 
 #include "qqueues.h"
 
-#if (Q_QUEUES == 1)
+#if ( Q_QUEUES == 1 )
 
 static void qQueue_CopyDataToQueue( qQueue_t * const obj, const void *ItemToQueue, const qBool_t xPosition );
 static void qQueue_MoveReader( qQueue_t * const obj );
@@ -48,7 +48,7 @@ qBool_t qQueue_Reset( qQueue_t * const obj )
 {
     qBool_t RetValue = qFalse;
 
-    if ( NULL != obj ) {
+    if ( ( NULL != obj ) && ( obj->qPrivate.ItemsWaiting >= 1u) ) {
         qCritical_Enter();
         obj->qPrivate.tail = obj->qPrivate.head + ( obj->qPrivate.ItemsCount * obj->qPrivate.ItemSize ); 
         obj->qPrivate.ItemsWaiting = 0u;
@@ -118,6 +118,7 @@ void* qQueue_Peek( const qQueue_t * const obj )
 
     if ( NULL != obj ) {
         size_t ItemsWaiting;
+
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -140,6 +141,7 @@ qBool_t qQueue_RemoveFront( qQueue_t * const obj )
 
     if ( NULL != obj ) {
         size_t ItemsWaiting;
+
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -192,6 +194,7 @@ qBool_t qQueue_Receive( qQueue_t * const obj, void *dest )
     
     if ( NULL != obj ) {
         size_t ItemsWaiting;
+        
         qCritical_Enter(); 
         ItemsWaiting = obj->qPrivate.ItemsWaiting; /*to avoid side effects*/
         if ( ItemsWaiting > 0u ) { 
@@ -222,4 +225,4 @@ qBool_t qQueue_SendGeneric( qQueue_t * const obj, void *ItemToQueue, qQueue_Mode
 }
 /*============================================================================*/
 
-#endif /* #if (Q_QUEUES == 1) */
+#endif /* #if ( Q_QUEUES == 1 ) */

@@ -1,7 +1,7 @@
 /*!
  * @file qresponse.h
  * @author J. Camilo Gomez C.
- * @version 1.25
+ * @version 1.27
  * @note This file is part of the QuarkTS distribution.
  * @brief API to simplify the handling of requested responses from terminal interfaces.
  **/
@@ -31,18 +31,20 @@
     * @brief A Response Handler object.
     * @note Do not access any member of this structure directly. 
     */
-    typedef struct _qResponse_s{
+    typedef struct _qResponse_s {
         /*! @cond  */
-        struct _qResponse_Private_s{
+        struct _qResponse_Private_s {
             char *Pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
             qSTimer_t timeout;                  /*< The timeout used to wait the requested response. */
             size_t MaxStrLength;                /*< The size of the storage area. */
             size_t PatternLength;               /*< The length of the current response request.*/
             volatile size_t MatchedCount;       /*< To hold the current number of response matches. */
             volatile qBool_t ResponseReceived;  /*< A flag that indicates when the response matches the request. */
-        }qPrivate;
+        }
+        qPrivate;
         /*! @endcond  */
-    }qResponse_t;
+    }
+    qResponse_t;
 
     /**
     * @brief Initialize the instance of the response handler object

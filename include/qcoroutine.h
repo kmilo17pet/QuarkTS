@@ -30,22 +30,24 @@
     
     /* Please don't access any members of this structure directly */
     /*! @cond  */
-    typedef struct _qCR_Instance_s{
+    typedef struct _qCR_Instance_s {
         _qCR_TaskPC_t instr;    /*< Used to hold the local continuation. */
         _qCR_TaskPC_t prev;     /*< Temporally holds the local continuation during a coroutine suspension*/
         qSTimer_t crdelay;      /*< Used to hold the required delay for #qCR_Delay. */
-    }_qCR_Instance_t;
+    }
+    _qCR_Instance_t;
     /*! @endcond  */
 
     /** @brief A typedef to instantiate a Co-Routine handle*/
     typedef _qCR_Instance_t *qCR_Handle_t;
 
     /** @brief A typedef to instantiate a Co-Routine Semaphore*/
-    typedef struct _qCR_Semaphore_s{ 
+    typedef struct _qCR_Semaphore_s { 
         /*! @cond  */
         size_t count; 
         /*! @endcond  */
-    }qCR_Semaphore_t; 
+    }
+    qCR_Semaphore_t; 
     
     /*! @cond  */
     #define QCR_RESTART     ( 0 )
@@ -57,21 +59,23 @@
     /** 
     * @brief An enumeration to define the possible actions that can be performed outside the context of a Co-Routine
     */
-    typedef enum{
+    typedef enum {
         qCR_RESTART = QCR_RESTART,          /**< Restart the coroutine execution at the place of the #qCR_BeginWithHandle statement.*/ 
         qCR_POSITIONSET = QCR_POSITIONSET,  /**< Force the coroutine execution at the position specified in qCR_ExternControl(). If a non-valid position is supplied, the Co-routine segment will be suspended.*/ 
         qCR_SUSPEND = QCR_SUSPEND,          /**< Suspend the entire coroutine segment. The task will still running instructions outside the segment. */ 
         qCR_RESUME = QCR_RESUME             /**< Resume the entire coroutine segment at the point where it had been left before the suspension. */ 
-    }qCR_ExternAction_t;
+    }
+    qCR_ExternAction_t;
 
     /*! @cond  */
-    typedef enum{
+    typedef enum {
         _qCR_UNDEFINED = 0,
         _qCR_PC_INITVAL = -1,
         _qCR_PC_SUSPENDEDVAL = -2,
         _qCR_SEM_SIGNAL = -3,
         _qCR_SEM_TRYLOCK = -4
-    }_qCR_Oper_t;
+    }
+    _qCR_Oper_t;
 
     /*Construction stataments*/
     #define _qCR_CodeStartBlock        do
