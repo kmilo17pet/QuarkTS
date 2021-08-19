@@ -310,6 +310,17 @@
     qTask_NotifyMode_t;
     
     /**
+    * @brief An enum that defines the parameters than can be cleared for a task
+    */
+    typedef enum {
+        qTask_ClearIterations,          /**< To clear the number of iterations performed by the task. */
+        qTask_ClearTimeElapsed,         /**< To clear the time elapsed by the task. */
+        qTask_ClearCycles,              /**< To clear the number of cycles performed by the task. */
+        qTask_ClearNotifications,       /**< To clear the notification value. */
+    }
+    qTask_ClrParam_t;
+
+    /**
     * @brief Sends a simple notification generating an asynchronous event. 
     * This method marks the task as ready for execution, therefore, the planner will 
     * launch the task immediately according to the scheduling rules (even if task is disabled) and 
@@ -448,11 +459,18 @@
     qBool_t qTask_Set_Data( qTask_t * const Task, void* arg );
 
     /**
-    * @brief Clear the elapsed time of the task. Restart the internal task tick;
+    * @brief Clear the specified parameter for the task. Restart the internal task tick;
     * @param[in] Task Pointer to the task node.
+    * @param[in] param Use one of the following values
+    * ::qTask_ClearIterations : Clear the number of iterations.
+    * 
+    * ::qTask_ClearTimeElapsed : Clear the time elapsed.
+    * 
+    * ::qTask_ClearCycles : Clear the number of task activations. 
+    * 
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    qBool_t qTask_ClearTimeElapsed( qTask_t * const Task );
+    qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param );
 
     /**
     * @brief Get the current running-task handle.
