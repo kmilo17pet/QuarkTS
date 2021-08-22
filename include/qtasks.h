@@ -462,13 +462,14 @@
     * @brief Clear the specified parameter for the task.
     * @param[in] Task Pointer to the task node.
     * @param[in] param Use one of the following values:
+    * 
     * ::qTask_ClearIterations : Clear the number of iterations.
     * 
     * ::qTask_ClearTimeElapsed : Clear the time elapsed.
     * 
     * ::qTask_ClearCycles : Clear the number of task activations. 
     * 
-    * ::qTask_ClearNotification : Clear the notification value.
+    * ::qTask_ClearNotifications : Clear the notification value.
     * 
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
