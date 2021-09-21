@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.08
+ * @version 1.09
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.

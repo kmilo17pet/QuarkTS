@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.31
+ * @version 3.32
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/

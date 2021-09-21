@@ -1,7 +1,7 @@
 /*!
  * @file qkshared.h
  * @author J. Camilo Gomez C.
- * @version 1.04
+ * @version 1.05
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel shared interfaces
  **/
