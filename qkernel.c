@@ -126,12 +126,7 @@ void qOS_DummyTask_Callback( qEvent_t e )
         #endif
         kernel.IDLECallback = IdleCallback;
         #if ( Q_PRIO_QUEUE_SIZE > 0 )    
-            /*init the priority queue*/
-            for ( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ) {
-                kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
-            }
-            kernel.QueueIndex = -1;     
-            kernel.QueueData = NULL;
+            qOS_PriorityQueue_Init();
         #endif
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             kernel.NotificationSpreadRequest.mode = NULL;
@@ -326,6 +321,18 @@ size_t qOS_PriorityQueue_GetCount( void )
     }
 
     return RetValue;
+}
+/*========================== Shared Private Method ===========================*/
+void qOS_PriorityQueue_Init( void )
+{
+    size_t i;
+    qCritical_Enter();
+    for ( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ) {
+        kernel.QueueStack[ i ].Task = NULL;  /*set the priority queue as empty*/  
+    }
+    kernel.QueueIndex = -1;     
+    kernel.QueueData = NULL;
+    qCritical_Exit();
 }
 /*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */

@@ -39,6 +39,7 @@
         extern qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data );
         extern qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task );
         extern size_t qOS_PriorityQueue_GetCount( void );
+        extern void qOS_PriorityQueue_Init( void );
     #endif
     
     extern void qOS_DummyTask_Callback( qEvent_t e );

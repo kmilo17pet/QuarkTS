@@ -8,9 +8,24 @@
 
 #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
 
-#define QEDGECHECK_WAIT         ( (qUINT8_t)0u )
-#define QEDGECHECK_UPDATE       ( (qUINT8_t)1u )
-#define QEDGECHECK_CHECK        ( (qUINT8_t)2u )
+#define QEDGECHECK_WAIT                         ( (qUINT8_t)0u )
+#define QEDGECHECK_UPDATE                       ( (qUINT8_t)1u )
+#define QEDGECHECK_CHECK                        ( (qUINT8_t)2u )
+#define _QEDGECHECK_REG_FCN_DEF(NAME, TYPE)     _QEDGECHECK_REG_FCN_DEC(NAME) \
+                                                { \
+                                                    TYPE Register, Mask, Bit = (TYPE)PinNumber; \
+                                                    Mask = (TYPE)((TYPE)1uL << Bit); \
+                                                    Register = *((const TYPE*)Address); \
+                                                    return ( (TYPE)0 != (Register & Mask) ); \
+                                                } \
+
+/*! @cond  */
+/*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+_QEDGECHECK_REG_FCN_DEF( QREG_32BIT, qUINT32_t );
+_QEDGECHECK_REG_FCN_DEF( QREG_16BIT, qUINT16_t );
+_QEDGECHECK_REG_FCN_DEF( QREG_8BIT,  qUINT8_t );
+/*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+/*! @endcond  */
 
 /*============================================================================*/
 qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime )
@@ -122,38 +137,6 @@ qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t 
 
     return RetValue;
 }
-/*============================================================================*/
-/*                        PRIVATE METHODS, DONT USE THEM                      */
-/*============================================================================*/
-/*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-qBool_t _qReg_32Bits( const void *Address, qBool_t PinNumber )
-{ 
-    qUINT32_t Register, Mask, Bit = (qUINT32_t)PinNumber; 
-
-    Mask = (qUINT32_t)((qUINT32_t)1uL << Bit);
-    Register = *((const qUINT32_t*)Address);
-
-    return ( (qUINT32_t)0 != (Register & Mask) ); 
-}
-qBool_t _qReg_16Bits( const void *Address, qBool_t PinNumber )
-{
-    qUINT16_t Register, Mask, Bit = (qUINT16_t)PinNumber; 
-
-    Mask = (qUINT16_t)((qUINT16_t)1uL << Bit);
-    Register = *((const qUINT16_t*)Address);
-
-    return ( (qUINT16_t)0 != (Register & Mask) ); 
-}
-qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber )
-{
-    qUINT8_t Register, Mask, Bit = (qUINT8_t)PinNumber; 
-    
-    Mask = (qUINT8_t)((qUINT8_t)1uL << Bit);
-    Register = *((const qUINT8_t*)Address);
-    
-    return ( (qUINT8_t)0 != (Register & Mask) );
-}
-/*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*============================================================================*/
 
 #endif /* #if ( Q_EDGE_CHECK_IOGROUPS == 1 ) */

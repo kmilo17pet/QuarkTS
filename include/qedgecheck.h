@@ -26,14 +26,13 @@
     */
 
     /** @brief To define a register size of 8-bits for an Edge-Check instance*/
-    #define QREG_8BIT               ( _qReg_08Bits )
+    #define QREG_8BIT                _qReg_08Bits
 
     /** @brief To define a register size of 16-bits for an Edge-Check instance*/
-    #define QREG_16BIT              ( _qReg_16Bits )
+    #define QREG_16BIT               _qReg_16Bits
 
     /** @brief To define a register size of 32-bits for an Edge-Check instance*/
-    #define QREG_32BIT              ( _qReg_32Bits )
-    
+    #define QREG_32BIT               _qReg_32Bits     
     /** 
     * @brief An input node object for edge checking.
     * @note Do not access any member of this structure directly. 
@@ -75,9 +74,10 @@
     qEdgeCheck_t;
 
     /*! @cond  */
-    qBool_t _qReg_08Bits( const void *Address, qBool_t PinNumber );
-    qBool_t _qReg_16Bits( const void *Address, qBool_t PinNumber );
-    qBool_t _qReg_32Bits( const void *Address, qBool_t PinNumber );
+    #define _QEDGECHECK_REG_FCN_DEC(NAME)   qBool_t NAME( const void *Address, qBool_t PinNumber )
+    _QEDGECHECK_REG_FCN_DEC( QREG_32BIT );
+    _QEDGECHECK_REG_FCN_DEC( QREG_16BIT );
+    _QEDGECHECK_REG_FCN_DEC( QREG_8BIT  );
     /*! @endcond  */
 
     /**

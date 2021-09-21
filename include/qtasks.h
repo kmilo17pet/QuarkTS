@@ -316,7 +316,9 @@
         qTask_ClearIterations,          /**< To clear the number of iterations performed by the task. */
         qTask_ClearTimeElapsed,         /**< To clear the time elapsed by the task. */
         qTask_ClearCycles,              /**< To clear the number of cycles performed by the task. */
-        qTask_ClearNotifications,       /**< To clear the notification value. */
+        qTask_ClearSimpleNotifications, /**< To clear the notification value. */
+        qTask_ClearQueuedNotifications, /**< To clear all queued notifications. */
+        qTask_ClearNotifications,       /**< To clear all notifications, simple and queued. */
     }
     qTask_ClrParam_t;
 
@@ -469,7 +471,11 @@
     * 
     * ::qTask_ClearCycles : Clear the number of task activations. 
     * 
-    * ::qTask_ClearNotifications : Clear the notification value.
+    * ::qTask_ClearSimpleNotifications : Clear the notification value.
+    * 
+    * ::qTask_ClearQueuedNotifications : Clear all the queued notifications.
+    * 
+    * ::qTask_ClearNotifications : Clear all notifications (simple and queued).
     * 
     * @return #qTrue on success. Otherwise return #qFalse.
     */      

@@ -203,6 +203,19 @@ qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param )
                 break;
             case qTask_ClearNotifications:
                 Task->qPrivate.Notification = 0uL;    
+                #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
+                    qOS_PriorityQueue_Init();
+                #endif
+                RetValue = qTrue;
+                break;
+            case qTask_ClearSimpleNotifications:    
+                Task->qPrivate.Notification = 0uL; 
+                RetValue = qTrue;
+                break;
+            case qTask_ClearQueuedNotifications:
+                #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
+                    qOS_PriorityQueue_Init();
+                #endif
                 RetValue = qTrue;
                 break;
             default:
