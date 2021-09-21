@@ -75,9 +75,9 @@
 
     /*! @cond  */
     #define _QEDGECHECK_REG_FCN_DEC(NAME)   qBool_t NAME( const void *Address, qBool_t PinNumber )
-    _QEDGECHECK_REG_FCN_DEC( QREG_32BIT );
-    _QEDGECHECK_REG_FCN_DEC( QREG_16BIT );
-    _QEDGECHECK_REG_FCN_DEC( QREG_8BIT  );
+    _QEDGECHECK_REG_FCN_DEC( _qReg_32Bits );
+    _QEDGECHECK_REG_FCN_DEC( _qReg_16Bits );
+    _QEDGECHECK_REG_FCN_DEC( _qReg_08Bits  );
     /*! @endcond  */
 
     /**
