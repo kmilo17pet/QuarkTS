@@ -124,10 +124,12 @@ $(document).ready(function(){initNavTree('structq_a_t_c_l_i__t.html',''); initRe
   </ul>
 </div>
 <script type="text/javascript">
-  $(document).ready(function(){
-    toggleButton = document.createElement('doxygen-awesome-dark-mode-toggle')
-    toggleButton.title = "Toggle Light/Dark Mode"
-    document.getElementById("MSearchBox").parentNode.appendChild(toggleButton)
+  $(function() {
+    $(document).ready(function(){
+      toggleButton = document.createElement('doxygen-awesome-dark-mode-toggle')
+      toggleButton.title = "Toggle Light/Dark Mode"
+      document.getElementById("MSearchBox").parentNode.appendChild(toggleButton)
+    })
   })
 </script>
 </body>
