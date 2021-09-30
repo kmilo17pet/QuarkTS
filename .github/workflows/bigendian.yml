@@ -15,4 +15,4 @@ jobs:
     - name: Run uname
       run: uname -a
     - name: Run tests on s390x/ubuntu
-      run: docker run --rm s390x/ubuntu bash -c "apt update && apt install -y gcc g++ make git && git clone https://github.com/kmilo17pet/QuarkTS.git && cd QuarkTS && make test"
+      run: docker run --rm s390x/ubuntu bash -c "apt update && apt install -y gcc g++ make git && git clone https://github.com/kmilo17pet/QuarkTS.git --recursive && cd QuarkTS && make test"
