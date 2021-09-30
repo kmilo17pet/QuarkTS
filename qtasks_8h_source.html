@@ -208,8 +208,8 @@ $(document).ready(function(){initNavTree('qtasks_8h_source.html',''); initResiza
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordtype">void</span> *TaskData, *AsyncData;             </div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <a class="code" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> Callback;                    </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">            #if ( Q_FSM == 1 )</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <a class="code" href="structq_s_m__t.html">qSM_t</a> *StateMachine;                </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">            #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                <span class="keywordtype">void</span> *aObj;                        </div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">            #endif</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">            #if ( Q_QUEUES == 1 )</span></div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <a class="code" href="structq_queue__t.html">qQueue_t</a> *Queue;                    </div>
@@ -398,7 +398,6 @@ $(document).ready(function(){initNavTree('qtasks_8h_source.html',''); initResiza
 <div class="ttc" id="astructq_event__t_html_aee880e0bf7834b8ca68c2bcd6ddab532"><div class="ttname"><a href="structq_event__t.html#aee880e0bf7834b8ca68c2bcd6ddab532">qEvent_t::StartDelay</a></div><div class="ttdeci">qClock_t StartDelay</div><div class="ttdoc">The number of epochs between current system time and point in time when the task was marked as Ready....</div><div class="ttdef"><b>Definition:</b> qtasks.h:201</div></div>
 <div class="ttc" id="astructq_event__t_html_af000312a956c600f57074345a75536bf"><div class="ttname"><a href="structq_event__t.html#af000312a956c600f57074345a75536bf">qEvent_t::LastIteration</a></div><div class="ttdeci">qBool_t LastIteration</div><div class="ttdoc">Indicates whether current pass is the last iteration of the task. This flag will be only set when tim...</div><div class="ttdef"><b>Definition:</b> qtasks.h:192</div></div>
 <div class="ttc" id="astructq_queue__t_html"><div class="ttname"><a href="structq_queue__t.html">qQueue_t</a></div><div class="ttdoc">A Queue object.</div><div class="ttdef"><b>Definition:</b> qqueues.h:50</div></div>
-<div class="ttc" id="astructq_s_m__t_html"><div class="ttname"><a href="structq_s_m__t.html">qSM_t</a></div><div class="ttdoc">A FSM(Finite State Machine) object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:331</div></div>
 <div class="ttc" id="astructq_s_timer__t_html"><div class="ttname"><a href="structq_s_timer__t.html">qSTimer_t</a></div><div class="ttdoc">A STimer(Software Timer) object.</div><div class="ttdef"><b>Definition:</b> qstimers.h:29</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:251</div></div>
 </div><!-- fragment --></div><!-- contents -->

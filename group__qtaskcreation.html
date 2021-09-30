@@ -161,9 +161,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaadaa6b0192ebad11103849f5305f389a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a">qOS_Add_StateMachineTask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_s_m__t.html">qSM_t</a> *m, <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Priority, <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> Time, <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> InitialTaskState, void *arg)</td></tr>
 <tr class="memdesc:gaadaa6b0192ebad11103849f5305f389a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <em>Time</em> seconds in <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> mode. The event info will be available as a generic pointer inside the <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a> field.  <a href="group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a">More...</a><br /></td></tr>
 <tr class="separator:gaadaa6b0192ebad11103849f5305f389a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a55cf73aad1c9980bbc425b074bb7c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1">qOS_Add_ATCLITask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *cli, <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Priority)</td></tr>
-<tr class="memdesc:ga3a55cf73aad1c9980bbc425b074bb7c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer.  <a href="group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1">More...</a><br /></td></tr>
-<tr class="separator:ga3a55cf73aad1c9980bbc425b074bb7c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0aab6ff6b94c933ad83f91284a89a853"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#ga0aab6ff6b94c933ad83f91284a89a853">qOS_Add_ATCLITask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *cli, <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> Priority, void *arg)</td></tr>
+<tr class="memdesc:ga0aab6ff6b94c933ad83f91284a89a853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer.  <a href="group__qtaskcreation.html#ga0aab6ff6b94c933ad83f91284a89a853">More...</a><br /></td></tr>
+<tr class="separator:ga0aab6ff6b94c933ad83f91284a89a853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d3b11b689fa9df89cf8ac4023482765"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765">qOS_Remove_Task</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
 <tr class="memdesc:ga4d3b11b689fa9df89cf8ac4023482765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the task from the scheduling scheme.  <a href="group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765">More...</a><br /></td></tr>
 <tr class="separator:ga4d3b11b689fa9df89cf8ac4023482765"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,8 +174,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Kernel API interface to create/remove tasks and perform special OS operations. </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga3a55cf73aad1c9980bbc425b074bb7c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3a55cf73aad1c9980bbc425b074bb7c1">&#9670;&nbsp;</a></span>qOS_Add_ATCLITask()</h2>
+<a id="ga0aab6ff6b94c933ad83f91284a89a853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0aab6ff6b94c933ad83f91284a89a853">&#9670;&nbsp;</a></span>qOS_Add_ATCLITask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +196,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a>&#160;</td>
-          <td class="paramname"><em>Priority</em>&#160;</td>
+          <td class="paramname"><em>Priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -214,6 +220,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Inteface instance. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Priority</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -603,7 +610,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line">    HAL_Init(); </div>
 <div class="line">    <a class="code" href="group__qtaskcreation.html#ga737c7e98817ffb5f628639616061f6cc">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback );</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qtaskcreation_html_ga737c7e98817ffb5f628639616061f6cc"><div class="ttname"><a href="group__qtaskcreation.html#ga737c7e98817ffb5f628639616061f6cc">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:106</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga737c7e98817ffb5f628639616061f6cc"><div class="ttname"><a href="group__qtaskcreation.html#ga737c7e98817ffb5f628639616061f6cc">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t TickProvider, const qTimingBase_t BaseTimming, qTaskFcn_t IdleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:105</div></div>
 </div><!-- fragment --><p>Example : When the tick is not provided </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;DeviceHeader.h&quot;</span></div>
 <div class="line"> </div>

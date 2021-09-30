@@ -6,7 +6,7 @@ var group__qtaskcreation =
     [ "qMedium_Priority", "group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744", null ],
     [ "qPeriodic", "group__qtaskcreation.html#gae3758e719245db560b090d90fce96301", null ],
     [ "qSingleShot", "group__qtaskcreation.html#gad3940f1fab63750a91ea0c3daf958406", null ],
-    [ "qOS_Add_ATCLITask", "group__qtaskcreation.html#ga3a55cf73aad1c9980bbc425b074bb7c1", null ],
+    [ "qOS_Add_ATCLITask", "group__qtaskcreation.html#ga0aab6ff6b94c933ad83f91284a89a853", null ],
     [ "qOS_Add_EventTask", "group__qtaskcreation.html#ga9d747397e555d252dc9fa0da04a01d6f", null ],
     [ "qOS_Add_StateMachineTask", "group__qtaskcreation.html#gaadaa6b0192ebad11103849f5305f389a", null ],
     [ "qOS_Add_Task", "group__qtaskcreation.html#ga9ee35a45322d97b9895ccee746dd9e94", null ],
