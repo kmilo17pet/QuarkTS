@@ -35,7 +35,7 @@ typedef struct _qNotificationSpreader_s {
 qNotificationSpreader_t;
 
 typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/
-    qList_t CoreLists[ Q_PRIORITY_LEVELS + 2 ];
+    qList_t CoreLists[ Q_PRIORITY_LEVELS + 2 ];         /*< [ ReadyLists[...] WaitingList SuspendedList  ]*/
     qTaskFcn_t IDLECallback;                            /*< The callback function that represents the idle-task activities. */
     qTask_t *CurrentRunningTask;                        /*< Points to the current running task. */    
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
@@ -85,8 +85,12 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
     static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task );
 #endif
 
+#if ( Q_FSM == 1)
+    static void qOS_FSM_TaskCallback( qEvent_t e );
+#endif
+
 #if ( Q_ATCLI == 1 )
-    static void qOS_ATCLI_TaskCallback( qEvent_t  e );
+    static void qOS_ATCLI_TaskCallback( qEvent_t e );
     static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli );
 #endif
 
@@ -94,11 +98,6 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
     static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h );
 #endif
 
-/*========================== Shared Private Method ===========================*/
-void qOS_DummyTask_Callback( qEvent_t e )
-{
-    Q_UNUSED( e ); 
-}
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
     qBool_t qOS_Setup( const qGetTickFcn_t TickProvider, qTaskFcn_t IdleCallback )
@@ -365,8 +364,8 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
         #if ( Q_QUEUES == 1 )
             Task->qPrivate.Queue = NULL;
         #endif
-        #if ( Q_FSM == 1 )
-            Task->qPrivate.StateMachine = NULL;
+        #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
+            Task->qPrivate.aObj = NULL;
         #endif
         #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
             Task->qPrivate.Entry = kernel.TaskEntries++;
@@ -388,8 +387,9 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Pr
     qBool_t RetValue = qFalse;
 
     if ( ( NULL != m ) ) {
-        if ( qTrue == qOS_Add_Task( Task, qOS_DummyTask_Callback, Priority, Time, qPeriodic, InitialTaskState, arg ) ) {
-            Task->qPrivate.StateMachine = m;
+        if ( qTrue == qOS_Add_Task( Task, qOS_FSM_TaskCallback, Priority, Time, qPeriodic, InitialTaskState, arg ) ) {
+            Task->qPrivate.aObj = m;
+            m->qPrivate.Owner = Task;
             RetValue = qTrue;
             #if ( Q_QUEUES == 1 )
                 if ( NULL != m->qPrivate.queue ) {
@@ -401,17 +401,30 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t Pr
 
     return RetValue;
 }
+/*============================================================================*/
+static void qOS_FSM_TaskCallback( qEvent_t e )/*wrapper for the task callback */
+{
+    qTask_t *xTask = qTask_Self();
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    qSM_t *sm = (qSM_t *)xTask->qPrivate.aObj;
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    /*cstat -MISRAC2012-Rule-11.8*/
+    sm->qPrivate.handler.Data = (void*)e; 
+    /*cstat +MISRAC2012-Rule-11.8*/
+    (void)qStateMachine_Run( sm, QSM_SIGNAL_NONE );
+}
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority )
+qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority, void *arg )
 {    
     qBool_t RetValue = qFalse;
 
     if ( NULL != cli ) {
-        cli->qPrivate.xPublic.UserData = Task;
+        Task->qPrivate.aObj = cli; 
+        cli->qPrivate.Owner = Task;
         cli->qPrivate.xNotifyFcn = &qOS_ATCLI_NotifyFcn;
-        RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, cli );
+        RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
     }
 
     return RetValue;
@@ -419,18 +432,23 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Prio
 /*============================================================================*/
 static void qOS_ATCLI_TaskCallback( qEvent_t  e )/*wrapper for the task callback */
 {
+    qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    (void)qATCLI_Run( (qATCLI_t*)e->TaskData ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+    qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    /*cstat -MISRAC2012-Rule-11.8*/
+    cli->qPrivate.xPublic.Data = (void*)e;
+    /*cstat +MISRAC2012-Rule-11.8*/
+    (void)qATCLI_Run( cli ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 }
 /*============================================================================*/
 static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli )
 {
     qTask_t *Task;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    Task = (qTask_t *)cli->qPrivate.xPublic.UserData; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+    Task = (qTask_t *)cli->qPrivate.Owner; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-    (void)qTask_Notification_Send( Task, NULL ); /*simple notifications preferred because queued notification can be disabled en <qconfig.h> */
+    (void)qTask_Notification_Send( Task, NULL ); /*simple notifications preferred because queued notification can be disabled on <qconfig.h> */
 }
 #endif /* #if ( Q_ATCLI == 1 ) */
 /*============================================================================*/
@@ -715,22 +733,11 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/   
             Event = qOS_Dispatch_xTask_FillEventInfo( Task ); /*#!OK : false-positive can be reported here*/
             TaskActivities = Task->qPrivate.Callback; /*#!OK: false-positive can be reported here*/
-            #if ( Q_FSM == 1 )
-                if ( ( NULL != Task->qPrivate.StateMachine ) && ( qOS_DummyTask_Callback == Task->qPrivate.Callback ) ) {
-                    Task->qPrivate.StateMachine->qPrivate.handler.Data = &kernel.EventInfo;
-                    (void)qStateMachine_Run( Task->qPrivate.StateMachine, QSM_SIGNAL_NONE );  /*If the task has a FSM attached, just run it*/  
-                }
-                else if ( NULL != TaskActivities ) {
-                    TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
-                }       
-                else {
-                    /*this case does not need to be handled*/
-                }
-            #else
-                if ( NULL != TaskActivities ) {
-                    TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
-                }     
-            #endif
+            
+            if ( NULL != TaskActivities ) {
+                TaskActivities( &kernel.EventInfo ); /*else, just launch the callback function*/ 
+            }     
+            
             kernel.CurrentRunningTask = NULL;
             (void)qList_Remove( xList, NULL, QLIST_ATFRONT ); /*remove the task from the ready-list*/
             (void)qList_Insert( WaitingList, Task, QLIST_ATBACK );  /*and insert the task back to the waiting-list*/

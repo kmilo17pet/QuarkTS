@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.31
+ * @version 3.32
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS operations.
  **/
@@ -250,9 +250,13 @@
         * @param[in] Task A pointer to the task node.
         * @param[in] cli A pointer to the AT Command Line Inteface instance.
         * @param[in] Priority Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+        * @param[in] arg Represents the task arguments. All arguments must be passed by
+        * reference and cast to (void *). Only one argument is allowed, 
+        * so, for multiple arguments, create a structure that contains 
+        * all of the arguments and pass a pointer to that structure.
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */       
-        qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority );
+        qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Priority, void *arg );
     #endif
 
     /**

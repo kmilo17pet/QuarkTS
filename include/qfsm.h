@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.32
+ * @version 5.33
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -187,7 +187,7 @@
         void *NextState;                                /**< Used to produce a transition to the desired state. */
         const void *machine;                            /**< A pointer to the state machine object. */
         const void *state;                              /**< A pointer to the state that its currently evaluated.*/
-        const void *Data;                               /**< The user storage pointer*/
+        const void *Data;                               /**< The user storage pointer. If the FSM its running as a task, this will point to the qEvent_t structure*/
         const void *StateData;                          /**< The state user storage pointer*/
         const qSM_Signal_t Signal;                      /**< The signal that its currently evaluated*/
         const qSM_Status_t Status;                      /**< The last state return status. Only available in the surrounding callback. */
@@ -343,6 +343,7 @@
             qSM_State_t top;                                /*< The top most state*/
             _qSM_UnprotectedPublicData_t handler;           /*< The FSM handler argument*/    
             qSM_Signal_t SignalNot;                         /*< Signal exclusion variable*/
+            void *Owner;
         }
         qPrivate;   
         /*! @endcond  */      

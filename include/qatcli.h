@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.55
+ * @version 2.56
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -158,11 +158,11 @@
         char *Output;
         /**
         * @brief Points to the user-defined data - Storage Pointer.
-        */             
-        void *UserData;
+        */                
+        void *Data;
         /**
         * @brief The length of @a StrData.
-        */           
+        */                  
         size_t StrLen;
         /**
         * @brief Number of arguments, only available if Type = ::qATCLI_CMDTYPE_PARA
@@ -201,7 +201,8 @@
             void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg);  /*< Used to notify the attached task if available*/           
             size_t SizeOutput;                                              /*< The size of Output. */
             qATCLI_Input_t Input;                                           /*< The input of the CLI. */  
-            _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
+            _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/          
+            void *Owner;
         }
         qPrivate;
         /*! @endcond  */

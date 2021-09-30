@@ -1,7 +1,7 @@
 /*!
  * @file qkshared.h
  * @author J. Camilo Gomez C.
- * @version 1.05
+ * @version 1.06
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel shared interfaces
  **/
@@ -42,7 +42,6 @@
         extern void qOS_PriorityQueue_Init( void );
     #endif
     
-    extern void qOS_DummyTask_Callback( qEvent_t e );
     extern qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task );
     extern qTask_t* qOS_Get_TaskRunning( void );
 

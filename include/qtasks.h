@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.32
+ * @version 3.33
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -254,8 +254,8 @@
             qNode_MinimalFields;
             void *TaskData, *AsyncData;             /**< internalThe task storage pointers. */
             qTaskFcn_t Callback;                    /**< The callback function representing the task activities. */
-            #if ( Q_FSM == 1 )
-                qSM_t *StateMachine;                /**< The pointer to the attached state-machine. */
+            #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
+                void *aObj;                        /**< The pointer to the attached object. */
             #endif
             #if ( Q_QUEUES == 1 )
                 qQueue_t *Queue;                    /**< The pointer to the attached queue. */

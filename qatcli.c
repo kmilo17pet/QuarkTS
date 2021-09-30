@@ -261,7 +261,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd )
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         for ( Command = (qATCLI_Command_t*)cli->qPrivate.First ; NULL != Command ; Command = Command->qPrivate.Next ) { /*loop over the subscribed commands*/ /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/  
-            if ( strstr( cmd, Command->Text ) == cmd ) { /*check if the input match the subscribed command starting from the beginning*/ /*TODO : potentially unsafe, find a better way*/
+            if ( 0 == strncmp( cmd, Command->Text, Command->qPrivate.CmdLen ) ) { /*check if the input match the subscribed command */
             	RetValue = qATCLI_NOTALLOWED;
                 if( qATCLI_PreProcessing( Command, (char*)cmd, &cli->qPrivate.xPublic ) ) { /*if success, proceed with the user pos-processing*/
                     qATCLI_CommandCallback_t CmdCallback = Command->qPrivate.CommandCallback;
@@ -313,7 +313,7 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
                 if ( '?' == params->StrData[ 1 ] ) { 
                     if ( 2u == params->StrLen ) { /*command should be a TEST Command*/
                         if ( 0u != ( Command->qPrivate.CmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_TEST ) ) { /*check if is allowed*/
-                            params->Type = qATCLI_CMDTYPE_TEST; /*set the type to TEXT*/
+                            params->Type = qATCLI_CMDTYPE_TEST; /*set the type to TEST*/
                             params->StrData += 2; /*move string two positions ahead*/
                             params->StrLen -= 2u;  /*decrease the len*/
                             RetValue = qTrue;

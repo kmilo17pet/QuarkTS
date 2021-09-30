@@ -132,8 +132,8 @@ qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn )
 
     if ( ( NULL != Task ) && ( CallbackFcn != Task->qPrivate.Callback )) { 
         Task->qPrivate.Callback = CallbackFcn;
-        #if ( Q_FSM == 1 )
-            Task->qPrivate.StateMachine = NULL;    
+        #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
+            Task->qPrivate.aObj = NULL;    
         #endif          
         RetValue = qTrue;
     }    
