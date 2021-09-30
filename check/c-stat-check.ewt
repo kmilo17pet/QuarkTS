@@ -974,7 +974,7 @@
                                 <check name="MISRAC2012-Rule-15.1" enabled="false" />
                                 <check name="MISRAC2012-Rule-15.2" enabled="true" />
                                 <check name="MISRAC2012-Rule-15.3" enabled="true" />
-                                <check name="MISRAC2012-Rule-15.4" enabled="false" />
+                                <check name="MISRAC2012-Rule-15.4" enabled="true" />
                                 <check name="MISRAC2012-Rule-15.5" enabled="true" />
                                 <check name="MISRAC2012-Rule-15.6_a" enabled="true" />
                                 <check name="MISRAC2012-Rule-15.6_b" enabled="true" />
@@ -1024,7 +1024,7 @@
                                 <check name="MISRAC2012-Rule-19.2" enabled="true" />
                             </group>
                             <group name="MISRAC2012-Rule-20" enabled="true">
-                                <check name="MISRAC2012-Rule-20.1" enabled="false" />
+                                <check name="MISRAC2012-Rule-20.1" enabled="true" />
                                 <check name="MISRAC2012-Rule-20.2" enabled="true" />
                                 <check name="MISRAC2012-Rule-20.4_c89" enabled="true" />
                                 <check name="MISRAC2012-Rule-20.4_c99" enabled="true" />

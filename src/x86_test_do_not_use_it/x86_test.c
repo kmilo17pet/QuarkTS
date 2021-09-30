@@ -481,12 +481,34 @@ void test_OS_API( void ){
     qTrace_Set_OutputFcn(putcharfcn); 
     qTrace_Variable( -3.1416, Float);
     qTrace_Variable( "dafdaa", Message );
+    printf( "\r\n[SYSTEM_SPECS: %s - %ld bits]\r\n", qIOUtil_CheckEndianness()? "LittleEndian" : "BigEndian", 8*sizeof(void*) );
     qTrace_Variable( sizeof(qTask_t) , UnsignedDecimal );
     #if ( Q_FSM == 1 )
     qTrace_Variable( sizeof(qSM_t) , UnsignedDecimal );
+    qTrace_Variable( sizeof(qSM_State_t) , UnsignedDecimal );
+    qTrace_Variable( sizeof(qSM_TimeoutStateDefinition_t) , UnsignedDecimal );
+    qTrace_Variable( sizeof(qSM_TimeoutSpec_t) , UnsignedDecimal );
+    qTrace_Variable( sizeof(qSM_Transition_t) , UnsignedDecimal );
+    #endif
+    #if ( Q_ATCLI == 1 )
+    qTrace_Variable( sizeof(qATCLI_t) , UnsignedDecimal );
+    qTrace_Variable( sizeof(qATCLI_Command_t) , UnsignedDecimal );
     #endif
     qTrace_Variable( sizeof(qSTimer_t) , UnsignedDecimal );
     qTrace_Variable( sizeof(qList_t) , UnsignedDecimal );
+    #if ( Q_QUEUES == 1)
+    qTrace_Variable( sizeof(qQueue_t) , UnsignedDecimal );
+    #endif
+    #if ( Q_MEMORY_MANAGER == 1 )
+    qTrace_Variable( sizeof(qMemMang_Pool_t) , UnsignedDecimal );
+    #endif
+    #if ( Q_RESPONSE_HANDLER == 1 )
+        qTrace_Variable( sizeof(qResponse_t) , UnsignedDecimal );
+    #endif
+    #if ( Q_EDGE_CHECK_IOGROUPS == 1 )
+        qTrace_Variable( sizeof(qEdgeCheck_IONode_t) , UnsignedDecimal );
+        qTrace_Variable( sizeof(qEdgeCheck_t) , UnsignedDecimal );
+    #endif
     qTrace_Variable( 1.0f/0.0f, Float );
     qTrace_Variable( -1.0f/0.0f, Float );
     qTrace_Variable( -0.0f/0.0f, Float );

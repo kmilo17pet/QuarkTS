@@ -19,6 +19,7 @@ OUT 	= 	$(BIN_DIR)/$(notdir $(CURDIR))
 $(OUT): $(OBJ)
 	@mkdir -p $(dir $@)
 	$(LD) $^ $(LFLAGS) -o $@
+	size $(OUT)
 
 $(OBJ_DIR)/%$(OBJ_EXT): %.c
 	@mkdir -p $(dir $@)
