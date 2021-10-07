@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.57
+ * @version 2.58
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -56,10 +56,6 @@
         volatile qBool_t Ready;             /*< A flag that indicates when the input is ready to parse. */  
     }
     qATCLI_Input_t;
-
-
-    typedef void (*qPutchFcn_t)(const char arg);
-    typedef void (*qPutsFcn_t)(const char* arg);
 
     #define QATCLI_CMDTYPE_UNDEF    ( 0x0000 )
     #define QATCLI_CMDTYPE_PARA     ( 0x0100 )
@@ -142,16 +138,16 @@
         /**
         * @brief  Helper method for printing character to the CLI output. 
         * It displays only one character at a time.
-        * @param[in] arg The ASCII character. 
+        * @param[in] c The ASCII character. 
         * @return  none.
         */         
-        qPutchFcn_t putch;
+        void (*putch)( const char c );
         /**
-        * @brief Writes a string to CLI output including the EOF string appended at the end.
-        * @param[in] arg This is the C string to be written.
+        * @brief Writes a string to CLI output without the EOF string appended at the end.
+        * @param[in] s This is the C string to be written.
         * @return  none.
         */         
-        qPutsFcn_t puts;
+        void (*puts)( const char *s );
         /**
         * @brief The CLI output buffer. Can be writtern by the user. 
         */          

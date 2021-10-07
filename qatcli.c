@@ -27,6 +27,7 @@ static qPutChar_t cli_OutCharFcn = NULL;
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
+static void qATCLI_PutString( const qPutChar_t OutputFcn, const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
 static char* qATCLI_Input_Fix( char *s, size_t maxlen );
 
@@ -60,9 +61,14 @@ static void qATCLI_Putc_Wrapper( const char c )
 /*============================================================================*/
 static void qATCLI_Puts_Wrapper( const char *s )
 {
+    qATCLI_PutString( cli_OutCharFcn, s);
+}
+/*============================================================================*/
+static void qATCLI_PutString( const qPutChar_t OutputFcn, const char *s )
+{
     qIndex_t i = 0u;
     while ( (char)'\0' != s[ i ] ) {
-        cli_OutCharFcn( NULL, s[ i++ ] );
+        OutputFcn( NULL, s[ i++ ] );
     }
 }
 /*============================================================================*/
@@ -73,11 +79,11 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t OutputFcn, char *In
     if ( ( NULL != cli ) && ( NULL != OutputFcn) ) {
         cli->qPrivate.First  = NULL;
         cli->qPrivate.OutputFcn = OutputFcn;
-        cli->qPrivate.Identifier = Identifier;
-        cli->qPrivate.OK_Response = OK_Response;
-        cli->qPrivate.ERROR_Response = ERROR_Response;
-        cli->qPrivate.NOTFOUND_Response = NOTFOUND_Response;
-        cli->qPrivate.term_EOL = term_EOL;
+        cli->qPrivate.Identifier = ( NULL != Identifier )? Identifier : QATCLI_DEFAULT_DEVID_STRING;
+        cli->qPrivate.OK_Response = ( NULL != OK_Response )? OK_Response : QATCLI_DEFAULT_OK_RSP_STRING;
+        cli->qPrivate.ERROR_Response = ( NULL != ERROR_Response )? ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING;
+        cli->qPrivate.NOTFOUND_Response = ( NULL != NOTFOUND_Response )? NOTFOUND_Response : QATCLI_DEFAULT_NOTFOUND_RSP_STRING;
+        cli->qPrivate.term_EOL = ( NULL != term_EOL )? term_EOL : QATCLI_DEFAULT_EOL_STRING;
         cli->qPrivate.SizeOutput = SizeOutput;
         cli->qPrivate.Input.Buffer = (char*)Input;
         cli->qPrivate.Input.Size = SizeInput;
@@ -309,13 +315,11 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const Command, char *Inp
         else if ( params->StrLen >= 2u ) { /*can be at+xx=? or at+xx=...*/
             if ( '=' == params->StrData[ 0 ] ) { /*could be a TEST or PARA command*/
                 if ( '?' == params->StrData[ 1 ] ) { 
-                    if ( 2u == params->StrLen ) { /*command should be a TEST Command*/
-                        if ( 0u != ( Command->qPrivate.CmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_TEST ) ) { /*check if is allowed*/
-                            params->Type = qATCLI_CMDTYPE_TEST; /*set the type to TEST*/
-                            params->StrData += 2; /*move string two positions ahead*/
-                            params->StrLen -= 2u;  /*decrease the len*/
-                            RetValue = qTrue;
-                        }
+                    if ( ( 2u == params->StrLen ) && ( 0u != ( Command->qPrivate.CmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_TEST ) ) ) { /*command should be a TEST Command*/
+                        params->Type = qATCLI_CMDTYPE_TEST; /*set the type to TEST*/
+                        params->StrData += 2; /*move string two positions ahead*/
+                        params->StrLen -= 2u;  /*decrease the len*/
+                        RetValue = qTrue;
                     }
                 }
                 else { /*definitely is a PARA command*/
@@ -377,19 +381,19 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
             (void)qATCLI_Input_Fix( InputBuffer, Input->Size ); /*remove non-graph chars*/
             /*Validation : set the value for the response lookup table*/
             if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ) {
-            	OutputRetval = qATCLI_OK;			/*check if the input its the simple AT command*/
+            	OutputRetval = qATCLI_OK;   /*check if the input its the simple AT command*/
             }
             else if	( qATCLI_NOTFOUND != ( CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ) {
                 OutputRetval = CLIRetVal;	/*check if the input is one of the subscribed commands*/
             }
             else if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_ID_COMMAND, Input->Size ) ) {
-                OutputRetval = qATCLI_DEVID;		/*check if the input its an ID request using the ATID command*/
+                OutputRetval = qATCLI_DEVID;    /*check if the input its an ID request using the ATID command*/
             }
             else if	( qIOUtil_StrLen( (const char*)InputBuffer, Input->Size ) >= QATCLI_MIN_INPUT_LENGTH ) {
-                OutputRetval = qATCLI_NOTFOUND;	/*check if it is pertinent to show the error*/
+                OutputRetval = qATCLI_NOTFOUND; /*check if it is pertinent to show the error*/
             }
             else {
-                OutputRetval = qATCLI_NORESPONSE;  /*nothing to do*/
+                OutputRetval = qATCLI_NORESPONSE;   /*nothing to do*/
             }
             /*cstat +CERT-STR32-C*/
             if ( NULL != cli->qPrivate.xPublic.Output ) { /*show the user output if available*/
@@ -409,43 +413,42 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
 static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval )
 {
     if ( qATCLI_NORESPONSE != retval ) {
-        qPutchFcn_t PutChar = cli->qPrivate.xPublic.putch;
-        qPutsFcn_t PutString = cli->qPrivate.xPublic.puts;
+        qPutChar_t PutChar = cli->qPrivate.OutputFcn;
 
         cli_OutCharFcn = cli->qPrivate.OutputFcn;
         switch ( retval ) { /*handle the command-callback response*/
             case qATCLI_ERROR:
-                PutString( ( NULL != cli->qPrivate.ERROR_Response )? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING);
+                qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
                 break;
             case qATCLI_OK:
-                PutString( ( NULL != cli->qPrivate.OK_Response )? cli->qPrivate.OK_Response: QATCLI_DEFAULT_OK_RSP_STRING );
+                qATCLI_PutString( PutChar, cli->qPrivate.OK_Response );
                 break;
             case qATCLI_NOTALLOWED:   
-                PutString( ( NULL != cli->qPrivate.ERROR_Response )? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING );
-                PutString(QATCLI_DEAFULT_NOTALLOWED_RSP_STRING);
+                qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
+                qATCLI_PutString( PutChar, QATCLI_DEAFULT_NOTALLOWED_RSP_STRING );
                 break; 
             case qATCLI_DEVID:
-                PutString( ( NULL != cli->qPrivate.Identifier )? cli->qPrivate.Identifier: QATCLI_DEFAULT_DEVID_STRING );
+                qATCLI_PutString( PutChar, cli->qPrivate.Identifier );
                 break;
             case qATCLI_NOTFOUND:
-                PutString( ( NULL != cli->qPrivate.NOTFOUND_Response )? cli->qPrivate.NOTFOUND_Response: QATCLI_DEFAULT_NOTFOUND_RSP_STRING );
+                qATCLI_PutString( PutChar, cli->qPrivate.NOTFOUND_Response );
                 break;        
             case qATCLI_OUTPUT:
-                PutString( cli->qPrivate.xPublic.Output );
+                qATCLI_PutString( PutChar, cli->qPrivate.xPublic.Output );
                 break;
             default: /*AT_ERRORCODE(#) */
                 if ( (qBase_t)retval < 0 ) {
                     qINT32_t ErrorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
 
                     (void)qIOUtil_ItoA( ErrorCode, cli->qPrivate.xPublic.Output, 10u );
-                    PutString( ( NULL != cli->qPrivate.ERROR_Response)? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING );
-                    PutChar( ':' );
-                    PutString( cli->qPrivate.xPublic.Output );
+                    qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
+                    PutChar( NULL, ':' );
+                    qATCLI_PutString( PutChar, cli->qPrivate.xPublic.Output );
                     cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
                 }                            
                 break;
         }
-        PutString( ( NULL != cli->qPrivate.term_EOL )? cli->qPrivate.term_EOL : QATCLI_DEFAULT_EOL_STRING );
+        qATCLI_PutString( PutChar, cli->qPrivate.term_EOL );
     }
 }
 /*============================================================================*/
@@ -479,7 +482,7 @@ static char* GetArgPtr( qIndex_t n )
                 --n;
                 for ( i = 0 ; '\0' != param->StrData[i] ; ++i ) {
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
-        	            if ( ++argc >= (qIndex_t)n ) {
+                        if ( ++argc >= (qIndex_t)n ) {
                             RetPtr = param->StrData + i + 1;        
                             break;
                         }
