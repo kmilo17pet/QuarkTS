@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('qtasks_8h_source.html',''); initResiza
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #include &quot;qstimers.h&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">    #include &quot;qlists.h&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    #if (Q_QUEUES == 1)</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    #if ( Q_QUEUES == 1 )</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">        #include &quot;qqueues.h&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('qtasks_8h_source.html',''); initResiza
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
 <div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="structq_task__t.html">  251</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qTask_s { <span class="comment">/*Task node definition*/</span></div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keyword">struct </span>_qTask_Private_s {    <span class="comment">/*Task control block - TCB*/</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;                    </div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordtype">void</span> *TaskData, *AsyncData;             </div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <a class="code" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> Callback;                    </div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">            #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )</span></div>

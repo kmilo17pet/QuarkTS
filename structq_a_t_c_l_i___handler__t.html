@@ -137,12 +137,12 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <tr class="memitem:ad080c0d353e5c2519c06d3f27ad337f5"><td class="memItemLeft" align="right" valign="top">char *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5">GetArgString</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *out)</td></tr>
 <tr class="memdesc:ad080c0d353e5c2519c06d3f27ad337f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> argument parsed as string from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5">More...</a><br /></td></tr>
 <tr class="separator:ad080c0d353e5c2519c06d3f27ad337f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3027a6aca104af1ab4a43977394cb62d"><td class="memItemLeft" align="right" valign="top">qPutchFcn_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a3027a6aca104af1ab4a43977394cb62d">putch</a></td></tr>
-<tr class="memdesc:a3027a6aca104af1ab4a43977394cb62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for printing character to the CLI output. It displays only one character at a time.  <a href="structq_a_t_c_l_i___handler__t.html#a3027a6aca104af1ab4a43977394cb62d">More...</a><br /></td></tr>
-<tr class="separator:a3027a6aca104af1ab4a43977394cb62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae7d9e4473d493cfc5a48e53b3435feb"><td class="memItemLeft" align="right" valign="top">qPutsFcn_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#aae7d9e4473d493cfc5a48e53b3435feb">puts</a></td></tr>
-<tr class="memdesc:aae7d9e4473d493cfc5a48e53b3435feb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string to CLI output including the EOF string appended at the end.  <a href="structq_a_t_c_l_i___handler__t.html#aae7d9e4473d493cfc5a48e53b3435feb">More...</a><br /></td></tr>
-<tr class="separator:aae7d9e4473d493cfc5a48e53b3435feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a6d6add1077334c02a5874c838819b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">putch</a> )(const char c)</td></tr>
+<tr class="memdesc:ad6a6d6add1077334c02a5874c838819b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for printing character to the CLI output. It displays only one character at a time.  <a href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">More...</a><br /></td></tr>
+<tr class="separator:ad6a6d6add1077334c02a5874c838819b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3fe8ee21670552de2e333b26ea9f9b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">puts</a> )(const char *s)</td></tr>
+<tr class="memdesc:acf3fe8ee21670552de2e333b26ea9f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string to CLI output without the EOF string appended at the end.  <a href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">More...</a><br /></td></tr>
+<tr class="separator:acf3fe8ee21670552de2e333b26ea9f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36853d82cd782a15d6909ec210081791"><td class="memItemLeft" align="right" valign="top"><a id="a36853d82cd782a15d6909ec210081791"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a36853d82cd782a15d6909ec210081791">Output</a></td></tr>
 <tr class="memdesc:a36853d82cd782a15d6909ec210081791"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CLI output buffer. Can be writtern by the user. <br /></td></tr>
@@ -289,14 +289,14 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 
 </div>
 </div>
-<a id="a3027a6aca104af1ab4a43977394cb62d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3027a6aca104af1ab4a43977394cb62d">&#9670;&nbsp;</a></span>putch</h2>
+<a id="ad6a6d6add1077334c02a5874c838819b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6a6d6add1077334c02a5874c838819b">&#9670;&nbsp;</a></span>putch</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qPutchFcn_t putch</td>
+          <td class="memname">void(* putch) (const char c)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -304,7 +304,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 <p>Helper method for printing character to the CLI output. It displays only one character at a time. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>The ASCII character. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The ASCII character. </td></tr>
   </table>
   </dd>
 </dl>
@@ -312,22 +312,22 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 
 </div>
 </div>
-<a id="aae7d9e4473d493cfc5a48e53b3435feb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae7d9e4473d493cfc5a48e53b3435feb">&#9670;&nbsp;</a></span>puts</h2>
+<a id="acf3fe8ee21670552de2e333b26ea9f9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf3fe8ee21670552de2e333b26ea9f9b">&#9670;&nbsp;</a></span>puts</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">qPutsFcn_t puts</td>
+          <td class="memname">void(* puts) (const char *s)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Writes a string to CLI output including the EOF string appended at the end. </p>
+<p>Writes a string to CLI output without the EOF string appended at the end. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>This is the C string to be written. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>This is the C string to be written. </td></tr>
   </table>
   </dd>
 </dl>

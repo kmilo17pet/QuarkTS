@@ -9,8 +9,8 @@ var structq_a_t_c_l_i___handler__t =
     [ "GetArgString", "structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5", null ],
     [ "NumArgs", "structq_a_t_c_l_i___handler__t.html#a4e0dcf7af0c2eddf1d9e3e88adda2ff2", null ],
     [ "Output", "structq_a_t_c_l_i___handler__t.html#a36853d82cd782a15d6909ec210081791", null ],
-    [ "putch", "structq_a_t_c_l_i___handler__t.html#a3027a6aca104af1ab4a43977394cb62d", null ],
-    [ "puts", "structq_a_t_c_l_i___handler__t.html#aae7d9e4473d493cfc5a48e53b3435feb", null ],
+    [ "putch", "structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b", null ],
+    [ "puts", "structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b", null ],
     [ "StrData", "structq_a_t_c_l_i___handler__t.html#ad5fcdcc3a862a1907c088abf07aa30fe", null ],
     [ "StrLen", "structq_a_t_c_l_i___handler__t.html#aa0d42278e492e50a660824c4b1ddaa7f", null ],
     [ "Type", "structq_a_t_c_l_i___handler__t.html#ace2594f0621470e85de85c9c5ee9c06d", null ]
