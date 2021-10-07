@@ -378,19 +378,19 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
             InputBuffer[ Input->MaxIndex ] = (char)'\0'; /*to perform string-safe operations */
             (void)qATCLI_Input_Fix( InputBuffer, Input->Size ); /*remove non-graph chars*/
 			/*Validation : set the value for the response lookup table*/
-			if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ) {
+            if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ) {
             	OutputRetval = qATCLI_OK;			/*check if the input its the simple AT command*/
             }
-			else if	( qATCLI_NOTFOUND != ( CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ) {
+            else if	( qATCLI_NOTFOUND != ( CLIRetVal = qATCLI_Exec( cli, Input->Buffer ) ) ) {
                 OutputRetval = CLIRetVal;	/*check if the input is one of the subscribed commands*/
             }
-			else if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_ID_COMMAND, Input->Size ) ) {
+            else if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_ID_COMMAND, Input->Size ) ) {
                 OutputRetval = qATCLI_DEVID;		/*check if the input its an ID request using the ATID command*/
             }
-			else if	( qIOUtil_StrLen( (const char*)InputBuffer, Input->Size ) >= QATCLI_MIN_INPUT_LENGTH ) {
+            else if	( qIOUtil_StrLen( (const char*)InputBuffer, Input->Size ) >= QATCLI_MIN_INPUT_LENGTH ) {
                 OutputRetval = qATCLI_NOTFOUND;	/*check if it is pertinent to show the error*/
             }
-			else {
+            else {
                 OutputRetval = qATCLI_NORESPONSE;  /*nothing to do*/
             }
             /*cstat +CERT-STR32-C*/

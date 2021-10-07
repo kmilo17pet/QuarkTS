@@ -341,6 +341,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
     qBool_t RetValue = qFalse;
 
     if ( ( NULL != Task ) ) {
+        memset( Task, 0, sizeof( qTask_t ) );
         Task->qPrivate.Callback = CallbackFcn;
         (void)qSTimer_Set( &Task->qPrivate.timer, Time );
         Task->qPrivate.TaskData = arg;
@@ -350,6 +351,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
         Task->qPrivate.Iterations = ( qPeriodic == nExecutions )? qPeriodic : -nExecutions;    
         Task->qPrivate.Notification = 0uL;
         Task->qPrivate.Trigger = qTriggerNULL;
+        Task->qPrivate.Flags = 0uL;
         qOS_Set_TaskFlags( Task,
                            QTASK_BIT_INIT | QTASK_BIT_QUEUE_RECEIVER | 
                            QTASK_BIT_QUEUE_FULL | QTASK_BIT_QUEUE_COUNT | 
@@ -421,16 +423,17 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Prio
     qBool_t RetValue = qFalse;
 
     if ( NULL != cli ) {
-        Task->qPrivate.aObj = cli; 
-        cli->qPrivate.Owner = Task;
-        cli->qPrivate.xNotifyFcn = &qOS_ATCLI_NotifyFcn;
-        RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );
+        if( qTrue == qOS_Add_EventTask( Task, qOS_ATCLI_TaskCallback, Priority, arg ) ){
+            Task->qPrivate.aObj = cli; 
+            cli->qPrivate.Owner = Task;
+            cli->qPrivate.xNotifyFcn = &qOS_ATCLI_NotifyFcn;
+        }
+        //RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );   
     }
-
     return RetValue;
 }
 /*============================================================================*/
-static void qOS_ATCLI_TaskCallback( qEvent_t  e )/*wrapper for the task callback */
+static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 {
     qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
