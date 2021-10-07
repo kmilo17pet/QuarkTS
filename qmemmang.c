@@ -155,7 +155,7 @@ static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_B
     }
     /*cstat +SEC-NULL-cmp-bef +PTR-null-cmp-bef +CERT-EXP34-C_g*/
     if ( Iterator != BlockToInsert ) {
-	    Iterator->Next = BlockToInsert;
+        Iterator->Next = BlockToInsert;
     }
 }
 /*============================================================================*/

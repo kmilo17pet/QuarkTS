@@ -423,12 +423,11 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t Prio
     qBool_t RetValue = qFalse;
 
     if ( NULL != cli ) {
-        if( qTrue == qOS_Add_EventTask( Task, qOS_ATCLI_TaskCallback, Priority, arg ) ){
+        if ( qTrue == qOS_Add_EventTask( Task, qOS_ATCLI_TaskCallback, Priority, arg ) ) {
             Task->qPrivate.aObj = cli; 
             cli->qPrivate.Owner = Task;
             cli->qPrivate.xNotifyFcn = &qOS_ATCLI_NotifyFcn;
-        }
-        //RetValue =  qOS_Add_Task( Task, qOS_ATCLI_TaskCallback, Priority, qTimeImmediate, qSingleShot, qDisabled, arg );   
+        } 
     }
     return RetValue;
 }

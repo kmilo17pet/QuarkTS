@@ -269,7 +269,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd )
                     }
                     else {
                         cli_CurrentCmdHelper = &cli->qPrivate.xPublic;
-		                cli_OutCharFcn = cli->qPrivate.OutputFcn;
+                        cli_OutCharFcn = cli->qPrivate.OutputFcn;
                         RetValue = CmdCallback( &cli->qPrivate.xPublic ); /*invoke the callback*/
                     }
                 }
@@ -375,7 +375,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
             
             InputBuffer[ Input->MaxIndex ] = (char)'\0'; /*to perform string-safe operations */
             (void)qATCLI_Input_Fix( InputBuffer, Input->Size ); /*remove non-graph chars*/
-			/*Validation : set the value for the response lookup table*/
+            /*Validation : set the value for the response lookup table*/
             if ( 0 == strncmp( (const char*)InputBuffer, QATCLI_DEFAULT_AT_COMMAND, Input->Size ) ) {
             	OutputRetval = qATCLI_OK;			/*check if the input its the simple AT command*/
             }
@@ -522,7 +522,7 @@ static qUINT32_t GetArgHex( qIndex_t n )
 
     if ( NULL != cli_CurrentCmdHelper ) {
         /*cstat -CERT-STR34-C*/
-	    RetValue = (qUINT32_t)qIOUtil_XtoU32( cli_CurrentCmdHelper->GetArgPtr( n ) );
+        RetValue = (qUINT32_t)qIOUtil_XtoU32( cli_CurrentCmdHelper->GetArgPtr( n ) );
         /*cstat +CERT-STR34-C*/ 
     }
 

@@ -12,7 +12,7 @@
     #include "qstimers.h"
     #include "qlists.h"
     
-    #if (Q_QUEUES == 1)
+    #if ( Q_QUEUES == 1 )
         #include "qqueues.h"
     #endif
 
@@ -251,8 +251,8 @@
     typedef struct _qTask_s { /*Task node definition*/
         /*! @cond  */
         struct _qTask_Private_s {    /*Task control block - TCB*/
-            qNode_MinimalFields;
-            void *TaskData, *AsyncData;             /**< internalThe task storage pointers. */
+            qNode_MinimalFields;                    /**< Linked-list pointers . */    
+            void *TaskData, *AsyncData;             /**< The task storage pointers. */
             qTaskFcn_t Callback;                    /**< The callback function representing the task activities. */
             #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
                 void *aObj;                        /**< The pointer to the attached object. */
