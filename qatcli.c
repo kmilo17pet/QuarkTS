@@ -8,20 +8,20 @@
 
 #if ( Q_ATCLI == 1)
 
-#define     QATCLI_DEFAULT_AT_COMMAND               "at"
-#define     QATCLI_DEFAULT_ID_COMMAND               "atid"
-#define     QATCLI_DEFAULT_ATSET_DELIM              ','
-#define     QATCLI_DEFAULT_ERROR_RSP_STRING         "ERROR"
-#define     QATCLI_DEFAULT_OK_RSP_STRING            "OK"
-#define     QATCLI_DEFAULT_NOTFOUND_RSP_STRING      "UNKNOWN"
-#define     QATCLI_DEAFULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
-#define     QATCLI_DEFAULT_DEVID_STRING             "QuarkTS CLI"
-#define     QATCLI_DEFAULT_EOL_STRING               "\r\n"             
-#define     QATCLI_MIN_INPUT_LENGTH                 ( 3u )
-#define     QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
+#define QATCLI_DEFAULT_AT_COMMAND               "at"
+#define QATCLI_DEFAULT_ID_COMMAND               "atid"
+#define QATCLI_DEFAULT_ATSET_DELIM              ','
+#define QATCLI_DEFAULT_ERROR_RSP_STRING         "ERROR"
+#define QATCLI_DEFAULT_OK_RSP_STRING            "OK"
+#define QATCLI_DEFAULT_NOTFOUND_RSP_STRING      "UNKNOWN"
+#define QATCLI_DEAFULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
+#define QATCLI_DEFAULT_DEVID_STRING             "QuarkTS CLI"
+#define QATCLI_DEFAULT_EOL_STRING               "\r\n"             
+#define QATCLI_MIN_INPUT_LENGTH                 ( 3u )
+#define QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
 
-#define QATCLI_CMDMASK_ARG_MAXNUM(opt)   ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
-#define QATCLI_CMDMASK_ARG_MINNUM(opt)   ( (opt) & (qATCLI_Options_t)0x000Fu )
+#define QATCLI_CMDMASK_ARG_MAXNUM(opt)          ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
+#define QATCLI_CMDMASK_ARG_MINNUM(opt)          ( (opt) & (qATCLI_Options_t)0x000Fu )
 
 static qPutChar_t cli_OutCharFcn = NULL;
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
@@ -61,7 +61,6 @@ static void qATCLI_Putc_Wrapper( const char c )
 static void qATCLI_Puts_Wrapper( const char *s )
 {
     qIndex_t i = 0u;
-
     while ( (char)'\0' != s[ i ] ) {
         cli_OutCharFcn( NULL, s[ i++ ] );
     }
@@ -255,7 +254,6 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd )
 qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd )
 {
     qATCLI_Response_t RetValue = qATCLI_NOTFOUND;
-    
     if ( ( NULL != cli ) && ( NULL != cmd ) ) {
         qATCLI_Command_t *Command;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
@@ -374,7 +372,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
         if ( Input->Ready ) { /*a new input has arrived*/
             qATCLI_Response_t OutputRetval, CLIRetVal;
             char *InputBuffer = Input->Buffer; /*to conform MISRAC2012-Rule-13.2_b*/
-
+            
             InputBuffer[ Input->MaxIndex ] = (char)'\0'; /*to perform string-safe operations */
             (void)qATCLI_Input_Fix( InputBuffer, Input->Size ); /*remove non-graph chars*/
 			/*Validation : set the value for the response lookup table*/
@@ -395,7 +393,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
             }
             /*cstat +CERT-STR32-C*/
             if ( NULL != cli->qPrivate.xPublic.Output ) { /*show the user output if available*/
-            	if ( '\0' != cli->qPrivate.xPublic.Output[ 0 ] ) {
+                if ( '\0' != cli->qPrivate.xPublic.Output[ 0 ] ) {
                     qATCLI_HandleCommandResponse( cli, qATCLI_OUTPUT );
                 }
             }
@@ -414,6 +412,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
         qPutchFcn_t PutChar = cli->qPrivate.xPublic.putch;
         qPutsFcn_t PutString = cli->qPrivate.xPublic.puts;
 
+        cli_OutCharFcn = cli->qPrivate.OutputFcn;
         switch ( retval ) { /*handle the command-callback response*/
             case qATCLI_ERROR:
                 PutString( ( NULL != cli->qPrivate.ERROR_Response )? cli->qPrivate.ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING);
@@ -532,7 +531,7 @@ static qUINT32_t GetArgHex( qIndex_t n )
 /*============================================================================*/
 static char* GetArgString( qIndex_t n, char* out )
 {
-	char *RetPtr = NULL;
+    char *RetPtr = NULL;
     
     if ( ( NULL != cli_CurrentCmdHelper ) && ( NULL != out ) && ( n > 0u ) ) {
         qATCLI_Handler_t param = cli_CurrentCmdHelper;
