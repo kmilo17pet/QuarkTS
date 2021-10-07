@@ -415,7 +415,6 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
     if ( qATCLI_NORESPONSE != retval ) {
         qPutChar_t PutChar = cli->qPrivate.OutputFcn;
 
-        cli_OutCharFcn = cli->qPrivate.OutputFcn;
         switch ( retval ) { /*handle the command-callback response*/
             case qATCLI_ERROR:
                 qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
