@@ -341,7 +341,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t CallbackFcn, qPriority_t 
     qBool_t RetValue = qFalse;
 
     if ( ( NULL != Task ) ) {
-        memset( Task, 0, sizeof( qTask_t ) );
+        (void)memset( Task, 0, sizeof( qTask_t ) );
         Task->qPrivate.Callback = CallbackFcn;
         (void)qSTimer_Set( &Task->qPrivate.timer, Time );
         Task->qPrivate.TaskData = arg;
