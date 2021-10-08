@@ -258,9 +258,8 @@ qBool_t qList_Move( qList_t *const destination, qList_t *const source, const qLi
 /*=========================================================*/
 static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h )
 {
-    qList_Node_t *xNode;
-
     if ( qList_WalkThrough == h->stage ) {
+        qList_Node_t *xNode;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/ 
         xNode = (qList_Node_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -340,12 +339,12 @@ qBool_t qList_Sort( qList_t * const list, qList_CompareFcn_t CompareFcn )
         if ( count >= (size_t)2 ) { /*It is only worth running the algorithm if the list has two or more nodes*/
             qList_Node_t *current = NULL, *before, *after;
             _qList_CompareHandle_t xHandle;
-            size_t i, j, n;
+            size_t i, j;
             qBool_t xRetCmp;
 
             for ( i = (size_t)1; i < count; ++i ) {
+                size_t n = count - i - (size_t)1;
                 current = list->head;
-                n = count - i - (size_t)1;
                 for ( j = (size_t)0; j <= n; ++j ) { 
                     xHandle.n1 = current;
                     xHandle.n2 = current->next;

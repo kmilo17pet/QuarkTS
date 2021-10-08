@@ -161,11 +161,11 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBo
     qBool_t RetValue = qFalse;
 
     if ( ( NULL != fcn ) && ( NULL != s ) ) {
-        size_t i = 0u;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         char *xPtr = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( ( qTrue == AIP ) && ( NULL != xPtr ) ) {
+            size_t i = 0u;
             while ( (char)'\0' != *s ) {
                 fcn( &xPtr[ i ] ,  *s++ );
                 ++i;
@@ -409,10 +409,9 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ) /*limited to
             num -= (qFloat32_t)intPart; /*get the floating-point part subtracting the integer part from the original value*/ /*CERT-FLP36-C deviation allowed*/
             i += qIOUtil_xBase_U32toA( intPart, &str[ i ], 10u ); /*convert the integer part in decimal form*/
             if ( precision > 0u ) { /*decimal part*/
-                char c;
-
                 str[ i++ ] = '.'; /*place decimal point*/ /*MISRAC2004-17.4_b deviation allowed*/
                 while ( 0u != precision-- ) { /*convert until precision reached*/
+                    char c;
                     num *= 10.0f;  /*start moving the floating-point part one by one multiplying by 10*/
                     c = (char)num; /*get the bcd byte*/
                     str[ i++ ] = (char) ((qUINT8_t)c + '0' ); /*convert to ASCII and put it inside the buffer*/

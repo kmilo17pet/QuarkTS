@@ -27,7 +27,6 @@ static qPutChar_t cli_OutCharFcn = NULL;
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
-static void qATCLI_PutString( const qPutChar_t OutputFcn, const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
 static char* qATCLI_Input_Fix( char *s, size_t maxlen );
 
@@ -61,15 +60,7 @@ static void qATCLI_Putc_Wrapper( const char c )
 /*============================================================================*/
 static void qATCLI_Puts_Wrapper( const char *s )
 {
-    qATCLI_PutString( cli_OutCharFcn, s);
-}
-/*============================================================================*/
-static void qATCLI_PutString( const qPutChar_t OutputFcn, const char *s )
-{
-    qIndex_t i = 0u;
-    while ( (char)'\0' != s[ i ] ) {
-        OutputFcn( NULL, s[ i++ ] );
-    }
+    (void)qIOUtil_OutputString( cli_OutCharFcn, NULL, s, qFalse ); 
 }
 /*============================================================================*/
 qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t OutputFcn, char *Input, const size_t SizeInput, char *Output, const size_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL )
@@ -417,37 +408,37 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Res
 
         switch ( retval ) { /*handle the command-callback response*/
             case qATCLI_ERROR:
-                qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.ERROR_Response , qFalse ); 
                 break;
             case qATCLI_OK:
-                qATCLI_PutString( PutChar, cli->qPrivate.OK_Response );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.OK_Response , qFalse );
                 break;
             case qATCLI_NOTALLOWED:   
-                qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
-                qATCLI_PutString( PutChar, QATCLI_DEAFULT_NOTALLOWED_RSP_STRING );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.ERROR_Response , qFalse );
+                (void)qIOUtil_OutputString( PutChar, NULL, QATCLI_DEAFULT_NOTALLOWED_RSP_STRING , qFalse );
                 break; 
             case qATCLI_DEVID:
-                qATCLI_PutString( PutChar, cli->qPrivate.Identifier );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.Identifier , qFalse );
                 break;
             case qATCLI_NOTFOUND:
-                qATCLI_PutString( PutChar, cli->qPrivate.NOTFOUND_Response );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.NOTFOUND_Response , qFalse );
                 break;        
             case qATCLI_OUTPUT:
-                qATCLI_PutString( PutChar, cli->qPrivate.xPublic.Output );
+                (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.xPublic.Output , qFalse );
                 break;
             default: /*AT_ERRORCODE(#) */
                 if ( (qBase_t)retval < 0 ) {
                     qINT32_t ErrorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
 
                     (void)qIOUtil_ItoA( ErrorCode, cli->qPrivate.xPublic.Output, 10u );
-                    qATCLI_PutString( PutChar, cli->qPrivate.ERROR_Response );
+                    (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.ERROR_Response , qFalse );
                     PutChar( NULL, ':' );
-                    qATCLI_PutString( PutChar, cli->qPrivate.xPublic.Output );
+                    (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.xPublic.Output , qFalse );
                     cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
                 }                            
                 break;
         }
-        qATCLI_PutString( PutChar, cli->qPrivate.term_EOL );
+        (void)qIOUtil_OutputString( PutChar, NULL, cli->qPrivate.term_EOL , qFalse );
     }
 }
 /*============================================================================*/

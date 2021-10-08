@@ -530,10 +530,9 @@ qBool_t qOS_Run( void )
     do {           
         if ( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ) { /*check for ready tasks in the waiting-list*/
             qIndex_t xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1;
-            qList_t *xList;
             
             do { /*loop every ready-list in descending priority order*/
-                xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
+                qList_t *xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if( xList->size > (size_t)0 ){ /*check for a non-empty target list */
                     (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in the current ready-list*/
                 }
