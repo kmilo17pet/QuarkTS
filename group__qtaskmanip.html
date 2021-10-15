@@ -248,6 +248,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gae48cb3c880e716d9336250027ecd4924"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_task__t.html">qTask_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a> (void)</td></tr>
 <tr class="memdesc:gae48cb3c880e716d9336250027ecd4924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current running-task handle.  <a href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">More...</a><br /></td></tr>
 <tr class="separator:gae48cb3c880e716d9336250027ecd4924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga610d3e350ae08d5d66c14351468ba27c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga610d3e350ae08d5d66c14351468ba27c">qTask_Set_Name</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const char *name)</td></tr>
+<tr class="memdesc:ga610d3e350ae08d5d66c14351468ba27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task name.  <a href="group__qtaskmanip.html#ga610d3e350ae08d5d66c14351468ba27c">More...</a><br /></td></tr>
+<tr class="separator:ga610d3e350ae08d5d66c14351468ba27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad21be21c06cd67abe0cee678f40bd8e7"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gad21be21c06cd67abe0cee678f40bd8e7">qTask_Get_Name</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:gad21be21c06cd67abe0cee678f40bd8e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the task name.  <a href="group__qtaskmanip.html#gad21be21c06cd67abe0cee678f40bd8e7">More...</a><br /></td></tr>
+<tr class="separator:gad21be21c06cd67abe0cee678f40bd8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1aff17c8ce258c4c756638e2dd7b3349"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_task__t.html">qTask_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga1aff17c8ce258c4c756638e2dd7b3349">qTask_Find_ByName</a> (const char *name)</td></tr>
+<tr class="memdesc:ga1aff17c8ce258c4c756638e2dd7b3349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find the first task that matches the name provided.  <a href="group__qtaskmanip.html#ga1aff17c8ce258c4c756638e2dd7b3349">More...</a><br /></td></tr>
+<tr class="separator:ga1aff17c8ce258c4c756638e2dd7b3349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API interface to manage tasks. </p>
@@ -589,6 +598,33 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga1aff17c8ce258c4c756638e2dd7b3349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1aff17c8ce258c4c756638e2dd7b3349">&#9670;&nbsp;</a></span>qTask_Find_ByName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structq_task__t.html">qTask_t</a>* qTask_Find_ByName </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tries to find the first task that matches the name provided. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>The string with the name to find. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the tasknode if found, otherwise returns NULL. </dd></dl>
+
+</div>
+</div>
 <a id="ga0ae8d90f1972bf0573af9aeafd6342d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0ae8d90f1972bf0573af9aeafd6342d4">&#9670;&nbsp;</a></span>qTask_Get_Cycles()</h2>
 
@@ -640,6 +676,33 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>One of the available global states : <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">qWaiting</a>, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">qSuspended</a>, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">qRunning</a>, <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">qReady</a>. Return <a class="el" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a> if the current task its passing through a current kernel transaction </dd></dl>
+
+</div>
+</div>
+<a id="gad21be21c06cd67abe0cee678f40bd8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad21be21c06cd67abe0cee678f40bd8e7">&#9670;&nbsp;</a></span>qTask_Get_Name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* qTask_Get_Name </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
+          <td class="paramname"><em>Task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the task name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the string containing the task name. </dd></dl>
 
 </div>
 </div>
@@ -799,6 +862,45 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">iValue</td><td>Number of task executions (Integer value). For indefinite execution (iValue = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. If you need to perform another set of iterations, you need to set the number of iterations again and resume. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success. Otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga610d3e350ae08d5d66c14351468ba27c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga610d3e350ae08d5d66c14351468ba27c">&#9670;&nbsp;</a></span>qTask_Set_Name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qTask_Set_Name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
+          <td class="paramname"><em>Task</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the task name. </p>
+<dl class="section note"><dt>Note</dt><dd>Name should be unique. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>A string with the task name </td></tr>
   </table>
   </dd>
 </dl>

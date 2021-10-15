@@ -15,5 +15,6 @@ var group__qtaskcreation =
     [ "qOS_Scheduler_Release", "group__qtaskcreation.html#ga7ab61e7b82c7d42ec83368c76bcbd9f2", null ],
     [ "qOS_Set_IdleTask", "group__qtaskcreation.html#gaa5dcfef5ef874146d424997f78fc5def", null ],
     [ "qOS_Set_SchedulerReleaseCallback", "group__qtaskcreation.html#ga8bf2fd6a232425e00427e58d8894a475", null ],
-    [ "qOS_Setup", "group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313", null ]
+    [ "qOS_Setup", "group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313", null ],
+    [ "qOS_YieldToTask", "group__qtaskcreation.html#gad380213ca91b01300d60522ba7fd8151", null ]
 ];

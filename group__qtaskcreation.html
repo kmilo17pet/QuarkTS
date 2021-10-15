@@ -170,6 +170,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gabd4b43371d39c5eb82b87f0900f2895a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a> (void)</td></tr>
 <tr class="memdesc:gabd4b43371d39c5eb82b87f0900f2895a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the scheduling scheme. It must be called once after the task pool has been defined.  <a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">More...</a><br /></td></tr>
 <tr class="separator:gabd4b43371d39c5eb82b87f0900f2895a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad380213ca91b01300d60522ba7fd8151"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#gad380213ca91b01300d60522ba7fd8151">qOS_YieldToTask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
+<tr class="memdesc:gad380213ca91b01300d60522ba7fd8151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yield the control of the current running task to another task.  <a href="group__qtaskcreation.html#gad380213ca91b01300d60522ba7fd8151">More...</a><br /></td></tr>
+<tr class="separator:gad380213ca91b01300d60522ba7fd8151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Kernel API interface to create/remove tasks and perform special OS operations. </p>
@@ -628,6 +631,37 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line">} </div>
 <div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:88</div></div>
 </div><!-- fragment --> 
+</div>
+</div>
+<a id="gad380213ca91b01300d60522ba7fd8151"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad380213ca91b01300d60522ba7fd8151">&#9670;&nbsp;</a></span>qOS_YieldToTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qOS_YieldToTask </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_task__t.html">qTask_t</a> *const&#160;</td>
+          <td class="paramname"><em>Task</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Yield the control of the current running task to another task. </p>
+<dl class="section note"><dt>Note</dt><dd>This API can only be invoked from the context of a task. </dd>
+<dd>
+Target task will inherit the event data. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Yielding from the IDLE task is not allowed. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task to which current control will be yielded. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
 </div>
 </div>
 </div><!-- contents -->
