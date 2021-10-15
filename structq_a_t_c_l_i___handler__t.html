@@ -134,9 +134,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <tr class="memitem:a1288e8e58a584a7a4d4847a414dcce07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">GetArgHex</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n)</td></tr>
 <tr class="memdesc:a1288e8e58a584a7a4d4847a414dcce07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> HEX argument parsed qUINT32_t from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">More...</a><br /></td></tr>
 <tr class="separator:a1288e8e58a584a7a4d4847a414dcce07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad080c0d353e5c2519c06d3f27ad337f5"><td class="memItemLeft" align="right" valign="top">char *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5">GetArgString</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *out)</td></tr>
-<tr class="memdesc:ad080c0d353e5c2519c06d3f27ad337f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> argument parsed as string from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5">More...</a><br /></td></tr>
-<tr class="separator:ad080c0d353e5c2519c06d3f27ad337f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c40d7b727c19aff4b6524fa8978e2e3"><td class="memItemLeft" align="right" valign="top">char *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a8c40d7b727c19aff4b6524fa8978e2e3">GetArgString</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *pOut)</td></tr>
+<tr class="memdesc:a8c40d7b727c19aff4b6524fa8978e2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> argument parsed as string from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#a8c40d7b727c19aff4b6524fa8978e2e3">More...</a><br /></td></tr>
+<tr class="separator:a8c40d7b727c19aff4b6524fa8978e2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6a6d6add1077334c02a5874c838819b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">putch</a> )(const char c)</td></tr>
 <tr class="memdesc:ad6a6d6add1077334c02a5874c838819b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for printing character to the CLI output. It displays only one character at a time.  <a href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">More...</a><br /></td></tr>
 <tr class="separator:ad6a6d6add1077334c02a5874c838819b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,14 +265,14 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 
 </div>
 </div>
-<a id="ad080c0d353e5c2519c06d3f27ad337f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad080c0d353e5c2519c06d3f27ad337f5">&#9670;&nbsp;</a></span>GetArgString</h2>
+<a id="a8c40d7b727c19aff4b6524fa8978e2e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c40d7b727c19aff4b6524fa8978e2e3">&#9670;&nbsp;</a></span>GetArgString</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char*(* GetArgString) (<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *out)</td>
+          <td class="memname">char*(* GetArgString) (<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *pOut)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -281,7 +281,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of the argument </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pOut</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
   </table>
   </dd>
 </dl>

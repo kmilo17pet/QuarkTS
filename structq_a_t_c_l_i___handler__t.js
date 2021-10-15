@@ -6,7 +6,7 @@ var structq_a_t_c_l_i___handler__t =
     [ "GetArgHex", "structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07", null ],
     [ "GetArgInt", "structq_a_t_c_l_i___handler__t.html#a24ac6c293d1f9fcd96c4df2395ae495c", null ],
     [ "GetArgPtr", "structq_a_t_c_l_i___handler__t.html#ad547a085de5f7734a26050f0bf8e591e", null ],
-    [ "GetArgString", "structq_a_t_c_l_i___handler__t.html#ad080c0d353e5c2519c06d3f27ad337f5", null ],
+    [ "GetArgString", "structq_a_t_c_l_i___handler__t.html#a8c40d7b727c19aff4b6524fa8978e2e3", null ],
     [ "NumArgs", "structq_a_t_c_l_i___handler__t.html#a4e0dcf7af0c2eddf1d9e3e88adda2ff2", null ],
     [ "Output", "structq_a_t_c_l_i___handler__t.html#a36853d82cd782a15d6909ec210081791", null ],
     [ "putch", "structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b", null ],

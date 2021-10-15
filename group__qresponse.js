@@ -1,9 +1,9 @@
 var group__qresponse =
 [
     [ "qResponse_t", "structq_response__t.html", null ],
-    [ "qResponse_ISRHandler", "group__qresponse.html#ga608ad8357dd1702dcbf17b1be28f193c", null ],
-    [ "qResponse_Received", "group__qresponse.html#ga33fdcfcacd23f90bdefb55bb48111628", null ],
-    [ "qResponse_ReceivedWithTimeout", "group__qresponse.html#ga494f68e996ea6520253c183ec1a60015", null ],
-    [ "qResponse_Reset", "group__qresponse.html#ga6f11247de7304a0121c5419bc69d20fc", null ],
-    [ "qResponse_Setup", "group__qresponse.html#ga58f881695f4bed7f2d20ce7d7789661e", null ]
+    [ "qResponse_ISRHandler", "group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac", null ],
+    [ "qResponse_Received", "group__qresponse.html#gaa53f36cfadce6a86ffe4bd4f4d9c3b90", null ],
+    [ "qResponse_ReceivedWithTimeout", "group__qresponse.html#ga4ab65869a9124f9ef296e6f1abc984da", null ],
+    [ "qResponse_Reset", "group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d", null ],
+    [ "qResponse_Setup", "group__qresponse.html#ga3ecade459059e689ff15475a6e22e066", null ]
 ];

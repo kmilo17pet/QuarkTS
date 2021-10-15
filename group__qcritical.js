@@ -4,5 +4,5 @@ var group__qcritical =
     [ "qInt_Restorer_t", "group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07", null ],
     [ "qCritical_Enter", "group__qcritical.html#gafebe530014dc778c3d005405bdac21cd", null ],
     [ "qCritical_Exit", "group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca", null ],
-    [ "qCritical_SetInterruptsED", "group__qcritical.html#gaa2ee3d96d9969fc06e14b62c1c9120eb", null ]
+    [ "qCritical_SetInterruptsED", "group__qcritical.html#gab60b5a86642800f3c4d733167d79dace", null ]
 ];

@@ -54,10 +54,10 @@ var group__qtaskmanip =
     [ "qTask_Get_GlobalState", "group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc", null ],
     [ "qTask_Get_State", "group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308", null ],
     [ "qTask_Self", "group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924", null ],
-    [ "qTask_Set_Callback", "group__qtaskmanip.html#ga917d0f4886542e06923e7f3b29ccc729", null ],
+    [ "qTask_Set_Callback", "group__qtaskmanip.html#ga8fa6e27f8abd9af718ad722c3a36012a", null ],
     [ "qTask_Set_Data", "group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774", null ],
-    [ "qTask_Set_Iterations", "group__qtaskmanip.html#gaeffce78374485f9de425083546f0d0e5", null ],
-    [ "qTask_Set_Priority", "group__qtaskmanip.html#ga65a57a81a3e16294907d941bc8fbaf58", null ],
-    [ "qTask_Set_State", "group__qtaskmanip.html#ga4652ea7f26b17b59a8dfd7192f9be766", null ],
-    [ "qTask_Set_Time", "group__qtaskmanip.html#gac577ff1a9a4c7adbf79af1e70d05dff7", null ]
+    [ "qTask_Set_Iterations", "group__qtaskmanip.html#gae104f1b7613ac41e4cdea23a34601dea", null ],
+    [ "qTask_Set_Priority", "group__qtaskmanip.html#ga3e42aa373e2e7eeed774814f8f2a978f", null ],
+    [ "qTask_Set_State", "group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a", null ],
+    [ "qTask_Set_Time", "group__qtaskmanip.html#ga27aa23ec76dae5afb4c1a4d8b8d8e256", null ]
 ];

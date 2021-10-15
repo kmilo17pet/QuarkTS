@@ -581,6 +581,10 @@ iframe#MSearchResults {
     margin: 4px;
 }
 
+iframe {
+    color-scheme: normal;
+}
+
 @media (prefers-color-scheme: dark) {
     html:not(.light-mode) iframe#MSearchResults {
         filter: invert() hue-rotate(180deg);
@@ -617,6 +621,16 @@ html.dark-mode iframe#MSearchResults {
         margin-top: var(--spacing-medium);
         margin-bottom: var(--spacing-medium);
         width: calc(100vw - 30px);
+    }
+
+    label.main-menu-btn ~ #searchBoxPos1 {
+        top: 4px !important;
+    }
+
+    label.main-menu-btn ~ #searchBoxPos1 > #MSearchBox {
+        margin-top: 0;
+        margin-bottom: 0;
+        width: calc(100vw - 55px);
     }
 
     #main-menu > li:last-child {

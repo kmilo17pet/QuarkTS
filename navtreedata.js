@@ -41,7 +41,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__qnot.html"
+"group__qmodules.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
