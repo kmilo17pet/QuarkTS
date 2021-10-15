@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.63
+ * @version 4.64
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/
@@ -50,7 +50,7 @@
     * @param[in] c The character to write out.
     * @return none.
     */
-    typedef void (*qPutChar_t)(void* arg1, const char arg2);
+    typedef void (*qPutChar_t)( void* arg1, const char arg2 );
 
      /**
     * @brief Pointer to function that get-a single character
@@ -66,7 +66,7 @@
     * @param[in] sp The user storage pointer.
     * @return none.
     */   
-    typedef char (*qGetChar_t)(void* arg1);
+    typedef char (*qGetChar_t)( void* arg1 );
 
     /**
     * @brief Returns a pointer to the first occurrence of character in the C string 
@@ -88,12 +88,12 @@
     * to and not including the first null character.
     * The function returns zero if @a str is a null pointer and returns @a maxlen if the 
     * null character was not found in the first @a maxlen bytes of @a str.
-    * @param[in] str Pointer to the null-terminated byte string to be examined
+    * @param[in] s Pointer to the null-terminated byte string to be examined
     * @param[in] maxlen Maximum number of characters to examine
     * @return The length of the null-terminated byte string @a str on success, zero if @a str 
     * is a null pointer, @a maxlen if the null character was not found.
     */  
-    size_t qIOUtil_StrLen( const char* str, size_t maxlen);
+    size_t qIOUtil_StrLen( const char* s, size_t maxlen);
 
     /**
     * @brief Copies up to @a (maxlen - 1) characters from the null-terminated string @a src to 
@@ -107,11 +107,11 @@
 
     /**
     * @brief Invert the endianess for n bytes of the specified memory location.
-    * @param[in,out] Data A pointer to block of data
+    * @param[in,out] pData A pointer to block of data
     * @param[in] n The number of bytes to swap
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qIOUtil_SwapBytes( void *Data, const size_t n );
+    qBool_t qIOUtil_SwapBytes( void *pData, const size_t n );
 
     /**
     * @brief Check the system endianess
@@ -133,33 +133,33 @@
     * @brief API interface to write data in HEX notation through @a fcn 
     * @param[in] fcn The basic output byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
-    * @param[in] Data A pointer to the block of data
+    * @param[in] pData A pointer to the block of data
     * @param[in] n The number of bytes to print out
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *Data, size_t n );
+    qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *pData, size_t n );
 
     /**
     * @brief API interface to write n RAW data through @a fcn
     * @param[in] fcn The basic output byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
-    * @param[in] Data A pointer to the block of data
+    * @param[in] pData A pointer to the block of data
     * @param[in] n The number of bytes that will be transferred to the output
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP );
 
     /**
     * @brief API interface to get n RAW data through @a fcn
     * @param[in] fcn The basic input byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
-    * @param[out] Data A pointer to the block where the read data will be saved
+    * @param[out] pData A pointer to the block where the read data will be saved
     * @param[in] n The number of bytes to get
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *Data, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP );
       
     /**
     * @brief Macro interface to write a string through @a fcn

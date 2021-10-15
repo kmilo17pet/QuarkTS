@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.59
+ * @version 2.60
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -9,6 +9,7 @@
     #define QATCLI_H 
 
     #include "qtypes.h"  
+    #include "qlists.h"
     #include "qioutils.h"  
 
     #ifdef __cplusplus
@@ -131,10 +132,10 @@
         /**
         * @brief  Helper method to get the @a n argument parsed as string from the incoming AT command.
         * @param[in] n The number of the argument
-        * @param[out] out Array in memory where to store the resulting null-terminated string.
+        * @param[out] pOut Array in memory where to store the resulting null-terminated string.
         * @return  Same as @a out on success, otherwise returns NULL.
         */          
-        char* (*GetArgString)( qIndex_t n, char* out );
+        char* (*GetArgString)( qIndex_t n, char* pOut );
         /**
         * @brief  Helper method for printing character to the CLI output. 
         * It displays only one character at a time.
@@ -237,10 +238,8 @@
     * @brief An AT-Command object
     */
     typedef struct _qATCLI_Command_s {
-        void *param;                                            /**< User parameters. */
-        char *Text;                                             /**< The command string. Used to match to the input*/
         /*! @cond  */
-        struct _qATCLI_Command_Private_s {                      
+        struct _qATCLI_Command_Private_s {                               /**< Linked-list pointers. */   
             qATCLI_CommandCallback_t CommandCallback;           /*< The command callback. */
             struct _qATCLI_Command_s *Next;                     /*< Points to the next command in the list. */
             qATCLI_Options_t CmdOpt;                            /*< The command options. */
@@ -248,6 +247,8 @@
         }
         qPrivate;      
         /*! @endcond  */ 
+        void *param;                                            /**< User parameters. */
+        char *Text;                                             /**< The command string. Used to match to the input*/
     }
     qATCLI_Command_t;
 
@@ -255,13 +256,13 @@
     * @brief Setup an instance of the AT Command Command Line Interface.
     * @see qOS_Add_ATCLITask()
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] OutputFcn The basic output-char wrapper function. All the CLI responses will be 
+    * @param[in] outFcn The basic output-char wrapper function. All the CLI responses will be 
     * printed-out through this function.
-    * @param[in] Input A memory location to store the cli input (Mandatory)
-    * @param[in] SizeInput The size of the memory allocated in @a Input 
-    * @param[in] Output A memory location to store the CLI output
-    * @param[in] SizeOutput The size of the memory allocated in @a Output 
-    * @param[in] Identifier The device identifier string. This string will be printed-out
+    * @param[in] pInput A memory location to store the cli input (Mandatory)
+    * @param[in] sizeInput The size of the memory allocated in @a pInput 
+    * @param[in] pOutput A memory location to store the CLI output
+    * @param[in] sizeOutput The size of the memory allocated in @a pOutput 
+    * @param[in] identifier The device identifier string. This string will be printed-out
     * after a call to the ATCLI_DEFAULT_ID_COMMAND
     * @param[in] OK_Response The output message when a command callback returns ::qATCLI_OK.  
     * @param[in] ERROR_Response  The output message when a command callback returns ::qATCLI_ERROR 
@@ -271,7 +272,7 @@
     * @param[in] term_EOL The End-Of-Line string printed out after any of the CLI messages 
     * @return #qTrue on success, otherwise return #qFalse.
     */   
-    qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t OutputFcn, char *Input, const size_t SizeInput, char *Output, const size_t SizeOutput, const char *Identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
+    qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput, const char *identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
 
     /**
     * @brief This function subscribes the CLI instance to a specific command with an associated 
@@ -279,13 +280,13 @@
     * callback function will be executed. The CLI module only analyze commands that follows the 
     * extended AT-Commands syntax (the + char can be ignored).
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] Command A pointer to the AT command object.
-    * @param[in] TextCommand The string (name) of the command we want to subscribe to. Since this 
+    * @param[in] cmd A pointer to the AT command object.
+    * @param[in] textCommand The string (name) of the command we want to subscribe to. Since this 
     * service only handles AT commands, this string has to begin by the "at" characters and 
     * should be in lower case.
-    * @param[in] Callback The handler of the callback function associated to the command. 
+    * @param[in] cFcn The handler of the callback function associated to the command. 
     * Prototype: @code qATCLI_Response_t xCallback( qATCLI_Handler_t ) @endcode
-    * @param[in] CmdOpt This flag combines with a bitwise OR the following information:
+    * @param[in] cmdOpt This flag combines with a bitwise OR the following information:
     * 
     * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
     * function also depends on whether the number of argument  is valid or not. Information 
@@ -302,7 +303,7 @@
     * @param[in] param User storage pointer.
     * @return #qTrue on success, otherwise return #qFalse.
     */ 
-    qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const Command, char *TextCommand, const qATCLI_CommandCallback_t Callback, qATCLI_Options_t CmdOpt, void *param );
+    qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const cmd, char *textCommand, const qATCLI_CommandCallback_t cFcn, qATCLI_Options_t cmdOpt, void *param );
     
     /**
     * @brief Iterate between the commands available inside the AT-CLI instance.
@@ -328,11 +329,11 @@
     * from an interrupt context. Put it inside the desired peripheral's ISR.
     * If your ISR only get a single char, use instead qATCLI_ISRHandler()
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] Data The incoming string.
+    * @param[in] pData The incoming string.
     * @param[in] n The length of the string.
     * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
-    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *Data, const size_t n );
+    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *pData, const size_t n );
 
     /**
     * @brief Sends a command to the specified AT Command Line Interface instance.

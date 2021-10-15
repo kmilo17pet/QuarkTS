@@ -1,7 +1,7 @@
 /*!
  * @file qbsbuffers.h
  * @author J. Camilo Gomez C.
- * @version 1.24
+ * @version 1.25
  * @note This file is part of the QuarkTS distribution.
  * @brief An interrupt-safe byte-sized ring buffer interface.
  **/
@@ -42,65 +42,65 @@
 
     /**
     * @brief Query the number of elements in the BSBuffer(Byte-sized Buffer)
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return Number of elements in the BSBuffer(Byte-sized Buffer)
     */ 
-    size_t qBSBuffer_Count( const qBSBuffer_t * const obj );
+    size_t qBSBuffer_Count( const qBSBuffer_t * const b );
 
     /**
     * @brief Query the the full status of the BSBuffer(Byte-sized Buffer)
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return #qTrue if the BSBuffer(Byte-sized Buffer) is full, #qFalse if it is not.
     */    
-    qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const obj );
+    qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const b );
 
     /**
     * @brief Query the the empty status of the BSBuffer(Byte-sized Buffer)
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return #qTrue if the BSBuffer(Byte-sized Buffer) is empty, #qFalse if it is not.
     */      
-    qBool_t qBSBuffer_Empty( const qBSBuffer_t * const obj );
+    qBool_t qBSBuffer_Empty( const qBSBuffer_t * const b );
 
     /**
     * @brief Looks for one byte from the head of the BSBuffer(Byte-sized Buffer) without removing it
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return byte of data, or zero if nothing in the list
     */         
-    qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const obj );
+    qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const b );
 
     /**
     * @brief Gets one data-byte from the front of the BSBuffer(Byte-sized Buffer), and removes it
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @param[out] dest the location where the data-byte will be written
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[out] dst the location where the data-byte will be written
     * @return #qTrue on success, otherwise returns #qFalse
     */ 
-    qBool_t qBSBuffer_Get( qBSBuffer_t * const obj, qUINT8_t *dest );
+    qBool_t qBSBuffer_Get( qBSBuffer_t * const b, qUINT8_t *dst );
 
     /**
     * @brief Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @param[out] dest the location where the data-byte will be written
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[out] dst the location where the data-byte will be written
     * @param[in] n The number of bytes to read
     * @return #qTrue on success, otherwise returns #qFalse
     */     
-    qBool_t qBSBuffer_Read( qBSBuffer_t * const obj, void *dest, const size_t n );
+    qBool_t qBSBuffer_Read( qBSBuffer_t * const b, void *dst, const size_t n );
 
     /**
     * @brief Adds an element of data to the BSBuffer(Byte-sized Buffer)
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @param[in] Data The data to be added
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] bData The data to be added
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qBSBuffer_Put( qBSBuffer_t * const obj, const qUINT8_t Data );
+    qBool_t qBSBuffer_Put( qBSBuffer_t * const b, const qUINT8_t bData );
 
     /**
     * @brief Initialize the BSBuffer(Byte-sized Buffer)
-    * @param[in] obj a pointer to the qBSBuffer(Byte-sized Buffer) object
-    * @param[in] buffer Block of memory or array of data
+    * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
+    * @param[in] pBuffer Block of memory or array of data
     * @param[in] length The size of the buffer(Must be a power of two)
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qBSBuffer_Setup( qBSBuffer_t * const obj, volatile qUINT8_t *buffer, const size_t length );
+    qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, volatile qUINT8_t *pBuffer, const size_t length );
 
     /** @}*/
 

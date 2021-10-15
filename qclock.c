@@ -17,14 +17,15 @@ static qTimingBase_t TimmingBase;
 /*============================================================================*/
 qBool_t qClock_SetTimeBase( const qTimingBase_t tb )
 {
-    qBool_t RetValue = qFalse;
-
+    qBool_t retValue = qFalse;
+    /*cstat -CERT-FLP36-C*/
     if ( tb > (qTimingBase_t)0 ) {
+    /*cstat +CERT-FLP36-C*/  
         TimmingBase = tb;
-        RetValue = qTrue;
+        retValue = qTrue;
     }
     
-    return RetValue;
+    return retValue;
 } 
 #endif
 /*============================================================================*/
@@ -35,7 +36,7 @@ static qClock_t qClock_InternalTick( void )
 /*============================================================================*/
 qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
     if ( provider != qClock_GetTick ) {
         if ( NULL != provider ) {
@@ -44,10 +45,10 @@ qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider )
         else {
             qClock_GetTick = &qClock_InternalTick;
         }
-        RetValue = qTrue;
+        retValue = qTrue;
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
 qTime_t qClock_Convert2Time( const qClock_t t )
@@ -93,12 +94,12 @@ qGetTickFcn_t qClock_GetTick = &qClock_InternalTick;
 /*============================================================================*/
 qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
     
     if ( ( qClock_GetTick() - ti ) >= td ) {
-        RetValue = qTrue;
+        retValue = qTrue;
     }
 
-    return RetValue; 
+    return retValue; 
 }
 /*============================================================================*/

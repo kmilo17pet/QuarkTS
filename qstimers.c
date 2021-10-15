@@ -7,107 +7,107 @@
 #include "qstimers.h"
 
 /*============================================================================*/
-qBool_t qSTimer_Reload( qSTimer_t * const obj )
+qBool_t qSTimer_Reload( qSTimer_t * const t )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
     
-    if ( NULL != obj ) {
-        obj->Start = qClock_GetTick();
-        RetValue = qTrue;
+    if ( NULL != t ) {
+        t->Start = qClock_GetTick();
+        retValue = qTrue;
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time )
+qBool_t qSTimer_Set( qSTimer_t * const t, const qTime_t tTime )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
-    if ( qSTimer_Reload( obj ) ) {
-        obj->TV  = qClock_Convert2Clock(Time); /*set the STimer time in epochs*/
-        RetValue = qTrue;
+    if ( qSTimer_Reload( t ) ) {
+        t->TV  = qClock_Convert2Clock( tTime ); /*set the STimer time in epochs*/
+        retValue = qTrue;
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time )
+qBool_t qSTimer_FreeRun( qSTimer_t * const t, const qTime_t tTime )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
-    if ( NULL != obj ) { 
-        if ( QSTIMER_ARMED == qSTimer_Status( obj ) ){  
-            if ( qSTimer_Expired( obj ) ) {
-                RetValue = qSTimer_Disarm( obj ); 
+    if ( NULL != t ) { 
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ){  
+            if ( qSTimer_Expired( t ) ) {
+                retValue = qSTimer_Disarm( t ); 
             }
         }
         else {
-            (void)qSTimer_Set( obj, Time ); 
+            (void)qSTimer_Set( t, tTime ); 
         }
     }
 
-    return RetValue;   
+    return retValue;   
 }
 /*============================================================================*/
-qBool_t qSTimer_Expired( const qSTimer_t * const obj )
+qBool_t qSTimer_Expired( const qSTimer_t * const t )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
-    if ( NULL != obj ) {
-        if ( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
-            RetValue = qClock_TimeDeadlineCheck( obj->Start, obj->TV );
+    if ( NULL != t ) {
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
+            retValue = qClock_TimeDeadlineCheck( t->Start, t->TV );
         }
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qClock_t qSTimer_Elapsed( const qSTimer_t * const obj )
+qClock_t qSTimer_Elapsed( const qSTimer_t * const t )
 {
-    qClock_t RetValue = 0uL;
+    qClock_t retValue = 0uL;
 
-    if ( NULL != obj ) {
-        if ( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
-            RetValue = qClock_GetTick() - obj->Start;
+    if ( NULL != t ) {
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
+            retValue = qClock_GetTick() - t->Start;
         }
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qClock_t qSTimer_Remaining( const qSTimer_t * const obj )
+qClock_t qSTimer_Remaining( const qSTimer_t * const t )
 {
-    qClock_t RetValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
+    qClock_t retValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
 
-    if ( NULL != obj ) {
-        if( QSTIMER_ARMED == qSTimer_Status( obj ) ) {
-            RetValue = obj->TV - qSTimer_Elapsed( obj );
+    if ( NULL != t ) {
+        if( QSTIMER_ARMED == qSTimer_Status( t ) ) {
+            retValue = t->TV - qSTimer_Elapsed( t );
         }
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_Disarm( qSTimer_t * const obj )
+qBool_t qSTimer_Disarm( qSTimer_t * const t )
 {
-    qBool_t RetValue = qFalse;
-    if ( NULL != obj ) {
-        obj->TV = QSTIMER_DISARM_VALUE;
-        obj->Start = QSTIMER_DISARM_VALUE;
-        RetValue = qTrue;
+    qBool_t retValue = qFalse;
+    if ( NULL != t ) {
+        t->TV = QSTIMER_DISARM_VALUE;
+        t->Start = QSTIMER_DISARM_VALUE;
+        retValue = qTrue;
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_Status( const qSTimer_t * const obj )
+qBool_t qSTimer_Status( const qSTimer_t * const t )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
-    if ( NULL != obj ) {
-        RetValue =  ( obj->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+    if ( NULL != t ) {
+        retValue =  ( t->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     } 
     
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/

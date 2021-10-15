@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.09
+ * @version 1.10
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.
@@ -82,43 +82,44 @@
 
     /**
     * @brief Initialize a I/O Edge-Check instance 
-    * @param[in] Instance A pointer to the I/O Edge-Check object
-    * @param[in] RegisterSize The specific-core register size: #QREG_8BIT, #QREG_16BIT or #QREG_32BIT(Default)
-    * @param[in] DebounceTime The specified time to bypass the bounce of the input nodes
+    * @param[in] ec A pointer to the I/O Edge-Check object
+    * @param[in] rSize The specific-core register size: #QREG_8BIT, #QREG_16BIT or #QREG_32BIT(Default)
+    * @param[in] debounceTime The specified time to bypass the bounce of the input nodes
     * @return #qTrue on success. Otherwise #qFalse.
     */   
-    qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const Instance, const qCoreRegSize_t RegisterSize, const qClock_t DebounceTime );
+    qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, const qCoreRegSize_t rSize, const qClock_t debounceTime );
 
     /**
     * @brief Add an input node to the Edge-Check instance 
-    * @param[in] Instance A pointer to the I/O Edge-Check object
-    * @param[in] Node A pointer to the Input-Node object
-    * @param[in] PortAddress The address of the core PORTx-register to read the levels of the specified PinNumber
-    * @param[in] PinNumber  The specified Pin to read from PortAddress 
+    * @param[in] ec A pointer to the I/O Edge-Check object
+    * @param[in] n A pointer to the Input-Node object
+    * @param[in] portAddress The address of the core PORTx-register to read the levels of the specified PinNumber
+    * @param[in] pinNumber  The specified Pin to read from PortAddress 
     * @return #qTrue on success. Otherwise #qFalse.
     */     
-    qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const Instance, qEdgeCheck_IONode_t * const Node, void *PortAddress, const qBool_t PinNumber );    
+    qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec, qEdgeCheck_IONode_t * const n, void *portAddress, const qBool_t pinNumber );    
    
     /**
     * @brief Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
+    * @param[in] ec A pointer to the I/O Edge-Check object
     * @return #qTrue on success. Otherwise #qFalse.
     */        
-    qBool_t qEdgeCheck_Update( qEdgeCheck_t * const Instance );
+    qBool_t qEdgeCheck_Update( qEdgeCheck_t * const ec );
 
     /**
     * @brief Query the status of the specified input-node.
-    * @param[in] Node A pointer to the Input-Node object
+    * @param[in] n A pointer to the Input-Node object
     * @return The status of the input node : #qTrue, #qFalse, #qRising, #qFalling or #qUnknown.
     */         
-    qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const Node );
+    qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const n );
 
     /**
     * @brief Set/Change the pin number for the provided node.
-    * @param[in] Node A pointer to the Input-Node object.
-    * @param[in] PinNumber  The specified Pin to read from PortAddress  
+    * @param[in] n A pointer to the Input-Node object.
+    * @param[in] pinNumber  The specified Pin to read from PortAddress  
     * @return #qTrue on success. Otherwise #qFalse.
     */     
-    qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const Node, const qBool_t PinNumber );
+    qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n, const qBool_t pinNumber );
 
     /** @}*/
 

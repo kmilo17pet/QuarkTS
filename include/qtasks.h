@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.33
+ * @version 3.34
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -94,7 +94,7 @@
         /**
         * @brief Only available when the Idle Task is triggered.
         */                     
-        byNoReadyTasks
+        byNoReadyTasks,
     } 
     qTrigger_t;
 
@@ -261,6 +261,9 @@
                 qQueue_t *Queue;                    /**< The pointer to the attached queue. */
                 qUINT32_t QueueCount;               /**< The item-count threshold */
             #endif
+            #if ( Q_ALLOW_TASK_NAMING == 1 )
+                const char *Name;                         /**< The task name. */
+            #endif
             qSTimer_t timer;                        /**< To handle the task timming*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t Cycles;                   /**< The current number of executions performed by the task. */
@@ -395,16 +398,16 @@
     /**
     * @brief Set/Change the Task execution interval
     * @param[in] Task Pointer to the task node.
-    * @param[in] Value Execution interval defined in seconds (floating-point format). 
+    * @param[in] tValue Execution interval defined in seconds (floating-point format). 
     * For immediate execution (tValue = #qTimeImmediate).
     * @return #qTrue on success, otherwise returns #qFalse.
     */  
-    qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t Value );
+    qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t tValue );
 
     /**
     * @brief Set/Change the number of task iterations
     * @param[in] Task Pointer to the task node.
-    * @param[in] Value Number of task executions (Integer value). For indefinite 
+    * @param[in] iValue Number of task executions (Integer value). For indefinite 
     * execution (iValue = #qPeriodic or #qIndefinite). Tasks do not remember 
     * the number of iteration set initially. After the iterations are 
     * done, internal iteration counter is 0. If you need to perform
@@ -412,31 +415,31 @@
     * iterations again and resume.
     * @return #qTrue on success. Otherwise return #qFalse.
     */     
-    qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t Value );
+    qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t iValue );
 
     /**
     * @brief Set/Change the task priority value
     * @param[in] Task Pointer to the task node.
-    * @param[in] Value Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] pValue Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     * @return #qTrue on success. Otherwise return #qFalse.
     */    
-    qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t Value );
+    qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t pValue );
 
     /**
     * @brief Set/Change the task callback function.
     * @note This function can be used to detach a state-machine from a task
     * @param[in] Task Pointer to the task node.
-    * @param[in] CallbackFcn A pointer to a void callback method with a qEvent_t parameter 
+    * @param[in] cFcn A pointer to a void callback method with a qEvent_t parameter 
     * as input argument.
     * @return #qTrue on success. Otherwise return #qFalse.
     */       
-    qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t CallbackFcn );
+    qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t cFcn );
 
     /**
     * @brief Set the task operational state (Enabled or Disabled)
     * @see #qTask_Suspend, #qTask_Disable, #qTask_Resume, #qTask_Enable, #qTask_ASleep, #qTask_Awake
     * @param[in] Task Pointer to the task node.
-    * @param[in] State Use one of the following values:
+    * @param[in] s Use one of the following values:
     * 
     * #qEnabled : Task will be able to catch all the events. (ENABLE Bit = 1 )
     * 
@@ -450,7 +453,7 @@
     * ( SHUTDOWN Bit = 1 )
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    qBool_t qTask_Set_State( qTask_t * const Task, const qState_t State );
+    qBool_t qTask_Set_State( qTask_t * const Task, const qState_t s );
 
     /**
     * @brief Set the task data
@@ -559,8 +562,8 @@
         /**
         * @brief Attach a Queue to the Task.    
         * @param[in] Task Pointer to the task node.
-        * @param[in] Queue A pointer to a Queue object
-        * @param[in] Mode Attach mode. This implies the event that will trigger the task according
+        * @param[in] q A pointer to a Queue object
+        * @param[in] mode Attach mode. This implies the event that will trigger the task according
         * to one of the following modes:
         * 
         * ::qQueueMode_Receiver : The task will be triggered if there are elements 
@@ -585,7 +588,7 @@
         * the element count of the queue. A zero value will act as a #qUnLink action. 
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */       
-        qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const Queue, const qQueueLinkMode_t Mode, const qUINT16_t arg );
+        qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const q, const qQueueLinkMode_t mode, const qUINT16_t arg );
 
          /** @}*/
     #endif 
@@ -619,29 +622,53 @@
         /**
         * @brief Check for flags set to #qTrue inside the task Event-Flags.
         * @param[in] Task Pointer to the task node.
-        * @param[in] FlagsToCheck A bitwise value that indicates the flags to test inside the EventFlags.
+        * @param[in] flagsToCheck A bitwise value that indicates the flags to test inside the EventFlags.
         * Can be combined with a bitwise OR.
         * QEVENTFLAG_01 | QEVENTFLAG_02 | QEVENTFLAG_03 | ... | QEVENTFLAG_20   
-        * @param[in] ClearOnExit If is set to #qTrue then any flags set in the value passed as the 
+        * @param[in] clearOnExit If is set to #qTrue then any flags set in the value passed as the 
         * @a FlagsToCheck parameter will be cleared in the event group before this
         * function returns only when the condition is meet.
-        * @param[in] CheckForAll Used to create either a logical AND test (where all flags must be set)
+        * @param[in] checkForAll Used to create either a logical AND test (where all flags must be set)
         * or a logical OR test (where one or more flags must be set) as follows:
         * 
         * If is set to #qTrue, this API will return #qTrue when either all the flags 
-        * set in  the value passed as the @a FlagsToCheck parameter are set in 
+        * set in  the value passed as the @a flagsToCheck parameter are set in 
         * the task's EventFlags.
         * 
         * If is set to #qFalse, this API will return #qTrue when any of the flags set in 
-        * the value passed as the @a FlagsToCheck parameter are set in the task's
+        * the value passed as the @a flagsToCheck parameter are set in the task's
         * EventFlags.
         * @return #qTrue if the condition is meet, otherwise return #qFalse.
         */           
-        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t FlagsToCheck, qBool_t ClearOnExit, qBool_t CheckForAll );
+        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, qBool_t clearOnExit, qBool_t checkForAll );
 
         /** @}*/
     #endif
     
+    #if ( Q_ALLOW_TASK_NAMING == 1 )
+        /**
+        * @brief Set the task name
+        * @note Name should be unique.
+        * @param[in] Task Pointer to the task node.
+        * @param[in] name A string with the task name
+        * @return #qTrue on success. Otherwise return #qFalse.
+        */  
+        qBool_t qTask_SetName( qTask_t * const Task, const char *name );
+
+        /**
+        * @brief Retrieves the task name
+        * @param[in] Task Pointer to the task node.
+        * @return A pointer to the string containing the task name.
+        */          
+        const char *qTask_GetName( const qTask_t * const Task );
+
+        /**
+        * @brief Tries to find the first task that matches the name provided.
+        * @param[in] name The string with the name to find.
+        * @return A pointer to the tasknode if found, otherwise returns NULL.
+        */ 
+        qTask_t* qTask_FindByName( const char *name );
+    #endif
 
     #ifdef __cplusplus
     }

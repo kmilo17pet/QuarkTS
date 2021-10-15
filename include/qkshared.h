@@ -1,7 +1,7 @@
 /*!
  * @file qkshared.h
  * @author J. Camilo Gomez C.
- * @version 1.06
+ * @version 1.07
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel shared interfaces
  **/
@@ -34,9 +34,9 @@
     #define QTASK_BIT_SHUTDOWN          ( 0x00000040uL )
     #define QTASK_BIT_REMOVE_REQUEST    ( 0x00000080uL )    
    
-    /*Private kernel shared functions*/
+     /*Private kernel shared functions*/
     #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-        extern qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *Data );
+        extern qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *pData );
         extern qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task );
         extern size_t qOS_PriorityQueue_GetCount( void );
         extern void qOS_PriorityQueue_Init( void );
@@ -47,6 +47,10 @@
 
     extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag );
     extern void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value );
+
+    #if ( Q_ALLOW_TASK_NAMING == 1 )
+        extern qTask_t* qOS_FindTaskByName( const char *name );
+    #endif
 
     /** @endcond */
 

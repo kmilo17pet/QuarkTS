@@ -1,7 +1,7 @@
 /*!
  * @file qresponse.h
  * @author J. Camilo Gomez C.
- * @version 1.27
+ * @version 1.28
  * @note This file is part of the QuarkTS distribution.
  * @brief API to simplify the handling of requested responses from terminal interfaces.
  **/
@@ -48,48 +48,48 @@
 
     /**
     * @brief Initialize the instance of the response handler object
-    * @param[in] obj A pointer to the Response Handler object.
+    * @param[in] r A pointer to the Response Handler object.
     * @param[in] xLocBuff A pointer to the memory block where the desired response will remain.
     * @param[in] nMax The size of @a xLocBuff
     * @return On success returns #qTrue, otherwise returns #qFalse.
     */ 
-    qBool_t qResponse_Setup( qResponse_t * const obj, char *xLocBuff, size_t nMax ); 
+    qBool_t qResponse_Setup( qResponse_t * const r, char *xLocBuff, size_t nMax ); 
 
     /**
     * @brief Reset the Response Handler
-    * @param[in] obj A pointer to the Response Handler object.
+    * @param[in] r A pointer to the Response Handler object.
     * @return #qTrue on success. Otherwise returns #qFalse.
     */     
-    qBool_t qResponse_Reset( qResponse_t * const obj );
+    qBool_t qResponse_Reset( qResponse_t * const r );
 
     /**
     * @brief Non-Blocking Response check
-    * @param[in] obj A pointer to the Response Handler object.
-    * @param[in] Pattern The data checked in the receiver ISR
+    * @param[in] r A pointer to the Response Handler object.
+    * @param[in] pattern The data checked in the receiver ISR
     * @param[in] n The length of the data pointer by @a Pattern 
     * (if Pattern is string, set @a n to 0 to auto-compute the length)
     * @return #qTrue if there is a response acknowledge, otherwise returns #qFalse.
     */     
-    qBool_t qResponse_Received( qResponse_t * const obj, const char *Pattern, size_t n );
+    qBool_t qResponse_Received( qResponse_t * const r, const char *pattern, size_t n );
     
     /**
     * @brief Non-Blocking Response check with timeout
-    * @param[in] obj A pointer to the Response Handler object.
-    * @param[in] Pattern The data checked in the receiver ISR
+    * @param[in] r A pointer to the Response Handler object.
+    * @param[in] pattern The data checked in the receiver ISR
     * @param[in] n The length of the data pointer by @a Pattern 
-    * (if Pattern is string, set @a n to 0 to auto-compute the length)
+    * (if @a pattern is string, set @a n to 0 to auto-compute the length)
     * @param[in] t The timeout value given in seconds
     * @return #qTrue if there is a response acknowledge, #qResponseTimeout if timeout expires otherwise returns #qFalse
     */      
-    qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const obj, const char *Pattern, size_t n, qTime_t t );
+    qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, const char *pattern, size_t n, qTime_t t );
     
     /**
     * @brief ISR receiver for the response handler
-    * @param[in] obj A pointer to the Response Handler object.
+    * @param[in] r A pointer to the Response Handler object.
     * @param[in] rxchar The byte-data from the receiver 
     * @return #qTrue when the Response handler match the request from qResponse_Received()
     */      
-    qBool_t qResponse_ISRHandler( qResponse_t * const obj, const char rxchar );
+    qBool_t qResponse_ISRHandler( qResponse_t * const r, const char rxchar );
 
     /** @}*/
 

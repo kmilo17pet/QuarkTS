@@ -9,10 +9,10 @@
 /*============================================================================*/
 qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
     if ( NULL != h ) { 
-        RetValue = qTrue;
+        retValue = qTrue;
         switch ( action ) {
             case qCR_RESTART:
                 h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL; 
@@ -29,12 +29,12 @@ qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  con
                 h->prev = (_qCR_TaskPC_t)_qCR_UNDEFINED;
                 break;                                 
             default:
-                RetValue = qFalse;
+                retValue = qFalse;
                 break;
         }
     }
 
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/
 /* Used to perform the semaphores operations on Coroutines
@@ -43,7 +43,7 @@ statements instead : <qCR_SemInit>, <qCR_SemWait> and <qCR_SemSignal>
 */
 qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
 
     if ( NULL != sem ) {
         switch ( oper ) {
@@ -52,7 +52,7 @@ qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper )
                 break;
             case _qCR_SEM_TRYLOCK:
                 if ( sem->count > (size_t)0 ) {
-                    RetValue = qTrue; /*break the Wait operation*/
+                    retValue = qTrue; /*break the Wait operation*/
                     --sem->count;
                 }
                 break;
@@ -64,6 +64,6 @@ qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper )
         }
     }
     
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/

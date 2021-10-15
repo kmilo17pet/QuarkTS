@@ -21,31 +21,31 @@ static qCritical_Handler_t Critical = { NULL, NULL , 0uL };
 void qCritical_Enter( void )
 {
     if ( NULL != Critical.I_Disable ) {
-        qInt_Disabler_t Disabler = Critical.I_Disable;
+        qInt_Disabler_t xDisabler = Critical.I_Disable;
 
-        Critical.IntFlags = Disabler();
+        Critical.IntFlags = xDisabler();
     }
 }
 /*============================================================================*/
 void qCritical_Exit( void )
 {
     if ( NULL != Critical.I_Restorer ) {
-        qInt_Restorer_t Restorer = Critical.I_Restorer;
+        qInt_Restorer_t xRestorer = Critical.I_Restorer;
 
-        Restorer( Critical.IntFlags );
+        xRestorer( Critical.IntFlags );
     }
 }
 /*============================================================================*/
-qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t Restorer, const qInt_Disabler_t Disabler )
+qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, const qInt_Disabler_t dFcn )
 {
-    qBool_t RetValue = qFalse;
+    qBool_t retValue = qFalse;
     
-    if ( ( Restorer != Critical.I_Restorer ) || ( Disabler != Critical.I_Disable ) ) {
-        Critical.I_Restorer = Restorer;
-        Critical.I_Disable = Disabler;
-        RetValue = qTrue;
+    if ( ( rFcn != Critical.I_Restorer ) || ( dFcn != Critical.I_Disable ) ) {
+        Critical.I_Restorer = rFcn;
+        Critical.I_Disable = dFcn;
+        retValue = qTrue;
     }
     
-    return RetValue;
+    return retValue;
 }
 /*============================================================================*/

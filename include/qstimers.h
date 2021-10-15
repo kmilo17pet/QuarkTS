@@ -1,7 +1,7 @@
 /*!
  * @file qstimers.h
  * @author J. Camilo Gomez C.
- * @version 1.10
+ * @version 1.11
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Software-Timers module.
  **/
@@ -48,10 +48,10 @@
     /**
     * @brief Reload the STimer with the previous specified time.
     * @note STimer should be armed before this operation
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return Returns qTrue on success, otherwise, returns qFalse.
     */     
-    qBool_t qSTimer_Reload( qSTimer_t * const obj );
+    qBool_t qSTimer_Reload( qSTimer_t * const t );
 
     /**
     * @brief Set the expiration time for a STimer. On success, the STimer gets
@@ -59,19 +59,19 @@
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 
     * the clock-Tick.
-    * @param[in] obj A pointer to the STimer object.
-    * @param[in] Time The expiration time(Must be specified in seconds).
+    * @param[in] t A pointer to the STimer object.
+    * @param[in] tTime The expiration time(Must be specified in seconds).
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */        
-    qBool_t qSTimer_Set( qSTimer_t * const obj, const qTime_t Time );
+    qBool_t qSTimer_Set( qSTimer_t * const t, const qTime_t tTime );
 
     /**
     * @brief Non-Blocking STimer check
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return Returns #qTrue when STimer expires, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */         
-    qBool_t qSTimer_Expired( const qSTimer_t * const obj ); 
+    qBool_t qSTimer_Expired( const qSTimer_t * const t ); 
 
     /**
     * @brief Non-Blocking STimer check with automatic arming. 
@@ -85,40 +85,40 @@
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 
     * the clock-Tick.
-    * @param[in] obj A pointer to the STimer object.
-    * @param[in] Time The expiration time(Must be specified in seconds).
+    * @param[in] t A pointer to the STimer object.
+    * @param[in] tTime The expiration time(Must be specified in seconds).
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */          
-    qBool_t qSTimer_FreeRun( qSTimer_t * const obj, const qTime_t Time );
+    qBool_t qSTimer_FreeRun( qSTimer_t * const t, const qTime_t tTime );
 
     /**
     * @brief Retrieve the elapsed time in epochs
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return The Elapsed time specified in epochs.
     */         
-    qClock_t qSTimer_Elapsed( const qSTimer_t * const obj );
+    qClock_t qSTimer_Elapsed( const qSTimer_t * const t );
 
     /**
     * @brief Retrieve the remaining time in epochs
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return The remaining time specified in epochs.
     */           
-    qClock_t qSTimer_Remaining( const qSTimer_t * const obj );
+    qClock_t qSTimer_Remaining( const qSTimer_t * const t );
 
     /**
     * @brief Disarms the STimer object
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */         
-    qBool_t qSTimer_Disarm( qSTimer_t * const obj );
+    qBool_t qSTimer_Disarm( qSTimer_t * const t );
 
     /**
     * @brief Get the current status of the STimer (Armed or Disarmed)
-    * @param[in] obj A pointer to the STimer object.
+    * @param[in] t A pointer to the STimer object.
     * @return #qTrue when armed, otherwise #qFalse when disarmed.
     */        
-    qBool_t qSTimer_Status( const qSTimer_t * const obj );
+    qBool_t qSTimer_Status( const qSTimer_t * const t );
 
     /** @}*/
 

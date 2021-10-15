@@ -1,7 +1,7 @@
 /*!
  * @file qmemmang.h
  * @author J. Camilo Gomez C.
- * @version 2.07
+ * @version 2.08
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Memory Management module.
  **/
@@ -87,13 +87,13 @@
     * @brief Initializes a memory pool instance. This function should be called once 
     * before any heap memory request.
     * @param[in] mPool A pointer to the memory pool instance
-    * @param[in] Area A pointer to a memory block (uint8_t) statically allocated 
+    * @param[in] pArea A pointer to a memory block (uint8_t) statically allocated 
     * to act as Heap of the memory pool. The size of this block should match 
-    * the @a Size argument.
-    * @param[in] Size The size of the memory block pointed by @a Area
+    * the @a pSize argument.
+    * @param[in] pSize The size of the memory block pointed by @a pArea
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */      
-    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* Area, size_t Size );
+    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, size_t pSize );
 
     /**
     * @brief Select the memory pool to perform heap memory requests with qMalloc() and qFree().
@@ -111,17 +111,17 @@
     size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool );    
 
     /**
-    * @brief Allocate a block of memory that is @a Size bytes large. Allocation will be performed
+    * @brief Allocate a block of memory that is @a pSize bytes large. Allocation will be performed
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
     * @attention qMemMang_Allocate() its NOT interrupt-safe. 
     * @param[in] mPool A pointer to the memory pool instance.
-    * @param[in] Size Size of the memory block in bytes.
+    * @param[in] pSize Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
     * If the function failed to allocate the requested block of memory, a NULL
     * pointer is returned.
     */   
-    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t Size );
+    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t pSize );
 
     /**
     * @brief Deallocates previously allocated space from the memory pool.
@@ -143,17 +143,17 @@
 
     /**
     * @brief Wrapper API for qMemMang_Allocate() in order to be compatible with @a malloc. 
-    * Allocate a block of memory that is @a Size bytes large. Allocation will be performed
+    * Allocate a block of memory that is @a mSize bytes large. Allocation will be performed
     * in the selected memory pool. If the requested memory can be allocated, a pointer 
     * is returned to the beginning of the memory block.
     * @note The behavior is undefined if selected memory pool has not been initialized.
     * @attention qMalloc() its NOT interrupt-safe. 
-    * @param[in] Size Size of the memory block in bytes.
+    * @param[in] mSize Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is returned.
     * If the function failed to allocate the requested block of memory, a NULL
     * pointer is returned.
     */     
-    void* qMalloc( size_t Size );
+    void* qMalloc( size_t mSize );
 
     /**
     * @brief Wrapper API for qMemMang_Free() in order to be compatible with @a free. 
