@@ -2266,7 +2266,9 @@ PREDEFINED             = Q_FSM=1 \
                          Q_TASK_COUNT_CYCLES=1 \
                          Q_PRESERVE_TASK_ENTRY_ORDER=1 \
                          Q_USE_STDINT_H=1 \
-                         "Q_TASK_EVENT_FLAGS =1" \
+                         Q_TASK_EVENT_FLAGS=1 \
+                         Q_ALLOW_TASK_NAMING=1 \
+                         Q_ALLOW_YIELD_TO_TASK=1 \
                          DOXYGEN
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this

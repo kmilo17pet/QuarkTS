@@ -550,9 +550,9 @@ void test_OS_API( void ){
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, T10MSEC, qPeriodic, qEnabled, "blink") );  
-    qTask_SetName( &blinktask, "blinky" ); 
+    qTask_Set_Name( &blinktask, "blinky" ); 
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, T500MSEC, 5, qEnabled, "TASK1") );
-    qTask_SetName( &Task1, "Task1" ); 
+    qTask_Set_Name( &Task1, "Task1" ); 
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     #if ( Q_QUEUES == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQueueMode_Receiver, qATTACH) );
