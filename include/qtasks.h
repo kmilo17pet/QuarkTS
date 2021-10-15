@@ -646,6 +646,10 @@
     #endif
     
     #if ( Q_ALLOW_TASK_NAMING == 1 )
+        /** @addtogroup qtaskmanip
+        *  @{
+        */
+
         /**
         * @brief Set the task name
         * @note Name should be unique.
@@ -653,21 +657,23 @@
         * @param[in] name A string with the task name
         * @return #qTrue on success. Otherwise return #qFalse.
         */  
-        qBool_t qTask_SetName( qTask_t * const Task, const char *name );
+        qBool_t qTask_Set_Name( qTask_t * const Task, const char *name );
 
         /**
         * @brief Retrieves the task name
         * @param[in] Task Pointer to the task node.
         * @return A pointer to the string containing the task name.
         */          
-        const char *qTask_GetName( const qTask_t * const Task );
+        const char *qTask_Get_Name( const qTask_t * const Task );
 
         /**
         * @brief Tries to find the first task that matches the name provided.
         * @param[in] name The string with the name to find.
         * @return A pointer to the tasknode if found, otherwise returns NULL.
         */ 
-        qTask_t* qTask_FindByName( const char *name );
+        qTask_t* qTask_Find_ByName( const char *name );
+
+        /** @}*/
     #endif
 
     #ifdef __cplusplus

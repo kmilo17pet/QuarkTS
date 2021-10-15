@@ -307,7 +307,7 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck,
 #endif/* ( Q_TASK_EVENT_FLAGS == 1 ) */
 #if ( Q_ALLOW_TASK_NAMING == 1 )
 /*============================================================================*/
-qBool_t qTask_SetName( qTask_t * const Task, const char *name )
+qBool_t qTask_Set_Name( qTask_t * const Task, const char *name )
 {
     qBool_t retValue = qFalse;
 
@@ -319,7 +319,7 @@ qBool_t qTask_SetName( qTask_t * const Task, const char *name )
     return retValue;
 }
 /*============================================================================*/
-const char *qTask_GetName( const qTask_t * const Task )
+const char *qTask_Get_Name( const qTask_t * const Task )
 {
     const char *retValue = NULL;
 
@@ -330,7 +330,7 @@ const char *qTask_GetName( const qTask_t * const Task )
     return retValue;
 }
 /*============================================================================*/
-qTask_t* qTask_FindByName( const char *name )
+qTask_t* qTask_Find_ByName( const char *name )
 {
     return qOS_FindTaskByName( name ); /*let the kernel perform this*/
 }
