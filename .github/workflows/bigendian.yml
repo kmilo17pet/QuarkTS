@@ -1,4 +1,4 @@
-name: 32bit_and_BigEndian
+name: BigEndian
 
 on:
   push:
