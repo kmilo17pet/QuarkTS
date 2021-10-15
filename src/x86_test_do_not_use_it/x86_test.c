@@ -6,7 +6,7 @@ WARNING:
 This its just a minor-test file for x86. Dont use this as reference example in your 
 embedded application
 This is not a full OS test, most of the built-in modules are tested externally with
-embedded C compilers in real hardware( theses are not included in this repository)
+embedded C compilers in real hardware( these are not included in this repository)
 
 ===================================================================================
 */
@@ -122,7 +122,7 @@ qBool_t comparator( qList_CompareHandle_t h ) {
 /*============================================================================*/
 void test_qList_API(void){
     qList_t mylist;
-    mynode_t n1, n2, n3, n4, n5, n6, n7, n8, n9, xn;
+    mynode_t n1, n2, n3, n4, n5, n6, n7, n8, n9;
 
     qList_Iterator_t iter;
     mynode_t *inode = NULL;
@@ -139,10 +139,7 @@ void test_qList_API(void){
     n7.value = 4;
     n8.value = 7;
     n9.value = 8;
-
-    #if ( Q_MEMORY_MANAGER == 1 )
-    qList_SetMemoryAllocation( qMalloc, qFree );
-    #endif   
+ 
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_IsMember(&mylist, &n1) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, QLIST_ATBACK ) );
@@ -157,15 +154,9 @@ void test_qList_API(void){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n9, QLIST_ATBACK )  );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, QLIST_ATBACK ) ); /*node n9 its already a member*/
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, QLIST_ATBACK ) ); 
-    xn.value = 50;
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), QLIST_ATBACK ) );
-    xn.value =88;
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_DInsert( &mylist, &xn, sizeof(mynode_t), QLIST_ATBACK ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Sort( &mylist, comparator ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
-    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, QLIST_ATBACK ) );
-    TEST_ASSERT_NOT_NULL( qList_DRemove( &mylist, NULL, QLIST_ATBACK ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_binremove, &mylist, QLIST_FORWARD, NULL ) );
@@ -190,7 +181,7 @@ void test_qMemoryManagement_API(void){
     uint8_t xpool_area[XPOOL_SIZE]={0};
     TEST_ASSERT_EQUAL_UINT8( qTrue, qMemMang_Pool_Setup(  &xpool, xpool_area, sizeof(xpool_area) ) );
     TEST_MESSAGE( "Executing TEST qMemoryManagement_API..." ); 
-    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize( NULL ) );
+    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE , qMemMang_Get_FreeSize( NULL ) );
     memtest = qMalloc( 16*sizeof(int) );
     TEST_ASSERT_NOT_NULL( memtest );   
     
@@ -216,7 +207,11 @@ qUINT32_t PORTA = 0x0A;
 qEdgeCheck_t INPUTS;
 qEdgeCheck_IONode_t button1, sensor1, button2, sensor2;
 /*============================================================================*/
-qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2;
+qTask_t Task1, Task2, Task3, Task4, Task5, Task6, TaskTestST, blinktask, SMTask, SMTask2, CLITask;
+
+#if ( Q_ATCLI == 1 )
+    qATCLI_t atcli;
+#endif
 
 #if ( Q_FSM == 1 )
     qSM_t statemachine;
@@ -344,6 +339,8 @@ void Task1Callback(qEvent_t e){
     if(qSTimer_FreeRun(&tmr, T500MSEC)){
         TEST_MESSAGE("Timer expired");
     }         
+
+    qOS_YieldToTask( &Task3 );
 }
 /*============================================================================*/
 void Task3Callback(qEvent_t e){
@@ -362,6 +359,7 @@ void Task3Callback(qEvent_t e){
         qTask_EventFlags_Modify( qTask_Self(), QEVENTFLAG_03, QEVENTFLAG_CLEAR );
         #endif
     }
+    
 }
 /*============================================================================*/
 void TaskSameCallback(qEvent_t e){
@@ -393,6 +391,7 @@ void IdleTaskCallback(qEvent_t e){
         qTrace_UnsignedDecimal( qSTimer_Elapsed(&t) );
         qTrace_UnsignedDecimal( qSTimer_Remaining(&t) );
         qTrace_Bool( qSTimer_Expired(&t) );
+        qATCLI_Raise( &atcli, "at+test1=2,4" );
         /*
        qStateMachine_SendSignal( &statemachine, QSM_SIGNAL_USER1, qFalse );
         */
@@ -464,6 +463,10 @@ void blinktaskCallback(qEvent_t e){
 void scheduler_Release(qEvent_t e){
     (void)e;
     TEST_MESSAGE("SCHEDULER RELEASED");
+}
+/*============================================================================*/
+qATCLI_Response_t at_test1_callback( qATCLI_Handler_t h ){
+    return qATCLI_OK;
 }
 /*============================================================================*/
 void test_OS_API( void ){
@@ -546,8 +549,10 @@ void test_OS_API( void ){
     #if (Q_ALLOW_SCHEDULER_RELEASE == 1)
         qOS_Set_SchedulerReleaseCallback( scheduler_Release );
     #endif
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, T10MSEC, qPeriodic, qEnabled, "blink") );   
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&blinktask, blinktaskCallback, qLowest_Priority, T10MSEC, qPeriodic, qEnabled, "blink") );  
+    qTask_SetName( &blinktask, "blinky" ); 
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_Task(&Task1, Task1Callback, qHigh_Priority, T500MSEC, 5, qEnabled, "TASK1") );
+    qTask_SetName( &Task1, "Task1" ); 
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task3, Task3Callback, qMedium_Priority, "TASK3") );
     #if ( Q_QUEUES == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qTask_Attach_Queue(&Task3, &somequeue, qQueueMode_Receiver, qATTACH) );
@@ -555,6 +560,16 @@ void test_OS_API( void ){
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task4, TaskSameCallback, qMedium_Priority, "TASK4") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task5, TaskSameCallback, qMedium_Priority, "TASK5") );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qOS_Add_EventTask(&Task6, TaskSameCallback, qMedium_Priority, "TASK6") );
+
+    #if ( Q_ATCLI == 1 )
+        char cliInput[ 128 ]= {0};
+        char cliOutput[ 128 ]= {0};
+        qATCLI_Command_t at_test1, at_test2;
+        qATCLI_Setup( &atcli, putcharfcn, cliInput, sizeof(cliInput), cliOutput, sizeof(cliOutput), NULL, NULL, NULL, NULL, NULL );
+        qATCLI_CmdSubscribe( &atcli, &at_test1, "at+test1", at_test1_callback, QATCLI_CMDTYPE_ACT, NULL );
+        qATCLI_CmdSubscribe( &atcli, &at_test2, "at+test2", at_test1_callback, QATCLI_CMDTYPE_ACT, NULL );
+        qOS_Add_ATCLITask( &CLITask, &atcli, qMedium_Priority, NULL );
+    #endif
 
     #if ( Q_FSM == 1 )
     TEST_ASSERT_EQUAL_UINT8( qTrue, qStateMachine_Setup( &statemachine, statetop_callback, &statefirst, NULL, NULL ) ) ;
