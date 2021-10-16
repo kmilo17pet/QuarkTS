@@ -149,7 +149,7 @@ qBool_t qTask_Set_State( qTask_t * const Task, const qState_t s )
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        switch( s ) {
+        switch ( s ) {
             case qDisabled: case qEnabled:
                 if ( s != (qState_t)qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) { 
                     qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, (qBool_t)s );
@@ -190,7 +190,7 @@ qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param )
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        switch( param ) {
+        switch ( param ) {
             case qTask_ClearIterations: 
                 Task->qPrivate.Iterations = (qIteration_t)0;
                 retValue = qTrue;

@@ -125,7 +125,7 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
         _QTRACE_KERNEL( "(*)Initializing QuarkTS kernel...", NULL, NULL );
         (void)qList_Initialize( SuspendedList );
         (void)qList_Initialize( WaitingList );
-        for ( i = (qIndex_t)0; i < (qIndex_t)Q_PRIORITY_LEVELS; i++ ) {
+        for ( i = (qIndex_t)0 ; i < (qIndex_t)Q_PRIORITY_LEVELS ; i++ ) {
             (void)qList_Initialize( &ReadyList[ i ] );
         }
         #if ( Q_SETUP_TIME_CANONICAL != 1 )
@@ -290,7 +290,7 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task )
         currentQueueIndex = kernel.QueueIndex + 1;
         if ( currentQueueIndex > 0 ) { /*check first if the queue has items inside*/
             qCritical_Enter();
-            for ( i = 0 ; i < currentQueueIndex; ++i ) { /*loop the queue slots to check if the Task is inside*/
+            for ( i = 0 ; i < currentQueueIndex ; ++i ) { /*loop the queue slots to check if the Task is inside*/
                 if ( Task == kernel.QueueStack[ i ].Task ) {
                     retValue = qTrue;
                     break;
@@ -320,7 +320,7 @@ static qTask_t* qOS_PriorityQueue_Get( void )
         maxPriorityValue = kernel.QueueStack[ 0 ].Task->qPrivate.Priority;
         /*walk through the queue to find the task with the highest priority*/
         /*loop until all items are checked or if the tail is reached*/
-        for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.QueueStack[i].Task ); ++i ) {  
+        for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.QueueStack[i].Task ) ; ++i ) {  
             iPriorityValue = kernel.QueueStack[i].Task->qPrivate.Priority;
             if ( iPriorityValue > maxPriorityValue ) { /*check if the queued task has the max priority value*/
                 maxPriorityValue = iPriorityValue; /*Reassign the max value*/
@@ -579,7 +579,7 @@ qBool_t qOS_Run( void )
             
             do { /*loop every ready-list in descending priority order*/
                 qList_t *xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
-                if( xList->size > (size_t)0 ){ /*check for a non-empty target list */
+                if ( xList->size > (size_t)0u ) { /*check for a non-empty target list */
                     (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in the current ready-list*/
                 }
             } while ( (qIndex_t)0 != xPriorityListIndex-- ); /*move to the next ready-list*/
@@ -590,7 +590,7 @@ qBool_t qOS_Run( void )
                 (void)qOS_Dispatch( &qOS_BuiltIn_IdleTask ); /*special call to dispatch idle-task already hardcoded in the kernel*/
             }
         }
-        if ( SuspendedList->size > (size_t)0 ) {  /*check for a non-empty suspended-list*/
+        if ( SuspendedList->size > (size_t)0u ) {  /*check for a non-empty suspended-list*/
             (void)qList_Move( WaitingList, SuspendedList, QLIST_ATBACK ); /*move the remaining suspended tasks to the waiting-list*/
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
                 (void)qList_Sort( WaitingList, qOS_TaskEntryOrderPreserver ); /*preseve the entry order by sorting the new waiting-list layout*/
@@ -602,7 +602,7 @@ qBool_t qOS_Run( void )
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
         retValue = qTrue; 
     #else
-        while( qTrue == qTrue);
+        while( qTrue == qTrue );
     #endif
 
     return retValue;
@@ -917,6 +917,7 @@ void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value )
 static qBool_t qOS_TaskNameLookup( qList_ForEachHandle_t h )
 {
     qBool_t retValue = qFalse;
+
     if ( qList_WalkThrough == h->stage ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         void **xLookupData = (void**)h->arg;
@@ -933,18 +934,20 @@ static qBool_t qOS_TaskNameLookup( qList_ForEachHandle_t h )
         }
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     }
+    
     return retValue;
 }
 /*============================================================================*/
 qTask_t* qOS_FindTaskByName( const char *name )
 {
     qTask_t *found = NULL;
+
     if ( NULL != name ) {
         const void *xLookupData[ 2 ] = { (const void*)name, NULL };
         const size_t maxLists = sizeof(kernel.CoreLists)/sizeof(qList_t);
         size_t i;
         
-        for ( i = 0u; i < maxLists; ++i ) {
+        for ( i = 0u ; i < maxLists ; ++i ) {
             if ( qTrue == qList_ForEach( &kernel.CoreLists[ i ], qOS_TaskNameLookup, &xLookupData, QLIST_FORWARD, NULL ) ) {
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.8*/
                 found = (qTask_t*)xLookupData[ 1 ];
@@ -953,6 +956,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
             }
         }
     }
+
     return found;
 }
 /*============================================================================*/
@@ -962,7 +966,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
 qBool_t qOS_YieldToTask( qTask_t * const Task )
 {
     qBool_t retValue = qFalse;
-    if ( ( NULL != kernel.CurrentRunningTask ) && ( Task != kernel.CurrentRunningTask) ) {
+    if ( ( NULL != kernel.CurrentRunningTask ) && ( Task != kernel.CurrentRunningTask ) ) {
         kernel.YieldTask = Task;
         retValue = qTrue;
     }

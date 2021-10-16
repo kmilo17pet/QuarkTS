@@ -82,14 +82,14 @@
     #define _qCR_CodeEndBlock          while( qFalse )
     #define _qCR_Persistent            static _qCR_Instance_t
     #define _qCR_TaskProgress          __LINE__
-    #define _qCR_Assert(_COND_)        if(!(_COND_))
+    #define _qCR_Assert(_COND_)        if ( !(_COND_) )
     #define _qCR_TaskPCVar             _qCRTaskState_.instr
     #define _qCR_DelayVar              _qCRTaskState_.crdelay           
     #define _qCR_SetPC(_VAL_)          _qCR_TaskPCVar = ( _VAL_ ) 
     #define _qCR_SaveState             _qCR_SetPC( _qCR_TaskProgress ) 
     #define _qCR_SaveStateOn(_VAR_)    ( _VAR_)  =  _qCR_TaskProgress
     #define _qCR_InitState             _qCRTaskState_ = { _qCR_PC_INITVAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }
-    #define _qCR_TaskCheckPCJump(_PC_) switch( _PC_ ){    
+    #define _qCR_TaskCheckPCJump(_PC_) switch ( _PC_ ) {    
     #define _qCR_TagExitCCR            _qCRYield_ExitLabel
     #define _qCR_Exit                  goto _qCR_TagExitCCR
     #define _qCR_TaskYield             _qCR_Exit;
@@ -98,7 +98,7 @@
     #define _qCR_SuspendPoint          default: _qCR_Exit
     #define _qCR_RestoreAfterYield     _qCR_Restorator( _qCR_TaskProgress )
     #define _qCR_RestoreFromBegin      _qCR_Restorator( _qCR_PC_INITVAL )
-    #define _qCR_CatchHandle(h)        if( NULL == (h) ){ (h) = &_qCRTaskState_; }
+    #define _qCR_CatchHandle(h)        if( NULL == (h) ) { (h) = &_qCRTaskState_; }
 
     /*! @endcond */
 

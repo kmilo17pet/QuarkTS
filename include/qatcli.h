@@ -9,7 +9,6 @@
     #define QATCLI_H 
 
     #include "qtypes.h"  
-    #include "qlists.h"
     #include "qioutils.h"  
 
     #ifdef __cplusplus
@@ -211,9 +210,9 @@
     * 
     * Example :
     * @code{.c}
-    * qATCLI_Response_t commandCallback_example( qATCLI_Handler_t h ){
+    * qATCLI_Response_t commandCallback_example( qATCLI_Handler_t h ) {
     *       qATCLI_Response_t retValue = qATCLI_ERROR;
-    *       switch( h->Type ){
+    *       switch ( h->Type ){
     *           case qATCLI_CMDTYPE_ACT:
     *               h->puts( "Test message" );
     *               retValue = qATCLI_OK;

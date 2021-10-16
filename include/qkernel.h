@@ -282,7 +282,7 @@
         * @note Target task will inherit the event data.
         * @warning Yielding from the IDLE task is not allowed.
         * @param[in] Task A pointer to the task to which current control will 
-        * be yielded.
+        * be yielded. Pass NULL to discard a previous request.
         * @return Returns #qTrue if success, otherwise returns #qFalse.
         */  
         qBool_t qOS_YieldToTask( qTask_t * const Task );

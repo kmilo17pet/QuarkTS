@@ -215,7 +215,7 @@ static char* qATCLI_Input_Fix( char *s, size_t maxlen ) /*modifies the input str
     int i, j = 0;
     int noL = 0;
     
-    for ( i = 0; ( (char)'\0' != s[ i ] ) && ( maxlen > 0u ) ; ++i ) {
+    for ( i = 0 ; ( (char)'\0' != s[ i ] ) && ( maxlen > 0u ) ; ++i ) {
         if ( ( '=' == s[ i ] ) || ( '?' == s[ i ] ) ) {
             noL = 1;    
         }
@@ -224,7 +224,7 @@ static char* qATCLI_Input_Fix( char *s, size_t maxlen ) /*modifies the input str
             break;    
         } 
         /*cstat -MISRAC2012-Dir-4.11_h*/
-        if ( 0 != isgraph( (int)s[ i ]) ) {
+        if ( 0 != isgraph( (int)s[ i ] ) ) {
         /*cstat +MISRAC2012-Dir-4.11_h*/  
             if ( 0 == noL ) {
                 s[ j++ ] = (char)tolower( (int)s[ i ] );
@@ -481,7 +481,7 @@ static char* GetArgPtr( qIndex_t n )
                 qIndex_t i, argc = 0u;
 
                 --n;
-                for ( i = 0u ; '\0' != param->StrData[i] ; ++i ) {
+                for ( i = 0u ; '\0' != param->StrData[ i ] ; ++i ) {
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
                         if ( ++argc >= (qIndex_t)n ) {
                             retPtr = param->StrData + i + 1;        
@@ -546,7 +546,7 @@ static char* GetArgString( qIndex_t n, char* pOut )
             --n;
             j = 0u;
             /*cstat -CERT-STR34-C*/
-            for ( i = 0u ; (char)'\0' != param->StrData[ i ]; ++i ) {
+            for ( i = 0u ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                 if ( argc == n ) {
                     retPtr = pOut;
                     if ( ( argc > n ) || ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) ) {

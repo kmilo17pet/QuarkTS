@@ -87,8 +87,8 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM
         qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
         qSM_LCA_t n = 0u;
         
-        for ( s = m->qPrivate.source; ( NULL != s ) && ( qFalse == xBreak ); s = s->qPrivate.parent ) {
-            for ( t = target; NULL != t; t = t->qPrivate.parent ) {
+        for ( s = m->qPrivate.source ; ( NULL != s ) && ( qFalse == xBreak ) ; s = s->qPrivate.parent ) {
+            for ( t = target ; NULL != t ; t = t->qPrivate.parent ) {
                 if ( s == t ) {
                     xLca = n;
                     xBreak = qTrue;
@@ -247,7 +247,7 @@ static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t
     qSM_State_t *s;
 
     *trace = NULL;
-    for ( s = m->qPrivate.next; s != m->qPrivate.current; s = s->qPrivate.parent ) {
+    for ( s = m->qPrivate.next ; s != m->qPrivate.current ; s = s->qPrivate.parent ) {
         *(++trace) = s;  /* trace path to target */
     }
     while ( NULL != ( s = *trace-- ) ) {  /* retrace entry from LCA */
@@ -317,7 +317,7 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t sig )
             qStateMachine_TraceOnStart( m, entryPath );
         }
         /*evaluate the hierarchy until the signal is handled*/
-        for ( s = m->qPrivate.current; NULL != s; s = s->qPrivate.parent ) {
+        for ( s = m->qPrivate.current ; NULL != s ; s = s->qPrivate.parent ) {
             m->qPrivate.source = s; /* level of outermost event handler */
             if ( qSM_STATUS_SIGNAL_HANDLED == qStateMachine_StateOnSignal( m, s, sig ) ) {
                 if ( NULL != m->qPrivate.next ) {  /* state transition taken? */
@@ -420,7 +420,7 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
     qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
-    for ( i = 0u; i < n; ++i ) {
+    for ( i = 0u ; i < n ; ++i ) {
         iTransition = &table[ i ];  /*get the i-element from the table*/
         transitionAllowed = qTrue; /*if no signal-guard available, allow the transition by default*/
         if ( h->Signal == iTransition->xSignal ) { /*table entry match*/
@@ -467,12 +467,12 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
     qSM_TimeoutSpec_t *ts = m->qPrivate.TimeSpec;
     size_t i;
 
-    for ( i = 0u; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ) {
+    for ( i = 0u ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
         if ( qTrue == qSTimer_Expired( &ts->builtin_timeout[ i ] ) ) {
             #if ( Q_QUEUES == 1 )
-                (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT(i), qFalse );   
+                (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT( i ), qFalse );   
             #endif
-            if ( 0uL  != ( ts->isPeriodic & (1uL <<  i) ) ) {
+            if ( 0uL  != ( ts->isPeriodic & ( 1uL <<  i ) ) ) {
                 (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
             }
             else {
@@ -491,7 +491,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
         size_t i;
         qSM_TimeoutSpecOptions_t setCheck, resetCheck;
 
-        if ( QSM_SIGNAL_ENTRY == sig) {
+        if ( QSM_SIGNAL_ENTRY == sig ) {
             setCheck = QSM_TSOPT_SET_ENTRY; 
             resetCheck = QSM_TSOPT_RST_ENTRY;
         }
@@ -499,7 +499,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
             setCheck = QSM_TSOPT_SET_EXIT; 
             resetCheck = QSM_TSOPT_RST_EXIT;
         }
-        for ( i = 0u; i < n; ++i ) { /*loop table */
+        for ( i = 0u ; i < n ; ++i ) { /*loop table */
             qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
             qIndex_t index = opt & QSM_TSOPT_INDEX_MASK; /*get the timeout index*/
             
@@ -511,7 +511,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
                     if ( 0uL == ( opt & QSM_TSOPT_KEEP_IF_SET ) ) {
                         (void)qSTimer_Set( tmr, tValue  );        
                     }
-                    if ( 0uL != (opt & QSM_TSOPT_PERIODIC) ) {
+                    if ( 0uL != ( opt & QSM_TSOPT_PERIODIC ) ) {
                         m->qPrivate.TimeSpec->isPeriodic |= (qUINT32_t)( ( 1uL << index ) );         
                     }
                     else {
@@ -535,7 +535,7 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * 
 
         (void)memset( ts, 0, sizeof(qSM_TimeoutSpec_t) );
         m->qPrivate.TimeSpec = ts;
-        for ( i = 0u ; i < (size_t)Q_FSM_MAX_TIMEOUTS; ++i ) {
+        for ( i = 0u ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
             (void)qSTimer_Disarm( &m->qPrivate.TimeSpec->builtin_timeout[ i ] );
         }
         retValue = qTrue;
@@ -582,7 +582,7 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout )
             cnt = qQueue_Count( m->qPrivate.queue );
             while ( 0u != cnt-- ) {
                 if ( qTrue == qQueue_Receive( m->qPrivate.queue , &xSignal ) ) {
-                    if ( xSignal != QSM_SIGNAL_TIMEOUT(xTimeout) ){ /*keep the non-timeout signals*/
+                    if ( xSignal != QSM_SIGNAL_TIMEOUT( xTimeout ) ) { /*keep the non-timeout signals*/
                         (void)qQueue_SendToBack( m->qPrivate.queue , &xSignal );
                     }
                 }

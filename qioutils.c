@@ -352,7 +352,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
 		    powersign = ( '-' == *s )? -1 : 1;
             s++;    
         } 
-        for ( power2 = 0; isdigit( *s ); s++ ) {
+        for ( power2 = 0 ; isdigit( *s ) ; s++ ) {
             power2 = power2 * 10 + ( *s - '0' );
         }
         if ( power2 > 0 ) {
@@ -378,14 +378,14 @@ char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ) /*limited to
             str[ 2 ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 3 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/       
         }
-        else if ( qTrue == qIOUtil_IsInf(num) ) { /*handle the infinity*/
+        else if ( qTrue == qIOUtil_IsInf( num ) ) { /*handle the infinity*/
             str[ 0 ] = ( num > 0.0f )? '+' : '-'; /*MISRAC2004-17.4_b deviation allowed*/
             str[ 1 ] = 'i';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 3 ] = 'f';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 4 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/  
         }
-        else if ( qTrue == qIOUtil_IsNan(num) ) { /*handle the NAN*/
+        else if ( qTrue == qIOUtil_IsNan( num ) ) { /*handle the NAN*/
             str[ 0 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 1 ] = 'a';  /*MISRAC2004-17.4_b deviation allowed*/
             str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/ 

@@ -199,9 +199,9 @@
     /**
     * @brief Pointer to a function that represents a state callback
     * @code{.c}
-    * qSM_Status_t myState_Callback( qSM_Handler_t h ){
+    * qSM_Status_t myState_Callback( qSM_Handler_t h ) {
     *       qSM_Status_t retVal = qSM_STATUS_EXIT_SUCCESS;
-    *       switch( h->Signal ){
+    *       switch ( h->Signal ) {
     *           case QSM_SIGNAL_ENTRY:
     *               break;
     *           case QSM_SIGNAL_EXIT:
@@ -222,8 +222,8 @@
     /**
     * @brief Pointer to a function that represents a surrounding callback
     * @code{.c}
-    * void surrounding_Callback( qSM_Handler_t h ){
-    *       switch( h->Status ){
+    * void surrounding_Callback( qSM_Handler_t h ) {
+    *       switch ( h->Status ) {
     *           case qSM_STATUS_BEFORE_ANY:
     *               break;
     *           case qSM_STATUS_EXIT_SUCCESS:

@@ -217,7 +217,7 @@ qBool_t qList_Move( qList_t *const dst, qList_t *const src, const qList_Position
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != dst ) && ( NULL != src ) && ( p >= (qList_Position_t)(-1) )  ) {    
+    if ( ( NULL != dst ) && ( NULL != src ) && ( p >= (qList_Position_t)(-1) ) ) {    
         if ( NULL != src->head) { /*source has items*/
             (void)qList_ForEach( src, qList_ChangeContainer, dst, QLIST_FORWARD, NULL );          
             if ( NULL == dst->head ) { /*destination is empty*/
@@ -336,7 +336,7 @@ qBool_t qList_Sort( qList_t * const l, qList_CompareFcn_t f )
             size_t i, j;
             qBool_t xRetCmp;
 
-            for ( i = 1u; i < count; ++i ) {
+            for ( i = 1u ; i < count ; ++i ) {
                 size_t n = count - i - 1u;
                 current = l->head;
                 for ( j = 0u; j <= n; ++j ) { 
@@ -441,7 +441,7 @@ qBool_t qList_ForEach( qList_t *const l, const qList_NodeFcn_t f, void *arg, qLi
             retValue = f( &xHandle ); /*run initial stage before looping through list*/
             if ( qFalse == retValue ) { /*check if the initial stage allows us to continue*/
                 xHandle.stage = qList_WalkThrough;
-                for ( iNode = adjacent; NULL != iNode; iNode = adjacent ) { /*loop the list*/
+                for ( iNode = adjacent ; NULL != iNode ; iNode = adjacent ) { /*loop the list*/
                     adjacent = d( iNode ); /*Save the adjacent node if the current node changes its links. */
                     xHandle.node = iNode;
                     retValue = f( &xHandle ); /*perform action over the node*/
