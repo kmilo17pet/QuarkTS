@@ -544,9 +544,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that represents a state callback. </p>
-<div class="fragment"><div class="line"><a class="code" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> myState_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="fragment"><div class="line"><a class="code" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> myState_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">      <a class="code" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> retVal = <a class="code" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
-<div class="line">      <span class="keywordflow">switch</span>( h-&gt;<a class="code" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ){</div>
+<div class="line">      <span class="keywordflow">switch</span> ( h-&gt;<a class="code" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">              <span class="keywordflow">break</span>;</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
@@ -587,8 +587,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that represents a surrounding callback. </p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> surrounding_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
-<div class="line">      <span class="keywordflow">switch</span>( h-&gt;<a class="code" href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">Status</a> ){</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> surrounding_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
+<div class="line">      <span class="keywordflow">switch</span> ( h-&gt;<a class="code" href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">Status</a> ) {</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a>:</div>
 <div class="line">              <span class="keywordflow">break</span>;</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>:</div>
