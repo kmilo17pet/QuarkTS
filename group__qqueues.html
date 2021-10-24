@@ -149,11 +149,11 @@ typedef <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a5
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gad063905acb9956611eb17eeed2d902d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gad063905acb9956611eb17eeed2d902d0">qQueue_IsReady</a> (const <a class="el" href="structq_queue__t.html">qQueue_t</a> *const q)</td></tr>
-<tr class="memdesc:gad063905acb9956611eb17eeed2d902d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#ga8eaa274f8b11c740c514609fdb2595a0" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> API.  <a href="group__qqueues.html#gad063905acb9956611eb17eeed2d902d0">More...</a><br /></td></tr>
+<tr class="memdesc:gad063905acb9956611eb17eeed2d902d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> API.  <a href="group__qqueues.html#gad063905acb9956611eb17eeed2d902d0">More...</a><br /></td></tr>
 <tr class="separator:gad063905acb9956611eb17eeed2d902d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8eaa274f8b11c740c514609fdb2595a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#ga8eaa274f8b11c740c514609fdb2595a0">qQueue_Setup</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, void *pData, size_t itemSize, size_t itemsCount)</td></tr>
-<tr class="memdesc:ga8eaa274f8b11c740c514609fdb2595a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures a Queue. Here, the RAM used to hold the queue data <em>pData</em> is statically allocated at compile time by the application writer.  <a href="group__qqueues.html#ga8eaa274f8b11c740c514609fdb2595a0">More...</a><br /></td></tr>
-<tr class="separator:ga8eaa274f8b11c740c514609fdb2595a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7b44df16c76bdf45d82f3b7621eec63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, void *pData, const size_t itemSize, const size_t itemsCount)</td></tr>
+<tr class="memdesc:gac7b44df16c76bdf45d82f3b7621eec63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures a Queue. Here, the RAM used to hold the queue data <em>pData</em> is statically allocated at compile time by the application writer.  <a href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">More...</a><br /></td></tr>
+<tr class="separator:gac7b44df16c76bdf45d82f3b7621eec63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad657e26fa2ff7c5bd90d34c0f96d6bb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gad657e26fa2ff7c5bd90d34c0f96d6bb9">qQueue_Reset</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q)</td></tr>
 <tr class="memdesc:gad657e26fa2ff7c5bd90d34c0f96d6bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets a queue to its original empty state.  <a href="group__qqueues.html#gad657e26fa2ff7c5bd90d34c0f96d6bb9">More...</a><br /></td></tr>
 <tr class="separator:gad657e26fa2ff7c5bd90d34c0f96d6bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,9 +178,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9c09590fb964a6c0c15d2b409861c9c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#ga9c09590fb964a6c0c15d2b409861c9c4">qQueue_Receive</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, void *dst)</td></tr>
 <tr class="memdesc:ga9c09590fb964a6c0c15d2b409861c9c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive an item from a queue (and removes it). The item is received by copy so a buffer of adequate size must be provided. The number of bytes copied into the buffer was defined when the queue was created.  <a href="group__qqueues.html#ga9c09590fb964a6c0c15d2b409861c9c4">More...</a><br /></td></tr>
 <tr class="separator:ga9c09590fb964a6c0c15d2b409861c9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadc5388a8cb5a3adad348371799d20474"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gadc5388a8cb5a3adad348371799d20474">qQueue_SendGeneric</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, void *itemToQueue, <a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a> insertMode)</td></tr>
-<tr class="memdesc:gadc5388a8cb5a3adad348371799d20474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Post an item to the back of the queue. The item is queued by copy, not by reference.  <a href="group__qqueues.html#gadc5388a8cb5a3adad348371799d20474">More...</a><br /></td></tr>
-<tr class="separator:gadc5388a8cb5a3adad348371799d20474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7cd9373ddc5f9b346ac1b0439c2747f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#gad7cd9373ddc5f9b346ac1b0439c2747f">qQueue_SendGeneric</a> (<a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, void *itemToQueue, const <a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a> insertMode)</td></tr>
+<tr class="memdesc:gad7cd9373ddc5f9b346ac1b0439c2747f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Post an item to the back of the queue. The item is queued by copy, not by reference.  <a href="group__qqueues.html#gad7cd9373ddc5f9b346ac1b0439c2747f">More...</a><br /></td></tr>
+<tr class="separator:gad7cd9373ddc5f9b346ac1b0439c2747f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7f3a6f120028be075a4e8ca5431445fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe">qTask_Attach_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_queue__t.html">qQueue_t</a> *const q, const <a class="el" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> mode, const <a class="el" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a> arg)</td></tr>
 <tr class="memdesc:ga7f3a6f120028be075a4e8ca5431445fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a Queue to the Task.  <a href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe">More...</a><br /></td></tr>
 <tr class="separator:ga7f3a6f120028be075a4e8ca5431445fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -400,7 +400,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#ga8eaa274f8b11c740c514609fdb2595a0" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> API. </p>
+<p>Check if the queue is already initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>A pointer to the Queue object </td></tr>
@@ -557,8 +557,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gadc5388a8cb5a3adad348371799d20474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadc5388a8cb5a3adad348371799d20474">&#9670;&nbsp;</a></span>qQueue_SendGeneric()</h2>
+<a id="gad7cd9373ddc5f9b346ac1b0439c2747f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad7cd9373ddc5f9b346ac1b0439c2747f">&#9670;&nbsp;</a></span>qQueue_SendGeneric()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -578,7 +578,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qqueues.html#ga4df3615b8cf11f36f7c7d368f24040cc">qQueue_Mode_t</a>&#160;</td>
           <td class="paramname"><em>insertMode</em>&#160;</td>
         </tr>
         <tr>
@@ -603,8 +603,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga8eaa274f8b11c740c514609fdb2595a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8eaa274f8b11c740c514609fdb2595a0">&#9670;&nbsp;</a></span>qQueue_Setup()</h2>
+<a id="gac7b44df16c76bdf45d82f3b7621eec63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7b44df16c76bdf45d82f3b7621eec63">&#9670;&nbsp;</a></span>qQueue_Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -624,13 +624,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>itemSize</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>itemsCount</em>&#160;</td>
         </tr>
         <tr>

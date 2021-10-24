@@ -180,18 +180,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga9b0271fe5fb2a1909abd47788ef399a9">qIOUtil_ItoA</a> (<a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> base)</td></tr>
 <tr class="memdesc:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an integer value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. If base is 10 and value is negative, the resulting string is preceded with a minus sign (-). With any other base, value is always considered unsigned.  <a href="group__qioutils.html#ga9b0271fe5fb2a1909abd47788ef399a9">More...</a><br /></td></tr>
 <tr class="separator:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaed387b627ca2f10c9ec91759abb8524f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaed387b627ca2f10c9ec91759abb8524f">qIOUtil_BtoA</a> (<a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
-<tr class="memdesc:gaed387b627ca2f10c9ec91759abb8524f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a boolean value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#gaed387b627ca2f10c9ec91759abb8524f">More...</a><br /></td></tr>
-<tr class="separator:gaed387b627ca2f10c9ec91759abb8524f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9083eb6c3c95091ccb0efc7ef95664f0"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga9083eb6c3c95091ccb0efc7ef95664f0">qIOUtil_QBtoA</a> (<a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
-<tr class="memdesc:ga9083eb6c3c95091ccb0efc7ef95664f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#ga9083eb6c3c95091ccb0efc7ef95664f0">More...</a><br /></td></tr>
-<tr class="separator:ga9083eb6c3c95091ccb0efc7ef95664f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4d698b668edc5e7801b46365d3d70691"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga4d698b668edc5e7801b46365d3d70691">qIOUtil_IsInf</a> (<a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
-<tr class="memdesc:ga4d698b668edc5e7801b46365d3d70691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is positive or negative infinity.  <a href="group__qioutils.html#ga4d698b668edc5e7801b46365d3d70691">More...</a><br /></td></tr>
-<tr class="separator:ga4d698b668edc5e7801b46365d3d70691"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b3ac5972f4654609e6507a3959b34b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga0b3ac5972f4654609e6507a3959b34b4">qIOUtil_IsNan</a> (<a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
-<tr class="memdesc:ga0b3ac5972f4654609e6507a3959b34b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is a not-a-number (NaN) value.  <a href="group__qioutils.html#ga0b3ac5972f4654609e6507a3959b34b4">More...</a><br /></td></tr>
-<tr class="separator:ga0b3ac5972f4654609e6507a3959b34b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac221ab146c69acb53b342c16820d2edc"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gac221ab146c69acb53b342c16820d2edc">qIOUtil_BtoA</a> (const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
+<tr class="memdesc:gac221ab146c69acb53b342c16820d2edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a boolean value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#gac221ab146c69acb53b342c16820d2edc">More...</a><br /></td></tr>
+<tr class="separator:gac221ab146c69acb53b342c16820d2edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae9a29cdeb06de4df3fc209193fa43275"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">qIOUtil_QBtoA</a> (const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
+<tr class="memdesc:gae9a29cdeb06de4df3fc209193fa43275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">More...</a><br /></td></tr>
+<tr class="separator:gae9a29cdeb06de4df3fc209193fa43275"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8974070a4de1db1c262aaf0588d00ff5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga8974070a4de1db1c262aaf0588d00ff5">qIOUtil_IsInf</a> (const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
+<tr class="memdesc:ga8974070a4de1db1c262aaf0588d00ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is positive or negative infinity.  <a href="group__qioutils.html#ga8974070a4de1db1c262aaf0588d00ff5">More...</a><br /></td></tr>
+<tr class="separator:ga8974070a4de1db1c262aaf0588d00ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3073092ea9146fa38affefe9535e825"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gad3073092ea9146fa38affefe9535e825">qIOUtil_IsNan</a> (const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
+<tr class="memdesc:gad3073092ea9146fa38affefe9535e825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is a not-a-number (NaN) value.  <a href="group__qioutils.html#gad3073092ea9146fa38affefe9535e825">More...</a><br /></td></tr>
+<tr class="separator:gad3073092ea9146fa38affefe9535e825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>API for input/output utilities and safe string interfaces. </p>
@@ -406,8 +406,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaed387b627ca2f10c9ec91759abb8524f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaed387b627ca2f10c9ec91759abb8524f">&#9670;&nbsp;</a></span>qIOUtil_BtoA()</h2>
+<a id="gac221ab146c69acb53b342c16820d2edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac221ab146c69acb53b342c16820d2edc">&#9670;&nbsp;</a></span>qIOUtil_BtoA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -415,7 +415,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">char* qIOUtil_BtoA </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
           <td class="paramname"><em>num</em>, </td>
         </tr>
         <tr>
@@ -569,8 +569,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga4d698b668edc5e7801b46365d3d70691"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4d698b668edc5e7801b46365d3d70691">&#9670;&nbsp;</a></span>qIOUtil_IsInf()</h2>
+<a id="ga8974070a4de1db1c262aaf0588d00ff5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8974070a4de1db1c262aaf0588d00ff5">&#9670;&nbsp;</a></span>qIOUtil_IsInf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -578,7 +578,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_IsInf </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -596,8 +596,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga0b3ac5972f4654609e6507a3959b34b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0b3ac5972f4654609e6507a3959b34b4">&#9670;&nbsp;</a></span>qIOUtil_IsNan()</h2>
+<a id="gad3073092ea9146fa38affefe9535e825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad3073092ea9146fa38affefe9535e825">&#9670;&nbsp;</a></span>qIOUtil_IsNan()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -605,7 +605,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_IsNan </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -831,8 +831,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga9083eb6c3c95091ccb0efc7ef95664f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9083eb6c3c95091ccb0efc7ef95664f0">&#9670;&nbsp;</a></span>qIOUtil_QBtoA()</h2>
+<a id="gae9a29cdeb06de4df3fc209193fa43275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae9a29cdeb06de4df3fc209193fa43275">&#9670;&nbsp;</a></span>qIOUtil_QBtoA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -840,7 +840,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">char* qIOUtil_QBtoA </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
           <td class="paramname"><em>num</em>, </td>
         </tr>
         <tr>

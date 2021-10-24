@@ -119,9 +119,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gae0bb7d0c4dd861e18f009a0f6bf70590"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qmemmang.html#gae0bb7d0c4dd861e18f009a0f6bf70590">qMemMang_Pool_Setup</a> (<a class="el" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *const mPool, void *pArea, size_t pSize)</td></tr>
-<tr class="memdesc:gae0bb7d0c4dd861e18f009a0f6bf70590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a memory pool instance. This function should be called once before any heap memory request.  <a href="group__qmemmang.html#gae0bb7d0c4dd861e18f009a0f6bf70590">More...</a><br /></td></tr>
-<tr class="separator:gae0bb7d0c4dd861e18f009a0f6bf70590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6eda783bf043945f75582f1ad580209"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">qMemMang_Pool_Setup</a> (<a class="el" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *const mPool, void *pArea, const size_t pSize)</td></tr>
+<tr class="memdesc:gab6eda783bf043945f75582f1ad580209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a memory pool instance. This function should be called once before any heap memory request.  <a href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">More...</a><br /></td></tr>
+<tr class="separator:gab6eda783bf043945f75582f1ad580209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d7a16afc6ea85ed3e80560d9f4877f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4">qMemMang_Pool_Select</a> (<a class="el" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *const mPool)</td></tr>
 <tr class="memdesc:ga4d7a16afc6ea85ed3e80560d9f4877f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the memory pool to perform heap memory requests with <a class="el" href="group__qmemmang.html#gaaf6fa2a8bd2181fa25d88e5b056f434a" title="Wrapper API for qMemMang_Allocate() in order to be compatible with malloc. Allocate a block of memory...">qMalloc()</a> and <a class="el" href="group__qmemmang.html#ga3e181f0109a557d2466895b5ea44bc98" title="Wrapper API for qMemMang_Free() in order to be compatible with free. Deallocates the space previously...">qFree()</a>.  <a href="group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4">More...</a><br /></td></tr>
 <tr class="separator:ga4d7a16afc6ea85ed3e80560d9f4877f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,8 +333,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gae0bb7d0c4dd861e18f009a0f6bf70590"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae0bb7d0c4dd861e18f009a0f6bf70590">&#9670;&nbsp;</a></span>qMemMang_Pool_Setup()</h2>
+<a id="gab6eda783bf043945f75582f1ad580209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6eda783bf043945f75582f1ad580209">&#9670;&nbsp;</a></span>qMemMang_Pool_Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,7 +354,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>pSize</em>&#160;</td>
         </tr>
         <tr>

@@ -24,6 +24,13 @@ var group__qatcli =
     [ "qATCLI_ERRORCODE", "group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a", null ],
     [ "qATCLI_CommandCallback_t", "group__qatcli.html#ga3985464bdb30735d016eb56745622f94", null ],
     [ "qATCLI_Options_t", "group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144", null ],
+    [ "qATCLI_BuiltInString_t", "group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404", [
+      [ "QATCLI_BUILTIN_STR_IDENTIFIER", "group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a57ec438a2bafe167a068ef302a5f2c91", null ],
+      [ "QATCLI_BUILTIN_STR_OK_RESPONSE", "group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404af67e7a623b76f9762d7d52b637a7b663", null ],
+      [ "QATCLI_BUILTIN_STR_ERROR_RESPONSE", "group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a494be3b00a7fc28798db794fdf9d7b83", null ],
+      [ "QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE", "group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404af1b0ff098b82704891e11385b2596adc", null ],
+      [ "QATCLI_BUILTIN_STR_TERM_EOL", "group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a8b88e79e2b916e6890d2bc34dabe5816", null ]
+    ] ],
     [ "qATCLI_CommandType_t", "group__qatcli.html#ga5e73b1b723c5a2d924eb0221f76e288f", [
       [ "qATCLI_CMDTYPE_UNDEF", "group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa960ac3e1ee09752d7d4a3beda70034e2", null ],
       [ "qATCLI_CMDTYPE_PARA", "group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e", null ],
@@ -40,13 +47,14 @@ var group__qatcli =
       [ "qATCLI_NOTFOUND", "group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379", null ],
       [ "qATCLI_OUTPUT", "group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaaf50cf96e5146ba1776c076d37d55ab2b", null ]
     ] ],
-    [ "qATCLI_CmdIterate", "group__qatcli.html#ga3aa265d9b7596bb43d5e826fe8775589", null ],
+    [ "qATCLI_CmdIterate", "group__qatcli.html#ga4be2be94e42ab1c60621325c5cb5bb58", null ],
     [ "qATCLI_CmdSubscribe", "group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33", null ],
     [ "qATCLI_Exec", "group__qatcli.html#ga0410b5b7dd03a4ea0225e3d72021bbdb", null ],
     [ "qATCLI_Input_Flush", "group__qatcli.html#ga1d034827dd62faf3de920aa189619ef8", null ],
-    [ "qATCLI_ISRHandler", "group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c", null ],
+    [ "qATCLI_ISRHandler", "group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2", null ],
     [ "qATCLI_ISRHandlerBlock", "group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2", null ],
     [ "qATCLI_Raise", "group__qatcli.html#ga21fa53455d7bfaedcff0269ae7e1e455", null ],
     [ "qATCLI_Run", "group__qatcli.html#gaa6cb92f56f3bfd470c76fee6d68d5e6a", null ],
-    [ "qATCLI_Setup", "group__qatcli.html#ga19c83427c6760ac702e37bd221073fc0", null ]
+    [ "qATCLI_SetBuiltInString", "group__qatcli.html#ga37628a48a37fcfd1a3aa473966cc85fc", null ],
+    [ "qATCLI_Setup", "group__qatcli.html#ga3a268bc78e828ca17067f89614f61756", null ]
 ];

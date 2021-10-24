@@ -168,23 +168,36 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ga5e73b1b723c5a2d924eb0221f76e288f"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to describe the available AT command types.  <a href="group__qatcli.html#ga5e73b1b723c5a2d924eb0221f76e288f">More...</a><br /></td></tr>
 <tr class="separator:ga5e73b1b723c5a2d924eb0221f76e288f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga54a1c9850d136f1390c28dbcef7ac404"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404">qATCLI_BuiltInString_t</a> { <br />
+&#160;&#160;<a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a57ec438a2bafe167a068ef302a5f2c91">QATCLI_BUILTIN_STR_IDENTIFIER</a>
+, <a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404af67e7a623b76f9762d7d52b637a7b663">QATCLI_BUILTIN_STR_OK_RESPONSE</a>
+, <a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a494be3b00a7fc28798db794fdf9d7b83">QATCLI_BUILTIN_STR_ERROR_RESPONSE</a>
+, <a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404af1b0ff098b82704891e11385b2596adc">QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE</a>
+, <br />
+&#160;&#160;<a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a8b88e79e2b916e6890d2bc34dabe5816">QATCLI_BUILTIN_STR_TERM_EOL</a>
+<br />
+ }</td></tr>
+<tr class="separator:ga54a1c9850d136f1390c28dbcef7ac404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga19c83427c6760ac702e37bd221073fc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga19c83427c6760ac702e37bd221073fc0">qATCLI_Setup</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput, const char *identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL)</td></tr>
-<tr class="memdesc:ga19c83427c6760ac702e37bd221073fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup an instance of the AT Command Command Line Interface.  <a href="group__qatcli.html#ga19c83427c6760ac702e37bd221073fc0">More...</a><br /></td></tr>
-<tr class="separator:ga19c83427c6760ac702e37bd221073fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga37628a48a37fcfd1a3aa473966cc85fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga37628a48a37fcfd1a3aa473966cc85fc">qATCLI_SetBuiltInString</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, <a class="el" href="group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404">qATCLI_BuiltInString_t</a> which, const char *str)</td></tr>
+<tr class="memdesc:ga37628a48a37fcfd1a3aa473966cc85fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a CLI built-in string to a custom one.  <a href="group__qatcli.html#ga37628a48a37fcfd1a3aa473966cc85fc">More...</a><br /></td></tr>
+<tr class="separator:ga37628a48a37fcfd1a3aa473966cc85fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3a268bc78e828ca17067f89614f61756"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756">qATCLI_Setup</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput)</td></tr>
+<tr class="memdesc:ga3a268bc78e828ca17067f89614f61756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup an instance of the AT Command Command Line Interface.  <a href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756">More...</a><br /></td></tr>
+<tr class="separator:ga3a268bc78e828ca17067f89614f61756"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">qATCLI_CmdSubscribe</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, <a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *const cmd, char *textCommand, const <a class="el" href="group__qatcli.html#ga3985464bdb30735d016eb56745622f94">qATCLI_CommandCallback_t</a> cFcn, <a class="el" href="group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144">qATCLI_Options_t</a> cmdOpt, void *param)</td></tr>
 <tr class="memdesc:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI module only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored).  <a href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">More...</a><br /></td></tr>
 <tr class="separator:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3aa265d9b7596bb43d5e826fe8775589"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga3aa265d9b7596bb43d5e826fe8775589">qATCLI_CmdIterate</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> reload)</td></tr>
-<tr class="memdesc:ga3aa265d9b7596bb43d5e826fe8775589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga3aa265d9b7596bb43d5e826fe8775589">More...</a><br /></td></tr>
-<tr class="separator:ga3aa265d9b7596bb43d5e826fe8775589"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad1ef1060c9574a8dff57e8a048c5803c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c">qATCLI_ISRHandler</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, char c)</td></tr>
-<tr class="memdesc:gad1ef1060c9574a8dff57e8a048c5803c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a>  <a href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c">More...</a><br /></td></tr>
-<tr class="separator:gad1ef1060c9574a8dff57e8a048c5803c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4be2be94e42ab1c60621325c5cb5bb58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga4be2be94e42ab1c60621325c5cb5bb58">qATCLI_CmdIterate</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> reload)</td></tr>
+<tr class="memdesc:ga4be2be94e42ab1c60621325c5cb5bb58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga4be2be94e42ab1c60621325c5cb5bb58">More...</a><br /></td></tr>
+<tr class="separator:ga4be2be94e42ab1c60621325c5cb5bb58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2">qATCLI_ISRHandler</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const char c)</td></tr>
+<tr class="memdesc:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a>  <a href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2">More...</a><br /></td></tr>
+<tr class="separator:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga514944cd933323378b33d3f3a557f1a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2">qATCLI_ISRHandlerBlock</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, char *pData, const size_t n)</td></tr>
-<tr class="memdesc:ga514944cd933323378b33d3f3a557f1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a>  <a href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2">More...</a><br /></td></tr>
+<tr class="memdesc:ga514944cd933323378b33d3f3a557f1a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a>  <a href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2">More...</a><br /></td></tr>
 <tr class="separator:ga514944cd933323378b33d3f3a557f1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga21fa53455d7bfaedcff0269ae7e1e455"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga21fa53455d7bfaedcff0269ae7e1e455">qATCLI_Raise</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const char *cmd)</td></tr>
 <tr class="memdesc:ga21fa53455d7bfaedcff0269ae7e1e455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a command to the specified AT Command Line Interface instance.  <a href="group__qatcli.html#ga21fa53455d7bfaedcff0269ae7e1e455">More...</a><br /></td></tr>
@@ -267,6 +280,32 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga54a1c9850d136f1390c28dbcef7ac404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54a1c9850d136f1390c28dbcef7ac404">&#9670;&nbsp;</a></span>qATCLI_BuiltInString_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404">qATCLI_BuiltInString_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404a57ec438a2bafe167a068ef302a5f2c91"></a>QATCLI_BUILTIN_STR_IDENTIFIER&#160;</td><td class="fielddoc"><p>To select the device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404af67e7a623b76f9762d7d52b637a7b663"></a>QATCLI_BUILTIN_STR_OK_RESPONSE&#160;</td><td class="fielddoc"><p>To select the output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404a494be3b00a7fc28798db794fdf9d7b83"></a>QATCLI_BUILTIN_STR_ERROR_RESPONSE&#160;</td><td class="fielddoc"><p>To select the output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a> or any <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE</a>(#) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404af1b0ff098b82704891e11385b2596adc"></a>QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE&#160;</td><td class="fielddoc"><p>To select the output message when input does not match with any of the available commands </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404a8b88e79e2b916e6890d2bc34dabe5816"></a>QATCLI_BUILTIN_STR_TERM_EOL&#160;</td><td class="fielddoc"><p>To select the End-Of-Line string printed out after any of the CLI messages </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ga5e73b1b723c5a2d924eb0221f76e288f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5e73b1b723c5a2d924eb0221f76e288f">&#9670;&nbsp;</a></span>qATCLI_CommandType_t</h2>
 
@@ -328,8 +367,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga3aa265d9b7596bb43d5e826fe8775589"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3aa265d9b7596bb43d5e826fe8775589">&#9670;&nbsp;</a></span>qATCLI_CmdIterate()</h2>
+<a id="ga4be2be94e42ab1c60621325c5cb5bb58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4be2be94e42ab1c60621325c5cb5bb58">&#9670;&nbsp;</a></span>qATCLI_CmdIterate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,7 +382,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
           <td class="paramname"><em>reload</em>&#160;</td>
         </tr>
         <tr>
@@ -507,8 +546,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gad1ef1060c9574a8dff57e8a048c5803c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad1ef1060c9574a8dff57e8a048c5803c">&#9670;&nbsp;</a></span>qATCLI_ISRHandler()</h2>
+<a id="gaa3787e31d4bfa59317e79097bc23a6c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa3787e31d4bfa59317e79097bc23a6c2">&#9670;&nbsp;</a></span>qATCLI_ISRHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -522,7 +561,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char&#160;</td>
+          <td class="paramtype">const char&#160;</td>
           <td class="paramname"><em>c</em>&#160;</td>
         </tr>
         <tr>
@@ -577,7 +616,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gad1ef1060c9574a8dff57e8a048c5803c" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a> </p>
+<p>Feed the CLI input with a string. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR only get a single char, use instead <a class="el" href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2" title="Feed the CLI input with a single character. This call is mandatory from an interrupt context....">qATCLI_ISRHandler()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
@@ -645,7 +684,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Run the AT Command Line Interface when the input is ready. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskcreation.html#ga04881a7018481c9ff7daa1b17ef16d9d" title="Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as a...">qOS_Add_ATCLITask()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2" title="Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as a...">qOS_Add_ATCLITask()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
@@ -656,8 +695,59 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga19c83427c6760ac702e37bd221073fc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga19c83427c6760ac702e37bd221073fc0">&#9670;&nbsp;</a></span>qATCLI_Setup()</h2>
+<a id="ga37628a48a37fcfd1a3aa473966cc85fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga37628a48a37fcfd1a3aa473966cc85fc">&#9670;&nbsp;</a></span>qATCLI_SetBuiltInString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qATCLI_SetBuiltInString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const&#160;</td>
+          <td class="paramname"><em>cli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404">qATCLI_BuiltInString_t</a>&#160;</td>
+          <td class="paramname"><em>which</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a CLI built-in string to a custom one. </p>
+<dl class="section note"><dt>Note</dt><dd>CLI Built-in strings will be written to their default values. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">outFcn</td><td>The basic output-char wrapper function. All the CLI responses will be printed-out through this function. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pInput</td><td>A memory location to store the cli input (Mandatory) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sizeInput</td><td>The size of the memory allocated in <em>pInput</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pOutput</td><td>A memory location to store the CLI output </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sizeOutput</td><td>The size of the memory allocated in <em>pOutput</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">which</td><td>To select which built-in string will be changed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>The value of the selected string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga3a268bc78e828ca17067f89614f61756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3a268bc78e828ca17067f89614f61756">&#9670;&nbsp;</a></span>qATCLI_Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -696,37 +786,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>sizeOutput</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>identifier</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>OK_Response</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>ERROR_Response</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>NOTFOUND_Response</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>term_EOL</em>&#160;</td>
+          <td class="paramname"><em>sizeOutput</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -737,7 +797,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Setup an instance of the AT Command Command Line Interface. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskcreation.html#ga04881a7018481c9ff7daa1b17ef16d9d" title="Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as a...">qOS_Add_ATCLITask()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2" title="Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as a...">qOS_Add_ATCLITask()</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>CLI Built-in strings will be written to their default values. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
