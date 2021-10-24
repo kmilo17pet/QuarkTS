@@ -41,7 +41,7 @@
                                 <check name="ATH-cmp-unsign-neg" enabled="true" />
                                 <check name="ATH-cmp-unsign-pos" enabled="true" />
                                 <check name="ATH-div-0-assign" enabled="true" />
-                                <check name="ATH-div-0-cmp-aft" enabled="false" />
+                                <check name="ATH-div-0-cmp-aft" enabled="true" />
                                 <check name="ATH-div-0-cmp-bef" enabled="true" />
                                 <check name="ATH-div-0-interval" enabled="true" />
                                 <check name="ATH-div-0-pos" enabled="true" />
@@ -54,7 +54,7 @@
                                 <check name="ATH-neg-check-nonneg" enabled="true" />
                                 <check name="ATH-neg-check-pos" enabled="true" />
                                 <check name="ATH-new-overrun" enabled="true" />
-                                <check name="ATH-overflow-cast" enabled="false" />
+                                <check name="ATH-overflow-cast" enabled="true" />
                                 <check name="ATH-overflow" enabled="true" />
                                 <check name="ATH-shift-bounds" enabled="true" />
                                 <check name="ATH-shift-neg" enabled="true" />
@@ -100,7 +100,7 @@
                                 <check name="CPU-return-ref-to-class-data" enabled="true" />
                             </group>
                             <group name="DECL" enabled="true">
-                                <check name="DECL-implicit-int" enabled="false" />
+                                <check name="DECL-implicit-int" enabled="true" />
                             </group>
                             <group name="DEFINE" enabled="true">
                                 <check name="DEFINE-hash-multiple" enabled="true" />
@@ -125,8 +125,8 @@
                                 <check name="FPT-misuse" enabled="true" />
                             </group>
                             <group name="FUNC" enabled="true">
-                                <check name="FUNC-implicit-decl" enabled="false" />
-                                <check name="FUNC-unprototyped-all" enabled="false" />
+                                <check name="FUNC-implicit-decl" enabled="true" />
+                                <check name="FUNC-unprototyped-all" enabled="true" />
                                 <check name="FUNC-unprototyped-used" enabled="true" />
                             </group>
                             <group name="INCLUDE" enabled="true">
@@ -898,7 +898,7 @@
                                 <check name="MISRAC2012-Rule-8.10" enabled="true" />
                                 <check name="MISRAC2012-Rule-8.11" enabled="true" />
                                 <check name="MISRAC2012-Rule-8.12" enabled="true" />
-                                <check name="MISRAC2012-Rule-8.13" enabled="false" />
+                                <check name="MISRAC2012-Rule-8.13" enabled="true" />
                                 <check name="MISRAC2012-Rule-8.14" enabled="true" />
                             </group>
                             <group name="MISRAC2012-Rule-9" enabled="true">

@@ -466,6 +466,7 @@ void scheduler_Release(qEvent_t e){
 }
 /*============================================================================*/
 qATCLI_Response_t at_test1_callback( qATCLI_Handler_t h ){
+    (void)h;
     return qATCLI_OK;
 }
 /*============================================================================*/
@@ -565,7 +566,7 @@ void test_OS_API( void ){
         char cliInput[ 128 ]= {0};
         char cliOutput[ 128 ]= {0};
         qATCLI_Command_t at_test1, at_test2;
-        qATCLI_Setup( &atcli, putcharfcn, cliInput, sizeof(cliInput), cliOutput, sizeof(cliOutput), NULL, NULL, NULL, NULL, NULL );
+        qATCLI_Setup( &atcli, putcharfcn, cliInput, sizeof(cliInput), cliOutput, sizeof(cliOutput) );
         qATCLI_CmdSubscribe( &atcli, &at_test1, "at+test1", at_test1_callback, QATCLI_CMDTYPE_ACT, NULL );
         qATCLI_CmdSubscribe( &atcli, &at_test2, "at+test2", at_test1_callback, QATCLI_CMDTYPE_ACT, NULL );
         qOS_Add_ATCLITask( &CLITask, &atcli, qMedium_Priority, NULL );
