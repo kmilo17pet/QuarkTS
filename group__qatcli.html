@@ -732,11 +732,6 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">outFcn</td><td>The basic output-char wrapper function. All the CLI responses will be printed-out through this function. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pInput</td><td>A memory location to store the cli input (Mandatory) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sizeInput</td><td>The size of the memory allocated in <em>pInput</em> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pOutput</td><td>A memory location to store the CLI output </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sizeOutput</td><td>The size of the memory allocated in <em>pOutput</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">which</td><td>To select which built-in string will be changed. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>The value of the selected string. </td></tr>
   </table>
@@ -807,11 +802,6 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sizeInput</td><td>The size of the memory allocated in <em>pInput</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pOutput</td><td>A memory location to store the CLI output </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sizeOutput</td><td>The size of the memory allocated in <em>pOutput</em> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">identifier</td><td>The device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">OK_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ERROR_Response</td><td>The output message when a command callback returns <a class="el" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a> or any <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE</a>(#) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">NOTFOUND_Response</td><td>The output message when input doesn't match with any of the available commands </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">term_EOL</td><td>The End-Of-Line string printed out after any of the CLI messages </td></tr>
   </table>
   </dd>
 </dl>
