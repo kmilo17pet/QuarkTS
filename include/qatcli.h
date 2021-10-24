@@ -264,12 +264,6 @@
     * @brief Set a CLI built-in string to a custom one.
     * @note CLI Built-in strings will be written to their default values.
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] outFcn The basic output-char wrapper function. All the CLI responses will be 
-    * printed-out through this function.
-    * @param[in] pInput A memory location to store the cli input (Mandatory)
-    * @param[in] sizeInput The size of the memory allocated in @a pInput 
-    * @param[in] pOutput A memory location to store the CLI output
-    * @param[in] sizeOutput The size of the memory allocated in @a pOutput 
     * @param[in] which To select which built-in string will be changed.
     * @param[in] str The value of the selected string.
     * @return #qTrue on success, otherwise return #qFalse.
@@ -287,14 +281,6 @@
     * @param[in] sizeInput The size of the memory allocated in @a pInput 
     * @param[in] pOutput A memory location to store the CLI output
     * @param[in] sizeOutput The size of the memory allocated in @a pOutput 
-    * @param[in] identifier The device identifier string. This string will be printed-out
-    * after a call to the ATCLI_DEFAULT_ID_COMMAND
-    * @param[in] OK_Response The output message when a command callback returns ::qATCLI_OK.  
-    * @param[in] ERROR_Response  The output message when a command callback returns ::qATCLI_ERROR 
-    * or any #qATCLI_ERRORCODE(#)
-    * @param[in] NOTFOUND_Response The output message when input doesn't match with any of 
-    * the available commands
-    * @param[in] term_EOL The End-Of-Line string printed out after any of the CLI messages 
     * @return #qTrue on success, otherwise return #qFalse.
     */   
     qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput );
