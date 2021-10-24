@@ -610,7 +610,7 @@
         * @param[in] action QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
         * @return #qTrue on success. Otherwise return #qFalse.
         */     
-        qBool_t qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action );
+        qBool_t qTask_EventFlags_Modify( qTask_t * const Task, const qTask_Flag_t flags, const qBool_t action );
 
         /**
         * @brief Returns the current value of the task's EventFlags. 
@@ -640,7 +640,7 @@
         * EventFlags.
         * @return #qTrue if the condition is meet, otherwise return #qFalse.
         */           
-        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, qBool_t clearOnExit, qBool_t checkForAll );
+        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, const qBool_t clearOnExit, const qBool_t checkForAll );
 
         /** @}*/
     #endif

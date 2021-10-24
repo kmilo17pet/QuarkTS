@@ -63,7 +63,40 @@ static void qATCLI_Puts_Wrapper( const char *s )
     (void)qIOUtil_OutputString( cli_OutCharFcn, NULL, s, qFalse ); 
 }
 /*============================================================================*/
-qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput, const char *identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL )
+qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, qATCLI_BuiltInString_t which, const char *str )
+{
+    qBool_t retValue = qTrue;
+
+    if ( NULL != cli ) {
+        switch ( which ) {
+            case QATCLI_BUILTIN_STR_IDENTIFIER:
+                cli->qPrivate.Identifier = ( NULL != str )? str : QATCLI_DEFAULT_DEVID_STRING;
+                break;
+            case QATCLI_BUILTIN_STR_OK_RESPONSE:
+                cli->qPrivate.OK_Response = ( NULL != str )? str : QATCLI_DEFAULT_OK_RSP_STRING;
+                break;
+            case QATCLI_BUILTIN_STR_ERROR_RESPONSE:
+                cli->qPrivate.ERROR_Response = ( NULL != str )? str : QATCLI_DEFAULT_ERROR_RSP_STRING;
+                break;
+            case QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE:
+                cli->qPrivate.NOTFOUND_Response = ( NULL != str )? str : QATCLI_DEFAULT_NOTFOUND_RSP_STRING;
+                break;        
+            case QATCLI_BUILTIN_STR_TERM_EOL:
+                cli->qPrivate.term_EOL = ( NULL != str )? str : QATCLI_DEFAULT_EOL_STRING;
+                break;           
+            default:
+                retValue = qFalse;
+                break;              
+        }
+    }
+    else {
+        retValue = qFalse;
+    }
+
+    return retValue;
+}
+/*============================================================================*/
+qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput )
 {
     qBool_t retValue = qFalse;
 
@@ -71,11 +104,11 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInpu
         (void)memset( cli, 0 , sizeof(qATCLI_t) );
         cli->qPrivate.First  = NULL;
         cli->qPrivate.OutputFcn = outFcn;
-        cli->qPrivate.Identifier = ( NULL != identifier )? identifier : QATCLI_DEFAULT_DEVID_STRING;
-        cli->qPrivate.OK_Response = ( NULL != OK_Response )? OK_Response : QATCLI_DEFAULT_OK_RSP_STRING;
-        cli->qPrivate.ERROR_Response = ( NULL != ERROR_Response )? ERROR_Response : QATCLI_DEFAULT_ERROR_RSP_STRING;
-        cli->qPrivate.NOTFOUND_Response = ( NULL != NOTFOUND_Response )? NOTFOUND_Response : QATCLI_DEFAULT_NOTFOUND_RSP_STRING;
-        cli->qPrivate.term_EOL = ( NULL != term_EOL )? term_EOL : QATCLI_DEFAULT_EOL_STRING;
+        cli->qPrivate.Identifier = QATCLI_DEFAULT_DEVID_STRING;
+        cli->qPrivate.OK_Response = QATCLI_DEFAULT_OK_RSP_STRING;
+        cli->qPrivate.ERROR_Response = QATCLI_DEFAULT_ERROR_RSP_STRING;
+        cli->qPrivate.NOTFOUND_Response = QATCLI_DEFAULT_NOTFOUND_RSP_STRING;
+        cli->qPrivate.term_EOL = QATCLI_DEFAULT_EOL_STRING;
         cli->qPrivate.SizeOutput = sizeOutput;
         cli->qPrivate.Input.Buffer = (char*)pInput;
         cli->qPrivate.Input.Size = sizeInput;
@@ -134,7 +167,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const cmd,
     return retValue;
 }
 /*============================================================================*/
-qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload )
+qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, const qBool_t reload )
 {
     static qATCLI_Command_t *iterator = NULL;
     qATCLI_Command_t *iCmd = NULL;
@@ -156,7 +189,7 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload )
     return iCmd;
 } 
 /*============================================================================*/
-qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c )
+qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, const char c )
 {
     qBool_t retValue = qFalse;
     

@@ -288,7 +288,7 @@
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */      
-    char* qIOUtil_BtoA( qBool_t num, char *str );
+    char* qIOUtil_BtoA( const qBool_t num, char *str );
 
     /**
     * @brief Converts a qBool_t value to a null-terminated string. Input is considered true
@@ -298,21 +298,21 @@
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */     
-    char* qIOUtil_QBtoA( qBool_t num, char *str );
+    char* qIOUtil_QBtoA( const qBool_t num, char *str );
 
     /**
     * @brief Determines if the given floating point number arg is positive or negative infinity.
     * @param[in] f Floating point value(32bits).
     * @return #qTrue is argument has an infinite value, otherwise #qFalse.
     */      
-    qBool_t qIOUtil_IsInf( qFloat32_t f );
+    qBool_t qIOUtil_IsInf( const qFloat32_t f );
 
     /**
     * @brief Determines if the given floating point number arg is a not-a-number (NaN) value. 
     * @param[in] f Floating point value(32bits).
     * @return #qTrue is argument is NaN, otherwise #qFalse
     */       
-    qBool_t qIOUtil_IsNan( qFloat32_t f );
+    qBool_t qIOUtil_IsNan( const qFloat32_t f );
 
     /** @}*/
 

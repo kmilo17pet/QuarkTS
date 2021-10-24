@@ -36,7 +36,7 @@ qBool_t qSTimer_FreeRun( qSTimer_t * const t, const qTime_t tTime )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) { 
-        if ( QSTIMER_ARMED == qSTimer_Status( t ) ){  
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {  
             if ( qSTimer_Expired( t ) ) {
                 retValue = qSTimer_Disarm( t ); 
             }
@@ -80,7 +80,7 @@ qClock_t qSTimer_Remaining( const qSTimer_t * const t )
     qClock_t retValue = QSTIMER_REMAINING_IN_DISARMED_STATE;
 
     if ( NULL != t ) {
-        if( QSTIMER_ARMED == qSTimer_Status( t ) ) {
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
             retValue = t->TV - qSTimer_Elapsed( t );
         }
     }

@@ -118,7 +118,7 @@
     * @param[in] itemsCount The maximum number of items the queue can hold.
     * @return #qTrue on success, otherwise returns #qFalse.
     */       
-    qBool_t qQueue_Setup( qQueue_t * const q, void* pData, size_t itemSize, size_t itemsCount );
+    qBool_t qQueue_Setup( qQueue_t * const q, void* pData, const size_t itemSize, const size_t itemsCount );
    
     /**
     * @brief Resets a queue to its original empty state.
@@ -192,7 +192,7 @@
     * the queue (for high priority messages).
     * @return #qTrue on successful add, #qFalse if not added
     */      
-    qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, qQueue_Mode_t insertMode );
+    qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, const qQueue_Mode_t insertMode );
     
     /** @}*/
 

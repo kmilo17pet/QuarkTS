@@ -25,7 +25,7 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
             k = k | (size_t)( k >> i ); /*CERT-INT34-C_a deviation allowed*/
             /*cstat +CERT-INT34-C_a*/
         }
-        k = (size_t)( ( k + 1u ) >> 1u);
+        k = (size_t)( ( k + 1u ) >> 1u );
     }
     
     return ( k < r )? ( k * 2u ) : k;

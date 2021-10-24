@@ -112,7 +112,7 @@ qBool_t qList_Insert( qList_t *const l, void * const node, const qList_Position_
 
             newnode = qList_NodeInit( node );
             retValue = qTrue;
-            if ( NULL == l->head ){ /*list is empty*/
+            if ( NULL == l->head ) { /*list is empty*/
                 l->head = newnode; 
                 l->tail = newnode;
             }
@@ -390,7 +390,7 @@ qBool_t qList_IteratorSet( qList_Iterator_t *i, qList_t *const l, void *nodeOffs
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         offset = (qList_Node_t*)nodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        if ( NULL != offset) {
+        if ( NULL != offset ) {
             if ( l == offset->container ) {
                 i->next = offset;
                 retValue = qTrue;

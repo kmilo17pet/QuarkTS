@@ -26,7 +26,7 @@ qBool_t qQueue_IsReady( const qQueue_t * const q )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qQueue_Setup( qQueue_t * const q, void* pData, size_t itemSize, size_t itemsCount )
+qBool_t qQueue_Setup( qQueue_t * const q, void* pData, const size_t itemSize, const size_t itemsCount )
 {
     qBool_t retValue = qFalse;
 
@@ -66,7 +66,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const q )
 {
     qBool_t retValue = qTrue;
 
-    if ( NULL != q ){
+    if ( NULL != q ) {
         retValue =  ( 0u == q->qPrivate.ItemsWaiting )? qTrue : qFalse;
     }
     
@@ -201,7 +201,7 @@ qBool_t qQueue_Receive( qQueue_t * const q, void *dst )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, qQueue_Mode_t insertMode )
+qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, const qQueue_Mode_t insertMode )
 {
     qBool_t retValue = qFalse;
     

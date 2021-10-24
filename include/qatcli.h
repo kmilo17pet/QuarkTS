@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.60
+ * @version 2.61
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -238,7 +238,7 @@
     */
     typedef struct _qATCLI_Command_s {
         /*! @cond  */
-        struct _qATCLI_Command_Private_s {                               /**< Linked-list pointers. */   
+        struct _qATCLI_Command_Private_s {                      /*< Linked-list pointers. */   
             qATCLI_CommandCallback_t CommandCallback;           /*< The command callback. */
             struct _qATCLI_Command_s *Next;                     /*< Points to the next command in the list. */
             qATCLI_Options_t CmdOpt;                            /*< The command options. */
@@ -251,9 +251,35 @@
     }
     qATCLI_Command_t;
 
+    typedef enum {
+        QATCLI_BUILTIN_STR_IDENTIFIER,                          /**< To select the device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND*/
+        QATCLI_BUILTIN_STR_OK_RESPONSE,                         /**< To select the output message when a command callback returns ::qATCLI_OK.*/
+        QATCLI_BUILTIN_STR_ERROR_RESPONSE,                      /**< To select the output message when a command callback returns ::qATCLI_ERROR or any #qATCLI_ERRORCODE(#)*/
+        QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE,                   /**< To select the output message when input does not match with any of the available commands */
+        QATCLI_BUILTIN_STR_TERM_EOL,                            /**< To select the End-Of-Line string printed out after any of the CLI messages */
+    }
+    qATCLI_BuiltInString_t;
+
+    /**
+    * @brief Set a CLI built-in string to a custom one.
+    * @note CLI Built-in strings will be written to their default values.
+    * @param[in] cli A pointer to the AT Command Line Interface instance
+    * @param[in] outFcn The basic output-char wrapper function. All the CLI responses will be 
+    * printed-out through this function.
+    * @param[in] pInput A memory location to store the cli input (Mandatory)
+    * @param[in] sizeInput The size of the memory allocated in @a pInput 
+    * @param[in] pOutput A memory location to store the CLI output
+    * @param[in] sizeOutput The size of the memory allocated in @a pOutput 
+    * @param[in] which To select which built-in string will be changed.
+    * @param[in] str The value of the selected string.
+    * @return #qTrue on success, otherwise return #qFalse.
+    */   
+    qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, qATCLI_BuiltInString_t which, const char *str );
+
     /**
     * @brief Setup an instance of the AT Command Command Line Interface.
     * @see qOS_Add_ATCLITask()
+    * @note CLI Built-in strings will be written to their default values.
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] outFcn The basic output-char wrapper function. All the CLI responses will be 
     * printed-out through this function.
@@ -271,7 +297,7 @@
     * @param[in] term_EOL The End-Of-Line string printed out after any of the CLI messages 
     * @return #qTrue on success, otherwise return #qFalse.
     */   
-    qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput, const char *identifier, const char *OK_Response, const char *ERROR_Response, const char *NOTFOUND_Response, const char *term_EOL );
+    qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput );
 
     /**
     * @brief This function subscribes the CLI instance to a specific command with an associated 
@@ -311,7 +337,7 @@
     * the list of subscribed commands.
     * @return The current iterated command. NULL when no more commands are available.
     */ 
-    qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, qBool_t reload );
+    qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, const qBool_t reload );
 
     /**
     * @brief Feed the CLI input with a single character. This call is mandatory 
@@ -321,7 +347,7 @@
     * @param[in] c The incoming byte/char to the input. 
     * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
-    qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, char c );
+    qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, const char c );
 
     /**
     * @brief Feed the CLI input with a string. This call is mandatory 

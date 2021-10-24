@@ -479,7 +479,7 @@ char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base )
     return str;
 }
 /*============================================================================*/
-char* qIOUtil_BtoA( qBool_t num, char *str )
+char* qIOUtil_BtoA( const qBool_t num, char *str )
 {
     if ( NULL != str ) {
         if ( qTrue == num ) {
@@ -493,7 +493,7 @@ char* qIOUtil_BtoA( qBool_t num, char *str )
     return str;
 }
 /*============================================================================*/
-char* qIOUtil_QBtoA( qBool_t num, char *str )
+char* qIOUtil_QBtoA( const qBool_t num, char *str )
 {
     if ( NULL != str ) {
         switch ( (qUINT8_t)num ) {
@@ -518,7 +518,7 @@ char* qIOUtil_QBtoA( qBool_t num, char *str )
     return str;
 }
 /*============================================================================*/
-qBool_t qIOUtil_IsInf( qFloat32_t f ) 
+qBool_t qIOUtil_IsInf( const qFloat32_t f ) 
 {
     qUINT32_t u = 0uL;
 
@@ -527,12 +527,12 @@ qBool_t qIOUtil_IsInf( qFloat32_t f )
     return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
-qBool_t qIOUtil_IsNan( qFloat32_t f )
+qBool_t qIOUtil_IsNan( const qFloat32_t f )
 {
     qUINT32_t u = 0uL;
 
     (void)memcpy( &u, &f, sizeof(u) );
 
-    return ( ( 0x7F800000uL == ( u & 0x7F800000uL ) ) && ( 0uL != (u & 0x7FFFFFuL) ) )? qTrue : qFalse;
+    return ( ( 0x7F800000uL == ( u & 0x7F800000uL ) ) && ( 0uL != ( u & 0x7FFFFFuL ) ) )? qTrue : qFalse;
 }
 /*============================================================================*/

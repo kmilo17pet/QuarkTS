@@ -60,7 +60,7 @@ qTime_t qClock_Convert2Time( const qClock_t t )
             return (qTime_t)( t/TimmingBase );
         #else
             /*cstat -CERT-FLP36-C*/
-            return (qTime_t)(TimmingBase*((qTime_t)t)); /*CERT-FLP36-C deviation allowed*/
+            return (qTime_t)(TimmingBase*( (qTime_t)t) ); /*CERT-FLP36-C deviation allowed*/
             /*cstat +CERT-FLP36-C*/
         #endif      
     #endif      

@@ -45,8 +45,8 @@
     extern qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task );
     extern qTask_t* qOS_Get_TaskRunning( void );
 
-    extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, qUINT32_t flag );
-    extern void qOS_Set_TaskFlags( qTask_t * const Task, qUINT32_t flags, qBool_t value );
+    extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, const qUINT32_t flag );
+    extern void qOS_Set_TaskFlags( qTask_t * const Task, const qUINT32_t flags, const qBool_t value );
 
     #if ( Q_ALLOW_TASK_NAMING == 1 )
         extern qTask_t* qOS_FindTaskByName( const char *name );

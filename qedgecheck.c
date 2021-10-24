@@ -15,9 +15,9 @@
 #define _QEDGECHECK_REG_FCN_DEF(NAME, TYPE)     _QEDGECHECK_REG_FCN_DEC(NAME) \
                                                 { \
                                                     TYPE Register, Mask, Bit = (TYPE)PinNumber; \
-                                                    Mask = (TYPE)((TYPE)1uL << Bit); \
-                                                    Register = *((const TYPE*)Address); \
-                                                    return ( (TYPE)0 != (Register & Mask) ); \
+                                                    Mask = (TYPE)( (TYPE)1uL << Bit ); \
+                                                    Register = *( (const TYPE*)Address ); \
+                                                    return ( (TYPE)0u != ( Register & Mask ) ); \
                                                 } \
 
 /*! @cond  */
@@ -83,7 +83,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const ec )
             
             for ( n = ec->qPrivate.Head ; NULL != n ; n = n->qPrivate.Next ) { /*iterate through all the input-nodes*/
                 v = pinReader( n->qPrivate.Port, n->qPrivate.Pin ); /*read the pin level*/        
-                if ( ec->qPrivate.State >= QEDGECHECK_CHECK ){ /*check state*/
+                if ( ec->qPrivate.State >= QEDGECHECK_CHECK ) { /*check state*/
                     if ( n->qPrivate.PreviousPinValue != v ) { /*check if the input level change since the last inputs-sweep*/
                         n->qPrivate.Status = (qBool_t)qUnknown; /*change detected, put the node on unknown status until the debounce wait finish*/
                         ec->qPrivate.State++; /* just to know that at least one node changed its state(count of nodes subject to the range of qUINT8_t)*/
@@ -98,7 +98,7 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const ec )
                     }      
                     n->qPrivate.PreviousPinValue = v; /*keep the previous level*/
                 }
-                else{
+                else {
                     /*nothing to do*/
                 }
             }       

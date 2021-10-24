@@ -93,7 +93,7 @@
     * @param[in] pSize The size of the memory block pointed by @a pArea
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */      
-    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, size_t pSize );
+    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, const size_t pSize );
 
     /**
     * @brief Select the memory pool to perform heap memory requests with qMalloc() and qFree().

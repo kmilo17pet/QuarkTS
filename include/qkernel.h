@@ -199,7 +199,7 @@
     * all of the arguments and pass a pointer to that structure.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */    
-    qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t callbackFcn, qPriority_t p, qTime_t t, qIteration_t n, qState_t init, void* arg );
+    qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void* arg );
 
     /**
     * @brief Add a task to the scheduling scheme.  This API creates a task with a #qDisabled 
@@ -216,7 +216,7 @@
     * all of the arguments and pass a pointer to that structure.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */       
-    qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t callbackFcn, qPriority_t p, void* arg );
+    qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t callbackFcn, const qPriority_t p, void* arg );
     #if ( Q_FSM == 1)
         /**
         * @brief Add a task to the scheduling scheme running a dedicated state-machine. 
@@ -237,7 +237,7 @@
         * all of the arguments and pass a pointer to that structure.
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */     
-        qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, qPriority_t p, qTime_t t, qState_t init, void *arg );                  
+        qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, const qPriority_t p, const qTime_t t, const qState_t init, void *arg );                  
     #endif
 
     #if ( Q_ATCLI == 1)
@@ -256,7 +256,7 @@
         * all of the arguments and pass a pointer to that structure.
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */       
-        qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, qPriority_t p, void *arg );
+        qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, const qPriority_t p, void *arg );
     #endif
 
     /**

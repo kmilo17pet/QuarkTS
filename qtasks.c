@@ -13,7 +13,7 @@ qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata )
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != Task ) ) {
+    if ( NULL != Task ) {
         if ( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ) { /*to avoid side effects - MISRAC2012-Rule-13.5*/
             ++Task->qPrivate.Notification;
             Task->qPrivate.AsyncData = eventdata;
@@ -40,7 +40,7 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  )
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        if( Task->qPrivate.Notification > (qNotifier_t)0 ) {
+        if ( Task->qPrivate.Notification > (qNotifier_t)0 ) {
             retValue = qTrue;
         }
         else {
@@ -53,7 +53,7 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  )
     return retValue;
 }
 /*============================================================================*/ 
-qState_t qTask_Get_State( const qTask_t * const Task)
+qState_t qTask_Get_State( const qTask_t * const Task )
 {
     qState_t retValue = qAsleep;
 
@@ -254,7 +254,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const q, const qQue
 #endif /* #if ( Q_QUEUES == 1 ) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
-qBool_t qTask_EventFlags_Modify( qTask_t * const Task, qTask_Flag_t flags, qBool_t action )
+qBool_t qTask_EventFlags_Modify( qTask_t * const Task, const qTask_Flag_t flags, const qBool_t action )
 {
     qBool_t retValue = qFalse;
 
@@ -278,7 +278,7 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, qBool_t clearOnExit, qBool_t checkForAll )
+qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, const qBool_t clearOnExit, const qBool_t checkForAll )
 {
     qBool_t retValue = qFalse;
     

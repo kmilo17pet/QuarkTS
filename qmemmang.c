@@ -21,7 +21,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool );
 static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_BlockConnect_t *blockToInsert );
 
 /*============================================================================*/
-qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, size_t pSize )
+qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, const size_t pSize )
 {
     qBool_t retValue = qFalse;
 
@@ -92,13 +92,13 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
         (void)qMemMang_Pool_Setup( mPool, mPool->qPrivate.PoolMemory, (size_t)Q_DEFAULT_HEAP_SIZE );
     }
 
-    mPool->qPrivate.Start.BlockSize = (size_t)0;
+    mPool->qPrivate.Start.BlockSize = (size_t)0u;
     mPool->qPrivate.Start.Next = NULL;
-    mPool->qPrivate.FreeBytesRemaining = (size_t)0;
+    mPool->qPrivate.FreeBytesRemaining = (size_t)0u;
     /*cstat -MISRAC2012-Rule-11.4 -CERT-INT36-C -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     address = (qAddress_t)mPool->qPrivate.PoolMemory; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
     if ( 0uL != ( address & ByteAlignmentMask ) ) {
-        address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 );
+        address += ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u );
         address &= ~ByteAlignmentMask;
         totalPoolSize -= address - (qAddress_t)mPool->qPrivate.PoolMemory; /*MISRAC2012-Rule-11.4 deviation allowed*/
     }
@@ -106,7 +106,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP36-C_a -CERT-EXP39-C_d*/
     mPool->qPrivate.Start.Next = ( qMemMang_BlockConnect_t* )aligned; /* Start is used to hold a pointer to the first item in the list of free blocks*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP36-C_a +CERT-EXP39-C_d*/
-    mPool->qPrivate.Start.BlockSize = (size_t)0;
+    mPool->qPrivate.Start.BlockSize = (size_t)0u;
     xAddrTmp = (qAddress_t)aligned; /*MISRAC2012-Rule-11.4 deviation allowed*/
     address = xAddrTmp + totalPoolSize; /*MISRAC2004-17.4_a deviation allowed*/
     address -= HeapStructSize;
@@ -114,7 +114,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     /* End is used to mark the end of the list of free blocks and is inserted at the end of the heap space. */
     mPool->qPrivate.End = (qMemMang_BlockConnect_t*)address; /*MISRAC2012-Rule-11.4 deviation allowed*/ /*MISRAC2012-Rule-11.6 allowed*/ 
     mPool->qPrivate.End->Next = NULL;
-    mPool->qPrivate.End->BlockSize = (size_t)0;
+    mPool->qPrivate.End->BlockSize = (size_t)0u;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP36-C_a -CERT-EXP39-C_d*/
     firstFreeBlock = (qMemMang_BlockConnect_t*)aligned; /* To start with there is a single free block that is sized to take up the entire heap space, minus the space taken by End. */ /* MISRAC2012-Rule-11.5 deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP36-C_a +CERT-EXP39-C_d*/
@@ -124,7 +124,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     firstFreeBlock->Next = mPool->qPrivate.End;
 
     mPool->qPrivate.FreeBytesRemaining = firstFreeBlock->BlockSize;
-    mPool->qPrivate.BlockAllocatedBit = ( (size_t)1 ) << ( (sizeof(size_t)*(size_t)8) - (size_t)1 ); /* Work out the position of the top bit in a size_t variable. */
+    mPool->qPrivate.BlockAllocatedBit = ( (size_t)1u ) << ( ( sizeof(size_t)*(size_t)8u ) - (size_t)1u ); /* Work out the position of the top bit in a size_t variable. */
 }
 /*============================================================================*/
 static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_BlockConnect_t *blockToInsert )
@@ -142,7 +142,7 @@ static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_B
     }
     ptr = (qUINT8_t*)blockToInsert;
     if ( &ptr[ blockToInsert->BlockSize ] == (qUINT8_t*)iterator->Next ) { /* check if the block being inserted, and the block it is being inserted before make a contiguous block of memory? */ /*MISRAC2004-17.4_a deviation allowed*/ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
-        if ( iterator->Next != mPool->qPrivate.End ){ 
+        if ( iterator->Next != mPool->qPrivate.End ) { 
             blockToInsert->BlockSize += iterator->Next->BlockSize; /* Form one big block from the two blocks. */ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
             blockToInsert->Next = iterator->Next->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         }
@@ -172,14 +172,14 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t pSize )
         if ( NULL == mPool->qPrivate.End ) { /*First call,*/
             qMemMang_HeapInit( mPool ); /*initialize the heap to setup the list of free blocks*/
         }
-        if ( (size_t)0 == ( pSize & mPool->qPrivate.BlockAllocatedBit ) ) {
+        if ( (size_t)0u == ( pSize & mPool->qPrivate.BlockAllocatedBit ) ) {
             if ( pSize > (size_t)0 ) { /* The requested size is increased so it can contain a qMemBlockConnect_t in addition to the requested amount of bytes. */
                 pSize += HeapStructSize;
-                if( 0x00u != ( pSize & ByteAlignmentMask ) ){ /*Ensure blocks are always aligned to the required number of bytes. */
+                if ( 0x00u != ( pSize & ByteAlignmentMask ) ) { /*Ensure blocks are always aligned to the required number of bytes. */
                     pSize += ( (size_t)Q_BYTE_ALIGNMENT - ( pSize & ByteAlignmentMask ) ); /* byte-alignment */
                 }
             }
-            if ( ( pSize > (size_t)0 ) && ( pSize <= mPool->qPrivate.FreeBytesRemaining ) ) {
+            if ( ( pSize > (size_t)0u ) && ( pSize <= mPool->qPrivate.FreeBytesRemaining ) ) {
                 qMemMang_BlockConnect_t *xBlock, *previousBlock, *newBlockLink;
 
                 previousBlock = &mPool->qPrivate.Start; /* check list from the start (lowest address) block until one of adequate size is found. */
@@ -189,8 +189,8 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t pSize )
                     xBlock = xBlock->Next;
                 }
                 if ( xBlock != mPool->qPrivate.End ) { /* If the end marker was reached then a block of adequate size was not found. */
-                    const size_t minBlockSize = ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( (size_t)( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 ) ) - (size_t)1 ) ) 
-                                                & ~( (size_t)( (size_t)Q_BYTE_ALIGNMENT - (size_t)1 ) ) )*(size_t)2;    
+                    const size_t minBlockSize = ( ( sizeof( qMemMang_BlockConnect_t ) + ( ( (size_t)( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u ) ) - (size_t)1u ) ) 
+                                                & ~( (size_t)( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u ) ) )*(size_t)2u;    
 
                     /* Return the memory space pointed to - jumping over the qMemBlockConnect_t node at its start. */
                     pAllocated = (void*)( ( (qUINT8_t*)previousBlock->Next ) + HeapStructSize ); /* This block is being returned for use so must be. */

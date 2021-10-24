@@ -122,7 +122,7 @@
         #endif
 
         extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];
-        void _qtrace_func( const char *loc, const char* fcn, const char *vName, const char* vValue, void* ptr, size_t blockSize );
+        void _qtrace_func( const char *loc, const char* fcn, const char *vName, const char* vValue, void* ptr, const size_t blockSize );
         /*! @endcond  */
 
         /**

@@ -20,21 +20,21 @@ Miro Samek and Paul Y. Montgomery, Embedded Systems Programming,  August 2000
 
 typedef qByte_t qSM_LCA_t;
 
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory );
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, const qSM_TransitionHistoryMode_t mHistory );
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t xSignal, qSM_State_t * const s );
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, const qSM_Signal_t xSignal, qSM_State_t * const s );
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
 static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
 static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s );
 static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s );
-static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t sig );
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, const qSM_Signal_t sig );
 static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **entryPath );
 static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath );
-static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, qSM_Signal_t sig );
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, const qSM_Signal_t sig );
 static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState, qSM_UnprotectedHandler_t h );
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
-static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, qSM_Signal_t sig );
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, const qSM_Signal_t sig );
 
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
@@ -45,7 +45,7 @@ with the newly entered state(s). To discover which exit actions to execute, it
 is necessary to find the Least Common Ancestor (LCA) of the source and target
 states. History mode is also handled here.
 */
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, qSM_TransitionHistoryMode_t mHistory )
+static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, const qSM_TransitionHistoryMode_t mHistory )
 {
     /*now, perform the exit actions by first finding the LCA*/
     qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
@@ -122,7 +122,7 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
 This function fill the qSM_Handler_t argument with the common data for all the
 required actions.
 */
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, qSM_Signal_t sig, qSM_State_t * const s )
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, const qSM_Signal_t sig, qSM_State_t * const s )
 {
     h->Signal = sig;
     h->NextState = NULL;
@@ -213,7 +213,7 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * c
     return m->qPrivate.next;
 }
 /*============================================================================*/
-static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, qSM_Signal_t sig )
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, const qSM_Signal_t sig )
 {
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     qSM_Status_t status;
@@ -275,7 +275,7 @@ Rules:
 - A signal coming from the signal-queue has the higher precedence.
 - A valid input argument overides the exclusion variable.
 */
-static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, qSM_Signal_t sig )
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, const qSM_Signal_t sig )
 {
     qSM_Signal_t xSignal = sig;
     
@@ -482,7 +482,7 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
     }
 }
 /*============================================================================*/
-static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, qSM_Signal_t sig )
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, const qSM_Signal_t sig )
 {
     qSM_TimeoutStateDefinition_t *tbl = current->qPrivate.tdef;
     size_t n = current->qPrivate.nTm;    
