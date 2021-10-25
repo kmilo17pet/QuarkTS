@@ -36,7 +36,8 @@ void qCritical_Exit( void )
     }
 }
 /*============================================================================*/
-qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, const qInt_Disabler_t dFcn )
+qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, 
+                                   const qInt_Disabler_t dFcn )
 {
     qBool_t retValue = qFalse;
     

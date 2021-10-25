@@ -108,9 +108,12 @@ static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
-    qBool_t qOS_Setup( const qGetTickFcn_t tFcn, qTaskFcn_t idleCallback )
+    qBool_t qOS_Setup( const qGetTickFcn_t tFcn, 
+                       qTaskFcn_t idleCallback )
 #else
-    qBool_t qOS_Setup( const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback )
+    qBool_t qOS_Setup( const qGetTickFcn_t tFcn, 
+                       const qTimingBase_t t, 
+                       qTaskFcn_t idleCallback )
 #endif
 {
     qBool_t retValue = qFalse;
@@ -197,7 +200,8 @@ qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t rCallback )
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
 /*============================================================================*/
-qBool_t qOS_Notification_Spread( void *eventdata, const qTask_NotifyMode_t mode )
+qBool_t qOS_Notification_Spread( void *eventdata, 
+                                 const qTask_NotifyMode_t mode )
 {
     qBool_t retValue = qFalse;
     
@@ -250,7 +254,8 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t indexToClear )
     --kernel.QueueIndex;    /*decrease the index*/    
 }
 /*========================== Shared Private Method ===========================*/
-qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *pData )
+qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, 
+                                  void *pData )
 {
     #if ( Q_PRIO_QUEUE_SIZE > 0 )  
         qBool_t retValue = qFalse;
@@ -362,7 +367,13 @@ void qOS_PriorityQueue_Init( void )
 /*============================================================================*/
 #endif /* #if ( Q_PRIORITY_QUEUE == 1 ) */
 /*============================================================================*/
-qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void* arg )
+qBool_t qOS_Add_Task( qTask_t * const Task, 
+                      qTaskFcn_t callbackFcn, 
+                      const qPriority_t p, 
+                      const qTime_t t, 
+                      const qIteration_t n, 
+                      const qState_t init, 
+                      void* arg )
 {
     qBool_t retValue = qFalse;
 
@@ -411,13 +422,21 @@ qBool_t qOS_Add_Task( qTask_t * const Task, qTaskFcn_t callbackFcn, const qPrior
     return retValue;  
 }
 /*============================================================================*/
-qBool_t qOS_Add_EventTask( qTask_t * const Task, qTaskFcn_t callbackFcn, const qPriority_t p, void* arg )
+qBool_t qOS_Add_EventTask( qTask_t * const Task, 
+                           qTaskFcn_t callbackFcn, 
+                           const qPriority_t p, 
+                           void* arg )
 {
     return qOS_Add_Task( Task, callbackFcn, p, qTimeImmediate, qSingleShot, qDisabled, arg );
 }
 #if ( Q_FSM == 1 )
 /*============================================================================*/
-qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, qSM_t *m, const qPriority_t p, const qTime_t t, const qState_t init, void *arg )
+qBool_t qOS_Add_StateMachineTask( qTask_t * const Task, 
+                                  qSM_t *m, 
+                                  const qPriority_t p, 
+                                  const qTime_t t, 
+                                  const qState_t init, 
+                                  void *arg )
 {
     qBool_t retValue = qFalse;
 
@@ -453,7 +472,10 @@ static void qOS_FSM_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 #endif /* #if ( Q_FSM == 1) */
 /*============================================================================*/
 #if ( Q_ATCLI == 1 )
-qBool_t qOS_Add_ATCLITask( qTask_t * const Task, qATCLI_t *cli, const qPriority_t p, void *arg )
+qBool_t qOS_Add_ATCLITask( qTask_t * const Task, 
+                           qATCLI_t *cli, 
+                           const qPriority_t p, 
+                           void *arg )
 {    
     qBool_t retValue = qFalse;
 
@@ -893,7 +915,8 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
     return retValue;
 }
 /*========================== Shared Private Method ===========================*/
-qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, const qUINT32_t flag )
+qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, 
+                          const qUINT32_t flag )
 {
     qUINT32_t xBit;
 
@@ -902,7 +925,9 @@ qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, const qUINT32_t flag )
     return ( ( 0uL != xBit )? qTrue : qFalse );
 }
 /*========================== Shared Private Method ===========================*/
-void qOS_Set_TaskFlags( qTask_t * const Task, const qUINT32_t flags, const qBool_t value )
+void qOS_Set_TaskFlags( qTask_t * const Task, 
+                        const qUINT32_t flags, 
+                        const qBool_t value )
 {
     if ( qTrue == value ) {
         Task->qPrivate.Flags |= flags; /*Set bits*/

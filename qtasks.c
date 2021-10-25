@@ -9,7 +9,8 @@
 #include "qtrace.h"
 
 /*============================================================================*/
-qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata )
+qBool_t qTask_Notification_Send( qTask_t * const Task, 
+                                 void* eventdata )
 {
     qBool_t retValue = qFalse;
 
@@ -25,7 +26,8 @@ qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata )
+qBool_t qTask_Notification_Queue( qTask_t * const Task, 
+                                  void* eventdata )
 {
     #if ( Q_PRIO_QUEUE_SIZE > 0 )      
         return qOS_PriorityQueue_Insert( Task, eventdata );     
@@ -96,7 +98,8 @@ qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t tValue )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t iValue )
+qBool_t qTask_Set_Iterations( qTask_t * const Task, 
+                              const qIteration_t iValue )
 {
     qBool_t retValue = qFalse;
 
@@ -117,7 +120,8 @@ qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t iValue )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t pValue )
+qBool_t qTask_Set_Priority( qTask_t * const Task, 
+                            const qPriority_t pValue )
 {
     qBool_t retValue = qFalse;
 
@@ -129,7 +133,8 @@ qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t pValue )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t cFcn )
+qBool_t qTask_Set_Callback( qTask_t * const Task, 
+                            const qTaskFcn_t cFcn )
 {
     qBool_t retValue = qFalse;
 
@@ -144,7 +149,8 @@ qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t cFcn )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Set_State( qTask_t * const Task, const qState_t s )
+qBool_t qTask_Set_State( qTask_t * const Task, 
+                        const qState_t s )
 {
     qBool_t retValue = qFalse;
 
@@ -173,7 +179,8 @@ qBool_t qTask_Set_State( qTask_t * const Task, const qState_t s )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Set_Data( qTask_t * const Task, void* arg )
+qBool_t qTask_Set_Data( qTask_t * const Task, 
+                        void* arg )
 {
     qBool_t retValue = qFalse;
 
@@ -185,7 +192,8 @@ qBool_t qTask_Set_Data( qTask_t * const Task, void* arg )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param )
+qBool_t qTask_Clear( qTask_t * const Task, 
+                     const qTask_ClrParam_t param )
 {
     qBool_t retValue = qFalse;
 
@@ -235,7 +243,10 @@ qTask_t* qTask_Self( void )
 }
 #if ( Q_QUEUES == 1 )
 /*============================================================================*/
-qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const q, const qQueueLinkMode_t mode, const qUINT16_t arg )
+qBool_t qTask_Attach_Queue( qTask_t * const Task, 
+                            qQueue_t * const q, 
+                            const qQueueLinkMode_t mode, 
+                            const qUINT16_t arg )
 {
     qBool_t retValue = qFalse;
 
@@ -254,7 +265,9 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const q, const qQue
 #endif /* #if ( Q_QUEUES == 1 ) */
 #if ( Q_TASK_EVENT_FLAGS == 1 )
 /*============================================================================*/
-qBool_t qTask_EventFlags_Modify( qTask_t * const Task, const qTask_Flag_t flags, const qBool_t action )
+qBool_t qTask_EventFlags_Modify( qTask_t * const Task, 
+                                 const qTask_Flag_t flags, 
+                                 const qBool_t action )
 {
     qBool_t retValue = qFalse;
 
@@ -278,7 +291,10 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, const qBool_t clearOnExit, const qBool_t checkForAll )
+qBool_t qTask_EventFlags_Check( qTask_t * const Task, 
+                                qTask_Flag_t flagsToCheck, 
+                                const qBool_t clearOnExit, 
+                                const qBool_t checkForAll )
 {
     qBool_t retValue = qFalse;
     
@@ -307,7 +323,8 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck,
 #endif/* ( Q_TASK_EVENT_FLAGS == 1 ) */
 #if ( Q_ALLOW_TASK_NAMING == 1 )
 /*============================================================================*/
-qBool_t qTask_Set_Name( qTask_t * const Task, const char *name )
+qBool_t qTask_Set_Name( qTask_t * const Task, 
+                        const char *name )
 {
     qBool_t retValue = qFalse;
 

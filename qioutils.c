@@ -13,7 +13,8 @@ static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen );
 static const char * qIOUtil_CheckStrSign( const char *s, int *sgn );
 
 /*============================================================================*/
-static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen )
+static const char * qIOUtil_DiscardWhitespaces( const char *s, 
+                                                size_t maxlen )
 {
     /*cstat -MISRAC2012-Rule-13.5 -MISRAC2012-Dir-4.11_h*/ 
     while ( ( maxlen > (size_t)0u ) && ( 0 != isspace( (int)*s ) ) ) { /*isspace is known to have no side effects*/  
@@ -25,7 +26,8 @@ static const char * qIOUtil_DiscardWhitespaces( const char *s, size_t maxlen )
     return s;
 }
 /*============================================================================*/
-static const char * qIOUtil_CheckStrSign( const char *s, int *sgn )
+static const char * qIOUtil_CheckStrSign( const char *s, 
+                                          int *sgn )
 {
     if ( '-' == *s ) { /*if negative found*/
         *sgn = -1; /*set the sign*/
@@ -41,7 +43,9 @@ static const char * qIOUtil_CheckStrSign( const char *s, int *sgn )
     return s;
 }
 /*============================================================================*/
-char* qIOUtil_StrChr( const char *s, int c, size_t maxlen )
+char* qIOUtil_StrChr( const char *s, 
+                      int c, 
+                      size_t maxlen )
 {
     char *retValue = NULL;
     do {
@@ -57,7 +61,8 @@ char* qIOUtil_StrChr( const char *s, int c, size_t maxlen )
     return retValue;
 }
 /*============================================================================*/
-size_t qIOUtil_StrLen( const char* s, size_t maxlen )
+size_t qIOUtil_StrLen( const char* s, 
+                       size_t maxlen )
 {
     size_t count;
 
@@ -76,7 +81,9 @@ size_t qIOUtil_StrLen( const char* s, size_t maxlen )
     return count;
 }
 /*============================================================================*/
-size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen )
+size_t qIOUtil_StrlCpy( char * dst, 
+                        const char * src, 
+                        size_t maxlen )
 {
     const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
 
@@ -95,7 +102,9 @@ size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen )
 }
 /*============================================================================*/
 /*makes the basic conversion of unsigned integer to ASCII. NULL Terminator not included*/
-static size_t qIOUtil_xBase_U32toA( qUINT32_t num, char* str, qUINT8_t base )
+static size_t qIOUtil_xBase_U32toA( qUINT32_t num, 
+                                    char* str, 
+                                    qUINT8_t base )
 {
     size_t i = 0u;
     
@@ -126,7 +135,8 @@ static char qIOUtil_NibbleToX( qUINT8_t value )
     return (char)( ( ch > '9' )? (char)( ch + 7 ) : ch );
 }
 /*============================================================================*/
-qBool_t qIOUtil_SwapBytes( void *pData, const size_t n )
+qBool_t qIOUtil_SwapBytes( void *pData, 
+                           const size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -156,7 +166,10 @@ qBool_t qIOUtil_CheckEndianness( void )
     return (qBool_t)( *( (qUINT8_t*)&i ) );
 }
 /*============================================================================*/
-qBool_t qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP )
+qBool_t qIOUtil_OutputString( qPutChar_t fcn, 
+                              void* pStorage, 
+                              const char *s, 
+                              qBool_t AIP )
 {
     qBool_t retValue = qFalse;
 
@@ -183,7 +196,10 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBo
     return retValue;
 }
 /*============================================================================*/
-qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *pData, size_t n )
+qBool_t qIOUtil_PrintXData( qPutChar_t fcn, 
+                            void* pStorage, 
+                            void *pData, 
+                            size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -206,7 +222,11 @@ qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *pData, size_t 
     return retValue;
 }
 /*============================================================================*/
-qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP )
+qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, 
+                           void* pStorage, 
+                           void *pData, 
+                           const size_t n, 
+                           qBool_t AIP )
 {
     qBool_t retValue = qFalse;
 
@@ -233,7 +253,11 @@ qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *pData, const si
     return retValue;
 }
 /*============================================================================*/
-qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP )
+qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, 
+                          void* pStorage, 
+                          void *pData, 
+                          const size_t n, 
+                          qBool_t AIP )
 {
     qBool_t retValue = qFalse;
 
@@ -260,7 +284,9 @@ qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *pData, con
     return retValue;
 }
 /*============================================================================*/
-char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n )
+char* qIOUtil_U32toX( qUINT32_t value, 
+                      char *str, 
+                      qINT8_t n )
 { 
     qBase_t i;
     /*cstat -CERT-STR34-C*/
@@ -369,7 +395,9 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     #endif      
 }
 /*============================================================================*/
-char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision ) /*limited to precision=10*/
+char* qIOUtil_FtoA( qFloat32_t num, 
+                    char *str, 
+                    qUINT8_t precision ) /*limited to precision=10*/
 {
     if ( NULL != str ) {
         if ( ( num >= 0.0f ) && ( num < 1.0E-38 ) ) { /*handle the 0.0f*/
@@ -449,7 +477,9 @@ int qIOUtil_AtoI( const char *s )
     return retValue;
 }
 /*============================================================================*/
-char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base )
+char* qIOUtil_UtoA( qUINT32_t num, 
+                    char* str, 
+                    qUINT8_t base )
 {
     if ( NULL != str ) {
         size_t i;
@@ -461,7 +491,9 @@ char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base )
     return str;
 }
 /*============================================================================*/
-char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base )
+char* qIOUtil_ItoA( qINT32_t num, 
+                    char* str, 
+                    qUINT8_t base )
 {
     if ( NULL != str ) {
         size_t i = 0u;
@@ -479,7 +511,8 @@ char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base )
     return str;
 }
 /*============================================================================*/
-char* qIOUtil_BtoA( const qBool_t num, char *str )
+char* qIOUtil_BtoA( const qBool_t num, 
+                    char *str )
 {
     if ( NULL != str ) {
         if ( qTrue == num ) {
@@ -493,7 +526,8 @@ char* qIOUtil_BtoA( const qBool_t num, char *str )
     return str;
 }
 /*============================================================================*/
-char* qIOUtil_QBtoA( const qBool_t num, char *str )
+char* qIOUtil_QBtoA( const qBool_t num, 
+                     char *str )
 {
     if ( NULL != str ) {
         switch ( (qUINT8_t)num ) {

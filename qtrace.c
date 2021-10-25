@@ -12,7 +12,9 @@ char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ] = { 0 };
 
 /*============================================================================*/
 #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )
-void _qtrace_krn( const char *msg, const void *id, const void *obj )
+void _qtrace_krn( const char *msg, 
+                  const void *id, 
+                  const void *obj )
 {
     if ( NULL != qDebug ) {
         char buff[ 11 ] = { 0 };
@@ -37,7 +39,12 @@ void _qtrace_krn( const char *msg, const void *id, const void *obj )
 }
 #endif   /*#if ( Q_TRACE_KERNEL_AND_MODULES == 1 )*/
 /*============================================================================*/
-void _qtrace_func( const char *loc, const char* fcn, const char *vName, const char* vValue, void* ptr, const size_t blockSize )
+void _qtrace_func( const char *loc, 
+                   const char* fcn, 
+                   const char *vName, 
+                   const char* vValue, 
+                   void* ptr, 
+                   const size_t blockSize )
 {
     if ( NULL != qDebug ) { /*trace only if the output-function is defined*/
         #if ( Q_DEBUGTRACE_FULL == 1 )

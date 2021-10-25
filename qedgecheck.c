@@ -29,7 +29,9 @@ _QEDGECHECK_REG_FCN_DEF( _qReg_08Bits,  qUINT8_t );
 /*! @endcond  */
 
 /*============================================================================*/
-qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, const qCoreRegSize_t rSize, const qClock_t debounceTime )
+qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, 
+                          const qCoreRegSize_t rSize, 
+                          const qClock_t debounceTime )
 {
     qBool_t retValue = qFalse;
 
@@ -46,7 +48,10 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, const qCoreRegSize_t rSize, c
     return retValue;
 }
 /*============================================================================*/
-qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec, qEdgeCheck_IONode_t * const n, void *portAddress, const qBool_t pinNumber )
+qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec, 
+                             qEdgeCheck_IONode_t * const n, 
+                             void *portAddress, 
+                             const qBool_t pinNumber )
 {
     qBool_t retValue = qFalse;
 
@@ -128,7 +133,8 @@ qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const n )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n, const qBool_t pinNumber )
+qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n, 
+                                const qBool_t pinNumber )
 {
     qBool_t retValue = qFalse;
     /*cstat -MISRAC2012-Rule-10.1_R3*/ /*false-positive*/

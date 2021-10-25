@@ -53,7 +53,9 @@
     * @param[in] nMax The size of @a xLocBuff
     * @return On success returns #qTrue, otherwise returns #qFalse.
     */ 
-    qBool_t qResponse_Setup( qResponse_t * const r, char *xLocBuff, const size_t nMax ); 
+    qBool_t qResponse_Setup( qResponse_t * const r, 
+                             char *xLocBuff, 
+                             const size_t nMax ); 
 
     /**
     * @brief Reset the Response Handler
@@ -70,7 +72,9 @@
     * (if Pattern is string, set @a n to 0 to auto-compute the length)
     * @return #qTrue if there is a response acknowledge, otherwise returns #qFalse.
     */     
-    qBool_t qResponse_Received( qResponse_t * const r, const char *pattern, const size_t n );
+    qBool_t qResponse_Received( qResponse_t * const r, 
+                                const char *pattern, 
+                                const size_t n );
     
     /**
     * @brief Non-Blocking Response check with timeout
@@ -81,7 +85,10 @@
     * @param[in] t The timeout value given in seconds
     * @return #qTrue if there is a response acknowledge, #qResponseTimeout if timeout expires otherwise returns #qFalse
     */      
-    qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, const char *pattern, const size_t n, const qTime_t t );
+    qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, 
+                                           const char *pattern, 
+                                           const size_t n, 
+                                           const qTime_t t );
     
     /**
     * @brief ISR receiver for the response handler
@@ -89,7 +96,8 @@
     * @param[in] rxchar The byte-data from the receiver 
     * @return #qTrue when the Response handler match the request from qResponse_Received()
     */      
-    qBool_t qResponse_ISRHandler( qResponse_t * const r, const char rxchar );
+    qBool_t qResponse_ISRHandler( qResponse_t * const r, 
+                                  const char rxchar );
 
     /** @}*/
 

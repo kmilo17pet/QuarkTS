@@ -8,9 +8,12 @@
 
 #if ( Q_QUEUES == 1 )
 
-static void qQueue_CopyDataToQueue( qQueue_t * const q, const void *itemToQueue, const qBool_t xPosition );
+static void qQueue_CopyDataToQueue( qQueue_t * const q, 
+                                    const void *itemToQueue, 
+                                    const qBool_t xPosition );
 static void qQueue_MoveReader( qQueue_t * const q );
-static void qQueue_CopyDataFromQueue( qQueue_t * const q, void * const pvBuffer );
+static void qQueue_CopyDataFromQueue( qQueue_t * const q, 
+                                      void * const pvBuffer );
 
 /*============================================================================*/
 qBool_t qQueue_IsReady( const qQueue_t * const q )
@@ -26,7 +29,10 @@ qBool_t qQueue_IsReady( const qQueue_t * const q )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qQueue_Setup( qQueue_t * const q, void* pData, const size_t itemSize, const size_t itemsCount )
+qBool_t qQueue_Setup( qQueue_t * const q, 
+                      void* pData, 
+                      const size_t itemSize, 
+                      const size_t itemsCount )
 {
     qBool_t retValue = qFalse;
 
@@ -149,7 +155,9 @@ qBool_t qQueue_RemoveFront( qQueue_t * const q )
     return retValue;
 }
 /*============================================================================*/
-static void qQueue_CopyDataToQueue( qQueue_t * const q, const void *itemToQueue, const qBool_t xPosition )
+static void qQueue_CopyDataToQueue( qQueue_t * const q, 
+                                    const void *itemToQueue, 
+                                    const qBool_t xPosition )
 {
     if ( QUEUE_SEND_TO_BACK == xPosition ) {
         (void)memcpy( (void*)q->qPrivate.writer, itemToQueue, q->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
@@ -176,13 +184,15 @@ static void qQueue_MoveReader( qQueue_t * const q )
     }
 }
 /*==================================================================================*/
-static void qQueue_CopyDataFromQueue( qQueue_t * const q, void * const pvBuffer )
+static void qQueue_CopyDataFromQueue( qQueue_t * const q, 
+                                      void * const pvBuffer )
 {
     qQueue_MoveReader( q );
     (void)memcpy( (void*)pvBuffer, (void*)q->qPrivate.reader, q->qPrivate.ItemSize );  /*MISRAC2012-Rule-11.8 allowed*/
 }
 /*============================================================================*/
-qBool_t qQueue_Receive( qQueue_t * const q, void *dst )
+qBool_t qQueue_Receive( qQueue_t * const q, 
+                        void *dst )
 {
     qBool_t retValue = qFalse;
     
@@ -201,7 +211,9 @@ qBool_t qQueue_Receive( qQueue_t * const q, void *dst )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, const qQueue_Mode_t insertMode )
+qBool_t qQueue_SendGeneric( qQueue_t * const q, 
+                            void *itemToQueue, 
+                            const qQueue_Mode_t insertMode )
 {
     qBool_t retValue = qFalse;
     

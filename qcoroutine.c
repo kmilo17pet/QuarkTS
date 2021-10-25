@@ -7,7 +7,9 @@
 #include "qcoroutine.h"
 
 /*============================================================================*/
-qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  const qCR_ExtPosition_t pos )
+qBool_t qCR_ExternControl( qCR_Handle_t h, 
+                           const qCR_ExternAction_t action,  
+                           const qCR_ExtPosition_t pos )
 {
     qBool_t retValue = qFalse;
 
@@ -41,7 +43,8 @@ qBool_t qCR_ExternControl( qCR_Handle_t h, const qCR_ExternAction_t action,  con
 Do not use this function explicitly to handle semaphores, use the provided coroutine 
 statements instead : <qCR_SemInit>, <qCR_SemWait> and <qCR_SemSignal>
 */
-qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper )
+qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  
+                  const _qCR_Oper_t oper )
 {
     qBool_t retValue = qFalse;
 

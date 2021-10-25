@@ -115,14 +115,21 @@
     #if ( Q_TRACE_VARIABLES == 1 )
         /*! @cond  */
         #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )
-            void _qtrace_krn( const char *msg, const void *id, const void *obj );
+            void _qtrace_krn( const char *msg, 
+                              const void *id, 
+                              const void *obj );
             #define _QTRACE_KERNEL( msg, id, obj )            _qtrace_krn( (char*)(msg), (id), (obj) );
         #else
             #define _QTRACE_KERNEL( msg, id, obj )
         #endif
 
         extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];
-        void _qtrace_func( const char *loc, const char* fcn, const char *vName, const char* vValue, void* ptr, const size_t blockSize );
+        void _qtrace_func( const char *loc, 
+                           const char* fcn, 
+                           const char *vName, 
+                           const char* vValue, 
+                           void* ptr, 
+                           const size_t blockSize );
         /*! @endcond  */
 
         /**

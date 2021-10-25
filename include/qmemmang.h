@@ -93,7 +93,9 @@
     * @param[in] pSize The size of the memory block pointed by @a pArea
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */      
-    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, const size_t pSize );
+    qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, 
+                                 void* pArea, 
+                                 const size_t pSize );
 
     /**
     * @brief Select the memory pool to perform heap memory requests with qMalloc() and qFree().
@@ -121,7 +123,8 @@
     * If the function failed to allocate the requested block of memory, a NULL
     * pointer is returned.
     */   
-    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t pSize );
+    void* qMemMang_Allocate( qMemMang_Pool_t *mPool, 
+                             size_t pSize );
 
     /**
     * @brief Deallocates previously allocated space from the memory pool.
@@ -139,7 +142,8 @@
     * @param[in] ptr to the memory to deallocate
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr );
+    qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, 
+                           void *ptr );
 
     /**
     * @brief Wrapper API for qMemMang_Allocate() in order to be compatible with @a malloc. 

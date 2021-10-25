@@ -337,7 +337,8 @@
     * @param[in] eventdata Specific event user-data.
     * @return #qTrue on success. Otherwise #qFalse.
     */       
-    qBool_t qTask_Notification_Send( qTask_t * const Task, void* eventdata );
+    qBool_t qTask_Notification_Send( qTask_t * const Task, 
+                                     void* eventdata );
 
     /**
     * @brief Insert a notification in the FIFO priority queue. The scheduler get this notification
@@ -354,7 +355,8 @@
     * @return Returns #qTrue if the event has been inserted in the queue, or #qFalse if an error 
     * occurred (The queue exceeds the size).
     */        
-    qBool_t qTask_Notification_Queue( qTask_t * const Task, void* eventdata );
+    qBool_t qTask_Notification_Queue( qTask_t * const Task, 
+                                      void* eventdata );
 
     /**
     * @brief Check if the task has pending notifications.
@@ -402,7 +404,8 @@
     * For immediate execution (tValue = #qTimeImmediate).
     * @return #qTrue on success, otherwise returns #qFalse.
     */  
-    qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t tValue );
+    qBool_t qTask_Set_Time( qTask_t * const Task, 
+                            const qTime_t tValue );
 
     /**
     * @brief Set/Change the number of task iterations
@@ -415,7 +418,8 @@
     * iterations again and resume.
     * @return #qTrue on success. Otherwise return #qFalse.
     */     
-    qBool_t qTask_Set_Iterations( qTask_t * const Task, const qIteration_t iValue );
+    qBool_t qTask_Set_Iterations( qTask_t * const Task, 
+                                  const qIteration_t iValue );
 
     /**
     * @brief Set/Change the task priority value
@@ -423,7 +427,8 @@
     * @param[in] pValue Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
     * @return #qTrue on success. Otherwise return #qFalse.
     */    
-    qBool_t qTask_Set_Priority( qTask_t * const Task, const qPriority_t pValue );
+    qBool_t qTask_Set_Priority( qTask_t * const Task, 
+                                const qPriority_t pValue );
 
     /**
     * @brief Set/Change the task callback function.
@@ -433,7 +438,8 @@
     * as input argument.
     * @return #qTrue on success. Otherwise return #qFalse.
     */       
-    qBool_t qTask_Set_Callback( qTask_t * const Task, const qTaskFcn_t cFcn );
+    qBool_t qTask_Set_Callback( qTask_t * const Task, 
+                                const qTaskFcn_t cFcn );
 
     /**
     * @brief Set the task operational state (Enabled or Disabled)
@@ -453,7 +459,8 @@
     * ( SHUTDOWN Bit = 1 )
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    qBool_t qTask_Set_State( qTask_t * const Task, const qState_t s );
+    qBool_t qTask_Set_State( qTask_t * const Task, 
+                             const qState_t s );
 
     /**
     * @brief Set the task data
@@ -461,7 +468,8 @@
     * @param[in] arg The task storage pointer. User data.
     * @return #qTrue on success. Otherwise return #qFalse.
     */  
-    qBool_t qTask_Set_Data( qTask_t * const Task, void* arg );
+    qBool_t qTask_Set_Data( qTask_t * const Task, 
+                            void* arg );
 
     /**
     * @brief Clear the specified parameter for the task.
@@ -482,7 +490,8 @@
     * 
     * @return #qTrue on success. Otherwise return #qFalse.
     */      
-    qBool_t qTask_Clear( qTask_t * const Task, const qTask_ClrParam_t param );
+    qBool_t qTask_Clear( qTask_t * const Task, 
+                         const qTask_ClrParam_t param );
 
     /**
     * @brief Get the current running-task handle.
@@ -588,7 +597,10 @@
         * the element count of the queue. A zero value will act as a #qUnLink action. 
         * @return Returns #qTrue on success, otherwise returns #qFalse.
         */       
-        qBool_t qTask_Attach_Queue( qTask_t * const Task, qQueue_t * const q, const qQueueLinkMode_t mode, const qUINT16_t arg );
+        qBool_t qTask_Attach_Queue( qTask_t * const Task, 
+                                    qQueue_t * const q, 
+                                    const qQueueLinkMode_t mode, 
+                                    const qUINT16_t arg );
 
          /** @}*/
     #endif 
@@ -610,7 +622,9 @@
         * @param[in] action QEVENTFLAG_SET or QEVENTFLAG_CLEAR 
         * @return #qTrue on success. Otherwise return #qFalse.
         */     
-        qBool_t qTask_EventFlags_Modify( qTask_t * const Task, const qTask_Flag_t flags, const qBool_t action );
+        qBool_t qTask_EventFlags_Modify( qTask_t * const Task, 
+                                         const qTask_Flag_t flags, 
+                                         const qBool_t action );
 
         /**
         * @brief Returns the current value of the task's EventFlags. 
@@ -640,7 +654,10 @@
         * EventFlags.
         * @return #qTrue if the condition is meet, otherwise return #qFalse.
         */           
-        qBool_t qTask_EventFlags_Check( qTask_t * const Task, qTask_Flag_t flagsToCheck, const qBool_t clearOnExit, const qBool_t checkForAll );
+        qBool_t qTask_EventFlags_Check( qTask_t * const Task, 
+                                        qTask_Flag_t flagsToCheck, 
+                                        const qBool_t clearOnExit, 
+                                        const qBool_t checkForAll );
 
         /** @}*/
     #endif
@@ -657,7 +674,8 @@
         * @param[in] name A string with the task name
         * @return #qTrue on success. Otherwise return #qFalse.
         */  
-        qBool_t qTask_Set_Name( qTask_t * const Task, const char *name );
+        qBool_t qTask_Set_Name( qTask_t * const Task, 
+                                const char *name );
 
         /**
         * @brief Retrieves the task name

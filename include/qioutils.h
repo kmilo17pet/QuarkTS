@@ -50,7 +50,8 @@
     * @param[in] c The character to write out.
     * @return none.
     */
-    typedef void (*qPutChar_t)( void* arg1, const char arg2 );
+    typedef void (*qPutChar_t)( void* arg1, 
+                                const char arg2 );
 
      /**
     * @brief Pointer to function that get-a single character
@@ -80,7 +81,9 @@
     * @return A pointer to the first occurrence of character in @a s. 
     * If the character is not found, the function returns a null pointer.
     */     
-    char* qIOUtil_StrChr( const char *s, int c, size_t maxlen );
+    char* qIOUtil_StrChr( const char *s, 
+                          int c, 
+                          size_t maxlen );
 
     /**
     * @brief Returns the length of the given null-terminated byte string, that is, the number 
@@ -93,7 +96,8 @@
     * @return The length of the null-terminated byte string @a str on success, zero if @a str 
     * is a null pointer, @a maxlen if the null character was not found.
     */  
-    size_t qIOUtil_StrLen( const char* s, size_t maxlen);
+    size_t qIOUtil_StrLen( const char* s, 
+                           size_t maxlen);
 
     /**
     * @brief Copies up to @a (maxlen - 1) characters from the null-terminated string @a src to 
@@ -103,7 +107,9 @@
     * @param[in] maxlen Maximum number of characters to copy
     * @return The length of @a src
     */      
-    size_t qIOUtil_StrlCpy( char * dst, const char * src, size_t maxlen );
+    size_t qIOUtil_StrlCpy( char * dst, 
+                            const char * src, 
+                            size_t maxlen );
 
     /**
     * @brief Invert the endianess for n bytes of the specified memory location.
@@ -111,7 +117,8 @@
     * @param[in] n The number of bytes to swap
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qIOUtil_SwapBytes( void *pData, const size_t n );
+    qBool_t qIOUtil_SwapBytes( void *pData, 
+                               const size_t n );
 
     /**
     * @brief Check the system endianess
@@ -127,7 +134,10 @@
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_OutputString( qPutChar_t fcn, void* pStorage, const char *s, qBool_t AIP );
+    qBool_t qIOUtil_OutputString( qPutChar_t fcn, 
+                                  void* pStorage, 
+                                  const char *s, 
+                                  qBool_t AIP );
 
     /**
     * @brief API interface to write data in HEX notation through @a fcn 
@@ -137,7 +147,10 @@
     * @param[in] n The number of bytes to print out
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_PrintXData( qPutChar_t fcn, void* pStorage, void *pData, size_t n );
+    qBool_t qIOUtil_PrintXData( qPutChar_t fcn, 
+                                void* pStorage, 
+                                void *pData, 
+                                size_t n );
 
     /**
     * @brief API interface to write n RAW data through @a fcn
@@ -148,7 +161,11 @@
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_OutputRaw( qPutChar_t fcn, 
+                               void* pStorage, 
+                               void *pData, 
+                               const size_t n, 
+                               qBool_t AIP );
 
     /**
     * @brief API interface to get n RAW data through @a fcn
@@ -159,7 +176,11 @@
     * @param[in] AIP Auto-Increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */      
-    qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, void* pStorage, void *pData, const size_t n, qBool_t AIP );
+    qBool_t qIOUtil_InputRaw( const qGetChar_t fcn, 
+                              void* pStorage, 
+                              void *pData, 
+                              const size_t n, 
+                              qBool_t AIP );
       
     /**
     * @brief Macro interface to write a string through @a fcn
@@ -189,7 +210,9 @@
     * @param[in] n The number of chars used to represent the value in @a str
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */ 
-    char* qIOUtil_U32toX( qUINT32_t value, char *str, qINT8_t n );
+    char* qIOUtil_U32toX( qUINT32_t value, 
+                          char *str, 
+                          qINT8_t n );
 
     /**
     * @brief Converts the input string consisting of hexadecimal digits into an unsigned 
@@ -228,7 +251,9 @@
     * (The max allowed precision is MAX_FTOA_PRECISION=10)
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */     
-    char* qIOUtil_FtoA( qFloat32_t num, char *str, qUINT8_t precision );
+    char* qIOUtil_FtoA( qFloat32_t num, 
+                        char *str, 
+                        qUINT8_t precision );
 
     /**
     * @brief Parses the C-string @a s interpreting its content as an integral number, which is 
@@ -261,7 +286,9 @@
     * and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */       
-    char* qIOUtil_UtoA( qUINT32_t num, char* str, qUINT8_t base );
+    char* qIOUtil_UtoA( qUINT32_t num, 
+                        char* str, 
+                        qUINT8_t base );
 
     /**
     * @brief Converts an integer value to a null-terminated string using the specified base 
@@ -278,7 +305,9 @@
     * and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. 
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */      
-    char* qIOUtil_ItoA( qINT32_t num, char* str, qUINT8_t base );
+    char* qIOUtil_ItoA( qINT32_t num, 
+                        char* str, 
+                        qUINT8_t base );
 
     /**
     * @brief Converts a boolean value to a null-terminated string. Input is considered true
@@ -288,7 +317,8 @@
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */      
-    char* qIOUtil_BtoA( const qBool_t num, char *str );
+    char* qIOUtil_BtoA( const qBool_t num, 
+                        char *str );
 
     /**
     * @brief Converts a qBool_t value to a null-terminated string. Input is considered true
@@ -298,7 +328,8 @@
     * @param[out] str  Array in memory where to store the resulting null-terminated string.
     * @return A pointer to the resulting null-terminated string, same as parameter @a str.
     */     
-    char* qIOUtil_QBtoA( const qBool_t num, char *str );
+    char* qIOUtil_QBtoA( const qBool_t num, 
+                         char *str );
 
     /**
     * @brief Determines if the given floating point number arg is positive or negative infinity.

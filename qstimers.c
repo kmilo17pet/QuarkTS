@@ -19,7 +19,8 @@ qBool_t qSTimer_Reload( qSTimer_t * const t )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_Set( qSTimer_t * const t, const qTime_t tTime )
+qBool_t qSTimer_Set( qSTimer_t * const t, 
+                     const qTime_t tTime )
 {
     qBool_t retValue = qFalse;
 
@@ -31,7 +32,8 @@ qBool_t qSTimer_Set( qSTimer_t * const t, const qTime_t tTime )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_FreeRun( qSTimer_t * const t, const qTime_t tTime )
+qBool_t qSTimer_FreeRun( qSTimer_t * const t, 
+                         const qTime_t tTime )
 {
     qBool_t retValue = qFalse;
 

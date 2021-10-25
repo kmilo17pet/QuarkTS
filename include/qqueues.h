@@ -118,7 +118,10 @@
     * @param[in] itemsCount The maximum number of items the queue can hold.
     * @return #qTrue on success, otherwise returns #qFalse.
     */       
-    qBool_t qQueue_Setup( qQueue_t * const q, void* pData, const size_t itemSize, const size_t itemsCount );
+    qBool_t qQueue_Setup( qQueue_t * const q, 
+                          void* pData, 
+                          const size_t itemSize, 
+                          const size_t itemsCount );
    
     /**
     * @brief Resets a queue to its original empty state.
@@ -177,7 +180,8 @@
     * @param[out] dst Pointer to the buffer into which the received item will be copied.
     * @return #qTrue if data was retrieved from the Queue, otherwise returns #qFalse
     */         
-    qBool_t qQueue_Receive( qQueue_t * const q, void *dst );
+    qBool_t qQueue_Receive( qQueue_t * const q, 
+                            void *dst );
 
     /**
     * @brief Post an item to the back of the queue. The item is queued by copy, not by reference
@@ -192,7 +196,9 @@
     * the queue (for high priority messages).
     * @return #qTrue on successful add, #qFalse if not added
     */      
-    qBool_t qQueue_SendGeneric( qQueue_t * const q, void *itemToQueue, const qQueue_Mode_t insertMode );
+    qBool_t qQueue_SendGeneric( qQueue_t * const q, 
+                                void *itemToQueue, 
+                                const qQueue_Mode_t insertMode );
     
     /** @}*/
 

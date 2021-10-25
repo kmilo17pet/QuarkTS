@@ -92,7 +92,8 @@ void qClock_SysTick( void )
 /*============================================================================*/
 qGetTickFcn_t qClock_GetTick = &qClock_InternalTick;
 /*============================================================================*/
-qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td )
+qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, 
+                                  const qClock_t td )
 {
     qBool_t retValue = qFalse;
     

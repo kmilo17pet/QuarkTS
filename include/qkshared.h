@@ -36,7 +36,8 @@
    
      /*Private kernel shared functions*/
     #if ( Q_PRIO_QUEUE_SIZE > 0 ) 
-        extern qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, void *pData );
+        extern qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task, 
+                                                 void *pData );
         extern qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task );
         extern size_t qOS_PriorityQueue_GetCount( void );
         extern void qOS_PriorityQueue_Init( void );
@@ -45,8 +46,11 @@
     extern qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task );
     extern qTask_t* qOS_Get_TaskRunning( void );
 
-    extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, const qUINT32_t flag );
-    extern void qOS_Set_TaskFlags( qTask_t * const Task, const qUINT32_t flags, const qBool_t value );
+    extern qBool_t qOS_Get_TaskFlag( const qTask_t * const Task, 
+                                     const qUINT32_t flag );
+    extern void qOS_Set_TaskFlags( qTask_t * const Task, 
+                                   const qUINT32_t flags, 
+                                   const qBool_t value );
 
     #if ( Q_ALLOW_TASK_NAMING == 1 )
         extern qTask_t* qOS_FindTaskByName( const char *name );

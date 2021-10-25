@@ -63,7 +63,8 @@
     * @param[in] tTime The expiration time(Must be specified in seconds).
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     */        
-    qBool_t qSTimer_Set( qSTimer_t * const t, const qTime_t tTime );
+    qBool_t qSTimer_Set( qSTimer_t * const t, 
+                         const qTime_t tTime );
 
     /**
     * @brief Non-Blocking STimer check
@@ -90,7 +91,8 @@
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */          
-    qBool_t qSTimer_FreeRun( qSTimer_t * const t, const qTime_t tTime );
+    qBool_t qSTimer_FreeRun( qSTimer_t * const t, 
+                             const qTime_t tTime );
 
     /**
     * @brief Retrieve the elapsed time in epochs

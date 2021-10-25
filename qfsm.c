@@ -20,21 +20,40 @@ Miro Samek and Paul Y. Montgomery, Embedded Systems Programming,  August 2000
 
 typedef qByte_t qSM_LCA_t;
 
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, const qSM_TransitionHistoryMode_t mHistory );
-static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target );
-static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca );
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, const qSM_Signal_t xSignal, qSM_State_t * const s );
-static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, qSM_State_t * const s, qSM_UnprotectedHandler_t h );
-static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s );
-static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s );
-static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s );
-static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, const qSM_Signal_t sig );
-static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **entryPath );
-static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath );
-static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, const qSM_Signal_t sig );
-static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState, qSM_UnprotectedHandler_t h );
+static void qStateMachine_Transition( qSM_t *m, 
+                                      qSM_State_t *target, 
+                                      const qSM_TransitionHistoryMode_t mHistory );
+static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, 
+                                                            qSM_State_t * const target );
+static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, 
+                                                       qSM_LCA_t lca );
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, 
+                                          const qSM_Signal_t xSignal, 
+                                          qSM_State_t * const s );
+static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m, 
+                                                       qSM_State_t * const s, 
+                                                       qSM_UnprotectedHandler_t h );
+static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, 
+                                               qSM_State_t * const s );
+static void qStateMachine_StateOnEntry( qSM_t * const m, 
+                                        qSM_State_t * const s );
+static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, 
+                                                qSM_State_t * const s );
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, 
+                                                 qSM_State_t * const s, 
+                                                 const qSM_Signal_t sig );
+static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, 
+                                                    qSM_State_t **entryPath );
+static void qStateMachine_TraceOnStart( qSM_t * const m, 
+                                        qSM_State_t **entryPath );
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, 
+                                                    const qSM_Signal_t sig );
+static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState, 
+                                                qSM_UnprotectedHandler_t h );
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
-static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, const qSM_Signal_t sig );
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, 
+                                                          qSM_State_t *current, 
+                                                          const qSM_Signal_t sig );
 
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
@@ -45,7 +64,9 @@ with the newly entered state(s). To discover which exit actions to execute, it
 is necessary to find the Least Common Ancestor (LCA) of the source and target
 states. History mode is also handled here.
 */
-static void qStateMachine_Transition( qSM_t *m, qSM_State_t *target, const qSM_TransitionHistoryMode_t mHistory )
+static void qStateMachine_Transition( qSM_t *m, 
+                                      qSM_State_t *target, 
+                                      const qSM_TransitionHistoryMode_t mHistory )
 {
     /*now, perform the exit actions by first finding the LCA*/
     qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
@@ -75,7 +96,8 @@ To discover which exit actions to execute, it is necessary to find the LCA(Least
 Common Ancestor) of the source and target states. So this function returns the
 number of levels from the current state to the LCA.
 */
-static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM_State_t * const target )
+static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, 
+                                                            qSM_State_t * const target )
 {
     qSM_LCA_t xLca = 0u;
 
@@ -105,7 +127,8 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, qSM
 /*
 This function its used to exit current states and all superstates up to LCA
 */
-static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_t lca )
+static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, 
+                                                       qSM_LCA_t lca )
 {
     qSM_State_t *s = m->qPrivate.current;
 
@@ -122,7 +145,9 @@ static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, qSM_LCA_
 This function fill the qSM_Handler_t argument with the common data for all the
 required actions.
 */
-static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, const qSM_Signal_t sig, qSM_State_t * const s )
+static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, 
+                                          const qSM_Signal_t sig, 
+                                          qSM_State_t * const s )
 {
     h->Signal = sig;
     h->NextState = NULL;
@@ -136,7 +161,9 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, const qSM_
 /*
 This function invokes the state callback including the surrounding callback if available
 */
-static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * const s, qSM_UnprotectedHandler_t h )
+static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, 
+                                                       qSM_State_t * const s, 
+                                                       qSM_UnprotectedHandler_t h )
 {
     if ( NULL != m->qPrivate.surrounding ) {
         h->Status = qSM_STATUS_BEFORE_ANY;
@@ -166,7 +193,8 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, qSM_State_t * c
     return h->Status;
 }
 /*============================================================================*/
-static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * const s )
+static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, 
+                                               qSM_State_t * const s )
 { 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     
@@ -181,7 +209,8 @@ static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m, qSM_State_t * co
     return s->qPrivate.parent;
 }
 /*============================================================================*/
-static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s )
+static void qStateMachine_StateOnEntry( qSM_t * const m, 
+                                        qSM_State_t * const s )
 { 
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     
@@ -192,7 +221,8 @@ static void qStateMachine_StateOnEntry( qSM_t * const m, qSM_State_t * const s )
     }
 }
 /*============================================================================*/
-static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * const s )
+static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, 
+                                                qSM_State_t * const s )
 {
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
 
@@ -213,7 +243,9 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m, qSM_State_t * c
     return m->qPrivate.next;
 }
 /*============================================================================*/
-static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, qSM_State_t * const s, const qSM_Signal_t sig )
+static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m, 
+                                                 qSM_State_t * const s, 
+                                                 const qSM_Signal_t sig )
 {
     qSM_UnprotectedHandler_t h = &m->qPrivate.handler;
     qSM_Status_t status;
@@ -242,7 +274,8 @@ path from the LCA to the target, then playing it  backwards. with execution
 of entry actions. qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart
 are used to handle this after the transition perform all the required exit actions.
 */
-static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t **trace )
+static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, 
+                                                    qSM_State_t **trace )
 {
     qSM_State_t *s;
 
@@ -257,7 +290,8 @@ static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, qSM_State_t
     m->qPrivate.next = NULL;    
 }
 /*============================================================================*/
-static void qStateMachine_TraceOnStart( qSM_t * const m, qSM_State_t **entryPath )
+static void qStateMachine_TraceOnStart( qSM_t * const m, 
+                                        qSM_State_t **entryPath )
 {
     while ( NULL != qStateMachine_StateOnStart( m, m->qPrivate.current ) ) {
         qStateMachine_TracePathandRetraceEntry( m, entryPath );
@@ -275,7 +309,8 @@ Rules:
 - A signal coming from the signal-queue has the higher precedence.
 - A valid input argument overides the exclusion variable.
 */
-static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, const qSM_Signal_t sig )
+static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, 
+                                                   const qSM_Signal_t sig )
 {
     qSM_Signal_t xSignal = sig;
     
@@ -299,7 +334,8 @@ static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, const qSM_Si
     return xSignal;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t sig )
+qBool_t qStateMachine_Run( qSM_t * const m, 
+                           qSM_Signal_t sig )
 {
     qBool_t retValue = qFalse;
 
@@ -334,7 +370,11 @@ qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t sig )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topFcn, qSM_State_t * const init, qSM_SurroundingCallback_t sFcn, void *pData )
+qBool_t qStateMachine_Setup( qSM_t * const m, 
+                             qSM_StateCallback_t topFcn, 
+                             qSM_State_t * const init, 
+                             qSM_SurroundingCallback_t sFcn, 
+                             void *pData )
 {
     qBool_t retValue = qFalse;
 
@@ -359,7 +399,12 @@ qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topFcn, qSM_St
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const s, qSM_State_t * const parent, qSM_StateCallback_t sFcn, qSM_State_t * const init, void *pData )
+qBool_t qStateMachine_StateSubscribe( qSM_t * const m, 
+                                      qSM_State_t * const s, 
+                                      qSM_State_t * const parent, 
+                                      qSM_StateCallback_t sFcn, 
+                                      qSM_State_t * const init, 
+                                      void *pData )
 {
     qBool_t retValue = qFalse;
 
@@ -380,7 +425,9 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const s, qS
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s, qSM_Transition_t * const table, const size_t n )
+qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s, 
+                                            qSM_Transition_t * const table, 
+                                            const size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -393,7 +440,8 @@ qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s, qSM_Transitio
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *q )
+qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, 
+                                          qQueue_t *q )
 {
     qBool_t retValue = qFalse;
     #if ( Q_QUEUES == 1 )
@@ -411,7 +459,8 @@ qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *q )
     return retValue;
 }
 /*============================================================================*/
-static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState, qSM_UnprotectedHandler_t h )
+static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState, 
+                                                qSM_UnprotectedHandler_t h )
 {
     size_t i, n;
     qBool_t transitionAllowed;
@@ -440,7 +489,9 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
     }
 }
 /*============================================================================*/
-qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t sig, const qBool_t isUrgent )
+qBool_t qStateMachine_SendSignal( qSM_t * const m, 
+                                  qSM_Signal_t sig, 
+                                  const qBool_t isUrgent )
 {
     qBool_t retValue = qFalse;
 
@@ -482,7 +533,9 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
     }
 }
 /*============================================================================*/
-static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_State_t *current, const qSM_Signal_t sig )
+static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, 
+                                                          qSM_State_t *current, 
+                                                          const qSM_Signal_t sig )
 {
     qSM_TimeoutStateDefinition_t *tbl = current->qPrivate.tdef;
     size_t n = current->qPrivate.nTm;    
@@ -526,7 +579,8 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m, qSM_S
     }
 }
 /*============================================================================*/
-qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts )
+qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m, 
+                                          qSM_TimeoutSpec_t * const ts )
 {
     qBool_t retValue = qFalse;
 
@@ -544,7 +598,9 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * 
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s, qSM_TimeoutStateDefinition_t *tdef, const size_t n )
+qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s, 
+                                         qSM_TimeoutStateDefinition_t *tdef, 
+                                         const size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -557,7 +613,9 @@ qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s, qSM_TimeoutState
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t t )
+qBool_t qStateMachine_TimeoutSet( qSM_t * const m, 
+                                  const qIndex_t xTimeout, 
+                                  const qTime_t t )
 {
     qBool_t retValue = qFalse;
 
@@ -570,7 +628,8 @@ qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, cons
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout )
+qBool_t qStateMachine_TimeoutStop( qSM_t * const m, 
+                                   const qIndex_t xTimeout )
 {
     qBool_t retValue = qFalse;
 
@@ -594,7 +653,8 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout )
     return retValue;
 }
 /*============================================================================*/
-void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t a )
+void* qStateMachine_Get_Machine( qSM_t * const m, 
+                                 const qSM_Attribute_t a )
 {
     void *xAttribute = NULL;
 
@@ -623,7 +683,8 @@ void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t a )
     return xAttribute;
 }
 /*============================================================================*/
-void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t a )
+void* qStateMachine_Get_State( qSM_State_t * const s, 
+                               const qSM_Attribute_t a )
 {
     void *xAttribute = NULL;
 
@@ -652,7 +713,8 @@ void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t a )
     return xAttribute;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t sFcn )
+qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, 
+                                         qSM_StateCallback_t sFcn )
 {
     qBool_t retValue = qFalse;
 
@@ -664,7 +726,8 @@ qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCal
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCallback_t sFcn )
+qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, 
+                                              qSM_SurroundingCallback_t sFcn )
 {
     qBool_t retValue = qFalse;
 

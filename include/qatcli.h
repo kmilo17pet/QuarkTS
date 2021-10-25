@@ -268,7 +268,9 @@
     * @param[in] str The value of the selected string.
     * @return #qTrue on success, otherwise return #qFalse.
     */   
-    qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, qATCLI_BuiltInString_t which, const char *str );
+    qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, 
+                                     qATCLI_BuiltInString_t which, 
+                                     const char *str );
 
     /**
     * @brief Setup an instance of the AT Command Command Line Interface.
@@ -283,7 +285,12 @@
     * @param[in] sizeOutput The size of the memory allocated in @a pOutput 
     * @return #qTrue on success, otherwise return #qFalse.
     */   
-    qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput );
+    qBool_t qATCLI_Setup( qATCLI_t * const cli, 
+                          const qPutChar_t outFcn, 
+                          char *pInput, 
+                          const size_t sizeInput, 
+                          char *pOutput, 
+                          const size_t sizeOutput );
 
     /**
     * @brief This function subscribes the CLI instance to a specific command with an associated 
@@ -314,7 +321,12 @@
     * @param[in] param User storage pointer.
     * @return #qTrue on success, otherwise return #qFalse.
     */ 
-    qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const cmd, char *textCommand, const qATCLI_CommandCallback_t cFcn, qATCLI_Options_t cmdOpt, void *param );
+    qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, 
+                                 qATCLI_Command_t * const cmd, 
+                                 char *textCommand, 
+                                 const qATCLI_CommandCallback_t cFcn, 
+                                 qATCLI_Options_t cmdOpt, 
+                                 void *param );
     
     /**
     * @brief Iterate between the commands available inside the AT-CLI instance.
@@ -323,7 +335,8 @@
     * the list of subscribed commands.
     * @return The current iterated command. NULL when no more commands are available.
     */ 
-    qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, const qBool_t reload );
+    qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, 
+                                         const qBool_t reload );
 
     /**
     * @brief Feed the CLI input with a single character. This call is mandatory 
@@ -333,7 +346,8 @@
     * @param[in] c The incoming byte/char to the input. 
     * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
-    qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, const char c );
+    qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, 
+                               const char c );
 
     /**
     * @brief Feed the CLI input with a string. This call is mandatory 
@@ -344,7 +358,9 @@
     * @param[in] n The length of the string.
     * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
     */     
-    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *pData, const size_t n );
+    qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, 
+                                    char *pData, 
+                                    const size_t n );
 
     /**
     * @brief Sends a command to the specified AT Command Line Interface instance.
@@ -352,7 +368,8 @@
     * @param[in] cmd The command string, including arguments if required.
     * @return #qTrue when the CLI accepts the input. If busy, return #qFalse
     */         
-    qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd );
+    qBool_t qATCLI_Raise( qATCLI_t * const cli, 
+                          const char *cmd );
 
     /**
     * @brief Try to execute the requested command.
@@ -360,7 +377,8 @@
     * @param[in] cmd The command string, including arguments if required.
     * @return The response output for the requested command.
     */     
-    qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd );
+    qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, 
+                                   char *cmd );
 
     /**
     * @brief Flush the CLI input buffer.

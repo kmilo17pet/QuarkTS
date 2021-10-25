@@ -87,7 +87,8 @@
     * @param[in] dFcn The function with hardware specific code that disables interrupts.
     * @return #qTrue on success. Otherwise return #qFalse.
     */   
-    qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, const qInt_Disabler_t dFcn );
+    qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, 
+                                       const qInt_Disabler_t dFcn );
 
     /** @}*/
 

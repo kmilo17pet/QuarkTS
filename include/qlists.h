@@ -170,7 +170,9 @@
     * #QLIST_ATBACK or any other index number where the node will be inserted after.
     * @return #qTrue if the item was successfully added to the list, othewise returns #qFalse   
     */       
-    qBool_t qList_Insert( qList_t * const l, void * const node, const qList_Position_t p );
+    qBool_t qList_Insert( qList_t * const l, 
+                          void * const node, 
+                          const qList_Position_t p );
 
     /**
     * @brief If the node is member of a list, the node will be removed from it.
@@ -188,7 +190,9 @@
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number.
     * @return A pointer to the removed node. NULL if removal can't be performed. 
     */       
-    void* qList_Remove( qList_t * const l, void * const node, const qList_Position_t p );
+    void* qList_Remove( qList_t * const l, 
+                        void * const node, 
+                        const qList_Position_t p );
 
     /**
     * @brief Moves(or merge) the entire list pointed by @a src to the list pointed by 
@@ -203,7 +207,9 @@
     * @return #qTrue if the move operation is performed successfully, otherwise 
     * returns #qFalse  
     */     
-    qBool_t qList_Move( qList_t *const dst, qList_t *const src, const qList_Position_t p );
+    qBool_t qList_Move( qList_t *const dst, 
+                        qList_t *const src, 
+                        const qList_Position_t p );
 
     /**
     * @brief Check if the node is member of the list.
@@ -211,7 +217,8 @@
     * @param[in] node  A pointer to the node
     * @return #qTrue if the node belongs to the list, #qFalse if it is not.   
     */      
-    qBool_t qList_IsMember( qList_t * const l, void * const node );
+    qBool_t qList_IsMember( qList_t * const l, 
+                            void * const node );
 
     /**
     * @brief Get a pointer to the front item of the list
@@ -281,7 +288,8 @@
     * after the element pointed to by @a node2.
     * @return #qTrue if at least one reordering is performed over the list.   
     */      
-    qBool_t qList_Sort( qList_t * const l, qList_CompareFcn_t f ) ;
+    qBool_t qList_Sort( qList_t * const l, 
+                        qList_CompareFcn_t f ) ;
 
     /*! @cond  */
     qList_Node_t* _qNode_Backward( const qList_Node_t *const n ); /*This function are not intended for the user usage*/
@@ -322,7 +330,10 @@
     * @param[in] d Use one of the following options: #QLIST_FORWARD or #QLIST_BACKWARD.
     * @return #qTrue on success. Otherwise returns #qFalse.  
     */       
-    qBool_t qList_IteratorSet( qList_Iterator_t *i, qList_t *const l, void *nodeOffset, qList_Direction_t d );
+    qBool_t qList_IteratorSet( qList_Iterator_t *i, 
+                               qList_t *const l, 
+                               void *nodeOffset, 
+                               qList_Direction_t d );
     
     /**
     * @brief Get the current node available in the iterator. After invoked, 
@@ -346,7 +357,11 @@
     * To ignore, pass NULL. 
     * @return #qTrue if the walk through was early terminated, otherwise returns #qFalse.
     */     
-    qBool_t qList_ForEach( qList_t *const l, const qList_NodeFcn_t f, void *arg, qList_Direction_t d, void *nodeOffset );
+    qBool_t qList_ForEach( qList_t *const l, 
+                           const qList_NodeFcn_t f, 
+                           void *arg, 
+                           qList_Direction_t d, 
+                           void *nodeOffset );
     
     /**
     * @brief Swap two nodes that belongs to the same list by changing its own links.
@@ -355,7 +370,8 @@
     * @param[in] node2 Pointer to the second node.
     * @return #qTrue if the swap operation is performed. Otherwise returns #qFalse.
     */      
-    qBool_t qList_Swap( void *node1, void *node2 );
+    qBool_t qList_Swap( void *node1, 
+                        void *node2 );
 
     /** @}*/
     #ifdef __cplusplus

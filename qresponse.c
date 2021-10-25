@@ -9,7 +9,9 @@
 #if ( Q_RESPONSE_HANDLER == 1 )
 
 /*============================================================================*/
-qBool_t qResponse_Setup( qResponse_t * const r, char *xLocBuff, const size_t nMax )
+qBool_t qResponse_Setup( qResponse_t * const r, 
+                         char *xLocBuff, 
+                         const size_t nMax )
 {
     qBool_t retValue = qFalse;
     
@@ -37,12 +39,17 @@ qBool_t qResponse_Reset( qResponse_t * const r )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qResponse_Received( qResponse_t * const r, const char *pattern, const size_t n )
+qBool_t qResponse_Received( qResponse_t * const r, 
+                            const char *pattern, 
+                            const size_t n )
 {
     return qResponse_ReceivedWithTimeout( r, pattern, n, qTimeImmediate );
 }
 /*============================================================================*/
-qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, const char *pattern, const size_t n, const qTime_t t )
+qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, 
+                                       const char *pattern, 
+                                       const size_t n, 
+                                       const qTime_t t )
 {
     qBool_t retValue = qFalse;
     
@@ -71,7 +78,8 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, const char *patter
     return retValue;
 }
 /*============================================================================*/
-qBool_t qResponse_ISRHandler( qResponse_t * const r, const char rxchar )
+qBool_t qResponse_ISRHandler( qResponse_t * const r, 
+                              const char rxchar )
 {
     qBool_t retValue = qFalse;
     

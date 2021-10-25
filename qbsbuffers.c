@@ -80,7 +80,8 @@ qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const b )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Get( qBSBuffer_t * const b, qUINT8_t *dst )
+qBool_t qBSBuffer_Get( qBSBuffer_t * const b, 
+                       qUINT8_t *dst )
 {
     qBool_t retValue = qFalse;
 
@@ -95,7 +96,9 @@ qBool_t qBSBuffer_Get( qBSBuffer_t * const b, qUINT8_t *dst )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Read( qBSBuffer_t * const b, void *dst, const size_t n )
+qBool_t qBSBuffer_Read( qBSBuffer_t * const b, 
+                        void *dst, 
+                        const size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -113,7 +116,8 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const b, void *dst, const size_t n )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Put( qBSBuffer_t * const b, const qUINT8_t bData )
+qBool_t qBSBuffer_Put( qBSBuffer_t * const b, 
+                       const qUINT8_t bData )
 {
     qBool_t retValue = qFalse;
 
@@ -128,7 +132,9 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const b, const qUINT8_t bData )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, volatile qUINT8_t *pBuffer, const size_t length )
+qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, 
+                         volatile qUINT8_t *pBuffer, 
+                         const size_t length )
 {
     qBool_t retValue = qFalse;
 

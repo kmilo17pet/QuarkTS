@@ -387,7 +387,8 @@
     * signal can be overridden
     * @return #qTrue if the signal was successfully handled, otherwise returns #qFalse.
     */        
-    qBool_t qStateMachine_Run( qSM_t * const m, qSM_Signal_t sig );
+    qBool_t qStateMachine_Run( qSM_t * const m, 
+                               qSM_Signal_t sig );
 
     /**
     * @brief Initializes a Finite State Machine (FSM).
@@ -400,7 +401,11 @@
     * @param[in] pData Represents the FSM arguments. User storage pointer. To ignore pass NULL.
     * @return Returns #qTrue on Success, otherwise returns #qFalse.
     */   
-    qBool_t qStateMachine_Setup( qSM_t * const m, qSM_StateCallback_t topFcn, qSM_State_t * const init, qSM_SurroundingCallback_t sFcn, void *pData );
+    qBool_t qStateMachine_Setup( qSM_t * const m, 
+                                 qSM_StateCallback_t topFcn, 
+                                 qSM_State_t * const init, 
+                                 qSM_SurroundingCallback_t sFcn, 
+                                 void *pData );
     
     /**
     * @brief This function subscribes the FSM instance to a specific state with an associated 
@@ -417,7 +422,12 @@
     * @param[in] pData State data. Storage pointer. To ignore pass NULL.
     * @return #qTrue on success, otherwise return #qFalse.
     */     
-    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, qSM_State_t * const s, qSM_State_t * const parent, qSM_StateCallback_t sFcn, qSM_State_t * const init, void *pData );
+    qBool_t qStateMachine_StateSubscribe( qSM_t * const m, 
+                                          qSM_State_t * const s, 
+                                          qSM_State_t * const parent, 
+                                          qSM_StateCallback_t sFcn, 
+                                          qSM_State_t * const init, 
+                                          void *pData );
        
     /**
     * @brief Installs a table with the outgoing transitions for the supplied state.
@@ -429,7 +439,9 @@
     * @param[in] n The number of elements inside @a table. 
     * @return #qTrue on success, otherwise return #qFalse.
     */        
-    qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s, qSM_Transition_t * const table, const size_t n );
+    qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s, 
+                                                qSM_Transition_t * const table, 
+                                                const size_t n );
 
     /**
     * @brief Install a signal queue to the provided Finite State Machine (FSM).
@@ -439,7 +451,8 @@
     * @param[in] q A pointer to the queue object.
     * @return #qTrue on success, otherwise return #qFalse.
     */      
-    qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, qQueue_t *q );
+    qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m, 
+                                              qQueue_t *q );
 
     /**
     * @brief Sends a signal to the provided state machine.
@@ -454,7 +467,9 @@
     * @return #qTrue if the provided signal was successfully delivered to the FSM, otherwise 
     * return #qFalse. #qFalse if there is a queue, and the signal cannot be inserted because it is full.
     */      
-    qBool_t qStateMachine_SendSignal( qSM_t * const m, qSM_Signal_t sig, const qBool_t isUrgent );
+    qBool_t qStateMachine_SendSignal( qSM_t * const m, 
+                                      qSM_Signal_t sig, 
+                                      const qBool_t isUrgent );
 
     /**
     * @brief Install the Timeout-specification object to target FSM to allow timed 
@@ -467,7 +482,8 @@
     * @param[in] ts A pointer to the timeout specification object.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */    
-    qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  qSM_TimeoutSpec_t * const ts );
+    qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,  
+                                              qSM_TimeoutSpec_t * const ts );
    
     /**
     * @brief Setup fixed timeouts for the specified state using a lookup-table. 
@@ -483,7 +499,9 @@
     * @param[in] n The number of elements inside @a tdef. 
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */    
-    qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s, qSM_TimeoutStateDefinition_t *tdef, const size_t n );
+    qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s, 
+                                             qSM_TimeoutStateDefinition_t *tdef, 
+                                             const size_t n );
 
     /**
     * @brief Set the time for the selected built-in timeout inside the target FSM.
@@ -494,7 +512,9 @@
     * @param[in] t The specified time usually given in seconds.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qStateMachine_TimeoutSet( qSM_t * const m, const qIndex_t xTimeout, const qTime_t t );
+    qBool_t qStateMachine_TimeoutSet( qSM_t * const m, 
+                                      const qIndex_t xTimeout, 
+                                      const qTime_t t );
 
     /**
     * @brief Stop the time count for the selected built-in timeout.
@@ -504,7 +524,8 @@
     * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */       
-    qBool_t qStateMachine_TimeoutStop( qSM_t * const m, const qIndex_t xTimeout );
+    qBool_t qStateMachine_TimeoutStop( qSM_t * const m, 
+                                       const qIndex_t xTimeout );
 
     /**
     * @brief Get attributes from the provided Finite State Machine object     
@@ -512,7 +533,8 @@
     * @param[in] a The requested attribute
     * @return Returns a pointer to the requested attribute. Otherwise returns NULL.
     */  
-    void* qStateMachine_Get_Machine( qSM_t * const m, const qSM_Attribute_t a );
+    void* qStateMachine_Get_Machine( qSM_t * const m, 
+                                     const qSM_Attribute_t a );
 
     /**
     * @brief Get attributes from the provided state object     
@@ -520,7 +542,8 @@
     * @param[in] a The requested attribute
     * @return Returns a pointer to the requested attribute. Otherwise returns NULL.
     */     
-    void* qStateMachine_Get_State( qSM_State_t * const s, const qSM_Attribute_t a );
+    void* qStateMachine_Get_State( qSM_State_t * const s, 
+                                   const qSM_Attribute_t a );
 
     /**
     * @brief Set/Change the state callback in run-time     
@@ -528,7 +551,8 @@
     * @param[in] sFcn The new state callback
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */         
-    qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, qSM_StateCallback_t sFcn );
+    qBool_t qStateMachine_Set_StateCallback( qSM_State_t * const state, 
+                                             qSM_StateCallback_t sFcn );
 
     /**
     * @brief Set/Change the FSM surrounding callback in run-time     
@@ -536,7 +560,8 @@
     * @param[in] sFcn The new surrounding callback
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, qSM_SurroundingCallback_t sFcn );
+    qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m, 
+                                                  qSM_SurroundingCallback_t sFcn );
     
     /** @}*/
 

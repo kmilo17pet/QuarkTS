@@ -7,15 +7,21 @@
 #include "qlists.h"
 
 static qList_Node_t* qList_NodeInit( void * const node );
-static void qList_InsertAtFront( qList_t * const l, qList_Node_t * const node );
-static void qList_InserAtBack( qList_t * const l, qList_Node_t * const node );
+static void qList_InsertAtFront( qList_t * const l, 
+                                 qList_Node_t * const node );
+static void qList_InserAtBack( qList_t * const l, 
+                               qList_Node_t * const node );
 static qList_Node_t* qList_RemoveFront( qList_t * const l );
 static qList_Node_t* qList_RemoveBack( qList_t * const l );
-static qList_Node_t* qList_GetiNode( const qList_t *const l, const qList_Position_t p );
+static qList_Node_t* qList_GetiNode( const qList_t *const l, 
+                                     const qList_Position_t p );
 static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h );
-static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 );
-static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 );
-static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 );
+static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, 
+                                             qList_Node_t *n2 );
+static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, 
+                                           qList_Node_t *n2 );
+static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, 
+                                               qList_Node_t *n2 );
 
 /*============================================================================*/
 qBool_t qList_Initialize( qList_t * const l )
@@ -44,14 +50,16 @@ static qList_Node_t* qList_NodeInit( void * const node )
     return xNode;
 }
 /*=========================================================*/
-static void qList_InsertAtFront( qList_t * const l, qList_Node_t * const node )
+static void qList_InsertAtFront( qList_t * const l, 
+                                 qList_Node_t * const node )
 {
     node->next = l->head;
     l->head->prev = node;
     l->head = node;
 }
 /*=========================================================*/
-static void qList_InserAtBack( qList_t * const l, qList_Node_t * const node )
+static void qList_InserAtBack( qList_t * const l, 
+                               qList_Node_t * const node )
 {
     l->tail->next = node;
     node->prev = l->tail;
@@ -90,7 +98,8 @@ static qList_Node_t* qList_RemoveBack( qList_t * const l )
     return removed;
 }
 /*=========================================================*/
-static qList_Node_t* qList_GetiNode( const qList_t *const l, const qList_Position_t p )
+static qList_Node_t* qList_GetiNode( const qList_t *const l, 
+                                     const qList_Position_t p )
 {
     qList_Node_t *iNode;
     qBase_t iPos = 0;
@@ -102,7 +111,9 @@ static qList_Node_t* qList_GetiNode( const qList_t *const l, const qList_Positio
     return iNode;
 }
 /*=========================================================*/
-qBool_t qList_Insert( qList_t *const l, void * const node, const qList_Position_t p )
+qBool_t qList_Insert( qList_t *const l, 
+                      void * const node, 
+                      const qList_Position_t p )
 {
     qBool_t retValue = qFalse;
  
@@ -175,7 +186,9 @@ qBool_t qList_RemoveItself( void * const node )
     return retValue;
 }
 /*=========================================================*/           
-void* qList_Remove( qList_t * const l, void * const node, const qList_Position_t p )
+void* qList_Remove( qList_t * const l, 
+                    void * const node, 
+                    const qList_Position_t p )
 {
     qList_Node_t *removed = NULL;
 
@@ -213,7 +226,9 @@ void* qList_Remove( qList_t * const l, void * const node, const qList_Position_t
     return removed;
 }
 /*=========================================================*/           
-qBool_t qList_Move( qList_t *const dst, qList_t *const src, const qList_Position_t p )
+qBool_t qList_Move( qList_t *const dst, 
+                    qList_t *const src, 
+                    const qList_Position_t p )
 {
     qBool_t retValue = qFalse;
 
@@ -263,7 +278,8 @@ static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h )
     return qFalse;
 }
 /*=========================================================*/
-qBool_t qList_IsMember( qList_t * const l, void * const node )
+qBool_t qList_IsMember( qList_t * const l, 
+                        void * const node )
 {
     qBool_t retValue = qFalse;
 
@@ -323,7 +339,8 @@ size_t qList_Length( const qList_t * const l )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qList_Sort( qList_t * const l, qList_CompareFcn_t f )
+qBool_t qList_Sort( qList_t * const l, 
+                    qList_CompareFcn_t f )
 {
     qBool_t retValue = qFalse;
 
@@ -379,7 +396,10 @@ qBool_t qList_Sort( qList_t * const l, qList_CompareFcn_t f )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qList_IteratorSet( qList_Iterator_t *i, qList_t *const l, void *nodeOffset, qList_Direction_t d )
+qBool_t qList_IteratorSet( qList_Iterator_t *i, 
+                           qList_t *const l, 
+                           void *nodeOffset, 
+                           qList_Direction_t d )
 {
     qBool_t retValue = qFalse;
 
@@ -419,7 +439,11 @@ void* qList_IteratorGetNext( qList_Iterator_t *i )
     return iNode;
 }
 /*============================================================================*/
-qBool_t qList_ForEach( qList_t *const l, const qList_NodeFcn_t f, void *arg, qList_Direction_t d, void *nodeOffset )
+qBool_t qList_ForEach( qList_t *const l, 
+                       const qList_NodeFcn_t f, 
+                       void *arg, 
+                       qList_Direction_t d, 
+                       void *nodeOffset )
 {
     qBool_t retValue = qFalse;
     
@@ -471,7 +495,8 @@ qList_Node_t* _qNode_Backward( const qList_Node_t *const n )
     return n->prev;
 }
 /*============================================================================*/
-qBool_t qList_Swap( void *node1, void *node2 )
+qBool_t qList_Swap( void *node1, 
+                    void *node2 )
 {
     qBool_t retValue = qFalse;
 
@@ -502,7 +527,8 @@ qBool_t qList_Swap( void *node1, void *node2 )
     return retValue;
 }
 /*============================================================================*/
-static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 )
+static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, 
+                                             qList_Node_t *n2 )
 {
     qList_t *list;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
@@ -529,7 +555,8 @@ static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1, qList_Node_t *n2 
     } 
 }
 /*============================================================================*/
-static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 )
+static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, 
+                                           qList_Node_t *n2 )
 {
     if ( ( ( n1->next == n2 ) && ( n2->prev == n1 ) ) || ( ( n1->prev == n2 ) && ( n2->next == n1 ) ) ) { /*adjacent nodes?*/
         n1->prev = n1->next; 
@@ -541,7 +568,8 @@ static void qList_GivenNodes_SwapAdjacent( qList_Node_t *n1, qList_Node_t *n2 )
     }
 }
 /*============================================================================*/
-static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, qList_Node_t *n2 ) 
+static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1, 
+                                               qList_Node_t *n2 ) 
 {
     if ( NULL != n1->prev ) {
         n1->prev->next = n1;

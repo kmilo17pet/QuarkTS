@@ -28,10 +28,14 @@ static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
-static char* qATCLI_Input_Fix( char *s, size_t maxlen );
+static char* qATCLI_Input_Fix( char *s, 
+                               size_t maxlen );
 
-static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval );
-static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd, char *inputBuffer, qATCLI_Handler_t params );
+static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, 
+                                          const qATCLI_Response_t retval );
+static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd, 
+                                     char *inputBuffer, 
+                                     qATCLI_Handler_t params );
 static qBool_t qATCLI_Notify( qATCLI_t * const cli );
 
 /*helper methods inside <qATCLI_PreCmd_t> to retreive command arguments*/
@@ -39,7 +43,8 @@ static char* GetArgPtr( qIndex_t n );
 static int GetArgInt( qIndex_t n );
 static qFloat32_t GetArgFlt( qIndex_t n );
 static qUINT32_t GetArgHex( qIndex_t n );
-static char* GetArgString( qIndex_t n, char* pOut );
+static char* GetArgString( qIndex_t n, 
+                           char* pOut );
 
 /*============================================================================*/
 static qBool_t qATCLI_Notify( qATCLI_t * const cli )
@@ -63,7 +68,9 @@ static void qATCLI_Puts_Wrapper( const char *s )
     (void)qIOUtil_OutputString( cli_OutCharFcn, NULL, s, qFalse ); 
 }
 /*============================================================================*/
-qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, qATCLI_BuiltInString_t which, const char *str )
+qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, 
+                                 qATCLI_BuiltInString_t which, 
+                                 const char *str )
 {
     qBool_t retValue = qTrue;
 
@@ -96,7 +103,12 @@ qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli, qATCLI_BuiltInString_t wh
     return retValue;
 }
 /*============================================================================*/
-qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput )
+qBool_t qATCLI_Setup( qATCLI_t * const cli, 
+                      const qPutChar_t outFcn, 
+                      char *pInput, 
+                      const size_t sizeInput, 
+                      char *pOutput, 
+                      const size_t sizeOutput )
 {
     qBool_t retValue = qFalse;
 
@@ -133,7 +145,12 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli, const qPutChar_t outFcn, char *pInpu
     return retValue;
 }
 /*============================================================================*/
-qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const cmd, char *textCommand, const qATCLI_CommandCallback_t cFcn, qATCLI_Options_t cmdOpt, void *param )
+qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, 
+                             qATCLI_Command_t * const cmd, 
+                             char *textCommand, 
+                             const qATCLI_CommandCallback_t cFcn, 
+                             qATCLI_Options_t cmdOpt, 
+                             void *param )
 {
     qBool_t retValue = qFalse;
 
@@ -167,7 +184,8 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli, qATCLI_Command_t * const cmd,
     return retValue;
 }
 /*============================================================================*/
-qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, const qBool_t reload )
+qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, 
+                                     const qBool_t reload )
 {
     static qATCLI_Command_t *iterator = NULL;
     qATCLI_Command_t *iCmd = NULL;
@@ -189,7 +207,8 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, const qBool_t reload 
     return iCmd;
 } 
 /*============================================================================*/
-qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, const char c )
+qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, 
+                           const char c )
 {
     qBool_t retValue = qFalse;
     
@@ -215,7 +234,9 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, const char c )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *pData, const size_t n )
+qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, 
+                                char *pData,
+                                const size_t n )
 {
     qBool_t retValue = qFalse;
 
@@ -243,7 +264,8 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, char *pData, const size_t 
     return retValue;
 }
 /*============================================================================*/
-static char* qATCLI_Input_Fix( char *s, size_t maxlen ) /*modifies the input string removing non-graph chars */
+static char* qATCLI_Input_Fix( char *s, 
+                               size_t maxlen ) /*modifies the input string removing non-graph chars */
 {
     int i, j = 0;
     int noL = 0;
@@ -273,7 +295,8 @@ static char* qATCLI_Input_Fix( char *s, size_t maxlen ) /*modifies the input str
     return s;
 }
 /*============================================================================*/
-qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd )
+qBool_t qATCLI_Raise( qATCLI_t * const cli, 
+                      const char *cmd )
 {
     qBool_t retValue = qFalse;
     
@@ -292,7 +315,8 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli, const char *cmd )
     return retValue;
 }
 /*============================================================================*/
-qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd )
+qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, 
+                            char *cmd )
 {
     qATCLI_Response_t retValue = qATCLI_NOTFOUND;
     if ( ( NULL != cli ) && ( NULL != cmd ) ) {
@@ -322,7 +346,9 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, char *cmd )
     return retValue;
 }
 /*============================================================================*/
-static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd, char *inputBuffer, qATCLI_Handler_t params )
+static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd, 
+                                     char *inputBuffer, 
+                                     qATCLI_Handler_t params )
 {
     qBool_t retValue = qFalse;
     
@@ -445,7 +471,8 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
     return retValue;
 }
 /*============================================================================*/
-static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, const qATCLI_Response_t retval )
+static void qATCLI_HandleCommandResponse( qATCLI_t * const cli, 
+                                          const qATCLI_Response_t retval )
 {
     if ( qATCLI_NORESPONSE != retval ) {
         qPutChar_t putChar = cli->qPrivate.OutputFcn;
@@ -566,7 +593,8 @@ static qUINT32_t GetArgHex( qIndex_t n )
     return retValue;  
 }
 /*============================================================================*/
-static char* GetArgString( qIndex_t n, char* pOut )
+static char* GetArgString( qIndex_t n, 
+                           char* pOut )
 {
     char *retPtr = NULL;
     

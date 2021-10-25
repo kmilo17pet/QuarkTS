@@ -87,7 +87,9 @@
     * @param[in] debounceTime The specified time to bypass the bounce of the input nodes
     * @return #qTrue on success. Otherwise #qFalse.
     */   
-    qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, const qCoreRegSize_t rSize, const qClock_t debounceTime );
+    qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, 
+                              const qCoreRegSize_t rSize, 
+                              const qClock_t debounceTime );
 
     /**
     * @brief Add an input node to the Edge-Check instance 
@@ -97,7 +99,10 @@
     * @param[in] pinNumber  The specified Pin to read from PortAddress 
     * @return #qTrue on success. Otherwise #qFalse.
     */     
-    qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec, qEdgeCheck_IONode_t * const n, void *portAddress, const qBool_t pinNumber );    
+    qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec, 
+                                 qEdgeCheck_IONode_t * const n, 
+                                 void *portAddress, 
+                                 const qBool_t pinNumber );    
    
     /**
     * @brief Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
@@ -119,7 +124,8 @@
     * @param[in] pinNumber  The specified Pin to read from PortAddress  
     * @return #qTrue on success. Otherwise #qFalse.
     */     
-    qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n, const qBool_t pinNumber );
+    qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n, 
+                                    const qBool_t pinNumber );
 
     /** @}*/
 

@@ -74,7 +74,8 @@
     * @param[out] dst the location where the data-byte will be written
     * @return #qTrue on success, otherwise returns #qFalse
     */ 
-    qBool_t qBSBuffer_Get( qBSBuffer_t * const b, qUINT8_t *dst );
+    qBool_t qBSBuffer_Get( qBSBuffer_t * const b, 
+                           qUINT8_t *dst );
 
     /**
     * @brief Gets n data from the BSBuffer(Byte-sized Buffer) and removes them
@@ -83,7 +84,9 @@
     * @param[in] n The number of bytes to read
     * @return #qTrue on success, otherwise returns #qFalse
     */     
-    qBool_t qBSBuffer_Read( qBSBuffer_t * const b, void *dst, const size_t n );
+    qBool_t qBSBuffer_Read( qBSBuffer_t * const b, 
+                            void *dst, 
+                            const size_t n );
 
     /**
     * @brief Adds an element of data to the BSBuffer(Byte-sized Buffer)
@@ -91,7 +94,8 @@
     * @param[in] bData The data to be added
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qBSBuffer_Put( qBSBuffer_t * const b, const qUINT8_t bData );
+    qBool_t qBSBuffer_Put( qBSBuffer_t * const b, 
+                           const qUINT8_t bData );
 
     /**
     * @brief Initialize the BSBuffer(Byte-sized Buffer)
@@ -100,7 +104,9 @@
     * @param[in] length The size of the buffer(Must be a power of two)
     * @return #qTrue on success, otherwise returns #qFalse.
     */     
-    qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, volatile qUINT8_t *pBuffer, const size_t length );
+    qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, 
+                             volatile qUINT8_t *pBuffer, 
+                             const size_t length );
 
     /** @}*/
 

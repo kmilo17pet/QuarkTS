@@ -18,10 +18,13 @@ static const size_t HeapStructSize	= ( ( sizeof( qMemMang_BlockConnect_t ) + ( (
                                         & ~( (size_t)( (size_t)Q_BYTE_ALIGNMENT - (size_t)1) ) );
 
 static void qMemMang_HeapInit( qMemMang_Pool_t *mPool );
-static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_BlockConnect_t *blockToInsert );
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, 
+                                              qMemMang_BlockConnect_t *blockToInsert );
 
 /*============================================================================*/
-qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, void* pArea, const size_t pSize )
+qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool, 
+                             void* pArea, 
+                             const size_t pSize )
 {
     qBool_t retValue = qFalse;
 
@@ -54,7 +57,8 @@ void qFree( void *ptr )
     (void)qMemMang_Free( Selected_MemPool, ptr );
 }
 /*============================================================================*/
-qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, void *ptr )
+qBool_t qMemMang_Free( qMemMang_Pool_t *mPool, 
+                       void *ptr )
 {
     qBool_t retValue = qFalse;
 
@@ -127,7 +131,8 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     mPool->qPrivate.BlockAllocatedBit = ( (size_t)1u ) << ( ( sizeof(size_t)*(size_t)8u ) - (size_t)1u ); /* Work out the position of the top bit in a size_t variable. */
 }
 /*============================================================================*/
-static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, qMemMang_BlockConnect_t *blockToInsert )
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool, 
+                                              qMemMang_BlockConnect_t *blockToInsert )
 {
     qMemMang_BlockConnect_t *iterator;
     qUINT8_t *ptr;
@@ -164,7 +169,8 @@ void* qMalloc( size_t mSize )
     return qMemMang_Allocate( Selected_MemPool, mSize );
 }
 /*============================================================================*/
-void* qMemMang_Allocate( qMemMang_Pool_t *mPool, size_t pSize )
+void* qMemMang_Allocate( qMemMang_Pool_t *mPool, 
+                         size_t pSize )
 {
     void *pAllocated = NULL;
     

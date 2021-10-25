@@ -133,7 +133,8 @@
     * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
     returns #qFalse
     */       
-    qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, const qClock_t td );
+    qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, 
+                                      const qClock_t td );
 
     /** @}*/
 
