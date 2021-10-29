@@ -12,19 +12,21 @@
 #define QEDGECHECK_WAIT                         ( (qUINT8_t)0u )
 #define QEDGECHECK_UPDATE                       ( (qUINT8_t)1u )
 #define QEDGECHECK_CHECK                        ( (qUINT8_t)2u )
-#define _QEDGECHECK_REG_FCN_DEF(NAME, TYPE)     _QEDGECHECK_REG_FCN_DEC(NAME) \
-                                                { \
-                                                    TYPE Register, Mask, Bit = (TYPE)PinNumber; \
-                                                    Mask = (TYPE)( (TYPE)1uL << Bit ); \
-                                                    Register = *( (const TYPE*)Address ); \
-                                                    return ( (TYPE)0u != ( Register & Mask ) ); \
-                                                } \
+
+#define QEDGECHECK_REG_FCN_DEF(NAME, TYPE)                                  \
+_QEDGECHECK_REG_FCN_DEC(NAME)                                               \
+{                                                                           \
+    TYPE Register, Mask, Bit = (TYPE)PinNumber;                             \
+    Mask = (TYPE)( (TYPE)1uL << Bit );                                      \
+    Register = *( (const TYPE*)Address );                                   \
+    return ( (TYPE)0u != ( Register & Mask ) );                             \
+}                                                                           \
 
 /*! @cond  */
 /*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-_QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t );
-_QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t );
-_QEDGECHECK_REG_FCN_DEF( _qReg_08Bits,  qUINT8_t );
+QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t );
+QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t );
+QEDGECHECK_REG_FCN_DEF( _qReg_08Bits,  qUINT8_t );
 /*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*! @endcond  */
 

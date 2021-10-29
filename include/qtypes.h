@@ -27,7 +27,7 @@
     #endif
 
     #define     Q_UNUSED(arg)     (void)(arg)
-    #define     Q_NONE
+    #define     Q_NONE            /*EMPTY MACRO*/
 
     /** @addtogroup  qtypes
     * @brief Sets of types having specified widths used to design the entire OS.
@@ -60,7 +60,7 @@
             #define INT8_MAX 	    ( 127 )
         #endif
         #ifndef UINT8_MAX
-            #define UINT8_MAX 	    ( 255 )
+            #define UINT8_MAX 	    ( 255u )
         #endif
         #ifndef INT16_MIN
             #define INT16_MIN 	    ( -32768 )
@@ -69,7 +69,7 @@
             #define INT16_MAX 	    ( 32767 )
         #endif
         #ifndef UINT16_MAX
-            #define UINT16_MAX 	    ( 65535 )    
+            #define UINT16_MAX 	    ( 65535u )    
         #endif
         #ifndef INT32_MIN    
             #define INT32_MIN 	    ( -2147483647-1 )
@@ -78,7 +78,7 @@
             #define INT32_MAX 	    ( 2147483647 )
         #endif
         #ifndef UINT32_MAX
-            #define UINT32_MAX      ( 4294967295U )
+            #define UINT32_MAX      ( 4294967295u )
         #endif
         /*Unsigned types*/
         typedef unsigned char qUINT8_t; 
@@ -184,7 +184,7 @@
     #define qUnLink                 ( qFalse )
 
     /** @cond */ 
-    #define qIgnore                 ( (qBool_t)0xFE )
+    #define qIgnore                 ( (qBool_t)0xFEu )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )  
     #define qATTACH                 ( qTrue )

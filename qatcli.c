@@ -316,7 +316,7 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli,
 }
 /*============================================================================*/
 qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli, 
-                            char *cmd )
+                               char *cmd )
 {
     qATCLI_Response_t retValue = qATCLI_NOTFOUND;
     if ( ( NULL != cli ) && ( NULL != cmd ) ) {

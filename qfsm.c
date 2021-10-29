@@ -7,15 +7,6 @@
 #include "qfsm.h"
 #include <string.h>
 
-/*
-Inspired from :
-- State Oriented Programming - Hierarchical State Machines in C/C++",
-Miro Samek and Paul Y. Montgomery, Embedded Systems Programming,  August 2000
-- Practical Statecharts in C/C++" by Miro Samek (CMP Books, 2002). 
-- github.com/kiishor/UML-State-Machine-in-C
-- github.com/howard-chan/HSM
-*/
-
 #if ( Q_FSM == 1 )
 
 typedef qByte_t qSM_LCA_t;

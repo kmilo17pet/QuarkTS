@@ -7,15 +7,15 @@
 #include "qkernel.h"
 #include "qkshared.h" /*kernel shared methods*/
 #include "qtrace.h"
+#include "qflm.h"
 
-#define QKERNEL_BIT_INIT          ( 0x00000001uL )  
-#define QKERNEL_BIT_FCALLIDLE     ( 0x00000002uL )
-#define QKERNEL_BIT_RELEASESCHED  ( 0x00000004uL )
-#define QKERNEL_BIT_FCALLRELEASED ( 0x00000008uL )
-
+#define QKERNEL_BIT_INIT                        ( 0x00000001uL )  
+#define QKERNEL_BIT_FCALLIDLE                   ( 0x00000002uL )
+#define QKERNEL_BIT_RELEASESCHED                ( 0x00000004uL )
+#define QKERNEL_BIT_FCALLRELEASED               ( 0x00000008uL )
 #define QKERNEL_COREFLAG_SET( FLAG, BIT )       ( FLAG ) |= (qCoreFlags_t)(  BIT )     
 #define QKERNEL_COREFLAG_CLEAR( FLAG, BIT )     ( FLAG ) &= (qCoreFlags_t)( ~BIT ) 
-#define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != (( FLAG ) & ( BIT )) )? qTrue : qFalse )
+#define QKERNEL_COREFLAG_GET( FLAG, BIT )       ( ( 0uL != ( (FLAG) & (BIT) ) )? qTrue : qFalse )
 
 /*an item of the priority-queue*/
 /*! @cond  */
@@ -67,14 +67,15 @@ static qKernelControlBlock_t kernel;
 static qList_t *const WaitingList = &kernel.CoreLists[ Q_PRIORITY_LEVELS ];
 static qList_t *const SuspendedList = &kernel.CoreLists[ Q_PRIORITY_LEVELS + 1 ];
 static qList_t *const ReadyList = &kernel.CoreLists[ 0 ];
+static const qPriority_t MaxPriorityValue = (qPriority_t)Q_PRIORITY_LEVELS - 1u;
 /*=============================== Private Methods ============================*/
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task );
 static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h );
 static qBool_t qOS_Dispatch( qList_ForEachHandle_t h );    
 static qTrigger_t qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 
-#define _qAbs( x )    ((((x)<0) && ((x)!=qPeriodic))? -(x) : (x))
-
+#define qTaskIterValue( x )    ( ( ( (x) < 0 ) && ( (x) != qPeriodic ) )? -(x) : (x) )
+ 
 #if ( Q_PRIO_QUEUE_SIZE > 0 )  
     static void qOS_PriorityQueue_ClearIndex( qIndex_t indexToClear );
     static void qOS_PriorityQueue_CleanUp( const qTask_t * Task );
@@ -382,9 +383,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
         Task->qPrivate.Callback = callbackFcn;
         (void)qSTimer_Set( &Task->qPrivate.timer, t );
         Task->qPrivate.TaskData = arg;
-        Task->qPrivate.Priority = ( p > ( (qPriority_t)Q_PRIORITY_LEVELS - (qPriority_t)1u ) )? 
-                                  ( (qPriority_t)Q_PRIORITY_LEVELS - (qPriority_t)1u ) : 
-                                  p;
+        Task->qPrivate.Priority = qFLM_ClipUpper( p, MaxPriorityValue );
         Task->qPrivate.Iterations = ( qPeriodic == n )? qPeriodic : -n;    
         Task->qPrivate.Notification = 0uL;
         Task->qPrivate.Trigger = qTriggerNULL;
@@ -596,14 +595,14 @@ qBool_t qOS_Run( void )
     /*cstat +MISRAC2012-Rule-2.2_c*/
     do {           
         if ( qList_ForEach( WaitingList, qOS_CheckIfReady, NULL, QLIST_FORWARD, NULL ) ) { /*check for ready tasks in the waiting-list*/
-            qIndex_t xPriorityListIndex = (qIndex_t)Q_PRIORITY_LEVELS - (qIndex_t)1u;
+            qPriority_t xPriorityListIndex = MaxPriorityValue;
             
             do { /*loop every ready-list in descending priority order*/
                 qList_t *xList = &ReadyList[ xPriorityListIndex ]; /*get the target ready-list*/
                 if ( xList->size > (size_t)0u ) { /*check for a non-empty target list */
                     (void)qList_ForEach( xList, qOS_Dispatch, xList, QLIST_FORWARD, NULL ); /*dispatch every task in the current ready-list*/
                 }
-            } while ( (qIndex_t)0u != xPriorityListIndex-- ); /*move to the next ready-list*/
+            } while ( 0u != xPriorityListIndex-- ); /*move to the next ready-list*/
         }
         else { /*no task in the scheme is ready*/
             if ( NULL != kernel.IDLECallback ) { /*check if the idle-task is available*/
@@ -873,7 +872,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task )
     if ( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) { /*nested-check for timed task, check the first requirement(the task must be enabled)*/
         qIteration_t taskIterations = Task->qPrivate.Iterations; /*avoid side efects in the next check*/
 
-        if ( ( _qAbs( taskIterations ) > 0 ) || ( qPeriodic == taskIterations ) ) { /*then task should be periodic or must have available iters*/
+        if ( ( qTaskIterValue( taskIterations ) > 0 ) || ( qPeriodic == taskIterations ) ) { /*then task should be periodic or must have available iters*/
             qClock_t taskInterval = Task->qPrivate.timer.TV;
             qBool_t deadLineReached;
 
@@ -930,10 +929,10 @@ void qOS_Set_TaskFlags( qTask_t * const Task,
                         const qBool_t value )
 {
     if ( qTrue == value ) {
-        Task->qPrivate.Flags |= flags; /*Set bits*/
+        qFLM_BitsSet( Task->qPrivate.Flags, flags );
     }
     else {
-        Task->qPrivate.Flags &= ~flags; /*Clear bits*/
+        qFLM_BitsClear( Task->qPrivate.Flags, flags );
     }
 }
 /*============================================================================*/
@@ -968,7 +967,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
 
     if ( NULL != name ) {
         const void *xLookupData[ 2 ] = { (const void*)name, NULL };
-        const size_t maxLists = sizeof(kernel.CoreLists)/sizeof(qList_t);
+        const size_t maxLists = qFLM_ArraySize( kernel.CoreLists );
         size_t i;
         
         for ( i = 0u ; i < maxLists ; ++i ) {

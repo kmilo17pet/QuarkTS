@@ -78,37 +78,36 @@
     _qCR_Oper_t;
 
     /*Construction stataments*/                         
-    #define _qCR_EMPTY
-    #define _qCR_NONE                                       (void)0   
     #define _qCR_LCInit                                     { _qCR_PC_INITVAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }  
-    #define _qCR_RT(_PT_)                                   case (_qCR_TaskPC_t)(_PT_) :             
-    #define _qCR_LC( _DST_ , _STATE_, _REST_, _ACTION_ )    ( _DST_ ) = (_STATE_); _ACTION_; _REST_ _qCR_NONE
+    #define _qCR_RT( _PT_ )                                 case (_qCR_TaskPC_t)(_PT_) :     
+    #define _qCR_JUMP( _DST_ )                              switch (_DST_)    
+    #define _qCR_LCON( _DST_ , _STATE_, _REST_, _ACTION_ )  ( _DST_ ) = (_STATE_); _ACTION_; _REST_ Q_UNUSED(0)
     #define _qCR_EXIT                                       goto _qCR_ExitPoint
+    #define _qCR_DEF                                        static _qCR_Instance_t _qCRState = _qCR_LCInit;  _qCR_Instance_t * const _qcr = &_qCRState
     /*! @endcond */
 
     /*! @cond  */
     /*Core Statements*/
     /*=======================================================================*/
     #define _qCR_Start                                                      \
-    static _qCR_Instance_t _qCRState = _qCR_LCInit;                         \
-    switch ( _qCRState.instr ) {                                            \
+    _qCR_DEF;                                                               \
+    _qCR_JUMP( _qcr->instr ) {                                              \
         _qCR_RT( _qCR_PC_INITVAL )                                          \
     
 
     /*=======================================================================*/
     #define _qCR_hStart( handle )                                           \
-    static _qCR_Instance_t _qCRState = _qCR_LCInit;                         \
+    _qCR_DEF;                                                               \
     if ( NULL == (handle) ) {                                               \
         (handle) = &_qCRState;                                              \
     }                                                                       \
-    switch ( _qCRState.instr ) {                                            \
-        default:                                                            \
-            _qCR_EXIT;  /*suspend point*/                                   \
+    _qCR_JUMP( _qcr->instr ) {                                              \
+        default: _qCR_EXIT;  /*suspend point*/                              \
         _qCR_RT( _qCR_PC_INITVAL )                                          \
     
     /*=======================================================================*/
     #define _qCR_Dispose                                                    \
-        _qCRState.instr = _qCR_PC_INITVAL;                                  \
+        _qcr->instr = _qCR_PC_INITVAL;                                      \
     }                                                                       \
     _qCR_ExitPoint: Q_UNUSED(0)                                             \
 
@@ -116,21 +115,21 @@
     /*=======================================================================*/
     #define _qCR_Yield                                                      \
     do {                                                                    \
-        _qCR_LC( _qCRState.instr, __LINE__, _qCR_RT(__LINE__), _qCR_EXIT ); \
+        _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), _qCR_EXIT );   \
     } while( qFalse )                                                       \
 
 
     /*=======================================================================*/
     #define _qCR_Restart                                                    \
     do {                                                                    \
-        _qCR_LC( _qCRState.instr, _qCR_PC_INITVAL, _qCR_EMPTY, _qCR_EXIT ); \
+        _qCR_LCON( _qcr->instr, _qCR_PC_INITVAL, Q_NONE, _qCR_EXIT );       \
     } while( qFalse )                                                       \
 
 
     /*=======================================================================*/
     #define _qCR_wu_Assert( condition )                                     \
     do {                                                                    \
-        _qCR_LC( _qCRState.instr, __LINE__, _qCR_RT(__LINE__), _qCR_NONE ); \
+        _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
         if ( !(condition) ) {                                               \
             _qCR_EXIT;                                                      \
         }                                                                   \
@@ -140,7 +139,7 @@
     /*=======================================================================*/
     #define _qCR_GetPosition( position )                                    \
     do {                                                                    \
-        _qCR_LC( position, __LINE__, _qCR_RT(__LINE__), _qCR_NONE );        \
+        _qCR_LCON( position, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) );    \
         Q_UNUSED( (position) );                                             \
     } while( qFalse )                                                       \
 
@@ -148,7 +147,7 @@
     /*=======================================================================*/
     #define _qCR_RestoreFromPosition( position )                            \
     do {                                                                    \
-        _qCR_LC( _qCRState.instr, (position), _qCR_EMPTY, _qCR_EXIT );      \
+        _qCR_LCON( _qcr->instr, (position), Q_NONE, _qCR_EXIT );            \
     } while( qFalse )                                                       \
 
 
@@ -156,7 +155,7 @@
     #define _qCR_Delay( dTime )                                             \
     do {                                                                    \
         qCR_TimeoutSet( dTime );                                            \
-        _qCR_LC( _qCRState.instr, __LINE__, _qCR_RT(__LINE__), _qCR_NONE ); \
+        _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
         if( !qCR_TimeoutExpired() ) {                                       \
             _qCR_EXIT;                                                      \
         }                                                                   \
@@ -167,7 +166,7 @@
     #define _qCR_wu_TmrAssert( condition, timeout )                         \
     do {                                                                    \
         qCR_TimeoutSet( timeout );                                          \
-        _qCR_LC( _qCRState.instr, __LINE__, _qCR_RT(__LINE__), _qCR_NONE ); \
+        _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
         if ( !( (condition) || qCR_TimeoutExpired() ) ) {                   \
             _qCR_EXIT;                                                      \
         }                                                                   \
@@ -177,7 +176,7 @@
     /*=======================================================================*/
     #define _qCR_do                                                         \
     do {                                                                    \
-        _qCR_LC( _qCRState.instr, __LINE__, _qCR_RT(__LINE__), _qCR_NONE ); \
+        _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
 
 
     /*=======================================================================*/    
@@ -399,13 +398,13 @@
     * @param tValue The specific amount of time to wait given in seconds.
     * @return none.
     */     
-    #define qCR_TimeoutSet( tValue )                    qSTimer_Set( &_qCRState.crdelay , tValue )    
+    #define qCR_TimeoutSet( tValue )                    qSTimer_Set( &_qcr->crdelay , tValue )    
 
     /**
     * @brief  Check if the internal Co-routine timeout expires.
     * @return #qTrue when STimer expires, otherwise, returns #qFalse.
     */         
-    #define qCR_TimeoutExpired( )                       qSTimer_Expired( &_qCRState.crdelay )
+    #define qCR_TimeoutExpired( )                       qSTimer_Expired( &_qcr->crdelay )
 
     /**
     * @brief Perform an external action over the requested Co-routine
@@ -423,7 +422,7 @@
                                const qCR_ExtPosition_t pos );
 
     /*! @cond  */
-    qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  const _qCR_Oper_t oper );
+    qBool_t _qCR_Sem( qCR_Semaphore_t * const sem, const _qCR_Oper_t oper );
     /*! @endcond */
 
     /** @}*/
