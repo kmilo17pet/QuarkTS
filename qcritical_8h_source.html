@@ -126,13 +126,14 @@ $(document).ready(function(){initNavTree('qcritical_8h_source.html',''); initRes
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca">qCritical_Exit</a>( <span class="keywordtype">void</span> );</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a>( <span class="keyword">const</span> <a class="code" href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a> rFcn, <span class="keyword">const</span> <a class="code" href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a> dFcn );</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a>( <span class="keyword">const</span> <a class="code" href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a> rFcn, </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                       <span class="keyword">const</span> <a class="code" href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a> dFcn );</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__qcritical_html_ga0b75a2121f1f84d643873bfe48a6b7cb"><div class="ttname"><a href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a></div><div class="ttdeci">qUINT32_t(* qInt_Disabler_t)(void)</div><div class="ttdoc">Function called by qCritical_Enter() to disable interrupts.</div><div class="ttdef"><b>Definition:</b> qcritical.h:59</div></div>
 <div class="ttc" id="agroup__qcritical_html_ga0e6e7fa105f510bc8bfa5067c792b8ca"><div class="ttname"><a href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca">qCritical_Exit</a></div><div class="ttdeci">void qCritical_Exit(void)</div><div class="ttdoc">Exit a critical section. This function invokes the Enabler function if available.</div><div class="ttdef"><b>Definition:</b> qcritical.c:30</div></div>
 <div class="ttc" id="agroup__qcritical_html_ga64adddc1db2a59fcea764d0f27ae5a07"><div class="ttname"><a href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a></div><div class="ttdeci">void(* qInt_Restorer_t)(qUINT32_t arg1)</div><div class="ttdoc">Function called by qCritical_Exit() to restore interrupts.</div><div class="ttdef"><b>Definition:</b> qcritical.h:40</div></div>

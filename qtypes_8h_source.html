@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('qtypes_8h_source.html',''); initResiza
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">    #define     Q_UNUSED(arg)     (void)(arg)</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">    #define     Q_NONE</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">    #define     Q_NONE            </span><span class="comment">/*EMPTY MACRO*/</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">    #if ( Q_USE_STDINT_H  == 1 )</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">        #include &lt;stdint.h&gt;</span></div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('qtypes_8h_source.html',''); initResiza
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">            #define INT8_MAX        ( 127 )</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">        #ifndef UINT8_MAX</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">            #define UINT8_MAX       ( 255 )</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">            #define UINT8_MAX       ( 255u )</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">        #ifndef INT16_MIN</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">            #define INT16_MIN       ( -32768 )</span></div>
@@ -157,7 +157,7 @@ $(document).ready(function(){initNavTree('qtypes_8h_source.html',''); initResiza
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">            #define INT16_MAX       ( 32767 )</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">        #ifndef UINT16_MAX</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">            #define UINT16_MAX      ( 65535 )    </span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">            #define UINT16_MAX      ( 65535u )    </span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">        #ifndef INT32_MIN    </span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">            #define INT32_MIN       ( -2147483647-1 )</span></div>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('qtypes_8h_source.html',''); initResiza
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">            #define INT32_MAX       ( 2147483647 )</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">        #ifndef UINT32_MAX</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">            #define UINT32_MAX      ( 4294967295U )</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">            #define UINT32_MAX      ( 4294967295u )</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="comment">/*Unsigned types*/</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>; </div>
@@ -216,7 +216,7 @@ $(document).ready(function(){initNavTree('qtypes_8h_source.html',''); initResiza
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
 <div class="line"><a name="l00184"></a><span class="lineno"><a class="line" href="group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525">  184</a></span>&#160;<span class="preprocessor">    #define qUnLink                 ( qFalse )</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    #define qIgnore                 ( (qBool_t)0xFE )</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    #define qIgnore                 ( (qBool_t)0xFEu )</span></div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">    #define qLINK                   ( qTrue )</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">    #define qUNLINK                 ( qFalse )  </span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">    #define qATTACH                 ( qTrue )</span></div>
