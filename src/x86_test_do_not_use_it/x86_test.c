@@ -452,17 +452,28 @@ void blinktaskCallback(qEvent_t e){
         qCR_Yield;
         qCR_Restart;
         qCR_WaitUntil( 0 == pos );
+        qCR_TimedWaitUntil( 0 == pos, 1.0f );
         qCR_Delay( 0.0 );
+        qCR_PositionGet(pos);
         qCR_PositionReset(pos);
+        qCR_PositionRestore(pos);
+
+        qCR_Do{
+            puts("he he");
+        }qCR_Until( 0 == pos );
 
         /**/
     }qCR_End;
     (void)e;
 }
+qCR_Handle_t hCr = NULL;
 /*============================================================================*/
 void scheduler_Release(qEvent_t e){
     (void)e;
     TEST_MESSAGE("SCHEDULER RELEASED");
+    qCR_BeginWithHandle( hCr ) {
+        qCR_Delay( 0.0 );
+    }qCR_End;
 }
 /*============================================================================*/
 qATCLI_Response_t at_test1_callback( qATCLI_Handler_t h ){
