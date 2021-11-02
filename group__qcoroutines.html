@@ -225,8 +225,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>It must always be used together with a matching <a class="el" href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc" title="Ends a Coroutine segment. Only one segment is allowed inside a task; The qCR_End statement is used to...">qCR_End</a> statement. Example: <div class="fragment"><div class="line"><a class="code" href="group__qcoroutines.html#gac742b61272ef52115b85293aebc933b1">qCR_Begin</a>{</div>
 <div class="line"> </div>
 <div class="line">}<a class="code" href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc">qCR_End</a>;</div>
-<div class="ttc" id="agroup__qcoroutines_html_ga06034cac3e4ed8d4153d5dd6e356ebbc"><div class="ttname"><a href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc">qCR_End</a></div><div class="ttdeci">#define qCR_End</div><div class="ttdoc">Ends a Coroutine segment. Only one segment is allowed inside a task; The qCR_End statement is used to...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:246</div></div>
-<div class="ttc" id="agroup__qcoroutines_html_gac742b61272ef52115b85293aebc933b1"><div class="ttname"><a href="group__qcoroutines.html#gac742b61272ef52115b85293aebc933b1">qCR_Begin</a></div><div class="ttdeci">#define qCR_Begin</div><div class="ttdoc">Defines a Coroutine segment. The qCR_Begin statement is used to declare the starting point of a Corou...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:208</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_ga06034cac3e4ed8d4153d5dd6e356ebbc"><div class="ttname"><a href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc">qCR_End</a></div><div class="ttdeci">#define qCR_End</div><div class="ttdoc">Ends a Coroutine segment. Only one segment is allowed inside a task; The qCR_End statement is used to...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:247</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_gac742b61272ef52115b85293aebc933b1"><div class="ttname"><a href="group__qcoroutines.html#gac742b61272ef52115b85293aebc933b1">qCR_Begin</a></div><div class="ttdeci">#define qCR_Begin</div><div class="ttdoc">Defines a Coroutine segment. The qCR_Begin statement is used to declare the starting point of a Corou...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:209</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
@@ -260,7 +260,7 @@ Functions</h2></td></tr>
 <p>Example: </p><div class="fragment"><div class="line"><a class="code" href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8">qCR_BeginWithHandle</a>( handle ){</div>
 <div class="line"> </div>
 <div class="line">}<a class="code" href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc">qCR_End</a>;</div>
-<div class="ttc" id="agroup__qcoroutines_html_ga644e5aee7ee2555bf064cce65116e0b8"><div class="ttname"><a href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8">qCR_BeginWithHandle</a></div><div class="ttdeci">#define qCR_BeginWithHandle(handle)</div><div class="ttdoc">Defines a Coroutine segment with a supplied external handle. The qCR_BeginWithHandle statement is use...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:227</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_ga644e5aee7ee2555bf064cce65116e0b8"><div class="ttname"><a href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8">qCR_BeginWithHandle</a></div><div class="ttdeci">#define qCR_BeginWithHandle(handle)</div><div class="ttdoc">Defines a Coroutine segment with a supplied external handle. The qCR_BeginWithHandle statement is use...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:228</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -308,8 +308,8 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Must be used together with a matching <a class="el" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7" title="This statement ends a blocking Job segment starting with the qCR_Do statement.">qCR_Until</a> statement. Example: <div class="fragment"><div class="line"><a class="code" href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a>{</div>
 <div class="line">    </div>
 <div class="line">}<a class="code" href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a>( Condition );</div>
-<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:303</div></div>
-<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:320</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_ga72540d286b976fa69359bdec344af224"><div class="ttname"><a href="group__qcoroutines.html#ga72540d286b976fa69359bdec344af224">qCR_Do</a></div><div class="ttdeci">#define qCR_Do</div><div class="ttdoc">This statement start a blocking Job segment.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:304</div></div>
+<div class="ttc" id="agroup__qcoroutines_html_gad3c43098c3c7da786fd0dec0e3714da7"><div class="ttname"><a href="group__qcoroutines.html#gad3c43098c3c7da786fd0dec0e3714da7">qCR_Until</a></div><div class="ttdeci">#define qCR_Until(bCondition)</div><div class="ttdoc">This statement ends a blocking Job segment starting with the qCR_Do statement.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:321</div></div>
 </div><!-- fragment --> </dd></dl>
 
 </div>
