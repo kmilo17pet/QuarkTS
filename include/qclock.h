@@ -34,7 +34,7 @@
         /** @brief To specify a NULL time value.*/
         #define QTIME_NULL        ( 0.0f )
         /** @brief To specify a non-wait time value.*/
-        #define qTimeImmediate    ((qTime_t)(0.0f))
+        #define qTimeImmediate    ( (qTime_t)(0.0f) )
         /** @brief Conversion factor from seconds to minutes.*/
         #define QTUNIT_MINUTE     ( 60.0f )    
         /** @brief Conversion factor from seconds to hours.*/
@@ -48,10 +48,11 @@
     /** 
      * @brief A macro to perform time conversions.
      * @param[in] _xTime_   The input time in seconds. 
-     * @param[in] _qUnit_   The target unit. Use on of the  provied factors prefixed with QTUNIT_XXX. 
+     * @param[in] _qUnit_   The target unit. Use on of the provied factors 
+     * prefixed with QTUNIT_XXX. 
      * @return The time converted to the specified unit.
     */
-    #define QTUNIT_TOTIME( _xTime_ , _qUnit_ )      ( (qTime_t)( _xTime_ ) *  (qTime_t)( _qUnit_ ) )
+    #define QTUNIT_TOTIME( _xTime_ , _qUnit_ )      ( (qTime_t)( _xTime_ )*(qTime_t)( _qUnit_ ) )
 
     #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
         #define qTimingBase_t    qClock_t
@@ -64,7 +65,8 @@
     typedef qUINT32_t qClock_t;
 
     /**
-    * @brief Pointer to Function type qGetTickFcn_t : function to get the hardware tick.
+    * @brief Pointer to Function type qGetTickFcn_t : function to get the 
+    * hardware tick.
     * 
     *@note  User should use bare-metal code to implement this function.
     * Example :
@@ -130,8 +132,8 @@
     *  and checks if the result is greather than @a td. 
     * @param[in] ti Init timestamp in epochs
     * @param[in] td Elapsed time to check in epochs
-    * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. Otherwise 
-    returns #qFalse
+    * @return #qTrue if the elapsed time (t-ti) is greather or equal to td. 
+    * Otherwise returns #qFalse
     */       
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, 
                                       const qClock_t td );

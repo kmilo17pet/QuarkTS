@@ -142,14 +142,16 @@
         /*On-demand debug/trace macros*/
         /**
         * @brief Output a trace message,
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @return none.
         */         
         #define qTrace()                         _qtrace_func( _qAT(), _QTRACE_FUNC, "", "", NULL, 0 )   
 
         /**
         * @brief Output a debug message,
-        * @note the Debug/Trace function must be previously defined with qTrace_Set_OutputFcn
+        * @note the Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn
         * @return none.
         */               
         #define qDebug_Caller()                  _qtrace_func( "",_QTRACE_FUNC, "", "", NULL, 0 )   
@@ -187,8 +189,10 @@
         /*! @endcond  */
         
         /**
-        * @brief Output a trace message for the memory from the specified address (HEX output)
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @brief Output a trace message for the memory from the specified 
+        * address (HEX output)
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] pMem The target memory address
         * @param[in] bSize Number of bytes
         * @return none.
@@ -204,8 +208,10 @@
         #define qTrace_Memory(pMem, bSize )     _qtrace_func ( _qAT(), _QTRACE_FUNC, #pMem "=", NULL, (pMem), (bSize) )
 
         /**
-        * @brief Output a debug message for the memory from the specified address (HEX output)
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @brief Output a debug message for the memory from the specified 
+        * address (HEX output)
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] pMem The target memory address
         * @param[in] bSize Number of bytes
         * @return none.
@@ -214,7 +220,8 @@
 
         /**
         * @brief Same behavior of #qDebug_Mem
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] pMem The target memory address
         * @param[in] bSize Number of bytes
         * @return none.
@@ -222,10 +229,13 @@
         #define qDebug_Memory( pMem, bSize )    _qtrace_func ( "", NULL, #pMem "=", NULL, (pMem), (bSize) )
 
         /**
-        * @brief Output a trace message for the supplied variable (up to 32bit data) 
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @brief Output a trace message for the supplied variable (up to 32bit 
+        * data) 
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] v The target variable
-        * @param[in] mode Visualization mode. It must be one of the following parameters:
+        * @param[in] mode Visualization mode. It must be one of the following 
+        * parameters:
         * - Bool
         * - qBool
         * - Float
@@ -245,7 +255,8 @@
 
         /**
         * @brief Same behavior of #qTrace_Var
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] v The target variable
         * @param[in] mode Visualization mode. 
         * @return none.
@@ -254,9 +265,11 @@
 
         /**
         * @brief Output a debug message for the supplied variable (up to 32bit data) 
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param v The target variable
-        * @param mode Visualization mode. It must be one of the following parameters:
+        * @param mode Visualization mode. It must be one of the following 
+        * parameters:
         * - Bool
         * - qBool
         * - Float
@@ -276,7 +289,8 @@
 
         /**
         * @brief Same behavior of #qDebug_Var
-        * @note The Debug/Trace function must be previously defined with qTrace_Set_OutputFcn()
+        * @note The Debug/Trace function must be previously defined with 
+        * qTrace_Set_OutputFcn()
         * @param[in] v The target variable
         * @param[in] mode Visualization mode.
         * @return none.

@@ -22,8 +22,9 @@
 
     /** 
     * @brief A STimer(Software Timer) object
-    * @details A STimer is referenced by a handle, an object of type qSTimer_t and preferably, 
-    * should be initialized by the #QSTIMER_INITIALIZER constant before any usage. 
+    * @details A STimer is referenced by a handle, an object of type qSTimer_t 
+    * and preferably, should be initialized by the #QSTIMER_INITIALIZER constant 
+    * before any usage. 
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSTimer_s { 
@@ -80,8 +81,9 @@
     * Behavior:
     * If disarmed, it gets armed immediately with the specified time.
     * 
-    * If armed, the time argument is ignored and the API only checks for expiration.
-    * When the time expires, the STimer gets armed immediately taking the specified time.
+    * If armed, the time argument is ignored and the API only checks for 
+    * expiration. When the time expires, the STimer gets armed immediately 
+    * taking the specified time.
     * @note After the STimer expiration, qSTimer_FreeRun() re-arms the STimer
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than 

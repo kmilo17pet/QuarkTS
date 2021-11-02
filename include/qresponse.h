@@ -23,7 +23,8 @@
     #endif
 
     /** @addtogroup qresponse Response handler
-    * @brief API to simplify the handling of requested responses from terminal interfaces.
+    * @brief API to simplify the handling of requested responses from terminal 
+    * interfaces.
     *  @{
     */
 
@@ -49,7 +50,8 @@
     /**
     * @brief Initialize the instance of the response handler object
     * @param[in] r A pointer to the Response Handler object.
-    * @param[in] xLocBuff A pointer to the memory block where the desired response will remain.
+    * @param[in] xLocBuff A pointer to the memory block where the desired 
+    * response will remain.
     * @param[in] nMax The size of @a xLocBuff
     * @return On success returns #qTrue, otherwise returns #qFalse.
     */ 
@@ -70,7 +72,8 @@
     * @param[in] pattern The data checked in the receiver ISR
     * @param[in] n The length of the data pointer by @a Pattern 
     * (if Pattern is string, set @a n to 0 to auto-compute the length)
-    * @return #qTrue if there is a response acknowledge, otherwise returns #qFalse.
+    * @return #qTrue if there is a response acknowledge, otherwise returns 
+    * #qFalse.
     */     
     qBool_t qResponse_Received( qResponse_t * const r, 
                                 const char *pattern, 
@@ -83,7 +86,8 @@
     * @param[in] n The length of the data pointer by @a Pattern 
     * (if @a pattern is string, set @a n to 0 to auto-compute the length)
     * @param[in] t The timeout value given in seconds
-    * @return #qTrue if there is a response acknowledge, #qResponseTimeout if timeout expires otherwise returns #qFalse
+    * @return #qTrue if there is a response acknowledge, #qResponseTimeout if 
+    * timeout expires otherwise returns #qFalse
     */      
     qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r, 
                                            const char *pattern, 
@@ -94,7 +98,8 @@
     * @brief ISR receiver for the response handler
     * @param[in] r A pointer to the Response Handler object.
     * @param[in] rxchar The byte-data from the receiver 
-    * @return #qTrue when the Response handler match the request from qResponse_Received()
+    * @return #qTrue when the Response handler match the request from 
+    * qResponse_Received()
     */      
     qBool_t qResponse_ISRHandler( qResponse_t * const r, 
                                   const char rxchar );

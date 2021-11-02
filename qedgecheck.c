@@ -58,7 +58,7 @@ qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != n ) && ( NULL != ec ) ) {
-        qCoreRegSize_t pinReader = ec->qPrivate.Reader;
+        const qCoreRegSize_t pinReader = ec->qPrivate.Reader;
 
         (void)memset( n, 0, sizeof(qEdgeCheck_IONode_t) );
         n->qPrivate.Port = portAddress;

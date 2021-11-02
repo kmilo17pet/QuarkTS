@@ -25,7 +25,8 @@
     */
 
     /**
-    * @brief an enumeration to define the possible values that can be returned from the callback of a command.
+    * @brief an enumeration to define the possible values that can be returned 
+    * from the callback of a command.
     */
     typedef enum {
         qATCLI_ERROR = -32767,          /**< To indicate an error operation. The CLI will print the  ERROR_String to the output.*/
@@ -39,10 +40,13 @@
     qATCLI_Response_t; 
 
     /**
-    * @brief Used to indicate an error code as return value inside a command-callback.
-    * This code is defined by the application writer and should be a value between 1 and 32766. 
+    * @brief Used to indicate an error code as return value inside a 
+    * command-callback.
+    * This code is defined by the application writer and should be a value 
+    * between 1 and 32766. 
     * 
-    * For example, a return value of #qATCLI_ERRORCODE(15), will print out the string "ERROR:15".
+    * For example, a return value of #qATCLI_ERRORCODE(15), will print out the 
+    * string "ERROR:15".
     */ 
     #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )
 
@@ -81,11 +85,13 @@
     qATCLI_CommandType_t;
 
     /** 
-    * @brief The command argument with all the regarding information of the incoming AT command.
-    * @details The type it's just a pointer to public data of the CLI instance where the command 
-    * it subscribed to. From the callback context, can be used to print out extra information 
-    * as a command response, parse the command parameters, and query properties with crucial 
-    * information about the detected command, like the type, the number of arguments, and the 
+    * @brief The command argument with all the regarding information of the 
+    * incoming AT command.
+    * @details The type it's just a pointer to public data of the CLI instance 
+    * where the command it subscribed to. From the callback context, can be used
+    * to print out extra information as a command response, parse the command 
+    * parameters, and query properties with crucial information about the 
+    * detected command, like the type, the number of arguments, and the 
     * subsequent string after the command text.
     * @note Should be used only in command-callbacks as the only input argument. 
     * @note The members of this structure must be read as if it were a pointer.
@@ -100,38 +106,46 @@
         */          
         char *StrData;  
         /**
-        * @brief  Helper method to get the pointer where the desired argument starts.
+        * @brief  Helper method to get the pointer where the desired argument 
+        * starts.
         * @param[in] n The number of the argument
-        * @return  A pointer to the desired argument. NULL  pointer if the argument is not present.
+        * @return  A pointer to the desired argument. NULL  pointer if the 
+        * argument is not present.
         */            
         char* (*GetArgPtr)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n argument parsed as integer from the
-        * incoming AT command.
+        * @brief  Helper method to get the @a n argument parsed as integer from 
+        * the incoming AT command.
         * @see qIOUtil_AtoI()
         * @param[in] n The number of the argument
-        * @return  The argument parsed as integer. Same behavior of qIOUtil_AtoI(). If argument not found returns 0.
+        * @return  The argument parsed as integer. Same behavior of 
+        * qIOUtil_AtoI(). If argument not found returns 0.
         */            
         int (*GetArgInt)( qIndex_t n );                         
         /**
-        * @brief  Helper method to get the @a n argument parsed as float from the
-        * incoming AT command.
+        * @brief  Helper method to get the @a n argument parsed as float from 
+        * the incoming AT command.
         * @see qIOUtil_AtoF()
         * @param[in] n The number of the argument
-        * @return  The argument parsed as Float. Same behavior of qIOUtil_AtoF(). If argument not found returns 0.0f
+        * @return  The argument parsed as Float. Same behavior of qIOUtil_AtoF(). 
+        * If argument not found returns 0.0f
         */         
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n HEX argument parsed qUINT32_t from the incoming AT command.
+        * @brief  Helper method to get the @a n HEX argument parsed qUINT32_t 
+        * from the incoming AT command.
         * @see qIOUtil_XtoU32()
         * @param[in] n The number of the argument
-        * @return  The HEX argument parsed as qUINT32_t. Same behavior of qIOUtil_XtoU32(). If argument not found returns 0.
+        * @return  The HEX argument parsed as qUINT32_t. Same behavior of 
+        * qIOUtil_XtoU32(). If argument not found returns 0.
         */          
         qUINT32_t (*GetArgHex)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n argument parsed as string from the incoming AT command.
+        * @brief  Helper method to get the @a n argument parsed as string from 
+        * the incoming AT command.
         * @param[in] n The number of the argument
-        * @param[out] pOut Array in memory where to store the resulting null-terminated string.
+        * @param[out] pOut Array in memory where to store the resulting 
+        * null-terminated string.
         * @return  Same as @a out on success, otherwise returns NULL.
         */          
         char* (*GetArgString)( qIndex_t n, char* pOut );
@@ -143,7 +157,8 @@
         */         
         void (*putch)( const char c );
         /**
-        * @brief Writes a string to CLI output without the EOF string appended at the end.
+        * @brief Writes a string to CLI output without the EOF string appended 
+        * at the end.
         * @param[in] s This is the C string to be written.
         * @return  none.
         */         
@@ -178,8 +193,8 @@
 
     /** 
     * @brief An AT Command Line Interface (CLI) object
-    * @details Before starting the CLI development, the corresponding instance must be defined; 
-    * a data structure of type qATCLI_t.
+    * @details Before starting the CLI development, the corresponding instance 
+    * must be defined; a data structure of type qATCLI_t.
     *  
     * The instance should be initialized using the qATCLI_Setup() API.
     * @note Do not access any member of this structure directly. 
@@ -277,8 +292,8 @@
     * @see qOS_Add_ATCLITask()
     * @note CLI Built-in strings will be written to their default values.
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] outFcn The basic output-char wrapper function. All the CLI responses will be 
-    * printed-out through this function.
+    * @param[in] outFcn The basic output-char wrapper function. All the CLI 
+    * responses will be printed-out through this function.
     * @param[in] pInput A memory location to store the cli input (Mandatory)
     * @param[in] sizeInput The size of the memory allocated in @a pInput 
     * @param[in] pOutput A memory location to store the CLI output
@@ -293,24 +308,28 @@
                           const size_t sizeOutput );
 
     /**
-    * @brief This function subscribes the CLI instance to a specific command with an associated 
-    * @a Callback function, so that next time the required command is sent to the CLI input, the 
-    * callback function will be executed. The CLI module only analyze commands that follows the 
-    * extended AT-Commands syntax (the + char can be ignored).
+    * @brief This function subscribes the CLI instance to a specific command 
+    * with an associated @a Callback function, so that next time the required 
+    * command is sent to the CLI input, the callback function will be executed. 
+    * The CLI module only analyze commands that follows the extended AT-Commands
+    * syntax (the + char can be ignored).
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] cmd A pointer to the AT command object.
-    * @param[in] textCommand The string (name) of the command we want to subscribe to. Since this 
-    * service only handles AT commands, this string has to begin by the "at" characters and 
-    * should be in lower case.
-    * @param[in] cFcn The handler of the callback function associated to the command. 
+    * @param[in] textCommand The string (name) of the command we want to 
+    * subscribe to. Since this service only handles AT commands, this string has
+    * to begin by the "at" characters and should be in lower case.
+    * @param[in] cFcn The handler of the callback function associated to the 
+    * command. 
     * Prototype: @code qATCLI_Response_t xCallback( qATCLI_Handler_t ) @endcode
-    * @param[in] cmdOpt This flag combines with a bitwise OR the following information:
+    * @param[in] cmdOpt This flag combines with a bitwise OR the following 
+    * information:
     * 
-    * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the callback
-    * function also depends on whether the number of argument  is valid or not. Information 
-    * about number of arguments is combined with a bitwise 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY , 
-    * where X which defines maximum argument number for incoming command and Y which 
-    * defines minimum argument number for incoming command
+    * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the 
+    * callback function also depends on whether the number of argument is valid 
+    * or not. Information about number of arguments is combined with a bitwise 
+    * 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY ,  where X which defines maximum 
+    * argument number for incoming command and Y which defines minimum argument 
+    * number for incoming command
     * 
     * ::qATCLI_CMDTYPE_TEST  : "AT+cmd=?" is allowed. 
     * 
@@ -331,9 +350,10 @@
     /**
     * @brief Iterate between the commands available inside the AT-CLI instance.
     * @param[in] cli A pointer to the AT Command Line Interface instance
-    * @param[in] reload If #qTrue, the iterator will set their position at the beginning of
-    * the list of subscribed commands.
-    * @return The current iterated command. NULL when no more commands are available.
+    * @param[in] reload If #qTrue, the iterator will set their position at the 
+    * beginning of the list of subscribed commands.
+    * @return The current iterated command. NULL when no more commands are 
+    * available.
     */ 
     qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli, 
                                          const qBool_t reload );
@@ -344,7 +364,8 @@
     * If your ISR get a block of data, use instead qATCLI_ISRHandlerBlock()
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] c The incoming byte/char to the input. 
-    * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
+    * @return #qTrue when the CLI is ready to process the input, otherwise 
+    * return #qFalse
     */     
     qBool_t qATCLI_ISRHandler( qATCLI_t * const cli, 
                                const char c );
@@ -356,7 +377,8 @@
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] pData The incoming string.
     * @param[in] n The length of the string.
-    * @return #qTrue when the CLI is ready to process the input, otherwise return #qFalse
+    * @return #qTrue when the CLI is ready to process the input, otherwise 
+    * return #qFalse
     */     
     qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli, 
                                     char *pData, 

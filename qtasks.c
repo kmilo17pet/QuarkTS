@@ -92,7 +92,7 @@ qBool_t qTask_Set_Time( qTask_t * const Task, const qTime_t tValue )
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        retValue = qSTimer_Set( &Task->qPrivate.timer , tValue );
+        retValue = qSTimer_Set( &Task->qPrivate.timer, tValue );
     }
 
     return retValue;

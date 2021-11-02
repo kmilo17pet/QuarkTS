@@ -458,9 +458,9 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_FSM_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 {
-    qTask_t *xTask = qTask_Self();
+    qTask_t * const xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qSM_t *sm = (qSM_t *)xTask->qPrivate.aObj;
+    qSM_t * const sm = (qSM_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*cstat -MISRAC2012-Rule-11.8*/
     sm->qPrivate.handler.Data = (void*)e; 
@@ -492,15 +492,14 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 {
-    qTask_t *xTask = qTask_Self();
+    qTask_t * const xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
+    qATCLI_t * const cli = (qATCLI_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*cstat -MISRAC2012-Rule-11.8*/
     cli->qPrivate.xPublic.Data = (void*)e;
     /*cstat +MISRAC2012-Rule-11.8*/
     _QTRACE_KERNEL( "(^)Running AT-CLI from task ", xTask, cli ); 
-    (void)qATCLI_Run( cli );
     (void)qATCLI_Run( cli ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 }
 /*============================================================================*/
@@ -580,7 +579,7 @@ static void qOS_TriggerReleaseSchedEvent( void )
     kernel.EventInfo.Trigger = bySchedulingRelease;
     kernel.EventInfo.TaskData = NULL;
     if ( NULL != kernel.ReleaseSchedCallback ) {
-        qTaskFcn_t callback = kernel.ReleaseSchedCallback;
+        const qTaskFcn_t callback = kernel.ReleaseSchedCallback;
 
         callback( &kernel.EventInfo ); /*some low-end compilers cant deal with function-pointers inside structs*/
     }    
@@ -655,8 +654,9 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             if ( NULL != kernel.NotificationSpreadRequest.mode ) {
+                void *eventData= kernel.NotificationSpreadRequest.eventdata; 
                 _QTRACE_KERNEL( "(*)Spreading notification on task ", xTask, kernel.NotificationSpreadRequest.eventdata );
-                kernel.NotificationSpreadRequest.mode( xTask, kernel.NotificationSpreadRequest.eventdata );
+                kernel.NotificationSpreadRequest.mode( xTask, eventData );
                 retValue = qTrue;
             }
         #endif
@@ -870,7 +870,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task )
     qBool_t retValue = qFalse;
     
     if ( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) { /*nested-check for timed task, check the first requirement(the task must be enabled)*/
-        qIteration_t taskIterations = Task->qPrivate.Iterations; /*avoid side efects in the next check*/
+        const qIteration_t taskIterations = Task->qPrivate.Iterations; /*avoid side efects in the next check*/
 
         if ( ( qTaskIterValue( taskIterations ) > 0 ) || ( qPeriodic == taskIterations ) ) { /*then task should be periodic or must have available iters*/
             qClock_t taskInterval = Task->qPrivate.timer.TV;
@@ -892,7 +892,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
    
     if ( NULL != Task ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qList_t *xList = (qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        const qList_t * const xList = (qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( kernel.CurrentRunningTask == Task ) {
             retValue = qRunning;

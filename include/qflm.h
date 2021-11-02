@@ -52,7 +52,8 @@
     #define qFLM_BitClear( Register, Bit )                  (Register) &= ( ~( 1 << (Bit) ) )
 
     /**
-    * @brief Uses the bitwise AND operator to read the value of a single bit from @a Register 
+    * @brief Uses the bitwise AND operator to read the value of a single bit 
+    * from @a Register 
     * @param[in] Register The variable where the operation will be applied
     * @param[in] Bit The bit-index 
     * @return The value of the requested bit.
@@ -60,7 +61,8 @@
     #define qFLM_BitRead( Register, Bit )                   ( ( qFalse == ( (Register) & ( 1 << (Bit) ) ) )? qFalse : qTrue )
 
     /**
-    * @brief Uses the bitwise XOR operator to toggle the value of a single bit from @a Register 
+    * @brief Uses the bitwise XOR operator to toggle the value of a single bit 
+    * from @a Register 
     * @param[in] Register The variable where the operation will be applied
     * @param[in] Bit The bit-index 
     * @return none.
@@ -186,11 +188,13 @@
     #define qFLM_ClipLower( X, Min )                        ( ( (X) < (Min) ) ? (Min) : (X) )
 
     /**
-    * @brief Check if the value of @a X  is within the limits defined by @a Low and @a High. 
+    * @brief Check if the value of @a X  is within the limits defined by
+    * @a Low and @a High. 
     * @param[in] X The value to check
     * @param[in] Low The minimum value allowed.
     * @param[in] High The maximum value allowed.
-    * @return True if the @a X is between the defined range. Otherwise returns false.
+    * @return True if the @a X is between the defined range. Otherwise returns 
+    * false.
     */      
     #define qFLM_IsBetween( X, Low, High )                  ( ( (X) >= (Low) ) && ( (X) <= (High) ) )
 

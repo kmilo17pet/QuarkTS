@@ -21,7 +21,8 @@
     #endif
 
     /** @addtogroup qedgecheck I/O Groups for edge checking
-    * @brief An interface to manage and simplify the value(with edge-checking) of incoming digital-signal groups.
+    * @brief An interface to manage and simplify the value(with edge-checking) 
+    * of incoming digital-signal groups.
     *  @{
     */
 
@@ -83,8 +84,10 @@
     /**
     * @brief Initialize a I/O Edge-Check instance 
     * @param[in] ec A pointer to the I/O Edge-Check object
-    * @param[in] rSize The specific-core register size: #QREG_8BIT, #QREG_16BIT or #QREG_32BIT(Default)
-    * @param[in] debounceTime The specified time to bypass the bounce of the input nodes
+    * @param[in] rSize The specific-core register size: #QREG_8BIT, #QREG_16BIT 
+    * or #QREG_32BIT(Default)
+    * @param[in] debounceTime The specified time to bypass the bounce of the 
+    * input nodes
     * @return #qTrue on success. Otherwise #qFalse.
     */   
     qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec, 
@@ -95,7 +98,8 @@
     * @brief Add an input node to the Edge-Check instance 
     * @param[in] ec A pointer to the I/O Edge-Check object
     * @param[in] n A pointer to the Input-Node object
-    * @param[in] portAddress The address of the core PORTx-register to read the levels of the specified PinNumber
+    * @param[in] portAddress The address of the core PORTx-register to read the
+    * levels of the specified PinNumber
     * @param[in] pinNumber  The specified Pin to read from PortAddress 
     * @return #qTrue on success. Otherwise #qFalse.
     */     
@@ -105,7 +109,8 @@
                                  const qBool_t pinNumber );    
    
     /**
-    * @brief Update the status of all nodes inside the I/O Edge-Check instance (Non-Blocking call).
+    * @brief Update the status of all nodes inside the I/O Edge-Check instance 
+    * (Non-Blocking call).
     * @param[in] ec A pointer to the I/O Edge-Check object
     * @return #qTrue on success. Otherwise #qFalse.
     */        
@@ -114,7 +119,8 @@
     /**
     * @brief Query the status of the specified input-node.
     * @param[in] n A pointer to the Input-Node object
-    * @return The status of the input node : #qTrue, #qFalse, #qRising, #qFalling or #qUnknown.
+    * @return The status of the input node : #qTrue, #qFalse, #qRising, 
+    * #qFalling or #qUnknown.
     */         
     qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const n );
 

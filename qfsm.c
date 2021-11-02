@@ -49,18 +49,18 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
 /*============================================================================*/
-/*When a transition its performed, all exit actions must precede any actions
-associated with the transition, which must precede any entry actions associated
-with the newly entered state(s). To discover which exit actions to execute, it
-is necessary to find the Least Common Ancestor (LCA) of the source and target
-states. History mode is also handled here.
-*/
 static void qStateMachine_Transition( qSM_t *m, 
                                       qSM_State_t *target, 
                                       const qSM_TransitionHistoryMode_t mHistory )
 {
-    /*now, perform the exit actions by first finding the LCA*/
-    qStateMachine_ExitUpToLeastCommonAncestor( m,  qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
+    /*
+    When a transition its performed, all exit actions must precede any actions
+    associated with the transition, which must precede any entry actions 
+    associated with the newly entered state(s). To discover which exit actions 
+    to execute, we first find the Least Common Ancestor (LCA) of the source and 
+    target states.     
+    */
+    qStateMachine_ExitUpToLeastCommonAncestor( m, qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
     /*then, handle the required history mode*/
     if ( qSM_TRANSITION_NO_HISTORY == mHistory ) {
         target->qPrivate.lastRunningChild = target->qPrivate.initState; /*just restore the default transition*/
@@ -73,27 +73,25 @@ static void qStateMachine_Transition( qSM_t *m,
     }
     else { 
         /*
-        nothing to do : qSM_TRANSITION_DEEP_HISTORY handled by default
-        all deep history its preserved in the "lastRunningChild" attribute,
-        so there is not need to change it. The qStateMachine_StateOnStart will 
-        assign this by default.
+        nothing to do : qSM_TRANSITION_DEEP_HISTORY handled by default all deep 
+        history its preserved in the "lastRunningChild" attribute, so there is 
+        no need to change it. qStateMachine_StateOnStart will assign this by default.
         */
     }
-    m->qPrivate.next = target; /*notify the state machine that there was indeed a transition*/
+    m->qPrivate.next = target; /*notify SM that there was indeed a transition*/
 }
 /*============================================================================*/
-/*
-To discover which exit actions to execute, it is necessary to find the LCA(Least
-Common Ancestor) of the source and target states. So this function returns the
-number of levels from the current state to the LCA.
-*/
 static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m, 
                                                             qSM_State_t * const target )
 {
     qSM_LCA_t xLca = 0u;
 
-    if ( m->qPrivate.source == target ) { /*recursive transition, only a level needs to be performed*/
-        xLca = 1u;
+    /*
+    To discover which exit actions to execute, it is necessary to find the 
+    LCA(LeastCommon Ancestor) of the source and target states. 
+    */
+    if ( m->qPrivate.source == target ) { 
+        xLca = 1u; /*recursive transition, only a level needs to be performed*/
     }
     else {
         qSM_State_t *s, *t;
@@ -112,30 +110,25 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m,
         }        
     }
     
-    return xLca;  
+    return xLca; /*return # of levels from the current state to the LCA.*/
 }
 /*============================================================================*/
-/*
-This function its used to exit current states and all superstates up to LCA
-*/
 static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m, 
                                                        qSM_LCA_t lca )
 {
     qSM_State_t *s = m->qPrivate.current;
 
+    /*exit current states*/
     while ( s != m->qPrivate.source ) {
         s = qStateMachine_StateOnExit( m, s );  
     }
+    /*exit all superstates up to LCA*/
     while ( 0u != lca-- ) {
         s = qStateMachine_StateOnExit( m, s ); 
     }
     m->qPrivate.current = s;    
 }
 /*============================================================================*/
-/*
-This function fill the qSM_Handler_t argument with the common data for all the
-required actions.
-*/
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h, 
                                           const qSM_Signal_t sig, 
                                           qSM_State_t * const s )
@@ -149,9 +142,6 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h,
     h->state = s;
 }
 /*============================================================================*/
-/*
-This function invokes the state callback including the surrounding callback if available
-*/
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m, 
                                                        qSM_State_t * const s, 
                                                        qSM_UnprotectedHandler_t h )
@@ -165,7 +155,8 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m,
     if ( NULL != s->qPrivate.sCallback ) {
         h->Status = qSM_STATUS_NULL;
         /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
-        h->Status = s->qPrivate.sCallback( (qSM_Handler_t)h ); /*execute the state callback (Transitions here are not allowed)*/ /*cast allowed, struct layout its compatible*/
+        /*execute the state callback (Transitions here are not allowed)*/
+        h->Status = s->qPrivate.sCallback( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
         /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
     }
     else {
@@ -193,7 +184,7 @@ static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m,
     (void)qStateMachine_InvokeStateCallback( m, s, h );
     
     if ( ( NULL != m->qPrivate.TimeSpec ) && ( NULL != s->qPrivate.tdef ) ) {
-        qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_EXIT );
+        qStateMachine_TimeoutPerformSpecifiedActions( m, s, QSM_SIGNAL_EXIT );
     }
     s->qPrivate.parent->qPrivate.lastRunningChild  = s; 
 
@@ -208,7 +199,7 @@ static void qStateMachine_StateOnEntry( qSM_t * const m,
     qStateMachine_PrepareHandler( h, QSM_SIGNAL_ENTRY, s );
     (void)qStateMachine_InvokeStateCallback( m, s, h );
     if ( ( NULL != m->qPrivate.TimeSpec ) && ( NULL != s->qPrivate.tdef ) ) {
-        qStateMachine_TimeoutPerformSpecifiedActions( m, s , QSM_SIGNAL_ENTRY );
+        qStateMachine_TimeoutPerformSpecifiedActions( m, s, QSM_SIGNAL_ENTRY );
     }
 }
 /*============================================================================*/
@@ -227,7 +218,7 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m,
     }
     else {
         if ( NULL != s->qPrivate.lastRunningChild ) {
-            m->qPrivate.next = s->qPrivate.lastRunningChild;  /*try to preserve history*/
+            m->qPrivate.next = s->qPrivate.lastRunningChild; /*try to preserve history*/
         }
     }
 
@@ -257,19 +248,20 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
     return status;
 }
 /*============================================================================*/
-/*
-Entry actions must be executed in order form the least deeply nested to the 
-most deeply nested state. This is opposite to the normal navigability of the 
-module data-structure design. So this is solved by first recording the entry
-path from the LCA to the target, then playing it  backwards. with execution
-of entry actions. qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart
-are used to handle this after the transition perform all the required exit actions.
-*/
 static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m, 
                                                     qSM_State_t **trace )
 {
     qSM_State_t *s;
 
+    /*
+    Entry actions must be executed in order form the least deeply nested to the 
+    most deeply nested state. This is opposite to the normal navigability of the 
+    module data-structure design. So this is solved by first recording the entry
+    path from the LCA to the target, then playing it  backwards. with execution
+    of entry actions. 
+    qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart are 
+    used to handle this after the transition perform all the required exit actions.
+    */
     *trace = NULL;
     for ( s = m->qPrivate.next ; s != m->qPrivate.current ; s = s->qPrivate.parent ) {
         *(++trace) = s;  /* trace path to target */
@@ -289,25 +281,25 @@ static void qStateMachine_TraceOnStart( qSM_t * const m,
     }
 }
 /*============================================================================*/
-/*
-This function checks for available signals. It initially checks for time signals 
-if the state machine has a timeout-specification object installed. If any timeout expires, 
-the signal is put on the available recipient.
-If the state machine has the signal-queue installed, the signal that is in front of the 
-queue is obtained. In case of there is no signal-queue or the queue its empty, 
-the input argument and the exclusion variable are verified.
-Rules: 
-- A signal coming from the signal-queue has the higher precedence.
-- A valid input argument overides the exclusion variable.
-*/
 static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m, 
                                                    const qSM_Signal_t sig )
 {
     qSM_Signal_t xSignal = sig;
     
+    /*
+    initially checks for time signals if the state machine has a 
+    timeout-specification object installed. If any timeout expires, the signal 
+    is put on the available recipient.
+    */
     if ( NULL != m->qPrivate.TimeSpec ) {
-        qStateMachine_TimeoutCheckSignals( m ); /*use the available recipient: signal-queue or the EV*/
+        qStateMachine_TimeoutCheckSignals( m ); 
+        /*use the available recipient: signal-queue or the EV*/
     }
+    /* 
+    If the state machine has the signal-queue installed, the signal that is in 
+    front of the queue is obtained. In case of there is no signal-queue or the 
+    queue its empty, the input argument and the exclusion variable are verified.
+    */
     #if ( Q_QUEUES == 1 )
         if ( NULL != m->qPrivate.queue ) {
             qSM_Signal_t ReceivedSignal;
@@ -317,8 +309,9 @@ static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m,
             }
         }
     #endif
+    /*A signal coming from the signal-queue has the higher precedence.*/
     if ( ( QSM_SIGNAL_NONE == xSignal ) && ( QSM_SIGNAL_NONE != m->qPrivate.SignalNot ) ) { 
-        xSignal = m->qPrivate.SignalNot;
+        xSignal = m->qPrivate.SignalNot; /*exclusion variable*/
         m->qPrivate.SignalNot = QSM_SIGNAL_NONE; 
     }
 
@@ -405,7 +398,7 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
         s->qPrivate.lastRunningChild = init;
         s->qPrivate.initState = init;
         s->qPrivate.sCallback = sFcn;
-        s->qPrivate.parent = ( NULL == parent )? &m->qPrivate.top : parent ;
+        s->qPrivate.parent = ( NULL == parent )? &m->qPrivate.top : parent;
         s->qPrivate.tTable = NULL;
         s->qPrivate.tEntries = (size_t)0u;
         s->qPrivate.tdef = NULL;
@@ -455,9 +448,9 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
 {
     size_t i, n;
     qBool_t transitionAllowed;
-    qSM_Transition_t *iTransition;
+    const qSM_Transition_t *iTransition;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
+    const qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
     for ( i = 0u ; i < n ; ++i ) {
@@ -544,8 +537,8 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
             resetCheck = QSM_TSOPT_RST_EXIT;
         }
         for ( i = 0u ; i < n ; ++i ) { /*loop table */
-            qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
-            qIndex_t index = opt & QSM_TSOPT_INDEX_MASK; /*get the timeout index*/
+            const qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
+            const qIndex_t index = opt & QSM_TSOPT_INDEX_MASK; /*get the timeout index*/
             
             if ( index < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) { /*state match and index is valid?*/
                 qSTimer_t *tmr = &m->qPrivate.TimeSpec->builtin_timeout[ index ]; /*get the timeout handle*/
@@ -631,9 +624,9 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m,
             
             cnt = qQueue_Count( m->qPrivate.queue );
             while ( 0u != cnt-- ) {
-                if ( qTrue == qQueue_Receive( m->qPrivate.queue , &xSignal ) ) {
+                if ( qTrue == qQueue_Receive( m->qPrivate.queue, &xSignal ) ) {
                     if ( xSignal != QSM_SIGNAL_TIMEOUT( xTimeout ) ) { /*keep the non-timeout signals*/
-                        (void)qQueue_SendToBack( m->qPrivate.queue , &xSignal );
+                        (void)qQueue_SendToBack( m->qPrivate.queue, &xSignal );
                     }
                 }
             }           

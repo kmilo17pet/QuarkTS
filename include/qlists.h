@@ -33,7 +33,8 @@
     qList_Node_t;
 
     /**
-    * @brief This macro can be used to create custom data that can be used as node of a list.
+    * @brief This macro can be used to create custom data that can be used as 
+    * node of a list.
     *  User should locate this macro as the first member of the custom structure.
     * 
     * Example :
@@ -144,18 +145,21 @@
     typedef qINT32_t qList_Position_t;
 
     /**
-    * @brief This macro should be used to define the destination position of a node in front of a list
+    * @brief This macro should be used to define the destination position of a 
+    * node in front of a list
     */
     #define QLIST_ATFRONT           ((qList_Position_t)(-1))
 
     /**
-    * @brief This macro should be used to define the destination position of a node at the end of a list
+    * @brief This macro should be used to define the destination position of a 
+    * node at the end of a list
     */    
     #define QLIST_ATBACK            ((qList_Position_t)(2147483647))
 
 
     /**
-    * @brief Must be called before a list is used. This initialises all the members of the 
+    * @brief Must be called before a list is used. This initialises all the 
+    * members of the 
     * list structure.
     * @param[in] l Pointer to the list being initialised.
     * @return #qTrue on success, #qFalse otherwise.
@@ -166,9 +170,11 @@
     * @brief Insert an item into the list.
     * @param[in] l Pointer to the list 
     * @param[in] node A pointer to the node to be inserted
-    * @param[in] p The position where the node will be inserted. Could be #QLIST_ATFRONT,
-    * #QLIST_ATBACK or any other index number where the node will be inserted after.
-    * @return #qTrue if the item was successfully added to the list, othewise returns #qFalse   
+    * @param[in] p The position where the node will be inserted. Could be 
+    * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number where the node 
+    * will be inserted after.
+    * @return #qTrue if the item was successfully added to the list, othewise 
+    * returns #qFalse   
     */       
     qBool_t qList_Insert( qList_t * const l, 
                           void * const node, 
@@ -184,8 +190,9 @@
     /**
     * @brief Remove an item from the list.
     * @param[in] l Pointer to the list.
-    * @param[in] node  A pointer to the node to be deleted (to ignore pass NULL ). 
-    * If the node is member or the list, use qList_RemoveItself() to avoid overhead
+    * @param[in] node A pointer to the node to be deleted (to ignore pass NULL ). 
+    * If the node is member or the list, use qList_RemoveItself() to avoid 
+    * overhead
     * @param[in] p The position of the node that will be removed. Could be
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number.
     * @return A pointer to the removed node. NULL if removal can't be performed. 
@@ -195,15 +202,17 @@
                         const qList_Position_t p );
 
     /**
-    * @brief Moves(or merge) the entire list pointed by @a src to the list pointed by 
+    * @brief Moves(or merge) the entire list pointed by @a src to the list 
+    * pointed by 
     * @a dst at location specified by @a p. 
-    * After the move operation, this function leaves empty the list pointed 
-    * by @a src.
-    * @param[in,out] dst Pointer to the list where the @a src nodes are to be moved.
+    * After the move operation, this function leaves empty the list pointed by 
+    * @a src.
+    * @param[in,out] dst Pointer to the list where the @a src nodes are to be 
+    * moved.
     * @param[in] src  Pointer to the source list to be moved.
     * @param[in] p The position where @a src list will be inserted. Could be 
-    * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number  where the list will 
-    * be inserted after.
+    * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number  where the list 
+    * will be inserted after.
     * @return #qTrue if the move operation is performed successfully, otherwise 
     * returns #qFalse  
     */     
@@ -302,12 +311,14 @@
     typedef qList_Node_t* (*qList_Direction_t)( const qList_Node_t *const node );      
 
     /**
-    * @brief This macro should be used to define the direction of travel of the list forward
+    * @brief This macro should be used to define the direction of travel of the 
+    * list forward
     */
     #define QLIST_FORWARD   ( _qNode_Forward  )  
 
     /**
-    * @brief This macro should be used to define the direction of travel of the list backwards
+    * @brief This macro should be used to define the direction of travel of the 
+    * list backwards
     */   
     #define QLIST_BACKWARD  ( _qNode_Backward )
     
@@ -327,7 +338,8 @@
     * @param[in] i Pointer to the iterator instance
     * @param[in] l Pointer to the list.
     * @param[in] nodeOffset The start offset-node. To ignore, pass NULL.
-    * @param[in] d Use one of the following options: #QLIST_FORWARD or #QLIST_BACKWARD.
+    * @param[in] d Use one of the following options: #QLIST_FORWARD or 
+    * #QLIST_BACKWARD.
     * @return #qTrue on success. Otherwise returns #qFalse.  
     */       
     qBool_t qList_IteratorSet( qList_Iterator_t *i, 
@@ -346,16 +358,18 @@
     /**
     * @brief Operate on each element of the list.
     * @param[in] l Pointer to the list.
-    * @param[in] f The function to perform over the node. Should have this prototype:
+    * @param[in] f The function to perform over the node. Should have this 
+    * prototype:
     * @code qBool_t Function( qList_ForEachHandle_t h ) @endcode
     * 
     * If @a f returns #qTrue, the walk-through loop will be terminated.
     * @param[in] arg Argument passed to @a f
     * @param[in] d Direction. Use one of the following options: #QLIST_FORWARD 
     * or #QLIST_BACKWARD.
-    * @param nodeOffset If available, the list walk through will start from this node.  
-    * To ignore, pass NULL. 
-    * @return #qTrue if the walk through was early terminated, otherwise returns #qFalse.
+    * @param nodeOffset If available, the list walk through will start from this
+    * node. To ignore, pass NULL. 
+    * @return #qTrue if the walk through was early terminated, otherwise returns
+    * #qFalse.
     */     
     qBool_t qList_ForEach( qList_t *const l, 
                            const qList_NodeFcn_t f, 
@@ -364,8 +378,10 @@
                            void *nodeOffset );
     
     /**
-    * @brief Swap two nodes that belongs to the same list by changing its own links.
-    * @note The list containing nodes will be updated if any node is part of the boundaries.
+    * @brief Swap two nodes that belongs to the same list by changing its own 
+    * links.
+    * @note The list containing nodes will be updated if any node is part of the
+    * boundaries.
     * @param[in] node1 Pointer to the first node.
     * @param[in] node2 Pointer to the second node.
     * @return #qTrue if the swap operation is performed. Otherwise returns #qFalse.

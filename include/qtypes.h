@@ -31,7 +31,8 @@
 
     /** @addtogroup  qtypes
     * @brief Sets of types having specified widths used to design the entire OS.
-    * It also define macros directives to perform specific actions and options for some OS APIs.
+    * It also define macros directives to perform specific actions and options 
+    * for some OS APIs.
     * @{
     */
 
@@ -98,27 +99,32 @@
     typedef qUINT8_t qByte_t;
 
     /** 
-    * @brief A type to instantiate a integer-base variable. This type is compiler implementation-defined.
+    * @brief A type to instantiate a integer-base variable. This type is 
+    * compiler implementation-defined.
     */    
     typedef int qBase_t;
 
     /** 
-    * @brief A type to instantiate a single-precision variable of 32-bits IEEE 754.
+    * @brief A type to instantiate a single-precision variable of 32-bits 
+    * IEEE 754.
     */   
     typedef float qFloat32_t;  /*this is not always true in some compilers*/   
 
     /** 
-    * @brief A type to instantiate a double-precision variable of 64-bits IEEE 754.
+    * @brief A type to instantiate a double-precision variable of 64-bits 
+    * IEEE 754.
     */       
     typedef double qFloat64_t; /*this is not always true in some compilers*/   
     
     /** 
-    * @brief A type to instantiate a variable to hold the priority value of a task.
+    * @brief A type to instantiate a variable to hold the priority value of a 
+    * task.
     */     
     typedef qUINT8_t qPriority_t;
 
     /** 
-    * @brief A type to instantiate a variable that hold the number of task iterations.
+    * @brief A type to instantiate a variable that hold the number of task 
+    * iterations.
     */       
     typedef qINT32_t qIteration_t;
 
@@ -133,7 +139,8 @@
     typedef qUINT8_t qBool_t;
 
     /** 
-    * @brief A type to instantiate an OS index variable. Can store the maximum size of a theoretically possible object of any type (including array).
+    * @brief A type to instantiate an OS index variable. Can store the maximum 
+    * size of a theoretically possible object of any type (including array).
     * Should be used for array indexing and loop counting.
     */  
     typedef size_t qIndex_t; /*better portability*/

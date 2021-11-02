@@ -558,7 +558,7 @@ qBool_t qIOUtil_IsInf( const qFloat32_t f )
 
     (void)memcpy( &u, &f, sizeof(u) );
 
-    return ( ( 0x7f800000uL == u ) || ( 0xff800000uL == u ) )? qTrue : qFalse;
+    return ( ( 0x7F800000uL == u ) || ( 0xFF800000uL == u ) )? qTrue : qFalse;
 }
 /*============================================================================*/
 qBool_t qIOUtil_IsNan( const qFloat32_t f )

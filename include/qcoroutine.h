@@ -57,7 +57,8 @@
     /*! @endcond  */
 
     /** 
-    * @brief An enumeration to define the possible actions that can be performed outside the context of a Co-Routine
+    * @brief An enumeration to define the possible actions that can be performed
+    * outside the context of a Co-Routine
     */
     typedef enum {
         qCR_RESTART = QCR_RESTART,          /**< Restart the coroutine execution at the place of the #qCR_BeginWithHandle statement.*/ 

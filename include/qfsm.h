@@ -43,25 +43,29 @@
      */
 
     /**
-    * @brief This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.
+    * @brief This macro can be used to reference the top state when using the 
+    * qStateMachine_StateSubscribe() API.
     */ 
     #define QSM_STATE_TOP               ( NULL )   
 
     /*FSM internal signals*/
 
     /**
-    * @brief Built-in signal that can be used to set a nested initial-transition (aka default transition) 
-    * by writing the qSM_Handler_t::StartState member.
-    * @note Transitions by setting the qSM_Handler_t::NextState member are not allowed here
+    * @brief Built-in signal that can be used to set a nested initial-transition
+    *  (aka default transition) by writing the qSM_Handler_t::StartState member.
+    * @note Transitions by setting the qSM_Handler_t::NextState member are not 
+    * allowed here
     */
     #define QSM_SIGNAL_START            ( (qSM_Signal_t)0xFFFFFFFFuL )
     /**
-    * @brief Built-in signal to indicate if the current state has just exit to another state.
+    * @brief Built-in signal to indicate if the current state has just exit to 
+    * another state.
     * @note Transitions are not allowed here
     */
     #define QSM_SIGNAL_EXIT             ( (qSM_Signal_t)0xFFFFFFFEuL )
     /**
-    * @brief Built-in signal to indicate if the current state has just entered from another state.
+    * @brief Built-in signal to indicate if the current state has just entered 
+    * from another state.
     * @note Transitions are not allowed here
     */ 
     #define QSM_SIGNAL_ENTRY            ( (qSM_Signal_t)0xFFFFFFFDuL )
@@ -73,43 +77,50 @@
     * @brief Built-in signal to indicate that a timeout expiration event occurs.
     * @param index The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     */      
-    #define QSM_SIGNAL_TIMEOUT(index)   ( (qSM_Signal_t)0xFFFFFFFBuL - (qSM_Signal_t)(Q_FSM_MAX_TIMEOUTS-1) + (qSM_Signal_t)(index) )   
+    #define QSM_SIGNAL_TIMEOUT(index)   ( (qSM_Signal_t)0xFFFFFFFBuL - (qSM_Signal_t)( Q_FSM_MAX_TIMEOUTS - 1 ) + (qSM_Signal_t)(index) )   
     
     /**
-    * @brief Timeout-specification option. Should be used to specify the timeout index.
+    * @brief Timeout-specification option. Should be used to specify the timeout
+    * index.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_INDEX(index)      ( ( (qSM_TimeoutSpecOptions_t)0x00FFFFFFuL & (qSM_TimeoutSpecOptions_t)index) )  /*to select the timeout to be used in the specification*/    
+    #define QSM_TSOPT_INDEX(index)      ( ( (qSM_TimeoutSpecOptions_t)0x00FFFFFFuL & (qSM_TimeoutSpecOptions_t)index) ) 
     /**
-    * @brief This timeout-specification option its used to specify that the engine should set the timeout when the specified state its entering.
+    * @brief This timeout-specification option its used to specify that the 
+    * engine should set the timeout when the specified state its entering.
     * @note Can be combined with a bitwise OR
     */
     #define QSM_TSOPT_SET_ENTRY         ( (qSM_TimeoutSpecOptions_t)0x01000000uL )
     /**
-    * @brief This timeout-specification option its used to specify that the engine should reset the timeout when the specified state its entering.
+    * @brief This timeout-specification option its used to specify that the 
+    * engine should reset the timeout when the specified state its entering.
     * @note Can be combined with a bitwise OR
     */    
     #define QSM_TSOPT_RST_ENTRY         ( (qSM_TimeoutSpecOptions_t)0x02000000uL )
     /**
-    * @brief This timeout-specification option its used to specify that the engine should set the timeout when the specified state its exiting*.
+    * @brief This timeout-specification option its used to specify that the 
+    * engine should set the timeout when the specified state its exiting*.
     * @note Can be combined with a bitwise OR
     */      
     #define QSM_TSOPT_SET_EXIT          ( (qSM_TimeoutSpecOptions_t)0x04000000uL )
     /**
-    * @brief This timeout-specification option its used to specify that the engine should reset the timeout when the specified state its exiting*.
+    * @brief This timeout-specification option its used to specify that the 
+    * engine should reset the timeout when the specified state its exiting*.
     * @note Can be combined with a bitwise OR
     */          
     #define QSM_TSOPT_RST_EXIT          ( (qSM_TimeoutSpecOptions_t)0x08000000uL )
     /**
-    * @brief This timeout-specification option its used to specify that the engine should set the timeout only if it is in reset state*.
+    * @brief This timeout-specification option its used to specify that the 
+    * engine should set the timeout only if it is in reset state*.
     * @note Can be combined with a bitwise OR
     */      
     #define QSM_TSOPT_KEEP_IF_SET       ( (qSM_TimeoutSpecOptions_t)0x10000000uL )
     /**
-    * @brief This timeout-specification option its used setup the timeout in periodic mode*.
+    * @brief This timeout-specification option its used setup the timeout in 
+    * periodic mode*.
     * @note Can be combined with a bitwise OR
     */         
-    #define QSM_TSOPT_PERIODIC          ( (qSM_TimeoutSpecOptions_t)0x20000000uL )  /*to mark the timeout as periodic*/    
+    #define QSM_TSOPT_PERIODIC          ( (qSM_TimeoutSpecOptions_t)0x20000000uL )  
     
     /**
     * @brief Minimum value that can be used for an user-defined signal
@@ -118,7 +129,7 @@
     /**
     * @brief Maximum value that can be used for an user-defined signal
     */      
-    #define QSM_SIGNAL_RANGE_MAX        ( (qSM_Signal_t)(0xFFFFFFFBuL - (qSM_Signal_t)Q_FSM_MAX_TIMEOUTS  ) )
+    #define QSM_SIGNAL_RANGE_MAX        ( (qSM_Signal_t)( 0xFFFFFFFBuL - (qSM_Signal_t)Q_FSM_MAX_TIMEOUTS ) )
     /**
     * @brief The start value for an user-defined signal
     */         
@@ -143,7 +154,8 @@
     qSM_Status_t; 
 
     /**
-    * @brief This enumeration defines the possible modes to perform a transistion to history  
+    * @brief This enumeration defines the possible modes to perform a 
+    * transistion to history  
     */    
     typedef enum {
         qSM_TRANSITION_NO_HISTORY = 0,          /**< History is not preserved. Composite states will start according to their default transition.*/
@@ -155,17 +167,18 @@
     /*fields for the qSM_Handler_t pointer*/
     
     /*! @cond  */
-    #define _qSM_HANDLER_FIELDS( pAttrib ) struct {\
-        void *StartState;\
-        void *NextState;\
-        pAttrib void *machine;\
-        pAttrib void *state;\
-        pAttrib void *Data;\
-        pAttrib void *StateData;\
-        pAttrib qSM_Signal_t Signal;\
-        pAttrib qSM_Status_t Status;\
-        qSM_TransitionHistoryMode_t TransitionHistory;\
-    };\
+    #define _qSM_HANDLER_FIELDS( pAttrib )                                  \
+    struct {                                                                \
+        void *StartState;                                                   \
+        void *NextState;                                                    \
+        pAttrib void *machine;                                              \
+        pAttrib void *state;                                                \
+        pAttrib void *Data;                                                 \
+        pAttrib void *StateData;                                            \
+        pAttrib qSM_Signal_t Signal;                                        \
+        pAttrib qSM_Status_t Status;                                        \
+        qSM_TransitionHistoryMode_t TransitionHistory;                      \
+    };                                                                      \
     /*! @endcond */
 
     /*! @cond  */
@@ -177,8 +190,9 @@
     
     #ifdef DOXYGEN
     /** 
-    * @brief The callback argument to handle the state-machine dynamics and provide execution information.
-    * Some members can be written to perform state-transtions.
+    * @brief The callback argument to handle the state-machine dynamics and 
+    * provide execution information. Some members can be written to perform 
+    * state-transtions.
     * @note Should be used only in state-callbacks as the only input argument. 
     * @note The members of this structure must be accessed as a pointer.
     */    
@@ -263,7 +277,8 @@
 
 
     /**
-    * @brief This structure should be used to define an item for a timeout-specification table. 
+    * @brief This structure should be used to define an item for a 
+    * timeout-specification table. 
     */
     typedef struct _qSM_TimeoutStateDefinition_s {
         qTime_t xTimeout;                                   /**< The value that the timeout will use*/
@@ -274,19 +289,22 @@
     /** 
     * @brief A state object
     * @details  States are represented as instances of the qSM_State_t object.
-    * One important attribute of this object is the callback function, which is used to describe
-    * the behavior specific to the state. Also there is a pointer to the parent state to define
-    * nesting of the state and its place in the hierarchical topology.
+    * One important attribute of this object is the callback function, which is 
+    * used to describe the behavior specific to the state. Also there is a 
+    * pointer to the parent state to define nesting of the state and its place 
+    * in the hierarchical topology.
     * 
-    * So concrete state machine are built by adding an arbitrary number states and defining 
-    * callback functions. 
+    * So concrete state machine are built by adding an arbitrary number states 
+    * and defining callback functions. 
     * 
-    * State  machines  are constructed by composition, therefore, the topology of a state machine 
-    * is determined upon construction. In this module implementation, there are not distinction between
-    *  composite states(states containing substates) and leaf states. All states are potentially composite. 
+    * State  machines  are constructed by composition, therefore, the topology 
+    * of a state machine is determined upon construction. In this module 
+    * implementation, there are not distinction between composite states(states 
+    * containing substates) and leaf states. All states are potentially 
+    * composite. 
     * 
-    * The API qStateMachine_StateSubscribe() should be used to initialize the state and define its
-    * position in the topology.
+    * The API qStateMachine_StateSubscribe() should be used to initialize the 
+    * state and define its position in the topology.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_State_s {
@@ -321,11 +339,13 @@
 
     /** 
     * @brief A FSM(Finite State Machine) object
-    * @details In QuarkTS, a state-machine must be instantiated with an object of type qSM_t. 
+    * @details In QuarkTS, a state-machine must be instantiated with an object 
+    * of type qSM_t. 
     * 
-    * Like any other OS object, a Finite State Machine (FSM) must be explicitly initialized before it can be used.
-    * The qStateMachine_Setup() initializes the instance, sets the callback for the top state, sets the initial
-    * state and the surrounding callback function.
+    * Like any other OS object, a Finite State Machine (FSM) must be explicitly 
+    * initialized before it can be used. The qStateMachine_Setup() initializes 
+    * the instance, sets the callback for the top state, sets the initial state 
+    * and the surrounding callback function.
     * @note Do not access any member of this structure directly. 
     */
     typedef struct _qSM_s {
@@ -351,7 +371,8 @@
     qSM_t;
 
     /**
-    * @brief This structure should be used to define an item for a state transition table. 
+    * @brief This structure should be used to define an item for a state 
+    * transition table. 
     */
     typedef struct _qSM_Transition_s {
         qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
@@ -381,11 +402,12 @@
     * @brief Execute the Finite State Machine (FSM).
     * @see qOS_Add_StateMachineTask()
     * @param[in] m A pointer to the FSM object.
-    * @param[in] sig User-defined signal (this value will be ignored if the installed queue 
-    * has items available)
-    * @note A signal coming from the signal-queue has the higher precedence. The user-defined
-    * signal can be overridden
-    * @return #qTrue if the signal was successfully handled, otherwise returns #qFalse.
+    * @param[in] sig User-defined signal (this value will be ignored if the 
+    * installed queue has items available)
+    * @note A signal coming from the signal-queue has the higher precedence. 
+    * The user-defined signal can be overridden
+    * @return #qTrue if the signal was successfully handled, otherwise returns 
+    * #qFalse.
     */        
     qBool_t qStateMachine_Run( qSM_t * const m, 
                                qSM_Signal_t sig );
@@ -396,9 +418,11 @@
     * @note This API also initializes the top state.
     * @param[in] m A pointer to the FSM object.
     * @param[in] topFcn The callback for the "Top" state
-    * @param[in] init The first state to be executed (init-state or default transition). 
+    * @param[in] init The first state to be executed (init-state or default 
+    * transition). 
     * @param[in] sFcn The surrounding callback. To ignore pass NULL      
-    * @param[in] pData Represents the FSM arguments. User storage pointer. To ignore pass NULL.
+    * @param[in] pData Represents the FSM arguments. User storage pointer. To 
+    * ignore pass NULL.
     * @return Returns #qTrue on Success, otherwise returns #qFalse.
     */   
     qBool_t qStateMachine_Setup( qSM_t * const m, 
@@ -408,11 +432,12 @@
                                  void *pData );
     
     /**
-    * @brief This function subscribes the FSM instance to a specific state with an associated 
-    * callback function. 
+    * @brief This function subscribes the FSM instance to a specific state with 
+    * an associated callback function. 
     * @param[in] m A pointer to the FSM object.
     * @param[in] state A pointer to the state object.
-    * @param[in] parent A pointer to the parent state (Use #QSM_STATE_TOP) if the parent is the top state.
+    * @param[in] parent A pointer to the parent state (Use #QSM_STATE_TOP) if 
+    * the parent is the top state.
     * @param[in] sFcn The handler function associated to the state.
     *
     * Prototype: @code qSM_Status_t xCallback( qSM_Handler_t h ) @endcode
@@ -430,11 +455,12 @@
                                           void *pData );
        
     /**
-    * @brief Installs a table with the outgoing transitions for the supplied state.
+    * @brief Installs a table with the outgoing transitions for the supplied 
+    * state.
     * @param[in] s A pointer to the state object.
-    * @param[in] table An array of entries of type qSM_Transition_t with the outgoing 
-    * transitions. Each entry relates signals, actions and the target state using the 
-    * following layout: 
+    * @param[in] table An array of entries of type qSM_Transition_t with the 
+    * outgoing transitions. Each entry relates signals, actions and the target 
+    * state using the following layout: 
     * @verbatim { [Signal], [Action/Guard],  [Target state],  [History Mode] } @endverbatim
     * @param[in] n The number of elements inside @a table. 
     * @return #qTrue on success, otherwise return #qFalse.
@@ -456,27 +482,29 @@
 
     /**
     * @brief Sends a signal to the provided state machine.
-    * @note If the signal queue is not available, an exclusion variable will be used.
-    * This means that the signal cannot be sent until the variable is empty. 
+    * @note If the signal queue is not available, an exclusion variable will be 
+    * used.This means that the signal cannot be sent until the variable is empty. 
     * (the signal was handled by the state-machine engine).
     * @note The signal-queue has the highest precedence.    
     * @param[in] m A pointer to the FSM object.
-    * @param[in] sig  The user-defined signal.
-    * @param[in] isUrgent If qTrue, the signal will be sent to the front of the queue. (only if the
-    * there is a signal-queue available)
-    * @return #qTrue if the provided signal was successfully delivered to the FSM, otherwise 
-    * return #qFalse. #qFalse if there is a queue, and the signal cannot be inserted because it is full.
+    * @param[in] sig The user-defined signal.
+    * @param[in] isUrgent If qTrue, the signal will be sent to the front of the 
+    * queue. (only if the there is a signal-queue available)
+    * @return #qTrue if the provided signal was successfully delivered to the 
+    * FSM, otherwise return #qFalse. #qFalse if there is a queue, and the signal
+    * cannot be inserted because it is full.
     */      
     qBool_t qStateMachine_SendSignal( qSM_t * const m, 
                                       qSM_Signal_t sig, 
                                       const qBool_t isUrgent );
 
     /**
-    * @brief Install the Timeout-specification object to target FSM to allow timed 
-    * signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ). 
-    * @attention This feature its only available if the FSM has a signal-queue installed.
-    * @note You can increse the number of available timeouts instances by changing 
-    * the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h          
+    * @brief Install the Timeout-specification object to target FSM to allow 
+    * timed signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ). 
+    * @attention This feature its only available if the FSM has a signal-queue 
+    * installed.
+    * @note You can increse the number of available timeouts instances by 
+    * changing the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h          
     * @see qStateMachine_InstallSignalQueue()  
     * @param[in] m A pointer to the FSM object.
     * @param[in] ts A pointer to the timeout specification object.
@@ -487,14 +515,16 @@
    
     /**
     * @brief Setup fixed timeouts for the specified state using a lookup-table. 
-    * @attention This feature its only available if the FSM has a signal-queue installed.
-    * @note The container state-machine must have a timeout-specification installed.
-    * @note The lookup table should be an array of type qSM_TimeoutStateDefinition_t
-    *  with @a n elements matching { time, options }. 
+    * @attention This feature its only available if the FSM has a signal-queue 
+    * installed.
+    * @note The container state-machine must have a timeout-specification 
+    * installed.
+    * @note The lookup table should be an array of type 
+    * qSM_TimeoutStateDefinition_t with @a n elements matching { time, options }. 
     * @see qStateMachine_InstallSignalQueue(),  qStateMachine_InstallTimeoutSpec()       
     * @param[in] s A pointer to the state object.
-    * @param[in] tdef  The lookup table matching the requested timeout values with their 
-    * respective options.
+    * @param[in] tdef  The lookup table matching the requested timeout values 
+    * with their respective options.
     * @verbatim { [Timeout value], [Options(Combined with a bitwise OR)] } @endverbatim
     * @param[in] n The number of elements inside @a tdef. 
     * @return Returns #qTrue on success, otherwise returns #qFalse.
@@ -505,10 +535,13 @@
 
     /**
     * @brief Set the time for the selected built-in timeout inside the target FSM.
-    * @note Requires an installed timeout-specification. For this use qStateMachine_InstallTimeoutSpec()
-    * @note Requires an installed signal-queue. For this use qStateMachine_InstallSignalQueue()      
+    * @note Requires an installed timeout-specification. 
+    * For this use qStateMachine_InstallTimeoutSpec()
+    * @note Requires an installed signal-queue. 
+    * For this use qStateMachine_InstallSignalQueue()      
     * @param[in] m A pointer to the FSM object.
-    * @param[in] xTimeout The index of the requested timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param[in] xTimeout The index of the requested timeout 
+    * (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @param[in] t The specified time usually given in seconds.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */     
@@ -518,10 +551,13 @@
 
     /**
     * @brief Stop the time count for the selected built-in timeout.
-    * @note Requires an installed timeout-specification. For this use qStateMachine_InstallTimeoutSpec()
-    * @note Requires an installed signal-queue. For this use qStateMachine_InstallSignalQueue()      
+    * @note Requires an installed timeout-specification. 
+    * For this use qStateMachine_InstallTimeoutSpec()
+    * @note Requires an installed signal-queue. 
+    * For this use qStateMachine_InstallSignalQueue()      
     * @param[in] m A pointer to the FSM object.
-    * @param[in] xTimeout The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param[in] xTimeout The index of the timeout 
+    * (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */       
     qBool_t qStateMachine_TimeoutStop( qSM_t * const m, 
@@ -531,7 +567,8 @@
     * @brief Get attributes from the provided Finite State Machine object     
     * @param[in] m A pointer to the FSM object.
     * @param[in] a The requested attribute
-    * @return Returns a pointer to the requested attribute. Otherwise returns NULL.
+    * @return Returns a pointer to the requested attribute. Otherwise returns 
+    * NULL.
     */  
     void* qStateMachine_Get_Machine( qSM_t * const m, 
                                      const qSM_Attribute_t a );
@@ -540,7 +577,8 @@
     * @brief Get attributes from the provided state object     
     * @param[in] s A pointer to the state object.
     * @param[in] a The requested attribute
-    * @return Returns a pointer to the requested attribute. Otherwise returns NULL.
+    * @return Returns a pointer to the requested attribute. Otherwise returns 
+    * NULL.
     */     
     void* qStateMachine_Get_State( qSM_State_t * const s, 
                                    const qSM_Attribute_t a );

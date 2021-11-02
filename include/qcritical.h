@@ -25,8 +25,9 @@
     * @brief Function called by qCritical_Exit() to restore interrupts.
     * 
     * @note User should use bare-metal code to implement this function.
-    * @note The kernel passes the previously saved interrupt configuration as input argument.
-    * The user is responsible for taking this argument to restore the saved interrupt setup.
+    * @note The kernel passes the previously saved interrupt configuration as 
+    * input argument. The user is responsible for taking this argument to 
+    * restore the saved interrupt setup.
     * Example :
     * @code{.c}
     * void BSP_InterruptRestorer( qUINT32_t savedmask ){
@@ -34,7 +35,8 @@
     *       HAL_EnableInterrupts();
     * }
     * @endcode
-    * @param[in] savedmask The interrupt configuration saved by the "Disabler" function
+    * @param[in] savedmask The interrupt configuration saved by the "Disabler" 
+    * function
     * @return none.
     */
     typedef void (*qInt_Restorer_t)(qUINT32_t arg1);
@@ -43,7 +45,8 @@
     * @brief Function called by qCritical_Enter() to disable interrupts.
     * 
     * @note User should use bare-metal code to implement this function.
-    * @note User should return the current interrupt configuration to be saved by the kernel.
+    * @note User should return the current interrupt configuration to be saved 
+    * by the kernel.
     * Example :
     * @code{.c}
     * qUINT32_t BSP_InterruptDisabler( void ){
@@ -53,14 +56,16 @@
     *       return currentmask;
     * }
     * @endcode
-    * @return The current interrupt configuration (mask). The kernel will retain this value
+    * @return The current interrupt configuration (mask). The kernel will retain
+    * this value
     * until the critical section is exited
     */
     typedef qUINT32_t (*qInt_Disabler_t)(void);
 
   
     /**
-    * @brief Enter a critical section. This function invokes the @b Disabler function if available.
+    * @brief Enter a critical section. This function invokes the @b Disabler 
+    * function if available.
     * @note  Please see qCritical_SetInterruptsED()
     * @return none.
     */   
@@ -68,7 +73,8 @@
 
 
     /**
-    * @brief Exit a critical section. This function invokes the @b Enabler function if available.
+    * @brief Exit a critical section. This function invokes the @b Enabler 
+    * function if available.
     * @note  Please see qCritical_SetInterruptsED()
     * @return none.
     */      
@@ -83,8 +89,10 @@
     * @code{.c}
     * void qCritical_SetInterruptsED( BSP_InterruptRestorer, BSP_InterruptDisabler );
     * @endcode
-    * @param[in] rFcn The function with hardware specific code that enables or restores interrupts.
-    * @param[in] dFcn The function with hardware specific code that disables interrupts.
+    * @param[in] rFcn The function with hardware specific code that enables or 
+    * restores interrupts.
+    * @param[in] dFcn The function with hardware specific code that disables 
+    * interrupts.
     * @return #qTrue on success. Otherwise return #qFalse.
     */   
     qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, 
