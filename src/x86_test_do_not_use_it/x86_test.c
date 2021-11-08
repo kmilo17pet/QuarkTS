@@ -466,12 +466,12 @@ void blinktaskCallback(qEvent_t e){
     }qCR_End;
     (void)e;
 }
-qCR_Handle_t hCr = NULL;
+qCR_Handle_t Cr_GlobalHandle = NULL;
 /*============================================================================*/
 void scheduler_Release(qEvent_t e){
     (void)e;
     TEST_MESSAGE("SCHEDULER RELEASED");
-    qCR_BeginWithHandle( hCr ) {
+    qCR_BeginWithHandle( Cr_GlobalHandle ) {
         qCR_Delay( 0.0 );
     }qCR_End;
 }
@@ -538,10 +538,10 @@ void test_OS_API( void ){
     #if ( Q_QUEUES == 1 )
         TEST_MESSAGE( "qQueue_Module..." ); 
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Setup( &somequeue, queuearea, sizeof(int), 8) );
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[0]) );
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[1]) );
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToBack( &somequeue, &x[2]) );
-        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_SendToFront( &somequeue, &x[3]) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Send( &somequeue, &x[0], QUEUE_SEND_TO_BACK ) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Send( &somequeue, &x[1], QUEUE_SEND_TO_FRONT ) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Send( &somequeue, &x[2], QUEUE_SEND_TO_BACK ) );
+        TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Send( &somequeue, &x[3], QUEUE_SEND_TO_FRONT ) );
         qTrace_Variable( qQueue_Count( &somequeue) , Decimal );
         TEST_ASSERT_EQUAL_size_t( 4, qQueue_Count( &somequeue ) );
         TEST_ASSERT_EQUAL_UINT8( qTrue, qQueue_Receive( &somequeue, &DataReceivedFromQueue) );
