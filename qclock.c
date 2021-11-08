@@ -1,5 +1,5 @@
 /*!
- * @file qclock.c   
+ * @file qclock.c
  * @author J. Camilo Gomez C.
  * @note This file is part of the QuarkTS distribution.
  **/
@@ -20,19 +20,19 @@ qBool_t qClock_SetTimeBase( const qTimingBase_t tb )
     qBool_t retValue = qFalse;
     /*cstat -CERT-FLP36-C*/
     if ( tb > (qTimingBase_t)0 ) {
-    /*cstat +CERT-FLP36-C*/  
+    /*cstat +CERT-FLP36-C*/
         TimmingBase = tb;
         retValue = qTrue;
     }
-    
+
     return retValue;
-} 
+}
 #endif
 /*============================================================================*/
 static qClock_t qClock_InternalTick( void )
 {
     return qSysTick_Epochs;
-} 
+}
 /*============================================================================*/
 qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider )
 {
@@ -62,45 +62,45 @@ qTime_t qClock_Convert2Time( const qClock_t t )
             /*cstat -CERT-FLP36-C*/
             return (qTime_t)(TimmingBase*( (qTime_t)t) ); /*CERT-FLP36-C deviation allowed*/
             /*cstat +CERT-FLP36-C*/
-        #endif      
-    #endif      
+        #endif
+    #endif
 }
 /*============================================================================*/
 qClock_t qClock_Convert2Clock( const qTime_t t )
 {
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
         return (qClock_t)t;
-    #else 
+    #else
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
             return (qClock_t)( t*TimmingBase );
         #else
             qTime_t epochs = qTimeImmediate;
-            
+
             if ( t > qTimeImmediate ) {
                 epochs = ( t/TimmingBase ) + QFLT_TIME_FIX_VALUE;
-            }     
+            }
 
             return (qClock_t)epochs;
-        #endif    
+        #endif
     #endif
 }
 /*============================================================================*/
 void qClock_SysTick( void )
-{ 
-    ++qSysTick_Epochs; 
+{
+    ++qSysTick_Epochs;
 }
 /*============================================================================*/
 qGetTickFcn_t qClock_GetTick = &qClock_InternalTick;
 /*============================================================================*/
-qBool_t qClock_TimeDeadlineCheck( const qClock_t ti, 
+qBool_t qClock_TimeDeadlineCheck( const qClock_t ti,
                                   const qClock_t td )
 {
     qBool_t retValue = qFalse;
-    
+
     if ( ( qClock_GetTick() - ti ) >= td ) {
         retValue = qTrue;
     }
 
-    return retValue; 
+    return retValue;
 }
 /*============================================================================*/

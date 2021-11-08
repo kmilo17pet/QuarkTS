@@ -10,7 +10,7 @@
 qBool_t qSTimer_Reload( qSTimer_t * const t )
 {
     qBool_t retValue = qFalse;
-    
+
     if ( NULL != t ) {
         t->Start = qClock_GetTick();
         retValue = qTrue;
@@ -19,36 +19,37 @@ qBool_t qSTimer_Reload( qSTimer_t * const t )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_Set( qSTimer_t * const t, 
+qBool_t qSTimer_Set( qSTimer_t * const t,
                      const qTime_t tTime )
 {
     qBool_t retValue = qFalse;
 
     if ( qSTimer_Reload( t ) ) {
-        t->TV  = qClock_Convert2Clock( tTime ); /*set the STimer time in epochs*/
+        /*set the STimer time in epochs*/
+        t->TV  = qClock_Convert2Clock( tTime );
         retValue = qTrue;
     }
 
     return retValue;
 }
 /*============================================================================*/
-qBool_t qSTimer_FreeRun( qSTimer_t * const t, 
+qBool_t qSTimer_FreeRun( qSTimer_t * const t,
                          const qTime_t tTime )
 {
     qBool_t retValue = qFalse;
 
-    if ( NULL != t ) { 
-        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {  
+    if ( NULL != t ) {
+        if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
             if ( qSTimer_Expired( t ) ) {
-                retValue = qSTimer_Disarm( t ); 
+                retValue = qSTimer_Disarm( t );
             }
         }
         else {
-            (void)qSTimer_Set( t, tTime ); 
+            (void)qSTimer_Set( t, tTime );
         }
     }
 
-    return retValue;   
+    return retValue;
 }
 /*============================================================================*/
 qBool_t qSTimer_Expired( const qSTimer_t * const t )
@@ -93,6 +94,7 @@ qClock_t qSTimer_Remaining( const qSTimer_t * const t )
 qBool_t qSTimer_Disarm( qSTimer_t * const t )
 {
     qBool_t retValue = qFalse;
+
     if ( NULL != t ) {
         t->TV = QSTIMER_DISARM_VALUE;
         t->Start = QSTIMER_DISARM_VALUE;
@@ -108,8 +110,8 @@ qBool_t qSTimer_Status( const qSTimer_t * const t )
 
     if ( NULL != t ) {
         retValue =  ( t->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
-    } 
-    
+    }
+
     return retValue;
 }
 /*============================================================================*/

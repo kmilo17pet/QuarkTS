@@ -7,29 +7,34 @@
 #include "qcoroutine.h"
 
 /*============================================================================*/
-qBool_t qCR_ExternControl( qCR_Handle_t h, 
-                           const qCR_ExternAction_t action,  
+qBool_t qCR_ExternControl( qCR_Handle_t h,
+                           const qCR_ExternAction_t action,
                            const qCR_ExtPosition_t pos )
 {
     qBool_t retValue = qFalse;
 
-    if ( NULL != h ) { 
+    if ( NULL != h ) {
         retValue = qTrue;
         switch ( action ) {
             case qCR_RESTART:
-                h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL; 
+                h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL;
                 break;
             case qCR_POSITIONSET:
-                h->instr = pos; 
+                h->instr = pos;
                 break;
             case qCR_SUSPEND:
-                h->prev = h->instr; 
+                h->prev = h->instr;
                 h->instr = (_qCR_TaskPC_t)_qCR_PC_SUSPENDEDVAL;
-                break;   
+                break;
             case qCR_RESUME:
-                h->instr = ( (_qCR_TaskPC_t)_qCR_UNDEFINED != h->prev )?  h->prev : (_qCR_TaskPC_t)_qCR_PC_INITVAL;
+                if ( (_qCR_TaskPC_t)_qCR_UNDEFINED != h->prev ) {
+                    h->instr = h->prev;
+                }
+                else {
+                    h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL;
+                }
                 h->prev = (_qCR_TaskPC_t)_qCR_UNDEFINED;
-                break;                                 
+                break;
             default:
                 retValue = qFalse;
                 break;
@@ -40,10 +45,10 @@ qBool_t qCR_ExternControl( qCR_Handle_t h,
 }
 /*============================================================================*/
 /* Used to perform the semaphores operations on Coroutines
-Do not use this function explicitly to handle semaphores, use the provided coroutine 
-statements instead : <qCR_SemInit>, <qCR_SemWait> and <qCR_SemSignal>
+Do not use this function explicitly to handle semaphores, use the provided
+coroutine statements instead : <qCR_SemInit>, <qCR_SemWait> and <qCR_SemSignal>
 */
-qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,  
+qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,
                   const _qCR_Oper_t oper )
 {
     qBool_t retValue = qFalse;
@@ -63,10 +68,10 @@ qBool_t _qCR_Sem( qCR_Semaphore_t * const sem,
                 if ( oper >= _qCR_UNDEFINED ) {
                     sem->count = (size_t)oper;
                 }
-                break;    
+                break;
         }
     }
-    
+
     return retValue;
 }
 /*============================================================================*/

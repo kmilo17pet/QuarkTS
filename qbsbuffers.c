@@ -1,5 +1,5 @@
 /*!
- * @file qbsbuffers.c   
+ * @file qbsbuffers.c
  * @author J. Camilo Gomez C.
  * @note This file is part of the QuarkTS distribution.
  **/
@@ -18,7 +18,7 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
 
     if ( 0u != ( ( k - 1u ) & k ) ) {
         qIndex_t i;
-        
+
         k--;
         for ( i = 1u ; i < ( sizeof(qIndex_t)*8u ) ; i = (qIndex_t)( i * 2u ) ) {
             /*cstat -CERT-INT34-C_a*/
@@ -27,18 +27,18 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
         }
         k = (size_t)( ( k + 1u ) >> 1u );
     }
-    
+
     return ( k < r )? ( k * 2u ) : k;
 }
 /*============================================================================*/
 size_t qBSBuffer_Count( const qBSBuffer_t * const b )
 {
     size_t retValue = 0u;
-    
+
     if ( NULL != b ) {
         qIndex_t head = b->qPrivate.head;
         qIndex_t tail = b->qPrivate.tail;
-        
+
         retValue = (size_t)( head - tail );
     }
 
@@ -48,7 +48,7 @@ size_t qBSBuffer_Count( const qBSBuffer_t * const b )
 qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const b )
 {
     qBool_t retValue = qFalse;
-    
+
     if ( NULL != b ) {
         retValue = ( b->qPrivate.length == qBSBuffer_Count( b ) )? qTrue : qFalse;
     }
@@ -80,7 +80,7 @@ qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const b )
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Get( qBSBuffer_t * const b, 
+qBool_t qBSBuffer_Get( qBSBuffer_t * const b,
                        qUINT8_t *dst )
 {
     qBool_t retValue = qFalse;
@@ -96,8 +96,8 @@ qBool_t qBSBuffer_Get( qBSBuffer_t * const b,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Read( qBSBuffer_t * const b, 
-                        void *dst, 
+qBool_t qBSBuffer_Read( qBSBuffer_t * const b,
+                        void *dst,
                         const size_t n )
 {
     qBool_t retValue = qFalse;
@@ -116,13 +116,14 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const b,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Put( qBSBuffer_t * const b, 
+qBool_t qBSBuffer_Put( qBSBuffer_t * const b,
                        const qUINT8_t bData )
 {
     qBool_t retValue = qFalse;
 
-    if ( NULL != b ) { 
-        if ( qFalse == qBSBuffer_IsFull( b ) ) {/* limit the ring to prevent overwriting */
+    if ( NULL != b ) {
+        /* limit the ring to prevent overwriting */
+        if ( qFalse == qBSBuffer_IsFull( b ) ) {
             b->qPrivate.buffer[ b->qPrivate.head % b->qPrivate.length ] = bData; /*MISRAC2004-17.4_b deviation allowed*/
             ++b->qPrivate.head;
             retValue = qTrue;
@@ -132,8 +133,8 @@ qBool_t qBSBuffer_Put( qBSBuffer_t * const b,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qBSBuffer_Setup( qBSBuffer_t * const b, 
-                         volatile qUINT8_t *pBuffer, 
+qBool_t qBSBuffer_Setup( qBSBuffer_t * const b,
+                         volatile qUINT8_t *pBuffer,
                          const size_t length )
 {
     qBool_t retValue = qFalse;
@@ -143,7 +144,7 @@ qBool_t qBSBuffer_Setup( qBSBuffer_t * const b,
         b->qPrivate.head = 0u;
         b->qPrivate.tail = 0u;
         b->qPrivate.buffer = pBuffer;
-        b->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );   
+        b->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );
         retValue = qTrue;
     }
 

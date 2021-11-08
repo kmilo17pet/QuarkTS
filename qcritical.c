@@ -1,5 +1,5 @@
 /*!
- * @file qcritical.c   
+ * @file qcritical.c
  * @author J. Camilo Gomez C.
  * @note This file is part of the QuarkTS distribution.
  **/
@@ -36,17 +36,17 @@ void qCritical_Exit( void )
     }
 }
 /*============================================================================*/
-qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn, 
+qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn,
                                    const qInt_Disabler_t dFcn )
 {
     qBool_t retValue = qFalse;
-    
+
     if ( ( rFcn != Critical.I_Restorer ) || ( dFcn != Critical.I_Disable ) ) {
         Critical.I_Restorer = rFcn;
         Critical.I_Disable = dFcn;
         retValue = qTrue;
     }
-    
+
     return retValue;
 }
 /*============================================================================*/
