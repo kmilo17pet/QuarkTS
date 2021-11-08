@@ -152,7 +152,7 @@ Functions</h2></td></tr>
 <dd>
 User should return the current interrupt configuration to be saved by the kernel. Example : <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> BSP_InterruptDisabler( <span class="keywordtype">void</span> ){</div>
 <div class="line">      <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> currentmask;</div>
-<div class="line">      currentmask = HAL_InteruptGetMask( savedmask );    </div>
+<div class="line">      currentmask = HAL_InteruptGetMask( savedmask );</div>
 <div class="line">      HAL_DisableInterrupts();</div>
 <div class="line">      <span class="keywordflow">return</span> currentmask;</div>
 <div class="line">}</div>
@@ -178,7 +178,7 @@ User should return the current interrupt configuration to be saved by the kernel
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. </dd>
 <dd>
 The kernel passes the previously saved interrupt configuration as input argument. The user is responsible for taking this argument to restore the saved interrupt setup. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_InterruptRestorer( <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> savedmask ){</div>
-<div class="line">      HAL_InteruptSetMask( savedmask );    </div>
+<div class="line">      HAL_InteruptSetMask( savedmask );</div>
 <div class="line">      HAL_EnableInterrupts();</div>
 <div class="line">}</div>
 </div><!-- fragment --> </dd></dl>

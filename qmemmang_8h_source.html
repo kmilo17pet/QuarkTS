@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('qmemmang_8h_source.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef QMEMMANG_H  </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef QMEMMANG_H</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">    #define  QMEMMANG_H</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">    #include &quot;qtypes.h&quot;</span></div>
@@ -121,11 +121,11 @@ $(document).ready(function(){initNavTree('qmemmang_8h_source.html',''); initResi
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">    #if ( Q_MEMORY_MANAGER == 1 )</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">    #ifndef Q_BYTE_ALIGNMENT    </span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">    #ifndef Q_BYTE_ALIGNMENT</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">        #define Q_BYTE_ALIGNMENT        ( 8 )</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #ifndef Q_DEFAULT_HEAP_SIZE    </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #ifndef Q_DEFAULT_HEAP_SIZE</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">        #define Q_DEFAULT_HEAP_SIZE     ( 512 )</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
@@ -135,13 +135,13 @@ $(document).ready(function(){initNavTree('qmemmang_8h_source.html',''); initResi
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">    #if ( ( Q_BYTE_ALIGNMENT != 1 ) &amp;&amp; ( Q_BYTE_ALIGNMENT != 2 ) &amp;&amp; ( Q_BYTE_ALIGNMENT != 4 ) &amp;&amp; ( Q_BYTE_ALIGNMENT != 8 ) )</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">        #error Q_BYTE_ALIGNMENT value not allowed, use only 1,2,4 or 8(default).</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">    #endif    </span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">/* Linked list structure to connect the free blocks in order of their memory address. */</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">/* List to connect the free blocks in order of their memory address. */</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qMemMang_BlockConnect_s {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">struct </span>_qMemMang_BlockConnect_s *Next;      <span class="comment">/*&lt; Points to the next free block in the list*/</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">size_t</span> BlockSize;                           <span class="comment">/*&lt; The size of the free block*/</span>     </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">struct </span>_qMemMang_BlockConnect_s *Next;  <span class="comment">/*&lt; Points to the next free block in the list*/</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">size_t</span> BlockSize;                       <span class="comment">/*&lt; The size of the free block*/</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    qMemMang_BlockConnect_t;</div>
 <div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structq_mem_mang___pool__t.html">   74</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qMemMang_Pool_s {</div>
@@ -149,25 +149,25 @@ $(document).ready(function(){initNavTree('qmemmang_8h_source.html',''); initResi
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            qMemMang_BlockConnect_t *End;           <span class="comment">/*&lt; Points to the last block of the list. */</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> *PoolMemory;                   <span class="comment">/*&lt; Points to the beginning of the heap area statically allocated. */</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">size_t</span> PoolMemSize;                     <span class="comment">/*&lt; The size of the memory block pointed by &quot;heap&quot;. */</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">size_t</span> FreeBytesRemaining;              <span class="comment">/*&lt; The number of free bytes in the heap. */</span>   </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">size_t</span> FreeBytesRemaining;              <span class="comment">/*&lt; The number of free bytes in the heap. */</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            qMemMang_BlockConnect_t Start;          <span class="comment">/*&lt; The first block of the heap. */</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        qPrivate;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">   98</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">qMemMang_Pool_Setup</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> * <span class="keyword">const</span> mPool, </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                 <span class="keywordtype">void</span>* pArea, </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">   98</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">qMemMang_Pool_Setup</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> * <span class="keyword">const</span> mPool,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                 <span class="keywordtype">void</span>* pArea,</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">size_t</span> pSize );</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4">  108</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4">qMemMang_Pool_Select</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> * <span class="keyword">const</span> mPool );</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gaea3910a3eda04c8b30fb3332b0430afe">  117</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="group__qmemmang.html#gaea3910a3eda04c8b30fb3332b0430afe">qMemMang_Get_FreeSize</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool );    </div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gaea3910a3eda04c8b30fb3332b0430afe">  117</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="group__qmemmang.html#gaea3910a3eda04c8b30fb3332b0430afe">qMemMang_Get_FreeSize</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool );</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gaef9c0475b992348ae71b4c3588969f13">  130</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="group__qmemmang.html#gaef9c0475b992348ae71b4c3588969f13">qMemMang_Allocate</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool, </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gaef9c0475b992348ae71b4c3588969f13">  130</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="group__qmemmang.html#gaef9c0475b992348ae71b4c3588969f13">qMemMang_Allocate</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool,</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                             <span class="keywordtype">size_t</span> pSize );</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__qmemmang.html#ga52de975439e8d5d7a0a0151ee99f6957">  149</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qmemmang.html#ga52de975439e8d5d7a0a0151ee99f6957">qMemMang_Free</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool, </div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__qmemmang.html#ga52de975439e8d5d7a0a0151ee99f6957">  149</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qmemmang.html#ga52de975439e8d5d7a0a0151ee99f6957">qMemMang_Free</a>( <a class="code" href="structq_mem_mang___pool__t.html">qMemMang_Pool_t</a> *mPool,</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                           <span class="keywordtype">void</span> *ptr );</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="group__qmemmang.html#gaaf6fa2a8bd2181fa25d88e5b056f434a">  166</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="group__qmemmang.html#gaaf6fa2a8bd2181fa25d88e5b056f434a">qMalloc</a>( <span class="keywordtype">size_t</span> mSize );</div>

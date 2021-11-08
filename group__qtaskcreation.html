@@ -162,7 +162,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaeea76a6e287011694689c658f7e204ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <em>t</em> seconds in <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> mode. The event info will be available as a generic pointer inside the <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a> field.  <a href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">More...</a><br /></td></tr>
 <tr class="separator:gaeea76a6e287011694689c658f7e204ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf0b51d7213c21c0afbfd4dbce865c6e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2">qOS_Add_ATCLITask</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *cli, const <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> p, void *arg)</td></tr>
-<tr class="memdesc:gaf0b51d7213c21c0afbfd4dbce865c6e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer.  <a href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2">More...</a><br /></td></tr>
+<tr class="memdesc:gaf0b51d7213c21c0afbfd4dbce865c6e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer.  <a href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2">More...</a><br /></td></tr>
 <tr class="separator:gaf0b51d7213c21c0afbfd4dbce865c6e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4d3b11b689fa9df89cf8ac4023482765"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765">qOS_Remove_Task</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
 <tr class="memdesc:ga4d3b11b689fa9df89cf8ac4023482765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the task from the scheduling scheme.  <a href="group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765">More...</a><br /></td></tr>
@@ -215,7 +215,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as an event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer. </p>
+<p>Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer. </p>
 <dl class="section note"><dt>Note</dt><dd>The AT-CLI object should be previously configured. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756" title="Setup an instance of the AT Command Command Line Interface.">qATCLI_Setup()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -223,7 +223,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>A pointer to the task node. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Inteface instance. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void*). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -343,7 +343,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)] </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">init</td><td>Specifies the initial operational state of the task (<a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>, <a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a>, <a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> or <a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a>(implies <a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a>)). </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void *). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Represents the task arguments. All arguments must be passed by reference and cast to (void*). Only one argument is allowed, so, for multiple arguments, create a structure that contains all of the arguments and pass a pointer to that structure. </td></tr>
   </table>
   </dd>
 </dl>
@@ -598,7 +598,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Function should take void and return a 32bit value. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>(Optional) This parameter specifies the ISR background timer base time. This can be the period in seconds(Floating-point format) or frequency in Herzt(Only if Q_SETUP_TICK_IN_HERTZ is enabled). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>(Optional) This parameter specifies the ISR background timer base time. This can be the period in seconds(Floating-point format) or frequency in Herzt(if Q_SETUP_TICK_IN_HERTZ is enabled). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">idleCallback</td><td>Callback function to the Idle Task. To disable the Idle-Task activities, pass NULL as argument. </td></tr>
   </table>
   </dd>
@@ -607,10 +607,10 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <p>Example : When tick is already provided </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;HAL.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001 </span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001f</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
-<div class="line">    HAL_Init(); </div>
+<div class="line">    HAL_Init();</div>
 <div class="line">    <a class="code" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback );</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:115</div></div>
@@ -625,10 +625,10 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
 <div class="line">    MCU_Init();</div>
-<div class="line">    BSP_Setup_Timer0(); </div>
-<div class="line">    <a class="code" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback ); </div>
-<div class="line">    </div>
-<div class="line">} </div>
+<div class="line">    BSP_Setup_Timer0();</div>
+<div class="line">    <a class="code" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line"> </div>
+<div class="line">}</div>
 <div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:88</div></div>
 </div><!-- fragment --> 
 </div>

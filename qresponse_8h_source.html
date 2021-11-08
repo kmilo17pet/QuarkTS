@@ -105,59 +105,59 @@ $(document).ready(function(){initNavTree('qresponse_8h_source.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef QRESPONSE_H</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">    #define QRESPONSE_H</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">    #include &quot;qtypes.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #include &quot;qstimers.h&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">    #include &quot;qioutils.h&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    #include &lt;string.h&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">    #ifndef Q_RESPONSE_HANDLER</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">        #define Q_RESPONSE_HANDLER      ( 1 )</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structq_response__t.html">   35</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qResponse_s {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">struct </span>_qResponse_Private_s {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordtype">char</span> *Pattern2Match;                <span class="comment">/*&lt; Points to the storage area provided by the user to hold the match requested response. */</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="structq_s_timer__t.html">qSTimer_t</a> timeout;                  <span class="comment">/*&lt; The timeout used to wait the requested response. */</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">size_t</span> MaxStrLength;                <span class="comment">/*&lt; The size of the storage area. */</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordtype">size_t</span> PatternLength;               <span class="comment">/*&lt; The length of the current response request.*/</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">volatile</span> <span class="keywordtype">size_t</span> MatchedCount;       <span class="comment">/*&lt; To hold the current number of response matches. */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keyword">volatile</span> <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ResponseReceived;  <span class="comment">/*&lt; A flag that indicates when the response matches the request. */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        qPrivate;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="structq_response__t.html">qResponse_t</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga167db0933d388aa1ebab7f1677d82382">   58</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga167db0933d388aa1ebab7f1677d82382">qResponse_Setup</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r, </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                             <span class="keywordtype">char</span> *xLocBuff, </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                             <span class="keyword">const</span> <span class="keywordtype">size_t</span> nMax ); </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d">   67</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d">qResponse_Reset</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r );</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga2e46c838020047a80bed649c1389f8bd">   78</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga2e46c838020047a80bed649c1389f8bd">qResponse_Received</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r, </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">char</span> *pattern, </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">size_t</span> n );</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    </div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga4a1def1d66f94c00d07d9c4f2345fb84">   92</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga4a1def1d66f94c00d07d9c4f2345fb84">qResponse_ReceivedWithTimeout</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r, </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                           <span class="keyword">const</span> <span class="keywordtype">char</span> *pattern, </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                           <span class="keyword">const</span> <span class="keywordtype">size_t</span> n, </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                           <span class="keyword">const</span> <a class="code" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> t );</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    </div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac">  104</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac">qResponse_ISRHandler</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r, </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                  <span class="keyword">const</span> <span class="keywordtype">char</span> rxchar );</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifndef QRESPONSE_H</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">    #define QRESPONSE_H</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #include &quot;qtypes.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">    #include &quot;qstimers.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">    #include &quot;qioutils.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">    #include &lt;string.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">    #ifndef Q_RESPONSE_HANDLER</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">        #define Q_RESPONSE_HANDLER      ( 1 )</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structq_response__t.html">   36</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qResponse_s {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">struct </span>_qResponse_Private_s {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordtype">char</span> *Pattern2Match;                <span class="comment">/*&lt; Points to the storage area provided by the user to hold the match requested response. */</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <a class="code" href="structq_s_timer__t.html">qSTimer_t</a> timeout;                  <span class="comment">/*&lt; The timeout used to wait the requested response. */</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordtype">size_t</span> MaxStrLength;                <span class="comment">/*&lt; The size of the storage area. */</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordtype">size_t</span> PatternLength;               <span class="comment">/*&lt; The length of the current response request.*/</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keyword">volatile</span> <span class="keywordtype">size_t</span> MatchedCount;       <span class="comment">/*&lt; To hold the current number of response matches. */</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keyword">volatile</span> <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ResponseReceived;  <span class="comment">/*&lt; A flag that indicates when the response matches the request. */</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        qPrivate;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="structq_response__t.html">qResponse_t</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga167db0933d388aa1ebab7f1677d82382">   59</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga167db0933d388aa1ebab7f1677d82382">qResponse_Setup</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                             <span class="keywordtype">char</span> *xLocBuff,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                             <span class="keyword">const</span> <span class="keywordtype">size_t</span> nMax );</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d">   68</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d">qResponse_Reset</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r );</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga2e46c838020047a80bed649c1389f8bd">   79</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga2e46c838020047a80bed649c1389f8bd">qResponse_Received</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">char</span> *pattern,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">size_t</span> n );</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga4a1def1d66f94c00d07d9c4f2345fb84">   93</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga4a1def1d66f94c00d07d9c4f2345fb84">qResponse_ReceivedWithTimeout</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                           <span class="keyword">const</span> <span class="keywordtype">char</span> *pattern,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                           <span class="keyword">const</span> <span class="keywordtype">size_t</span> n,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                           <span class="keyword">const</span> <a class="code" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> t );</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac">  105</a></span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac">qResponse_ISRHandler</a>( <a class="code" href="structq_response__t.html">qResponse_t</a> * <span class="keyword">const</span> r,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                  <span class="keyword">const</span> <span class="keywordtype">char</span> rxchar );</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__qclock_html_gac7b81fb14df7cba7c4bc212c6226e1ec"><div class="ttname"><a href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a></div><div class="ttdeci">qFloat32_t qTime_t</div><div class="ttdoc">The typedef that specified an time quantity, usually expressed in seconds.</div><div class="ttdef"><b>Definition:</b> qclock.h:33</div></div>
 <div class="ttc" id="agroup__qresponse_html_ga0af79cb4f9531148b8547fb249c02bac"><div class="ttname"><a href="group__qresponse.html#ga0af79cb4f9531148b8547fb249c02bac">qResponse_ISRHandler</a></div><div class="ttdeci">qBool_t qResponse_ISRHandler(qResponse_t *const r, const char rxchar)</div><div class="ttdoc">ISR receiver for the response handler.</div></div>
 <div class="ttc" id="agroup__qresponse_html_ga167db0933d388aa1ebab7f1677d82382"><div class="ttname"><a href="group__qresponse.html#ga167db0933d388aa1ebab7f1677d82382">qResponse_Setup</a></div><div class="ttdeci">qBool_t qResponse_Setup(qResponse_t *const r, char *xLocBuff, const size_t nMax)</div><div class="ttdoc">Initialize the instance of the response handler object.</div></div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('qresponse_8h_source.html',''); initRes
 <div class="ttc" id="agroup__qresponse_html_ga4a1def1d66f94c00d07d9c4f2345fb84"><div class="ttname"><a href="group__qresponse.html#ga4a1def1d66f94c00d07d9c4f2345fb84">qResponse_ReceivedWithTimeout</a></div><div class="ttdeci">qBool_t qResponse_ReceivedWithTimeout(qResponse_t *const r, const char *pattern, const size_t n, const qTime_t t)</div><div class="ttdoc">Non-Blocking Response check with timeout.</div></div>
 <div class="ttc" id="agroup__qresponse_html_gae9b3e1b1a1b61673167627198b20c98d"><div class="ttname"><a href="group__qresponse.html#gae9b3e1b1a1b61673167627198b20c98d">qResponse_Reset</a></div><div class="ttdeci">qBool_t qResponse_Reset(qResponse_t *const r)</div><div class="ttdoc">Reset the Response Handler.</div></div>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
-<div class="ttc" id="astructq_response__t_html"><div class="ttname"><a href="structq_response__t.html">qResponse_t</a></div><div class="ttdoc">A Response Handler object.</div><div class="ttdef"><b>Definition:</b> qresponse.h:35</div></div>
+<div class="ttc" id="astructq_response__t_html"><div class="ttname"><a href="structq_response__t.html">qResponse_t</a></div><div class="ttdoc">A Response Handler object.</div><div class="ttdef"><b>Definition:</b> qresponse.h:36</div></div>
 <div class="ttc" id="astructq_s_timer__t_html"><div class="ttname"><a href="structq_s_timer__t.html">qSTimer_t</a></div><div class="ttdoc">A STimer(Software Timer) object.</div><div class="ttdef"><b>Definition:</b> qstimers.h:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

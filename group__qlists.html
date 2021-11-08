@@ -252,7 +252,7 @@ Functions</h2></td></tr>
 <div class="line">      <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;</div>
 <div class="line">      <span class="keywordtype">int</span> x;</div>
 <div class="line">      <span class="keywordtype">float</span> y;</div>
-<div class="line">      <span class="keywordtype">char</span> str[10];  </div>
+<div class="line">      <span class="keywordtype">char</span> str[10];</div>
 <div class="line">}mydata_t;</div>
 <div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:51</div></div>
 </div><!-- fragment --> 
@@ -304,16 +304,16 @@ Functions</h2></td></tr>
 <p>Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887" title="Operate on each element of the list.">qList_ForEach()</a> API. </p>
 <p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ForEach_ListExample( <a class="code" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h );{</div>
 <div class="line">      <span class="keywordflow">if</span>( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a> == h-&gt;stage ){</div>
-<div class="line">          </div>
+<div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a> == h-&gt;stage  ) {</div>
-<div class="line">      </div>
+<div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a> == h-&gt;stage  )</div>
-<div class="line">          </div>
+<div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">      <span class="keywordflow">else</span>{</div>
-<div class="line">      </div>
+<div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a></div><div class="ttdeci">@ qList_WalkEnd</div><div class="ttdef"><b>Definition:</b> qlists.h:77</div></div>
