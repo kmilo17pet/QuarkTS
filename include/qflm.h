@@ -41,7 +41,8 @@
     * @param[in] xBit The bit-index
     * @return none.
     */
-    #define qFLM_BitSet( dst, xBit )      (dst) |= ( 1 << (xBit) )
+    #define qFLM_BitSet( dst, xBit, xType )                                 \
+    (dst) |= (xType)( (xType)1u << (xBit) )                                 \
 
     /**
     * @brief Uses the bitwise AND operator to clear a single bit into @a dst
@@ -49,7 +50,8 @@
     * @param[in] xBit The bit-index
     * @return none.
     */
-    #define qFLM_BitClear( dst, Bit )     (dst) &= ( ~( 1 << (xBit) ) )
+    #define qFLM_BitClear( dst, xBit, xType )                               \
+    (dst) &= (xType)( ~( (xType)1u << (xBit) ) )                            \
 
     /**
     * @brief Uses the bitwise AND operator to read the value of a single bit
@@ -79,7 +81,7 @@
     */
     #define qFLM_BitWrite( dst, xBit, xVal )                                \
     ( (xVal) ? qFLM_BitSet( (dst), (xBit) )                                 \
-            : qFLM_BitClear( (dst),(xBit) ) )                               \
+             : qFLM_BitClear( (dst),(xBit) ) )                              \
 
     /**
     * @brief Build a byte value from independent bits
@@ -118,7 +120,8 @@
     * @param[in] L The low nibble
     * @return The value of the resulting byte
     */
-    #define qFLM_ByteMergeNibbles( H, L ) ( (qUINT8_t)( ( (H) << 4 ) | ( 0x0F & (L) ) ) )
+    #define qFLM_ByteMergeNibbles( H, L )                                   \
+    ( (qUINT8_t)( ( (H) << 4 ) | ( 0x0F & (L) ) ) )                         \
 
     /**
     * @brief Read the high-byte from @a dst assuming it as a Word
@@ -140,7 +143,8 @@
     * @param[in] L The low byte
     * @return The value of the resulting word
     */
-    #define qFLM_WordMergeBytes( H, L )   ( (qUINT16_t) ( ( (H) << 8 ) | (L) ) )
+    #define qFLM_WordMergeBytes( H, L )                                     \
+    ( (qUINT16_t) ( ( (H) << 8 ) | (L) ) )                                  \
 
     /**
     * @brief Read the high-word from @a dst  assuming it as a DWord
@@ -162,7 +166,8 @@
     * @param[in] L The low word
     * @return The value of the resulting DWord
     */
-    #define qFLM_DWordMergeWords( H, L )  ( (qUINT32_t)( ( (qUINT32_t)(H) << 16 ) | (L) ) )
+    #define qFLM_DWordMergeWords( H, L )                                    \
+    ( (qUINT32_t)( ( (qUINT32_t)(H) << 16 ) | (L) ) )                       \
 
     /**
     * @brief Ensures that @a X is between the limits set by @a Min and @a Max.
@@ -200,7 +205,8 @@
     * @return True if the @a X is between the defined range. Otherwise returns
     * false.
     */
-    #define qFLM_IsBetween( X, Low, High )  ( ( (X) >= (Low) ) && ( (X) <= (High) ) )
+    #define qFLM_IsBetween( X, Low, High )                                  \
+    ( ( (X) >= (Low) ) && ( (X) <= (High) ) )                               \
 
     /**
     * @brief Calculates the minimum of @a a and @a b.

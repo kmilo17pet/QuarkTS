@@ -30,12 +30,23 @@ The index of the bit that is set when a block belongs to the application.
 Clearead when the block is part of the free space (only the MSB is used)
 Work out the position of the top bit in a size_t variable.
 */
-static const size_t blockAllocatedBit = ( ( (size_t)1u ) << ( ( sizeof(size_t)*(size_t)8u ) - (size_t)1u ) );
-static const size_t heapStructSize = ( ( sizeof(qMemMang_BlockConnect_t) + ( BYTE_ALIGN_MASK - (size_t)1u ) ) & ~BYTE_ALIGN_MASK );
+static const size_t blockAllocatedBit = ( 
+                                            ( (size_t)1u ) <<
+                                            (
+                                                ( sizeof(size_t)*(size_t)8u ) -
+                                                (size_t)1u
+                                            )
+                                        );
+static const size_t heapStructSize = ( 
+                                        (   sizeof(qMemMang_BlockConnect_t) +
+                                            ( BYTE_ALIGN_MASK - (size_t)1u )
+                                        )
+                                        & ~BYTE_ALIGN_MASK
+                                     );
 
 static void qMemMang_HeapInit( qMemMang_Pool_t *mPool );
 static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool,
-                                              qMemMang_BlockConnect_t *blockToInsert );
+                                              qMemMang_BlockConnect_t *xBlock );
 
 /*============================================================================*/
 qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool,
@@ -117,7 +128,9 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     size_t totalPoolSize = mPool->qPrivate.PoolMemSize;
 
     if ( mPool == &defaultMemPool ) { /*initialize the default memory pool */
-        (void)qMemMang_Pool_Setup( mPool, mPool->qPrivate.PoolMemory, (size_t)Q_DEFAULT_HEAP_SIZE );
+        (void)qMemMang_Pool_Setup( mPool, 
+                                   mPool->qPrivate.PoolMemory, 
+                                   (size_t)Q_DEFAULT_HEAP_SIZE );
     }
 
     mPool->qPrivate.Start.BlockSize = (size_t)0u;
@@ -165,7 +178,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
 }
 /*============================================================================*/
 static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool,
-                                              qMemMang_BlockConnect_t *blockToInsert )
+                                              qMemMang_BlockConnect_t *xBlock )
 {
     qMemMang_BlockConnect_t *iterator;
     qUINT8_t *ptr;
@@ -174,38 +187,40 @@ static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool,
     Iterate through the list until a block is found that has a higher address
     than the block being inserted.
     */
-    for ( iterator = &mPool->qPrivate.Start ; iterator->Next < blockToInsert ; iterator = iterator->Next ) {}
+    for ( iterator = &mPool->qPrivate.Start ;
+          iterator->Next < xBlock ;
+          iterator = iterator->Next ) {}
     ptr = (qUINT8_t*)iterator;
     /*cstat -SEC-NULL-cmp-bef -PTR-null-cmp-bef -CERT-EXP34-C_g*/
     /*
     Do the block being inserted, and the block it is being inserted after
     make a contiguous block of memory?
     */
-    if ( &ptr[ iterator->BlockSize ] == (qUINT8_t*)blockToInsert ) { /*MISRAC2004-17.4_a deviation allowed*/
-        iterator->BlockSize += blockToInsert->BlockSize; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
-        blockToInsert = iterator;
+    if ( &ptr[ iterator->BlockSize ] == (qUINT8_t*)xBlock ) { /*MISRAC2004-17.4_a deviation allowed*/
+        iterator->BlockSize += xBlock->BlockSize; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+        xBlock = iterator;
     }
-    ptr = (qUINT8_t*)blockToInsert;
+    ptr = (qUINT8_t*)xBlock;
     /*
     Check if the block being inserted, and the block it is being inserted before
     make a contiguous block of memory?
     */
-    if ( &ptr[ blockToInsert->BlockSize ] == (qUINT8_t*)iterator->Next ) { /*MISRAC2004-17.4_a deviation allowed*/ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+    if ( &ptr[ xBlock->BlockSize ] == (qUINT8_t*)iterator->Next ) { /*MISRAC2004-17.4_a deviation allowed*/ /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         if ( iterator->Next != mPool->qPrivate.End ) {
             /* Form one big block from the two blocks. */
-            blockToInsert->BlockSize += iterator->Next->BlockSize; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
-            blockToInsert->Next = iterator->Next->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+            xBlock->BlockSize += iterator->Next->BlockSize; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+            xBlock->Next = iterator->Next->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         }
         else {
-            blockToInsert->Next = mPool->qPrivate.End; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+            xBlock->Next = mPool->qPrivate.End; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
         }
     }
     else {
-        blockToInsert->Next = iterator->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
+        xBlock->Next = iterator->Next; /*PTR-null-cmp-bef,CERT-EXP34-C_g ok*/
     }
     /*cstat +SEC-NULL-cmp-bef +PTR-null-cmp-bef +CERT-EXP34-C_g*/
-    if ( iterator != blockToInsert ) {
-        iterator->Next = blockToInsert;
+    if ( iterator != xBlock ) {
+        iterator->Next = xBlock;
     }
 }
 /*============================================================================*/

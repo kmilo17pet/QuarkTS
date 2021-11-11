@@ -26,7 +26,7 @@ qBool_t qSTimer_Set( qSTimer_t * const t,
 
     if ( qSTimer_Reload( t ) ) {
         /*set the STimer time in epochs*/
-        t->TV  = qClock_Convert2Clock( tTime );
+        t->TV = qClock_Convert2Clock( tTime );
         retValue = qTrue;
     }
 
@@ -109,7 +109,7 @@ qBool_t qSTimer_Status( const qSTimer_t * const t )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) {
-        retValue =  ( t->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+        retValue = ( t->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     }
 
     return retValue;

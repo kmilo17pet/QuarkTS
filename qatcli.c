@@ -263,7 +263,9 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli,
                 /*cstat +MISRAC2012-Dir-4.11_h*/
                     /*find the end of line safely*/
                     if ( NULL != qIOUtil_StrChr( pData, (int)'\r', maxToInsert ) ) {
-                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, pData, maxToInsert );
+                        (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer,
+                                               pData,
+                                               maxToInsert );
                         retValue = qATCLI_Notify( cli );
                     }
                 }
@@ -317,7 +319,9 @@ qBool_t qATCLI_Raise( qATCLI_t * const cli,
         /*qIOUtil_StrLen is known to have no side effects*/
         if ( ( qFalse == readyInput ) && ( qIOUtil_StrLen( cmd, maxToInsert ) <= maxToInsert ) ) {
         /*cstat +MISRAC2012-Rule-13.5 */
-            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer, cmd, maxToInsert );
+            (void)qIOUtil_StrlCpy( (char*)cli->qPrivate.Input.Buffer,
+                                   cmd,
+                                   maxToInsert );
             (void)qATCLI_Input_Fix( (char*)cli->qPrivate.Input.Buffer, maxToInsert );
             retValue = qATCLI_Notify( cli );
         }
@@ -499,32 +503,59 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
 
         switch ( retval ) { /*handle the command-callback response*/
             case qATCLI_ERROR:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.ERROR_Response , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.ERROR_Response,
+                                            qFalse );
                 break;
             case qATCLI_OK:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.OK_Response , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.OK_Response,
+                                            qFalse );
                 break;
             case qATCLI_NOTALLOWED:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.ERROR_Response , qFalse );
-                (void)qIOUtil_OutputString( putChar, NULL, QATCLI_DEAFULT_NOTALLOWED_RSP_STRING , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.ERROR_Response,
+                                            qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            QATCLI_DEAFULT_NOTALLOWED_RSP_STRING,
+                                            qFalse );
                 break;
             case qATCLI_DEVID:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.Identifier , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.Identifier,
+                                            qFalse );
                 break;
             case qATCLI_NOTFOUND:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.NOTFOUND_Response , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.NOTFOUND_Response,
+                                            qFalse );
                 break;
             case qATCLI_OUTPUT:
-                (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.xPublic.Output , qFalse );
+                (void)qIOUtil_OutputString( putChar,
+                                            NULL,
+                                            cli->qPrivate.xPublic.Output,
+                                            qFalse );
                 break;
             default: /*AT_ERRORCODE(#) */
                 if ( (qBase_t)retval < 0 ) {
                     const qINT32_t errorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
 
                     (void)qIOUtil_ItoA( errorCode, cli->qPrivate.xPublic.Output, 10u );
-                    (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.ERROR_Response , qFalse );
+                    (void)qIOUtil_OutputString( putChar,
+                                                NULL,
+                                                cli->qPrivate.ERROR_Response,
+                                                qFalse );
                     putChar( NULL, ':' );
-                    (void)qIOUtil_OutputString( putChar, NULL, cli->qPrivate.xPublic.Output , qFalse );
+                    (void)qIOUtil_OutputString( putChar,
+                                                NULL,
+                                                cli->qPrivate.xPublic.Output,
+                                                qFalse );
                     cli->qPrivate.xPublic.Output[ 0 ] = (char)'\0';
                 }
                 break;

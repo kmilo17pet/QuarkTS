@@ -5,6 +5,7 @@
  **/
 
 #include "qfsm.h"
+#include "qflm.h"
 #include <string.h>
 
 #if ( Q_FSM == 1 )
@@ -14,10 +15,10 @@ typedef qByte_t qSM_LCA_t;
 static void qStateMachine_Transition( qSM_t *m,
                                       qSM_State_t *target,
                                       const qSM_TransitionHistoryMode_t mHistory );
-static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m,
-                                                            qSM_State_t * const target );
-static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m,
-                                                       qSM_LCA_t lca );
+static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
+                                            qSM_State_t * const target );
+static void qStateMachine_ExitUpToLCA( qSM_t * const m,
+                                       qSM_LCA_t lca );
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h,
                                           const qSM_Signal_t xSignal,
                                           qSM_State_t * const s );
@@ -60,7 +61,7 @@ static void qStateMachine_Transition( qSM_t *m,
     to execute, we first find the Least Common Ancestor (LCA) of the source and
     target states.
     */
-    qStateMachine_ExitUpToLeastCommonAncestor( m, qStateMachine_LevelsToLeastCommonAncestor( m, target ) );
+    qStateMachine_ExitUpToLCA( m, qStateMachine_LevelsToLCA( m, target ) );
     /*then, handle the required history mode*/
     if ( qSM_TRANSITION_NO_HISTORY == mHistory ) {
         /*just restore the default transition*/
@@ -68,8 +69,9 @@ static void qStateMachine_Transition( qSM_t *m,
     }
     else if ( qSM_TRANSITION_SHALLOW_HISTORY == mHistory ) {
         if ( NULL != target->qPrivate.lastRunningChild ) {
+            qSM_State_t * const lrc = target->qPrivate.lastRunningChild;
             /*restore the default transition in the last running nested state*/
-            target->qPrivate.lastRunningChild->qPrivate.lastRunningChild = target->qPrivate.lastRunningChild->qPrivate.initState;
+            lrc->qPrivate.lastRunningChild = lrc->qPrivate.initState;
         }
     }
     else {
@@ -83,8 +85,8 @@ static void qStateMachine_Transition( qSM_t *m,
     m->qPrivate.next = target; /*notify SM that there was indeed a transition*/
 }
 /*============================================================================*/
-static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m,
-                                                            qSM_State_t * const target )
+static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
+                                            qSM_State_t * const target )
 {
     qSM_LCA_t xLca = 0u;
 
@@ -100,7 +102,9 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m,
         qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
         qSM_LCA_t n = 0u;
 
-        for ( s = m->qPrivate.source ; ( NULL != s ) && ( qFalse == xBreak ) ; s = s->qPrivate.parent ) {
+        for ( s = m->qPrivate.source ;
+             ( NULL != s ) && ( qFalse == xBreak ) ; 
+             s = s->qPrivate.parent ) {
             for ( t = target ; NULL != t ; t = t->qPrivate.parent ) {
                 if ( s == t ) {
                     xLca = n;
@@ -115,8 +119,8 @@ static qSM_LCA_t qStateMachine_LevelsToLeastCommonAncestor( qSM_t * const m,
     return xLca; /*return # of levels from the current state to the LCA.*/
 }
 /*============================================================================*/
-static void qStateMachine_ExitUpToLeastCommonAncestor( qSM_t * const m,
-                                                       qSM_LCA_t lca )
+static void qStateMachine_ExitUpToLCA( qSM_t * const m,
+                                       qSM_LCA_t lca )
 {
     qSM_State_t *s = m->qPrivate.current;
 
@@ -245,7 +249,9 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
 
     if ( NULL != h->NextState ) { /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qStateMachine_Transition( m, (qSM_State_t*)h->NextState, h->TransitionHistory );
+        qStateMachine_Transition( m,
+                                  (qSM_State_t*)h->NextState,
+                                  h->TransitionHistory );
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         /*the signal is assumed to be handled if the transition occurs*/
         status = qSM_STATUS_SIGNAL_HANDLED;
@@ -386,7 +392,12 @@ qBool_t qStateMachine_Setup( qSM_t * const m,
         #endif
         m->qPrivate.TimeSpec = NULL;
         /*subscribe the built-in top state*/
-        retValue = qStateMachine_StateSubscribe( m, &m->qPrivate.top, NULL, topFcn, init, NULL );
+        retValue = qStateMachine_StateSubscribe( m,
+                                                 &m->qPrivate.top,
+                                                 NULL,
+                                                 topFcn,
+                                                 init,
+                                                 NULL );
         m->qPrivate.top.qPrivate.parent = NULL;
     }
 
@@ -566,10 +577,14 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
                         (void)qSTimer_Set( tmr, tValue  );
                     }
                     if ( 0uL != ( opt & QSM_TSOPT_PERIODIC ) ) {
-                        m->qPrivate.TimeSpec->isPeriodic |= (qUINT32_t)( ( 1uL << index ) );
+                        qFLM_BitSet( m->qPrivate.TimeSpec->isPeriodic,
+                                     index,
+                                     qUINT32_t );
                     }
                     else {
-                        m->qPrivate.TimeSpec->isPeriodic &= (qUINT32_t)(~( 1uL << index ) );
+                        qFLM_BitClear( m->qPrivate.TimeSpec->isPeriodic,
+                                       index,
+                                       qUINT32_t );
                     }
                 }
                 if ( 0uL != ( opt & resetCheck ) ) {
@@ -644,7 +659,9 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m,
                 if ( qTrue == qQueue_Receive( m->qPrivate.queue, &xSignal ) ) {
                     if ( xSignal != QSM_SIGNAL_TIMEOUT( xTimeout ) ) {
                         /*keep non-timeout signals*/
-                        (void)qQueue_Send( m->qPrivate.queue, &xSignal, QUEUE_SEND_TO_BACK );
+                        (void)qQueue_Send( m->qPrivate.queue,
+                                           &xSignal,
+                                           QUEUE_SEND_TO_BACK );
                     }
                 }
             }

@@ -256,8 +256,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
     if ( ( NULL != q ) && ( NULL != Task ) && ( NULL != q->qPrivate.head ) ) {
         qOS_Set_TaskFlags( Task,
                            (qUINT32_t)mode & QTASK_QUEUEFLAGS_MASK,
-                           ( ( 0u != arg )? qATTACH : qDETACH )
-                         );
+                           ( ( 0u != arg )? qATTACH : qDETACH ) );
         if ( mode == qQueueMode_Count ) {
             /*if mode is qQUEUE_COUNT, use their arg value as count*/
             Task->qPrivate.QueueCount = (qUINT32_t)arg;

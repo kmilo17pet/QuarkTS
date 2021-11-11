@@ -75,7 +75,7 @@
     #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFCuL )
     /**
     * @brief Built-in signal to indicate that a timeout expiration event occurs.
-    * @param index The index of the timeout (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param index The index of the timeout (0, 1, 2... (Q_FSM_MAX_TIMEOUTS-1) )
     */
     #define QSM_SIGNAL_TIMEOUT(index)                                       \
     ( (qSM_Signal_t)0xFFFFFFFBuL - (qSM_Signal_t)( Q_FSM_MAX_TIMEOUTS - 1 ) \

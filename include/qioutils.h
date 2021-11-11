@@ -53,21 +53,33 @@
     typedef void (*qPutChar_t)( void* arg1,
                                 const char arg2 );
 
+
      /**
-    * @brief Pointer to function that get-a single character
+    * @brief Pointer to function that perform a single character I/O operation
     *
     * @note  User should use bare-metal code to implement this function.
-    * Example :
+    * Example 1: Input operation
     * @code{.c}
-    * char BSP_GetChar( void *sp ){
+    * char BSP_GetChar( void *sp, char in ){
     *       (void)sp;
+    *       (void)in;
     *       return HAL_UARTReceiveByte( );
+    * }
+    * @endcode
+    * Example 2: Ouput operation
+    * @code{.c}
+    * char BSP_GetChar( void *sp, char in ){
+    *       (void)sp;
+    *       HAL_UARTPutByte( in );
+    *       return 0u;
     * }
     * @endcode
     * @param[in] sp The user storage pointer.
     * @return none.
     */
-    typedef char (*qGetChar_t)( void* arg1 );
+    typedef char (*qIOFcn_t)( void *arg1, 
+                              const char arg2 );
+
 
     /**
     * @brief Returns a pointer to the first occurrence of character in the C
@@ -162,14 +174,14 @@
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] pData A pointer to the block of data
     * @param[in] n The number of bytes that will be transferred to the output
-    * @param[in] AIP Auto-Increment the storage-pointer
+    * @param[in] aip Auto-increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */
-    qBool_t qIOUtil_OutputRaw( qPutChar_t oFcn,
+    qBool_t qIOUtil_OutputRaw( const qIOFcn_t oFcn,
                                void* pStorage,
                                void *pData,
                                const size_t n,
-                               qBool_t AIP );
+                               qBool_t aip );
 
     /**
     * @brief API interface to get n RAW data through @a fcn
@@ -177,14 +189,14 @@
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[out] pData A pointer to the block where the read data will be saved
     * @param[in] n The number of bytes to get
-    * @param[in] AIP Auto-Increment the storage-pointer
+    * @param[in] aip Auto-increment the storage-pointer
     * @return #qTrue on success, otherwise returns #qFalse.
     */
-    qBool_t qIOUtil_InputRaw( const qGetChar_t iFcn,
+    qBool_t qIOUtil_InputRaw( const qIOFcn_t iFcn,
                               void* pStorage,
                               void *pData,
                               const size_t n,
-                              qBool_t AIP );
+                              qBool_t aip );
 
     /**
     * @brief Macro interface to write a string through @a fcn

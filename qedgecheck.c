@@ -41,7 +41,7 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec,
         (void)memset( ec, 0, sizeof(qEdgeCheck_t) );
         ec->qPrivate.Head = NULL;
         ec->qPrivate.DebounceTime = debounceTime;
-        ec->qPrivate.Reader = ( NULL == rSize )? &QREG_32BIT  : rSize;
+        ec->qPrivate.Reader = ( NULL == rSize )? &QREG_32BIT : rSize;
         ec->qPrivate.State = QEDGECHECK_CHECK;
         ec->qPrivate.Start = qClock_GetTick();
         retValue = qTrue;

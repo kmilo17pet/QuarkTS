@@ -39,26 +39,26 @@
     #ifndef _QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
             #if  __GNUC__ >= 2
-                #define _QTRACE_FUNC __PRETTY_FUNCTION__
+                #define _QFCN    __PRETTY_FUNCTION__
             #else
-                #define _QTRACE_FUNC   __func__
+                #define _QFCN    __func__
             #endif
         #elif defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
-            #define _QTRACE_FUNC __PRETTY_FUNCTION__
+            #define _QFCN       __PRETTY_FUNCTION__
         #elif defined(__DMC__) && (__DMC__ >= 0x810)
-            #define _QTRACE_FUNC __PRETTY_FUNCTION__
+            #define _QFCN       __PRETTY_FUNCTION__
         #elif defined(__FUNCSIG__)
-            #define _QTRACE_FUNC __FUNCSIG__
+            #define _QFCN       __FUNCSIG__
         #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
-            #define _QTRACE_FUNC __FUNCTION__
+            #define _QFCN       __FUNCTION__
         #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
-            #define _QTRACE_FUNC __FUNC__
+            #define _QFCN       __FUNC__
         #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
-            #define _QTRACE_FUNC __func__
+            #define _QFCN       __func__
         #elif defined(__cplusplus) && (__cplusplus >= 201103)
-            #define _QTRACE_FUNC __func__
+            #define _QFCN    __func__
         #else /* failed to detect __func__ support.  */
-            #define _QTRACE_FUNC ((char *) 0)
+            #define _QFCN       ( (char *)0 )
         #endif
     #endif
 
@@ -118,18 +118,20 @@
             void _qtrace_krn( const char *msg,
                               const void *id,
                               const void *obj );
-            #define _QTRACE_KERNEL( msg, id, obj )            _qtrace_krn( (char*)(msg), (id), (obj) );
+            #define _QTRACE_KERNEL( msg, id, obj )                          \
+            _qtrace_krn( (char*)(msg), (id), (obj) );                       \
+
         #else
             #define _QTRACE_KERNEL( msg, id, obj )
         #endif
 
         extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];
-        void _qtrace_func( const char *loc,
-                           const char* fcn,
-                           const char *vName,
-                           const char* vValue,
-                           void* ptr,
-                           const size_t blockSize );
+        void _qTrace_dgb( const char *loc,
+                          const char* fcn,
+                          const char *vName,
+                          const char* vValue,
+                          void* ptr,
+                          const size_t blockSize );
         /*! @endcond  */
 
         /**
@@ -146,7 +148,8 @@
         * qTrace_Set_OutputFcn()
         * @return none.
         */
-        #define qTrace()                         _qtrace_func( _qAT(), _QTRACE_FUNC, "", "", NULL, 0 )
+        #define qTrace()                                                    \
+        _qTrace_dgb( _qAT(), _QFCN, "", "", NULL, 0 )                       \
 
         /**
         * @brief Output a debug message,
@@ -154,38 +157,146 @@
         * qTrace_Set_OutputFcn
         * @return none.
         */
-        #define qDebug_Caller()                  _qtrace_func( "",_QTRACE_FUNC, "", "", NULL, 0 )
+        #define qDebug_Caller()                                             \
+        _qTrace_dgb( "", _QFCN, "", "", NULL, 0 )                           \
+
 
         /*! @cond  */
-        #define qDebug_Message( v )              _qtrace_func( "", NULL, "", (char*)(v), NULL, 0)
-        #define qDebug_String( v )               _qtrace_func( "", NULL, #v "="  , (char*)(v), NULL, 0)
-        #define qDebug_Bool( v )                 _qtrace_func( "", NULL, #v "="  , qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer    ), NULL, 0 )
-        #define qDebug_qBool( v )                _qtrace_func( "", NULL, #v "="  , qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer   ), NULL, 0 )
-        #define qDebug_Binary( v )               _qtrace_func( "", NULL, #v "=0b", qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer,  2), NULL, 0 )
-        #define qDebug_Octal( v )                _qtrace_func( "", NULL, #v "=0" , qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer,  8), NULL, 0 )
-        #define qDebug_Hexadecimal( v )          _qtrace_func( "", NULL, #v "=0x", qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16), NULL, 0 )
-        #define qDebug_Decimal( v )              _qtrace_func( "", NULL, #v "="  , qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
-        #define qDebug_Float( v )                _qtrace_func( "", NULL, #v "="  , qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
-        #define qDebug_FloatPrec( v , prec )     _qtrace_func( "", NULL, #v "="  , qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec)), NULL, 0 )
-        #define qDebug_UnsignedBinary( v )       _qtrace_func( "", NULL, #v "=0b", qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer,  2), NULL, 0 )
-        #define qDebug_UnsignedOctal( v )        _qtrace_func( "", NULL, #v "=0" , qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer,  8), NULL, 0 )
-        #define qDebug_UnsignedHexadecimal( v )  _qtrace_func( "", NULL, #v "=0x", qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16), NULL, 0 )
-        #define qDebug_UnsignedDecimal( v )      _qtrace_func( "", NULL, #v "="  , qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
+        #define qDebug_Message( v )                                         \
+        _qTrace_dgb( "", NULL, "", (char*)(v), NULL, 0 )                    \
 
-        #define qTrace_Message( v )              _qtrace_func( _qAT(), _QTRACE_FUNC, "", (char*)(v), NULL, 0)
-        #define qTrace_String( v )               _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , (char*)(v), NULL, 0)
-        #define qTrace_Bool( v )                 _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer    ), NULL, 0 )
-        #define qTrace_qBool( v )                _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer   ), NULL, 0 )
-        #define qTrace_Binary( v )               _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0b", qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer,  2), NULL, 0 )
-        #define qTrace_Octal( v )                _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0" , qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer,  8), NULL, 0 )
-        #define qTrace_Hexadecimal( v )          _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0x", qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16), NULL, 0 )
-        #define qTrace_Decimal( v )              _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
-        #define qTrace_Float( v )                _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
-        #define qTrace_FloatPrec( v , prec )     _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec)), NULL, 0 )
-        #define qTrace_UnsignedBinary( v )       _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0b", qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer,  2), NULL, 0 )
-        #define qTrace_UnsignedOctal( v )        _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0" , qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer,  8), NULL, 0 )
-        #define qTrace_UnsignedHexadecimal( v )  _qtrace_func( _qAT(), _QTRACE_FUNC, #v "=0x", qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16), NULL, 0 )
-        #define qTrace_UnsignedDecimal( v )      _qtrace_func( _qAT(), _QTRACE_FUNC, #v "="  , qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10), NULL, 0 )
+
+        #define qDebug_String( v )                                          \
+        _qTrace_dgb( "", NULL, #v "="  , (char*)(v), NULL, 0 )              \
+
+
+        #define qDebug_Bool( v )                                            \
+        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \
+        _qTrace_dgb( "", NULL, #v "=", qTrace_PublicBuffer, NULL, 0 )       \
+
+
+        #define qDebug_qBool( v )                                           \
+        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \
+        _qTrace_dgb( "", NULL, #v "=", qTrace_PublicBuffer, NULL, 0 )       \
+
+        #define qDebug_Binary( v )                                          \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \
+        _qTrace_dgb( "", NULL, #v "=0b", qTrace_PublicBuffer, NULL, 0 )     \
+
+
+        #define qDebug_Octal( v )                                           \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \
+        _qTrace_dgb( "", NULL, #v "=0", qTrace_PublicBuffer, NULL, 0 )      \
+
+
+        #define qDebug_Hexadecimal( v )                                     \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \
+        _qTrace_dgb( "", NULL, #v "=0x", qTrace_PublicBuffer, NULL, 0 )      \
+
+
+        #define qDebug_Decimal( v )                                         \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \
+        _qTrace_dgb( "", NULL, #v "=", qTrace_PublicBuffer, NULL, 0 )       \
+
+
+        #define qDebug_Float( v )                                           \
+        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \
+        _qTrace_dgb( "", NULL, #v "=", qTrace_PublicBuffer, NULL, 0 )       \
+
+
+        #define qDebug_FloatPrec( v , prec )                                \
+        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \
+        _qTrace_dgb( "", NULL, #v "=", qTrace_PublicBuffer, NULL, 0 )       \
+
+
+        #define qDebug_UnsignedBinary( v )                                  \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \
+        _qTrace_dgb( "", NULL, #v "=0b", qTrace_PublicBuffer, NULL, 0 )     \
+
+
+        #define qDebug_UnsignedOctal( v )                                   \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \
+        _qTrace_dgb( "", NULL, #v "=0", qTrace_PublicBuffer, NULL, 0 )      \
+
+
+        #define qDebug_UnsignedHexadecimal( v )                             \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \
+        _qTrace_dgb( "", NULL, #v "=0x", qTrace_PublicBuffer, NULL, 0 )     \
+
+
+        #define qDebug_UnsignedDecimal( v )                                 \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \
+        _qTrace_dgb( "", NULL, #v "=", , NULL, 0 )                          \
+
+
+        #define qTrace_Message( v )                                         \
+        _qTrace_dgb( _qAT(), _QFCN, "", (char*)(v), NULL, 0 )               \
+
+
+        #define qTrace_String( v )                                          \
+        _qTrace_dgb( _qAT(), _QFCN, #v "="  , (char*)(v), NULL, 0 )         \
+
+
+        #define qTrace_Bool( v )                                            \
+        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
+        #define qTrace_qBool( v )                                           \
+        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
+        #define qTrace_Binary( v )                                          \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0b", qTrace_PublicBuffer, NULL, 0 )\
+
+
+        #define qTrace_Octal( v )                                           \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0", qTrace_PublicBuffer, NULL, 0 ) \
+
+
+        #define qTrace_Hexadecimal( v )                                     \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0x", qTrace_PublicBuffer, NULL, 0 )\
+
+
+        #define qTrace_Decimal( v )                                         \
+        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
+        #define qTrace_Float( v )                                           \
+        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
+        #define qTrace_FloatPrec( v , prec )                                \
+        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
+        #define qTrace_UnsignedBinary( v )                                  \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0b", qTrace_PublicBuffer, NULL, 0 )\
+
+
+        #define qTrace_UnsignedOctal( v )                                   \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0", qTrace_PublicBuffer, NULL, 0 ) \
+
+
+        #define qTrace_UnsignedHexadecimal( v )                             \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=0x", qTrace_PublicBuffer, NULL, 0 )\
+
+
+        #define qTrace_UnsignedDecimal( v )                                 \
+        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=", qTrace_PublicBuffer, NULL, 0 )  \
+
+
         /*! @endcond  */
 
         /**
@@ -205,7 +316,13 @@
         * @param[in] bSize Number of bytes
         * @return none.
         */
-        #define qTrace_Memory(pMem, bSize )     _qtrace_func ( _qAT(), _QTRACE_FUNC, #pMem "=", NULL, (pMem), (bSize) )
+        #define qTrace_Memory(pMem, bSize )                                 \
+        _qTrace_dgb( _qAT(),                                                \
+                     _QFCN,                                                 \
+                     #pMem "=",                                             \
+                     NULL,                                                  \
+                     (pMem),                                                \
+                     (bSize) )                                              \
 
         /**
         * @brief Output a debug message for the memory from the specified
@@ -226,7 +343,8 @@
         * @param[in] bSize Number of bytes
         * @return none.
         */
-        #define qDebug_Memory( pMem, bSize )    _qtrace_func ( "", NULL, #pMem "=", NULL, (pMem), (bSize) )
+        #define qDebug_Memory( pMem, bSize )                                \
+        _qTrace_dgb( "", NULL, #pMem "=", NULL, (pMem), (bSize) )           \
 
         /**
         * @brief Output a trace message for the supplied variable (up to 32bit

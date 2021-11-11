@@ -62,7 +62,9 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
                                    r->qPrivate.MaxStrLength
                                  );
             /*set the number of chars to match*/
-            r->qPrivate.PatternLength = ( 0u == n )? qIOUtil_StrLen( pattern, r->qPrivate.MaxStrLength ) : n;
+            r->qPrivate.PatternLength = ( 0u == n )? 
+                                        qIOUtil_StrLen( pattern, r->qPrivate.MaxStrLength ) : 
+                                        n;
             r->qPrivate.MatchedCount = 0u; /*reinitialize the chars match count*/
             r->qPrivate.ResponseReceived = qFalse; /*clear the ready flag*/
             if ( t > qTimeImmediate ) {
