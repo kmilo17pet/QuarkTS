@@ -10,6 +10,8 @@
 static qPutChar_t qDebug = NULL;
 char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ] = { 0 };
 
+static void qTrace_LogTicks( char *buff );
+
 /*============================================================================*/
 #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )
 void _qtrace_krn( const char *msg,
@@ -17,12 +19,10 @@ void _qtrace_krn( const char *msg,
                   const void *obj )
 {
     if ( NULL != qDebug ) {
-        char buff[ 11 ] = { 0 };
-        char *s;
-        s = qIOUtil_UtoA( qClock_GetTick(), buff, 10 );
-        qDebug( NULL, '[' );
-        (void)qIOUtil_OutputString( qDebug, NULL, s, qFalse );
-        (void)qIOUtil_OutputString( qDebug, NULL, "] {OS:Kernel} ", qFalse );
+        char *obuf = qTrace_PublicBuffer;
+        
+        qTrace_LogTicks( obuf );
+        (void)qIOUtil_OutputString( qDebug, NULL,"{OS:Kernel} ", qFalse );
         (void)qIOUtil_OutputString( qDebug, NULL, msg, qFalse );
         if ( NULL != id ) {
             qUINT32_t val = 0;
@@ -30,14 +30,14 @@ void _qtrace_krn( const char *msg,
                                                             : sizeof(void*);
                                                             
             (void)memcpy( &val, &id, n);
-            s = qIOUtil_UtoA( val, buff, 16 );
+            (void)qIOUtil_UtoA( val, obuf, 16 );
             (void)qIOUtil_OutputString( qDebug, NULL, "0x", qFalse );
-            (void)qIOUtil_OutputString( qDebug, NULL, s, qFalse );
+            (void)qIOUtil_OutputString( qDebug, NULL, obuf, qFalse );
             if ( obj != NULL ) {
                 (void)memcpy( &val, &obj, n );
-                s = qIOUtil_UtoA( val, buff, 16 );
+                 qIOUtil_UtoA( val, obuf, 16 );
                 (void)qIOUtil_OutputString( qDebug, NULL, "<-0x", qFalse );
-                (void)qIOUtil_OutputString( qDebug, NULL, s, qFalse );
+                (void)qIOUtil_OutputString( qDebug, NULL, obuf, qFalse );
             }
         }
         qDebug( NULL, '\r' );
@@ -55,14 +55,9 @@ void _qTrace_dgb( const char *loc,
 {
     if ( NULL != qDebug ) { /*trace only if the output-function is defined*/
         #if ( Q_DEBUGTRACE_FULL == 1 )
-            char buff[ 11 ] = { 0 };
-            char *s;
+            char obuff[ 11 ] = { 0 };
 
-            s = qIOUtil_UtoA( qClock_GetTick(), buff, 10 );
-            qDebug( NULL, '[' );
-            (void)qIOUtil_OutputString( qDebug, NULL, s, qFalse );
-            qDebug( NULL, ']' );
-            qDebug( NULL, ' ' );
+            qTrace_LogTicks( obuff );
         #endif
         if ( NULL != fcn ) { /*print out the function if available*/
             (void)qIOUtil_OutputString( qDebug, NULL, fcn, qFalse );
@@ -82,6 +77,14 @@ void _qTrace_dgb( const char *loc,
             qDebug( NULL, '\n' );
         }
     }
+}
+/*============================================================================*/
+static void qTrace_LogTicks( char *buff ) {
+    (void)qIOUtil_UtoA( qClock_GetTick(), buff, 10 );
+    qDebug( NULL, '[' );
+    (void)qIOUtil_OutputString( qDebug, NULL, buff, qFalse );
+    qDebug( NULL, ']' );
+    qDebug( NULL, ' ' );
 }
 /*============================================================================*/
 void qTrace_Set_OutputFcn( qPutChar_t fcn )
