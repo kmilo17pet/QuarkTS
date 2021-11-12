@@ -126,9 +126,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>) (void *arg1, const char arg2)</td></tr>
 <tr class="memdesc:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function that write-out a single character.  <a href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">More...</a><br /></td></tr>
 <tr class="separator:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga14d6f391021b8e2e93fc8ed8c981d2f8"><td class="memItemLeft" align="right" valign="top">typedef char(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a>) (void *arg1)</td></tr>
-<tr class="memdesc:ga14d6f391021b8e2e93fc8ed8c981d2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function that get-a single character.  <a href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">More...</a><br /></td></tr>
-<tr class="separator:ga14d6f391021b8e2e93fc8ed8c981d2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="memItemLeft" align="right" valign="top">typedef char(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>) (void *arg1, const char arg2)</td></tr>
+<tr class="memdesc:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function that perform a single character I/O operation.  <a href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">More...</a><br /></td></tr>
+<tr class="separator:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -153,12 +153,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga47255c3d0056220a3ae9080ed42da6f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga47255c3d0056220a3ae9080ed42da6f3">qIOUtil_PrintXData</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *pData, size_t n)</td></tr>
 <tr class="memdesc:ga47255c3d0056220a3ae9080ed42da6f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write data in HEX notation through <em>fcn</em>.  <a href="group__qioutils.html#ga47255c3d0056220a3ae9080ed42da6f3">More...</a><br /></td></tr>
 <tr class="separator:ga47255c3d0056220a3ae9080ed42da6f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeea8b241c43f3e3dddf964413c6aa30a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaeea8b241c43f3e3dddf964413c6aa30a">qIOUtil_OutputRaw</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> oFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
-<tr class="memdesc:gaeea8b241c43f3e3dddf964413c6aa30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gaeea8b241c43f3e3dddf964413c6aa30a">More...</a><br /></td></tr>
-<tr class="separator:gaeea8b241c43f3e3dddf964413c6aa30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacdaf83dad2845f76706ee7b079ed29c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gacdaf83dad2845f76706ee7b079ed29c0">qIOUtil_InputRaw</a> (const <a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a> iFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
-<tr class="memdesc:gacdaf83dad2845f76706ee7b079ed29c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to get n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gacdaf83dad2845f76706ee7b079ed29c0">More...</a><br /></td></tr>
-<tr class="separator:gacdaf83dad2845f76706ee7b079ed29c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade873a18491ec4f390ab0d66deed194b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gade873a18491ec4f390ab0d66deed194b">qIOUtil_OutputRaw</a> (const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a> oFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> aip)</td></tr>
+<tr class="memdesc:gade873a18491ec4f390ab0d66deed194b"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gade873a18491ec4f390ab0d66deed194b">More...</a><br /></td></tr>
+<tr class="separator:gade873a18491ec4f390ab0d66deed194b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga6eef53910a05cdb0cd397d987c24b4b0">qIOUtil_InputRaw</a> (const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a> iFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> aip)</td></tr>
+<tr class="memdesc:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to get n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#ga6eef53910a05cdb0cd397d987c24b4b0">More...</a><br /></td></tr>
+<tr class="separator:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">qIOUtil_U32toX</a> (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> value, char *str, <a class="el" href="group__qtypes.html#ga903e6b3909103df27f390f45f34d5885">qINT8_t</a> n)</td></tr>
 <tr class="memdesc:ga58569cdb08e25554c4b4556e1ba3520b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned integer value to a null-terminated string using the 16 base and stores the result in the array given by <em>str</em> parameter. <em>str</em> should be an array long enough to contain any possible value.  <a href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">More...</a><br /></td></tr>
 <tr class="separator:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,22 +294,28 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga14d6f391021b8e2e93fc8ed8c981d2f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga14d6f391021b8e2e93fc8ed8c981d2f8">&#9670;&nbsp;</a></span>qGetChar_t</h2>
+<a id="ga0ed0793f44f3cdc6ef61f6c0ec96e15d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">&#9670;&nbsp;</a></span>qIOFcn_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef char(* qGetChar_t) (void *arg1)</td>
+          <td class="memname">typedef char(* qIOFcn_t) (void *arg1, const char arg2)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Pointer to function that get-a single character. </p>
-<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp ){</div>
+<p>Pointer to function that perform a single character I/O operation. </p>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example 1: Input operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ){</div>
 <div class="line">      (void)sp;</div>
+<div class="line">      (void)in;</div>
 <div class="line">      <span class="keywordflow">return</span> HAL_UARTReceiveByte( );</div>
+<div class="line">}</div>
+</div><!-- fragment --> Example 2: Ouput operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ){</div>
+<div class="line">      (void)sp;</div>
+<div class="line">      HAL_UARTPutByte( in );</div>
+<div class="line">      <span class="keywordflow">return</span> 0u;</div>
 <div class="line">}</div>
 </div><!-- fragment --> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -510,8 +516,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gacdaf83dad2845f76706ee7b079ed29c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacdaf83dad2845f76706ee7b079ed29c0">&#9670;&nbsp;</a></span>qIOUtil_InputRaw()</h2>
+<a id="ga6eef53910a05cdb0cd397d987c24b4b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6eef53910a05cdb0cd397d987c24b4b0">&#9670;&nbsp;</a></span>qIOUtil_InputRaw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -519,7 +525,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_InputRaw </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__qioutils.html#ga14d6f391021b8e2e93fc8ed8c981d2f8">qGetChar_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>&#160;</td>
           <td class="paramname"><em>iFcn</em>, </td>
         </tr>
         <tr>
@@ -544,7 +550,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
-          <td class="paramname"><em>AIP</em>&#160;</td>
+          <td class="paramname"><em>aip</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -561,7 +567,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">pData</td><td>A pointer to the block where the read data will be saved </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to get </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aip</td><td>Auto-increment the storage-pointer </td></tr>
   </table>
   </dd>
 </dl>
@@ -668,8 +674,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaeea8b241c43f3e3dddf964413c6aa30a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeea8b241c43f3e3dddf964413c6aa30a">&#9670;&nbsp;</a></span>qIOUtil_OutputRaw()</h2>
+<a id="gade873a18491ec4f390ab0d66deed194b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade873a18491ec4f390ab0d66deed194b">&#9670;&nbsp;</a></span>qIOUtil_OutputRaw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -677,7 +683,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_OutputRaw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>&#160;</td>
           <td class="paramname"><em>oFcn</em>, </td>
         </tr>
         <tr>
@@ -702,7 +708,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
-          <td class="paramname"><em>AIP</em>&#160;</td>
+          <td class="paramname"><em>aip</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -719,7 +725,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pData</td><td>A pointer to the block of data </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes that will be transferred to the output </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aip</td><td>Auto-increment the storage-pointer </td></tr>
   </table>
   </dd>
 </dl>

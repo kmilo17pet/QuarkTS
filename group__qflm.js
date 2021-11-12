@@ -1,11 +1,11 @@
 var group__qflm =
 [
     [ "qFLM_ArraySize", "group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18", null ],
-    [ "qFLM_BitClear", "group__qflm.html#gae8a21d18f93daadb1a475fd32ca45d11", null ],
+    [ "qFLM_BitClear", "group__qflm.html#gacfaa1512798869d8013bb30e9c5c2b0a", null ],
     [ "qFLM_BitMakeByte", "group__qflm.html#ga0edb2f08dfaa5d2a9f419bfcebfdb092", null ],
     [ "qFLM_BitRead", "group__qflm.html#gae59199a335b5c6ff3711af33bcad9b95", null ],
     [ "qFLM_BitsClear", "group__qflm.html#gaf754131bd339ccf914b12c69f7924d69", null ],
-    [ "qFLM_BitSet", "group__qflm.html#ga0a115a8d6795c144db0255bb439e7b27", null ],
+    [ "qFLM_BitSet", "group__qflm.html#ga27054552ab4ebf47652992519e611177", null ],
     [ "qFLM_BitsSet", "group__qflm.html#gad28d3dbd3699e8754dae6a321c3af808", null ],
     [ "qFLM_BitToggle", "group__qflm.html#ga55ee9fe6c0fe56995c31f46057643261", null ],
     [ "qFLM_BitWrite", "group__qflm.html#ga6efa4e7aed62da75c48090a9bca80936", null ],

@@ -118,12 +118,12 @@ Macros</h2></td></tr>
 <tr class="memitem:gaf754131bd339ccf914b12c69f7924d69"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#gaf754131bd339ccf914b12c69f7924d69">qFLM_BitsClear</a>(dst,  xBits)</td></tr>
 <tr class="memdesc:gaf754131bd339ccf914b12c69f7924d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise AND operator to clear bits into <em>dst</em>.  <a href="group__qflm.html#gaf754131bd339ccf914b12c69f7924d69">More...</a><br /></td></tr>
 <tr class="separator:gaf754131bd339ccf914b12c69f7924d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0a115a8d6795c144db0255bb439e7b27"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#ga0a115a8d6795c144db0255bb439e7b27">qFLM_BitSet</a>(dst,  xBit)</td></tr>
-<tr class="memdesc:ga0a115a8d6795c144db0255bb439e7b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise OR operator to set a single bit into <em>dst</em>.  <a href="group__qflm.html#ga0a115a8d6795c144db0255bb439e7b27">More...</a><br /></td></tr>
-<tr class="separator:ga0a115a8d6795c144db0255bb439e7b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae8a21d18f93daadb1a475fd32ca45d11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#gae8a21d18f93daadb1a475fd32ca45d11">qFLM_BitClear</a>(dst,  Bit)</td></tr>
-<tr class="memdesc:gae8a21d18f93daadb1a475fd32ca45d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise AND operator to clear a single bit into <em>dst</em>.  <a href="group__qflm.html#gae8a21d18f93daadb1a475fd32ca45d11">More...</a><br /></td></tr>
-<tr class="separator:gae8a21d18f93daadb1a475fd32ca45d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga27054552ab4ebf47652992519e611177"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#ga27054552ab4ebf47652992519e611177">qFLM_BitSet</a>(dst,  xBit,  xType)</td></tr>
+<tr class="memdesc:ga27054552ab4ebf47652992519e611177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise OR operator to set a single bit into <em>dst</em>.  <a href="group__qflm.html#ga27054552ab4ebf47652992519e611177">More...</a><br /></td></tr>
+<tr class="separator:ga27054552ab4ebf47652992519e611177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfaa1512798869d8013bb30e9c5c2b0a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#gacfaa1512798869d8013bb30e9c5c2b0a">qFLM_BitClear</a>(dst,  xBit,  xType)</td></tr>
+<tr class="memdesc:gacfaa1512798869d8013bb30e9c5c2b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise AND operator to clear a single bit into <em>dst</em>.  <a href="group__qflm.html#gacfaa1512798869d8013bb30e9c5c2b0a">More...</a><br /></td></tr>
+<tr class="separator:gacfaa1512798869d8013bb30e9c5c2b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae59199a335b5c6ff3711af33bcad9b95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qflm.html#gae59199a335b5c6ff3711af33bcad9b95">qFLM_BitRead</a>(dst,  xBit)</td></tr>
 <tr class="memdesc:gae59199a335b5c6ff3711af33bcad9b95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the bitwise AND operator to read the value of a single bit from <em>dst</em>.  <a href="group__qflm.html#gae59199a335b5c6ff3711af33bcad9b95">More...</a><br /></td></tr>
 <tr class="separator:gae59199a335b5c6ff3711af33bcad9b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,8 +215,8 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="gae8a21d18f93daadb1a475fd32ca45d11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae8a21d18f93daadb1a475fd32ca45d11">&#9670;&nbsp;</a></span>qFLM_BitClear</h2>
+<a id="gacfaa1512798869d8013bb30e9c5c2b0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfaa1512798869d8013bb30e9c5c2b0a">&#9670;&nbsp;</a></span>qFLM_BitClear</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +231,13 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">Bit&#160;</td>
+          <td class="paramname">xBit, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">xType&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -402,8 +408,8 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="ga0a115a8d6795c144db0255bb439e7b27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0a115a8d6795c144db0255bb439e7b27">&#9670;&nbsp;</a></span>qFLM_BitSet</h2>
+<a id="ga27054552ab4ebf47652992519e611177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga27054552ab4ebf47652992519e611177">&#9670;&nbsp;</a></span>qFLM_BitSet</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -418,7 +424,13 @@ Macros</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">xBit&#160;</td>
+          <td class="paramname">xBit, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">xType&#160;</td>
         </tr>
         <tr>
           <td></td>
