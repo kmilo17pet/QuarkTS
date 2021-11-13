@@ -140,17 +140,17 @@ $(document).ready(function(){initNavTree('qmemmang_8h_source.html',''); initResi
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">/* List to connect the free blocks in order of their memory address. */</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qMemMang_BlockConnect_s {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">struct </span>_qMemMang_BlockConnect_s *Next;  <span class="comment">/*&lt; Points to the next free block in the list*/</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">size_t</span> BlockSize;                       <span class="comment">/*&lt; The size of the free block*/</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">struct </span>_qMemMang_BlockConnect_s *next;  <span class="comment">/*&lt; Points to the next free block in the list*/</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">size_t</span> blockSize;                       <span class="comment">/*&lt; The size of the free block*/</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    qMemMang_BlockConnect_t;</div>
 <div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structq_mem_mang___pool__t.html">   74</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qMemMang_Pool_s {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">struct </span>_qMemMang_Pool_Private_s {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            qMemMang_BlockConnect_t *End;           <span class="comment">/*&lt; Points to the last block of the list. */</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> *PoolMemory;                   <span class="comment">/*&lt; Points to the beginning of the heap area statically allocated. */</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">size_t</span> PoolMemSize;                     <span class="comment">/*&lt; The size of the memory block pointed by &quot;heap&quot;. */</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">size_t</span> FreeBytesRemaining;              <span class="comment">/*&lt; The number of free bytes in the heap. */</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            qMemMang_BlockConnect_t Start;          <span class="comment">/*&lt; The first block of the heap. */</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            qMemMang_BlockConnect_t *end;           <span class="comment">/*&lt; Points to the last block of the list. */</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> *poolMemory;                   <span class="comment">/*&lt; Points to the beginning of the heap area statically allocated. */</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordtype">size_t</span> poolMemSize;                     <span class="comment">/*&lt; The size of the memory block pointed by &quot;heap&quot;. */</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordtype">size_t</span> freeBytesRemaining;              <span class="comment">/*&lt; The number of free bytes in the heap. */</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            qMemMang_BlockConnect_t start;          <span class="comment">/*&lt; The first block of the heap. */</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        qPrivate;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
