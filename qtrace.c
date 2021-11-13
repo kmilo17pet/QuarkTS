@@ -35,7 +35,7 @@ void _qtrace_krn( const char *msg,
             (void)qIOUtil_OutputString( qDebug, NULL, obuf, qFalse );
             if ( obj != NULL ) {
                 (void)memcpy( &val, &obj, n );
-                 qIOUtil_UtoA( val, obuf, 16 );
+                (void)qIOUtil_UtoA( val, obuf, 16 );
                 (void)qIOUtil_OutputString( qDebug, NULL, "<-0x", qFalse );
                 (void)qIOUtil_OutputString( qDebug, NULL, obuf, qFalse );
             }

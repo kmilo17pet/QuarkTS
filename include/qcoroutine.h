@@ -1,7 +1,7 @@
 /*!
  * @file qcoroutine.h
  * @author J. Camilo Gomez C.
- * @version 3.73
+ * @version 3.74
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface for the Co-Routine module.
  **/

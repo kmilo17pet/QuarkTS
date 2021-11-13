@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.64
+ * @version 4.65
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/

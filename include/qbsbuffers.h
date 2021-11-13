@@ -1,7 +1,7 @@
 /*!
  * @file qbsbuffers.h
  * @author J. Camilo Gomez C.
- * @version 1.25
+ * @version 1.26
  * @note This file is part of the QuarkTS distribution.
  * @brief An interrupt-safe byte-sized ring buffer interface.
  **/

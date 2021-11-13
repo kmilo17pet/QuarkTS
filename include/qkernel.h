@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.35
+ * @version 3.36
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS
  * operations.
@@ -13,7 +13,7 @@
     #include "qcritical.h"
     #include "qtasks.h"
 
-    #if ( Q_ATCLI == 1)
+    #if ( Q_ATCLI == 1 )
         #include "qatcli.h"
     #endif
 

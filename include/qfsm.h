@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.34
+ * @version 5.35
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the Finite State Machine (FSM) module.
  **/
@@ -327,7 +327,7 @@
             qSM_StateCallback_t sCallback;                  /*< The state callback function*/
             qSM_TimeoutStateDefinition_t *tdef;             /*< The timeout state definition*/
             void *tTable;                                   /*< A pointer to the transition table.*/
-            void* Data;                                     /*< State data. Storage pointer*/
+            void* sData;                                    /*< State data. Storage pointer*/
             size_t tEntries;                                /*< Number of entries on <tTable>*/
             size_t nTm;                                     /*< Number of entries on <tdef>*/
         }
@@ -365,16 +365,16 @@
             qSM_State_t *current;                           /*< A pointer to the current state.*/
             qSM_State_t *next;                              /*< The next state to execute. */
             qSM_State_t *source;                            /*< Source state during the last transition*/
-            void *Data;                                     /*< The user storage-pointer*/
+            void *mData;                                    /*< The user storage-pointer*/
             #if ( Q_QUEUES == 1 )
-                qQueue_t *queue;                            /*< A pointer to the signal queue.*/
+                qQueue_t *sQueue;                           /*< A pointer to the signal queue.*/
             #endif
-            qSM_TimeoutSpec_t *TimeSpec;                    /*< A pointer to the timeout specification object*/
+            qSM_TimeoutSpec_t *timeSpec;                    /*< A pointer to the timeout specification object*/
             qSM_SurroundingCallback_t surrounding;          /*< A callback to handle actions after and before any state. */
             qSM_State_t top;                                /*< The top most state*/
             _qSM_UnprotectedPublicData_t handler;           /*< The FSM handler argument*/
-            qSM_Signal_t SignalNot;                         /*< Signal exclusion variable*/
-            void *Owner;
+            qSM_Signal_t signalNot;                         /*< Signal exclusion variable*/
+            void *owner;
         }
         qPrivate;
         /*! @endcond  */
@@ -387,9 +387,9 @@
     */
     typedef struct _qSM_Transition_s {
         qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
-        qSM_SignalAction_t Guard;                           /**< The signal guard/action*/
-        qSM_State_t *NextState;                             /**< A pointer to the next state after the transition*/
-        qSM_TransitionHistoryMode_t HistoryMode;            /**< To set the history mode for a transition*/
+        qSM_SignalAction_t guard;                           /**< The signal guard/action*/
+        qSM_State_t *nextState;                             /**< A pointer to the next state after the transition*/
+        qSM_TransitionHistoryMode_t historyMode;            /**< To set the history mode for a transition*/
     }
     qSM_Transition_t;
 

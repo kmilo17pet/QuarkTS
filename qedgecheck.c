@@ -16,10 +16,10 @@
 #define QEDGECHECK_REG_FCN_DEF(NAME, TYPE)                                  \
 _QEDGECHECK_REG_FCN_DEC(NAME)                                               \
 {                                                                           \
-    TYPE Register, Mask, Bit = (TYPE)PinNumber;                             \
-    Mask = (TYPE)( (TYPE)1uL << Bit );                                      \
-    Register = *( (const TYPE*)Address );                                   \
-    return ( (TYPE)0u != ( Register & Mask ) );                             \
+    TYPE reg, mask, xBit = (TYPE)pinNumber;                                  \
+    mask = (TYPE)( (TYPE)1uL << xBit );                                      \
+    reg = *( (const TYPE*)addr );                                           \
+    return ( (TYPE)0u != ( reg & mask ) );                                  \
 }                                                                           \
 
 /*! @cond  */
@@ -39,11 +39,11 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec,
 
     if ( NULL != ec ) {
         (void)memset( ec, 0, sizeof(qEdgeCheck_t) );
-        ec->qPrivate.Head = NULL;
-        ec->qPrivate.DebounceTime = debounceTime;
-        ec->qPrivate.Reader = ( NULL == rSize )? &QREG_32BIT : rSize;
-        ec->qPrivate.State = QEDGECHECK_CHECK;
-        ec->qPrivate.Start = qClock_GetTick();
+        ec->qPrivate.head = NULL;
+        ec->qPrivate.debounceTime = debounceTime;
+        ec->qPrivate.reader = ( NULL == rSize )? &QREG_32BIT : rSize;
+        ec->qPrivate.state = QEDGECHECK_CHECK;
+        ec->qPrivate.start = qClock_GetTick();
         retValue = qTrue;
     }
 
@@ -58,15 +58,15 @@ qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != n ) && ( NULL != ec ) ) {
-        const qCoreRegSize_t pinReader = ec->qPrivate.Reader;
+        const qCoreRegSize_t pinReader = ec->qPrivate.reader;
 
         (void)memset( n, 0, sizeof(qEdgeCheck_IONode_t) );
-        n->qPrivate.Port = portAddress;
-        n->qPrivate.Pin = pinNumber;
-        n->qPrivate.Next = ec->qPrivate.Head;
+        n->qPrivate.xPort = portAddress;
+        n->qPrivate.xPin = pinNumber;
+        n->qPrivate.next = ec->qPrivate.head;
         /*some compilers cant deal with function pointers inside structs*/
-        n->qPrivate.PreviousPinValue = pinReader( n->qPrivate.Port, n->qPrivate.Pin );
-        ec->qPrivate.Head = n;
+        n->qPrivate.prevPinValue = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
+        ec->qPrivate.head = n;
         retValue = qTrue;
     }
 
@@ -78,61 +78,61 @@ qBool_t qEdgeCheck_Update( qEdgeCheck_t * const ec )
     qBool_t retValue = qFalse;
 
     if ( NULL != ec ) {
-        if ( QEDGECHECK_WAIT == ec->qPrivate.State ) { /*de-bounce wait state*/
-            if ( qClock_TimeDeadlineCheck( ec->qPrivate.Start, ec->qPrivate.DebounceTime ) ) {
+        if ( QEDGECHECK_WAIT == ec->qPrivate.state ) { /*de-bounce wait state*/
+            if ( qClock_TimeDeadlineCheck( ec->qPrivate.start, ec->qPrivate.debounceTime ) ) {
                 /*debounce time reached, update the inputlevel*/
-                ec->qPrivate.State = QEDGECHECK_UPDATE;
+                ec->qPrivate.state = QEDGECHECK_UPDATE;
             }
             retValue = qTrue;
         }
         else {
             qBool_t v; /*to hold the current pin value*/
             qEdgeCheck_IONode_t *n;
-            const qCoreRegSize_t pinReader = ec->qPrivate.Reader;
+            const qCoreRegSize_t pinReader = ec->qPrivate.reader;
             /*iterate through all the input-nodes*/
-            for ( n = ec->qPrivate.Head ; NULL != n ; n = n->qPrivate.Next ) {
+            for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {
                 /*read the pin level*/
-                v = pinReader( n->qPrivate.Port, n->qPrivate.Pin );
-                if ( ec->qPrivate.State >= QEDGECHECK_CHECK ) {
+                v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
+                if ( ec->qPrivate.state >= QEDGECHECK_CHECK ) {
                     /*check if input level change since the last inputs-sweep*/
-                    if ( n->qPrivate.PreviousPinValue != v ) {
+                    if ( n->qPrivate.prevPinValue != v ) {
                         /*
                           change detected, put the node on unknown status until
                           the debounce wait finish
                         */
-                        n->qPrivate.Status = (qBool_t)qUnknown;
+                        n->qPrivate.status = (qBool_t)qUnknown;
                         /*to indicate that least one node changed its state*/
-                        ec->qPrivate.State++;
+                        ec->qPrivate.state++;
                     }
                     else {
                         /*
                         if there is no change, let the state of the pin be equal
                         to its own level
                         */
-                        n->qPrivate.Status = v;
+                        n->qPrivate.status = v;
                     }
                 }
-                else if ( QEDGECHECK_UPDATE == ec->qPrivate.State ) {
+                else if ( QEDGECHECK_UPDATE == ec->qPrivate.state ) {
                     /*if the level change is effective*/
-                    if ( n->qPrivate.PreviousPinValue != v ) {
+                    if ( n->qPrivate.prevPinValue != v ) {
                         /*set the edge status*/
-                        n->qPrivate.Status = ( v )? qRising : qFalling;
+                        n->qPrivate.status = ( v )? qRising : qFalling;
                     }
                     /*keep the previous level*/
-                    n->qPrivate.PreviousPinValue = v;
+                    n->qPrivate.prevPinValue = v;
                 }
                 else {
                     /*nothing to do*/
                 }
             }
             /*reload the instance to a full check*/
-            if ( QEDGECHECK_UPDATE == ec->qPrivate.State ) {
-                ec->qPrivate.State = QEDGECHECK_CHECK; /*reload the init state*/
-                ec->qPrivate.Start = qClock_GetTick(); /*reload the time*/
+            if ( QEDGECHECK_UPDATE == ec->qPrivate.state ) {
+                ec->qPrivate.state = QEDGECHECK_CHECK; /*reload the init state*/
+                ec->qPrivate.start = qClock_GetTick(); /*reload the time*/
             }
-            if ( ec->qPrivate.State > QEDGECHECK_CHECK ) {
+            if ( ec->qPrivate.state > QEDGECHECK_CHECK ) {
                 /*at least one pin change detected, do the de-bounce wait*/
-                ec->qPrivate.State = QEDGECHECK_WAIT;
+                ec->qPrivate.state = QEDGECHECK_WAIT;
             }
             retValue = qTrue;
         }
@@ -146,7 +146,7 @@ qBool_t qEdgeCheck_Get_NodeStatus( const qEdgeCheck_IONode_t * const n )
     qBool_t retValue = qUnknown;
 
     if ( NULL != n ) {
-        retValue = n->qPrivate.Status;
+        retValue = n->qPrivate.status;
     }
 
     return retValue;
@@ -159,7 +159,7 @@ qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n,
     /*cstat -MISRAC2012-Rule-10.1_R3*/ /*false-positive*/
     if ( ( NULL != n ) && ( pinNumber < (qBool_t)32u ) ) {
     /*cstat +MISRAC2012-Rule-10.1_R3*/
-        n->qPrivate.Pin = pinNumber;
+        n->qPrivate.xPin = pinNumber;
         retValue = qTrue;
     }
 

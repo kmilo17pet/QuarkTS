@@ -209,9 +209,9 @@ void* qList_Remove( qList_t * const l,
             }
             else {
                 qList_Node_t *iNode;
-                qBase_t LastIndex = ( (qBase_t)p - 1 );
+                qBase_t lastIndex = ( (qBase_t)p - 1 );
 
-                iNode = qList_GetiNode( l, (qList_Position_t)LastIndex );
+                iNode = qList_GetiNode( l, (qList_Position_t)lastIndex );
                 removed = iNode->next; /* <-> (inode0) <-> inode1 <-> inode2 */
                 iNode->next = removed->next;
                 if ( NULL != removed->next ) {
@@ -234,7 +234,11 @@ qBool_t qList_Move( qList_t *const dst,
 
     if ( ( NULL != dst ) && ( NULL != src ) && ( p >= (qList_Position_t)(-1) ) ) {
         if ( NULL != src->head) { /*source has items*/
-            (void)qList_ForEach( src, qList_ChangeContainer, dst, QLIST_FORWARD, NULL );
+            (void)qList_ForEach( src,
+                                 qList_ChangeContainer,
+                                 dst,
+                                 QLIST_FORWARD,
+                                 NULL );
             if ( NULL == dst->head ) { /*destination is empty*/
                 dst->head = src->head;
                 dst->tail = src->tail;

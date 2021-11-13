@@ -1,7 +1,7 @@
 /*!
  * @file qtasks.h
  * @author J. Camilo Gomez C.
- * @version 3.34
+ * @version 3.35
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to manage tasks.
  **/
@@ -266,30 +266,30 @@
         /*! @cond  */
         struct _qTask_Private_s {    /*Task control block - TCB*/
             qNode_MinimalFields;                    /**< Linked-list pointers. */
-            void *TaskData, *AsyncData;             /**< The task storage pointers. */
+            void *taskData, *asyncData;             /**< The task storage pointers. */
             qTaskFcn_t Callback;                    /**< The callback function representing the task activities. */
             #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
                 void *aObj;                        /**< The pointer to the attached object. */
             #endif
             #if ( Q_QUEUES == 1 )
-                qQueue_t *Queue;                    /**< The pointer to the attached queue. */
-                qUINT32_t QueueCount;               /**< The item-count threshold */
+                qQueue_t *aQueue;                    /**< The pointer to the attached queue. */
+                qUINT32_t aQueueCount;               /**< The item-count threshold */
             #endif
             #if ( Q_ALLOW_TASK_NAMING == 1 )
-                const char *Name;                         /**< The task name. */
+                const char *name;                         /**< The task name. */
             #endif
             qSTimer_t timer;                        /**< To handle the task timming*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
-                qCycles_t Cycles;                   /**< The current number of executions performed by the task. */
+                qCycles_t cycles;                   /**< The current number of executions performed by the task. */
             #endif
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
-                size_t Entry;                       /*< To allow the OS maintain the task entry order. */
+                size_t entry;                       /*< To allow the OS maintain the task entry order. */
             #endif
-            qIteration_t Iterations;                /**< Hold the number of iterations. */
-            volatile qNotifier_t Notification;      /**< The notification value. */
-            volatile qTask_Flag_t Flags;            /**< Task flags (core and eventflags)*/
-            qTrigger_t Trigger;                     /**< The event source that put the task in a qReady state. */
-            qPriority_t Priority;                   /**< The task priority. */
+            qIteration_t iterations;                /**< Hold the number of iterations. */
+            volatile qNotifier_t notification;      /**< The notification value. */
+            volatile qTask_Flag_t flags;            /**< Task flags (core and eventflags)*/
+            qTrigger_t trigger;                     /**< The event source that put the task in a qReady state. */
+            qPriority_t priority;                   /**< The task priority. */
         }
         qPrivate;
         /*! @endcond  */

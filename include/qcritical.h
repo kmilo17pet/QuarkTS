@@ -1,7 +1,7 @@
 /*!
  * @file qcritical.h
  * @author J. Camilo Gomez C.
- * @version 3.27
+ * @version 3.28
  * @note This file is part of the QuarkTS distribution.
  * @brief API to handle entry/exit actions in critical sections.
  **/

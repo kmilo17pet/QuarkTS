@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.10
+ * @version 1.11
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.
@@ -41,11 +41,11 @@
     typedef struct _qEdgeCheck_IONode_s {
         /*! @cond  */
         struct _qEdgeCheck_IONode_Private_s {
-            struct _qEdgeCheck_IONode_s *Next;  /*< Point to the next node of the IO list. */
-            void *Port;                         /*< Point to the address of the hardware PORT/IO register. */
-            qBool_t PreviousPinValue;           /*< The previous value of "Pin". */
-            qBool_t Status;                     /*< The status of the pin. */
-            qBool_t Pin;                        /*< The specific pin to read. */
+            struct _qEdgeCheck_IONode_s *next;  /*< Point to the next node of the IO list. */
+            void *xPort;                        /*< Point to the address of the hardware PORT/IO register. */
+            qBool_t prevPinValue;               /*< The previous value of "Pin". */
+            qBool_t status;                     /*< The status of the pin. */
+            qBool_t xPin;                       /*< The specific pin to read. */
         }
         qPrivate;
         /*! @endcond  */
@@ -64,10 +64,10 @@
     typedef struct _qEdgeCheck_s {
         /*! @cond  */
         struct _qEdgeCheck_Private_s {
-            qEdgeCheck_IONode_t *Head;          /*< The first ionode in the list. */
-            qClock_t Start, DebounceTime;       /*< Debounce time control*/
-            qCoreRegSize_t Reader;              /*< The xBits reg-reader function*/
-            qUINT8_t State;                     /*< The node state*/
+            qEdgeCheck_IONode_t *head;          /*< The first ionode in the list. */
+            qClock_t start, debounceTime;       /*< Debounce time control*/
+            qCoreRegSize_t reader;              /*< The xBits reg-reader function*/
+            qUINT8_t state;                     /*< The node state*/
         }
         qPrivate;
         /*! @endcond  */
@@ -76,7 +76,7 @@
 
     /*! @cond  */
     #define _QEDGECHECK_REG_FCN_DEC(NAME)                                   \
-    qBool_t NAME( const void *Address, qBool_t PinNumber )                  \
+    qBool_t NAME( const void *addr, qBool_t pinNumber )                     \
 
     _QEDGECHECK_REG_FCN_DEC( _qReg_32Bits );
     _QEDGECHECK_REG_FCN_DEC( _qReg_16Bits );

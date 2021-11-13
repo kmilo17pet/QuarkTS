@@ -12,7 +12,7 @@ qBool_t qSTimer_Reload( qSTimer_t * const t )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) {
-        t->Start = qClock_GetTick();
+        t->tstart = qClock_GetTick();
         retValue = qTrue;
     }
 
@@ -26,7 +26,7 @@ qBool_t qSTimer_Set( qSTimer_t * const t,
 
     if ( qSTimer_Reload( t ) ) {
         /*set the STimer time in epochs*/
-        t->TV = qClock_Convert2Clock( tTime );
+        t->tv = qClock_Convert2Clock( tTime );
         retValue = qTrue;
     }
 
@@ -58,7 +58,7 @@ qBool_t qSTimer_Expired( const qSTimer_t * const t )
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
-            retValue = qClock_TimeDeadlineCheck( t->Start, t->TV );
+            retValue = qClock_TimeDeadlineCheck( t->tstart, t->tv );
         }
     }
 
@@ -71,7 +71,7 @@ qClock_t qSTimer_Elapsed( const qSTimer_t * const t )
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
-            retValue = qClock_GetTick() - t->Start;
+            retValue = qClock_GetTick() - t->tstart;
         }
     }
 
@@ -84,7 +84,7 @@ qClock_t qSTimer_Remaining( const qSTimer_t * const t )
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
-            retValue = t->TV - qSTimer_Elapsed( t );
+            retValue = t->tv - qSTimer_Elapsed( t );
         }
     }
 
@@ -96,8 +96,8 @@ qBool_t qSTimer_Disarm( qSTimer_t * const t )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) {
-        t->TV = QSTIMER_DISARM_VALUE;
-        t->Start = QSTIMER_DISARM_VALUE;
+        t->tv = QSTIMER_DISARM_VALUE;
+        t->tstart = QSTIMER_DISARM_VALUE;
         retValue = qTrue;
     }
 
@@ -109,7 +109,7 @@ qBool_t qSTimer_Status( const qSTimer_t * const t )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) {
-        retValue = ( t->TV != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+        retValue = ( t->tv != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
     }
 
     return retValue;

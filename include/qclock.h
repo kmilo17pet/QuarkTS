@@ -1,7 +1,7 @@
 /*!
 * @file qclock.h
 * @author J. Camilo Gomez C.
-* @version 3.28
+* @version 3.29
 * @note This file is part of the QuarkTS distribution.
 * @brief Clock and time manipulation interface used by the OS and kernel modules.
 */

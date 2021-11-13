@@ -1,7 +1,7 @@
 /*!
 * @file qtypes.h
 * @author J. Camilo Gomez C.
-* @version 1.49
+* @version 1.50
 * @note This file is part of the QuarkTS distribution.
 * @brief type definitions for all OS interfaces
 */

@@ -1,7 +1,7 @@
 /*!
  * @file qstimers.h
  * @author J. Camilo Gomez C.
- * @version 1.11
+ * @version 1.12
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Software-Timers module.
  **/
@@ -29,8 +29,8 @@
     */
     typedef struct _qSTimer_s {
         /*! @cond  */
-        qClock_t Start;     /*< The time(epochs) taken at the arming moment. */
-        qClock_t TV;        /*< The required time in epochs. */
+        qClock_t tstart;    /*< The time(epochs) taken at the arming moment. */
+        qClock_t tv;        /*< The required time in epochs. */
         /*! @endcond  */
     }
     qSTimer_t;

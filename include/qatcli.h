@@ -1,7 +1,7 @@
 /*!
  * @file qatcli.h
  * @author J. Camilo Gomez C.
- * @version 2.61
+ * @version 2.62
  * @note This file is part of the QuarkTS distribution.
  * @brief API for the AT Command Line Interface(AT-CLI) module.
  **/
@@ -53,11 +53,11 @@
 
     /*! @cond  */
     typedef volatile struct _qATCLI_Input_s {
-        char *Buffer;               /*< Points to the user-defined storage area for the input. */
+        char *storage;              /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;    /*< Used to hold the index of the current input-buffer. */
-        qIndex_t MaxIndex;          /*< Max index  = (Size - 1) */
-        size_t Size;                /*< The size of the input buffer. */
-        volatile qBool_t Ready;     /*< A flag that indicates when the input is ready to parse. */
+        qIndex_t maxIndex;          /*< Max index  = (Size - 1) */
+        size_t size;                /*< The size of the input buffer. */
+        volatile qBool_t ready;     /*< A flag that indicates when the input is ready to parse. */
     }
     qATCLI_Input_t;
 
@@ -202,18 +202,18 @@
     typedef struct _qATCLI_ControlBlock_s {
         /*! @cond  */
         struct _qATCLI_Private_s {
-            void *First;                                                    /*< Points to the first command*/
-            const char *OK_Response;                                        /*< The response printed when OK is needed. */
-            const char *ERROR_Response;                                     /*< The response printed when ERROR is needed. */
-            const char *NOTFOUND_Response;                                  /*< The response printed when NOTFOUND is needed. */
-            const char *Identifier;                                         /*< The response printed when the "ATID" command has been entered. */
-            const char *term_EOL;                                           /*< The End Of Line string after a command response */
-            qPutChar_t OutputFcn;                                           /*< Points to the user-supplied function to write a single byte to the output. */
+            void *first;                                                    /*< Points to the first command*/
+            const char *ok_rsp;                                             /*< The response printed when OK is needed. */
+            const char *er_rsp;                                             /*< The response printed when ERROR is needed. */
+            const char *nf_rsp;                                             /*< The response printed when NOTFOUND is needed. */
+            const char *id_rsp;                                             /*< The response printed when the "ATID" command has been entered. */
+            const char *eol;                                                /*< The End Of Line string after a command response */
+            qPutChar_t outputFcn;                                           /*< Points to the user-supplied function to write a single byte to the output. */
             void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg);  /*< Used to notify the attached task if available*/
-            size_t SizeOutput;                                              /*< The size of Output. */
-            qATCLI_Input_t Input;                                           /*< The input of the CLI. */
+            size_t sizeOutput;                                              /*< The size of Output. */
+            qATCLI_Input_t xInput;                                          /*< The input of the CLI. */
             _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
-            void *Owner;
+            void *owner;
         }
         qPrivate;
         /*! @endcond  */
@@ -254,10 +254,10 @@
     typedef struct _qATCLI_Command_s {
         /*! @cond  */
         struct _qATCLI_Command_Private_s {              /*< Linked-list pointers. */
-            qATCLI_CommandCallback_t CommandCallback;   /*< The command callback. */
-            struct _qATCLI_Command_s *Next;             /*< Points to the next command in the list. */
-            qATCLI_Options_t CmdOpt;                    /*< The command options. */
-            size_t CmdLen;                              /*< The command length. */
+            qATCLI_CommandCallback_t cmdCallback;       /*< The command callback. */
+            struct _qATCLI_Command_s *next;             /*< Points to the next command in the list. */
+            qATCLI_Options_t cmdOpt;                    /*< The command options. */
+            size_t cmdLen;                              /*< The command length. */
         }
         qPrivate;
         /*! @endcond  */

@@ -1,7 +1,7 @@
 /*!
  * @file qqueues.h
  * @author J. Camilo Gomez C.
- * @version 2.06
+ * @version 2.07
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface to create and handle queues.
  **/
@@ -57,9 +57,9 @@
             qUINT8_t *tail;                 /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
             qUINT8_t *writer;               /*< Points to the free next place in the storage area. */
             qUINT8_t *reader;               /*< Points to the last place that a queued item was read from. */
-            volatile size_t ItemsWaiting;   /*< The number of items currently in the queue. */
-            size_t ItemsCount;              /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
-            size_t ItemSize;                /*< The size of each items that the queue will hold. */
+            volatile size_t itemsWaiting;   /*< The number of items currently in the queue. */
+            size_t itemsCount;              /*< The length of the queue defined as the number of items it will hold, not the number of bytes. */
+            size_t itemSize;                /*< The size of each items that the queue will hold. */
         }
         qPrivate;
         /*! @endcond  */

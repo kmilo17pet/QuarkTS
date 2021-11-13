@@ -1,7 +1,7 @@
 /*!
  * @file qmemmang.h
  * @author J. Camilo Gomez C.
- * @version 2.08
+ * @version 2.09
  * @note This file is part of the QuarkTS distribution.
  * @brief API interface for the Memory Management module.
  **/
@@ -46,8 +46,8 @@
     /* List to connect the free blocks in order of their memory address. */
     /*! @cond  */
     typedef struct _qMemMang_BlockConnect_s {
-        struct _qMemMang_BlockConnect_s *Next;  /*< Points to the next free block in the list*/
-        size_t BlockSize;                       /*< The size of the free block*/
+        struct _qMemMang_BlockConnect_s *next;  /*< Points to the next free block in the list*/
+        size_t blockSize;                       /*< The size of the free block*/
     }
     qMemMang_BlockConnect_t;
     /*! @endcond  */
@@ -74,11 +74,11 @@
     typedef struct _qMemMang_Pool_s {
         /*! @cond  */
         struct _qMemMang_Pool_Private_s {
-            qMemMang_BlockConnect_t *End;           /*< Points to the last block of the list. */
-            qUINT8_t *PoolMemory;                   /*< Points to the beginning of the heap area statically allocated. */
-            size_t PoolMemSize;                     /*< The size of the memory block pointed by "heap". */
-            size_t FreeBytesRemaining;              /*< The number of free bytes in the heap. */
-            qMemMang_BlockConnect_t Start;          /*< The first block of the heap. */
+            qMemMang_BlockConnect_t *end;           /*< Points to the last block of the list. */
+            qUINT8_t *poolMemory;                   /*< Points to the beginning of the heap area statically allocated. */
+            size_t poolMemSize;                     /*< The size of the memory block pointed by "heap". */
+            size_t freeBytesRemaining;              /*< The number of free bytes in the heap. */
+            qMemMang_BlockConnect_t start;          /*< The first block of the heap. */
         }
         qPrivate;
         /*! @endcond  */

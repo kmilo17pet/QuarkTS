@@ -12,7 +12,7 @@ static volatile qClock_t qSysTick_Epochs = 0uL;
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if ( Q_SETUP_TIME_CANONICAL != 1 )
-static qTimingBase_t TimmingBase;
+static qTimingBase_t timmingBase;
 
 /*============================================================================*/
 qBool_t qClock_SetTimeBase( const qTimingBase_t tb )
@@ -21,7 +21,7 @@ qBool_t qClock_SetTimeBase( const qTimingBase_t tb )
     /*cstat -CERT-FLP36-C*/
     if ( tb > (qTimingBase_t)0 ) {
     /*cstat +CERT-FLP36-C*/
-        TimmingBase = tb;
+        timmingBase = tb;
         retValue = qTrue;
     }
 
@@ -60,7 +60,7 @@ qTime_t qClock_Convert2Time( const qClock_t t )
             return (qTime_t)( t/TimmingBase );
         #else
             /*cstat -CERT-FLP36-C*/
-            return (qTime_t)(TimmingBase*( (qTime_t)t) ); /*CERT-FLP36-C deviation allowed*/
+            return (qTime_t)( timmingBase*( (qTime_t)t) ); /*CERT-FLP36-C deviation allowed*/
             /*cstat +CERT-FLP36-C*/
         #endif
     #endif
@@ -77,7 +77,7 @@ qClock_t qClock_Convert2Clock( const qTime_t t )
             qTime_t epochs = qTimeImmediate;
 
             if ( t > qTimeImmediate ) {
-                epochs = ( t/TimmingBase ) + QFLT_TIME_FIX_VALUE;
+                epochs = ( t/timmingBase ) + QFLT_TIME_FIX_VALUE;
             }
 
             return (qClock_t)epochs;

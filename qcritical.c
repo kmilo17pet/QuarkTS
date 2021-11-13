@@ -8,31 +8,31 @@
 
 /*! @cond */
 typedef struct _qCritical_Handler_s {
-    qInt_Disabler_t I_Disable;      /*< Point to the user-supplied function used to disable the hardware interrupts. */
-    qInt_Restorer_t I_Restorer;     /*< Point to the user-supplied function used to restore the hardware interrupts. */
-    volatile qUINT32_t IntFlags;    /*< To save the current interrupt flags before the disable action is performed. */
+    qInt_Disabler_t disable;      /*< Point to the user-supplied function used to disable the hardware interrupts. */
+    qInt_Restorer_t restore;     /*< Point to the user-supplied function used to restore the hardware interrupts. */
+    volatile qUINT32_t flags;    /*< To save the current interrupt flags before the disable action is performed. */
 }
 qCritical_Handler_t;
 /*! @endcond */
 
-static qCritical_Handler_t Critical = { NULL, NULL , 0uL };
+static qCritical_Handler_t critical = { NULL, NULL , 0uL };
 
 /*============================================================================*/
 void qCritical_Enter( void )
 {
-    if ( NULL != Critical.I_Disable ) {
-        const qInt_Disabler_t xDisabler = Critical.I_Disable;
+    if ( NULL != critical.disable ) {
+        const qInt_Disabler_t xDisabler = critical.disable;
 
-        Critical.IntFlags = xDisabler();
+        critical.flags = xDisabler();
     }
 }
 /*============================================================================*/
 void qCritical_Exit( void )
 {
-    if ( NULL != Critical.I_Restorer ) {
-        const qInt_Restorer_t xRestorer = Critical.I_Restorer;
+    if ( NULL != critical.restore ) {
+        const qInt_Restorer_t xRestorer = critical.restore;
 
-        xRestorer( Critical.IntFlags );
+        xRestorer( critical.flags );
     }
 }
 /*============================================================================*/
@@ -41,9 +41,9 @@ qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( rFcn != Critical.I_Restorer ) || ( dFcn != Critical.I_Disable ) ) {
-        Critical.I_Restorer = rFcn;
-        Critical.I_Disable = dFcn;
+    if ( ( rFcn != critical.restore ) || ( dFcn != critical.disable ) ) {
+        critical.restore = rFcn;
+        critical.disable = dFcn;
         retValue = qTrue;
     }
 

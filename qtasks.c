@@ -15,9 +15,9 @@ qBool_t qTask_Notification_Send( qTask_t * const Task,
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        if ( Task->qPrivate.Notification < QMAX_NOTIFICATION_VALUE ) {
-            ++Task->qPrivate.Notification;
-            Task->qPrivate.AsyncData = eventdata;
+        if ( Task->qPrivate.notification < QMAX_NOTIFICATION_VALUE ) {
+            ++Task->qPrivate.notification;
+            Task->qPrivate.asyncData = eventdata;
             _QTRACE_KERNEL( "(>)Notification sended to task ", Task, eventdata );
             retValue = qTrue;
         }
@@ -45,7 +45,7 @@ qBool_t qTask_HasPendingNotifications( const qTask_t * const Task )
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        if ( Task->qPrivate.Notification > (qNotifier_t)0 ) {
+        if ( Task->qPrivate.notification > (qNotifier_t)0 ) {
             retValue = qTrue;
         }
         else {
@@ -78,7 +78,7 @@ qCycles_t qTask_Get_Cycles( const qTask_t * const Task )
     qCycles_t retValue = 0uL;
 
     if ( NULL != Task ) {
-        retValue = Task->qPrivate.Cycles;
+        retValue = Task->qPrivate.cycles;
     }
 
     return retValue;
@@ -108,11 +108,11 @@ qBool_t qTask_Set_Iterations( qTask_t * const Task,
 
     if ( NULL != Task ) {
         if ( iValue >= (qIteration_t)0 ) {
-            Task->qPrivate.Iterations = -iValue;
+            Task->qPrivate.iterations = -iValue;
             retValue = qTrue;
         }
         else if ( qPeriodic == iValue ) {
-            Task->qPrivate.Iterations = qPeriodic;
+            Task->qPrivate.iterations = qPeriodic;
             retValue = qTrue;
         }
         else {
@@ -129,7 +129,7 @@ qBool_t qTask_Set_Priority( qTask_t * const Task,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != Task ) && ( pValue < (qPriority_t)Q_PRIORITY_LEVELS ) ) {
-        Task->qPrivate.Priority = pValue;
+        Task->qPrivate.priority = pValue;
         retValue = qTrue;
     }
 
@@ -187,8 +187,8 @@ qBool_t qTask_Set_Data( qTask_t * const Task,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != Task ) && ( arg != Task->qPrivate.TaskData ) ) {
-        Task->qPrivate.TaskData = arg;
+    if ( ( NULL != Task ) && ( arg != Task->qPrivate.taskData ) ) {
+        Task->qPrivate.taskData = arg;
         retValue = qTrue;
     }
 
@@ -203,7 +203,7 @@ qBool_t qTask_Clear( qTask_t * const Task,
     if ( NULL != Task ) {
         switch ( param ) {
             case qTask_ClearIterations:
-                Task->qPrivate.Iterations = (qIteration_t)0;
+                Task->qPrivate.iterations = (qIteration_t)0;
                 retValue = qTrue;
                 break;
             case qTask_ClearTimeElapsed:
@@ -211,19 +211,19 @@ qBool_t qTask_Clear( qTask_t * const Task,
                 break;
             case qTask_ClearCycles:
                 #if ( Q_TASK_COUNT_CYCLES == 1 )
-                    Task->qPrivate.Cycles = 0uL;
+                    Task->qPrivate.cycles = 0uL;
                     retValue = qTrue;
                 #endif
                 break;
             case qTask_ClearNotifications:
-                Task->qPrivate.Notification = 0uL;
+                Task->qPrivate.notification = 0uL;
                 #if ( Q_PRIO_QUEUE_SIZE > 0 )
                     qOS_PriorityQueue_Init();
                 #endif
                 retValue = qTrue;
                 break;
             case qTask_ClearSimpleNotifications:
-                Task->qPrivate.Notification = 0uL;
+                Task->qPrivate.notification = 0uL;
                 retValue = qTrue;
                 break;
             case qTask_ClearQueuedNotifications:
@@ -259,10 +259,10 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
                            ( ( 0u != arg )? qATTACH : qDETACH ) );
         if ( mode == qQueueMode_Count ) {
             /*if mode is qQUEUE_COUNT, use their arg value as count*/
-            Task->qPrivate.QueueCount = (qUINT32_t)arg;
+            Task->qPrivate.aQueueCount = (qUINT32_t)arg;
         }
         /*reject, if no valid arg input*/
-        Task->qPrivate.Queue = ( arg > 0u )? q : NULL;
+        Task->qPrivate.aQueue = ( arg > 0u )? q : NULL;
         retValue = qTrue;
         _QTRACE_KERNEL( "(>)Queue successfully attached to task ", Task, q );
     }
@@ -292,7 +292,7 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task )
     qTask_Flag_t retValue = 0u;
 
     if ( NULL != Task ) {
-        retValue = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
+        retValue = Task->qPrivate.flags & QTASK_EVENTFLAGS_RMASK;
     }
 
     return retValue;
@@ -306,7 +306,7 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task,
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        qTask_Flag_t cEventBits = Task->qPrivate.Flags & QTASK_EVENTFLAGS_RMASK;
+        qTask_Flag_t cEventBits = Task->qPrivate.flags & QTASK_EVENTFLAGS_RMASK;
 
         flagsToCheck &= QTASK_EVENTFLAGS_RMASK;
         if ( qFalse == checkForAll ) {
@@ -320,7 +320,7 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task,
             }
         }
         if ( ( qTrue == retValue ) && ( qTrue == clearOnExit ) ) {
-            Task->qPrivate.Flags &= ~flagsToCheck;
+            Task->qPrivate.flags &= ~flagsToCheck;
         }
     }
 
@@ -334,9 +334,11 @@ qBool_t qTask_Set_Name( qTask_t * const Task,
                         const char *name )
 {
     qBool_t retValue = qFalse;
-
-    if ( NULL != Task ) {
-        Task->qPrivate.Name = name;
+    /*cstat -MISRAC2012-Rule-13.5*/
+    /*qOS_FindTaskByName is know to not have side effects*/
+    if ( ( NULL != Task ) && ( NULL == qOS_FindTaskByName( name ) )) {
+    /*cstat +MISRAC2012-Rule-13.5*/  
+        Task->qPrivate.name = name;
         retValue = qTrue;
     }
 
@@ -348,7 +350,7 @@ const char *qTask_Get_Name( const qTask_t * const Task )
     const char *retValue = NULL;
 
     if ( NULL != Task ) {
-        retValue = Task->qPrivate.Name;
+        retValue = Task->qPrivate.name;
     }
 
     return retValue;

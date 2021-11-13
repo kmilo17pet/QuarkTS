@@ -1,7 +1,7 @@
 /*!
 * @file qtrace.h
 * @author J. Camilo Gomez C.
-* @version 1.47
+* @version 1.48
 * @note This file is part of the QuarkTS distribution.
 * @brief API interfaces for the trace and debug messages
 */

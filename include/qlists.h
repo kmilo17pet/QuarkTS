@@ -1,7 +1,7 @@
 /*!
  * @file qlists.h
  * @author J. Camilo Gomez C.
- * @version 1.12
+ * @version 1.13
  * @note This file is part of the QuarkTS distribution.
  * @brief API to create and manage double-linked generic lists.
  **/
