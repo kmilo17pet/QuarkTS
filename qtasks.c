@@ -18,7 +18,9 @@ qBool_t qTask_Notification_Send( qTask_t * const Task,
         if ( Task->qPrivate.notification < QMAX_NOTIFICATION_VALUE ) {
             ++Task->qPrivate.notification;
             Task->qPrivate.asyncData = eventdata;
-            _QTRACE_KERNEL( "(>)Notification sended to task ", Task, eventdata );
+            _QTRACE_KERNEL( "(>)Notification sended to task ",
+                            Task,
+                            eventdata );
             retValue = qTrue;
         }
     }
@@ -141,8 +143,8 @@ qBool_t qTask_Set_Callback( qTask_t * const Task,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != Task ) && ( cFcn != Task->qPrivate.Callback ) ) {
-        Task->qPrivate.Callback = cFcn;
+    if ( ( NULL != Task ) && ( cFcn != Task->qPrivate.callback ) ) {
+        Task->qPrivate.callback = cFcn;
         #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
             Task->qPrivate.aObj = NULL;
         #endif

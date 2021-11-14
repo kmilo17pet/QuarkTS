@@ -267,7 +267,7 @@
         struct _qTask_Private_s {    /*Task control block - TCB*/
             qNode_MinimalFields;                    /**< Linked-list pointers. */
             void *taskData, *asyncData;             /**< The task storage pointers. */
-            qTaskFcn_t Callback;                    /**< The callback function representing the task activities. */
+            qTaskFcn_t callback;                    /**< The callback function representing the task activities. */
             #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )
                 void *aObj;                        /**< The pointer to the attached object. */
             #endif

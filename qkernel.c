@@ -36,7 +36,8 @@ qQueueStack_t;
 
 typedef qUINT32_t qCoreFlags_t;
 
-typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task, void* eventdata );
+typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task, 
+                                               void* eventdata );
 
 typedef struct _qNotificationSpreader_s {
     qNotificationSpreaderFcn_t mode;
@@ -45,7 +46,6 @@ typedef struct _qNotificationSpreader_s {
 qNotificationSpreader_t;
 
 typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/
-    qList_t coreLists[ Q_PRIORITY_LEVELS + 2 ];         /*< [ ReadyLists[...] WaitingList SuspendedList  ]*/
     qTaskFcn_t idleCallback;                            /*< The callback function that represents the idle-task activities. */
     qTask_t *currentTask;                               /*< Points to the current running task. */
     #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
@@ -62,11 +62,12 @@ typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/
     _qEvent_t_ eventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
     volatile qCoreFlags_t flag;                         /*< The scheduler Core-Flags. */
     #if ( Q_NOTIFICATION_SPREADER == 1 )
-        volatile qNotificationSpreader_t notificationSpreadRequest;
+        volatile qNotificationSpreader_t nSpreader;     /*< Notification spread request*/
     #endif
     #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
         size_t taskEntries;                             /*< Used to hold the number of task entries*/
     #endif
+    qList_t coreLists[ Q_PRIORITY_LEVELS + 2 ];         /*< [ ReadyLists[...] WaitingList SuspendedList ]*/
 }
 qKernelControlBlock_t;
 /*! @endcond  */
@@ -76,6 +77,7 @@ static qKernelControlBlock_t kernel;
 static qList_t *const waitingList = &kernel.coreLists[ Q_PRIORITY_LEVELS ];
 static qList_t *const suspendedList = &kernel.coreLists[ Q_PRIORITY_LEVELS + 1 ];
 static qList_t *const readyList = &kernel.coreLists[ 0 ];
+static _qEvent_t_ * const eventinfo = &kernel.eventInfo;
 static const qPriority_t maxPriorityValue = (qPriority_t)Q_PRIORITY_LEVELS - 1u;
 /*=============================== Private Methods ============================*/
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task );
@@ -147,8 +149,8 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
             qOS_PriorityQueue_Init();
         #endif
         #if ( Q_NOTIFICATION_SPREADER == 1 )
-            kernel.notificationSpreadRequest.mode = NULL;
-            kernel.notificationSpreadRequest.eventdata = NULL;
+            kernel.nSpreader.mode = NULL;
+            kernel.nSpreader.eventdata = NULL;
         #endif
         kernel.flag = 0uL; /*clear all the core flags*/
         #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
@@ -216,12 +218,16 @@ qBool_t qOS_Notification_Spread( void *eventdata,
 
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         /*do not proceed if any previous operation is in progress*/
-        if ( NULL ==  kernel.notificationSpreadRequest.mode ) {
+        if ( NULL ==  kernel.nSpreader.mode ) {
             if ( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ) {
-                kernel.notificationSpreadRequest.mode = ( qTask_NotifySimple == mode )? &qTask_Notification_Send : &qTask_Notification_Queue;
-                kernel.notificationSpreadRequest.eventdata = eventdata;
+                kernel.nSpreader.mode = ( qTask_NotifySimple == mode )? 
+                                        &qTask_Notification_Send : 
+                                        &qTask_Notification_Queue;
+                kernel.nSpreader.eventdata = eventdata;
                 retValue = qTrue;
-                _QTRACE_KERNEL( "(>)Notification spread has been requested", NULL, NULL );
+                _QTRACE_KERNEL( "(>)Notification spread has been requested",
+                                NULL,
+                                NULL );
             }
         }
         else {
@@ -410,7 +416,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
 
     if ( NULL != Task ) {
         (void)memset( Task, 0, sizeof( qTask_t ) );
-        Task->qPrivate.Callback = callbackFcn;
+        Task->qPrivate.callback = callbackFcn;
         (void)qSTimer_Set( &Task->qPrivate.timer, t );
         Task->qPrivate.taskData = arg;
         Task->qPrivate.priority = qFLM_ClipUpper( p, maxPriorityValue );
@@ -424,7 +430,9 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
                            QTASK_BIT_QUEUE_EMPTY | QTASK_BIT_REMOVE_REQUEST,
                            qFalse);
         /*task will be awaken and enabled*/
-        qOS_Set_TaskFlags( Task, QTASK_BIT_SHUTDOWN | QTASK_BIT_ENABLED, qTrue );
+        qOS_Set_TaskFlags( Task,
+                           QTASK_BIT_SHUTDOWN | QTASK_BIT_ENABLED,
+                           qTrue );
         (void)qTask_Set_State( Task, init );
 
         #if ( Q_ALLOW_TASK_NAMING == 1 )
@@ -642,13 +650,13 @@ static void qOS_TriggerReleaseSchedEvent( void )
     _QTRACE_KERNEL( "(*)Dispatching scheduler release event...", NULL, NULL );
     QKERNEL_COREFLAG_CLEAR( kernel.flag, QKERNEL_BIT_INIT );
     QKERNEL_COREFLAG_CLEAR( kernel.flag, QKERNEL_BIT_RELEASESCHED );
-    kernel.eventInfo.FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLRELEASED ) );
-    kernel.eventInfo.Trigger = bySchedulingRelease;
-    kernel.eventInfo.TaskData = NULL;
+    eventinfo->FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLRELEASED ) );
+    eventinfo->Trigger = bySchedulingRelease;
+    eventinfo->TaskData = NULL;
     if ( NULL != kernel.releaseSchedCallback ) {
         const qTaskFcn_t callback = kernel.releaseSchedCallback;
         /*some low-end compilers cant deal with function-pointers inside structs*/
-        callback( &kernel.eventInfo );
+        callback( eventinfo );
     }
     QKERNEL_COREFLAG_SET( kernel.flag, QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
@@ -727,12 +735,12 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
         xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
-            if ( NULL != kernel.notificationSpreadRequest.mode ) {
-                void *eventData= kernel.notificationSpreadRequest.eventdata;
+            if ( NULL != kernel.nSpreader.mode ) {
+                void *eventData= kernel.nSpreader.eventdata;
                 _QTRACE_KERNEL( "(*)Spreading notification on task ",
                                 xTask,
-                                kernel.notificationSpreadRequest.eventdata );
-                kernel.notificationSpreadRequest.mode( xTask, eventData );
+                                kernel.nSpreader.eventdata );
+                kernel.nSpreader.mode( xTask, eventData );
                 retValue = qTrue;
             }
         #endif
@@ -824,8 +832,8 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
     else if ( qList_WalkEnd == h->stage ) {
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             /*spread operation done, clean-up*/
-            kernel.notificationSpreadRequest.mode = NULL;
-            kernel.notificationSpreadRequest.eventdata = NULL;
+            kernel.nSpreader.mode = NULL;
+            kernel.nSpreader.eventdata = NULL;
         #endif
         retValue = xReady;
     }
@@ -850,39 +858,40 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task )
         case byTimeElapsed:
             /*handle the iteration value and the FirstIteration flag*/
             taskIteration = Task->qPrivate.iterations;
-            kernel.eventInfo.FirstIteration = ( ( qPeriodic != taskIteration ) && ( taskIteration < 0 ) );
-            Task->qPrivate.iterations = ( kernel.eventInfo.FirstIteration )?
+            eventinfo->FirstIteration = ( ( qPeriodic != taskIteration )
+                                                && ( taskIteration < 0 ) );
+            Task->qPrivate.iterations = ( eventinfo->FirstIteration )?
                                         -Task->qPrivate.iterations :
                                         Task->qPrivate.iterations;
             if ( qPeriodic != Task->qPrivate.iterations ) {
                 --Task->qPrivate.iterations;
             }
-            kernel.eventInfo.LastIteration = ( 0 == Task->qPrivate.iterations );
-            if ( kernel.eventInfo.LastIteration ) {
+            eventinfo->LastIteration = ( 0 == Task->qPrivate.iterations );
+            if ( eventinfo->LastIteration ) {
                 /*When iteration value is reached, the task will be disabled*/
                 qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, qFalse );
             }
-            kernel.eventInfo.StartDelay = qClock_GetTick() - Task->qPrivate.timer.tstart;
+            eventinfo->StartDelay = qClock_GetTick() - Task->qPrivate.timer.tstart;
             break;
         case byNotificationSimple:
             /*Transfer async-data to the eventinfo structure*/
-            kernel.eventInfo.EventData = Task->qPrivate.asyncData;
+            eventinfo->EventData = Task->qPrivate.asyncData;
             --Task->qPrivate.notification;
             break;
         #if ( Q_QUEUES == 1 )
             case byQueueReceiver:
                 /*the EventData will point to the queue front-data*/
-                kernel.eventInfo.EventData = qQueue_Peek( Task->qPrivate.aQueue );
+                eventinfo->EventData = qQueue_Peek( Task->qPrivate.aQueue );
                 break;
             case byQueueFull: case byQueueCount: case byQueueEmpty:
                 /*the EventData will point to the the linked queue*/
-                kernel.eventInfo.EventData = (void*)Task->qPrivate.aQueue;
+                eventinfo->EventData = (void*)Task->qPrivate.aQueue;
                 break;
         #endif
         #if ( Q_PRIO_QUEUE_SIZE > 0 )
             case byNotificationQueued:
                 /*get the extracted data from queue*/
-                kernel.eventInfo.EventData = kernel.queueData;
+                eventinfo->EventData = kernel.queueData;
                 kernel.queueData = NULL;
                 break;
         #endif
@@ -893,9 +902,9 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task )
             default: break;
     }
     /*Fill the event info structure: Trigger, FirstCall and TaskData */
-    kernel.eventInfo.Trigger = Task->qPrivate.trigger;
-    kernel.eventInfo.FirstCall = qFalse == qOS_Get_TaskFlag( Task, QTASK_BIT_INIT );
-    kernel.eventInfo.TaskData = Task->qPrivate.taskData;
+    eventinfo->Trigger = Task->qPrivate.trigger;
+    eventinfo->FirstCall = qFalse == qOS_Get_TaskFlag( Task, QTASK_BIT_INIT );
+    eventinfo->TaskData = Task->qPrivate.taskData;
     kernel.currentTask = Task; /*needed for qTask_Self()*/
 }
 /*============================================================================*/
@@ -909,7 +918,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
             qTask_t *xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/
             qOS_Dispatch_xTask_FillEventInfo( xTask );
-            taskActivities = xTask->qPrivate.Callback;
+            taskActivities = xTask->qPrivate.callback;
 
             #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
                 kernel.yieldTask = NULL;
@@ -917,20 +926,20 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
 
             if ( NULL != taskActivities ) {
                 _QTRACE_KERNEL( "(^)Dispatching task ", xTask, NULL );
-                taskActivities( &kernel.eventInfo );
+                taskActivities( eventinfo );
             }
 
             #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
                 while ( NULL != kernel.yieldTask ) {
                     kernel.currentTask = kernel.yieldTask;
-                    taskActivities = kernel.currentTask->qPrivate.Callback;
+                    taskActivities = kernel.currentTask->qPrivate.callback;
                     kernel.yieldTask = NULL;
                     if ( NULL != taskActivities ) {
                         _QTRACE_KERNEL( "(^)Control yielded to task ",
                                         kernel.currentTask,
                                         NULL );
                         /*yielded task inherits eventdata*/
-                        taskActivities( &kernel.eventInfo );
+                        taskActivities( eventinfo );
                     }
                 }
             #endif
@@ -948,22 +957,22 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
             #endif
             /*set the init flag*/
             qOS_Set_TaskFlags( xTask, QTASK_BIT_INIT, qTrue );
-            kernel.eventInfo.FirstIteration = qFalse;
-            kernel.eventInfo.LastIteration =  qFalse;
-            kernel.eventInfo.StartDelay = (qClock_t)0uL;
-            kernel.eventInfo.EventData = NULL; /*clear the eventdata*/
+            eventinfo->FirstIteration = qFalse;
+            eventinfo->LastIteration =  qFalse;
+            eventinfo->StartDelay = (qClock_t)0uL;
+            eventinfo->EventData = NULL; /*clear the eventdata*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 ++xTask->qPrivate.cycles; /*increase the task-cycles value*/
             #endif
             xTask->qPrivate.trigger = qTriggerNULL;
         }
         else { /*run the idle*/
-            kernel.eventInfo.FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLIDLE ) );
-            kernel.eventInfo.TaskData = NULL;
-            kernel.eventInfo.Trigger = byNoReadyTasks;
+            eventinfo->FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLIDLE ) );
+            eventinfo->TaskData = NULL;
+            eventinfo->Trigger = byNoReadyTasks;
             taskActivities = kernel.idleCallback;
             /*some compilers can not deal with function pointers inside structs*/
-            taskActivities( &kernel.eventInfo ); /*run the idle callback*/
+            taskActivities( eventinfo ); /*run the idle callback*/
             QKERNEL_COREFLAG_SET( kernel.flag, QKERNEL_BIT_FCALLIDLE );
         }
     }
