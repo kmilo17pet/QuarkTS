@@ -30,14 +30,14 @@ The index of the bit that is set when a block belongs to the application.
 Clearead when the block is part of the free space (only the MSB is used)
 Work out the position of the top bit in a size_t variable.
 */
-static const size_t blockAllocatedBit = ( 
+static const size_t blockAllocatedBit = (
                                             ( (size_t)1u ) <<
                                             (
                                                 ( sizeof(size_t)*(size_t)8u ) -
                                                 (size_t)1u
                                             )
                                         );
-static const size_t heapStructSize = ( 
+static const size_t heapStructSize = (
                                         (   sizeof(qMemMang_BlockConnect_t) +
                                             ( BYTE_ALIGN_MASK - (size_t)1u )
                                         )
@@ -128,8 +128,8 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     size_t totalPoolSize = mPool->qPrivate.poolMemSize;
 
     if ( mPool == &defaultMemPool ) { /*initialize the default memory pool */
-        (void)qMemMang_Pool_Setup( mPool, 
-                                   mPool->qPrivate.poolMemory, 
+        (void)qMemMang_Pool_Setup( mPool,
+                                   mPool->qPrivate.poolMemory,
                                    (size_t)Q_DEFAULT_HEAP_SIZE );
     }
 

@@ -103,7 +103,7 @@ static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
         qSM_LCA_t n = 0u;
 
         for ( s = m->qPrivate.source ;
-             ( NULL != s ) && ( qFalse == xBreak ) ; 
+             ( NULL != s ) && ( qFalse == xBreak ) ;
              s = s->qPrivate.parent ) {
             for ( t = target ; NULL != t ; t = t->qPrivate.parent ) {
                 if ( s == t ) {

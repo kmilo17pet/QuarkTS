@@ -191,7 +191,7 @@
 
         #define qDebug_Hexadecimal( v )                                     \
         qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \
-        _qTrace_dgb( "", NULL, #v "=0x", qTrace_PublicBuffer, NULL, 0 )      \
+        _qTrace_dgb( "", NULL, #v "=0x", qTrace_PublicBuffer, NULL, 0 )     \
 
 
         #define qDebug_Decimal( v )                                         \

@@ -130,8 +130,8 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num,
         while ( 0uL != num ) { /*Process individual digits*/
             rem = num % (qUINT32_t)base;
             /*cstat -CERT-INT30-C_a*/
-            str[ i++ ] = ( rem > 9uL )? 
-                         (char)( (qUINT8_t)( rem - 10uL ) + 'A' ) : 
+            str[ i++ ] = ( rem > 9uL )?
+                         (char)( (qUINT8_t)( rem - 10uL ) + 'A' ) :
                          (char)( (qUINT8_t)rem + '0' );
             /*cstat +CERT-INT30-C_a*/
             num = num/base;
@@ -413,32 +413,20 @@ char* qIOUtil_FtoA( qFloat32_t num,
 {
     if ( NULL != str ) {
         if ( ( num >= 0.0f ) && ( num < 1.0E-38 ) ) { /*handle the 0.0f*/
-            str[ 0 ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 1 ] = '.';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 2 ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 3 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/
+            (void)qIOUtil_StrlCpy( str, "0.0", 4 );
         }
         else if ( qTrue == qIOUtil_IsInf( num ) ) { /*handle the infinity*/
             str[ 0 ] = ( num > 0.0f )? '+' : '-'; /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 1 ] = 'i';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 3 ] = 'f';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 4 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/
+            (void)qIOUtil_StrlCpy( &str[1] , "inf", 4 );
         }
         else if ( qTrue == qIOUtil_IsNan( num ) ) { /*handle the NAN*/
-            str[ 0 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 1 ] = 'a';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 2 ] = 'n';  /*MISRAC2004-17.4_b deviation allowed*/
-            str[ 3 ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/
+            (void)qIOUtil_StrlCpy( str, "nan", 4 );
         }
         else {
             qUINT32_t intPart;
             size_t i = 0u;
 
-            if ( precision > Q_MAX_FTOA_PRECISION ) {
-                precision = Q_MAX_FTOA_PRECISION; /*clip the precision*/
-            }
-
+            precision = qFLM_ClipUpper( precision, Q_MAX_FTOA_PRECISION );
             if ( num < 0.0f ) { /*handle the negative numbers*/
                 num = -num; /*leave it positive for the convert method*/
                 str[ i++ ] = '-'; /*add the negative sign*/
@@ -522,7 +510,7 @@ char* qIOUtil_ItoA( qINT32_t num,
 
         if ( num < 0 ) {
             if ( 10u == base ) { /*handle negative numbers only with 10-base*/
-                /*put the sign at the begining*/ 
+                /*put the sign at the begining*/
                 str[ i++ ] = '-'; /*MISRAC2004-17.4_b deviation allowed*/
             }
             num = -num;
@@ -540,7 +528,7 @@ char* qIOUtil_BtoA( const qBool_t num,
                     char *str )
 {
     qBool_t v = qFalse != num;
-    
+
     return qIOUtil_QBtoA( v, str );
 }
 /*============================================================================*/
@@ -593,7 +581,7 @@ qBool_t qIOUtil_IsNan( const qFloat32_t f )
 
     (void)memcpy( &u, &f, sizeof(u) );
 
-    return ( ( xNaNv == ( u & mask1 ) ) && ( 0uL != ( u & mask2 ) ) )? qTrue 
+    return ( ( xNaNv == ( u & mask1 ) ) && ( 0uL != ( u & mask2 ) ) )? qTrue
                                                                      : qFalse;
 }
 /*============================================================================*/

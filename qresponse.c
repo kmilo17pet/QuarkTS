@@ -62,8 +62,8 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
                                    r->qPrivate.maxStrLength
                                  );
             /*set the number of chars to match*/
-            r->qPrivate.patternLength = ( 0u == n )? 
-                                        qIOUtil_StrLen( pattern, r->qPrivate.maxStrLength ) : 
+            r->qPrivate.patternLength = ( 0u == n )?
+                                        qIOUtil_StrLen( pattern, r->qPrivate.maxStrLength ) :
                                         n;
             r->qPrivate.matchedCount = 0u; /*reinitialize the chars match count*/
             r->qPrivate.responseReceived = qFalse; /*clear the ready flag*/

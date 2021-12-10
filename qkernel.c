@@ -36,7 +36,7 @@ qQueueStack_t;
 
 typedef qUINT32_t qCoreFlags_t;
 
-typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task, 
+typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task,
                                                void* eventdata );
 
 typedef struct _qNotificationSpreader_s {
@@ -220,8 +220,8 @@ qBool_t qOS_Notification_Spread( void *eventdata,
         /*do not proceed if any previous operation is in progress*/
         if ( NULL ==  kernel.nSpreader.mode ) {
             if ( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ) {
-                kernel.nSpreader.mode = ( qTask_NotifySimple == mode )? 
-                                        &qTask_Notification_Send : 
+                kernel.nSpreader.mode = ( qTask_NotifySimple == mode )?
+                                        &qTask_Notification_Send :
                                         &qTask_Notification_Queue;
                 kernel.nSpreader.eventdata = eventdata;
                 retValue = qTrue;
@@ -627,7 +627,7 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task )
                             Task->qPrivate.aQueue );
             retValue = byQueueReceiver;
         }
-        else if ( emptyFlag && qQueue_IsEmpty( Task->qPrivate.aQueue ) ) { 
+        else if ( emptyFlag && qQueue_IsEmpty( Task->qPrivate.aQueue ) ) {
             /*qQueue_IsEmpty is known to not have side effects*/
             _QTRACE_KERNEL( "(>)Event::IsEmpty on attached-queue for task ",
                             Task,

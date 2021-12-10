@@ -1,7 +1,7 @@
 /*!
  * @file qedgecheck.h
  * @author J. Camilo Gomez C.
- * @version 1.11
+ * @version 1.12
  * @note This file is part of the QuarkTS distribution.
  * @brief An interface to manage and simplify the value(with edge-checking)
  *  of incoming digital-signal groups.
@@ -64,10 +64,10 @@
     typedef struct _qEdgeCheck_s {
         /*! @cond  */
         struct _qEdgeCheck_Private_s {
+            void (*state)( struct _qEdgeCheck_s * const ec );
             qEdgeCheck_IONode_t *head;          /*< The first ionode in the list. */
             qClock_t start, debounceTime;       /*< Debounce time control*/
             qCoreRegSize_t reader;              /*< The xBits reg-reader function*/
-            qUINT8_t state;                     /*< The node state*/
         }
         qPrivate;
         /*! @endcond  */

@@ -339,7 +339,7 @@ qBool_t qTask_Set_Name( qTask_t * const Task,
     /*cstat -MISRAC2012-Rule-13.5*/
     /*qOS_FindTaskByName is know to not have side effects*/
     if ( ( NULL != Task ) && ( NULL == qOS_FindTaskByName( name ) )) {
-    /*cstat +MISRAC2012-Rule-13.5*/  
+    /*cstat +MISRAC2012-Rule-13.5*/
         Task->qPrivate.name = name;
         retValue = qTrue;
     }

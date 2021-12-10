@@ -78,23 +78,23 @@ qBool_t qATCLI_SetBuiltInString( qATCLI_t * const cli,
     if ( NULL != cli ) {
         switch ( which ) {
             case QATCLI_BUILTIN_STR_IDENTIFIER:
-                cli->qPrivate.id_rsp = ( NULL != str )? str 
+                cli->qPrivate.id_rsp = ( NULL != str )? str
                                                       : QATCLI_DEFAULT_DEVID_STRING;
                 break;
             case QATCLI_BUILTIN_STR_OK_RESPONSE:
-                cli->qPrivate.ok_rsp = ( NULL != str )? str 
+                cli->qPrivate.ok_rsp = ( NULL != str )? str
                                                       : QATCLI_DEFAULT_OK_RSP_STRING;
                 break;
             case QATCLI_BUILTIN_STR_ERROR_RESPONSE:
-                cli->qPrivate.er_rsp = ( NULL != str )? str 
+                cli->qPrivate.er_rsp = ( NULL != str )? str
                                                        : QATCLI_DEFAULT_ERROR_RSP_STRING;
                 break;
             case QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE:
-                cli->qPrivate.nf_rsp = ( NULL != str )? str 
+                cli->qPrivate.nf_rsp = ( NULL != str )? str
                                                       : QATCLI_DEFAULT_NOTFOUND_RSP_STRING;
                 break;
             case QATCLI_BUILTIN_STR_TERM_EOL:
-                cli->qPrivate.eol = ( NULL != str )? str 
+                cli->qPrivate.eol = ( NULL != str )? str
                                                    : QATCLI_DEFAULT_EOL_STRING;
                 break;
             default:
@@ -378,8 +378,8 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
 
     params->Type = qATCLI_CMDTYPE_UNDEF;
     params->Command = cmd;
-    params->StrLen = qIOUtil_StrLen( (const char*)inputBuffer, 
-                                     QATCLI_RECOMMENDED_INPUT_SIZE ) - 
+    params->StrLen = qIOUtil_StrLen( (const char*)inputBuffer,
+                                     QATCLI_RECOMMENDED_INPUT_SIZE ) -
                                      cmd->qPrivate.cmdLen;
     params->StrData = (char*)&inputBuffer[ cmd->qPrivate.cmdLen ];
     params->NumArgs = 0u;
