@@ -75,7 +75,8 @@
     * }
     * @endcode
     * @param[in] sp The user storage pointer.
-    * @return none.
+    * @return If an input operation is performed, this function should return
+    * the byte read from the input.
     */
     typedef char (*qIOFcn_t)( void *arg1, 
                               const char arg2 );
