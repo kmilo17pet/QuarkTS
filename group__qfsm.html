@@ -514,7 +514,7 @@ Functions</h2></td></tr>
 <p>Pointer to a function that represents a signal guard/action. </p>
 <div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> signalAction_Callback( <a class="code" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
 <div class="line">      <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retVal = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div>
-<div class="line">      <span class="keywordflow">if</span> ( ConditionGuard ){</div>
+<div class="line">      <span class="keywordflow">if</span> ( ConditionGuard ) {</div>
 <div class="line">          performSomeAction();</div>
 <div class="line">          retVal = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
 <div class="line">      }</div>
@@ -530,7 +530,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The execution status of the state. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A boolean value that allow or rejects the state transition. If the value is <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> the event-signal is rejected, preventing the state transition to be performed. </dd></dl>
 
 </div>
 </div>
@@ -610,7 +610,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The execution status of the state. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
 
 </div>
 </div>
