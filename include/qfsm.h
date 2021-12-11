@@ -260,7 +260,7 @@
     * }
     * @endcode
     * @param h The object that handles the state machine
-    * @return The execution status of the state.
+    * @return none.
     */
     typedef void (*qSM_SurroundingCallback_t)( qSM_Handler_t arg );
 
@@ -269,7 +269,7 @@
     * @code{.c}
     * qBool_t signalAction_Callback( qSM_Handler_t h ){
     *       qBool_t retVal = qFalse
-    *       if ( ConditionGuard ){
+    *       if ( ConditionGuard ) {
     *           performSomeAction();
     *           retVal = qTrue;
     *       }
@@ -277,7 +277,9 @@
     * }
     * @endcode
     * @param h The object that handles the state machine
-    * @return The execution status of the state.
+    * @return A boolean value that allow or rejects the state transition. If the
+    * value is #qFalse the event-signal is rejected, preventing the state
+    * transition to be performed.
     */
     typedef qBool_t (*qSM_SignalAction_t)( qSM_Handler_t arg );
 
