@@ -605,9 +605,8 @@
         * qEvent_t::EventData field.
         *
         * ::qQueueMode_Count : The task will be triggered if the count of
-        * elements in the queue reach the specified value.
-        * A pointer to the queue will be available in the
-        * qEvent_t::EventData field.
+        * elements in the queue reach the specified value. A pointer to the
+        * queue will be available in the qEvent_t::EventData field.
         *
         * ::qQueueMode_Empty : The task will be triggered if the queue
         * is empty. A pointer to the queue will be available in the

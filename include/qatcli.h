@@ -238,7 +238,8 @@
     *       return retValue;
     * }
     * @endcode
-    * @param arg1 The current interrupt configuration
+    * @param arg1 A pointer to the public data of the CLI instance where the
+    * command its subscribed to.
     * @return none.
     */
     typedef qATCLI_Response_t (*qATCLI_CommandCallback_t)(qATCLI_Handler_t arg1);
