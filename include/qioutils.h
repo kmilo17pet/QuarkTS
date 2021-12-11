@@ -37,7 +37,6 @@
 
     /**
     * @brief Pointer to function that write-out a single character
-    *
     * @note  User should use bare-metal code to implement this function.
     * Example :
     * @code{.c}
@@ -56,7 +55,6 @@
 
      /**
     * @brief Pointer to function that perform a single character I/O operation
-    *
     * @note  User should use bare-metal code to implement this function.
     * Example 1: Input operation
     * @code{.c}

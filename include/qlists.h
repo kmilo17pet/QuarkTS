@@ -134,8 +134,10 @@
     *       }
     * }
     * @endcode
-    * @param[in] h THe for-Each handle.
-    * @return none.
+    * @param[in] h A handle to the list iterator.
+    * @return A boolean value that can be used to continue or break the walk
+    * through loop over the list. If a #qTrue value its returned the break will
+    * be performed
     */
     typedef qBool_t (*qList_NodeFcn_t)( qList_ForEachHandle_t h );
 
