@@ -7,8 +7,8 @@
 [![CodeInspectorGrade](https://api.codiga.io/project/27196/status/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/context:cpp)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/alerts/)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/TECREA/QuarkTS)](https://github.com/TECREA/QuarkTS/releases)
-[![MISRAC2012](https://img.shields.io/badge/MISRAC2012-Compliant-blue.svg)](https://en.wikipedia.org/wiki/MISRA_C)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/TECREA/QuarkTS?logo=webpack)](https://github.com/TECREA/QuarkTS/releases)
+[![MISRAC2012](https://img.shields.io/badge/MISRAC2012-Compliant-blue.svg?logo=verizon)](https://www.misra.org.uk/)
 [![CERT](https://img.shields.io/badge/CERT-Compliant-blue.svg?logo=c)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
 [![C Standard](https://img.shields.io/badge/STD-C99-green.svg?logo=c)](https://en.wikipedia.org/wiki/C99)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?logo=textpattern)](https://github.com/TECREA/QuarkTS/graphs/commit-activity)
@@ -48,10 +48,10 @@ QuarkTS is not intended to replace o compete with the other great and proven RTO
 
 ## Cloning QuarkTS
 
-Make sure to use the recursive flag to fetch the kernel submodule into src/os
+You only need to clone the kernel branch as follows:
 
 ```
-git clone https://github.com/kmilo17pet/QuarkTS.git --recursive
+git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git
 ```
 
 
