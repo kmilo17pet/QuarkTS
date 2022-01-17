@@ -231,7 +231,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a>
 , <a class="el" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253">qSM_TRANSITION_DEEP_HISTORY</a>
  }</td></tr>
-<tr class="memdesc:gaa410ec930ead4964eaf0d75fc24d230b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This enumeration defines the possible modes to perform a transistion to history.  <a href="group__qfsm.html#gaa410ec930ead4964eaf0d75fc24d230b">More...</a><br /></td></tr>
+<tr class="memdesc:gaa410ec930ead4964eaf0d75fc24d230b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This enumeration defines the possible modes to perform a transition to history.  <a href="group__qfsm.html#gaa410ec930ead4964eaf0d75fc24d230b">More...</a><br /></td></tr>
 <tr class="separator:gaa410ec930ead4964eaf0d75fc24d230b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1b1fbda0bf0e715aa1986e21235c6e91"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qfsm.html#ga1b1fbda0bf0e715aa1986e21235c6e91">qSM_Attribute_t</a> { <br />
 &#160;&#160;<a class="el" href="group__qfsm.html#gga1b1fbda0bf0e715aa1986e21235c6e91ab6752da4ca41e4f1448bc06dc21a7481">qSM_ATTRIB_STATE_TOP</a>
@@ -691,7 +691,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This enumeration defines the possible modes to perform a transistion to history. </p>
+<p>This enumeration defines the possible modes to perform a transition to history. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7"></a>qSM_TRANSITION_NO_HISTORY&#160;</td><td class="fielddoc"><p>History is not preserved. Composite states will start according to their default transition. </p>
 </td></tr>
@@ -1111,7 +1111,7 @@ The lookup table should be an array of type <a class="el" href="structq_s_m___ti
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>A pointer to the state object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of entries of type <a class="el" href="structq_s_m___transition__t.html" title="This structure should be used to define an item for a state transition table.">qSM_Transition_t</a> with the outgoing transitions. Each entry relates signals, actions and the target state using the following layout: <pre class="fragment">{ [Signal], [Action/Guard],  [Target state],  [History Mode] } </pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">table</td><td>An array of entries of type <a class="el" href="structq_s_m___transition__t.html" title="This structure should be used to define an item for a state transition table.">qSM_Transition_t</a> with the outgoing transitions. Each entry relates signals, actions and the target state using the following layout: <pre class="fragment">{ [Signal], [Action/Guard], [Target state], [History Mode] } </pre> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of elements inside <em>table</em>. </td></tr>
   </table>
   </dd>

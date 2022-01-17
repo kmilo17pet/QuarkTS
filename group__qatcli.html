@@ -252,7 +252,7 @@ Functions</h2></td></tr>
 <p>Pointer to function : An AT-Command callback. </p>
 <p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qatcli.html#gac5402443a477397530af4e9b7140ebca">qATCLI_Response_t</a> commandCallback_example( <a class="code" href="structq_a_t_c_l_i___handler__t.html">qATCLI_Handler_t</a> h ) {</div>
 <div class="line">      <a class="code" href="group__qatcli.html#gac5402443a477397530af4e9b7140ebca">qATCLI_Response_t</a> retValue = <a class="code" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df">qATCLI_ERROR</a>;</div>
-<div class="line">      <span class="keywordflow">switch</span> ( h-&gt;<a class="code" href="structq_a_t_c_l_i___handler__t.html#ace2594f0621470e85de85c9c5ee9c06d">Type</a> ){</div>
+<div class="line">      <span class="keywordflow">switch</span> ( h-&gt;<a class="code" href="structq_a_t_c_l_i___handler__t.html#ace2594f0621470e85de85c9c5ee9c06d">Type</a> ) {</div>
 <div class="line">          <span class="keywordflow">case</span> <a class="code" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246">qATCLI_CMDTYPE_ACT</a>:</div>
 <div class="line">              h-&gt;<a class="code" href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">puts</a>( <span class="stringliteral">&quot;Test message&quot;</span> );</div>
 <div class="line">              retValue = <a class="code" href="group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247">qATCLI_OK</a>;</div>

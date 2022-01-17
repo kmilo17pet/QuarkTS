@@ -248,12 +248,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This macro can be used to create custom data that can be used as node of a list. User should locate this macro as the first member of the custom structure. </p>
-<p>Example : </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
+<p>Example : </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line">      <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;</div>
 <div class="line">      <span class="keywordtype">int</span> x;</div>
 <div class="line">      <span class="keywordtype">float</span> y;</div>
-<div class="line">      <span class="keywordtype">char</span> str[10];</div>
-<div class="line">}mydata_t;</div>
+<div class="line">      <span class="keywordtype">char</span> str[ 10 ];</div>
+<div class="line">} mydata_t;</div>
 <div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:51</div></div>
 </div><!-- fragment --> 
 </div>
@@ -272,13 +272,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function used by the <a class="el" href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6" title="Sort the double linked list using the f function to determine the order. The sorting algorithm used b...">qList_Sort()</a> API to compare nodes of a list. </p>
-<p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myNode_CompareFcn( <a class="code" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h );</div>
-<div class="line">      mydata_t *n1 = (mydata_t *)h-&gt;n1;</div>
-<div class="line">      mydata_t *n2 = (mydata_t *)h-&gt;n2;</div>
+<p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> myNode_CompareFcn( <a class="code" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h ) {</div>
+<div class="line">      mydata_t *n1 = (mydata_t *)h-&gt;<a class="code" href="structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d">n1</a>;</div>
+<div class="line">      mydata_t *n2 = (mydata_t *)h-&gt;<a class="code" href="structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b">n2</a>;</div>
 <div class="line">      <span class="keywordflow">return</span> (<a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>)( n1-&gt;x &gt; n2-&gt;x );</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
 <div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort() API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:105</div></div>
+<div class="ttc" id="astructq_list___compare_handle__t_html_a3448184cc3864a59ca4757a9d3a3da0d"><div class="ttname"><a href="structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d">qList_CompareHandle_t::n1</a></div><div class="ttdeci">const void * n1</div><div class="ttdef"><b>Definition:</b> qlists.h:106</div></div>
+<div class="ttc" id="astructq_list___compare_handle__t_html_a6ca17a8286aea578f473c9e6b669528b"><div class="ttname"><a href="structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b">qList_CompareHandle_t::n2</a></div><div class="ttdeci">const void * n2</div><div class="ttdef"><b>Definition:</b> qlists.h:107</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The handler object containing the objects being compared. </td></tr>
@@ -302,17 +304,17 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887" title="Operate on each element of the list.">qList_ForEach()</a> API. </p>
-<p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ForEach_ListExample( <a class="code" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h );{</div>
-<div class="line">      <span class="keywordflow">if</span>( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a> == h-&gt;stage ){</div>
+<p>Example : </p><div class="fragment"><div class="line"><a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ForEach_ListExample( <a class="code" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h ) {</div>
+<div class="line">      <span class="keywordflow">if</span>( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a> == h-&gt;<a class="code" href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">stage</a> ) {</div>
 <div class="line"> </div>
 <div class="line">      }</div>
-<div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a> == h-&gt;stage  ) {</div>
+<div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a> == h-&gt;<a class="code" href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">stage</a> ) {</div>
 <div class="line"> </div>
 <div class="line">      }</div>
-<div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a> == h-&gt;stage  )</div>
+<div class="line">      <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a> == h-&gt;<a class="code" href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">stage</a> ) {</div>
 <div class="line"> </div>
 <div class="line">      }</div>
-<div class="line">      <span class="keywordflow">else</span>{</div>
+<div class="line">      <span class="keywordflow">else</span> {</div>
 <div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">}</div>
@@ -320,6 +322,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a></div><div class="ttdeci">@ qList_WalkInit</div><div class="ttdef"><b>Definition:</b> qlists.h:75</div></div>
 <div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a></div><div class="ttdeci">@ qList_WalkThrough</div><div class="ttdef"><b>Definition:</b> qlists.h:76</div></div>
 <div class="ttc" id="astructq_list___for_each_handle__t_html"><div class="ttname"><a href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a></div><div class="ttdoc">Handle of the qList_ForEach() API that is passed as an argument to the function that operates on each...</div><div class="ttdef"><b>Definition:</b> qlists.h:87</div></div>
+<div class="ttc" id="astructq_list___for_each_handle__t_html_a3a0029b84cc61be4b552d11e6770fb6f"><div class="ttname"><a href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">qList_ForEachHandle_t::stage</a></div><div class="ttdeci">qList_WalkStage_t stage</div><div class="ttdef"><b>Definition:</b> qlists.h:90</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>A handle to the list iterator. </td></tr>

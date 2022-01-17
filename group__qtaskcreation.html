@@ -609,7 +609,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define TIMER_TICK   0.001f</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
+<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    HAL_Init();</div>
 <div class="line">    <a class="code" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback );</div>
 <div class="line">}</div>
@@ -619,11 +619,11 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define TIMER_TICK   0.001</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> Interrupt_Timer0( <span class="keywordtype">void</span> ){</div>
+<div class="line"><span class="keywordtype">void</span> Interrupt_Timer0( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    <a class="code" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ){</div>
+<div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    MCU_Init();</div>
 <div class="line">    BSP_Setup_Timer0();</div>
 <div class="line">    <a class="code" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
