@@ -22,7 +22,7 @@ _QEDGECHECK_REG_FCN_DEC(NAME)                                               \
 /*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
 QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t );
 QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t );
-QEDGECHECK_REG_FCN_DEF( _qReg_08Bits,  qUINT8_t );
+QEDGECHECK_REG_FCN_DEF( _qReg_08Bits, qUINT8_t );
 /*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*! @endcond  */
 

@@ -196,7 +196,7 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn,
         if ( ( qTrue == AIP ) && ( NULL != xPtr ) ) {
             size_t i = 0u;
             while ( (char)'\0' != *s ) {
-                fcn( &xPtr[ i ] ,  *s++ );
+                fcn( &xPtr[ i ] , *s++ );
                 ++i;
             }
             retValue = qTrue;
@@ -384,7 +384,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     }
     /*cstat +CERT-FLP36-C*/
     #if ( Q_ATOF_FULL == 1 )
-    if ( ( 'e'  == *s ) || ( 'E' == *s ) ) {
+    if ( ( 'e' == *s ) || ( 'E' == *s ) ) {
         s++;
         if ( ( '-' == *s ) || ( '+' == *s ) ) {
             powersign = ( '-' == *s )? -1 : 1;
@@ -480,7 +480,7 @@ int qIOUtil_AtoI( const char *s )
             res = ( res * 10 ) + ( (int)*s ) - ( (int)'0' );
             ++s; /*MISRAC2004-17.4_a deviation allowed*/
         }
-        retValue =  sgn * res; /*return the computed integer with sign*/
+        retValue = sgn * res; /*return the computed integer with sign*/
     }
 
     return retValue;

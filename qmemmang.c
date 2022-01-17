@@ -235,7 +235,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
     void *pAllocated = NULL;
 
     if ( NULL != mPool ) {
-        if ( NULL == mPool->qPrivate.end ) { /*First call,*/
+        if ( NULL == mPool->qPrivate.end ) {
             /*initialize the heap to setup the list of free blocks*/
             qMemMang_HeapInit( mPool );
         }
@@ -275,7 +275,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                     Return the memory space pointed to - jumping over the
                     qMemBlockConnect_t node at its start.
                     */
-                    /* This block is being returned for use so must be. */
+                    /* This block is being returned for use so must be.*/
                     pAllocated = (void*)( ( (qUINT8_t*)previousBlock->next ) + heapStructSize );
                     /* Allocated must be removed from the list of free blocks*/
                     previousBlock->next = xBlock->next;
@@ -287,7 +287,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                         qUINT8_t *pBlockU8 = (qUINT8_t*)xBlock;
                         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP36-C_a -CERT-EXP39-C_d*/
                         /*Create a new block following the # of bytes requested.*/
-                        newBlockLink = (qMemMang_BlockConnect_t*)&pBlockU8[ pSize ];  /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                        newBlockLink = (qMemMang_BlockConnect_t*)&pBlockU8[ pSize ]; /*MISRAC2004-17.4_a deviation allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP36-C_a +CERT-EXP39-C_d*/
                         /*compute the sizes of two blocks split from the single block.*/
                         newBlockLink->blockSize = xBlock->blockSize - pSize;
@@ -319,7 +319,7 @@ size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool )
     }
     retValue = mPool->qPrivate.poolMemSize;
     if ( NULL != mPool->qPrivate.end ) {
-        retValue =  mPool->qPrivate.freeBytesRemaining;
+        retValue = mPool->qPrivate.freeBytesRemaining;
     }
 
     return retValue;

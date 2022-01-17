@@ -302,7 +302,7 @@
         * to a task
         */
         typedef enum {
-            qQueueMode_Receiver  = 4,   /**< This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the qEvent_t::EventData field.*/
+            qQueueMode_Receiver = 4,    /**< This mode will trigger the task if there are elements in the queue. Data will be extracted automatically in every trigger and will be available in the qEvent_t::EventData field.*/
             qQueueMode_Full = 8,        /**< This mode will trigger the task if the queue is full. A pointer to the queue will be available in the qEvent_t::EventData field.*/
             qQueueMode_Count = 16,      /**< This mode will trigger the task if the count of elements in the queue reach the specified value. A pointer to the queue will be available in the qEvent_t::EventData field.*/
             qQueueMode_Empty = 32,      /**< This mode will trigger the task if the queue is empty. A pointer to the queue will be available in the qEvent_t::EventData field.*/
@@ -381,7 +381,7 @@
     * @param[in] Task Pointer to the task node.
     * @return #qTrue if the function asserts, otherwise returns #qFalse.
     */
-    qBool_t qTask_HasPendingNotifications( const qTask_t * const Task  );
+    qBool_t qTask_HasPendingNotifications( const qTask_t * const Task );
 
     /** @}*/
 

@@ -30,7 +30,7 @@
     * restore the saved interrupt setup.
     * Example :
     * @code{.c}
-    * void BSP_InterruptRestorer( qUINT32_t savedmask ){
+    * void BSP_InterruptRestorer( qUINT32_t savedmask ) {
     *       HAL_InteruptSetMask( savedmask );
     *       HAL_EnableInterrupts();
     * }
@@ -49,7 +49,7 @@
     * by the kernel.
     * Example :
     * @code{.c}
-    * qUINT32_t BSP_InterruptDisabler( void ){
+    * qUINT32_t BSP_InterruptDisabler( void ) {
     *       qUINT32_t currentmask;
     *       currentmask = HAL_InteruptGetMask( savedmask );
     *       HAL_DisableInterrupts();

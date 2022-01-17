@@ -178,7 +178,7 @@
     * @a ptr as the argument and no calls to qMalloc() resulted in a pointer
     * equal to @a ptr afterwards. The behavior is undefined if after qFree()
     * returns, an access is made through the pointer @a ptr.
-    * @attention  qFree() its NOT interrupt-safe.
+    * @attention qFree() its NOT interrupt-safe.
     * @param[in] ptr to the memory to deallocate
     * @return none.
     */

@@ -161,7 +161,7 @@
 
     /**
     * @brief This enumeration defines the possible modes to perform a
-    * transistion to history
+    * transition to history
     */
     typedef enum {
         qSM_TRANSITION_NO_HISTORY = 0,          /**< History is not preserved. Composite states will start according to their default transition.*/
@@ -189,10 +189,10 @@
     /*! @cond  */
     typedef struct _qSM_uPublicData_s {
         _qSM_HANDLER_FIELDS( Q_NONE );
-    } 
+    }
     _qSM_UnprotectedPublicData_t;
     typedef struct _qSM_pPublicData_s {
-        _qSM_HANDLER_FIELDS( const  );
+        _qSM_HANDLER_FIELDS( const );
     }
     _qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;
@@ -301,7 +301,7 @@
 
     /**
     * @brief A state object
-    * @details  States are represented as instances of the qSM_State_t object.
+    * @details States are represented as instances of the qSM_State_t object.
     * One important attribute of this object is the callback function, which is
     * used to describe the behavior specific to the state. Also there is a
     * pointer to the parent state to define nesting of the state and its place
@@ -474,7 +474,7 @@
     * @param[in] table An array of entries of type qSM_Transition_t with the
     * outgoing transitions. Each entry relates signals, actions and the target
     * state using the following layout:
-    * @verbatim { [Signal], [Action/Guard],  [Target state],  [History Mode] } @endverbatim
+    * @verbatim { [Signal], [Action/Guard], [Target state], [History Mode] } @endverbatim
     * @param[in] n The number of elements inside @a table.
     * @return #qTrue on success, otherwise return #qFalse.
     */

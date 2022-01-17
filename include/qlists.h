@@ -39,12 +39,12 @@
     *
     * Example :
     * @code{.c}
-    * typedef struct{
+    * typedef struct {
     *       qNode_MinimalFields;
     *       int x;
     *       float y;
-    *       char str[10];
-    * }mydata_t;
+    *       char str[ 10 ];
+    * } mydata_t;
     * @endcode
     */
 
@@ -119,17 +119,17 @@
     *
     * Example :
     * @code{.c}
-    * qBool_t ForEach_ListExample( qList_ForEachHandle_t h );{
-    *       if( qList_WalkThrough == h->stage ){
+    * qBool_t ForEach_ListExample( qList_ForEachHandle_t h ) {
+    *       if( qList_WalkThrough == h->stage ) {
     *
     *       }
-    *       else if ( qList_WalkInit == h->stage  ) {
+    *       else if ( qList_WalkInit == h->stage ) {
     *
     *       }
-    *       else if ( qList_WalkEnd == h->stage  )
+    *       else if ( qList_WalkEnd == h->stage ) {
     *
     *       }
-    *       else{
+    *       else {
     *
     *       }
     * }
@@ -266,7 +266,7 @@
     *
     * Example :
     * @code{.c}
-    * qBool_t myNode_CompareFcn( qList_CompareHandle_t h );
+    * qBool_t myNode_CompareFcn( qList_CompareHandle_t h ) {
     *       mydata_t *n1 = (mydata_t *)h->n1;
     *       mydata_t *n2 = (mydata_t *)h->n2;
     *       return (qBool_t)( n1->x > n2->x );
@@ -316,7 +316,7 @@
     * @brief This macro should be used to define the direction of travel of the
     * list forward
     */
-    #define QLIST_FORWARD   ( _qNode_Forward  )
+    #define QLIST_FORWARD   ( _qNode_Forward )
 
     /**
     * @brief This macro should be used to define the direction of travel of the

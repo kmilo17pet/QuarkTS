@@ -167,7 +167,7 @@
 
 
         #define qDebug_String( v )                                          \
-        _qTrace_dgb( "", NULL, #v "="  , (char*)(v), NULL, 0 )              \
+        _qTrace_dgb( "", NULL, #v "=" , (char*)(v), NULL, 0 )               \
 
 
         #define qDebug_Bool( v )                                            \
@@ -234,7 +234,7 @@
 
 
         #define qTrace_String( v )                                          \
-        _qTrace_dgb( _qAT(), _QFCN, #v "="  , (char*)(v), NULL, 0 )         \
+        _qTrace_dgb( _qAT(), _QFCN, #v "=" , (char*)(v), NULL, 0 )          \
 
 
         #define qTrace_Bool( v )                                            \

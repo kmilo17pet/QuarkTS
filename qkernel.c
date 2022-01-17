@@ -15,7 +15,7 @@
 #define QKERNEL_BIT_FCALLRELEASED            ( 0x00000008uL )
 
 #define QKERNEL_COREFLAG_SET( FLAG, BIT )                                   \
-( FLAG ) |= (qCoreFlags_t)(  BIT )                                          \
+( FLAG ) |= (qCoreFlags_t)( BIT )                                           \
 
 #define QKERNEL_COREFLAG_CLEAR( FLAG, BIT )                                 \
 ( FLAG ) &= (qCoreFlags_t)( ~BIT )                                          \
@@ -218,7 +218,7 @@ qBool_t qOS_Notification_Spread( void *eventdata,
 
     #if ( Q_NOTIFICATION_SPREADER == 1 )
         /*do not proceed if any previous operation is in progress*/
-        if ( NULL ==  kernel.nSpreader.mode ) {
+        if ( NULL == kernel.nSpreader.mode ) {
             if ( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ) {
                 kernel.nSpreader.mode = ( qTask_NotifySimple == mode )?
                                         &qTask_Notification_Send :
@@ -789,7 +789,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
             #endif
             else {
                 xTask->qPrivate.trigger = qTriggerNULL;
-                /*the task has no available events, put it into a suspended state*/
+                /*task has no available events, put it into a suspended state*/
             }
         }
         (void)qList_Remove( waitingList, NULL, QLIST_ATFRONT );
@@ -958,7 +958,7 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
             /*set the init flag*/
             qOS_Set_TaskFlags( xTask, QTASK_BIT_INIT, qTrue );
             eventinfo->FirstIteration = qFalse;
-            eventinfo->LastIteration =  qFalse;
+            eventinfo->LastIteration = qFalse;
             eventinfo->StartDelay = (qClock_t)0uL;
             eventinfo->EventData = NULL; /*clear the eventdata*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )

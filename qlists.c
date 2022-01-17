@@ -139,11 +139,11 @@ qBool_t qList_Insert( qList_t *const l,
                 qList_Node_t *iNode;
 
                 iNode = qList_GetiNode( l, p );
-                newnode->next = iNode->next;  /*  NEW -> (i+1)NODE */
-                newnode->prev = iNode;        /*  iNODE <- NEW */
-                iNode->next->prev = newnode;  /*  NEW <- (i+1)NODE  */
-                iNode->next = newnode;        /*  iNODE -> NEW */
-            }                                 /*  result: iNODE <-> NEW <-> (i+1)NODE    */
+                newnode->next = iNode->next;  /* NEW -> (i+1)NODE */
+                newnode->prev = iNode;        /* iNODE <- NEW */
+                iNode->next->prev = newnode;  /* NEW <- (i+1)NODE */
+                iNode->next = newnode;        /* iNODE -> NEW */
+            }                                 /* result: iNODE <-> NEW <-> (i+1)NODE*/
             ++l->size;
             newnode->container = l;
         }
@@ -462,10 +462,10 @@ qBool_t qList_ForEach( qList_t *const l,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != l ) && ( NULL != f ) && ( ( &QLIST_FORWARD == d ) || ( &QLIST_BACKWARD == d ) ) ) {
-        if ( NULL != l->head ) {  /*walk the list only if it has items*/
+        if ( NULL != l->head ) { /*walk the list only if it has items*/
             qList_Node_t *iNode;
-            qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk throught*/
-            _qList_ForEachHandle_t xHandle = { NULL, arg,  qList_WalkInit };
+            qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk-through*/
+            _qList_ForEachHandle_t xHandle = { NULL, arg, qList_WalkInit };
             /*select starting point*/
             adjacent = ( &QLIST_FORWARD == d )? l->head : l->tail;
             if ( NULL != nodeOffset ) { /*offset request?*/
@@ -481,7 +481,7 @@ qBool_t qList_ForEach( qList_t *const l,
             if ( qFalse == retValue ) { /*check if initial stage allows us to continue*/
                 xHandle.stage = qList_WalkThrough;
                 for ( iNode = adjacent ; NULL != iNode ; iNode = adjacent ) {
-                    /*Save the adjacent node if the current node changes its links. */
+                    /*Save adjacent node if current node changes its links. */
                     adjacent = d( iNode );
                     xHandle.node = iNode;
                     retValue = f( &xHandle ); /*perform action over the node*/

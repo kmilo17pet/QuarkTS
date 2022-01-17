@@ -209,7 +209,7 @@ qBool_t qTask_Clear( qTask_t * const Task,
                 retValue = qTrue;
                 break;
             case qTask_ClearTimeElapsed:
-                retValue =  qSTimer_Reload( &Task->qPrivate.timer );
+                retValue = qSTimer_Reload( &Task->qPrivate.timer );
                 break;
             case qTask_ClearCycles:
                 #if ( Q_TASK_COUNT_CYCLES == 1 )

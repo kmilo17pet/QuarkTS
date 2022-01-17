@@ -59,8 +59,7 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
             /*set the expected response pattern*/
             (void)qIOUtil_StrlCpy( r->qPrivate.pattern2Match,
                                    (const char*)pattern,
-                                   r->qPrivate.maxStrLength
-                                 );
+                                   r->qPrivate.maxStrLength );
             /*set the number of chars to match*/
             r->qPrivate.patternLength = ( 0u == n )?
                                         qIOUtil_StrLen( pattern, r->qPrivate.maxStrLength ) :

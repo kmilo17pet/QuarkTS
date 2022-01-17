@@ -120,7 +120,7 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli,
 
     if ( ( NULL != cli ) && ( NULL != outFcn) ) {
         (void)memset( cli, 0 , sizeof(qATCLI_t) );
-        cli->qPrivate.first  = NULL;
+        cli->qPrivate.first = NULL;
         cli->qPrivate.outputFcn = outFcn;
         cli->qPrivate.id_rsp = QATCLI_DEFAULT_DEVID_STRING;
         cli->qPrivate.ok_rsp = QATCLI_DEFAULT_OK_RSP_STRING;
@@ -130,7 +130,7 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli,
         cli->qPrivate.sizeOutput = sizeOutput;
         cli->qPrivate.xInput.storage = (char*)pInput;
         cli->qPrivate.xInput.size = sizeInput;
-        cli->qPrivate.xInput.maxIndex =  sizeInput - 1u;
+        cli->qPrivate.xInput.maxIndex = sizeInput - 1u;
         cli->qPrivate.xInput.ready = qFalse;
         cli->qPrivate.xInput.index = 0u;
         cli->qPrivate.xNotifyFcn = NULL;
@@ -232,7 +232,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli,
 
             cli->qPrivate.xInput.storage[ currentIndex++ ] = c; /*insert char*/
             /*put the null-char after to keep the string safe*/
-            cli->qPrivate.xInput.storage[ currentIndex   ] = (char)'\0';
+            cli->qPrivate.xInput.storage[ currentIndex ] = (char)'\0';
             /*check if the input buffer its reached*/
             if ( currentIndex >= cli->qPrivate.xInput.maxIndex ) {
                 currentIndex = 0u;
@@ -459,7 +459,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
     qBool_t retValue = qFalse;
 
     if ( NULL != cli ) {
-        qATCLI_Input_t *xInput =  &cli->qPrivate.xInput;
+        qATCLI_Input_t *xInput = &cli->qPrivate.xInput;
         /*cstat -CERT-STR32-C*/
         if ( xInput->ready ) { /*a new input has arrived*/
             qATCLI_Response_t outRetval, cliRetVal;
@@ -620,7 +620,7 @@ static int GetArgInt( qIndex_t n )
 
     if ( NULL != cli_CurrentCmdHelper ) {
         /*cstat -CERT-STR34-C*/
-        retValue =  (int)qIOUtil_AtoI( cli_CurrentCmdHelper->GetArgPtr( n ) );
+        retValue = (int)qIOUtil_AtoI( cli_CurrentCmdHelper->GetArgPtr( n ) );
         /*cstat +CERT-STR34-C*/
     }
 
@@ -632,7 +632,7 @@ static qFloat32_t GetArgFlt( qIndex_t n )
     qFloat32_t retValue = 0.0f;
 
     if ( NULL != cli_CurrentCmdHelper ) {
-        retValue =  (qFloat32_t)qIOUtil_AtoF( cli_CurrentCmdHelper->GetArgPtr( n ) );
+        retValue = (qFloat32_t)qIOUtil_AtoF( cli_CurrentCmdHelper->GetArgPtr( n ) );
     }
 
     return retValue;
@@ -659,7 +659,7 @@ static char* GetArgString( qIndex_t n,
     if ( ( NULL != cli_CurrentCmdHelper ) && ( NULL != pOut ) && ( n > 0u ) ) {
         qATCLI_Handler_t param = cli_CurrentCmdHelper;
 
-        if ( qATCLI_CMDTYPE_PARA ==  param->Type ) {
+        if ( qATCLI_CMDTYPE_PARA == param->Type ) {
             qIndex_t i, j, argc = 0u;
 
             --n;

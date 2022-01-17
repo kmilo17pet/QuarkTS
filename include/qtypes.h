@@ -36,7 +36,7 @@
     * @{
     */
 
-    #if ( Q_USE_STDINT_H  == 1 )
+    #if ( Q_USE_STDINT_H == 1 )
         #include <stdint.h>
         /*Unsigned types*/
 

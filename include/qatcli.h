@@ -76,11 +76,11 @@
     * @brief An enum to describe the available AT command types.
     */
     typedef enum {
-        qATCLI_CMDTYPE_UNDEF    = QATCLI_CMDTYPE_UNDEF, /**< Was not able to detected a correct input command*/
-        qATCLI_CMDTYPE_PARA     = QATCLI_CMDTYPE_PARA,  /**< Command that receives parameters (comma separated arguments after the equal(=) symbol) : AT+cmd=x,y */
-        qATCLI_CMDTYPE_TEST     = QATCLI_CMDTYPE_TEST,  /**< Command in test mode (no arguments allowed): AT+cmd=? */
-        qATCLI_CMDTYPE_READ     = QATCLI_CMDTYPE_READ,  /**< Command to query information(data allowed after the ? symbol)  : AT+cmd? */
-        qATCLI_CMDTYPE_ACT      = QATCLI_CMDTYPE_ACT    /**< Command to perform an action (no arguments allowed) : AT+cmd */
+        qATCLI_CMDTYPE_UNDEF = QATCLI_CMDTYPE_UNDEF, /**< Was not able to detected a correct input command*/
+        qATCLI_CMDTYPE_PARA  = QATCLI_CMDTYPE_PARA,  /**< Command that receives parameters (comma separated arguments after the equal(=) symbol) : AT+cmd=x,y */
+        qATCLI_CMDTYPE_TEST  = QATCLI_CMDTYPE_TEST,  /**< Command in test mode (no arguments allowed): AT+cmd=? */
+        qATCLI_CMDTYPE_READ  = QATCLI_CMDTYPE_READ,  /**< Command to query information(data allowed after the ? symbol)  : AT+cmd? */
+        qATCLI_CMDTYPE_ACT   = QATCLI_CMDTYPE_ACT    /**< Command to perform an action (no arguments allowed) : AT+cmd */
     }
     qATCLI_CommandType_t;
 
@@ -98,7 +98,7 @@
     */
     typedef struct _qATCLI_PublicData_s {
         /**
-        * @brief  A pointer to the calling AT Command object.
+        * @brief A pointer to the calling AT Command object.
         */
         void *Command;
         /**
@@ -106,24 +106,24 @@
         */
         char *StrData;
         /**
-        * @brief  Helper method to get the pointer where the desired argument
+        * @brief Helper method to get the pointer where the desired argument
         * starts.
         * @param[in] n The number of the argument
-        * @return  A pointer to the desired argument. NULL  pointer if the
+        * @return A pointer to the desired argument. NULL pointer if the
         * argument is not present.
         */
         char* (*GetArgPtr)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n argument parsed as integer from
+        * @brief Helper method to get the @a n argument parsed as integer from
         * the incoming AT command.
         * @see qIOUtil_AtoI()
         * @param[in] n The number of the argument
-        * @return  The argument parsed as integer. Same behavior of
+        * @return The argument parsed as integer. Same behavior of
         * qIOUtil_AtoI(). If argument not found returns 0.
         */
         int (*GetArgInt)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n argument parsed as float from
+        * @brief Helper method to get the @a n argument parsed as float from
         * the incoming AT command.
         * @see qIOUtil_AtoF()
         * @param[in] n The number of the argument
@@ -132,25 +132,25 @@
         */
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n HEX argument parsed qUINT32_t
+        * @brief Helper method to get the @a n HEX argument parsed qUINT32_t
         * from the incoming AT command.
         * @see qIOUtil_XtoU32()
         * @param[in] n The number of the argument
-        * @return  The HEX argument parsed as qUINT32_t. Same behavior of
+        * @return The HEX argument parsed as qUINT32_t. Same behavior of
         * qIOUtil_XtoU32(). If argument not found returns 0.
         */
         qUINT32_t (*GetArgHex)( qIndex_t n );
         /**
-        * @brief  Helper method to get the @a n argument parsed as string from
+        * @brief Helper method to get the @a n argument parsed as string from
         * the incoming AT command.
         * @param[in] n The number of the argument
         * @param[out] pOut Array in memory where to store the resulting
         * null-terminated string.
-        * @return  Same as @a out on success, otherwise returns NULL.
+        * @return Same as @a out on success, otherwise returns NULL.
         */
         char* (*GetArgString)( qIndex_t n, char* pOut );
         /**
-        * @brief  Helper method for printing character to the CLI output.
+        * @brief Helper method for printing character to the CLI output.
         * It displays only one character at a time.
         * @param[in] c The ASCII character.
         * @return  none.
@@ -221,13 +221,13 @@
     qATCLI_t;
 
     /**
-    * @brief Pointer to function  : An AT-Command callback
+    * @brief Pointer to function : An AT-Command callback
     *
     * Example :
     * @code{.c}
     * qATCLI_Response_t commandCallback_example( qATCLI_Handler_t h ) {
     *       qATCLI_Response_t retValue = qATCLI_ERROR;
-    *       switch ( h->Type ){
+    *       switch ( h->Type ) {
     *           case qATCLI_CMDTYPE_ACT:
     *               h->puts( "Test message" );
     *               retValue = qATCLI_OK;
@@ -328,7 +328,7 @@
     * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the
     * callback function also depends on whether the number of argument is valid
     * or not. Information about number of arguments is combined with a bitwise
-    * 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY ,  where X which defines maximum
+    * 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY , where X which defines maximum
     * argument number for incoming command and Y which defines minimum argument
     * number for incoming command
     *

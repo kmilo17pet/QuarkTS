@@ -69,10 +69,10 @@
     * @brief Pointer to Function type qGetTickFcn_t : function to get the
     * hardware tick.
     *
-    *@note  User should use bare-metal code to implement this function.
+    * @note User should use bare-metal code to implement this function.
     * Example :
     * @code{.c}
-    * qUINT32_t OSInterface_GetTick( void ){
+    * qUINT32_t OSInterface_GetTick( void ) {
     *       return HAL_GetTick();
     * }
     * @endcode
@@ -89,14 +89,14 @@
 
     /**
     * @brief Set the clock-tick provider function.
-    * @param[in]  provider A pointer to the tick provider function
+    * @param[in] provider A pointer to the tick provider function
     * @return #qTrue on success, otherwise returns #qFalse.
     */
     qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider );
 
     /**
     * @brief Convert the specified input time(epochs) to time(seconds)
-    * @param[in]  t Time in epochs
+    * @param[in] t Time in epochs
     * @return time (t) in seconds
     */
     qTime_t qClock_Convert2Time( const qClock_t t );

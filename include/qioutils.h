@@ -263,7 +263,7 @@
     * function.
     * @param[in] s The string beginning with the representation of a
     * floating-point number.
-    * @return  On success, the function returns the converted floating point
+    * @return On success, the function returns the converted floating point
     * number as a double(qFloat64_t) value.
     * If no valid conversion could be performed, the function returns zero (0.0).
     * If the converted value would be out of the range of representable values

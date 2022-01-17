@@ -259,7 +259,7 @@
     #define qCR_End                         _qCR_Dispose
 
     /**
-    * @brief  This statement is only allowed inside a Coroutine segment.
+    * @brief This statement is only allowed inside a Coroutine segment.
     * #qCR_Yield return the CPU control back to the scheduler but saving the
     * execution progress. With the next task activation, the Coroutine will
     * resume the execution after the last #qCR_Yield statement.
@@ -288,7 +288,7 @@
     #define qCR_WaitUntil( bCondition )     _qCR_wu_Assert( bCondition )
 
     /**
-    * @brief  Yields until the logical condition being true or the specified
+    * @brief Yields until the logical condition being true or the specified
     * timeout expires.
     * @see #qCR_WaitUntil
     * @param[in] bCondition The logical condition to be evaluated.
@@ -304,7 +304,7 @@
     _qCR_wu_TmrAssert( bCondition, tValue )                                 \
 
     /**
-    * @brief  This statement start a blocking Job segment.
+    * @brief This statement start a blocking Job segment.
     * @see #qCR_Until
     * @note Must be used together with a matching #qCR_Until statement.
     * Example:
@@ -317,7 +317,7 @@
     #define qCR_Do                          _qCR_do
 
     /**
-    * @brief  This statement ends a blocking Job segment starting with the
+    * @brief This statement ends a blocking Job segment starting with the
     * #qCR_Do statement.
     * @see #qCR_Do
     * @param[in] bCondition The logical condition to be evaluated.
@@ -335,7 +335,7 @@
 
     /**
     * @brief Initializes a semaphore with a value for the counter. Internally,
-    * the semaphores use an "unsigned int" to represent the counter,  therefore
+    * the semaphores use an "unsigned int" to represent the counter, therefore
     * the @a sValue argument should be within range of an "unsigned int".
     * @see #qCR_SemWait
     * @see #qCR_SemSignal
@@ -417,7 +417,7 @@
     #define qCR_TimeoutSet( tValue )    qSTimer_Set( &_qcr->crdelay , tValue )
 
     /**
-    * @brief  Check if the internal Co-routine timeout expires.
+    * @brief Check if the internal Co-routine timeout expires.
     * @return #qTrue when STimer expires, otherwise, returns #qFalse.
     */
     #define qCR_TimeoutExpired( )       qSTimer_Expired( &_qcr->crdelay )

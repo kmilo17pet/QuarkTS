@@ -22,7 +22,7 @@ void _qtrace_krn( const char *msg,
         char *obuf = qTrace_PublicBuffer;
 
         qTrace_LogTicks( obuf );
-        (void)qIOUtil_OutputString( qDebug, NULL,"{OS:Kernel} ", qFalse );
+        (void)qIOUtil_OutputString( qDebug, NULL, "{OS:Kernel} ", qFalse );
         (void)qIOUtil_OutputString( qDebug, NULL, msg, qFalse );
         if ( NULL != id ) {
             qUINT32_t val = 0;

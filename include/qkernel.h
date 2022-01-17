@@ -108,7 +108,7 @@
         *
         * #define TIMER_TICK   0.001f
         *
-        * void main( void ){
+        * void main( void ) {
         *     HAL_Init();
         *     qOS_Setup( HAL_GetTick, TIMER_TICK, IdleTask_Callback );
         * }
@@ -121,11 +121,11 @@
         *
         * #define TIMER_TICK   0.001
         *
-        * void Interrupt_Timer0( void ){
+        * void Interrupt_Timer0( void ) {
         *     qClock_SysTick();
         * }
         *
-        * void main( void ){
+        * void main( void ) {
         *     MCU_Init();
         *     BSP_Setup_Timer0();
         *     qOS_Setup( NULL, TIMER_TICK, IdleTask_Callback );

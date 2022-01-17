@@ -99,7 +99,7 @@ static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
     }
     else {
         qSM_State_t *s, *t;
-        qBool_t xBreak = qFalse; /*just to be in compliance with the MISRAC2012-Rule-15.5*/
+        qBool_t xBreak = qFalse; /*to be in compliance with MISRAC2012-Rule-15.5*/
         qSM_LCA_t n = 0u;
 
         for ( s = m->qPrivate.source ;
@@ -192,7 +192,7 @@ static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m,
     if ( ( NULL != m->qPrivate.timeSpec ) && ( NULL != s->qPrivate.tdef ) ) {
         qStateMachine_TimeoutPerformSpecifiedActions( m, s, QSM_SIGNAL_EXIT );
     }
-    s->qPrivate.parent->qPrivate.lastRunningChild  = s;
+    s->qPrivate.parent->qPrivate.lastRunningChild = s;
 
     return s->qPrivate.parent;
 }
@@ -204,6 +204,7 @@ static void qStateMachine_StateOnEntry( qSM_t * const m,
 
     qStateMachine_PrepareHandler( h, QSM_SIGNAL_ENTRY, s );
     (void)qStateMachine_InvokeStateCallback( m, s, h );
+
     if ( ( NULL != m->qPrivate.timeSpec ) && ( NULL != s->qPrivate.tdef ) ) {
         qStateMachine_TimeoutPerformSpecifiedActions( m, s, QSM_SIGNAL_ENTRY );
     }
@@ -269,7 +270,7 @@ static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m,
     Entry actions must be executed in order form the least deeply nested to the
     most deeply nested state. This is opposite to the normal navigability of the
     module data-structure design. So this is solved by first recording the entry
-    path from the LCA to the target, then playing it  backwards. with execution
+    path from the LCA to the target, then playing it backwards. with execution
     of entry actions.
     qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart are
     used to handle this after the transition perform all the required exit
@@ -277,9 +278,9 @@ static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m,
     */
     *trace = NULL;
     for ( s = m->qPrivate.next ; s != m->qPrivate.current ; s = s->qPrivate.parent ) {
-        *(++trace) = s;  /* trace path to target */
+        *(++trace) = s; /* trace path to target */
     }
-    while ( NULL != ( s = *trace-- ) ) {  /* retrace entry from LCA */
+    while ( NULL != ( s = *trace-- ) ) { /* retrace entry from LCA */
         qStateMachine_StateOnEntry( m, s );
     }
     m->qPrivate.current = m->qPrivate.next;
@@ -475,13 +476,13 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
     for ( i = 0u ; i < n ; ++i ) {
-        iTransition = &table[ i ];  /*get the i-element from the table*/
+        iTransition = &table[ i ]; /*get the i-element from the table*/
         /*if no signal-guard available, allow the transition by default*/
         transitionAllowed = qTrue;
         if ( h->Signal == iTransition->xSignal ) { /*table entry match*/
             if ( NULL != iTransition->guard ) {
                 /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
-                /*if signal-guard available, just run the guard function*/
+                /*if signal-guard available, run the guard function*/
                 transitionAllowed = iTransition->guard( (qSM_Handler_t)h ); /*cast allowed, struct layout compatible*/
                 /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             }
@@ -574,7 +575,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
 
                 if ( 0uL != ( opt & setCheck ) ) {
                     if ( 0uL == ( opt & QSM_TSOPT_KEEP_IF_SET ) ) {
-                        (void)qSTimer_Set( tmr, tValue  );
+                        (void)qSTimer_Set( tmr, tValue );
                     }
                     if ( 0uL != ( opt & QSM_TSOPT_PERIODIC ) ) {
                         qFLM_BitSet( m->qPrivate.timeSpec->isPeriodic,
