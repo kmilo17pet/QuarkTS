@@ -5,7 +5,7 @@ https://github.com/jothepro/doxygen-awesome-css
 
 MIT License
 
-Copyright (c) 2021 jothepro
+Copyright (c) 2021 - 2022 jothepro
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ html {
     /* default box shadow used for raising an element above the normal content. Used in dropdowns, Searchresult, ... */
     --box-shadow: 0 2px 10px 0 rgba(0,0,0,.1);
 
-    --odd-color: rgba(0,0,0,.03);
+    --odd-color: rgba(0,0,0,.028);
 
     /* font-families. will affect all text on the website
      * font-family: the normal font for text, headlines, menus
@@ -153,10 +153,14 @@ html {
     --side-nav-arrow-opacity: 0;
     --side-nav-arrow-hover-opacity: 0.9;
 
+    --toc-background: var(--side-nav-background);
+    --toc-foreground: var(--side-nav-foreground);
+
     /* height of an item in any tree / collapsable table */
     --tree-item-height: 30px;
 
-    --darkmode-toggle-button-icon: '☀️'
+    --darkmode-toggle-button-icon: '☀️';
+    --memname-font-size: var(--page-font-size);
 }
 
 @media screen and (max-width: 767px) {
@@ -180,7 +184,7 @@ html {
 
         --box-shadow: 0 2px 10px 0 rgba(0,0,0,.35);
 
-        --odd-color: rgba(0,0,0,.1);
+        --odd-color: rgba(100,100,100,.06);
 
         --menu-selected-background: rgba(0,0,0,.4);
 
@@ -229,7 +233,7 @@ html.dark-mode {
 
     --box-shadow: 0 2px 10px 0 rgba(0,0,0,.35);
 
-    --odd-color: rgba(0,0,0,.1);
+    --odd-color: rgba(100,100,100,.06);
 
     --menu-selected-background: rgba(0,0,0,.4);
 
@@ -491,6 +495,11 @@ a:link, a:visited, a:hover, a:focus, a:active {
 
 .left #MSearchSelect {
     left: 0;
+    user-select: none;
+}
+
+.SelectionMark {
+    user-select: none;
 }
 
 .tabs .left #MSearchSelect {
@@ -609,6 +618,8 @@ html.dark-mode iframe#MSearchResults {
     border-radius: var(--border-radius-medium);
     box-shadow: var(--box-shadow);
     background: var(--page-background-color);
+    padding-top: var(--spacing-small);
+    padding-bottom: var(--spacing-small);
 }
 
 #MSearchSelectWindow a.SelectItem {
@@ -713,8 +724,10 @@ html.dark-mode iframe#MSearchResults {
 }
 
 #nav-sync {
-    top: 12px !important;
+    bottom: 12px;
     right: 12px;
+    top: auto !important;
+    user-select: none;
 }
 
 #nav-tree .selected {
@@ -894,7 +907,7 @@ blockquote p {
  */
 
 div.toc {
-    background-color: var(--side-nav-background);
+    background-color: var(--toc-background);
     border: 1px solid var(--separator-color);
     border-radius: var(--border-radius-medium);
     box-shadow: var(--box-shadow);
@@ -903,7 +916,7 @@ div.toc {
 }
 
 div.toc h3 {
-    color: var(--side-nav-foreground);
+    color: var(--toc-foreground);
     font-size: var(--navigation-font-size);
     margin: var(--spacing-large) 0;
 }
@@ -919,7 +932,7 @@ div.toc li:before {
     font-weight: 800;
     font-family: var(--font-family);
     margin-right: var(--spacing-small);
-    color: var(--side-nav-foreground);
+    color: var(--toc-foreground);
     opacity: .4;
 }
 
@@ -1201,6 +1214,7 @@ div.memtitle {
 div.memproto table.memname {
     font-family: monospace, fixed;
     color: var(--page-foreground-color);
+    font-size: var(--memname-font-size);
 }
 
 table.mlabels, table.mlabels > tbody {
@@ -1327,9 +1341,9 @@ hr {
     box-shadow: var(--content-maxwidth) 0 0 0 var(--separator-color), calc(0px - var(--content-maxwidth)) 0 0 0 var(--separator-color);
 }
 
-.contents img, .contents .center, .contents center {
+.contents img, .contents .center, .contents center, .contents div.image object {
     max-width: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 
 /*
@@ -1409,6 +1423,27 @@ html.dark-mode .iconfopen, html.dark-mode .iconfclosed {
     .classindex {
         margin: 0 calc(0px - var(--spacing-small));
     }
+}
+
+/* 
+ Class Index Doxygen 1.8 
+*/
+
+table.classindex table div.ah {
+    background-image: none;
+    background-color: initial;
+    border-color: var(--separator-color);
+    color: var(--page-foreground-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-small);
+}
+
+div.qindex {
+    background-color: var(--odd-color);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--separator-color);
+    padding: var(--spacing-small) 0;
 }
 
 /*
@@ -1513,6 +1548,8 @@ doxygen-awesome-dark-mode-toggle {
     vertical-align: middle;
     text-align: center;
     line-height: var(--searchbar-height);
+    user-select: none;
+    cursor: pointer;
 }
 
 doxygen-awesome-dark-mode-toggle:hover {
