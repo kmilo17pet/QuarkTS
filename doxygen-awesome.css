@@ -860,10 +860,6 @@ td.memSeparator {
     border-color: var(--separator-color);
 }
 
-.mdescLeft, .mdescRight, .memItemLeft, .memItemRight, .memTemplItemLeft, .memTemplItemRight, .memTemplParams {
-    background: var(--code-background);
-}
-
 span.mlabel {
     background: var(--primary-color);
     border: none;
@@ -914,22 +910,20 @@ h2.groupheader {
     box-shadow: 
         100px 0 var(--page-background-color), 
         -100px 0 var(--page-background-color),
-        100px 1px var(--separator-color),
-        -100px 1px var(--separator-color),
+        100px 0.75px var(--separator-color),
+        -100px 0.75px var(--separator-color),
         500px 0 var(--page-background-color), 
         -500px 0 var(--page-background-color),
-        500px 1px var(--separator-color),
-        -500px 1px var(--separator-color),
-        1500px 0 var(--page-background-color), 
-        1500px 1px var(--separator-color),
-        var(--content-maxwidth) 0 var(--page-background-color),
-        calc(0px - var(--content-maxwidth)) 0 var(--page-background-color),
-        var(--content-maxwidth) 1px var(--separator-color),
-        calc(0px - var(--content-maxwidth)) 1px var(--separator-color),
-        calc(2 * var(--content-maxwidth)) 0 var(--page-background-color),
-        calc(0px - 2 * var(--content-maxwidth)) 0 var(--page-background-color),
-        calc(2 * var(--content-maxwidth)) 1px var(--separator-color),
-        calc(0px - 2 * var(--content-maxwidth)) 1px var(--separator-color);
+        500px 0.75px var(--separator-color),
+        -500px 0.75px var(--separator-color),
+        1500px 0 var(--page-background-color),
+        -1500px 0 var(--page-background-color), 
+        1500px 0.75px var(--separator-color),
+        -1500px 0.75px var(--separator-color),
+        2000px 0 var(--page-background-color),
+        -2000px 0 var(--page-background-color),
+        2000px 0.75px var(--separator-color),
+        -2000px 0.75px var(--separator-color);
 }
 
 blockquote {
@@ -1373,6 +1367,13 @@ div.memproto table.memname {
     font-size: var(--memname-font-size);
 }
 
+div.memproto div.memtemplate {
+    font-family: var(--font-family-monospace);
+    color: var(--primary-dark-color);
+    font-size: var(--memname-font-size);
+    margin-left: 2px;
+}
+
 table.mlabels, table.mlabels > tbody {
     display: block;
 }
@@ -1436,12 +1437,26 @@ dl.reflist dd {
  Table
  */
 
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname) {
+     display: inline-block;
+     max-width: 100%;
+ }
+
+.contents > table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname):not(.classindex) {
+    margin-left: calc(0px - var(--spacing-large));
+    margin-right: calc(0px - var(--spacing-large));
+    max-width: calc(100% + 2 * var(--spacing-large));
+}
+
 table.markdownTable, table.fieldtable {
-    width: 100%;
     border: none;
     margin: var(--spacing-medium) 0;
     box-shadow: 0 0 0 1px var(--separator-color);
     border-radius: var(--border-radius-small);
+}
+
+table.fieldtable {
+    width: 100%;
 }
 
 th.markdownTableHeadLeft, th.markdownTableHeadRight, th.markdownTableHeadCenter, th.markdownTableHeadNone {
@@ -1509,13 +1524,48 @@ table.memberdecls tr[class^='memitem'] {
     font-size: var(--code-font-size);
 }
 
-table.memberdecls .memItemLeft, table.memberdecls .memItemRight {
+table.memberdecls tr[class^='memitem'] .memTemplParams {
+    font-family: var(--font-family-monospace);
+    font-size: var(--code-font-size);
+    color: var(--primary-dark-color);
+}
+
+table.memberdecls .memItemLeft,
+table.memberdecls .memItemRight,
+table.memberdecls .memTemplItemLeft,
+table.memberdecls .memTemplItemRight,
+table.memberdecls .memTemplParams {
     transition: none;
     padding-top: var(--spacing-small);
     padding-bottom: var(--spacing-small);
     border-top: 1px solid var(--separator-color);
     border-bottom: 1px solid var(--separator-color);
     background-color: var(--fragment-background);
+}
+
+table.memberdecls .memTemplItemLeft,
+table.memberdecls .memTemplItemRight {
+    padding-top: 2px;
+}
+
+table.memberdecls .memTemplParams {
+    border-bottom: 0;
+    border-left: 1px solid var(--separator-color);
+    border-right: 1px solid var(--separator-color);
+    border-radius: var(--border-radius-small) var(--border-radius-small) 0 0;
+    padding-bottom: 0;
+}
+
+table.memberdecls .memTemplItemLeft {
+    border-radius: 0 0 0 var(--border-radius-small);
+    border-left: 1px solid var(--separator-color);
+    border-top: 0;
+}
+
+table.memberdecls .memTemplItemRight {
+    border-radius: 0 0 var(--border-radius-small) 0;
+    border-right: 1px solid var(--separator-color);
+    border-top: 0;
 }
 
 table.memberdecls .memItemLeft {
@@ -1525,7 +1575,7 @@ table.memberdecls .memItemLeft {
     padding-right: 0;
 }
 
-table.memberdecls .memItemRight {
+table.memberdecls .memItemRight  {
     border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
     border-right: 1px solid var(--separator-color);
     padding-right: var(--spacing-medium);
@@ -1559,7 +1609,13 @@ table.memberdecls .inherit_header td {
 
 @media screen and (max-width: 767px) {
 
-    table.memberdecls .memItemLeft, table.memberdecls .memItemRight, table.memberdecls .mdescLeft, table.memberdecls .mdescRight {
+    table.memberdecls .memItemLeft,
+    table.memberdecls .memItemRight,
+    table.memberdecls .mdescLeft,
+    table.memberdecls .mdescRight,
+    table.memberdecls .memTemplItemLeft,
+    table.memberdecls .memTemplItemRight,
+    table.memberdecls .memTemplParams {
         display: block;
         text-align: left;
         padding-left: var(--spacing-large);
@@ -1569,19 +1625,28 @@ table.memberdecls .inherit_header td {
         border-radius: 0;
     }
 
-    table.memberdecls .memItemLeft, table.memberdecls .mdescLeft {
+    table.memberdecls .memItemLeft,
+    table.memberdecls .mdescLeft,
+    table.memberdecls .memTemplItemLeft {
         border-bottom: 0;
         padding-bottom: 0;
+    }
+
+    table.memberdecls .memTemplItemLeft {
+        padding-top: 0;
     }
 
     table.memberdecls .mdescLeft {
         margin-top: calc(0px - var(--page-font-size));
     }
 
-    table.memberdecls .memItemRight, table.memberdecls .mdescRight {
+    table.memberdecls .memItemRight, 
+    table.memberdecls .mdescRight,
+    table.memberdecls .memTemplItemRight {
         border-top: 0;
         padding-top: 0;
         padding-right: var(--spacing-large);
+        overflow-x: auto;
     }
 
     table.memberdecls tr[class^='memitem']:not(.inherit) {
@@ -1625,21 +1690,33 @@ table.memberdecls .inherit_header td {
 hr {
     margin-top: var(--spacing-large);
     margin-bottom: var(--spacing-large);
-    border-top:1px solid var(--separator-color);
+    height: 1px;
+    background-color: var(--separator-color);
+    border: 0;
 }
 
 .contents hr {
-    box-shadow: 100px 0 0 0 var(--separator-color),
-                -100px 0 0 0 var(--separator-color),
-                var(--content-maxwidth) 0 0 0 var(--separator-color),
-                calc(0px - var(--content-maxwidth)) 0 0 0 var(--separator-color),
-                calc(2 * var(--content-maxwidth)) 0 0 0 var(--separator-color),
-                calc(0px - 2* var(--content-maxwidth)) 0 0 0 var(--separator-color);
+    box-shadow: 100px 0 0 var(--separator-color),
+                -100px 0 0 var(--separator-color),
+                500px 0 0 var(--separator-color),
+                -500px 0 0 var(--separator-color),
+                1500px 0 0 var(--separator-color),
+                -1500px 0 0 var(--separator-color),
+                2000px 0 0 var(--separator-color),
+                -2000px 0 0 var(--separator-color);
 }
 
 .contents img, .contents .center, .contents center, .contents div.image object {
     max-width: 100%;
     overflow: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .contents .dyncontent > .center, .contents > center {
+        margin-left: calc(0px - var(--spacing-large));
+        margin-right: calc(0px - var(--spacing-large));
+        max-width: calc(100% + 2 * var(--spacing-large));
+    }
 }
 
 /*
@@ -1655,13 +1732,18 @@ table.directory {
     font-family: var(--font-family);
     font-size: var(--page-font-size);
     font-weight: normal;
+    width: 100%;
 }
 
-.directory td.entry {
+table.directory td.entry {
     padding: var(--spacing-small);
 }
 
-.directory tr.even {
+table.directory td.desc {
+    min-width: 250px;
+}
+
+table.directory tr.even {
     background-color: var(--odd-color);
 }
 
@@ -1689,8 +1771,8 @@ table.directory {
 
 @media screen and (max-width: 767px) {
     div.directory {
-        margin-left: calc(0px - var(--spacing-medium));
-        margin-right: calc(0px - var(--spacing-medium));
+        margin-left: calc(0px - var(--spacing-large));
+        margin-right: calc(0px - var(--spacing-large));
     }
 }
 
@@ -1713,15 +1795,15 @@ html.dark-mode .iconfopen, html.dark-mode .iconfclosed {
     border-radius: var(--border-radius-small);
 }
 
-@media screen and (max-width: 767px) {
-    .classindex {
-        margin: 0 calc(0px - var(--spacing-small));
-    }
-}
-
 /* 
  Class Index Doxygen 1.8 
 */
+
+table.classindex {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}
 
 table.classindex table div.ah {
     background-image: none;
@@ -1745,7 +1827,6 @@ div.qindex {
  */
 
 #nav-path {
-    margin-bottom: -1px;
     width: 100%;
 }
 
@@ -1755,6 +1836,8 @@ div.qindex {
     border: none;
     border-top: 1px solid var(--separator-color);
     border-bottom: 1px solid var(--separator-color);
+    border-bottom: 0;
+    box-shadow: 0 0.75px 0 var(--separator-color);
     font-size: var(--navigation-font-size);
 }
 
@@ -1767,6 +1850,7 @@ img.footer {
 }
 
 address.footer {
+    color: var(--page-secondary-foreground-color);
     margin-bottom: var(--spacing-large);
 }
 
@@ -1806,7 +1890,7 @@ li.navelem:first-child:before {
     border-bottom-color: transparent;
     border-right-color: transparent;
     border-top-color: transparent;
-    transform: scaleY(4.2);
+    transform: translateY(-1px) scaleY(4.2);
     z-index: 10;
     margin-left: 6px;
 }
@@ -1817,7 +1901,7 @@ li.navelem:first-child:before {
     border-bottom-color: transparent;
     border-right-color: transparent;
     border-top-color: transparent;
-    transform: scaleY(3.2);
+    transform: translateY(-1px) scaleY(3.2);
     margin-right: var(--spacing-small);
 }
 
@@ -1833,7 +1917,9 @@ li.navelem:first-child:before {
 div.fragment::-webkit-scrollbar,
 pre.fragment::-webkit-scrollbar,
 div.memproto::-webkit-scrollbar,
-.contents center::-webkit-scrollbar {
+.contents center::-webkit-scrollbar,
+.contents .center::-webkit-scrollbar,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname)::-webkit-scrollbar {
     width: calc(var(--webkit-scrollbar-size) + var(--webkit-scrollbar-padding) + var(--webkit-scrollbar-padding));
     height: calc(var(--webkit-scrollbar-size) + var(--webkit-scrollbar-padding) + var(--webkit-scrollbar-padding));
 }
@@ -1842,7 +1928,9 @@ div.memproto::-webkit-scrollbar,
 div.fragment::-webkit-scrollbar-thumb,
 pre.fragment::-webkit-scrollbar-thumb,
 div.memproto::-webkit-scrollbar-thumb,
-.contents center::-webkit-scrollbar-thumb {
+.contents center::-webkit-scrollbar-thumb,
+.contents .center::-webkit-scrollbar-thumb,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname)::-webkit-scrollbar-thumb {
     background-color: transparent;
     border: var(--webkit-scrollbar-padding) solid transparent;
     border-radius: calc(var(--webkit-scrollbar-padding) + var(--webkit-scrollbar-padding));
@@ -1853,7 +1941,9 @@ div.memproto::-webkit-scrollbar-thumb,
 div.fragment:hover::-webkit-scrollbar-thumb,
 pre.fragment:hover::-webkit-scrollbar-thumb,
 div.memproto:hover::-webkit-scrollbar-thumb,
-.contents center:hover::-webkit-scrollbar-thumb {
+.contents center:hover::-webkit-scrollbar-thumb,
+.contents .center:hover::-webkit-scrollbar-thumb,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname):hover::-webkit-scrollbar-thumb {
     background-color: var(--webkit-scrollbar-color);
 }
 
@@ -1861,11 +1951,24 @@ div.memproto:hover::-webkit-scrollbar-thumb,
 div.fragment::-webkit-scrollbar-track,
 pre.fragment::-webkit-scrollbar-track,
 div.memproto::-webkit-scrollbar-track,
-.contents center::-webkit-scrollbar-track {
+.contents center::-webkit-scrollbar-track,
+.contents .center::-webkit-scrollbar-track,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname)::-webkit-scrollbar-track {
     background: transparent;
 }
 
-#nav-tree, div.fragment, pre.fragment, div.memproto, .contents center {
+#nav-tree::-webkit-scrollbar-corner {
+    background-color: var(--side-nav-background);
+}
+
+#nav-tree,
+div.fragment,
+pre.fragment,
+div.memproto,
+.contents center,
+.contents .center,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname) {
+    overflow-x: auto;
     overflow-x: overlay;
 }
 
@@ -1873,7 +1976,13 @@ div.memproto::-webkit-scrollbar-track,
  Scrollbars for Firefox
 */
 
-#nav-tree, div.fragment, pre.fragment, div.memproto, .contents center {
+#nav-tree,
+div.fragment,
+pre.fragment,
+div.memproto,
+.contents center,
+.contents .center,
+.contents table:not(.memberdecls):not(.mlabels):not(.fieldtable):not(.memname) {
     scrollbar-width: thin;
 }
 
