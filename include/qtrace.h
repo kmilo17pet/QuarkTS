@@ -1,7 +1,7 @@
 /*!
 * @file qtrace.h
 * @author J. Camilo Gomez C.
-* @version 1.48
+* @version 1.49
 * @note This file is part of the QuarkTS distribution.
 * @brief API interfaces for the trace and debug messages
 */
@@ -415,6 +415,8 @@
         */
         #define qDebug_Variable( v, mode )      qDebug_##mode( v )
     #else
+        #define qTrace_Set_OutputFcn( fcn )
+        #define _QTRACE_KERNEL( msg, id, obj )
         #define qTrace()
         #define qTrace_Message( v )
         #define qTrace_String( v )

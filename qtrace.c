@@ -92,5 +92,4 @@ void qTrace_Set_OutputFcn( qPutChar_t fcn )
     qDebug = fcn;
 }
 /*============================================================================*/
-
 #endif /* #if ( Q_TRACE_VARIABLES ==1 ) */
