@@ -282,14 +282,14 @@ static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h )
     return qFalse;
 }
 /*============================================================================*/
-qBool_t qList_IsMember( qList_t * const l,
-                        void * const node )
+qBool_t qList_IsMember( const qList_t * const l,
+                        const void * const node )
 {
     qBool_t retValue = qFalse;
 
     if ( NULL != node ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qList_Node_t *xNode = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        const qList_Node_t *xNode = (const qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 
         if ( l == (qList_t*)xNode->container ) { /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             retValue = qTrue;

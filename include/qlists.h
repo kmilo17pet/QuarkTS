@@ -228,8 +228,8 @@
     * @param[in] node  A pointer to the node
     * @return #qTrue if the node belongs to the list, #qFalse if it is not.
     */
-    qBool_t qList_IsMember( qList_t * const l,
-                            void * const node );
+    qBool_t qList_IsMember( const qList_t * const l,
+                            const void * const node );
 
     /**
     * @brief Get a pointer to the front item of the list
