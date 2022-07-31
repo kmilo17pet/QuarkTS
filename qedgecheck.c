@@ -30,6 +30,11 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec );
 static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec );
 static void qEdgeCheck_StateUpdate( qEdgeCheck_t * const ec );
 
+typedef void (*qEdgeCheck_NodeIteratorFcn_t)( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
+static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg );
+static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
+static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
+
 /*============================================================================*/
 qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec,
                           const qCoreRegSize_t rSize,
@@ -81,32 +86,56 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec )
     }
 }
 /*============================================================================*/
-static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec )
+static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg )
 {
     qBool_t v; /*to hold the current pin value*/
-    qEdgeCheck_IONode_t *n;
     const qCoreRegSize_t pinReader = ec->qPrivate.reader;
-    size_t nodeChange = 0u;
-    /*iterate through all the input-nodes*/
+    qEdgeCheck_IONode_t *n;
+
     for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {
         /*read the pin level*/
         v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
-
-        /*check if input level change since the last inputs-sweep*/
-        if ( n->qPrivate.prevPinValue != v ) {
-            /*
-              change detected, put the node on unknown status until the debounce
-              wait finish
-            */
-            n->qPrivate.status = (qBool_t)qUnknown;
-            /*to indicate that least one node changed its state*/
-            nodeChange++;
-        }
-        else {
-            /* no change, let the state of the pin be equal to its own level*/
-            n->qPrivate.status = v;
-        }
+        fcn( n, v, arg );
     }
+}
+/*============================================================================*/
+static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, void *arg )
+{
+    /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    size_t *nodeChange = (size_t *)arg;
+    /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+    /*check if input level change since the last inputs-sweep*/
+    if ( n->qPrivate.prevPinValue != v ) {
+        /*
+          change detected, put the node on unknown status until the debounce
+          wait finish
+        */
+        n->qPrivate.status = (qBool_t)qUnknown;
+        /*to indicate that least one node changed its state*/
+        nodeChange[ 0 ]++;
+    }
+    else {
+        /* no change, let the state of the pin be equal to its own level*/
+        n->qPrivate.status = v;
+    }
+}
+/*============================================================================*/
+static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, qBool_t v, void *arg )
+{
+    Q_UNUSED( arg );
+    if ( n->qPrivate.prevPinValue != v ) {
+        /*set the edge status*/
+        n->qPrivate.status = ( v )? qRising : qFalling;
+    }
+    /*keep the previous level*/
+    n->qPrivate.prevPinValue = v;
+}
+/*============================================================================*/
+static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec )
+{
+    size_t nodeChange = 0u;
+    /*iterate through all the input-nodes*/
+    qEdgeCheck_NodeChangeIterator( ec, &qEdgeCheck_IterNodeStateCheck, &nodeChange );
 
     if ( nodeChange > 0u ) {
         ec->qPrivate.state = &qEdgeCheck_StateWait;
@@ -115,22 +144,7 @@ static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec )
 /*============================================================================*/
 static void qEdgeCheck_StateUpdate( qEdgeCheck_t * const ec )
 {
-    qBool_t v; /*to hold the current pin value*/
-    qEdgeCheck_IONode_t *n;
-    const qCoreRegSize_t pinReader = ec->qPrivate.reader;
-    /*iterate through all the input-nodes*/
-    for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {
-        /*read the pin level*/
-        v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
-        /*if the level change is effective*/
-        if ( n->qPrivate.prevPinValue != v ) {
-            /*set the edge status*/
-            n->qPrivate.status = ( v )? qRising : qFalling;
-        }
-        /*keep the previous level*/
-        n->qPrivate.prevPinValue = v;
-    }
-
+    qEdgeCheck_NodeChangeIterator( ec, &qEdgeCheck_IterNodeStateUpdate, NULL );
     ec->qPrivate.state = &qEdgeCheck_StateCheck; /*reload the init state*/
     ec->qPrivate.start = qClock_GetTick(); /*reload the time*/
 }
