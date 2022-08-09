@@ -7,7 +7,7 @@
  **/
 
 /*
-QuarkTS V7.2.3 - An open-source OS for small embedded applications.
+QuarkTS V7.2.4 - An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant
 
