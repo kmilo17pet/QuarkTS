@@ -34,7 +34,7 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m,
 static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
                                                  qSM_State_t * const s,
                                                  const qSM_Signal_t sig );
-static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m,
+static void qStateMachine_TracePathAndRetraceEntry( qSM_t * const m,
                                                     qSM_State_t **entryPath );
 static void qStateMachine_TraceOnStart( qSM_t * const m,
                                         qSM_State_t **entryPath );
@@ -261,7 +261,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
     return status;
 }
 /*============================================================================*/
-static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m,
+static void qStateMachine_TracePathAndRetraceEntry( qSM_t * const m,
                                                     qSM_State_t **trace )
 {
     qSM_State_t *s;
@@ -272,7 +272,7 @@ static void qStateMachine_TracePathandRetraceEntry( qSM_t * const m,
     module data-structure design. So this is solved by first recording the entry
     path from the LCA to the target, then playing it backwards. with execution
     of entry actions.
-    qStateMachine_TracePathandRetraceEntry and qStateMachine_TraceOnStart are
+    qStateMachine_TracePathAndRetraceEntry and qStateMachine_TraceOnStart are
     used to handle this after the transition perform all the required exit
     actions.
     */
@@ -291,7 +291,7 @@ static void qStateMachine_TraceOnStart( qSM_t * const m,
                                         qSM_State_t **entryPath )
 {
     while ( NULL != qStateMachine_StateOnStart( m, m->qPrivate.current ) ) {
-        qStateMachine_TracePathandRetraceEntry( m, entryPath );
+        qStateMachine_TracePathAndRetraceEntry( m, entryPath );
     }
 }
 /*============================================================================*/
@@ -359,7 +359,7 @@ qBool_t qStateMachine_Run( qSM_t * const m,
                      execute entry/start actions in the rest of the hierarchy
                      after transition
                      */
-                    qStateMachine_TracePathandRetraceEntry( m, entryPath );
+                    qStateMachine_TracePathAndRetraceEntry( m, entryPath );
                     qStateMachine_TraceOnStart( m, entryPath );
                 }
                 retValue = qTrue;

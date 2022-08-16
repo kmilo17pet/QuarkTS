@@ -203,7 +203,7 @@
     /**
     * @brief The callback argument to handle the state-machine dynamics and
     * provide execution information. Some members can be written to perform
-    * state-transtions.
+    * state-transitions.
     * @note Should be used only in state-callbacks as the only input argument.
     * @note The members of this structure must be accessed as a pointer.
     */
@@ -313,7 +313,7 @@
     * State  machines  are constructed by composition, therefore, the topology
     * of a state machine is determined upon construction. In this module
     * implementation, there are not distinction between composite states(states
-    * containing substates) and leaf states. All states are potentially
+    * containing sub-states) and leaf states. All states are potentially
     * composite.
     *
     * The API qStateMachine_StateSubscribe() should be used to initialize the
@@ -486,7 +486,7 @@
     * @brief Install a signal queue to the provided Finite State Machine (FSM).
     * @note Queue object should be previously initialized by using
     * qQueue_Setup()
-    * @attention Queue itemsize == qSM_Signal_t
+    * @attention Queue item size == qSM_Signal_t
     * @param[in] m A pointer to the FSM object.
     * @param[in] q A pointer to the queue object.
     * @return #qTrue on success, otherwise return #qFalse.
@@ -517,7 +517,7 @@
     * timed signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ).
     * @attention This feature its only available if the FSM has a signal-queue
     * installed.
-    * @note You can increse the number of available timeouts instances by
+    * @note You can increase the number of available timeouts instances by
     * changing the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h
     * @see qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.

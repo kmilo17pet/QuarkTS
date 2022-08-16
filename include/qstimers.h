@@ -29,7 +29,7 @@
     */
     typedef struct _qSTimer_s {
         /*! @cond  */
-        qClock_t tstart;    /*< The time(epochs) taken at the arming moment. */
+        qClock_t tStart;    /*< The time(epochs) taken at the arming moment. */
         qClock_t tv;        /*< The required time in epochs. */
         /*! @endcond  */
     }

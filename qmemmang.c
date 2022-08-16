@@ -27,7 +27,7 @@ static qMemMang_Pool_t *selectedMemPool = &defaultMemPool;
 static const size_t byteAlignmentMask = BYTE_ALIGN_MASK;
 /*
 The index of the bit that is set when a block belongs to the application.
-Clearead when the block is part of the free space (only the MSB is used)
+Cleared when the block is part of the free space (only the MSB is used)
 Work out the position of the top bit in a size_t variable.
 */
 static const size_t blockAllocatedBit = (
@@ -104,14 +104,13 @@ qBool_t qMemMang_Free( qMemMang_Pool_t *mPool,
             /*cstat +CERT-EXP36-C_a*/
             /*cstat +MISRAC2012-Rule-18.4 +MISRAC2012-Rule-11.3 +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             if ( (size_t)0 != ( xConnect->blockSize & blockAllocatedBit ) ) {
-                /*
-                The block is being returned to the heap - it is no longer
-                allocated.
-                */
-                qFLM_BitsClear( xConnect->blockSize, blockAllocatedBit );
-                /* Add this block to the list of free blocks. */
-                mPool->qPrivate.freeBytesRemaining += xConnect->blockSize;
-                qMemMang_InsertBlockIntoFreeList( mPool, xConnect );
+                if ( NULL == xConnect->next ) {
+                    /* Free block */
+                    qFLM_BitsClear( xConnect->blockSize, blockAllocatedBit );
+                    /* Add this block to the list of free blocks. */
+                    mPool->qPrivate.freeBytesRemaining += xConnect->blockSize;
+                    qMemMang_InsertBlockIntoFreeList( mPool, xConnect );
+                }
             }
             retValue = qTrue;
         }
@@ -239,38 +238,37 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
             /*initialize the heap to setup the list of free blocks*/
             qMemMang_HeapInit( mPool );
         }
-        if ( (size_t)0u == ( pSize & blockAllocatedBit ) ) {
-            if ( pSize > (size_t)0 ) {
-                /*
-                The requested size is increased so it can contain a
-                qMemBlockConnect_t in addition to the requested amount of bytes.
-                */
-                pSize += heapStructSize;
-                /*Ensure blocks are always aligned to the required # of bytes. */
-                if ( 0x00u != ( pSize & byteAlignmentMask ) ) {
-                    pSize += ( (size_t)Q_BYTE_ALIGNMENT - ( pSize & byteAlignmentMask ) ); /* byte-alignment */
-                }
-            }
-            if ( ( pSize > (size_t)0u ) && ( pSize <= mPool->qPrivate.freeBytesRemaining ) ) {
-                qMemMang_BlockConnect_t *xBlock, *previousBlock, *newBlockLink;
 
-                /*
-                Check list from the start (lowest address) block until one of
-                adequate size is found.
+        if ( pSize > 0u ) {
+            const size_t additional = heapStructSize + (size_t)Q_BYTE_ALIGNMENT
+                                      - ( pSize & byteAlignmentMask );
+            /*check for heap overflow*/
+            if ( pSize > ( ( ~( ( size_t )0u ) ) - additional ) ) {
+                pSize = 0u;
+            }
+            else {
+                /* 
+                requested must be increased so it can contain a block 
+                connector structure in addition to some increment required for
+                alignment 
                 */
+                pSize += additional;
+            }
+        }
+
+        if ( (size_t)0u == ( pSize & blockAllocatedBit ) ) {
+            if ( ( pSize > (size_t)0u ) && ( pSize < mPool->qPrivate.freeBytesRemaining ) ) {
+                qMemMang_BlockConnect_t *xBlock, *previousBlock, *newBlockLink;
+                /* Traverse list from start until one of adequate size is found */
                 previousBlock = &mPool->qPrivate.start;
                 xBlock = mPool->qPrivate.start.next;
                 while ( ( xBlock->blockSize < pSize ) && ( NULL != xBlock->next ) ) {
                     previousBlock = xBlock;
                     xBlock = xBlock->next;
                 }
-                /*
-                If the end marker was reached then a block of adequate size was
-                not found.
-                */
-                if ( xBlock != mPool->qPrivate.end ) {
-                    const size_t minBlockSize = heapStructSize*(size_t)2u;
 
+                if ( xBlock != mPool->qPrivate.end ) {
+                    const size_t minBlockSize = ( heapStructSize << 1u );
                     /*
                     Return the memory space pointed to - jumping over the
                     qMemBlockConnect_t node at its start.

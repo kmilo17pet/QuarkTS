@@ -48,7 +48,7 @@
     /**
      * @brief A macro to perform time conversions.
      * @param[in] _xTime_   The input time in seconds.
-     * @param[in] _qUnit_   The target unit. Use on of the provied factors
+     * @param[in] _qUnit_   The target unit. Use on of the provided factors
      * prefixed with QTUNIT_XXX.
      * @return The time converted to the specified unit.
     */
@@ -130,10 +130,10 @@
      /**
     * @brief Perform a timestamp check. This function computes the amount
     * of time elapsed between the current instant and the init timestamp @a ti
-    * and checks if the result is greather than @a td.
+    * and checks if the result is greater than @a td.
     * @param[in] ti Init timestamp in epochs
     * @param[in] td Elapsed time to check in epochs
-    * @return #qTrue if the elapsed time (t-ti) is greather or equal to td.
+    * @return #qTrue if the elapsed time (t-ti) is greater or equal to td.
     * Otherwise returns #qFalse
     */
     qBool_t qClock_TimeDeadlineCheck( const qClock_t ti,

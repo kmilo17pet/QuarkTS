@@ -64,7 +64,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 *
 * QuarkTS is developed using a formal and rigorous process framed in compliance
 * of the MISRA-C-2012 and CERT coding standard guidelines and complemented with
-* multiple static-analysis checks targered to safe critical applications.
+* multiple static-analysis checks targeted to safe critical applications.
 *
 * <b>Why cooperative?</b>
 *
@@ -79,7 +79,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 *
 * The design goal of QuarkTS is to achieve its stated functionality using a
 * small, simple, and (most importantly) robust implementation to make it
-* suitable on resource-constrained microcontrollers, where a full-preemptive
+* suitable on resource-constrained micro-controllers, where a full-preemptive
 * RTOS is an overkill and their inclusion adds unnecessary complexity to the
 * firmware development. In addition with a state-machines support, co-routines,
 * time control and the inter-task communication primitives, QuarkTS provides a

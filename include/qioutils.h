@@ -211,7 +211,7 @@
                           qFalse )                                          \
 
     /**
-    * @brief Macro interface to write RAW datathrough @a fcn
+    * @brief Macro interface to write RAW data through @a fcn
     * @param[in] fcn The basic input byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] Data A pointer to the block of data

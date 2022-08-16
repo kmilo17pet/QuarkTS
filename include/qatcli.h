@@ -30,9 +30,9 @@
     */
     typedef enum {
         qATCLI_ERROR = -32767,      /**< To indicate an error operation. The CLI will print the  ERROR_String to the output.*/
-        qATCLI_NOTALLOWED = -32766, /**< To indicate an successfull operation. The CLI will print the " string to the output.*/
+        qATCLI_NOTALLOWED = -32766, /**< To indicate an successful operation. The CLI will print the " string to the output.*/
         qATCLI_NORESPONSE = 0,      /**< To indicate that no response will be printed out.*/
-        qATCLI_OK = 1,              /**< To indicate an successfull operation. The CLI will print the  OK_String to the output.*/
+        qATCLI_OK = 1,              /**< To indicate an successful operation. The CLI will print the  OK_String to the output.*/
         qATCLI_DEVID = 32765,       /**< To indicate that the Device Identifier should be print out.*/
         qATCLI_NOTFOUND = 32766,    /**< To indicate that the command was not found. The CLI will print the NOTFOUND_string to the output*/
         qATCLI_OUTPUT = 32767       /**< To indicate that only the output buffer will be print out*/
@@ -164,7 +164,7 @@
         */
         void (*puts)( const char *s );
         /**
-        * @brief The CLI output buffer. Can be writtern by the user.
+        * @brief The CLI output buffer. Can be written by the user.
         */
         char *Output;
         /**
@@ -212,7 +212,7 @@
             void (*xNotifyFcn)(struct _qATCLI_ControlBlock_s * const arg);  /*< Used to notify the attached task if available*/
             size_t sizeOutput;                                              /*< The size of Output. */
             qATCLI_Input_t xInput;                                          /*< The input of the CLI. */
-            _qATCLI_PublicData_t xPublic;                                   /*< External accesible throught the qATCLI_Handler_t*/
+            _qATCLI_PublicData_t xPublic;                                   /*< External accessible through the qATCLI_Handler_t*/
             void *owner;
         }
         qPrivate;

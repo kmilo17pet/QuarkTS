@@ -30,12 +30,12 @@
     * restore the saved interrupt setup.
     * Example :
     * @code{.c}
-    * void BSP_InterruptRestorer( qUINT32_t savedmask ) {
-    *       HAL_InteruptSetMask( savedmask );
+    * void BSP_InterruptRestorer( qUINT32_t savedMask ) {
+    *       HAL_InterruptSetMask( savedMask );
     *       HAL_EnableInterrupts();
     * }
     * @endcode
-    * @param[in] savedmask The interrupt configuration saved by the "Disabler"
+    * @param[in] savedMask The interrupt configuration saved by the "Disabler"
     * function
     * @return none.
     */
@@ -50,10 +50,10 @@
     * Example :
     * @code{.c}
     * qUINT32_t BSP_InterruptDisabler( void ) {
-    *       qUINT32_t currentmask;
-    *       currentmask = HAL_InteruptGetMask( savedmask );
+    *       qUINT32_t currentMask;
+    *       currentMask = HAL_InterruptGetMask( savedMask );
     *       HAL_DisableInterrupts();
-    *       return currentmask;
+    *       return currentMask;
     * }
     * @endcode
     * @return The current interrupt configuration (mask). The kernel will retain
@@ -83,7 +83,7 @@
 
     /**
     * @brief Set the hardware-specific code for global interrupt enable/disable.
-    * Setting this allows you to comunicate safely from Interrupts using queued
+    * Setting this allows you to communicate safely from Interrupts using queued
     * notifications or qQueues.
     * Example :
     * @code{.c}
