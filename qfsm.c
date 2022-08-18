@@ -20,7 +20,7 @@ static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
 static void qStateMachine_ExitUpToLCA( qSM_t * const m,
                                        qSM_LCA_t lca );
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h,
-                                          const qSM_Signal_t xSignal,
+                                          const qSM_Signal_t sig,
                                           qSM_State_t * const s );
 static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m,
                                                        qSM_State_t * const s,
@@ -35,7 +35,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
                                                  qSM_State_t * const s,
                                                  const qSM_Signal_t sig );
 static void qStateMachine_TracePathAndRetraceEntry( qSM_t * const m,
-                                                    qSM_State_t **entryPath );
+                                                    qSM_State_t **trace );
 static void qStateMachine_TraceOnStart( qSM_t * const m,
                                         qSM_State_t **entryPath );
 static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m,
