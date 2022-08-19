@@ -2,6 +2,6 @@
   "script": "misra.py",
   "args": [
     "--rule-texts=${GITHUB_WORKSPACE}/check/misra_c2012_Rules.txt",
-    "--suppress-rules 12.3,13.3,17.18,18.4,20.10"
+    "--suppress-rules 12.3,13.3,17.18,18.4,20.10,21.1"
   ]
 }
