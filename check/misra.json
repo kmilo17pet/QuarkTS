@@ -1,0 +1,7 @@
+{
+  "script": "misra.py",
+  "args": [
+    "--rule-texts=${GITHUB_WORKSPACE}/check/misra_c2012_Rules.txt",
+    "--suppress-rules 13.3,21.1"
+  ]
+}
