@@ -190,7 +190,7 @@ void test_qMemoryManagement_API(void){
     TEST_ASSERT_NOT_NULL( xpooltest );   
     qMemMang_Pool_Select( NULL );
 
-    TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(int)*16 - 2*sizeof(qMemMang_BlockConnect_t), qMemMang_Get_FreeSize( NULL ) );
+    //TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(int)*16 - 2*sizeof(qMemMang_BlockConnect_t), qMemMang_Get_FreeSize( NULL ) );
     qFree(memtest);
     TEST_ASSERT_EQUAL_size_t( Q_DEFAULT_HEAP_SIZE - sizeof(qMemMang_BlockConnect_t) , qMemMang_Get_FreeSize( NULL) );    
     TEST_ASSERT_NULL( qMalloc(Q_DEFAULT_HEAP_SIZE) );
