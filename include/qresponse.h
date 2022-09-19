@@ -1,7 +1,7 @@
 /*!
  * @file qresponse.h
  * @author J. Camilo Gomez C.
- * @version 1.29
+ * @version 1.30
  * @note This file is part of the QuarkTS distribution.
  * @brief API to simplify the handling of requested responses from terminal
  * interfaces.
@@ -98,12 +98,12 @@
     /**
     * @brief ISR receiver for the response handler
     * @param[in] r A pointer to the Response Handler object.
-    * @param[in] rxchar The byte-data from the receiver
+    * @param[in] rxChar The byte-data from the receiver
     * @return #qTrue when the Response handler match the request from
     * qResponse_Received()
     */
     qBool_t qResponse_ISRHandler( qResponse_t * const r,
-                                  const char rxchar );
+                                  const char rxChar );
 
     /** @}*/
 

@@ -39,7 +39,7 @@
     */
     typedef enum {
         /**
-        * @brief To indicate the abscense of trigger. Reserved for internal use.
+        * @brief To indicate the absence of trigger. Reserved for internal use.
         */
         qTriggerNULL,
         /**
@@ -48,7 +48,7 @@
         byTimeElapsed,
         /**
         * @brief When there is a queued notification in the FIFO priority queue.
-        * For this trigger, the dispacher performs a dequeue operation
+        * For this trigger, the dispatcher performs a dequeue operation
         * automatically. A pointer to the extracted event data will be available
         * in the qEvent_t::EventData field.
         */
@@ -143,10 +143,10 @@
         #define QEVENTFLAG_19               ( 0x40000000uL )
         #define QEVENTFLAG_20               ( 0x80000000uL )
         /*! @endcond  */
-        /** @brief A macro directive to indicate that the eventflags should be cleared. */
+        /** @brief A macro directive to indicate that the eventFlags should be cleared. */
         #define QEVENTFLAG_CLEAR            ( qFalse )
 
-        /** @brief A macro directive to indicate that the eventflags should be set. */
+        /** @brief A macro directive to indicate that the eventFlags should be set. */
         #define QEVENTFLAG_SET              ( qTrue )
     #endif
 
@@ -278,7 +278,7 @@
             #if ( Q_ALLOW_TASK_NAMING == 1 )
                 const char *name;                         /**< The task name. */
             #endif
-            qSTimer_t timer;                        /**< To handle the task timming*/
+            qSTimer_t timer;                        /**< To handle the task timing*/
             #if ( Q_TASK_COUNT_CYCLES == 1 )
                 qCycles_t cycles;                   /**< The current number of executions performed by the task. */
             #endif
@@ -287,7 +287,7 @@
             #endif
             qIteration_t iterations;                /**< Hold the number of iterations. */
             volatile qNotifier_t notification;      /**< The notification value. */
-            volatile qTask_Flag_t flags;            /**< Task flags (core and eventflags)*/
+            volatile qTask_Flag_t flags;            /**< Task flags (core and eventFlags)*/
             qTrigger_t trigger;                     /**< The event source that put the task in a qReady state. */
             qPriority_t priority;                   /**< The task priority. */
         }
@@ -351,11 +351,11 @@
     * field.
     * @see qTask_Notification_Queue(), qOS_Notification_Spread()
     * @param[in] Task Pointer to the task node.
-    * @param[in] eventdata Specific event user-data.
+    * @param[in] eventData Specific event user-data.
     * @return #qTrue on success. Otherwise #qFalse.
     */
     qBool_t qTask_Notification_Send( qTask_t * const Task,
-                                     void* eventdata );
+                                     void* eventData );
 
     /**
     * @brief Insert a notification in the FIFO priority queue. The scheduler get
@@ -369,12 +369,12 @@
     * to qAwaken setting the SHUTDOWN bit.
     * @see qTask_Notification_Send(), qOS_Notification_Spread()
     * @param[in] Task Pointer to the task node.
-    * @param[in] eventdata Specific event user-data.
+    * @param[in] eventData Specific event user-data.
     * @return Returns #qTrue if the event has been inserted in the queue, or
     * #qFalse if an error occurred (The queue exceeds the size).
     */
     qBool_t qTask_Notification_Queue( qTask_t * const Task,
-                                      void* eventdata );
+                                      void* eventData );
 
     /**
     * @brief Check if the task has pending notifications.

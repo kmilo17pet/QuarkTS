@@ -38,7 +38,7 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
                                      qATCLI_Handler_t params );
 static qBool_t qATCLI_Notify( qATCLI_t * const cli );
 
-/*helper methods inside <qATCLI_PreCmd_t> to retreive command arguments*/
+/*helper methods inside <qATCLI_PreCmd_t> to retrieve command arguments*/
 static char* GetArgPtr( qIndex_t n );
 static int GetArgInt( qIndex_t n );
 static qFloat32_t GetArgFlt( qIndex_t n );

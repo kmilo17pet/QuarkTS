@@ -86,14 +86,14 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
 }
 /*============================================================================*/
 qBool_t qResponse_ISRHandler( qResponse_t * const r,
-                              const char rxchar )
+                              const char rxChar )
 {
     qBool_t retValue = qFalse;
 
     if ( NULL != r ) {
         if ( ( qFalse == r->qPrivate.responseReceived ) && ( r->qPrivate.patternLength > 0u ) ) {
             /*check if the received char match with the expected*/
-            if ( r->qPrivate.pattern2Match[ r->qPrivate.matchedCount ] == rxchar ) {/*MISRAC2004-17.4_b Deviation allowed*/
+            if ( r->qPrivate.pattern2Match[ r->qPrivate.matchedCount ] == rxChar ) {/*MISRAC2004-17.4_b Deviation allowed*/
                 /*move to the next char in the expected buffer*/
                 ++r->qPrivate.matchedCount;
                 if ( r->qPrivate.matchedCount == r->qPrivate.patternLength ) {

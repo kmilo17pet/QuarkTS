@@ -78,7 +78,7 @@
     }
     _qCR_Oper_t;
 
-    /*Construction stataments*/
+    /*Construction statements*/
     #define _qCR_LCInit                                                     \
     { _qCR_PC_INITVAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }                \
 
@@ -393,7 +393,7 @@
     #define qCR_PositionRestore( p )    _qCR_RestoreFromPosition( p )
 
     /**
-    * @brief Resets the @a p variable to the begining of the Co-Routine
+    * @brief Resets the @a p variable to the beginning of the Co-Routine
     * @see #qCR_PositionGet
     * @see #qCR_PositionRestore
     * @param[in,out] position The variable of type qCR_Position_t to reset.

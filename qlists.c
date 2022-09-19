@@ -9,7 +9,7 @@
 static qList_Node_t* qList_NodeInit( void * const node );
 static void qList_InsertAtFront( qList_t * const l,
                                  qList_Node_t * const node );
-static void qList_InserAtBack( qList_t * const l,
+static void qList_InsertAtBack( qList_t * const l,
                                qList_Node_t * const node );
 static qList_Node_t* qList_RemoveFront( qList_t * const l );
 static qList_Node_t* qList_RemoveBack( qList_t * const l );
@@ -58,7 +58,7 @@ static void qList_InsertAtFront( qList_t * const l,
     l->head = node;
 }
 /*============================================================================*/
-static void qList_InserAtBack( qList_t * const l,
+static void qList_InsertAtBack( qList_t * const l,
                                qList_Node_t * const node )
 {
     l->tail->next = node;
@@ -119,33 +119,33 @@ qBool_t qList_Insert( qList_t *const l,
 
     if ( ( NULL != l ) && ( NULL != node ) && ( p >= (qList_Position_t)(-1) ) ) {
         if ( qFalse == qList_IsMember( l, node ) ) {
-            qList_Node_t *newnode;
+            qList_Node_t *newNode;
 
-            newnode = qList_NodeInit( node );
+            newNode = qList_NodeInit( node );
             retValue = qTrue;
             if ( NULL == l->head ) { /*list is empty*/
-                l->head = newnode;
-                l->tail = newnode;
+                l->head = newNode;
+                l->tail = newNode;
             }
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             else if ( QLIST_ATFRONT == p ) {
                 qList_InsertAtFront( l, (qList_Node_t*)node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             else if ( p >= ( (qList_Position_t)l->size - 1 ) ) {
-                qList_InserAtBack( l, (qList_Node_t*)node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                qList_InsertAtBack( l, (qList_Node_t*)node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             else { /*insert the new node after the position*/
                 qList_Node_t *iNode;
 
                 iNode = qList_GetiNode( l, p );
-                newnode->next = iNode->next;  /* NEW -> (i+1)NODE */
-                newnode->prev = iNode;        /* iNODE <- NEW */
-                iNode->next->prev = newnode;  /* NEW <- (i+1)NODE */
-                iNode->next = newnode;        /* iNODE -> NEW */
+                newNode->next = iNode->next;  /* NEW -> (i+1)NODE */
+                newNode->prev = iNode;        /* iNODE <- NEW */
+                iNode->next->prev = newNode;  /* NEW <- (i+1)NODE */
+                iNode->next = newNode;        /* iNODE -> NEW */
             }                                 /* result: iNODE <-> NEW <-> (i+1)NODE*/
             ++l->size;
-            newnode->container = l;
+            newNode->container = l;
         }
     }
 
