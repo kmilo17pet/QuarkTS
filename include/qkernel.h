@@ -174,13 +174,13 @@
     * scheme
     * @note Operation will be performed in the next scheduling cycle.
     * @see qTask_Notification_Send(), qTask_Notification_Queue()
-    * @param[in] eventdata Specific event user-data.
+    * @param[in] eventData Specific event user-data.
     * @param[in] mode the method used to spread the event: ::qTask_NotifySimple
     * or ::qTask_NotifyQueued.
     * @return #qTrue if success. #qFalse if any other spread operation is in
     * progress.
     */
-    qBool_t qOS_Notification_Spread( void *eventdata,
+    qBool_t qOS_Notification_Spread( void *eventData,
                                      const qTask_NotifyMode_t mode );
     /** @}*/
 

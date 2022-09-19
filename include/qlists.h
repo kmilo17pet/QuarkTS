@@ -73,7 +73,7 @@
     */
     typedef enum {
         qList_WalkInit,                 /**< When the loop is about to start. In this case, A NULL value will be passed in the node pointer.*/
-        qList_WalkThrough,              /**< When the loop is transversing the list.*/
+        qList_WalkThrough,              /**< When the loop is traversing the list.*/
         qList_WalkEnd,                  /**< When the loop has finished. In this case, A NULL value will be passed in the node pointer.*/
     }
     qList_WalkStage_t;
@@ -175,7 +175,7 @@
     * @param[in] p The position where the node will be inserted. Could be
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number where the node
     * will be inserted after.
-    * @return #qTrue if the item was successfully added to the list, othewise
+    * @return #qTrue if the item was successfully added to the list, otherwise
     * returns #qFalse
     */
     qBool_t qList_Insert( qList_t * const l,

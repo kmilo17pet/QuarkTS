@@ -10,17 +10,17 @@
 
 /*============================================================================*/
 qBool_t qTask_Notification_Send( qTask_t * const Task,
-                                 void* eventdata )
+                                 void* eventData )
 {
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
         if ( Task->qPrivate.notification < QMAX_NOTIFICATION_VALUE ) {
             ++Task->qPrivate.notification;
-            Task->qPrivate.asyncData = eventdata;
+            Task->qPrivate.asyncData = eventData;
             _QTRACE_KERNEL( "(>)Notification sended to task ",
                             Task,
-                            eventdata );
+                            eventData );
             retValue = qTrue;
         }
     }
@@ -29,10 +29,10 @@ qBool_t qTask_Notification_Send( qTask_t * const Task,
 }
 /*============================================================================*/
 qBool_t qTask_Notification_Queue( qTask_t * const Task,
-                                  void* eventdata )
+                                  void* eventData )
 {
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
-        return qOS_PriorityQueue_Insert( Task, eventdata );
+        return qOS_PriorityQueue_Insert( Task, eventData );
     #else
         _QTRACE_KERNEL( "(E)Priority queue disabled. Notification can't be"
                         "queued for task ",

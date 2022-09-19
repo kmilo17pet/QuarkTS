@@ -30,7 +30,7 @@
     typedef struct _qBSBuffer_s {
         /*! @cond  */
         struct _qBSBuffer_Private_s {
-            volatile qUINT8_t *buffer;  /*< Points to the begining of the buffer storage area. */
+            volatile qUINT8_t *buffer;  /*< Points to the beginning of the buffer storage area. */
             volatile qIndex_t head;     /*< Used to hold the index of the head. */
             volatile qIndex_t tail;     /*< Used to hold the index of the tail. */
             size_t length;              /*< The length of the buffer(a valid power of two). */
@@ -82,7 +82,7 @@
                            qUINT8_t *dst );
 
     /**
-    * @brief Gets n data from the Byte-sized bufferand removes them
+    * @brief Gets n data from the Byte-sized buffer and removes them
     * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @param[out] dst the location where the data-byte will be written
     * @param[in] n The number of bytes to read

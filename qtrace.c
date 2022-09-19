@@ -14,7 +14,7 @@ static void qTrace_LogTicks( char *buff );
 
 /*============================================================================*/
 #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )
-void _qtrace_krn( const char *msg,
+void _qTrace_krn( const char *msg,
                   const void *id,
                   const void *obj )
 {
@@ -55,9 +55,9 @@ void _qTrace_dgb( const char *loc,
 {
     if ( NULL != qDebug ) { /*trace only if the output-function is defined*/
         #if ( Q_DEBUGTRACE_FULL == 1 )
-            char obuff[ 11 ] = { 0 };
+            char oBuff[ 11 ] = { 0 };
 
-            qTrace_LogTicks( obuff );
+            qTrace_LogTicks( oBuff );
         #endif
         if ( NULL != fcn ) { /*print out the function if available*/
             (void)qIOUtil_OutputString( qDebug, NULL, fcn, qFalse );
@@ -66,7 +66,7 @@ void _qTrace_dgb( const char *loc,
         (void)qIOUtil_OutputString( qDebug, NULL, vName, qFalse );
         if ( NULL == vValue ) {
             /*
-            if varvalue is not defined, the call must correspond to memory
+            if vValue is not defined, the call must correspond to memory
             tracing. Print out the memory in hex format.
             */
             (void)qIOUtil_PrintXData( qDebug, NULL, ptr, blockSize );

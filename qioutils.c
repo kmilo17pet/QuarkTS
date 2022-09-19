@@ -356,8 +356,8 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     char c;
 
     #if ( Q_ATOF_FULL == 1 )
-        int power2, powersign = 1;
-        qFloat64_t power = 1.0, efactor;
+        int power2, powerSign = 1;
+        qFloat64_t power = 1.0, eFactor;
     #endif
 
     s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
@@ -387,16 +387,16 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     if ( ( 'e' == *s ) || ( 'E' == *s ) ) {
         s++;
         if ( ( '-' == *s ) || ( '+' == *s ) ) {
-            powersign = ( '-' == *s )? -1 : 1;
+            powerSign = ( '-' == *s )? -1 : 1;
             s++;
         }
         for ( power2 = 0 ; isdigit( *s ) ; s++ ) {
             power2 = power2 * 10 + ( *s - '0' );
         }
         if ( power2 > 0 ) {
-            efactor = ( -1 == powersign )? 0.1 : 10.0;
+            eFactor = ( -1 == powerSign )? 0.1 : 10.0;
             for ( power = 1; 0 != power2; power2-- ) {
-                power *= efactor;
+                power *= eFactor;
             }
         }
     }
@@ -510,7 +510,7 @@ char* qIOUtil_ItoA( qINT32_t num,
 
         if ( num < 0 ) {
             if ( 10u == base ) { /*handle negative numbers only with 10-base*/
-                /*put the sign at the begining*/
+                /*put the sign at the beginning*/
                 str[ i++ ] = '-'; /*MISRAC2004-17.4_b deviation allowed*/
             }
             num = -num;
