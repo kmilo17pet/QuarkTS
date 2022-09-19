@@ -13,8 +13,8 @@ var group__qnot =
       [ "qTask_NotifySimple", "group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e", null ],
       [ "qTask_NotifyQueued", "group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b", null ]
     ] ],
-    [ "qOS_Notification_Spread", "group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb", null ],
+    [ "qOS_Notification_Spread", "group__qnot.html#ga33296034dc4209f85d6a710a1be4dcbf", null ],
     [ "qTask_HasPendingNotifications", "group__qnot.html#ga7c6b45789367b815f17c1a346014256b", null ],
-    [ "qTask_Notification_Queue", "group__qnot.html#gafb9df07070eefeccc74552c2cfc70881", null ],
-    [ "qTask_Notification_Send", "group__qnot.html#gace469c30db43a71068dce72404de0e40", null ]
+    [ "qTask_Notification_Queue", "group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b", null ],
+    [ "qTask_Notification_Send", "group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c", null ]
 ];

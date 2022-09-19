@@ -147,15 +147,15 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gad1ac6cbe8d1646f096f5d3fdc0473eeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb">qOS_Notification_Spread</a> (void *eventdata, const <a class="el" href="group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a> mode)</td></tr>
-<tr class="memdesc:gad1ac6cbe8d1646f096f5d3fdc0473eeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to spread a notification among all the tasks in the scheduling scheme.  <a href="group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb">More...</a><br /></td></tr>
-<tr class="separator:gad1ac6cbe8d1646f096f5d3fdc0473eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace469c30db43a71068dce72404de0e40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gace469c30db43a71068dce72404de0e40">qTask_Notification_Send</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gace469c30db43a71068dce72404de0e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field.  <a href="group__qnot.html#gace469c30db43a71068dce72404de0e40">More...</a><br /></td></tr>
-<tr class="separator:gace469c30db43a71068dce72404de0e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb9df07070eefeccc74552c2cfc70881"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881">qTask_Notification_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventdata)</td></tr>
-<tr class="memdesc:gafb9df07070eefeccc74552c2cfc70881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispacher perfo...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit.  <a href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881">More...</a><br /></td></tr>
-<tr class="separator:gafb9df07070eefeccc74552c2cfc70881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33296034dc4209f85d6a710a1be4dcbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#ga33296034dc4209f85d6a710a1be4dcbf">qOS_Notification_Spread</a> (void *eventData, const <a class="el" href="group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a> mode)</td></tr>
+<tr class="memdesc:ga33296034dc4209f85d6a710a1be4dcbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to spread a notification among all the tasks in the scheduling scheme.  <a href="group__qnot.html#ga33296034dc4209f85d6a710a1be4dcbf">More...</a><br /></td></tr>
+<tr class="separator:ga33296034dc4209f85d6a710a1be4dcbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab793f72b9f447c74fbabb876fd7aea4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">qTask_Notification_Send</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventData)</td></tr>
+<tr class="memdesc:gab793f72b9f447c74fbabb876fd7aea4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field.  <a href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">More...</a><br /></td></tr>
+<tr class="separator:gab793f72b9f447c74fbabb876fd7aea4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0897bb00bc0e8b090397e7632f61f7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *eventData)</td></tr>
+<tr class="memdesc:gaa0897bb00bc0e8b090397e7632f61f7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispatcher perf...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit.  <a href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">More...</a><br /></td></tr>
+<tr class="separator:gaa0897bb00bc0e8b090397e7632f61f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7c6b45789367b815f17c1a346014256b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">qTask_HasPendingNotifications</a> (const <a class="el" href="structq_task__t.html">qTask_t</a> *const Task)</td></tr>
 <tr class="memdesc:ga7c6b45789367b815f17c1a346014256b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the task has pending notifications.  <a href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">More...</a><br /></td></tr>
 <tr class="separator:ga7c6b45789367b815f17c1a346014256b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,8 +218,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gad1ac6cbe8d1646f096f5d3fdc0473eeb" name="gad1ac6cbe8d1646f096f5d3fdc0473eeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad1ac6cbe8d1646f096f5d3fdc0473eeb">&#9670;&nbsp;</a></span>qOS_Notification_Spread()</h2>
+<a id="ga33296034dc4209f85d6a710a1be4dcbf" name="ga33296034dc4209f85d6a710a1be4dcbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33296034dc4209f85d6a710a1be4dcbf">&#9670;&nbsp;</a></span>qOS_Notification_Spread()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +228,7 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qOS_Notification_Spread </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>eventdata</em>, </td>
+          <td class="paramname"><em>eventData</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -246,10 +246,10 @@ Functions</h2></td></tr>
 
 <p>Try to spread a notification among all the tasks in the scheduling scheme. </p>
 <dl class="section note"><dt>Note</dt><dd>Operation will be performed in the next scheduling cycle. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gace469c30db43a71068dce72404de0e40" title="Sends a simple notification generating an asynchronous event. This method marks the task as ready for...">qTask_Notification_Send()</a>, <a class="el" href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881" title="Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...">qTask_Notification_Queue()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c" title="Sends a simple notification generating an asynchronous event. This method marks the task as ready for...">qTask_Notification_Send()</a>, <a class="el" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b" title="Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...">qTask_Notification_Queue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventData</td><td>Specific event user-data. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>the method used to spread the event: <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a> or <a class="el" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>. </td></tr>
   </table>
   </dd>
@@ -285,8 +285,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gafb9df07070eefeccc74552c2cfc70881" name="gafb9df07070eefeccc74552c2cfc70881"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb9df07070eefeccc74552c2cfc70881">&#9670;&nbsp;</a></span>qTask_Notification_Queue()</h2>
+<a id="gaa0897bb00bc0e8b090397e7632f61f7b" name="gaa0897bb00bc0e8b090397e7632f61f7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0897bb00bc0e8b090397e7632f61f7b">&#9670;&nbsp;</a></span>qTask_Notification_Queue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,7 +301,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>eventdata</em>&#160;</td>
+          <td class="paramname"><em>eventData</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -311,12 +311,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispacher perfo...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gace469c30db43a71068dce72404de0e40" title="Sends a simple notification generating an asynchronous event. This method marks the task as ready for...">qTask_Notification_Send()</a>, <a class="el" href="group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb" title="Try to spread a notification among all the tasks in the scheduling scheme.">qOS_Notification_Spread()</a> </dd></dl>
+<p>Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchronous event, therefor, the task will be ready for execution according to the queue order (determined by priority), even if task is in a disabled or sleep operational state. When extracted, the scheduler will set <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002" title="When there is a queued notification in the FIFO priority queue. For this trigger, the dispatcher perf...">byNotificationQueued</a>. Specific user-data can be passed through, and will be available inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field, only in corresponding launch. If the task is in a qSleep operation state, the scheduler will change the operational state to qAwaken setting the SHUTDOWN bit. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c" title="Sends a simple notification generating an asynchronous event. This method marks the task as ready for...">qTask_Notification_Send()</a>, <a class="el" href="group__qnot.html#ga33296034dc4209f85d6a710a1be4dcbf" title="Try to spread a notification among all the tasks in the scheduling scheme.">qOS_Notification_Spread()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventData</td><td>Specific event user-data. </td></tr>
   </table>
   </dd>
 </dl>
@@ -324,8 +324,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gace469c30db43a71068dce72404de0e40" name="gace469c30db43a71068dce72404de0e40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gace469c30db43a71068dce72404de0e40">&#9670;&nbsp;</a></span>qTask_Notification_Send()</h2>
+<a id="gab793f72b9f447c74fbabb876fd7aea4c" name="gab793f72b9f447c74fbabb876fd7aea4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab793f72b9f447c74fbabb876fd7aea4c">&#9670;&nbsp;</a></span>qTask_Notification_Send()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,7 +340,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>eventdata</em>&#160;</td>
+          <td class="paramname"><em>eventData</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -351,11 +351,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Sends a simple notification generating an asynchronous event. This method marks the task as ready for execution, therefore, the planner will launch the task immediately according to the scheduling rules (even if task is disabled) and setting the <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df" title="This member indicates the event source that triggers the task execution. Possible values are describe...">qEvent_t::Trigger</a> flag to <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e" title="When the execution chain does, according to a requirement of asynchronous notification event prompted...">byNotificationSimple</a>. Specific user-data can be passed through, and will be available in the respective callback inside the <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74" title="Associated data of the event. Specific data will reside here according to the event source....">qEvent_t::EventData</a> field. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gafb9df07070eefeccc74552c2cfc70881" title="Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...">qTask_Notification_Queue()</a>, <a class="el" href="group__qnot.html#gad1ac6cbe8d1646f096f5d3fdc0473eeb" title="Try to spread a notification among all the tasks in the scheduling scheme.">qOS_Notification_Spread()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b" title="Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...">qTask_Notification_Queue()</a>, <a class="el" href="group__qnot.html#ga33296034dc4209f85d6a710a1be4dcbf" title="Try to spread a notification among all the tasks in the scheduling scheme.">qOS_Notification_Spread()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">eventdata</td><td>Specific event user-data. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">eventData</td><td>Specific event user-data. </td></tr>
   </table>
   </dd>
 </dl>

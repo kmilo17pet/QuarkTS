@@ -218,11 +218,11 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">    #if ( Q_TRACE_VARIABLES == 1 )</span></div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">        #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            <span class="keywordtype">void</span> _qtrace_krn( <span class="keyword">const</span> <span class="keywordtype">char</span> *msg,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            <span class="keywordtype">void</span> _qTrace_krn( <span class="keyword">const</span> <span class="keywordtype">char</span> *msg,</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *<span class="keywordtype">id</span>,</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *obj );</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">            #define _QTRACE_KERNEL( msg, id, obj )                          \</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">            _qtrace_krn( (char*)(msg), (id), (obj) );                       \</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">            _qTrace_krn( (char*)(msg), (id), (obj) );                       \</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor"></span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">        #else</span></div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _QTRACE_KERNEL( msg, id, obj )</span></div>

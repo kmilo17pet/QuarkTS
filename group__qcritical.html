@@ -142,7 +142,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga0e6e7fa105f510bc8bfa5067c792b8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exit a critical section. This function invokes the <b>Enabler</b> function if available.  <a href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca">More...</a><br /></td></tr>
 <tr class="separator:ga0e6e7fa105f510bc8bfa5067c792b8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab60b5a86642800f3c4d733167d79dace"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a> (const <a class="el" href="group__qcritical.html#ga64adddc1db2a59fcea764d0f27ae5a07">qInt_Restorer_t</a> rFcn, const <a class="el" href="group__qcritical.html#ga0b75a2121f1f84d643873bfe48a6b7cb">qInt_Disabler_t</a> dFcn)</td></tr>
-<tr class="memdesc:gab60b5a86642800f3c4d733167d79dace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to comunicate safely from Interrupts using queued notifications or qQueues. Example :  <a href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">More...</a><br /></td></tr>
+<tr class="memdesc:gab60b5a86642800f3c4d733167d79dace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to communicate safely from Interrupts using queued notifications or qQueues. Example :  <a href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">More...</a><br /></td></tr>
 <tr class="separator:gab60b5a86642800f3c4d733167d79dace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -164,10 +164,10 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. </dd>
 <dd>
 User should return the current interrupt configuration to be saved by the kernel. Example : <div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> BSP_InterruptDisabler( <span class="keywordtype">void</span> ) {</div>
-<div class="line">      <a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> currentmask;</div>
-<div class="line">      currentmask = HAL_InteruptGetMask( savedmask );</div>
+<div class="line">      <a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> currentMask;</div>
+<div class="line">      currentMask = HAL_InterruptGetMask( savedMask );</div>
 <div class="line">      HAL_DisableInterrupts();</div>
-<div class="line">      <span class="keywordflow">return</span> currentmask;</div>
+<div class="line">      <span class="keywordflow">return</span> currentMask;</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
 </div><!-- fragment --> </dd></dl>
@@ -190,14 +190,14 @@ User should return the current interrupt configuration to be saved by the kernel
 <p>Function called by <a class="el" href="group__qcritical.html#ga0e6e7fa105f510bc8bfa5067c792b8ca" title="Exit a critical section. This function invokes the Enabler function if available.">qCritical_Exit()</a> to restore interrupts. </p>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. </dd>
 <dd>
-The kernel passes the previously saved interrupt configuration as input argument. The user is responsible for taking this argument to restore the saved interrupt setup. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_InterruptRestorer( <a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> savedmask ) {</div>
-<div class="line">      HAL_InteruptSetMask( savedmask );</div>
+The kernel passes the previously saved interrupt configuration as input argument. The user is responsible for taking this argument to restore the saved interrupt setup. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_InterruptRestorer( <a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> savedMask ) {</div>
+<div class="line">      HAL_InterruptSetMask( savedMask );</div>
 <div class="line">      HAL_EnableInterrupts();</div>
 <div class="line">}</div>
 </div><!-- fragment --> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">savedmask</td><td>The interrupt configuration saved by the "Disabler" function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">savedMask</td><td>The interrupt configuration saved by the "Disabler" function </td></tr>
   </table>
   </dd>
 </dl>
@@ -223,7 +223,7 @@ The kernel passes the previously saved interrupt configuration as input argument
 </div><div class="memdoc">
 
 <p>Enter a critical section. This function invokes the <b>Disabler</b> function if available. </p>
-<dl class="section note"><dt>Note</dt><dd>Please see <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to comuni...">qCritical_SetInterruptsED()</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Please see <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to commun...">qCritical_SetInterruptsED()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
 
 </div>
@@ -245,7 +245,7 @@ The kernel passes the previously saved interrupt configuration as input argument
 </div><div class="memdoc">
 
 <p>Exit a critical section. This function invokes the <b>Enabler</b> function if available. </p>
-<dl class="section note"><dt>Note</dt><dd>Please see <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to comuni...">qCritical_SetInterruptsED()</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Please see <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to commun...">qCritical_SetInterruptsED()</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
 
 </div>
@@ -276,9 +276,9 @@ The kernel passes the previously saved interrupt configuration as input argument
       </table>
 </div><div class="memdoc">
 
-<p>Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to comunicate safely from Interrupts using queued notifications or qQueues. Example : </p>
+<p>Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to communicate safely from Interrupts using queued notifications or qQueues. Example : </p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a>( BSP_InterruptRestorer, BSP_InterruptDisabler );</div>
-<div class="ttc" id="agroup__qcritical_html_gab60b5a86642800f3c4d733167d79dace"><div class="ttname"><a href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a></div><div class="ttdeci">qBool_t qCritical_SetInterruptsED(const qInt_Restorer_t rFcn, const qInt_Disabler_t dFcn)</div><div class="ttdoc">Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to comuni...</div><div class="ttdef"><b>Definition:</b> qcritical.c:39</div></div>
+<div class="ttc" id="agroup__qcritical_html_gab60b5a86642800f3c4d733167d79dace"><div class="ttname"><a href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace">qCritical_SetInterruptsED</a></div><div class="ttdeci">qBool_t qCritical_SetInterruptsED(const qInt_Restorer_t rFcn, const qInt_Disabler_t dFcn)</div><div class="ttdoc">Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to commun...</div><div class="ttdef"><b>Definition:</b> qcritical.c:39</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rFcn</td><td>The function with hardware specific code that enables or restores interrupts. </td></tr>
