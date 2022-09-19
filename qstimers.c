@@ -41,7 +41,7 @@ qBool_t qSTimer_FreeRun( qSTimer_t * const t,
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
             if ( qSTimer_Expired( t ) ) {
-                retValue = qSTimer_Disarm( t );
+                retValue = qSTimer_Reload( t );
             }
         }
         else {
