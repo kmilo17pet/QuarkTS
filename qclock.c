@@ -33,6 +33,7 @@ static qClock_t qClock_InternalTick( void )
 {
     return qSysTick_Epochs;
 }
+/*cstat -MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider )
 {
@@ -50,6 +51,7 @@ qBool_t qClock_SetTickProvider( const qGetTickFcn_t provider )
 
     return retValue;
 }
+/*cstat +MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 qTime_t qClock_Convert2Time( const qClock_t t )
 {

@@ -469,16 +469,15 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
                                                 qSM_UnprotectedHandler_t h )
 {
     size_t i, n;
-    qBool_t transitionAllowed;
     const qSM_Transition_t *iTransition;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     const qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
     for ( i = 0u ; i < n ; ++i ) {
+        qBool_t transitionAllowed = qTrue; /*allow the transition by default*/
+
         iTransition = &table[ i ]; /*get the i-element from the table*/
-        /*if no signal-guard available, allow the transition by default*/
-        transitionAllowed = qTrue;
         if ( h->Signal == iTransition->xSignal ) { /*table entry match*/
             if ( NULL != iTransition->guard ) {
                 /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/

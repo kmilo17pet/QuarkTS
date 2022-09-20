@@ -322,11 +322,13 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task )
 {
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         qBool_t retValue = qFalse;
-        qBase_t currentQueueIndex, i;
+        qBase_t currentQueueIndex;
 
         currentQueueIndex = kernel.queueIndex + 1;
         /*check first if the queue has items inside*/
         if ( currentQueueIndex > 0 ) {
+            qBase_t i;
+
             qCritical_Enter();
             /*loop the queue slots to check if the Task is inside*/
             for ( i = 0 ; i < currentQueueIndex ; ++i ) {
@@ -350,7 +352,7 @@ static qTask_t* qOS_PriorityQueue_Get( void )
     qTask_t *xTask = NULL;
 
     if ( kernel.queueIndex >= 0 ) { /*queue has elements*/
-        qPriority_t maxPriority, iPriorityValue;
+        qPriority_t maxPriority;
         qIndex_t indexTaskToExtract = 0u;
         qIndex_t i;
 
@@ -360,7 +362,7 @@ static qTask_t* qOS_PriorityQueue_Get( void )
         /*walk through the queue to find the task with the highest priority*/
         /*loop until all items are checked or if the tail is reached*/
         for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.queueStack[i].Task ) ; ++i ) {
-            iPriorityValue = kernel.queueStack[i].Task->qPrivate.priority;
+            qPriority_t iPriorityValue = kernel.queueStack[i].Task->qPrivate.priority;
             /*check if the queued task has the max priority value*/
             if ( iPriorityValue > maxPriority ) {
                 maxPriority = iPriorityValue; /*Reassign the max value*/
@@ -1008,7 +1010,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
 
     if ( NULL != Task ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        const qList_t * const xList = (qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        const qList_t * const xList = (const qList_t * const)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( kernel.currentTask == Task ) {
             retValue = qRunning;

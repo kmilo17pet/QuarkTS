@@ -88,13 +88,11 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec )
 /*============================================================================*/
 static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg )
 {
-    qBool_t v; /*to hold the current pin value*/
     const qCoreRegSize_t pinReader = ec->qPrivate.reader;
     qEdgeCheck_IONode_t *n;
 
     for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {
-        /*read the pin level*/
-        v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
+        qBool_t v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
         fcn( n, v, arg );
     }
 }

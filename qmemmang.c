@@ -252,13 +252,15 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                 connector structure in addition to some increment required for
                 alignment 
                 */
+                /*cstat -ATH-overflow*/ 
                 pSize += additional;
+                /*cstat +ATH-overflow*/
             }
         }
 
         if ( (size_t)0u == ( pSize & blockAllocatedBit ) ) {
             if ( ( pSize > (size_t)0u ) && ( pSize < mPool->qPrivate.freeBytesRemaining ) ) {
-                qMemMang_BlockConnect_t *xBlock, *previousBlock, *newBlockLink;
+                qMemMang_BlockConnect_t *xBlock, *previousBlock;
                 /* Traverse list from start until one of adequate size is found */
                 previousBlock = &mPool->qPrivate.start;
                 xBlock = mPool->qPrivate.start.next;
@@ -278,6 +280,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                     /* Allocated must be removed from the list of free blocks*/
                     previousBlock->next = xBlock->next;
                     if ( ( xBlock->blockSize - pSize ) > minBlockSize ) {
+                        qMemMang_BlockConnect_t *newBlockLink;
                         /*
                         If the block is larger than required it can be split
                         into two.
@@ -289,7 +292,9 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP36-C_a +CERT-EXP39-C_d*/
                         /*compute the sizes of two blocks split from the single block.*/
                         newBlockLink->blockSize = xBlock->blockSize - pSize;
+                        /*cstat -ATH-overflow*/
                         xBlock->blockSize = pSize;
+                        /*cstat +ATH-overflow*/
                         /* Insert the new block into the list of free blocks. */
                         qMemMang_InsertBlockIntoFreeList( mPool, newBlockLink );
                     }

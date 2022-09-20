@@ -16,7 +16,7 @@ qCritical_Handler_t;
 /*! @endcond */
 
 static qCritical_Handler_t critical = { NULL, NULL , 0uL };
-
+/*cstat -MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 void qCritical_Enter( void )
 {
@@ -50,3 +50,4 @@ qBool_t qCritical_SetInterruptsED( const qInt_Restorer_t rFcn,
     return retValue;
 }
 /*============================================================================*/
+/*cstat +MISRAC2012-Rule-8.13*/
