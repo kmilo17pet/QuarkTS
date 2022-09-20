@@ -126,9 +126,8 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num,
         str[ i++ ] = '0';  /*MISRAC2004-17.4_b deviation allowed*/
     }
     else {
-        qUINT32_t rem;
         while ( 0uL != num ) { /*Process individual digits*/
-            rem = num % (qUINT32_t)base;
+            qUINT32_t rem = num % (qUINT32_t)base;
             /*cstat -CERT-INT30-C_a*/
             str[ i++ ] = ( rem > 9uL )?
                          (char)( (qUINT8_t)( rem - 10uL ) + 'A' ) :
@@ -158,13 +157,13 @@ qBool_t qIOUtil_SwapBytes( void *pData,
 
     if ( ( NULL != pData ) && ( n > 0u ) ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        qUINT8_t *p = (qUINT8_t*)pData, tmp; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+        qUINT8_t *p = (qUINT8_t*)pData; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         size_t lo, hi;
 
         hi = n - 1u;
         for ( lo = 0u ; hi > lo ; ++lo ) {
-            tmp = p[ lo ];
+            qUINT8_t tmp = p[ lo ];
             p[ lo ] = p[ hi ];
             p[ hi ] = tmp;
             --hi;
@@ -309,19 +308,17 @@ qUINT32_t qIOUtil_XtoU32( const char *s )
     qUINT32_t val = 0uL;
 
     if ( NULL != s ) {
-        qUINT8_t nparsed = 0u;
-        qUINT8_t xByte;
-
+        qUINT8_t nParsed = 0u;
         /*
         loop until the end of the string or the number of parsed chars exceeds
         the 32bit notation
         */
-        while ( ( (char)'\0' != *s ) && ( nparsed < 8u ) ) {
+        while ( ( (char)'\0' != *s ) && ( nParsed < 8u ) ) {
             /*get the hex char, considerate only upper case*/
-            xByte = (qUINT8_t)toupper( (int)*s++ ); /*MISRAC2004-17.4_a deviation allowed*/
+            qUINT8_t xByte = (qUINT8_t)toupper( (int)*s++ ); /*MISRAC2004-17.4_a deviation allowed*/
             /*cstat -MISRAC2012-Dir-4.11_h*/
             if ( 0 != isxdigit( (int)xByte ) ) { /*if is a valid hex digit*/
-                ++nparsed; /*increase the parsed char count*/
+                ++nParsed; /*increase the parsed char count*/
                 if ( ( (char)xByte >= '0' ) && ( (char)xByte <= '9' ) ) {
                     xByte = (qUINT8_t)( xByte - (qUINT8_t)48u );
                 }
