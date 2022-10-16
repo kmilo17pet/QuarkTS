@@ -63,8 +63,10 @@
 *
 * @subsection q_codstandard Development process and coding starndard
 * QuarkTS is developed using a formal and rigorous process framed in compliance
-* of the MISRA C 2012 and CERT coding standard guidelines and complemented with 
-* multiple static-analysis checks targered to safe critical applications.
+* of the <a style="font-weight:bold" href="https://www.misra.org.uk/">MISRA C 2012</a>
+* and <a style="font-weight:bold" href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT coding standard</a>
+* guidelines and complemented with multiple static-analysis checks targered to
+* safe critical applications.
 *
 * Simply using QuarkTS in an application, does not mean developers can make a 
 * claim related to the development process and compliance of the OS to any 
@@ -87,7 +89,7 @@
 * overflows from occurring and strategies designed to detect buffer overflows 
 * and securely recover without allowing the failure to be exploited.
 * - In line with MISRA guides and for portability between platforms, we use the
-* stdint.h with typedefs that indicate size and signedness in place of the basic
+* @c stdint.h with typedefs that indicate size and signedness in place of the basic
 * types.
 * - In line with MISRA guides, unqualified standard @c char and @c char* types 
 * are only permitted to hold ASCII characters and strings respectively.
@@ -117,9 +119,9 @@
 * <table>
 * <caption id="multi_row">OS Memory footprint (Measured in a 32-bit MCU)</caption>
 * <tr><th>Functionality  <th>Size(bytes)
-* <tr><td> Kernel, scheduler and task management <td>cell 2637
-* <tr><td> A task node (@c qTask_t) <td>cell 68
-* <tr><td> Finite State machines(FSM) handling and related APIs <td>cell 314
+* <tr><td> Kernel, scheduler and task management <td>2637
+* <tr><td> A task node (@c qTask_t) <td>68
+* <tr><td> Finite State machines(FSM) handling and related APIs <td>314
 * <tr><td> A FSM object (@c qSM_t) <td> 100
 * <tr><td> A state object (@c qSM_State_t) <td> 36
 * <tr><td> STimers handling and related APIs <td> 258
@@ -264,7 +266,7 @@
 * After setting up the kernel with qOS_Setup(), the user can proceed to deploy 
 * the multitasking application by adding tasks. If the task node and their 
 * respective callback is already defined, the task can be added to the scheme 
-* using qOS_Add_Task() . This API can schedule a task to run every @c t seconds,
+* using qOS_Add_Task(). This API can schedule a task to run every @c t seconds,
 * @c n exencutions times and executing the @c callbackFcn method on every pass.
 *
 * <b> Caveats: </b>
@@ -285,7 +287,7 @@
 *
 * Invoking qOS_Add_Task() is the most generic way to adding tasks to the scheme, 
 * supporting a mixture of time-triggered and event-triggered tasks, however, 
-* additional simplified *API functions are also provided to add specific purpose
+* additional simplified API functions are also provided to add specific purpose
 * tasks:
 *
 * - Event-triggered only tasks → qOS_Add_EventTask().

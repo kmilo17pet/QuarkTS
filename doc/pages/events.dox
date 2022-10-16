@@ -326,7 +326,8 @@
 * will be received automatically in every trigger, this involves a data removal 
 * after the task is served. During the respective task execution, the EventData 
 * field of the qEvent_t structure will be pointing to the extracted data. For 
-* the other modes, the qEvent::EventData field will point to the queue that triggered the event.
+* the other modes, the qEvent_t::EventData field will point to the queue that 
+* triggered the event.
 * 
 * @subsubsection q_queueexample A queue example
 * This example shows the usage of QuarkTS queues. The application is the classic

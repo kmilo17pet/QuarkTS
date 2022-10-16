@@ -134,7 +134,7 @@
 * the instance, sets the callback for the top state, sets the initial state and 
 * the surrounding callback function.
 *
-* @subsection q_fsmsetup Subscribin states and defining callbacks
+* @subsection q_fsm_subscribe_states Subscribing states and defining callbacks
 * State machines are constructed by composition, therefore, the topology of a 
 * state machine is determined upon construction. In this module implementation, 
 * there are not distinction between composite states(states containing substates) 
@@ -143,7 +143,7 @@
 * define its position in the topology. 
 *
 * A state callback-functions takes a qSM_Handler_t object as input argument and
-* returns a qSM_Status_t value. An example is shown in the following code snippet:
+* returns a @ref qSM_Status_t value. An example is shown in the following code snippet:
 *
 *  @code{.c}
 *  qSM_Status_t ExampleState_Callback( qSM_Handler_t h ) {
@@ -266,7 +266,7 @@
 * through its state callback. The behavior of this surrounding callback must be 
 * defined by the programmer.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196009040-bf314b36-4ff8-4d3d-84cf-377fba2453d1.png " The simple led-button FSM example with three states"
+* \image html https://user-images.githubusercontent.com/11412210/196009040-bf314b36-4ff8-4d3d-84cf-377fba2453d1.png " Surrounding callback invocation after and before the current state"
 *
 * The surrounding callback \f$ S_u \f$ invocation occurs afther and befor the
 * current state \f$ P \f$. When the surrounding callback is executed, indicates 
@@ -321,16 +321,16 @@
 * Check the example below:
 *
 *  @code{.c}
-*  qSM_Status_t Example_State( qSM_Handler_t h ){
+*  qSM_Status_t Example_State( qSM_Handler_t h ) {
 *      qEvent_t e = h->Data; 
 *      /* Get the event info of the task that owns this state-machine*/
-*      switch( h->Signal ){
+*      switch ( h->Signal ) {
 *          case QSM_SIGNAL_ENTRY:
 *              break;
 *          case QSM_SIGNAL_EXIT:
 *              break;
 *          default:
-*              switch( e->Trigger ){
+*              switch ( e->Trigger ) {
 *                  case byTimeElapsed:
 *                      /* TODO: Code for this case */
 *                  break;
@@ -359,11 +359,10 @@
 * @image html https://user-images.githubusercontent.com/11412210/196019529-4effa4e7-8449-4747-8a74-8add637ab395.png "A simple FSM example with three states"
 * States \f$ S_i \f$  and transitions \f$ t_i \f$ are described as follows:
 *
-* \f$ S_1 \f$ LED Off, \f$ S_2 \f$ LED On and \f$ S_3 \f$ LED Blink
+* - \f$ S_1 \f$ LED Off, \f$ S_2 \f$ LED On and \f$ S_3 \f$ LED Blink
+* - \f$ t_1 \f$ Button press (rising edge) and \f$ t_2 \f$ Timeout 10s
 *
-* \f$ t_1 \f$ Button press (rising edge) and \f$ t_2 \f$ Timeout 10s
-*
-* To start the implementation, let’s define the necessary global variables...
+* To start the implementation, let's define the necessary global variables...
 *
 *  @code{.c}
 *  qTask_t LED_Task; /*The task node*/
@@ -374,15 +373,15 @@
 * Then, we define our states as the flow-diagram showed in the figure above.
 *
 *  @code{.c}
-*  qSM_Status_t State_LEDOff_Callback( qSM_Handler_t h ){
-*      switch( h->Signal ){
+*  qSM_Status_t State_LEDOff_Callback( qSM_Handler_t h ) {
+*      switch ( h->Signal ) {
 *          case QSM_SIGNAL_ENTRY:
 *              BSP_LED_OFF();
 *              break;
 *          case QSM_SIGNAL_EXIT: case QSM_SIGNAL_START: /*Ignore*/
 *              break;
 *          default:
-*              if( BUTTON_PRESSED ){
+*              if ( BUTTON_PRESSED ) {
 *                  h->NextState = &State_LEDOn;
 *              }
 *              break;
@@ -390,9 +389,9 @@
 *      return qSM_STATUS_EXIT_SUCCESS;
 *  }
 *  /*---------------------------------------------------------------------*/
-*  qSM_Status_t State_LEDOn_Callback( qSM_Handler_t h ){
+*  qSM_Status_t State_LEDOn_Callback( qSM_Handler_t h ) {
 *      static qSTimer_t timeout;
-*      switch( h->Signal ){
+*      switch ( h->Signal ) {
 *          case QSM_SIGNAL_ENTRY:
 *              qSTimer_Set( &timeout, 10.0 ); /*STimer gets armed*/
 *              BSP_LED_ON();
@@ -400,10 +399,10 @@
 *          case QSM_SIGNAL_EXIT: case QSM_SIGNAL_START: /*Ignore*/
 *              break;
 *          default:
-*              if( qSTimer_Expired( &timeout) ){ /*check if the timeout expired*/
+*              if ( qSTimer_Expired( &timeout) ) { /*check if the timeout expired*/
 *                  h->NextState = &State_LEDOff;
 *              }
-*              if( BUTTON_PRESSED ){
+*              if ( BUTTON_PRESSED  {
 *                  h->NextState = &State_LEDBlink;
 *              }
 *              break;
@@ -412,20 +411,20 @@
 *  }
 *  /*---------------------------------------------------------------------*/
 *  qSM_Status_t State_LEDBlink_Callback( qSM_Handler_t h ){
-*      static qSTimer_t timeout;
+*      static qSTimer_t timeout; 
 *      static qSTimer_t blinktime;
 *      
-*      switch( m->Signal ){
+*      switch ( h->Signal ) {
 *          case QSM_SIGNAL_ENTRY:
 *              qSTimer_Set( &timeout, 10.0 );
 *              break;
 *          case QSM_SIGNAL_EXIT: case QSM_SIGNAL_START: /*Ignore*/
 *              break;    
 *          default:
-*              if( qSTimer_Expired( &timeout ) || BUTTON_PRESSED ){
+*              if ( qSTimer_Expired( &timeout ) || BUTTON_PRESSED ) {
 *                  h->NextState = &State_LEDOff;
 *              }
-*              if( qSTimer_FreeRun( &blinktime, 0.5 ) ){
+*              if ( qSTimer_FreeRun( &blinktime, 0.5 ) ) {
 *                 BSP_LED_TOGGLE();
 *              }
 *              break;
@@ -513,8 +512,8 @@
 * entries, an n-sized array of qSM_Transition_t elements following the layout
 * described below:
 *
-* The API qStateMachine_InstallTransitionTable(), should be used to perform the transition
-* table installation to a specific state.
+* The API qStateMachine_Set_StateTransitions(), should be used to perform the 
+* transition table installation to a specific state.
 *
 * <center>
 * <table>
@@ -1018,12 +1017,12 @@
 * @image html https://user-images.githubusercontent.com/11412210/196015888-68556734-dd55-4fcc-b4ef-b797b744b539.png "Coroutines in QuarkTS"
 * 
 * The QuarkTS implementation uses the Duff's device approach, and is heavily
-* inspired by the Knuth method[5], Simon Tatham's Co-Routines in C [6] and Adam 
-* Dunkels Protothreads [7]. This means that a local-continuation variable is 
-* used to preserve the current state of execution at a particular place of the 
-* Co-Routine scope but without any call history or local variables. This brings
-* benefits to lower RAM usage, but at the cost of some restrictions on how a 
-* Co-routine can be used.
+* inspired by the Knuth method[5], <a style="font-weight:bold" href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html">Simon Tatham's Co-Routines in C</a>
+* and <a style="font-weight:bold" href="http://dunkels.com/adam/pt/index.html">Adam Dunkels Protothreads</a>
+* . This means that a local-continuation variable is used to preserve the current
+* state of execution at a particular place of the Co-Routine scope but without 
+* any call history or local variables. This brings benefits to lower RAM usage, 
+* but at the cost of some restrictions on how a Co-routine can be used.
 *
 * <b> Limitations and restrictions </b>
 *
