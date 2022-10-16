@@ -49,7 +49,7 @@
      * @brief A macro to perform time conversions.
      * @param[in] _xTime_   The input time in seconds.
      * @param[in] _qUnit_   The target unit. Use on of the provided factors
-     * prefixed with QTUNIT_XXX.
+     * prefixed with @c QTUNIT_XXX.
      * @return The time converted to the specified unit.
     */
     #define QTUNIT_TOTIME( _xTime_ , _qUnit_ )                              \

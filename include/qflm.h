@@ -39,6 +39,7 @@
     * @brief Uses the bitwise OR operator to set a single bit into @a dst
     * @param[in] dst The variable where the operation will be applied
     * @param[in] xBit The bit-index
+    * @param[in] xType Data-type
     * @return none.
     */
     #define qFLM_BitSet( dst, xBit, xType )                                 \
@@ -48,6 +49,7 @@
     * @brief Uses the bitwise AND operator to clear a single bit into @a dst
     * @param[in] dst The variable where the operation will be applied
     * @param[in] xBit The bit-index
+    * @param[in] xType Data-type
     * @return none.
     */
     #define qFLM_BitClear( dst, xBit, xType )                               \
@@ -76,7 +78,7 @@
     * @brief Write the @a bVal in a single bit of the @a dst variable
     * @param[in] dst The variable where the operation will be applied
     * @param[in] xBit The bit-index
-    * @param[in] bVal The boolean value to write
+    * @param[in] xVal The boolean value to write
     * @return none.
     */
     #define qFLM_BitWrite( dst, xBit, xVal )                                \
@@ -155,7 +157,7 @@
 
     /**
     * @brief Read the low-word from @a dst  assuming it as a DWord
-    * @param[in] Register The variable where the operation will be applied
+    * @param[in] dst The variable where the operation will be applied
     * @return The value of the low word
     */
     #define qFLM_DWordLowWord( dst )      ( (qUINT16_t)( (dst) & 0xFFFF ) )

@@ -62,8 +62,8 @@
     *
     * The default memory management unit resides in a memory pool object. Also
     * called the default-pool. The total amount of available heap space in the
-    * default memory pool is set by Q_DEFAULT_HEAP_SIZE, which is defined in
-    * qconfig.h.
+    * default memory pool is set by @c Q_DEFAULT_HEAP_SIZE, which is defined in
+    * @c qconfig.h.
     *
     * Besides the default pool, any number of additional memory pools can be
     * defined. Like any other object in QuarkTS, memory pools are referenced by
@@ -89,7 +89,7 @@
     * @brief Initializes a memory pool instance. This function should be called
     * once before any heap memory request.
     * @param[in] mPool A pointer to the memory pool instance
-    * @param[in] pArea A pointer to a memory block (uint8_t) statically
+    * @param[in] pArea A pointer to a memory block @c uint8_t statically
     * allocated to act as Heap of the memory pool. The size of this block should
     * match the @a pSize argument.
     * @param[in] pSize The size of the memory block pointed by @a pArea
@@ -110,7 +110,7 @@
     /**
     * @brief Returns the total amount of heap space that remains unallocated for
     * the selected memory pool.
-    * @param[in] mPool A pointer to the memory pool instance. Pass NULL to
+    * @param[in] mPool A pointer to the memory pool instance. Pass @c NULL to
     * select the default memory pool.
     * @return The size of the unallocated heap.
     */
@@ -125,7 +125,7 @@
     * @param[in] pSize Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block is
     * returned. If the function failed to allocate the requested block of memory
-    * , a NULL pointer is returned.
+    * , a @c NULL pointer is returned.
     */
     void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                              size_t pSize );
@@ -151,7 +151,7 @@
 
     /**
     * @brief Wrapper API for qMemMang_Allocate() in order to be compatible with
-    * @a malloc. Allocate a block of memory that is @a mSize bytes large.
+    * @c malloc(). Allocate a block of memory that is @a mSize bytes large.
     * Allocation will be performed in the selected memory pool. If the requested
     * memory can be allocated, a pointer is returned to the beginning of the
     * memory block.
@@ -161,13 +161,13 @@
     * @param[in] mSize Size of the memory block in bytes.
     * @return If the request is successful then a pointer to the memory block
     * is returned. If the function failed to allocate the requested block of
-    * memory, a NULL pointer is returned.
+    * memory, a @c NULL pointer is returned.
     */
     void* qMalloc( size_t mSize );
 
     /**
     * @brief Wrapper API for qMemMang_Free() in order to be compatible with
-    * @a free.  Deallocates the space previously allocated by qMalloc().
+    * @c free(). Deallocates the space previously allocated by qMalloc().
     * Deallocation will be performed in the selected memory pool.
     * If @a ptr is a null pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.

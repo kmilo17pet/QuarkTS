@@ -47,7 +47,10 @@
     * qStateMachine_StateSubscribe() API.
     */
     #define QSM_STATE_TOP           ( NULL )
+
+    /*! @cond  */
     #define QSM_TSOPT_MASK          ( (qSM_TimeoutSpecOptions_t)0x00FFFFFFuL )
+    /*! @endcond  */
 
     /*FSM internal signals*/
     /**
@@ -75,7 +78,7 @@
     #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFCuL )
     /**
     * @brief Built-in signal to indicate that a timeout expiration event occurs.
-    * @param index The index of the timeout (0, 1, 2... (Q_FSM_MAX_TIMEOUTS-1) )
+    * @param index The index of the timeout (0, 1, 2... ( @c Q_FSM_MAX_TIMEOUTS-1 ) )
     */
     #define QSM_SIGNAL_TIMEOUT(index)                                       \
     ( (qSM_Signal_t)0xFFFFFFFBuL - (qSM_Signal_t)( Q_FSM_MAX_TIMEOUTS - 1 ) \
@@ -433,9 +436,9 @@
     * @param[in] topFcn The callback for the "Top" state.
     * @param[in] init The first state to be executed (init-state or default
     * transition).
-    * @param[in] sFcn The surrounding callback. To ignore pass NULL.
+    * @param[in] sFcn The surrounding callback. To ignore pass @c NULL.
     * @param[in] pData Represents the FSM arguments. User storage pointer. To
-    * ignore pass NULL.
+    * ignore pass @c NULL.
     * @return Returns #qTrue on Success, otherwise returns #qFalse.
     */
     qBool_t qStateMachine_Setup( qSM_t * const m,
@@ -448,7 +451,7 @@
     * @brief This function subscribes the FSM instance to a specific state with
     * an associated callback function.
     * @param[in] m A pointer to the FSM object.
-    * @param[in] state A pointer to the state object.
+    * @param[in] s A pointer to the state object.
     * @param[in] parent A pointer to the parent state (Use #QSM_STATE_TOP) if
     * the parent is the top state.
     * @param[in] sFcn The handler function associated to the state.
@@ -456,8 +459,8 @@
     * Prototype: @code qSM_Status_t xCallback( qSM_Handler_t h ) @endcode
     * @param[in] init The first child-state to be executed if the subscribed
     * state its a parent in an hierarchical pattern. (default transition).
-    * To ignore pass NULL as argument.
-    * @param[in] pData State data. Storage pointer. To ignore pass NULL.
+    * To ignore pass @c NULL as argument.
+    * @param[in] pData State data. Storage pointer. To ignore pass @c NULL.
     * @return #qTrue on success, otherwise return #qFalse.
     */
     qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
@@ -502,7 +505,7 @@
     * @note The signal-queue has the highest precedence.
     * @param[in] m A pointer to the FSM object.
     * @param[in] sig The user-defined signal.
-    * @param[in] isUrgent If qTrue, the signal will be sent to the front of the
+    * @param[in] isUrgent If #qTrue, the signal will be sent to the front of the
     * queue. (only if the there is a signal-queue available)
     * @return #qTrue if the provided signal was successfully delivered to the
     * FSM, otherwise return #qFalse. #qFalse if there is a queue, and the signal
@@ -518,7 +521,7 @@
     * @attention This feature its only available if the FSM has a signal-queue
     * installed.
     * @note You can increase the number of available timeouts instances by
-    * changing the @b Q_FSM_MAX_TIMEOUTS configuration macro inside @b qconfig.h
+    * changing the @c Q_FSM_MAX_TIMEOUTS configuration macro inside @c qconfig.h
     * @see qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.
     * @param[in] ts A pointer to the timeout specification object.
@@ -555,7 +558,7 @@
     * For this use qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.
     * @param[in] xTimeout The index of the requested timeout
-    * (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * (0, 1, 2 ... (@c Q_FSM_MAX_TIMEOUTS-1) )
     * @param[in] t The specified time usually given in seconds.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */
@@ -571,7 +574,7 @@
     * For this use qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.
     * @param[in] xTimeout The index of the timeout
-    * (0, 1, 2 ... (Q_FSM_MAX_TIMEOUTS-1) )
+    * (0, 1, 2 ... (@c Q_FSM_MAX_TIMEOUTS-1) )
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */
     qBool_t qStateMachine_TimeoutStop( qSM_t * const m,
@@ -582,7 +585,7 @@
     * @param[in] m A pointer to the FSM object.
     * @param[in] a The requested attribute
     * @return Returns a pointer to the requested attribute. Otherwise returns
-    * NULL.
+    * @c NULL.
     */
     void* qStateMachine_Get_Machine( qSM_t * const m,
                                      const qSM_Attribute_t a );
@@ -592,7 +595,7 @@
     * @param[in] s A pointer to the state object.
     * @param[in] a The requested attribute
     * @return Returns a pointer to the requested attribute. Otherwise returns
-    * NULL.
+    * @c NULL.
     */
     void* qStateMachine_Get_State( qSM_State_t * const s,
                                    const qSM_Attribute_t a );

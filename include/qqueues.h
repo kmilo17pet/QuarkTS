@@ -139,7 +139,7 @@
     /**
     * @brief Looks at the data from the front of the Queue without removing it.
     * @param[in] q A pointer to the Queue object
-    * @return Pointer to the data, or NULL if there is nothing in the queue.
+    * @return Pointer to the data, or @c NULL if there is nothing in the queue.
     */
     void* qQueue_Peek( const qQueue_t * const q );
 

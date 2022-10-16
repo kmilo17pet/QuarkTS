@@ -29,12 +29,12 @@
     * from the callback of a command.
     */
     typedef enum {
-        qATCLI_ERROR = -32767,      /**< To indicate an error operation. The CLI will print the  ERROR_String to the output.*/
-        qATCLI_NOTALLOWED = -32766, /**< To indicate an successful operation. The CLI will print the " string to the output.*/
+        qATCLI_ERROR = -32767,      /**< To indicate an error operation. The CLI will print the  @c ERROR_String to the output.*/
+        qATCLI_NOTALLOWED = -32766, /**< To indicate an successful operation. The CLI will print the @c NOT_Allowed  string to the output.*/
         qATCLI_NORESPONSE = 0,      /**< To indicate that no response will be printed out.*/
-        qATCLI_OK = 1,              /**< To indicate an successful operation. The CLI will print the  OK_String to the output.*/
-        qATCLI_DEVID = 32765,       /**< To indicate that the Device Identifier should be print out.*/
-        qATCLI_NOTFOUND = 32766,    /**< To indicate that the command was not found. The CLI will print the NOTFOUND_string to the output*/
+        qATCLI_OK = 1,              /**< To indicate an successful operation. The CLI will print the  @c OK_String to the output.*/
+        qATCLI_DEVID = 32765,       /**< To indicate that the device "Identifier" should be printed out.*/
+        qATCLI_NOTFOUND = 32766,    /**< To indicate that the command was not found. The CLI will print the @c NOTFOUND_string to the output*/
         qATCLI_OUTPUT = 32767       /**< To indicate that only the output buffer will be print out*/
     }
     qATCLI_Response_t;
@@ -43,10 +43,10 @@
     * @brief Used to indicate an error code as return value inside a
     * command-callback.
     * This code is defined by the application writer and should be a value
-    * between 1 and 32766.
+    * between @c 1 and @c 32766.
     *
     * For example, a return value of #qATCLI_ERRORCODE(15), will print out the
-    * string "ERROR:15".
+    * string @c ERROR:15.
     */
     #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )
 
@@ -77,10 +77,10 @@
     */
     typedef enum {
         qATCLI_CMDTYPE_UNDEF = QATCLI_CMDTYPE_UNDEF, /**< Was not able to detected a correct input command*/
-        qATCLI_CMDTYPE_PARA  = QATCLI_CMDTYPE_PARA,  /**< Command that receives parameters (comma separated arguments after the equal(=) symbol) : AT+cmd=x,y */
-        qATCLI_CMDTYPE_TEST  = QATCLI_CMDTYPE_TEST,  /**< Command in test mode (no arguments allowed): AT+cmd=? */
-        qATCLI_CMDTYPE_READ  = QATCLI_CMDTYPE_READ,  /**< Command to query information(data allowed after the ? symbol)  : AT+cmd? */
-        qATCLI_CMDTYPE_ACT   = QATCLI_CMDTYPE_ACT    /**< Command to perform an action (no arguments allowed) : AT+cmd */
+        qATCLI_CMDTYPE_PARA  = QATCLI_CMDTYPE_PARA,  /**< Command that receives parameters (comma separated arguments after the equal(=) symbol) : @c "AT+cmd=x,y" */
+        qATCLI_CMDTYPE_TEST  = QATCLI_CMDTYPE_TEST,  /**< Command in test mode (no arguments allowed): @c "AT+cmd=?" */
+        qATCLI_CMDTYPE_READ  = QATCLI_CMDTYPE_READ,  /**< Command to query information(data allowed after the ? symbol)  : @c "AT+cmd?" */
+        qATCLI_CMDTYPE_ACT   = QATCLI_CMDTYPE_ACT    /**< Command to perform an action (no arguments allowed) : @c AT+cmd */
     }
     qATCLI_CommandType_t;
 
@@ -109,7 +109,7 @@
         * @brief Helper method to get the pointer where the desired argument
         * starts.
         * @param[in] n The number of the argument
-        * @return A pointer to the desired argument. NULL pointer if the
+        * @return A pointer to the desired argument. @c NULL pointer if the
         * argument is not present.
         */
         char* (*GetArgPtr)( qIndex_t n );
@@ -132,11 +132,11 @@
         */
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**
-        * @brief Helper method to get the @a n HEX argument parsed qUINT32_t
+        * @brief Helper method to get the @a n HEX argument parsed @c qUINT32_t
         * from the incoming AT command.
         * @see qIOUtil_XtoU32()
         * @param[in] n The number of the argument
-        * @return The HEX argument parsed as qUINT32_t. Same behavior of
+        * @return The HEX argument parsed as @c qUINT32_t. Same behavior of
         * qIOUtil_XtoU32(). If argument not found returns 0.
         */
         qUINT32_t (*GetArgHex)( qIndex_t n );
@@ -146,7 +146,7 @@
         * @param[in] n The number of the argument
         * @param[out] pOut Array in memory where to store the resulting
         * null-terminated string.
-        * @return Same as @a out on success, otherwise returns NULL.
+        * @return Same as @a out on success, otherwise returns @c NULL.
         */
         char* (*GetArgString)( qIndex_t n, char* pOut );
         /**
@@ -157,7 +157,7 @@
         */
         void (*putch)( const char c );
         /**
-        * @brief Writes a string to CLI output without the EOF string appended
+        * @brief Writes a string to CLI output without the @c EOF string appended
         * at the end.
         * @param[in] s This is the C string to be written.
         * @return  none.
@@ -267,6 +267,9 @@
     }
     qATCLI_Command_t;
 
+    /**
+    * @brief Possible values for built-in string identifiers
+    */
     typedef enum {
         QATCLI_BUILTIN_STR_IDENTIFIER,                  /**< To select the device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND*/
         QATCLI_BUILTIN_STR_OK_RESPONSE,                 /**< To select the output message when a command callback returns ::qATCLI_OK.*/
@@ -325,18 +328,18 @@
     * @param[in] cmdOpt This flag combines with a bitwise OR the following
     * information:
     *
-    * ::qATCLI_CMDTYPE_PARA  : "AT+cmd=x,y" is allowed. The execution of the
+    * ::qATCLI_CMDTYPE_PARA  : @c AT+cmd=x,y is allowed. The execution of the
     * callback function also depends on whether the number of argument is valid
     * or not. Information about number of arguments is combined with a bitwise
     * 'OR' : ::qATCLI_CMDTYPE_PARA | 0xXY , where X which defines maximum
     * argument number for incoming command and Y which defines minimum argument
     * number for incoming command
     *
-    * ::qATCLI_CMDTYPE_TEST  : "AT+cmd=?" is allowed.
+    * ::qATCLI_CMDTYPE_TEST  : @c "AT+cmd=?" is allowed.
     *
-    * ::qATCLI_CMDTYPE_READ  : "AT+cmd?" is allowed.
+    * ::qATCLI_CMDTYPE_READ  : @c "AT+cmd?" is allowed.
     *
-    * ::qATCLI_CMDTYPE_ACT   : "AT+cmd" is allowed.
+    * ::qATCLI_CMDTYPE_ACT   : @c AT+cmd is allowed.
     *
     * @param[in] param User storage pointer.
     * @return #qTrue on success, otherwise return #qFalse.

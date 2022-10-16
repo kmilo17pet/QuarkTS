@@ -72,9 +72,9 @@
     * @brief An enum to describe the ForEach stage.
     */
     typedef enum {
-        qList_WalkInit,                 /**< When the loop is about to start. In this case, A NULL value will be passed in the node pointer.*/
+        qList_WalkInit,                 /**< When the loop is about to start. In this case, A @c NULL value will be passed in the node pointer.*/
         qList_WalkThrough,              /**< When the loop is traversing the list.*/
-        qList_WalkEnd,                  /**< When the loop has finished. In this case, A NULL value will be passed in the node pointer.*/
+        qList_WalkEnd,                  /**< When the loop has finished. In this case, A @c NULL value will be passed in the node pointer.*/
     }
     qList_WalkStage_t;
 
@@ -192,12 +192,12 @@
     /**
     * @brief Remove an item from the list.
     * @param[in] l Pointer to the list.
-    * @param[in] node A pointer to the node to be deleted (to ignore pass NULL ).
+    * @param[in] node A pointer to the node to be deleted (to ignore pass @c NULL ).
     * If the node is member or the list, use qList_RemoveItself() to avoid
     * overhead
     * @param[in] p The position of the node that will be removed. Could be
     * #QLIST_ATFRONT, #QLIST_ATBACK or any other index number.
-    * @return A pointer to the removed node. NULL if removal can't be performed.
+    * @return A pointer to the removed node. @c NULL if removal can't be performed.
     */
     void* qList_Remove( qList_t * const l,
                         void * const node,
@@ -234,14 +234,14 @@
     /**
     * @brief Get a pointer to the front item of the list
     * @param[in] l Pointer to the list.
-    * @return A pointer to the front node. NULL if the list is empty
+    * @return A pointer to the front node. @c NULL if the list is empty
     */
     void* qList_GetFront( const qList_t * const l );
 
     /**
     * @brief Get a pointer to the back item of the list
     * @param[in] l Pointer to the list.
-    * @return A pointer to the back node. NULL if the list is empty
+    * @return A pointer to the back node. @c NULL if the list is empty
     */
     void* qList_GetBack( const qList_t * const l );
 
@@ -291,9 +291,8 @@
     * @param[in] f Pointer to a function that compares two nodes.
     * This function is called repeatedly by qList_Sort() to compare two nodes.
     * It shall follow the following prototype:
-    * @code qBool_t CompareFcn(void *node1, void *node2) @endcode
+    * @code qBool_t CompareFcn( qList_CompareHandle_t h ) @endcode
     *
-    * Taking two pointers as arguments (both converted to const void*).
     * The function defines the order of the elements by returning a Boolean data,
     * where a #qTrue value indicates that element pointed by @a node1 goes
     * after the element pointed to by @a node2.
@@ -339,7 +338,7 @@
     * @brief Setup an instance of the given iterator to traverse the list.
     * @param[in] i Pointer to the iterator instance
     * @param[in] l Pointer to the list.
-    * @param[in] nodeOffset The start offset-node. To ignore, pass NULL.
+    * @param[in] nodeOffset The start offset-node. To ignore, pass @c  NULL.
     * @param[in] d Use one of the following options: #QLIST_FORWARD or
     * #QLIST_BACKWARD.
     * @return #qTrue on success. Otherwise returns #qFalse.
@@ -353,7 +352,7 @@
     * @brief Get the current node available in the iterator. After invoked,
     * iterator will be updated to the next node.
     * @param[in] i Pointer to the iterator instance
-    * @return Return the next node or NULL when no more nodes remain in the list.
+    * @return Return the next node or @c NULL when no more nodes remain in the list.
     */
     void* qList_IteratorGetNext( qList_Iterator_t *i );
 
@@ -369,7 +368,7 @@
     * @param[in] d Direction. Use one of the following options: #QLIST_FORWARD
     * or #QLIST_BACKWARD.
     * @param nodeOffset If available, the list walk through will start from this
-    * node. To ignore, pass NULL.
+    * node. To ignore, pass @c NULL.
     * @return #qTrue if the walk through was early terminated, otherwise returns
     * #qFalse.
     */

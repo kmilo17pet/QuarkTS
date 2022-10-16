@@ -92,13 +92,13 @@
         * added to the OS.
         * @param[in] tFcn The function that provides the tick value. If the user
         * application uses the qClock_SysTick() from the ISR, this parameter can
-        * be NULL.
+        * be @c NULL.
         * @note Function should take void and return a 32bit value.
         * @param[in] t (Optional) This parameter specifies the ISR background
         * timer base time. This can be the period in seconds(Floating-point
-        * format) or frequency in Herzt(if Q_SETUP_TICK_IN_HERTZ is enabled).
+        * format) or frequency in Herzt(if @c Q_SETUP_TICK_IN_HERTZ is enabled).
         * @param[in] idleCallback  Callback function to the Idle Task. To
-        * disable the Idle-Task activities, pass NULL as argument.
+        * disable the Idle-Task activities, pass @c NULL as argument.
         * @return #qTrue on success. Otherwise return #qFalse.
         *
         * Example : When tick is already provided
@@ -141,7 +141,7 @@
     /**
     * @brief Set/Change the callback for the Idle-task
     * @param[in] callbackFcn A pointer to a void callback method with a qEvent_t
-    * parameter as input argument. To disable pass NULL as argument.
+    * parameter as input argument. To disable pass @c NULL as argument.
     * @return #qTrue on success. Otherwise return #qFalse.
     */
     qBool_t qOS_Set_IdleTask( qTaskFcn_t callbackFcn );
@@ -198,7 +198,7 @@
     * @param[in] callbackFcn A pointer to a void callback method with a qEvent_t
     * parameter
     * as input argument.
-    * @param[in] p Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] p Task priority Value. [0(min) - @c Q_PRIORITY_LEVELS(max)]
     * @param[in] t Execution interval defined in seconds (floating-point format).
     * For immediate execution (tValue = #qTimeImmediate).
     * @param[in] n Number of task executions (Integer value). For indefinite
@@ -212,7 +212,7 @@
     * @param[in] init Specifies the initial operational state of the task
     * (#qEnabled, #qDisabled, #qAsleep or #qAwake(implies #qEnabled)).
     * @param[in] arg Represents the task arguments. All arguments must be passed
-    * by reference and cast to (void *). Only one argument is allowed, so, for
+    * by reference and cast to @c void* . Only one argument is allowed, so, for
     * multiple arguments, create a structure that contains all of the arguments
     * and pass a pointer to that structure.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
@@ -233,9 +233,9 @@
     * @param[in] Task  A pointer to the task node.
     * @param[in] callbackFcn A pointer to a the task callback method with a
     * qEvent_t parameter as input argument.
-    * @param[in] p Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] p Task priority Value. [0(min) - @c Q_PRIORITY_LEVELS (max)]
     * @param[in] arg Represents the task arguments. All arguments must be passed
-    * by reference and cast to (void *). Only one argument is allowed, so, for
+    * by reference and cast to @c void*. Only one argument is allowed, so, for
     * multiple arguments, create a structure that contains all of the arguments
     * and pass a pointer to that structure.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
@@ -254,13 +254,13 @@
         * @see qStateMachine_Setup()
         * @param[in] Task  A pointer to the task node.
         * @param[in] m  A pointer to the Finite State-Machine (FSM) object.
-        * @param[in] p Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+        * @param[in] p Task priority Value. [0(min) - @c Q_PRIORITY_LEVELS (max)]
         * @param[in] t Execution interval defined in seconds (floating-point
         * format). For immediate execution (tValue = #qTimeImmediate).
         * @param[in] init Specifies the initial operational state of the task
         * (#qEnabled, #qDisabled, #qAsleep or #qAwake(implies #qEnabled)).
         * @param[in] arg Represents the task arguments. All arguments must be
-        * passed by reference and cast to (void*). Only one argument is allowed,
+        * passed by reference and cast to @c void*. Only one argument is allowed,
         * so, for multiple arguments, create a structure that contains all of
         * the arguments and pass a pointer to that structure.
         * @return Returns #qTrue on success, otherwise returns #qFalse.
@@ -282,9 +282,9 @@
         * @see qATCLI_Setup()
         * @param[in] Task A pointer to the task node.
         * @param[in] cli A pointer to the AT Command Line Inteface instance.
-        * @param[in] p Task priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+        * @param[in] p Task priority Value. [0(min) - @c Q_PRIORITY_LEVELS (max)]
         * @param[in] arg Represents the task arguments. All arguments must be
-        * passed by reference and cast to (void*). Only one argument is allowed,
+        * passed by reference and cast to @c void*. Only one argument is allowed,
         * so, for multiple arguments, create a structure that contains all of
         * the arguments and pass a pointer to that structure.
         * @return Returns #qTrue on success, otherwise returns #qFalse.
@@ -318,7 +318,7 @@
         * @note Target task will inherit the event data.
         * @warning Yielding from the IDLE task is not allowed.
         * @param[in] Task A pointer to the task to which current control will
-        * be yielded. Pass NULL to discard a previous request.
+        * be yielded. Pass @c NULL to discard a previous request.
         * @return Returns #qTrue if success, otherwise returns #qFalse.
         */
         qBool_t qOS_YieldToTask( qTask_t * const Task );

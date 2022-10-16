@@ -164,7 +164,7 @@
         void *TaskData;
         /**
         * @brief Associated data of the event. Specific data will reside here
-        * according to the event source. This field will have a NULL value when
+        * according to the event source. This field will have a @c NULL value when
         * the trigger gets one of this values: ::byTimeElapsed, ::byEventFlags
         * and ::byNoReadyTasks.
         */
@@ -172,7 +172,7 @@
         /**
         * @brief This member indicates the event source that triggers the task
         * execution.
-        * Possible values are described in the qTrigger_t enum typedef.
+        * Possible values are described in the ::qTrigger_t enum typedef.
         */
         qTrigger_t Trigger;
         /**
@@ -203,7 +203,7 @@
         * relative to when it was scheduled
         * A value of 0 (zero) indicates that task started right on time per
         * schedule.This parameter will be only available on timed tasks. when
-        * Trigger == ::byTimeElapsed
+        * @c Trigger == ::byTimeElapsed
         */
         qClock_t StartDelay;
     }
@@ -365,8 +365,8 @@
     * the scheduler will set qEvent_t::Trigger flag to  ::byNotificationQueued.
     * Specific user-data can be passed through, and will be available inside the
     * qEvent_t::EventData field, only in corresponding launch. If the task is in
-    * a qSleep operation state, the scheduler will change the operational state
-    * to qAwaken setting the SHUTDOWN bit.
+    * a @c qSleep operation state, the scheduler will change the operational state
+    * to qAwaken setting the @c SHUTDOWN bit.
     * @see qTask_Notification_Send(), qOS_Notification_Spread()
     * @param[in] Task Pointer to the task node.
     * @param[in] eventData Specific event user-data.
@@ -443,7 +443,7 @@
     /**
     * @brief Set/Change the task priority value
     * @param[in] Task Pointer to the task node.
-    * @param[in] pValue Priority Value. [0(min) - Q_PRIORITY_LEVELS(max)]
+    * @param[in] pValue Priority Value. [0(min) - @c Q_PRIORITY_LEVELS (max)]
     * @return #qTrue on success. Otherwise return #qFalse.
     */
     qBool_t qTask_Set_Priority( qTask_t * const Task,
@@ -467,16 +467,16 @@
     * @param[in] Task Pointer to the task node.
     * @param[in] s Use one of the following values:
     *
-    * #qEnabled : Task will be able to catch all the events. (ENABLE Bit = 1 )
+    * #qEnabled : Task will be able to catch all the events. ( @c ENABLE Bit = 1 )
     *
     * #qDisabled : Time events will be discarded. The task catch asynchronous
-    * events. (ENABLE Bit = 0)
+    * events. ( @c ENABLE Bit = 0)
     *
     * #qAsleep : Put the task into a sleep operability state. The task can't be
-    * triggered by the lower precedence events. ( SHUTDOWN Bit = 0)
+    * triggered by the lower precedence events. ( @c SHUTDOWN Bit = 0)
     *
     * #qAwake : Put the task into the previous state before it was put in the
-    * sleep state.( SHUTDOWN Bit = 1 )
+    * sleep state.( @c SHUTDOWN Bit = 1 )
     * @return #qTrue on success. Otherwise return #qFalse.
     */
     qBool_t qTask_Set_State( qTask_t * const Task,
@@ -516,7 +516,7 @@
     /**
     * @brief Get the current running-task handle.
     * @return A pointer to the current running task.
-    * NULL when the OS scheduler it's in a busy state or when IDLE Task is
+    * @c NULL when the OS scheduler it's in a busy state or when IDLE Task is
     * running.
     */
     qTask_t* qTask_Self( void );
@@ -638,8 +638,8 @@
         * @note Any EventFlag set will cause a task activation.
         * @param[in] Task Pointer to the task node.
         * @param[in] flags The flags to modify. Can be combined with a bitwise
-        * OR. QEVENTFLAG_01 | QEVENTFLAG_02 | ... | QEVENTFLAG_20
-        * @param[in] action QEVENTFLAG_SET or QEVENTFLAG_CLEAR
+        * OR. @c QEVENTFLAG_01 | @c QEVENTFLAG_02 | ... | @c QEVENTFLAG_20
+        * @param[in] action #QEVENTFLAG_SET or #QEVENTFLAG_CLEAR
         * @return #qTrue on success. Otherwise return #qFalse.
         */
         qBool_t qTask_EventFlags_Modify( qTask_t * const Task,
@@ -659,7 +659,7 @@
         * @param[in] flagsToCheck A bitwise value that indicates the flags to
         * test inside the EventFlags.
         * Can be combined with a bitwise OR.
-        * QEVENTFLAG_01 | QEVENTFLAG_02 | ... | QEVENTFLAG_20
+        * @c QEVENTFLAG_01 | @c QEVENTFLAG_02 | ... | @c QEVENTFLAG_20
         * @param[in] clearOnExit If is set to #qTrue then any flags set in the
         * value passed as the
         * @a FlagsToCheck parameter will be cleared in the event group before
@@ -710,7 +710,7 @@
         /**
         * @brief Tries to find the first task that matches the name provided.
         * @param[in] name The string with the name to find.
-        * @return A pointer to the tasknode if found, otherwise returns NULL.
+        * @return A pointer to the task node if found, otherwise returns @c NULL.
         */
         qTask_t* qTask_Find_ByName( const char *name );
 

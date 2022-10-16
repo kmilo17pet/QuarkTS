@@ -229,7 +229,7 @@
     * @see #qCR_End
     * @warning Only one segment is allowed inside a task.
     * @note It must always be used together with a matching #qCR_End statement.
-    * @param[in] handle The handle of a coroutine (qCR_Handle_t)
+    * @param[in] handle The handle of a coroutine (@ref qCR_Handle_t)
     *
     * Example:
     * @code{.c}
@@ -376,7 +376,7 @@
     * restored by #qCR_PositionRestore
     * @see #qCR_PositionRestore
     * @see #qCR_PositionReset
-    * @param[out] p The variable of type qCR_Position_t where the current
+    * @param[out] p The variable of type #qCR_Position_t where the current
     * position will be saved.
     * @return none.
     */
@@ -386,7 +386,7 @@
     * @brief Restores the Co-Routine position saved in @a p
     * @see #qCR_PositionGet
     * @see #qCR_PositionReset
-    * @param[in,out] p The variable of type qCR_Position_t that contains the
+    * @param[in,out] p The variable of type #qCR_Position_t that contains the
     * position to be restored.
     * @return none.
     */
@@ -396,7 +396,7 @@
     * @brief Resets the @a p variable to the beginning of the Co-Routine
     * @see #qCR_PositionGet
     * @see #qCR_PositionRestore
-    * @param[in,out] position The variable of type qCR_Position_t to reset.
+    * @param[in,out] p The variable of type #qCR_Position_t to reset.
     * @return none.
     */
     #define qCR_PositionReset( p )      (p) = _qCR_PC_INITVAL

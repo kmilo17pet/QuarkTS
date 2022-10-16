@@ -107,8 +107,8 @@
     * @param[in] s Pointer to the null-terminated byte string to be examined
     * @param[in] maxlen Maximum number of characters to examine
     * @return The length of the null-terminated byte string @a str on success,
-    * zero if @a str
-    * is a null pointer, @a maxlen if the null character was not found.
+    * zero if @a str is a null pointer, @a maxlen if the null character was 
+    * not found.
     */
     size_t qIOUtil_StrLen( const char* s,
                            size_t maxlen);
@@ -169,7 +169,7 @@
 
     /**
     * @brief API interface to write n RAW data through @a fcn
-    * @param[in] fcn The basic output byte function
+    * @param[in] oFcn The basic output byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] pData A pointer to the block of data
     * @param[in] n The number of bytes that will be transferred to the output
@@ -184,7 +184,7 @@
 
     /**
     * @brief API interface to get n RAW data through @a fcn
-    * @param[in] oFcn The basic input byte function
+    * @param[in] iFcn The basic input byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[out] pData A pointer to the block where the read data will be saved
     * @param[in] n The number of bytes to get
@@ -199,7 +199,7 @@
 
     /**
     * @brief Macro interface to write a string through @a fcn
-    * @param[in] iFcn The basic input byte function
+    * @param[in] fcn The basic input byte function
     * @param[in] pStorage The storage pointer passed to @a fcn
     * @param[in] s The string to be written
     * @return none.
@@ -247,13 +247,13 @@
     * processed one character at a time, until the function reaches a character
     * which it doesn't recognize (including a null character).
     * @param[in] s The hex string to be converted.
-    * @return The numeric value uint32_t.
+    * @return The numeric value as @c uint32_t.
     */
     qUINT32_t qIOUtil_XtoU32( const char *s );
 
     /**
     * @brief Parses the C string @a s, interpreting its content as a floating
-    * point number and returns its value as a double(qFloat64_t). The function
+    * point number and returns its value as a double( @c qFloat64_t). The function
     * first discards as many whitespace characters (as in isspace) as necessary
     * until the first non-whitespace character is found. Then, starting from
     * this character, takes as many characters as possible that are valid
@@ -264,10 +264,10 @@
     * @param[in] s The string beginning with the representation of a
     * floating-point number.
     * @return On success, the function returns the converted floating point
-    * number as a double(qFloat64_t) value.
+    * number as a double( @c qFloat64_t ) value.
     * If no valid conversion could be performed, the function returns zero (0.0).
     * If the converted value would be out of the range of representable values
-    * by a double(qFloat64_t), it causes undefined behavior
+    * by a double( @c qFloat64_t ), it causes undefined behavior
     */
     qFloat64_t qIOUtil_AtoF( const char *s );
 
@@ -277,7 +277,7 @@
     * @param[out] str  Array in memory where to store the resulting
     * null-terminated string.
     * @param[in] precision Desired number of significant fractional digits in
-    * the string.  (The max allowed precision is MAX_FTOA_PRECISION=10)
+    * the string. ( The max allowed precision is @c MAX_FTOA_PRECISION=10 )
     * @return A pointer to the resulting null-terminated string, same as
     * parameter @a str.
     */
@@ -288,7 +288,7 @@
     /**
     * @brief Parses the C-string @a s interpreting its content as an integral
     * number, which is returned as a value of type int. The function first
-    * discards as many whitespace characters (as in isspace) as necessary until
+    * discards as many whitespace characters (as in @c isspace) as necessary until
     * the first non-whitespace character is found. Then, starting from this
     * character, takes an optional initial plus or minus sign followed by as
     * many base-10 digits as possible, and interprets them as a numerical value.
@@ -303,7 +303,7 @@
     * @return On success, the function returns the converted integral number as
     * an int value.
     * If the converted value would be out of the range of representable values
-    * by an int, it causes undefined behavior.
+    * by an @c int, it causes undefined behavior.
     */
     int qIOUtil_AtoI( const char *s );
 
@@ -311,7 +311,7 @@
     * @brief Converts an unsigned value to a null-terminated string using the
     * specified base and stores the result in the array given by @a str
     * parameter. The argument @a str should be an array long enough to contain
-    * any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in
+    * any possible value: @c "sizeof(int)*8+1" for radix=2, i.e. 17 bytes in
     * 16-bits platforms and 33 in 32-bits platforms.
     * @param[in] num Value to be converted to a string.
     * @param[out] str  Array in memory where to store the resulting
@@ -387,7 +387,7 @@
     * @brief Determines if the given floating point number arg is a not-a-number
     * (NaN) value.
     * @param[in] f Floating point value(32bits).
-    * @return #qTrue is argument is NaN, otherwise #qFalse
+    * @return #qTrue is argument is @c NaN, otherwise #qFalse
     */
     qBool_t qIOUtil_IsNan( const qFloat32_t f );
 
