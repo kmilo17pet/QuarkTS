@@ -61,6 +61,7 @@ var index =
       [ "Finite State Machines (FSM)", "q_extensions.html#q_fsm", [
         [ "The provided approach", "q_extensions.html#qfsm_approach", null ],
         [ "Setting up a state machine", "q_extensions.html#q_fsmsetup", null ],
+        [ "Subscribing states and defining callbacks", "q_extensions.html#q_fsm_subscribe_states", null ],
         [ "The state callback handler: performing transitions and retreiving data", "q_extensions.html#q_fsmhandler", null ],
         [ "The surrounding callback", "q_extensions.html#q_fsm_surrounding", null ],
         [ "Adding a state machine as a task", "q_extensions.html#q_fsm_astask", null ],

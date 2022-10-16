@@ -134,6 +134,7 @@ $(document).ready(function(){initNavTree('q_extensions.html',''); initResizable(
 </li>
 <li class="level1"><a href="#q_fsm">Finite State Machines (FSM)</a><ul><li class="level2"><a href="#qfsm_approach">The provided approach</a></li>
 <li class="level2"><a href="#q_fsmsetup">Setting up a state machine</a></li>
+<li class="level2"><a href="#q_fsm_subscribe_states">Subscribing states and defining callbacks</a></li>
 <li class="level2"><a href="#q_fsmhandler">The state callback handler: performing transitions and retreiving data</a></li>
 <li class="level2"><a href="#q_fsm_surrounding">The surrounding callback</a></li>
 <li class="level2"><a href="#q_fsm_astask">Adding a state machine as a task</a></li>
@@ -248,10 +249,10 @@ FSM module design</div></div>
 <h2><a class="anchor" id="q_fsmsetup"></a>
 Setting up a state machine</h2>
 <p >Like any other OS object, a Finite State Machine (FSM) must be explicitly initialized before it can be used. The <a class="el" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c" title="Initializes a Finite State Machine (FSM).">qStateMachine_Setup()</a> API initializes the instance, sets the callback for the top state, sets the initial state and the surrounding callback function.</p>
-<h2><a class="anchor" id="q_fsmsetup"></a>
-Setting up a state machine</h2>
+<h2><a class="anchor" id="q_fsm_subscribe_states"></a>
+Subscribing states and defining callbacks</h2>
 <p >State machines are constructed by composition, therefore, the topology of a state machine is determined upon construction. In this module implementation, there are not distinction between composite states(states containing substates) and leaf states. All states are potentially composite. The API <a class="el" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3" title="This function subscribes the FSM instance to a specific state with an associated callback function.">qStateMachine_StateSubscribe()</a> should be used to initialize the state and define its position in the topology.</p>
-<p >A state callback-functions takes a <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> object as input argument and returns a qSM_Status_t value. An example is shown in the following code snippet:</p>
+<p >A state callback-functions takes a <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> object as input argument and returns a <a class="el" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> value. An example is shown in the following code snippet:</p>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> ExampleState_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <span class="comment">/* TODO: State code */</span></div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
@@ -322,7 +323,7 @@ The surrounding callback</h2>
 <div class="image">
 <img src="https://user-images.githubusercontent.com/11412210/196009040-bf314b36-4ff8-4d3d-84cf-377fba2453d1.png" alt=""/>
 <div class="caption">
-The simple led-button FSM example with three states</div></div>
+Surrounding callback invocation after and before the current state</div></div>
 <p >The surrounding callback \( S_u \) invocation occurs afther and befor the current state \( P \). When the surrounding callback is executed, indicates its own checkpoint through the <code>Status</code> attribute of the <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument. Unlike a state callback, the surrounding callback should not return anything, thus, the callback should be written as:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> SurroundingCallback_Example( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> m ) {</div>
 <div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">Status</a> ) {</div>
@@ -357,16 +358,16 @@ Adding a state machine as a task</h2>
 <p >By using this API, the kernel will take care of the FSM by itself, so the usage of <a class="el" href="group__qfsm.html#ga0b56645c3980372fc55ed5e3f5c8c31e" title="Execute the Finite State Machine (FSM).">qStateMachine_Run()</a> can be omitted.</p>
 <p >Now that a task is running a dedicated state-machine, the specific task event-information can be obtained in every state callback through the <code>Data</code> field of the <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument.</p>
 <p >Check the example below:</p>
-<div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> Example_State( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> Example_State( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e = h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">Data</a>; </div>
 <div class="line">    <span class="comment">/* Get the event info of the task that owns this state-machine*/</span></div>
-<div class="line">    <span class="keywordflow">switch</span>( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ){</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">switch</span>( e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ){</div>
+<div class="line">            <span class="keywordflow">switch</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ) {</div>
 <div class="line">                <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a>:</div>
 <div class="line">                    <span class="comment">/* TODO: Code for this case */</span></div>
 <div class="line">                <span class="keywordflow">break</span>;</div>
@@ -397,9 +398,11 @@ A demonstrative example for a FSM</h2>
 <div class="caption">
 A simple FSM example with three states</div></div>
 <p> States \( S_i \) and transitions \( t_i \) are described as follows:</p>
-<p >\( S_1 \) LED Off, \( S_2 \) LED On and \( S_3 \) LED Blink</p>
-<p >\( t_1 \) Button press (rising edge) and \( t_2 \) Timeout 10s</p>
-<p >To start the implementation, let’s define the necessary global variables...</p>
+<ul>
+<li>\( S_1 \) LED Off, \( S_2 \) LED On and \( S_3 \) LED Blink</li>
+<li>\( t_1 \) Button press (rising edge) and \( t_2 \) Timeout 10s</li>
+</ul>
+<p >To start the implementation, let's define the necessary global variables...</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> LED_Task; <span class="comment">/*The task node*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> LED_FSM; <span class="comment">/*The state -machine handle*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff , State_LEDOn , State_LEDBlink ;</div>
@@ -407,15 +410,15 @@ A simple FSM example with three states</div></div>
 <div class="ttc" id="astructq_s_m__t_html"><div class="ttname"><a href="structq_s_m__t.html">qSM_t</a></div><div class="ttdoc">A FSM(Finite State Machine) object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:367</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:265</div></div>
 </div><!-- fragment --><p >Then, we define our states as the flow-diagram showed in the figure above.</p>
-<div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOff_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
-<div class="line">    <span class="keywordflow">switch</span>( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ){</div>
+<div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOff_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            BSP_LED_OFF();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>: <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a>: <span class="comment">/*Ignore*/</span></div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">if</span>( BUTTON_PRESSED ){</div>
+<div class="line">            <span class="keywordflow">if</span> ( BUTTON_PRESSED ) {</div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDOn;</div>
 <div class="line">            }</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -423,9 +426,9 @@ A simple FSM example with three states</div></div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
-<div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOn_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOn_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout;</div>
-<div class="line">    <span class="keywordflow">switch</span>( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ){</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 10.0 ); <span class="comment">/*STimer gets armed*/</span></div>
 <div class="line">            BSP_LED_ON();</div>
@@ -433,10 +436,10 @@ A simple FSM example with three states</div></div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>: <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a>: <span class="comment">/*Ignore*/</span></div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">if</span>( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout) ){ <span class="comment">/*check if the timeout expired*/</span></div>
+<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout) ) { <span class="comment">/*check if the timeout expired*/</span></div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDOff;</div>
 <div class="line">            }</div>
-<div class="line">            <span class="keywordflow">if</span>( BUTTON_PRESSED ){</div>
+<div class="line">            <span class="keywordflow">if</span> ( BUTTON_PRESSED  {</div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDBlink;</div>
 <div class="line">            }</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -445,20 +448,20 @@ A simple FSM example with three states</div></div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDBlink_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
-<div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout;</div>
+<div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout; </div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> blinktime;</div>
 <div class="line">    </div>
-<div class="line">    <span class="keywordflow">switch</span>( m-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ){</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 10.0 );</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>: <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368">QSM_SIGNAL_START</a>: <span class="comment">/*Ignore*/</span></div>
 <div class="line">            <span class="keywordflow">break</span>;    </div>
 <div class="line">        <span class="keywordflow">default</span>:</div>
-<div class="line">            <span class="keywordflow">if</span>( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout ) || BUTTON_PRESSED ){</div>
+<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout ) || BUTTON_PRESSED ) {</div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDOff;</div>
 <div class="line">            }</div>
-<div class="line">            <span class="keywordflow">if</span>( <a class="code hl_function" href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a>( &amp;blinktime, 0.5 ) ){</div>
+<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a>( &amp;blinktime, 0.5 ) ) {</div>
 <div class="line">               BSP_LED_TOGGLE();</div>
 <div class="line">            }</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -503,7 +506,7 @@ Installing a signal queue</h2>
 Using a transition table</h2>
 <p >In this approach, the FSM is coded in tables with the outgoing transitions of every state, where each entry relates signals, actions and the target state. This is an elegant method to translate the FSM to actual implementation as the handling for every state and event combination is encapsulated in the table.</p>
 <p >Here, the application writer get a quick picture of the FSM and the embedded software maintenance is also much more under control. A transition table should be explicitly installed in the target state with the corresponding entries, an n-sized array of <a class="el" href="structq_s_m___transition__t.html" title="This structure should be used to define an item for a state transition table.">qSM_Transition_t</a> elements following the layout described below:</p>
-<p >The API qStateMachine_InstallTransitionTable(), should be used to perform the transition table installation to a specific state.</p>
+<p >The API <a class="el" href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727" title="Installs a table with the outgoing transitions for the supplied state.">qStateMachine_Set_StateTransitions()</a>, should be used to perform the transition table installation to a specific state.</p>
 <center> <a class="anchor" id="multi_row"></a>
 <table class="doxtable">
 <caption>Transition table layout for a state</caption>
@@ -908,7 +911,7 @@ Co-Routines</h1>
 <img src="https://user-images.githubusercontent.com/11412210/196015888-68556734-dd55-4fcc-b4ef-b797b744b539.png" alt=""/>
 <div class="caption">
 Coroutines in QuarkTS</div></div>
-<p >The QuarkTS implementation uses the Duff's device approach, and is heavily inspired by the Knuth method[5], Simon Tatham's Co-Routines in C [6] and Adam Dunkels Protothreads [7]. This means that a local-continuation variable is used to preserve the current state of execution at a particular place of the Co-Routine scope but without any call history or local variables. This brings benefits to lower RAM usage, but at the cost of some restrictions on how a Co-routine can be used.</p>
+<p >The QuarkTS implementation uses the Duff's device approach, and is heavily inspired by the Knuth method[5], <a href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html" style="font-weight:bold">Simon Tatham's Co-Routines in C</a> and <a href="http://dunkels.com/adam/pt/index.html" style="font-weight:bold">Adam Dunkels Protothreads</a> . This means that a local-continuation variable is used to preserve the current state of execution at a particular place of the Co-Routine scope but without any call history or local variables. This brings benefits to lower RAM usage, but at the cost of some restrictions on how a Co-routine can be used.</p>
 <p ><b> Limitations and restrictions </b></p>
 <ul>
 <li>The stack of a Co-Routine is not maintained when a yield is performed. This means variables allocated on the stack will loose their values. To overcome this, a variable that must maintain its value across a blocking call must be declared as <code>static</code>.</li>
