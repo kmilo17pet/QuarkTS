@@ -17,7 +17,8 @@
             "compilerPath": "C:/cygwin64/bin/gcc.exe",
             "cStandard": "c89",
             "cppStandard": "c++17",
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "${default}",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4

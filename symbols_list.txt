@@ -138,3 +138,34 @@ qTrace_Variable  qTrace_Var qDebug_Var qDebug_Variable
 qFLM_BitsSet  qFLM_BitsClear qFLM_BitSet qFLM_BitClear qFLM_BitRead qFLM_BitToggle qFLM_BitWrite qFLM_BitMakeByte qFLM_ByteHighNibble
 qFLM_ByteLowNibble qFLM_ByteMergeNibbles qFLM_WordHighByte qFLM_WordLowByte qFLM_WordMergeBytes qFLM_DWordHighWord qFLM_DWordLowWord
 qFLM_DWordMergeWords qFLM_Clip qFLM_ClipUpper qFLM_ClipLower qFLM_IsBetween qFLM_Min qFLM_Max qFLM_ArraySize
+
+#qlibs
+#qbitfield
+qBitField_t QBITFIELD_SIZE
+#qcrc
+qCRC_Mode_t QCRC8 QCRC16 QCRC32
+#qfis
+qFIS_MF_Name_t qFIS_DeFuzz_Method_t qFIS_ParamValue_t qFIS_Parameter_t qFIS_Type_t qFIS_DeFuzzState_t qFIS_IO_Base_t qFIS_Input_t qFIS_Output_t
+qFIS_MF_Fcn_t qFIS_MF_t qFIS_Tag_t qFIS_Rules_t qFIS_DeFuzz_Fcn_t qFIS_t QFIS_RULES_BEGIN QFIS_RULES_END _qFIS_s QFIS_INFERENCE_ERROR
+custommf trimf trapmf gbellmf gaussmf gauss2mf sigmf dsigmf psigmf pimf smf zmf singletonmf concavemf spikemf linsmf linzmf rectmf cosmf constantmf
+linearmf tlinsmf tlinzmf tconcavemf tsigmf tsmf tzmf
+centroid bisector mom som wtavr wtsum 
+qFIS_MIN qFIS_PROD qFIS_MAX qFIS_PROBOR qFIS_SUM qFIS_Implication qFIS_Aggregation qFIS_AND qFIS_OR qFIS_EvalPoints qFIS_FuzzyOperator_t
+Mamdani Sugeno Tsukamoto DeFuzz_Init DeFuzz_Compute DeFuzz_End 
+#qfp16
+qFP16_t qFP16 qFP16_Constant qFP16_Settings_t
+#qltisys
+QLTISYS_DISCRETE qLTISys_ContinuosX_t qLTISys_DiscreteX_t qLTISys_t
+#qnuma
+qNumA_state_t qNumA_IntegrationMethod_t
+#qpid
+qPID_AutoTunning_t QPID_AUTOTUNNING_UNDEFINED qPID_controller_t
+#qrms
+qRMS_t
+#qssmoother
+qSSmoother_Type_t  QSSMOOTHER_TYPE_LPF1 QSSMOOTHER_TYPE_LPF2 QSSMOOTHER_TYPE_MWM1 QSSMOOTHER_TYPE_MWM2 QSSMOOTHER_TYPE_MOR1 QSSMOOTHER_TYPE_MOR2
+QSSMOOTHER_TYPE_GMWF QSSMOOTHER_TYPE_KLMN QSSMOOTHER_TYPE_EXPW
+qSSmoother_LPF1_t qSSmoother_LPF2_t qSSmoother_MWM1_t  qSSmoother_MWM2_t qSSmoother_MOR1_t qSSmoother_MOR2_t qSSmoother_GMWF_t qSSmoother_EXPW_t
+qSSmoother_KLMN_t qSSmootherPtr_t _qSSmoother_t
+#qtdl
+qTDL_t

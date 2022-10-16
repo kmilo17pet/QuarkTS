@@ -1,0 +1,749 @@
+/*! @page q_background Background
+* @tableofcontents
+* 
+* @section q_about About the OS
+* QuarkTS is an open-source operating system that is built on top of a 
+* cooperative quasistatic scheduler. Its simplified kernel implements a 
+* specialized round-robin scheme using a linked-chain approach and an 
+* event-queue to provide true FIFO priority scheduling.
+* 
+* <b> @b Why cooperative? </b>
+*
+* Rather than having preemption, tasks manage their own life-cycle. This bring 
+* significant benefits, fewer re-entrance problems are encountered, because 
+* tasks cannot be interrupted arbitrarily by other tasks, but only at positions
+* permitted by the programmer, so you mostly do not need to worry about pitfalls 
+* of the concurrent approach(resourcesharing, races, deadlocks, etc...).
+*
+* <b> What is it made for? </b>
+
+* The design goal of QuarkTS is to achieve its stated functionality using a 
+* small, simple, and (most importantly) robust implementation to make it 
+* suitable on resourceconstrained microcontrollers, where a full-preemptive RTOS
+* is an overkill and their inclusion adds unnecessary complexity to the firmware 
+* development. In addition with a state-machines support, co-routines, time 
+* control and the inter-task communication primitives, QuarkTS provides a modern
+* environment to build stable and predictable event-driven multitasking embedded
+* software. Their modularity and reliability make this OS a great choice to 
+* develop efficiently a wide range of applications in low-cost devices, 
+* including automotive controls, monitoring and Internet of Things
+*
+* <b>Why should I choose it?</b>
+*
+* QuarkTS is not intended to replace o compete with the other great and proven
+* RTOS options already available today, for example FreeRTOS or MicroC/OS-II,
+* in fact, you should check these options first. However, due to its size and
+* features, is intended to play in the space between RTOSes and bare-metal.
+* QuarkTS was written for embedded developers who want more functionality than
+* what existing task schedulers offer, but want to avoid the space and
+* complexity of a full RTOS, but keeping the taste of a robust and safe one.
+*
+* @subsection q_license License
+* QuarkTS is licensed under the MIT License. You may copy, distribute and modify
+* the software without any restriction, including without limitation the rights 
+* to to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+* copies of the OS, and to permit persons to whom the OS is furnished to do so. 
+* This OS is provided as is in the hope that it will be useful, but WITHOUT ANY 
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
+* A PARTICULAR PURPOSE . 
+*
+* For more details, see the MIT License line by line here.
+* <a style="font-weight:bold" href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html">MIT License</a>
+*
+* @subsection q_hardwarecompatibility Hardware compatibility
+* QuarkTS has no direct hardware dependencies, so it is portable to many 
+* platforms and C compilers. 
+* 
+* The following cores have been powered with QuarkTS successfully:
+*
+* - ARM cores(ATMEL, STM32, LPC, Kinetis, Nordic and others)
+* - 8Bit AVR, 8051, STM8
+* - HCS12, ColdFire, MSP430
+* - PIC (PIC24, dsPIC, 32MX, 32MZ)
+*
+* @subsection q_codstandard Development process and coding starndard
+* QuarkTS is developed using a formal and rigorous process framed in compliance
+* of the MISRA C 2012 and CERT coding standard guidelines and complemented with 
+* multiple static-analysis checks targered to safe critical applications.
+*
+* Simply using QuarkTS in an application, does not mean developers can make a 
+* claim related to the development process and compliance of the OS to any 
+* requirements or product specification, without first, following a recognized 
+* system wide conformance verification process. Conformance evidence must then 
+* be presented, audited and accepted by a recognized and relevant independent 
+* assessment organization. Without undergoing this process of due diligence, no
+* claim can be made as to the suitability of QuarkTS to be used in any safety or
+* otherwise commercially critical application.
+*
+* Besides the previous information, the OS sets the following clarifications 
+* regarding coding policies and naming convention:
+*
+* - All the QuarkTS implementation follows the ANSI C99 standard strictly.
+* - Dynamic memory allocation is banned to conform the industry standards for
+* safety-critical software: MISRA-C, DO178B, IEC 61508, ISO 26262 and so on.
+* - Because errors in string manipulation have long been recognized as a leading
+* source of buffer overflows in C, a number of mitigation strategies have been
+* devised. These include mitigation strategies designed to prevent buffer 
+* overflows from occurring and strategies designed to detect buffer overflows 
+* and securely recover without allowing the failure to be exploited.
+* - In line with MISRA guides and for portability between platforms, we use the
+* stdint.h with typedefs that indicate size and signedness in place of the basic
+* types.
+* - In line with MISRA guides, unqualified standard @c char and @c char* types 
+* are only permitted to hold ASCII characters and strings respectively.
+* - The @c _t suffix its used to denote a type definition (i.e @c qBool_t , 
+* @c qTask_t , @c size_t, ...).
+* - Functions, macros, enum values and data-types are prefixed q. (i.e. 
+* @c qFunction, @c qEnumValue, @c QCONSTANT, @c qType_t, ...)
+* - Other than the pre-fix, most macros used for constants are written in all 
+* upper case.
+* - Almost all functions returns a boolean value of type @c qBool_t, where a
+* @c qTrue - @c 1u
+* value indicates a successful procedure and @c qFalse - @c 0u, the failure of 
+* the procedure
+* 
+* @subsection q_memusage Memory usage
+* As a quasi-static scheduler is implemented here, dynamic scheduling is not 
+* required and the assignment of tasks must be done before program execution 
+* begins. The kernel is designed to allow unlimited tasks and kernel objects, 
+* but of course, the whole application will be constrained by the memory 
+* specifications of the embedded system.
+*
+* The kernel's memory footprint can be scaled down to contain only the features 
+* required for your application, typically 3.7 KBytes of code space and less 
+* than 1 KByte of data space.
+*
+* <center>
+* <table>
+* <caption id="multi_row">OS Memory footprint (Measured in a 32-bit MCU)</caption>
+* <tr><th>Functionality  <th>Size(bytes)
+* <tr><td> Kernel, scheduler and task management <td>cell 2637
+* <tr><td> A task node (@c qTask_t) <td>cell 68
+* <tr><td> Finite State machines(FSM) handling and related APIs <td>cell 314
+* <tr><td> A FSM object (@c qSM_t) <td> 100
+* <tr><td> A state object (@c qSM_State_t) <td> 36
+* <tr><td> STimers handling and related APIs <td> 258
+* <tr><td> A STimer object (@c qSTimer_t) <td> 8
+* <tr><td> Queues handling and related APIs <td> 544
+* <tr><td> A queue object (@c qQueue_t) <td> 28
+* <tr><td> Memory management <td> 407
+* <tr><td> A memory pool <td> 28
+* <tr><td> The AT Command Line Interface <td> 1724
+* <tr><td> An AT-CLI instance (@c qATCLI_t) <td> 112
+* <tr><td> An AT-CLI command instance (@c qATCLI_Command_t) <td> 24
+* <tr><td> Remaining utilities <td> 2980
+* </table>
+* </center>
+*
+* @note Although the kernel does not use dynamically-allocated resources 
+* internally, the application writer can create an object in run-time using the
+* safe-heap implementation provided by the memory management module, later 
+* described here. Of course, additional checks must be performed to keep the
+* solution safe.
+*
+* @section q_timmingapproach Timming Approach
+* The kernel implements a <a style="font-weight:bold" href="https://en.wikipedia.org/wiki/Time-triggered_architecture">Time-Triggered Architecture (TTA)</a>
+* , in which the tasks are triggered by comparing the corresponding task-time 
+* with a reference clock. The reference clock must be real-time and follow a
+* monotonic behavior. Usually, all embedded systems can provide this kind of 
+* reference with a constant tick generated by a periodic background 
+* hardware-timer, typically, at 1Khz (1mS tick).
+*
+* For this, the kernel allows you to select the reference clock source among 
+* these two scenarios:
+*
+* - When tick already provided: The reference is supplied by the Hardware 
+* Abstraction Layer (HAL) of the device. It is the simplest scenario and it 
+* occurs when the framework or SDK of the embedded system includes a HAL-API 
+* that obtains the time elapsed since the system starts, usually in milliseconds
+* and taking a 32-bit counter variable.
+* - When the tick is not provided: The application writer should use bare-metal 
+* code to configure the device and feed the reference clock manually. Here, a 
+* hardware timer should raise an interrupt periodically. After the Interrupt 
+* Service Routine(ISR) has been implemented using the platform-dependent code, 
+* the qClock_SysTick() API must be called inside. It is recommended that the 
+* reserved ISR should only be used by QuarkTS.
+* 
+* @section q_setupkernel Setting up the OS kernel
+* The qOS_Setup() function should be the first call to the OS APIs. qOS_Setup() 
+* prepares the kernel instance, sets the reference clock, defines the Idle-Task 
+* callback and allocates the stack for the internal queue.
+*
+* @note This call is mandatory and must be called once in the application main 
+* thread before any kind of interaction with the OS.
+*
+* Usage example:
+* - Scenario 1 : When tick is already provided
+*  @code{.c}
+*  #include "QuarkTS.h"
+*  #include "HAL.h"
+*
+*  #define TIMER_TICK 0.001 /* 1ms */
+*
+*  void main( void ) {
+*      HAL_Init();
+*      qOS_Setup( HAL_GetTick , TIMER_TICK , IdleTask_Callback );
+*      // TODO: add Tasks to the scheduler scheme and run the OS
+*  }
+*  @endcode
+*
+* - Scenario 2 : When the tick is not provided
+*  @code{.c}
+*  #include "QuarkTS.h"
+*  #include "DeviceHeader.h"
+*
+*  #define TIMER_TICK 0.001 /* 1ms */
+*
+*  void Interrupt_Timer0( void ) {
+*      qClock_SysTick();
+*  }
+* 
+*  void main( void ) {
+       MCU_Init();
+*      HAL_Init();
+*      qOS_Setup( NULL , TIMER_TICK , IdleTask_Callback );
+*      // TODO: add Tasks to the scheduler scheme and run the OS
+*  }
+*  @endcode
+*
+* @section q_tasks Tasks
+* Like many operating systems, the basic unit of work is the task. Tasks can 
+* perform certain functions, which could require periodic or one-time execution,
+* update of specific variables or waiting for specific events. Tasks also could
+* be controlling specific hardware or be triggered by hardware interrupts. In 
+* the QuarkTS OS, a task is seen as a node concept that links together:
+*
+* - Program code performing specific task activities (callback function)
+* - Execution interval (time)
+* - Number of execution (iterations)
+* - Event-based data
+*
+* The OS uses a Task Control Block (TCB) to represent each task, storing 
+* essential information about task management and execution. Part of this 
+* information also includes link-pointers that allows it to be part of one of 
+* the lists available in the Kernel Control Block (KCB).
+* 
+* \image html https://user-images.githubusercontent.com/11412210/195989613-5b4f8970-2645-4324-a11b-70c9ce52061b.png "Task node illustration"
+*
+* Each task performs its activities via a callback function and each of them is 
+* responsible for supporting cooperative multitasking by being “good neighbors”,
+* i.e., running their callback methods quickly in a non-blocking way and 
+* releasing control back to the scheduler as soon as possible (returning).
+*
+* Every task node, must be defined using the qTask_t data-type and the callback
+* is defined as a function that returns void and takes a qEvent_t data structure
+* as its only parameter (This input argument can be used later to get event 
+* information, see XXX).
+*
+*  @code{.c}
+*  qTask_t UserTask;
+*  void UserTask_Callback( qEvent_t eventdata ) {
+*      // TODO : Task code
+*  }
+*  @endcode
+*
+* @note All tasks in QuarkTS must ensure their completion to return the CPU
+* control back to the scheduler, otherwise, the scheduler will hold the 
+* execution state for that task, preventing the activation of other tasks.
+*
+* @subsection q_idletask The idle task
+* Its a special task loaded by the OS scheduler when there is nothing else to 
+* do (no task in the whole scheme has reached the ready state). The idle task is
+* already hard-coded into the kernel, ensuring that at least, one task is able 
+* to run. Additionally, the OS setup this task with the lowest possible priority
+* to ensure that does not use any CPU time if there are higher priority 
+* application tasks able to run. The idle task doesn't perform any active 
+* functions, but the user can decide if it should perform some activities 
+* defining a callback function for it. This could be done at the beginning of 
+* the kernel setup. Of course, the callback must follow the same function 
+* prototype for tasks.
+* @note To disable the idle-task activities, a @c NULL should be passed as 
+* argument on qOS_Setup().
+*
+* @subsection q_addtasks Adding tasks to the scheme
+* After setting up the kernel with qOS_Setup(), the user can proceed to deploy 
+* the multitasking application by adding tasks. If the task node and their 
+* respective callback is already defined, the task can be added to the scheme 
+* using qOS_Add_Task() . This API can schedule a task to run every @c t seconds,
+* @c n exencutions times and executing the @c callbackFcn method on every pass.
+*
+* <b> Caveats: </b>
+*
+* -# A task with Time argument defined in @c qTimeImmediate, will always get the 
+* @c qReady state in every scheduling cycle, as consequence, the idle task will 
+* never gets dispatched.
+* -# Tasks do not remember the number of iteration set initially by the 
+* @c nExecutions argument. After the iterations are done, the internal iteration
+* counter decreases until reach the zero. If another set of iterations is 
+* needed, the user should set the number of iterations again and resume the 
+* task explicitly.
+* -# Tasks that performed all their iterations, put their own state to @c 
+* qDisabled. Asynchronous triggers do not affect the iteration counter.
+* -# The @c arg parameter can be used as storage pointer, so, for multiple data, 
+* create a structure with the required members and pass a pointer to that
+* structure.
+*
+* Invoking qOS_Add_Task() is the most generic way to adding tasks to the scheme, 
+* supporting a mixture of time-triggered and event-triggered tasks, however, 
+* additional simplified *API functions are also provided to add specific purpose
+* tasks:
+*
+* - Event-triggered only tasks → qOS_Add_EventTask().
+* - State-machine tasks → qOS_Add_StateMachineTask().
+* - AT Command Line Interface tasks → qOS_Add_ATCLITask().
+*
+* @subsection q_eventtasks Event-triggered tasks
+* An event-triggered task reacts asynchronously to the occurrence of events in 
+* the system, such as external interrupts or changes in the available resources.
+*
+* The API qOS_Add_EventTask() is intended to add this kind of tasks, keeping it
+* in a @c qSuspended state. Only asynchronous events followed by their priority
+* value dictates when a task can change to the @c qRunning state.
+* 
+* @subsection q_removetask Removing a task
+* The qOS_Remove_Task() function removes the task from the scheduling scheme.
+* This means the task node will be disconnected from the kernel chain, 
+* preventing additional overhead provided by the scheduler when it does checks 
+* over it and course, preventing from running.
+*
+* <b> Caveats: </b>
+*
+* Task nodes are variables like any other. They allow your application code to 
+* reference a task, but there is no link back the other way and the kernel 
+* doesn't know anything about the variables, where the variable is allocated 
+* (stack, global, static, etc.) or how many copies of the variable you have 
+* made, or even if the variable still exists. So the qOS_Remove_Task() API 
+* cannot automatically free the resources allocated by the variable. If the task
+* node has been dynamically allocated, the application writer it's responsible
+* to free the memory block after a removal call.
+* 
+* @section q_runos Running the OS
+* After preparing the multitasking environment for your application, a call to 
+* qOS_Run() is required to execute the scheduling scheme. This function is 
+* responsible to run the following OS main components:
+*
+* - The Scheduler : Select the tasks to be submitted into the system and decide 
+* with of them are able to run.
+* - The Dispatcher : When the scheduler completes its job of selecting ready 
+* tasks, it is the dispatcher which takes that task to the running state. This 
+* procedure gives a task control over the CPU after it has been selected by the
+* scheduler. This involves the following:
+*    -# Preparing the resources before the task execution
+*    -# Execute the task activities (via the callback function)
+*    -# Releasing the resources after the task execution
+* 
+* The states involved in the interaction between the scheduler and dispatcher 
+* are described @ref q_globalstates "here".
+* 
+* @note  After calling qOS_Run(), the OS scheduler will now be running, and the
+* following line should never be reached, however, the user can optionally 
+* release it explicitly with qOS_Scheduler_Release() API function.
+*
+* @subsection q_releasescheduler Releasing the scheduler
+* This functionality must be enabled from the @c Q_ALLOW_SCHEDULER_RELEASE 
+* macro. This API stop the kernel scheduling. In consequence, the main thread 
+* will continue after the qOS_Run() call.
+*
+* Although producing this action is not a typical desired behavior in any 
+* application, it can be used to handle a critical exception.
+*
+* When used, the release will take place after the current scheduling cycle 
+* finish. The kernel can optionally include a release callback function that can
+* be configured to get called if the scheduler is released. Defining the release
+* callback, will help to take actions over the exception that caused the release
+* action. To perform a release action, the qOS_Set_SchedulerReleaseCallback()
+* API should be used
+*
+* @note When a scheduler release is performed, resources are not freed. After
+* released, the application can invoke the qOS_Run() again to resume the
+* scheduling activities
+*
+* @section q_globalstates Global states and scheduling rules
+* A task can be in one of the four global states: @c qRunning, @c qReady, 
+* @c qSuspended or @c qWaiting.
+* Each of these states is tracked implicitly by putting the task in one of the 
+* associated kernel lists.
+*
+* These global states are described below:
+*
+* \image html https://user-images.githubusercontent.com/11412210/195989701-2b393456-db3c-42e8-b104-b99ce9f80f94.png "Task global states"
+*
+* - @c qWaiting : The task cannot run because the conditions for running are 
+* not in place.
+* - @c qReady : The task has completed preparations for running, but cannot run 
+* because a task with a higher precedence is running.
+* - @c qRunning : The task is currently being executed.
+* - @c qSuspended : The task doesn't take part in what is going on. Normally 
+* this state is taken after the @c qRunning state or when the task does not 
+* reach the @c qReady state.
+*
+* The presence of a task in a particular list indicates the task's state. There
+* are many ready-lists as defined in the @c Q_PRIORITY_LEVELS macro. To select 
+* the target ready list, the OS use the user-assigned priority between 0 (the 
+* lowest priority) and @c Q_PRIORITY_LEVELS-1 (the highest priority). For 
+* instance, if @c Q_PRIORITY_LEVELS is set to 5, then QuarkTS will use 5 
+* priority levels or ready lists: 0 (lowest priority), 1, 2, 3, and 4 (highest 
+* priority).
+*
+* \image html https://user-images.githubusercontent.com/11412210/195989816-e03a419e-795f-4afc-8152-0ff45cef87c4.png "OS lists"
+*
+* Except for the idle task, a task exists in one of these states. As the 
+* real-time embedded system runs, each task moves from one state to another 
+* (moving it from a list to another), according to the logic of a simple finite
+* state machine (FSM). The figure below illustrates the typical flowchart used 
+* by QuarkTS to handle the task's states, with brief descriptions of state 
+* transitions, additionally you may also notice the interaction between the 
+* scheduler and the dispatcher.
+*
+* The OS assumes that none of the tasks does a block anywhere during the 
+* @c qRunning state. Based on the round-robin fashion, each ready task runs in 
+* turn from every ready lists. The developer should take care to monitor their 
+* system execution times to make sure during the worst case, when all tasks have
+* to execute, all of the deadlines are still met.
+*
+* @subsection q_osrules Rules
+*
+* Task precedence is used as the task scheduling rule and precedence among tasks
+* is determined based on the priority of each task. If there are multiple tasks 
+* able to run, the one with the highest precedence goes to @c qRunning state 
+* first.
+*
+* In determining precedence among tasks, of those tasks having different 
+* priority levels, that with the highest priority has the highest precedence. 
+* Among tasks having the same priority, the one that entered the scheduling 
+* scheme first has the highest precedence if the @c Q_PRESERVE_TASK_ENTRY_ORDER
+* configuration is enabled, otherwise the OS will reserves for himself the order
+* according to the dynamics of the kernel lists.
+*
+* @subsubsection q_os_evenprecedence Event precedence
+* The scheduler also has an order of precedence for incoming events, in this 
+* way, if events of different nature converge to a single task, these will be 
+* served according to the following flowchart:
+*
+* \image html https://user-images.githubusercontent.com/11412210/195989877-d4b36a38-6a91-4615-967a-7b78898b96ec.png "Event precedence"
+*
+*
+* @subsubsection q_os_operational_states Additional operational states
+* Each task has independent operating states from those globally controlled by 
+* the scheduler. These states can be handled by the application writer to modify
+* the event-flow to the task and consequently, affecting the transition to the 
+* @c qReady global state. These states are described as follows:
+*
+* - @c qAwake : In this state, the task is conceptually in an alert mode, handling
+* most of the available events. This operational state is available when the 
+* @c SHUTDOWN bit is set, allowing the next operational states to be available:
+*    - @c qEnabled : The task is able to catch all the events. This operational 
+* state is available when the @c ENABLE bit is set.
+*    - @c qDisabled : In this state the time events will be discarded. This 
+* operational state is available when the @c ENABLE bit is cleared.
+* - @c qAsleep : Task operability is put into a deep doze mode, so the task 
+* can not be triggered by the lower precedence events. This operational state 
+* is available when the @c SHUTDOWN bit is cleared. The task can exit from this
+* operational state when it receives a high precedence event (a queued 
+* notification) or using the qTask_Set_State() API.
+* 
+* The figure bellow shows a better representation of how the event flow can be 
+* affected by this operational states.
+*
+* @image html https://user-images.githubusercontent.com/11412210/195989955-464a3eaf-c19f-4f27-bf83-21953358b3c2.png "Event flow according operational states"
+*
+* @remark Queued notifications are the only event that can wake up sleeping tasks
+* @note The @c qAsleep operational state overrides the @c qEnabled and 
+* @c qDisabled states.
+*
+* @section q_gettingstarted Getting started
+* Unpack the source files and copy them into your project. Also, add a copy of 
+* the file @c qconfig.h and modify it according to your needs. Setup your
+* compiler include path with the corresponding OS directory. Include the header 
+* file @c QuarkTS.h and setup the instance of the kernel using the qOS_Setup() 
+* inside the main thread. Additional configuration to the target compiler may be
+* required to add the path to the directory of header files. The code below 
+* shows a common initialization in the main source file.
+*
+* File @c main.c
+*  @code{.c}
+*  #include "QuarkTS.h"
+*  #define TIMER_TICK 0.001 // 1ms
+* 
+*  void main( void ) {
+*      //device startup with hardware-specific code
+*      HardwareSetup();
+*      Configure_Periodic_Timer_Interrupt_1ms();
+*      //end of device startup with hardware-specific code
+*      qOS_Setup( NULL , TIMER_TICK , IdleTask_Callback );
+*      // TODO: add Tasks to the scheduler scheme and run the OS
+*  }
+*  @endcode
+*
+* In the above code, the following considerations should be taken:
+* - The function qOS_Setup() must be called before any interaction with the OS.
+* - The procedure HardwareSetup() should be a function with all the hardware 
+* instructions needed to initialize the target system.
+* - The procedure @c Configure_Periodic_Timer_Interrupt_1ms() should be a 
+* function with all the hardware instructions needed to initialize and enable a 
+* timer with an overflow tick of one millisecond.
+*
+* Tasks can be later added to the scheduling scheme by simply calling 
+* qOS_Add_Task() or any of the other available APIs for specific purpose tasks.
+*
+* @section q_critical Critical sections
+* Since the kernel is non-preemptive, the only critical section that must be 
+* handled are the shared resources accessed from the ISR context. Perhaps, the 
+* most obvious way of achieving mutual exclusion is to allow the kernel to 
+* disable interrupts before it enters its critical section and then, enable
+* interrupts after it leaves its critical section.
+*
+* By disabling interrupts, the CPU will be unable to change the current context.
+* This guarantees that the currently running job can use a shared resource 
+* without another context accessing it. But, disabling interrupts, is a major 
+* undertaking. At best, the system will not be able to service interrupts for 
+* the time the current job is doing in its critical section, however, in QuarkTS,
+* these critical sections are handled as quickly as possible.
+*
+* Considering that the kernel is hardware-independent, the application writer 
+* should provide the necessary piece of code to enable and disable interrupts.
+*
+* For this, the qCritical_SetInterruptsED() API should be used. In this way, 
+* communication between ISR and tasks using queued notifications or data queues 
+* is performed safely.
+*
+* In some systems, disabling the global IRQ flags is not enough, as they don't
+* save/restore  state of interrupt, so here, the @c qUINT32_t argument and 
+* return value in both functions (@c Disabler and @c Restorer) becomes relevant,
+* because they can be used by the application writer to save and restore the 
+* current interrupt configuration. So, when a critical section is performed, 
+* the @c Disabler, in addition to disable the interrupts, returns the current
+* configuration to be retained by the kernel, later when the critical section 
+* finish, this retained value is passed to Restorer to bring back the saved
+* configuration.
+*
+* @section q_os_demo Demonstrative examples
+*
+* @subsection q_os_example1 A simple scheduling
+* This example demonstrates a simple environment setup for multiple tasks. 
+* Initially, only @c task1 and @c task2 are enabled. @c task1 runs every 2 
+* seconds 10 times and then stops. @c task2 runs every 3 seconds indefinitely. 
+* @c task1 enables @c task3 at its first run. @c task3 run every  5 seconds. 
+* @c task1 disables @c task3 on its last iteration and changed @c task2 to run 
+* every 1/2 seconds. In the end, @c task2 is the only task running every 1/2 
+* seconds.
+*
+*  @code{.c}
+*  #include <stdio.h>
+*  #include <stdlib.h>
+*  #include <stdint.h>
+*  #include "BSP.h"
+*  
+*  #include "QuarkTS.h"
+*  #define TIMER_TICK   0.001   /* 1ms */ 
+*  
+*  qTask_t task1, task2, task3; /*task nodes*/
+*  /*==================================================================*/
+*  void interrupt Timer0_ISR( void ) {
+*      qClock_SysTick();   
+*  }
+*  /*==================================================================*/
+*  void Task1_Callback( qEvent_t e ) {
+*      BSP_UART1_WriteString( "Task1" );
+*  
+*      if ( e->FirstIteration ) {
+*          qTask_Resume( &Task3 );    
+*      }
+*      
+*      if ( e->LastIteration ) {
+*          qTask_Suspend( &Task3 );
+*          qTask_Set_Time( &Task2, 0.5 );
+*      }
+*  }
+*  /*==================================================================*/
+*  void Task2_Callback( qEvent_t e ) {
+*      BSP_UART1_WriteString( "Task2" );
+*  }
+*  /*==================================================================*/
+*  void Task3_Callback( qEvent_t e ) {
+*      BSP_UART1_WriteString( "Task3" );
+*  }
+*  /*==================================================================*/
+*  int main( void ) {    
+*      HardwareSetup();  /*hardware initialization function*/
+*      /*function to fire an interrupt at 1ms - timer tick*/
+*      Configure_Periodic_Timer0_Interrupt_1ms(); 
+*      
+*      qOS_Setup( NULL, TIMER_TICK, NULL );     
+*      qOS_Add_Task( &Task1, Task1_Callback, 50, 2.0, 10, qEnabled, NULL );
+*      qOS_Add_Task( &Task2, Task2_Callback, 50, 3.0, qPeriodic, qEnabled, NULL );
+*      qOS_Add_Task( &Task2, Task3_Callback, 50, 5.0, qPeriodic, qDisabled, NULL );
+*      qOS_Run();
+*
+*      return 0;
+*  }
+*  @endcode
+*
+* @subsection q_os_example2 Using the task argument
+* When adding tasks, they can accept a parameter of type pointer to void @c void*
+* also called the storage pointer. This parameter could be used for multiple 
+* applications, including storage, task identification, duplication removal and
+* others. The following example shows the usage of this argument to avoid 
+* callback duplication among tasks with the same behavior.
+*
+* Consider a scenario where you have to build a digital controller for several 
+* physical variables, for example, a PID controller for temperature, humidity and
+* light. The PID algorithm will be the same for all variables. The only 
+* difference will be the variable input, the controlled output action and the 
+* PID gains. In this case, each of the PID tasks will utilize the same callback 
+* methods. The only difference will be the I/O parameters (specific for each 
+* PID controller).
+*
+* Let’s define a PID data structure with the I/O variables and gains.
+*
+*  @code{.c}
+*  typedef struct{
+*       float yt; /*Measured variable (Controller Input)*/
+*       float ut; /*Controlled variable (Controller Output)*/
+*       float ie; /*Accumulated error*/
+*       float pe; /*Previous error*/
+*       float dt; /*Controller Time Step*/
+*       float sp; /*Set-Point*/
+*       float Kc, Ki, Kd; /*PID Gains*/ 
+*   }PID_Params_t;
+*   
+*   PID_Params_t TemperatureControl = {
+*      0,0,0,0, /*Initial IO state of yt and ut*/
+*      1.5, /*time step*/
+*      28.5, /*Set-Point*/
+*      0.89, 0.122, 0.001 /*Kc, Ki, Kd*/
+*   };
+*   PID_Params_t HumidityControl= {
+*      0,0,0,0, /*Initial IO state of yt and ut*/
+*      1, /*time step*/
+*      60.0, /*Set-Point*/
+*      2.5, 0.2354, 0.0015 /*Kc, Ki, Kd*/
+*   };
+*   PID_Params_t LightControl= {
+*      0,0,0,0, /*Initial IO state of yt and ut*/
+*      0.5, /*time step*/
+*      45.0, /*Set-Point*/
+*      5.36, 0.0891, 0.0 /*Kc, Ki, Kd*/
+*   };
+*  @endcode
+*
+* A task will be added to the scheme to collect the sensor data and apply 
+* the respective control output.
+*
+*  @code{.c}
+*  qOS_Add_Task( &IO_TASK , IO_TASK_Callback , qMedium_Priority , 0.1, qPeriodic, qEnabled , "iotask");
+*  @endcode
+*
+*  @code{.c}
+*  void IO_TASK_Callback( qEvent_t e ) {
+*      TemperatureControl.yt  = SampleTemperatureSensor();
+*      HumidityControl.yt  = SampleHumiditySensor();
+*      LightControl.yt  = SampleLightSensor();
+*      WriteTemperatureActuatorValue( TemperatureControl.ut );
+*      WriteHumidityActuatorValue( HumidityControl.ut );
+*      WriteLightActuatorValue( LightControl.ut ); 
+*  }
+*  @endcode
+*
+* Then, three different tasks are created to apply the respective PID controller. 
+* Note that these tasks refer to the same callback methods and we assign 
+* pointers to the respective variables.
+*
+*  @code{.c}
+*  qOS_Add_Task( &TEMPERATURE_CONTROL_TASK, PIDControl_Callback,
+*                qHigh_Priority, TemperatureControl.dt , 
+*                qPeriodic, qEnabled, &TemperatureControl );
+*  qOS_Add_Task( &HUMIDITY_CONTROL_TASK, PIDControl_Callback, 
+*                qHigh_Priority, HumidityControl.dt, 
+*                qPeriodic, qEnabled, &HumidityControl );
+*  qOS_Add_Task( &LIGHT_CONTROL_TASK, PIDControl_Callback, 
+*                qHigh_Priority, LightControl.dt, 
+*                qPeriodic, qEnabled, &LightControl );
+*  @endcode
+*
+*  @code{.c}
+*  void PIDControl_Callback( qEvent_t e ) {
+*      float Error, derivative;
+*      /* Obtain the reference to the specific PID controller 
+*       * using the TaskData field from the qEvent structure
+*       */
+*      PID_Params_t *Controller = (PID_Params_t *)e->TaskData; 
+*      /*Compute the error*/
+*      Error = Controller->sp - Controller->yt;
+*      /*Compute the accumulated error using backward integral approximation*/
+*      Controller->ie += Error*Controller->dt;
+*      /*update and compute the derivative term*/
+*      derivative = (Error - Controller->pe)/Controller->dt;
+*      /*update the previous error*/
+*      Controller->pe = Error;
+*      /*compute the pid control law*/
+*      Controller->ut = Controller->Kc*Error  +  
+*                       Controller->Ki*Controller->ie + 
+*                       Controller->Kd*derivative;
+*  }
+*  @endcode
+*
+* @section q_configmacros Configuration macros
+* Some OS features can be customized using a set of macros located in the header 
+* file @c qconfig.h. Here is the default configuration, followed by an 
+* explanation of each macro:
+*
+* - @c Q_PRIORITY_LEVELS : @a Default: @c 3. The number of priorities available for
+* application tasks.
+* - @c Q_SETUP_TIME_CANONICAL : @a Default: @c 0(disabled). If enabled, the 
+* kernel assumes the timing base to 1mS(1KHz). So all time specifications for 
+* tasks and STimers must be set in milliseconds(mS). Also can be used to remove
+* the floating-point operations when dealing with time. In some systems, 
+* can reduce the memory usage.
+* - @c Q_SETUP_TICK_IN_HERTZ : @a Default: @c 0(disabled). If enabled, the 
+* timing base will be taken as frequency(Hz) instead of period(S) by qOS_Setup()
+* (In some systems, can reduce the memory usage ).
+* - @c Q_PRIO_QUEUE_SIZE : @a Default: @c 10. Size of the priority queue for 
+* notifications. This argument should be an integer number greater than zero. 
+* A zero value can be used to disable this functionality.
+* - @c Q_PRESERVE_TASK_ENTRY_ORDER : @a Default: @c 0(disabled). If enabled, 
+* the kernel will preserve the tasks entry order every OS scheduling cycle.
+* - @c Q_MEMORY_MANAGER : @a Default: @c 1(enabled).  Used to enable or disable 
+* the memory management module.
+* - @c Q_BYTE_ALIGNMENT : @a Default: @c 8. Used by the memory management module 
+* to perform the byte-alignment.
+* - @c Q_DEFAULT_HEAP_SIZE : @a Default: @c 2048.  The total amount of heap size
+* for the default memory pool.
+* - @c Q_NOTIFICATION_SPREADER : @a Default: @c 0(disabled). Used to enable or 
+* disable the spread notification functionality.
+* - @c Q_FSM : @a Default: @c 1(enabled). Used to enable or disable the Finite
+State Machine (FSM) extension.
+* - @c Q_FSM_MAX_NEST_DEPTH : @a Default: @c 5. The max depth of nesting in
+* Finite State Machines (FSM).
+* - @c Q_FSM_MAX_TIMEOUTS : @a Default: @c 3. Max number of timeouts inside a 
+* timeout specification for the Finite State machine (FSM) module.
+* - @c Q_QUEUES : @a Default: @c 1(enabled). Used to enable or disable the 
+* queues APIs for inter-task communication.
+* - @c Q_TRACE_VARIABLES : @a Default: @c 1(enabled). Used to enable or disable 
+* debug and trace macros.
+* - @c Q_DEBUGTRACE_BUFSIZE : @a Default: @c 36. The buffer size for debug and 
+* trace macros
+* - @c Q_DEBUGTRACE_FULL : @a Default: @c 1(enabled). Used to enable of disable 
+* the extended output for trace macros.
+* - @c Q_ATCLI : @a Default: @c 1(enabled). Used to enable or disable the AT
+* Command Line Interface (CLI) module.
+* - @c Q_TASK_COUNT_CYCLES : @a Default: @c 0(disabled). Used to enable or 
+* disable the counting of cycler of a task.
+* - @c Q_TASK_EVENT_FLAGS : @a Default: @c 1(enabled). Used to enable or disable 
+* the task event flags.
+* - @c Q_MAX_FTOA_PRECISION : @a Default: @c 10.  The default precision used to 
+* perform float to ASCII conversions. 
+* - @c Q_ATOF_FULL : @a Default: @c 0(disabled). Used to enable or disable the 
+* scientific notation in ASCII to float conversions.
+* - @c Q_ALLOW_SCHEDULER_RELEASE : @a Default: @c 0(disabled). Used to enable or
+* disable the scheduler release functionality.
+* - @c Q_RESPONSE_HANDLER : @a Default: @c 1(enabled). Used to enable or disable
+* the response handler functionality.
+* - @c Q_EDGE_CHECK_IOGROUPS : @a Default: @c 1(enabled). Used to enable or 
+* disable the edge check functionality for I/O groups .
+* - @c Q_BYTE_SIZED_BUFFERS : @a Default: @c 1(enabled). Used to enable or 
+* disable the usage of Byte-sized buffers.
+* - @c Q_USE_STDINT_H : @a Default: @c 1(enabled).  Use the @c stdint.h header 
+* to define kernel data-types.
+*
+*/
