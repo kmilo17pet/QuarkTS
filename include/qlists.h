@@ -27,7 +27,7 @@
      * also has a head and a tail pointer, to allow fast operations on boundary 
      * nodes.
      * 
-     * image html https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png "Doubly-linked list implementation"
+     * @image html https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png "Doubly-linked list implementation"
      * 
      * Nodes should be an user-defined data structure of any number of members, 
      * however, they must be specially defined to be compatible with the 
