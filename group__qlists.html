@@ -258,7 +258,10 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >The provided list implementation uses a generic doubly-linked approach in which each node, apart from storing its data, has two link pointers. The first link points to the previous node in the list and the second link, points to the next node in the list. The first node of the list has its previous link pointing to <code>NULL</code>, similarly, the last node of the list has its next node pointing to <code>NULL</code>. </p>
 <p >The list data-structure, referenced through an object of type <a class="el" href="structq_list__t.html" title="A list object (Generic double-linked)">qList_t</a> also has a head and a tail pointer, to allow fast operations on boundary nodes.</p>
-<p >image html <a href="https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png">https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png</a> "Doubly-linked list implementation"</p>
+<div class="image">
+<img src="https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png" alt=""/>
+<div class="caption">
+Doubly-linked list implementation</div></div>
 <p >Nodes should be an user-defined data structure of any number of members, however, they must be specially defined to be compatible with the provided APIs. All the user-defined nodes must have the <a class="el" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11" title="This macro can be used to create custom data that can be used as node of a list. User should locate t...">qNode_MinimalFields</a> definition on top of the structure. An example is shown below:</p>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line">    <a class="code hl_define" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>; <span class="comment">// required for lists</span></div>
