@@ -16,7 +16,37 @@
     #endif
 
     /** @addtogroup qlists
-     * @brief API to create and manage double-linked generic lists.
+     * @brief The provided list implementation uses a generic doubly-linked 
+     * approach in which each node, apart from storing its data, has two link 
+     * pointers. The first link points to the previous node in the list and the 
+     * second link, points to the next node in the list. The first node of the 
+     * list has its previous link pointing to @c NULL, similarly, the last node
+     * of the list has its next node pointing to @c NULL.
+     * 
+     * The list data-structure, referenced through an object of type qList_t 
+     * also has a head and a tail pointer, to allow fast operations on boundary 
+     * nodes.
+     * 
+     * image html https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png "Doubly-linked list implementation"
+     * 
+     * Nodes should be an user-defined data structure of any number of members, 
+     * however, they must be specially defined to be compatible with the 
+     * provided APIs. All the user-defined nodes must have the 
+     * #qNode_MinimalFields definition on top of the structure. An example is 
+     * shown below:
+     * 
+     * @code{.c}
+     * typedef struct {
+     *     qNode_MinimalFields; // required for lists
+     *     int a;
+     *     int b;
+     *     float y;
+     * } userdata_t;
+     * @endcode
+     *
+     * With this special type definition on all custom data, the application 
+     * writer can take advantage of this powerful data structure.
+     * 
      *  @{
      */
 
