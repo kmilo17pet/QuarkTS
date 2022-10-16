@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: qMemMang_Pool_t Struct Reference</title>
+<title>OS: qMemMang_Pool_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -116,7 +124,7 @@ $(document).ready(function(){initNavTree('structq_mem_mang___pool__t.html',''); 
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">qMemMang_Pool_t Struct Reference<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel Modules</a> &raquo; <a class="el" href="group__qmemmang.html">Memory Management</a></div></div></div>
+  <div class="headertitle"><div class="title">qMemMang_Pool_t Struct Reference<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel extensions</a> &raquo; <a class="el" href="group__qmemmang.html">Memory Management</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -127,7 +135,7 @@ $(document).ready(function(){initNavTree('structq_mem_mang___pool__t.html',''); 
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A Memory Pool object. </p>
 <p >A memory pool its a special resource that allows memory blocks to be dynamically allocated from a user-designated memory region. Instead of typical pools with fixed-size block allocation, the pools in QuarkTS can be of any size, thereby the user is responsible for selecting the appropriate memory pool to allocate data with the same size.</p>
-<p >The default memory management unit resides in a memory pool object. Also called the default-pool. The total amount of available heap space in the default memory pool is set by Q_DEFAULT_HEAP_SIZE, which is defined in qconfig.h.</p>
+<p >The default memory management unit resides in a memory pool object. Also called the default-pool. The total amount of available heap space in the default memory pool is set by <code>Q_DEFAULT_HEAP_SIZE</code>, which is defined in <code>qconfig.h</code>.</p>
 <p >Besides the default pool, any number of additional memory pools can be defined. Like any other object in QuarkTS, memory pools are referenced by handles, a variable of type <a class="el" href="structq_mem_mang___pool__t.html" title="A Memory Pool object.">qMemMang_Pool_t</a> and should be initialized before use with the <a class="el" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209" title="Initializes a memory pool instance. This function should be called once before any heap memory reques...">qMemMang_Pool_Setup()</a> API. </p><dl class="section note"><dt>Note</dt><dd>Do not access any member of this structure directly. </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->

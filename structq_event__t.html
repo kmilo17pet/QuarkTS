@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: qEvent_t Struct Reference</title>
+<title>OS: qEvent_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -135,11 +143,11 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>TaskData</b></td></
 <tr class="separator:a191262c05958798bbb47391043170b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8774ca79810e9df25e2743501ee6b74"><td class="memItemLeft" align="right" valign="top"><a id="aa8774ca79810e9df25e2743501ee6b74" name="aa8774ca79810e9df25e2743501ee6b74"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>EventData</b></td></tr>
-<tr class="memdesc:aa8774ca79810e9df25e2743501ee6b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associated data of the event. Specific data will reside here according to the event source. This field will have a NULL value when the trigger gets one of this values: <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18" title="When the time specified for the task elapsed.">byTimeElapsed</a>, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244" title="When any event-flag is set.">byEventFlags</a> and <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212" title="Only available when the Idle Task is triggered.">byNoReadyTasks</a>. <br /></td></tr>
+<tr class="memdesc:aa8774ca79810e9df25e2743501ee6b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associated data of the event. Specific data will reside here according to the event source. This field will have a <code>NULL</code> value when the trigger gets one of this values: <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18" title="When the time specified for the task elapsed.">byTimeElapsed</a>, <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244" title="When any event-flag is set.">byEventFlags</a> and <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212" title="Only available when the Idle Task is triggered.">byNoReadyTasks</a>. <br /></td></tr>
 <tr class="separator:aa8774ca79810e9df25e2743501ee6b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61ae4900215e528bd801c8ee156ac0df"><td class="memItemLeft" align="right" valign="top"><a id="a61ae4900215e528bd801c8ee156ac0df" name="a61ae4900215e528bd801c8ee156ac0df"></a>
 <a class="el" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Trigger</b></td></tr>
-<tr class="memdesc:a61ae4900215e528bd801c8ee156ac0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">This member indicates the event source that triggers the task execution. Possible values are described in the qTrigger_t enum typedef. <br /></td></tr>
+<tr class="memdesc:a61ae4900215e528bd801c8ee156ac0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">This member indicates the event source that triggers the task execution. Possible values are described in the <a class="el" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334" title="An enum with all the possible values for the qEvent_t::Trigger member.">qTrigger_t</a> enum typedef. <br /></td></tr>
 <tr class="separator:a61ae4900215e528bd801c8ee156ac0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6b771f59e71f08d49c14466b88edb04"><td class="memItemLeft" align="right" valign="top"><a id="ab6b771f59e71f08d49c14466b88edb04" name="ab6b771f59e71f08d49c14466b88edb04"></a>
 <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FirstCall</b></td></tr>
@@ -155,7 +163,7 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>EventData</b></td><
 <tr class="separator:af000312a956c600f57074345a75536bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee880e0bf7834b8ca68c2bcd6ddab532"><td class="memItemLeft" align="right" valign="top"><a id="aee880e0bf7834b8ca68c2bcd6ddab532" name="aee880e0bf7834b8ca68c2bcd6ddab532"></a>
 <a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>StartDelay</b></td></tr>
-<tr class="memdesc:aee880e0bf7834b8ca68c2bcd6ddab532"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of epochs between current system time and point in time when the task was marked as Ready. Can be used to keep track when current task's execution took place relative to when it was scheduled A value of 0 (zero) indicates that task started right on time per schedule.This parameter will be only available on timed tasks. when Trigger == <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18" title="When the time specified for the task elapsed.">byTimeElapsed</a>. <br /></td></tr>
+<tr class="memdesc:aee880e0bf7834b8ca68c2bcd6ddab532"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of epochs between current system time and point in time when the task was marked as Ready. Can be used to keep track when current task's execution took place relative to when it was scheduled A value of 0 (zero) indicates that task started right on time per schedule.This parameter will be only available on timed tasks. when <code>Trigger</code> == <a class="el" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18" title="When the time specified for the task elapsed.">byTimeElapsed</a>. <br /></td></tr>
 <tr class="separator:aee880e0bf7834b8ca68c2bcd6ddab532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

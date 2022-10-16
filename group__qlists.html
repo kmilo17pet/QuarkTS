@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: Generic double-linked lists</title>
+<title>OS: Generic double-linked lists</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -363,11 +371,11 @@ Functions</h2></td></tr>
 
 <p>An enum to describe the ForEach stage. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf" name="ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf"></a>qList_WalkInit&#160;</td><td class="fielddoc"><p >When the loop is about to start. In this case, A NULL value will be passed in the node pointer. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf" name="ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf"></a>qList_WalkInit&#160;</td><td class="fielddoc"><p >When the loop is about to start. In this case, A <code>NULL</code> value will be passed in the node pointer. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4" name="ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4"></a>qList_WalkThrough&#160;</td><td class="fielddoc"><p >When the loop is traversing the list. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161" name="ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161"></a>qList_WalkEnd&#160;</td><td class="fielddoc"><p >When the loop has finished. In this case, A NULL value will be passed in the node pointer. </p>
+<tr><td class="fieldname"><a id="ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161" name="ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161"></a>qList_WalkEnd&#160;</td><td class="fielddoc"><p >When the loop has finished. In this case, A <code>NULL</code> value will be passed in the node pointer. </p>
 </td></tr>
 </table>
 
@@ -431,7 +439,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">arg</td><td>Argument passed to <em>f</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>Direction. Use one of the following options: <a class="el" href="group__qlists.html#ga5365ab050c7da9fb0b835f48d042ad61" title="This macro should be used to define the direction of travel of the list forward.">QLIST_FORWARD</a> or <a class="el" href="group__qlists.html#ga2446c3162503fa5f1a078fbbd2519fab" title="This macro should be used to define the direction of travel of the list backwards.">QLIST_BACKWARD</a>. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">nodeOffset</td><td>If available, the list walk through will start from this node. To ignore, pass NULL. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">nodeOffset</td><td>If available, the list walk through will start from this node. To ignore, pass <code>NULL</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -462,7 +470,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the back node. NULL if the list is empty </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the back node. <code>NULL</code> if the list is empty </dd></dl>
 
 </div>
 </div>
@@ -489,7 +497,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the front node. NULL if the list is empty </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the front node. <code>NULL</code> if the list is empty </dd></dl>
 
 </div>
 </div>
@@ -653,7 +661,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Return the next node or NULL when no more nodes remain in the list. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Return the next node or <code>NULL</code> when no more nodes remain in the list. </dd></dl>
 
 </div>
 </div>
@@ -700,7 +708,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>Pointer to the iterator instance </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">l</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nodeOffset</td><td>The start offset-node. To ignore, pass NULL. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nodeOffset</td><td>The start offset-node. To ignore, pass <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">d</td><td>Use one of the following options: <a class="el" href="group__qlists.html#ga5365ab050c7da9fb0b835f48d042ad61" title="This macro should be used to define the direction of travel of the list forward.">QLIST_FORWARD</a> or <a class="el" href="group__qlists.html#ga2446c3162503fa5f1a078fbbd2519fab" title="This macro should be used to define the direction of travel of the list backwards.">QLIST_BACKWARD</a>. </td></tr>
   </table>
   </dd>
@@ -817,12 +825,12 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">l</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be deleted (to ignore pass NULL ). If the node is member or the list, use <a class="el" href="group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a" title="If the node is member of a list, the node will be removed from it.">qList_RemoveItself()</a> to avoid overhead </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be deleted (to ignore pass <code>NULL</code> ). If the node is member or the list, use <a class="el" href="group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a" title="If the node is member of a list, the node will be removed from it.">qList_RemoveItself()</a> to avoid overhead </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position of the node that will be removed. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the removed node. NULL if removal can't be performed. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the removed node. <code>NULL</code> if removal can't be performed. </dd></dl>
 
 </div>
 </div>
@@ -884,12 +892,12 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">l</td><td>Pointer to the list. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6" title="Sort the double linked list using the f function to determine the order. The sorting algorithm used b...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> CompareFcn(<span class="keywordtype">void</span> *node1, <span class="keywordtype">void</span> *node2) </div>
+    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Pointer to a function that compares two nodes. This function is called repeatedly by <a class="el" href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6" title="Sort the double linked list using the f function to determine the order. The sorting algorithm used b...">qList_Sort()</a> to compare two nodes. It shall follow the following prototype: <div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> CompareFcn( <a class="code hl_struct" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a> h ) </div>
 </div><!-- fragment --></td></tr>
   </table>
   </dd>
 </dl>
-<p>Taking two pointers as arguments (both converted to const void*). The function defines the order of the elements by returning a Boolean data, where a <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> value indicates that element pointed by <em>node1</em> goes after the element pointed to by <em>node2</em>. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if at least one reordering is performed over the list. </dd></dl>
+<p>The function defines the order of the elements by returning a Boolean data, where a <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> value indicates that element pointed by <em>node1</em> goes after the element pointed to by <em>node2</em>. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if at least one reordering is performed over the list. </dd></dl>
 
 </div>
 </div>

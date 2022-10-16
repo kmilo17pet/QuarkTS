@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: I/O Utils</title>
+<title>OS: I/O Utils</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -181,16 +189,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:gada839f471006399214084cb0f1e81e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the input string consisting of hexadecimal digits into an unsigned integer value. The input parameter should consist exclusively of hexadecimal digits, with optional whitespaces. The string will be processed one character at a time, until the function reaches a character which it doesn't recognize (including a null character).  <a href="group__qioutils.html#gada839f471006399214084cb0f1e81e57">More...</a><br /></td></tr>
 <tr class="separator:gada839f471006399214084cb0f1e81e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabbdf7619961ec8fab759375781f9eda3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3">qIOUtil_AtoF</a> (const char *s)</td></tr>
-<tr class="memdesc:gabbdf7619961ec8fab759375781f9eda3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double(qFloat64_t). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function.  <a href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3">More...</a><br /></td></tr>
+<tr class="memdesc:gabbdf7619961ec8fab759375781f9eda3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double( <code>qFloat64_t</code>). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function.  <a href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3">More...</a><br /></td></tr>
 <tr class="separator:gabbdf7619961ec8fab759375781f9eda3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadec86fa22eb276b21ecd4df7e3e1892f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gadec86fa22eb276b21ecd4df7e3e1892f">qIOUtil_FtoA</a> (<a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> precision)</td></tr>
 <tr class="memdesc:gadec86fa22eb276b21ecd4df7e3e1892f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a float value to a formatted string.  <a href="group__qioutils.html#gadec86fa22eb276b21ecd4df7e3e1892f">More...</a><br /></td></tr>
 <tr class="separator:gadec86fa22eb276b21ecd4df7e3e1892f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4669fcd270819f7729ef5d16cc4d123a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a">qIOUtil_AtoI</a> (const char *s)</td></tr>
-<tr class="memdesc:ga4669fcd270819f7729ef5d16cc4d123a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned.  <a href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a">More...</a><br /></td></tr>
+<tr class="memdesc:ga4669fcd270819f7729ef5d16cc4d123a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in <code>isspace</code>) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned.  <a href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a">More...</a><br /></td></tr>
 <tr class="separator:ga4669fcd270819f7729ef5d16cc4d123a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae64a6818f59775c7b3a3a4e3d1bb9ae7"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gae64a6818f59775c7b3a3a4e3d1bb9ae7">qIOUtil_UtoA</a> (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> base)</td></tr>
-<tr class="memdesc:gae64a6818f59775c7b3a3a4e3d1bb9ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms.  <a href="group__qioutils.html#gae64a6818f59775c7b3a3a4e3d1bb9ae7">More...</a><br /></td></tr>
+<tr class="memdesc:gae64a6818f59775c7b3a3a4e3d1bb9ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: <code>"sizeof(int)*8+1"</code> for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms.  <a href="group__qioutils.html#gae64a6818f59775c7b3a3a4e3d1bb9ae7">More...</a><br /></td></tr>
 <tr class="separator:gae64a6818f59775c7b3a3a4e3d1bb9ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8402e8689f7dd1426ca948641f50c264"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga8402e8689f7dd1426ca948641f50c264">qIOUtil_ItoA</a> (<a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> base)</td></tr>
 <tr class="memdesc:ga8402e8689f7dd1426ca948641f50c264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an integer value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. If base is 10 and value is negative, the resulting string is preceded with a minus sign (-). With any other base, value is always considered unsigned.  <a href="group__qioutils.html#ga8402e8689f7dd1426ca948641f50c264">More...</a><br /></td></tr>
@@ -298,7 +306,7 @@ Functions</h2></td></tr>
 <p>Macro interface to write a string through <em>fcn</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">iFcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string to be written </td></tr>
   </table>
@@ -389,14 +397,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double(qFloat64_t). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function. </p>
+<p>Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double( <code>qFloat64_t</code>). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a floating-point number. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted floating point number as a double(qFloat64_t) value. If no valid conversion could be performed, the function returns zero (0.0). If the converted value would be out of the range of representable values by a double(qFloat64_t), it causes undefined behavior </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted floating point number as a double( <code>qFloat64_t</code> ) value. If no valid conversion could be performed, the function returns zero (0.0). If the converted value would be out of the range of representable values by a double( <code>qFloat64_t</code> ), it causes undefined behavior </dd></dl>
 
 </div>
 </div>
@@ -416,14 +424,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned. </p>
+<p>Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in <code>isspace</code>) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a integer number. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted integral number as an int value. If the converted value would be out of the range of representable values by an int, it causes undefined behavior. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted integral number as an int value. If the converted value would be out of the range of representable values by an <code>int</code>, it causes undefined behavior. </dd></dl>
 
 </div>
 </div>
@@ -523,7 +531,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">precision</td><td>Desired number of significant fractional digits in the string. (The max allowed precision is MAX_FTOA_PRECISION=10) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">precision</td><td>Desired number of significant fractional digits in the string. ( The max allowed precision is <code>MAX_FTOA_PRECISION=10</code> ) </td></tr>
   </table>
   </dd>
 </dl>
@@ -578,7 +586,7 @@ Functions</h2></td></tr>
 <p>API interface to get n RAW data through <em>fcn</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">oFcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">iFcn</td><td>The basic input byte function </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">pData</td><td>A pointer to the block where the read data will be saved </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to get </td></tr>
@@ -640,7 +648,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> is argument is NaN, otherwise <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> is argument is <code>NaN</code>, otherwise <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> </dd></dl>
 
 </div>
 </div>
@@ -736,7 +744,7 @@ Functions</h2></td></tr>
 <p>API interface to write n RAW data through <em>fcn</em>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">oFcn</td><td>The basic output byte function </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pData</td><td>A pointer to the block of data </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes that will be transferred to the output </td></tr>
@@ -1133,7 +1141,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p>
+<p>Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: <code>"sizeof(int)*8+1"</code> for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
@@ -1169,7 +1177,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The numeric value uint32_t. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The numeric value as <code>uint32_t</code>. </dd></dl>
 
 </div>
 </div>

@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: AT Command Line Interface</title>
+<title>OS: AT Command Line Interface</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -122,7 +130,7 @@ $(document).ready(function(){initNavTree('group__qatcli.html',''); initResizable
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">AT Command Line Interface<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel Modules</a></div></div></div>
+  <div class="headertitle"><div class="title">AT Command Line Interface<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel extensions</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -144,7 +152,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:gaf24e23cde8cd2566c1971a161b4b689a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a">qATCLI_ERRORCODE</a>(ecode)</td></tr>
-<tr class="memdesc:gaf24e23cde8cd2566c1971a161b4b689a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to indicate an error code as return value inside a command-callback. This code is defined by the application writer and should be a value between 1 and 32766.  <a href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a">More...</a><br /></td></tr>
+<tr class="memdesc:gaf24e23cde8cd2566c1971a161b4b689a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to indicate an error code as return value inside a command-callback. This code is defined by the application writer and should be a value between <code>1</code> and <code>32766</code>.  <a href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a">More...</a><br /></td></tr>
 <tr class="separator:gaf24e23cde8cd2566c1971a161b4b689a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -192,6 +200,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="group__qatcli.html#gga54a1c9850d136f1390c28dbcef7ac404a8b88e79e2b916e6890d2bc34dabe5816">QATCLI_BUILTIN_STR_TERM_EOL</a>
 <br />
  }</td></tr>
+<tr class="memdesc:ga54a1c9850d136f1390c28dbcef7ac404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible values for built-in string identifiers.  <a href="group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404">More...</a><br /></td></tr>
 <tr class="separator:ga54a1c9850d136f1390c28dbcef7ac404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -246,8 +255,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Used to indicate an error code as return value inside a command-callback. This code is defined by the application writer and should be a value between 1 and 32766. </p>
-<p >For example, a return value of <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE(15)</a>, will print out the string "ERROR:15". </p>
+<p>Used to indicate an error code as return value inside a command-callback. This code is defined by the application writer and should be a value between <code>1</code> and <code>32766</code>. </p>
+<p >For example, a return value of <a class="el" href="group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a" title="Used to indicate an error code as return value inside a command-callback. This code is defined by the...">qATCLI_ERRORCODE(15)</a>, will print out the string <code>ERROR:15</code>. </p>
 
 </div>
 </div>
@@ -306,6 +315,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Possible values for built-in string identifiers. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga54a1c9850d136f1390c28dbcef7ac404a57ec438a2bafe167a068ef302a5f2c91" name="gga54a1c9850d136f1390c28dbcef7ac404a57ec438a2bafe167a068ef302a5f2c91"></a>QATCLI_BUILTIN_STR_IDENTIFIER&#160;</td><td class="fielddoc"><p >To select the device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND </p>
 </td></tr>
@@ -337,13 +348,13 @@ Functions</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa960ac3e1ee09752d7d4a3beda70034e2" name="gga5e73b1b723c5a2d924eb0221f76e288fa960ac3e1ee09752d7d4a3beda70034e2"></a>qATCLI_CMDTYPE_UNDEF&#160;</td><td class="fielddoc"><p >Was not able to detected a correct input command </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e" name="gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e"></a>qATCLI_CMDTYPE_PARA&#160;</td><td class="fielddoc"><p >Command that receives parameters (comma separated arguments after the equal(=) symbol) : AT+cmd=x,y </p>
+<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e" name="gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e"></a>qATCLI_CMDTYPE_PARA&#160;</td><td class="fielddoc"><p >Command that receives parameters (comma separated arguments after the equal(=) symbol) : <code>"AT+cmd=x,y"</code> </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40" name="gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40"></a>qATCLI_CMDTYPE_TEST&#160;</td><td class="fielddoc"><p >Command in test mode (no arguments allowed): AT+cmd=? </p>
+<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40" name="gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40"></a>qATCLI_CMDTYPE_TEST&#160;</td><td class="fielddoc"><p >Command in test mode (no arguments allowed): <code>"AT+cmd=?"</code> </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b" name="gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b"></a>qATCLI_CMDTYPE_READ&#160;</td><td class="fielddoc"><p >Command to query information(data allowed after the ? symbol) : AT+cmd? </p>
+<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b" name="gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b"></a>qATCLI_CMDTYPE_READ&#160;</td><td class="fielddoc"><p >Command to query information(data allowed after the ? symbol) : <code>"AT+cmd?"</code> </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246" name="gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246"></a>qATCLI_CMDTYPE_ACT&#160;</td><td class="fielddoc"><p >Command to perform an action (no arguments allowed) : AT+cmd </p>
+<tr><td class="fieldname"><a id="gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246" name="gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246"></a>qATCLI_CMDTYPE_ACT&#160;</td><td class="fielddoc"><p >Command to perform an action (no arguments allowed) : <code>AT+cmd</code> </p>
 </td></tr>
 </table>
 
@@ -363,17 +374,17 @@ Functions</h2></td></tr>
 
 <p>an enumeration to define the possible values that can be returned from the callback of a command. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df" name="ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df"></a>qATCLI_ERROR&#160;</td><td class="fielddoc"><p >To indicate an error operation. The CLI will print the ERROR_String to the output. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df" name="ggac5402443a477397530af4e9b7140ebcaac69cfec92bd21e6abddce5501c2a19df"></a>qATCLI_ERROR&#160;</td><td class="fielddoc"><p >To indicate an error operation. The CLI will print the <code>ERROR_String</code> to the output. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaa470934f7fc7fbc1fe0be6f58f8fcf5f8" name="ggac5402443a477397530af4e9b7140ebcaa470934f7fc7fbc1fe0be6f58f8fcf5f8"></a>qATCLI_NOTALLOWED&#160;</td><td class="fielddoc"><p >To indicate an successful operation. The CLI will print the " string to the output. </p>
+<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaa470934f7fc7fbc1fe0be6f58f8fcf5f8" name="ggac5402443a477397530af4e9b7140ebcaa470934f7fc7fbc1fe0be6f58f8fcf5f8"></a>qATCLI_NOTALLOWED&#160;</td><td class="fielddoc"><p >To indicate an successful operation. The CLI will print the <code>NOT_Allowed</code> string to the output. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaac8726c56f12c1314e75544f5454550b6" name="ggac5402443a477397530af4e9b7140ebcaac8726c56f12c1314e75544f5454550b6"></a>qATCLI_NORESPONSE&#160;</td><td class="fielddoc"><p >To indicate that no response will be printed out. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247" name="ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247"></a>qATCLI_OK&#160;</td><td class="fielddoc"><p >To indicate an successful operation. The CLI will print the OK_String to the output. </p>
+<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247" name="ggac5402443a477397530af4e9b7140ebcaa7b3a3d2e9097e42a2b738a09b2f79247"></a>qATCLI_OK&#160;</td><td class="fielddoc"><p >To indicate an successful operation. The CLI will print the <code>OK_String</code> to the output. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaabdee876e71e698a5e74e0e496fe304bc" name="ggac5402443a477397530af4e9b7140ebcaabdee876e71e698a5e74e0e496fe304bc"></a>qATCLI_DEVID&#160;</td><td class="fielddoc"><p >To indicate that the Device Identifier should be print out. </p>
+<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaabdee876e71e698a5e74e0e496fe304bc" name="ggac5402443a477397530af4e9b7140ebcaabdee876e71e698a5e74e0e496fe304bc"></a>qATCLI_DEVID&#160;</td><td class="fielddoc"><p >To indicate that the device "Identifier" should be printed out. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379" name="ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379"></a>qATCLI_NOTFOUND&#160;</td><td class="fielddoc"><p >To indicate that the command was not found. The CLI will print the NOTFOUND_string to the output </p>
+<tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379" name="ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379"></a>qATCLI_NOTFOUND&#160;</td><td class="fielddoc"><p >To indicate that the command was not found. The CLI will print the <code>NOTFOUND_string</code> to the output </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggac5402443a477397530af4e9b7140ebcaaf50cf96e5146ba1776c076d37d55ab2b" name="ggac5402443a477397530af4e9b7140ebcaaf50cf96e5146ba1776c076d37d55ab2b"></a>qATCLI_OUTPUT&#160;</td><td class="fielddoc"><p >To indicate that only the output buffer will be print out </p>
 </td></tr>
@@ -482,10 +493,10 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e">qATCLI_CMDTYPE_PARA</a> : "AT+cmd=x,y" is allowed. The execution of the callback function also depends on whether the number of argument is valid or not. Information about number of arguments is combined with a bitwise 'OR' : <a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e">qATCLI_CMDTYPE_PARA</a> | 0xXY , where X which defines maximum argument number for incoming command and Y which defines minimum argument number for incoming command</p>
-<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40">qATCLI_CMDTYPE_TEST</a> : "AT+cmd=?" is allowed.</p>
-<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b">qATCLI_CMDTYPE_READ</a> : "AT+cmd?" is allowed.</p>
-<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246">qATCLI_CMDTYPE_ACT</a> : "AT+cmd" is allowed.</p>
+<p><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e">qATCLI_CMDTYPE_PARA</a> : <code>AT+cmd=x</code>,y is allowed. The execution of the callback function also depends on whether the number of argument is valid or not. Information about number of arguments is combined with a bitwise 'OR' : <a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa87994a9d12f31107158d324d7193dd8e">qATCLI_CMDTYPE_PARA</a> | 0xXY , where X which defines maximum argument number for incoming command and Y which defines minimum argument number for incoming command</p>
+<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa18f9c75771825773c1b522c2b3428b40">qATCLI_CMDTYPE_TEST</a> : <code>"AT+cmd=?"</code> is allowed.</p>
+<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fadfb8cdf3888c18f6c79bd54393d4fa7b">qATCLI_CMDTYPE_READ</a> : <code>"AT+cmd?"</code> is allowed.</p>
+<p ><a class="el" href="group__qatcli.html#gga5e73b1b723c5a2d924eb0221f76e288fa8786bb7eb59de20a6eff70589f4d1246">qATCLI_CMDTYPE_ACT</a> : <code>AT+cmd</code> is allowed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>User storage pointer. </td></tr>

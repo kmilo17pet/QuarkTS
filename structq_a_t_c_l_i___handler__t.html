@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: qATCLI_Handler_t Struct Reference</title>
+<title>OS: qATCLI_Handler_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -118,7 +126,7 @@ $(document).ready(function(){initNavTree('structq_a_t_c_l_i___handler__t.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">qATCLI_Handler_t Struct Reference<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel Modules</a> &raquo; <a class="el" href="group__qatcli.html">AT Command Line Interface</a></div></div></div>
+  <div class="headertitle"><div class="title">qATCLI_Handler_t Struct Reference<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel extensions</a> &raquo; <a class="el" href="group__qatcli.html">AT Command Line Interface</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -147,7 +155,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>StrData</b></td></t
 <tr class="memdesc:ab14ba7f0bc38949d572f65e399820e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> argument parsed as float from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#ab14ba7f0bc38949d572f65e399820e88">More...</a><br /></td></tr>
 <tr class="separator:ab14ba7f0bc38949d572f65e399820e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1288e8e58a584a7a4d4847a414dcce07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">GetArgHex</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n)</td></tr>
-<tr class="memdesc:a1288e8e58a584a7a4d4847a414dcce07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> HEX argument parsed qUINT32_t from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">More...</a><br /></td></tr>
+<tr class="memdesc:a1288e8e58a584a7a4d4847a414dcce07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> HEX argument parsed <code>qUINT32_t</code> from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">More...</a><br /></td></tr>
 <tr class="separator:a1288e8e58a584a7a4d4847a414dcce07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6755a847edb0a7791c8abd5301557c2"><td class="memItemLeft" align="right" valign="top">char *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#ab6755a847edb0a7791c8abd5301557c2">GetArgString</a> )(<a class="el" href="group__qtypes.html#ga5ff52af930bc9b3955f5e08523df9de9">qIndex_t</a> n, char *pOut)</td></tr>
 <tr class="memdesc:ab6755a847edb0a7791c8abd5301557c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to get the <em>n</em> argument parsed as string from the incoming AT command.  <a href="structq_a_t_c_l_i___handler__t.html#ab6755a847edb0a7791c8abd5301557c2">More...</a><br /></td></tr>
@@ -156,7 +164,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>StrData</b></td></t
 <tr class="memdesc:ad6a6d6add1077334c02a5874c838819b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for printing character to the CLI output. It displays only one character at a time.  <a href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">More...</a><br /></td></tr>
 <tr class="separator:ad6a6d6add1077334c02a5874c838819b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf3fe8ee21670552de2e333b26ea9f9b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">puts</a> )(const char *s)</td></tr>
-<tr class="memdesc:acf3fe8ee21670552de2e333b26ea9f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string to CLI output without the EOF string appended at the end.  <a href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">More...</a><br /></td></tr>
+<tr class="memdesc:acf3fe8ee21670552de2e333b26ea9f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string to CLI output without the <code>EOF</code> string appended at the end.  <a href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">More...</a><br /></td></tr>
 <tr class="separator:acf3fe8ee21670552de2e333b26ea9f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36853d82cd782a15d6909ec210081791"><td class="memItemLeft" align="right" valign="top"><a id="a36853d82cd782a15d6909ec210081791" name="a36853d82cd782a15d6909ec210081791"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>Output</b></td></tr>
@@ -221,7 +229,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Helper method to get the <em>n</em> HEX argument parsed qUINT32_t from the incoming AT command. </p>
+<p>Helper method to get the <em>n</em> HEX argument parsed <code>qUINT32_t</code> from the incoming AT command. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57" title="Converts the input string consisting of hexadecimal digits into an unsigned integer value....">qIOUtil_XtoU32()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -229,7 +237,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The HEX argument parsed as qUINT32_t. Same behavior of <a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57" title="Converts the input string consisting of hexadecimal digits into an unsigned integer value....">qIOUtil_XtoU32()</a>. If argument not found returns 0. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The HEX argument parsed as <code>qUINT32_t</code>. Same behavior of <a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57" title="Converts the input string consisting of hexadecimal digits into an unsigned integer value....">qIOUtil_XtoU32()</a>. If argument not found returns 0. </dd></dl>
 
 </div>
 </div>
@@ -276,7 +284,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the desired argument. NULL pointer if the argument is not present. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the desired argument. <code>NULL</code> pointer if the argument is not present. </dd></dl>
 
 </div>
 </div>
@@ -300,7 +308,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Same as <em>out</em> on success, otherwise returns NULL. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Same as <em>out</em> on success, otherwise returns <code>NULL</code>. </dd></dl>
 
 </div>
 </div>
@@ -339,7 +347,7 @@ The members of this structure must be read as if it were a pointer. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Writes a string to CLI output without the EOF string appended at the end. </p>
+<p>Writes a string to CLI output without the <code>EOF</code> string appended at the end. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>This is the C string to be written. </td></tr>

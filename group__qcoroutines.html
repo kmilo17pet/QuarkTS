@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: Co-Routines</title>
+<title>OS: Co-Routines</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -122,7 +130,7 @@ $(document).ready(function(){initNavTree('group__qcoroutines.html',''); initResi
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">Co-Routines<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel Modules</a></div></div></div>
+  <div class="headertitle"><div class="title">Co-Routines<div class="ingroups"><a class="el" href="group__qmodules.html">Kernel extensions</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -268,7 +276,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>It must always be used together with a matching <a class="el" href="group__qcoroutines.html#ga06034cac3e4ed8d4153d5dd6e356ebbc" title="Ends a Coroutine segment. Only one segment is allowed inside a task. The qCR_End statement is used to...">qCR_End</a> statement. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>The handle of a coroutine (qCR_Handle_t)</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">handle</td><td>The handle of a coroutine (<a class="el" href="group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5">qCR_Handle_t</a>)</td></tr>
   </table>
   </dd>
 </dl>
@@ -374,7 +382,7 @@ Functions</h2></td></tr>
 <a class="el" href="group__qcoroutines.html#ga81001e40716233ccf831e9a22d94ddf2" title="Resets the p variable to the beginning of the Co-Routine.">qCR_PositionReset</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">p</td><td>The variable of type qCR_Position_t where the current position will be saved. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">p</td><td>The variable of type <a class="el" href="group__qcoroutines.html#gacd57e0fda0a5e65cc208419f1c36d7f9" title="A typedef to hold Co-Routine current position or progress.">qCR_Position_t</a> where the current position will be saved. </td></tr>
   </table>
   </dd>
 </dl>
@@ -404,7 +412,7 @@ Functions</h2></td></tr>
 <a class="el" href="group__qcoroutines.html#ga4b91b9b71c066a015ebe8d7096f2aa4d" title="Restores the Co-Routine position saved in p.">qCR_PositionRestore</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">position</td><td>The variable of type qCR_Position_t to reset. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>The variable of type <a class="el" href="group__qcoroutines.html#gacd57e0fda0a5e65cc208419f1c36d7f9" title="A typedef to hold Co-Routine current position or progress.">qCR_Position_t</a> to reset. </td></tr>
   </table>
   </dd>
 </dl>
@@ -434,7 +442,7 @@ Functions</h2></td></tr>
 <a class="el" href="group__qcoroutines.html#ga81001e40716233ccf831e9a22d94ddf2" title="Resets the p variable to the beginning of the Co-Routine.">qCR_PositionReset</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>The variable of type qCR_Position_t that contains the position to be restored. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">p</td><td>The variable of type <a class="el" href="group__qcoroutines.html#gacd57e0fda0a5e65cc208419f1c36d7f9" title="A typedef to hold Co-Routine current position or progress.">qCR_Position_t</a> that contains the position to be restored. </td></tr>
   </table>
   </dd>
 </dl>

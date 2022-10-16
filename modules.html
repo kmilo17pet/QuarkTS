@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>API Reference: Modules</title>
+<title>OS: Modules</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -39,6 +39,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -58,9 +65,10 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">API Reference
+   <div id="projectname">OS
    &#160;<span id="projectnumber">v7</span>
    </div>
+   <div id="projectbrief">Documentation</div>
   </td>
  </tr>
  </tbody>
@@ -131,7 +139,7 @@ $(document).ready(function(){initNavTree('modules.html',''); initResizable(); })
 <tr id="row_0_3_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qclock.html" target="_self">Clock</a></td><td class="desc">Clock and time manipulation interface used by the entire OS </td></tr>
 <tr id="row_0_4_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qcritical.html" target="_self">Critical</a></td><td class="desc">APIs to handle entry/exit actions in critical sections </td></tr>
 <tr id="row_0_5_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qtypes.html" target="_self">Types and macros</a></td><td class="desc">Sets of types having specified widths used to design the entire OS. It also define macros directives to perform specific actions and options for some OS APIs </td></tr>
-<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><a class="el" href="group__qmodules.html" target="_self">Kernel Modules</a></td><td class="desc"></td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><a class="el" href="group__qmodules.html" target="_self">Kernel extensions</a></td><td class="desc"></td></tr>
 <tr id="row_1_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qfsm.html" target="_self">Finite State Machines</a></td><td class="desc">API interface of the Finite State Machine (FSM) module </td></tr>
 <tr id="row_1_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qstimers.html" target="_self">Software-Timers</a></td><td class="desc">API interface for the Software-Timers module </td></tr>
 <tr id="row_1_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__qcoroutines.html" target="_self">Co-Routines</a></td><td class="desc">API interface for the Co-Routine module </td></tr>
