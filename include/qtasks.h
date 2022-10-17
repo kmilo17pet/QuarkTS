@@ -252,7 +252,7 @@
     * @code{.c}
     * qTask_t UserTask;
     *
-    * void UserTask_Callback( qEvent_t e ){
+    * void UserTask_Callback( qEvent_t e ) {
     *
     * }
     * @endcode
@@ -421,7 +421,7 @@
     * @brief Set/Change the Task execution interval
     * @param[in] Task Pointer to the task node.
     * @param[in] tValue Execution interval defined in seconds (floating-point
-    * format). For immediate execution (tValue = #qTimeImmediate).
+    * format). For immediate execution (@a tValue = #qTimeImmediate).
     * @return #qTrue on success, otherwise returns #qFalse.
     */
     qBool_t qTask_Set_Time( qTask_t * const Task,
@@ -431,7 +431,7 @@
     * @brief Set/Change the number of task iterations
     * @param[in] Task Pointer to the task node.
     * @param[in] iValue Number of task executions (Integer value). For
-    * indefinite execution (iValue = #qPeriodic or #qIndefinite). Tasks do not
+    * indefinite execution (@a iValue = #qPeriodic or #qIndefinite). Tasks do not
     * remember the number of iteration set initially. After the iterations are
     * done, internal iteration counter is 0. If you need to perform another set
     * of iterations, you need to set the number of iterations again and resume.
@@ -461,22 +461,22 @@
                                 const qTaskFcn_t cFcn );
 
     /**
-    * @brief Set the task operational state (Enabled or Disabled)
+    * @brief Set the task operational state
     * @see #qTask_Suspend, #qTask_Disable, #qTask_Resume, #qTask_Enable,
     * #qTask_ASleep, #qTask_Awake
     * @param[in] Task Pointer to the task node.
     * @param[in] s Use one of the following values:
     *
-    * #qEnabled : Task will be able to catch all the events. ( @c ENABLE Bit = 1 )
+    * #qEnabled : Task will be able to catch all the events. ( @c ENABLE_Bit=1 )
     *
     * #qDisabled : Time events will be discarded. The task catch asynchronous
-    * events. ( @c ENABLE Bit = 0)
+    * events. ( @c ENABLE_Bit=0)
     *
     * #qAsleep : Put the task into a sleep operability state. The task can't be
-    * triggered by the lower precedence events. ( @c SHUTDOWN Bit = 0)
+    * triggered by the lower precedence events. ( @c SHUTDOWN_Bit=0)
     *
     * #qAwake : Put the task into the previous state before it was put in the
-    * sleep state.( @c SHUTDOWN Bit = 1 )
+    * sleep state.( @c SHUTDOWN_Bit=1 )
     * @return #qTrue on success. Otherwise return #qFalse.
     */
     qBool_t qTask_Set_State( qTask_t * const Task,

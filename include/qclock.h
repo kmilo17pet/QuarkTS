@@ -31,7 +31,7 @@
     #else
         /** @brief The typedef that specified an time quantity, usually expressed in seconds.*/
         typedef qFloat32_t qTime_t;
-        /** @brief To specify a NULL time value.*/
+        /** @brief To specify a @c NULL time value.*/
         #define QTIME_NULL        ( 0.0f )
         /** @brief To specify a non-wait time value.*/
         #define qTimeImmediate    ( (qTime_t)(0.0f) )
@@ -66,8 +66,8 @@
     typedef qUINT32_t qClock_t;
 
     /**
-    * @brief Pointer to Function type qGetTickFcn_t : function to get the
-    * hardware tick.
+    * @brief Pointer to Function type @ref qGetTickFcn_t : A function to get the
+    * hardware tick value.
     *
     * @note User should use bare-metal code to implement this function.
     * Example :
@@ -113,7 +113,7 @@
     * @note This call is mandatory and must be called once inside the
     * dedicated timer interrupt service routine (ISR). Example
     * @code{.c}
-    * void interrupt xPeriodicTimer_ISR( void ){
+    * void interrupt xPeriodicTimer_ISR( void ) {
     *       qClock_SysTick();
     * }
     * @endcode

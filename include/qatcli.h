@@ -271,7 +271,7 @@
     * @brief Possible values for built-in string identifiers
     */
     typedef enum {
-        QATCLI_BUILTIN_STR_IDENTIFIER,                  /**< To select the device identifier string. This string will be printed-out after a call to the ATCLI_DEFAULT_ID_COMMAND*/
+        QATCLI_BUILTIN_STR_IDENTIFIER,                  /**< To select the device identifier string. This string will be printed-out after a call to the @c ATCLI_DEFAULT_ID_COMMAND -> default @c ATID*/
         QATCLI_BUILTIN_STR_OK_RESPONSE,                 /**< To select the output message when a command callback returns ::qATCLI_OK.*/
         QATCLI_BUILTIN_STR_ERROR_RESPONSE,              /**< To select the output message when a command callback returns ::qATCLI_ERROR or any #qATCLI_ERRORCODE(#)*/
         QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE,           /**< To select the output message when input does not match with any of the available commands */
@@ -356,7 +356,7 @@
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] reload If #qTrue, the iterator will set their position at the
     * beginning of the list of subscribed commands.
-    * @return The current iterated command. NULL when no more commands are
+    * @return The current iterated command. @c NULL when no more commands are
     * available.
     */
     qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli,

@@ -150,7 +150,7 @@
     * Example :
     * @code{.c}
     * qBool_t ForEach_ListExample( qList_ForEachHandle_t h ) {
-    *       if( qList_WalkThrough == h->stage ) {
+    *       if ( qList_WalkThrough == h->stage ) {
     *
     *       }
     *       else if ( qList_WalkInit == h->stage ) {

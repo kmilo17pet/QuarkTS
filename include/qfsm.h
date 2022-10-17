@@ -270,7 +270,7 @@
     /**
     * @brief Pointer to a function that represents a signal guard/action
     * @code{.c}
-    * qBool_t signalAction_Callback( qSM_Handler_t h ){
+    * qBool_t signalAction_Callback( qSM_Handler_t h ) {
     *       qBool_t retVal = qFalse
     *       if ( ConditionGuard ) {
     *           performSomeAction();
@@ -487,7 +487,7 @@
 
     /**
     * @brief Install a signal queue to the provided Finite State Machine (FSM).
-    * @note Queue object should be previously initialized by using
+    * @pre Queue object should be previously initialized by using
     * qQueue_Setup()
     * @attention Queue item size == qSM_Signal_t
     * @param[in] m A pointer to the FSM object.
@@ -534,7 +534,7 @@
     * @brief Setup fixed timeouts for the specified state using a lookup-table.
     * @attention This feature its only available if the FSM has a signal-queue
     * installed.
-    * @note The container state-machine must have a timeout-specification
+    * @pre The container state-machine must have a timeout-specification
     * installed.
     * @note The lookup table should be an array of type
     * qSM_TimeoutStateDefinition_t with @a n elements matching { time, options }.
@@ -552,9 +552,9 @@
 
     /**
     * @brief Set the time for the selected built-in timeout inside the target FSM.
-    * @note Requires an installed timeout-specification.
+    * @pre Requires an installed timeout-specification.
     * For this use qStateMachine_InstallTimeoutSpec()
-    * @note Requires an installed signal-queue.
+    * @pre Requires an installed signal-queue.
     * For this use qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.
     * @param[in] xTimeout The index of the requested timeout
@@ -568,9 +568,9 @@
 
     /**
     * @brief Stop the time count for the selected built-in timeout.
-    * @note Requires an installed timeout-specification.
+    * @pre Requires an installed timeout-specification.
     * For this use qStateMachine_InstallTimeoutSpec()
-    * @note Requires an installed signal-queue.
+    * @pre Requires an installed signal-queue.
     * For this use qStateMachine_InstallSignalQueue()
     * @param[in] m A pointer to the FSM object.
     * @param[in] xTimeout The index of the timeout

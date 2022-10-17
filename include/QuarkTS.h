@@ -91,7 +91,8 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qos Operative System
-*  This is the second group
+*  This section contains the documentation related to all the Interfaces and 
+*  intrinsic definitions of the operating system.
 */
 
 /**
@@ -142,7 +143,8 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qmodules Kernel extensions
-*  This is the second group
+*  This section contains the documentation related to all the extensions that 
+*  add additional functionality to the operating system.
 */
 
 /**
@@ -172,6 +174,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qutility Utilities
+*  A collection of utility libraries for the QuarkTS OS
 */
 
 /**

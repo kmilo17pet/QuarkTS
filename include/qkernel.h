@@ -250,7 +250,8 @@
         * state-machine. The task is scheduled to run every @a t seconds in
         * #qPeriodic mode. The event info will be available as a generic pointer
         * inside the qSM_Handler_t::Data field.
-        * @note The State-machine object should be previously configured
+        * @pre The State-machine object should be previously configured with 
+        * qStateMachine_Setup()
         * @see qStateMachine_Setup()
         * @param[in] Task  A pointer to the task node.
         * @param[in] m  A pointer to the Finite State-Machine (FSM) object.
@@ -278,7 +279,7 @@
         * @brief Add a task to the scheduling scheme running an AT Command Line
         * Interface. Task will be scheduled as event-triggered task. The parser
         * address will be stored in the qEvent_t::TaskData storage-Pointer.
-        * @note The AT-CLI object should be previously configured.
+        * @pre The AT-CLI object should be previously configured with qATCLI_Setup().
         * @see qATCLI_Setup()
         * @param[in] Task A pointer to the task node.
         * @param[in] cli A pointer to the AT Command Line Inteface instance.

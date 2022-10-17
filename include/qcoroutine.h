@@ -170,7 +170,7 @@
     do {                                                                    \
         qCR_TimeoutSet( dTime );                                            \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
-        if( !qCR_TimeoutExpired() ) {                                       \
+        if ( !qCR_TimeoutExpired() ) {                                       \
             _qCR_EXIT;                                                      \
         }                                                                   \
     } while( qFalse )                                                       \
@@ -233,7 +233,7 @@
     *
     * Example:
     * @code{.c}
-    * qCR_BeginWithHandle( handle ){
+    * qCR_BeginWithHandle( handle ) {
     *
     * }qCR_End;
     * @endcode
@@ -280,7 +280,7 @@
     * @param[in] bCondition The logical condition to be evaluated
     * @verbatim
      Action sequence : [Save progress]
-                     IF ( condition == False ){
+                     IF ( condition == False ) {
                          [Yield]
                      }
       @endverbatim
