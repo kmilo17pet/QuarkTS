@@ -1,6 +1,8 @@
 /** @mainpage QuarkTS OS
-* An open-source OS for small embedded applications.
 *
+* @image html https://github.com/kmilo17pet/QuarkTS/raw/master/doc/quarktslogo.png
+* 
+* An open-source OS for small embedded applications.
 *
 * <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download the PDF version of the user manual</a>
 *

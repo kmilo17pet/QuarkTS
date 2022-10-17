@@ -1,6 +1,6 @@
 /*! @page q_background Background
 * @tableofcontents
-* 
+*
 * @section q_about About the OS
 * QuarkTS is an open-source operating system that is built on top of a 
 * cooperative quasistatic scheduler. Its simplified kernel implements a 
@@ -47,8 +47,8 @@
 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
 * A PARTICULAR PURPOSE . 
 *
-* For more details, see the MIT License line by line here.
-* <a style="font-weight:bold" href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html">MIT License</a>
+* For more details, see the <a style="font-weight:bold" href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html">MIT License</a> line by line.
+* 
 *
 * @subsection q_hardwarecompatibility Hardware compatibility
 * QuarkTS has no direct hardware dependencies, so it is portable to many 

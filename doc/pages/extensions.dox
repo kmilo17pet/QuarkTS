@@ -5,7 +5,7 @@
 * There are several situations where the application does not need such hard 
 * real-time precision for timing actions and we just need that a section of 
 * code will execute when at least, some amount of time has elapsed. For these 
-* purposes, STimers (Software-Timers) is the right module to use.
+* purposes, STimers (Software-Timers) is the right extension to use.
 *
 * The STimers implementation does not access resources from the interrupt 
 * context, does not consume any significant processing time unless a timer has 
@@ -1017,7 +1017,7 @@
 * @image html https://user-images.githubusercontent.com/11412210/196015888-68556734-dd55-4fcc-b4ef-b797b744b539.png "Coroutines in QuarkTS"
 * 
 * The QuarkTS implementation uses the Duff's device approach, and is heavily
-* inspired by the Knuth method[5], <a style="font-weight:bold" href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html">Simon Tatham's Co-Routines in C</a>
+* inspired by the Knuth method, <a style="font-weight:bold" href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html">Simon Tatham's Co-Routines in C</a>
 * and <a style="font-weight:bold" href="http://dunkels.com/adam/pt/index.html">Adam Dunkels Protothreads</a>
 * . This means that a local-continuation variable is used to preserve the current
 * state of execution at a particular place of the Co-Routine scope but without 
