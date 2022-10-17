@@ -532,7 +532,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to a function that represents a signal guard/action. </p>
-<div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> signalAction_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> signalAction_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">      <a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retVal = <a class="code hl_define" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div>
 <div class="line">      <span class="keywordflow">if</span> ( ConditionGuard ) {</div>
 <div class="line">          performSomeAction();</div>
@@ -827,7 +827,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Install a signal queue to the provided Finite State Machine (FSM). </p>
-<dl class="section note"><dt>Note</dt><dd>Queue object should be previously initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Queue object should be previously initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> </dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>Queue item size == qSM_Signal_t </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1079,9 +1079,8 @@ The signal-queue has the highest precedence. </dd></dl>
 
 <p>Setup fixed timeouts for the specified state using a lookup-table. </p>
 <dl class="section attention"><dt>Attention</dt><dd>This feature its only available if the FSM has a signal-queue installed. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The container state-machine must have a timeout-specification installed. </dd>
-<dd>
-The lookup table should be an array of type <a class="el" href="structq_s_m___timeout_state_definition__t.html" title="This structure should be used to define an item for a timeout-specification table.">qSM_TimeoutStateDefinition_t</a> with <em>n</em> elements matching { time, options }. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The container state-machine must have a timeout-specification installed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The lookup table should be an array of type <a class="el" href="structq_s_m___timeout_state_definition__t.html" title="This structure should be used to define an item for a timeout-specification table.">qSM_TimeoutStateDefinition_t</a> with <em>n</em> elements matching { time, options }. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556" title="Install a signal queue to the provided Finite State Machine (FSM).">qStateMachine_InstallSignalQueue()</a>, <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1306,7 +1305,7 @@ The lookup table should be an array of type <a class="el" href="structq_s_m___ti
 </div><div class="memdoc">
 
 <p>Set the time for the selected built-in timeout inside the target FSM. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed timeout-specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
+<dl class="section pre"><dt>Precondition</dt><dd>Requires an installed timeout-specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
 Requires an installed signal-queue. For this use <a class="el" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556" title="Install a signal queue to the provided Finite State Machine (FSM).">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1348,7 +1347,7 @@ Requires an installed signal-queue. For this use <a class="el" href="group__qfsm
 </div><div class="memdoc">
 
 <p>Stop the time count for the selected built-in timeout. </p>
-<dl class="section note"><dt>Note</dt><dd>Requires an installed timeout-specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
+<dl class="section pre"><dt>Precondition</dt><dd>Requires an installed timeout-specification. For this use <a class="el" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a" title="Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...">qStateMachine_InstallTimeoutSpec()</a> </dd>
 <dd>
 Requires an installed signal-queue. For this use <a class="el" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556" title="Install a signal queue to the provided Finite State Machine (FSM).">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>

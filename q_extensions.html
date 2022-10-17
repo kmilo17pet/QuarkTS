@@ -184,7 +184,7 @@ $(document).ready(function(){initNavTree('q_extensions.html',''); initResizable(
 </div>
 <div class="textblock"><h1><a class="anchor" id="q_stimers"></a>
 STimers</h1>
-<p >There are several situations where the application does not need such hard real-time precision for timing actions and we just need that a section of code will execute when at least, some amount of time has elapsed. For these purposes, STimers (Software-Timers) is the right module to use.</p>
+<p >There are several situations where the application does not need such hard real-time precision for timing actions and we just need that a section of code will execute when at least, some amount of time has elapsed. For these purposes, STimers (Software-Timers) is the right extension to use.</p>
 <p >The STimers implementation does not access resources from the interrupt context, does not consume any significant processing time unless a timer has actually expired, does not add any processing overhead to the sys-tick interrupt, and does not walk any other data structures. The timer service just takes the value of the existing kernel clock source for reference \( t_{sys}\) , allowing timer functionality to be added to an application with minimal impact.</p>
 <div class="image">
 <img src="https://user-images.githubusercontent.com/11412210/196007003-b9fc5317-6b92-4983-961f-2054fc18db8d.png" alt=""/>
@@ -911,7 +911,7 @@ Co-Routines</h1>
 <img src="https://user-images.githubusercontent.com/11412210/196015888-68556734-dd55-4fcc-b4ef-b797b744b539.png" alt=""/>
 <div class="caption">
 Coroutines in QuarkTS</div></div>
-<p >The QuarkTS implementation uses the Duff's device approach, and is heavily inspired by the Knuth method[5], <a href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html" style="font-weight:bold">Simon Tatham's Co-Routines in C</a> and <a href="http://dunkels.com/adam/pt/index.html" style="font-weight:bold">Adam Dunkels Protothreads</a> . This means that a local-continuation variable is used to preserve the current state of execution at a particular place of the Co-Routine scope but without any call history or local variables. This brings benefits to lower RAM usage, but at the cost of some restrictions on how a Co-routine can be used.</p>
+<p >The QuarkTS implementation uses the Duff's device approach, and is heavily inspired by the Knuth method, <a href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html" style="font-weight:bold">Simon Tatham's Co-Routines in C</a> and <a href="http://dunkels.com/adam/pt/index.html" style="font-weight:bold">Adam Dunkels Protothreads</a> . This means that a local-continuation variable is used to preserve the current state of execution at a particular place of the Co-Routine scope but without any call history or local variables. This brings benefits to lower RAM usage, but at the cost of some restrictions on how a Co-routine can be used.</p>
 <p ><b> Limitations and restrictions </b></p>
 <ul>
 <li>The stack of a Co-Routine is not maintained when a yield is performed. This means variables allocated on the stack will loose their values. To overcome this, a variable that must maintain its value across a blocking call must be declared as <code>static</code>.</li>

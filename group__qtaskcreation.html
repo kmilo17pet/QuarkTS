@@ -239,7 +239,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as event-triggered task. The parser address will be stored in the <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a" title="Task arguments defined at the time of its creation. (Storage-Pointer)">qEvent_t::TaskData</a> storage-Pointer. </p>
-<dl class="section note"><dt>Note</dt><dd>The AT-CLI object should be previously configured. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The AT-CLI object should be previously configured with <a class="el" href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756" title="Setup an instance of the AT Command Command Line Interface.">qATCLI_Setup()</a>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756" title="Setup an instance of the AT Command Command Line Interface.">qATCLI_Setup()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -357,7 +357,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run every <em>t</em> seconds in <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> mode. The event info will be available as a generic pointer inside the <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a> field. </p>
-<dl class="section note"><dt>Note</dt><dd>The State-machine object should be previously configured </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The State-machine object should be previously configured with <a class="el" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c" title="Initializes a Finite State Machine (FSM).">qStateMachine_Setup()</a> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c" title="Initializes a Finite State Machine (FSM).">qStateMachine_Setup()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

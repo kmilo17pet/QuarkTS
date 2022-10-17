@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('structq_task__t.html',''); initResizab
 <p >Each task performs its activities via a callback function and each of them is responsible for supporting cooperative multitasking by being “good neighbors”, i.e., running their callback methods quickly in a non-blocking way and releasing control back to the scheduler as soon as possible (returning). Every task node, must be defined using the <a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a> data-type and the callback is defined as a function that returns void and takes a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> data structure as its only parameter (This input argument can be used later to get event information.</p>
 <p >Example : </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> UserTask;</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> UserTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ){</div>
+<div class="line"><span class="keywordtype">void</span> UserTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line"> </div>
 <div class="line">}</div>
 <div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:159</div></div>

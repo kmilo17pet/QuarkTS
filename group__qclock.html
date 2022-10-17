@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('group__qclock.html',''); initResizable
 Macros</h2></td></tr>
 <tr class="memitem:gaae28222a8be0371f9bf947a8c7c0aa1d"><td class="memItemLeft" align="right" valign="top"><a id="gaae28222a8be0371f9bf947a8c7c0aa1d" name="gaae28222a8be0371f9bf947a8c7c0aa1d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>QTIME_NULL</b></td></tr>
-<tr class="memdesc:gaae28222a8be0371f9bf947a8c7c0aa1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">To specify a NULL time value. <br /></td></tr>
+<tr class="memdesc:gaae28222a8be0371f9bf947a8c7c0aa1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">To specify a <code>NULL</code> time value. <br /></td></tr>
 <tr class="separator:gaae28222a8be0371f9bf947a8c7c0aa1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadec796ce357ca94b4d6a2444f3a46939"><td class="memItemLeft" align="right" valign="top"><a id="gadec796ce357ca94b4d6a2444f3a46939" name="gadec796ce357ca94b4d6a2444f3a46939"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>qTimeImmediate</b></td></tr>
@@ -181,7 +181,7 @@ typedef <a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317e
 <tr class="memdesc:ga166565f14c43c0fb055b6f1f73f8b910"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 32-bit unsigned integer to hold ticks count. Epochs counter. <br /></td></tr>
 <tr class="separator:ga166565f14c43c0fb055b6f1f73f8b910"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab5aa8bbf739e2c7b181761ff93d20951"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a>) (void)</td></tr>
-<tr class="memdesc:gab5aa8bbf739e2c7b181761ff93d20951"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to Function type qGetTickFcn_t : function to get the hardware tick.  <a href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">More...</a><br /></td></tr>
+<tr class="memdesc:gab5aa8bbf739e2c7b181761ff93d20951"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to Function type <a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a> : A function to get the hardware tick value.  <a href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">More...</a><br /></td></tr>
 <tr class="separator:gab5aa8bbf739e2c7b181761ff93d20951"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -265,7 +265,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Pointer to Function type qGetTickFcn_t : function to get the hardware tick. </p>
+<p>Pointer to Function type <a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a> : A function to get the hardware tick value. </p>
 <dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> OSInterface_GetTick( <span class="keywordtype">void</span> ) {</div>
 <div class="line">      <span class="keywordflow">return</span> HAL_GetTick();</div>
 <div class="line">}</div>
@@ -401,7 +401,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Feed the system tick. </p>
-<dl class="section note"><dt>Note</dt><dd>This call is mandatory and must be called once inside the dedicated timer interrupt service routine (ISR). Example <div class="fragment"><div class="line"><span class="keywordtype">void</span> interrupt xPeriodicTimer_ISR( <span class="keywordtype">void</span> ){</div>
+<dl class="section note"><dt>Note</dt><dd>This call is mandatory and must be called once inside the dedicated timer interrupt service routine (ISR). Example <div class="fragment"><div class="line"><span class="keywordtype">void</span> interrupt xPeriodicTimer_ISR( <span class="keywordtype">void</span> ) {</div>
 <div class="line">      <a class="code hl_function" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition:</b> qclock.c:90</div></div>

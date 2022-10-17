@@ -260,7 +260,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga8fa6e27f8abd9af718ad722c3a36012a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the task callback function.  <a href="group__qtaskmanip.html#ga8fa6e27f8abd9af718ad722c3a36012a">More...</a><br /></td></tr>
 <tr class="separator:ga8fa6e27f8abd9af718ad722c3a36012a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5d9970617573cd8c14ed9a905d9c6a3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a">qTask_Set_State</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, const <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> s)</td></tr>
-<tr class="memdesc:ga5d9970617573cd8c14ed9a905d9c6a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task operational state (Enabled or Disabled)  <a href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a">More...</a><br /></td></tr>
+<tr class="memdesc:ga5d9970617573cd8c14ed9a905d9c6a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task operational state.  <a href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a">More...</a><br /></td></tr>
 <tr class="separator:ga5d9970617573cd8c14ed9a905d9c6a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf2a7c1e32a2b2407447bac214bae1774"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774">qTask_Set_Data</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, void *arg)</td></tr>
 <tr class="memdesc:gaf2a7c1e32a2b2407447bac214bae1774"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the task data.  <a href="group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774">More...</a><br /></td></tr>
@@ -302,7 +302,7 @@ Functions</h2></td></tr>
 
 <p>Put the task into a sleep state. The task can't be triggered by the lower precedence events. </p>
 <dl class="section note"><dt>Note</dt><dd>Only the higher precedence events (Queued Notifications) can wake up the task. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -330,7 +330,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a normal operation state. Here the task will be able to catch any kind of events. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -358,7 +358,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a disabled state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -386,7 +386,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into an enabled state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -414,7 +414,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieve the enabled/disabled state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -442,7 +442,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into an enabled state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -470,7 +470,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Put the task into a disabled state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
@@ -884,7 +884,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">iValue</td><td>Number of task executions (Integer value). For indefinite execution (iValue = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. If you need to perform another set of iterations, you need to set the number of iterations again and resume. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">iValue</td><td>Number of task executions (Integer value). For indefinite execution (<em>iValue</em> = <a class="el" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301" title="A directive indicating that the task will run every time its timeout has expired.">qPeriodic</a> or <a class="el" href="group__qtaskcreation.html#ga773358d89dd96b94fd6dd1e17fc60d23" title="Same as qPeriodic. A directive indicating that the task will run every time its timeout has expired.">qIndefinite</a>). Tasks do not remember the number of iteration set initially. After the iterations are done, internal iteration counter is 0. If you need to perform another set of iterations, you need to set the number of iterations again and resume. </td></tr>
   </table>
   </dd>
 </dl>
@@ -995,7 +995,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the task operational state (Enabled or Disabled) </p>
+<p>Set the task operational state. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6" title="Put the task into a disabled state.">qTask_Suspend</a>, <a class="el" href="group__qtaskmanip.html#gae6a5d46741694d47d7a521a6360b960b" title="Put the task into a disabled state.">qTask_Disable</a>, <a class="el" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe" title="Put the task into an enabled state.">qTask_Resume</a>, <a class="el" href="group__qtaskmanip.html#ga3e627c1487e57b485f9d1b7252c80dc3" title="Put the task into an enabled state.">qTask_Enable</a>, <a class="el" href="group__qtaskmanip.html#gac5daf7435704726af13127c87bb2f43c" title="Put the task into a sleep state. The task can&#39;t be triggered by the lower precedence events.">qTask_ASleep</a>, <a class="el" href="group__qtaskmanip.html#ga2bd9c2e2584a627a824099eaaa3062b6" title="Put the task into a normal operation state. Here the task will be able to catch any kind of events.">qTask_Awake</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1004,10 +1004,10 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p><a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a> : Task will be able to catch all the events. ( <code>ENABLE</code> Bit = 1 )</p>
-<p ><a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a> : Time events will be discarded. The task catch asynchronous events. ( <code>ENABLE</code> Bit = 0)</p>
-<p ><a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> : Put the task into a sleep operability state. The task can't be triggered by the lower precedence events. ( <code>SHUTDOWN</code> Bit = 0)</p>
-<p ><a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a> : Put the task into the previous state before it was put in the sleep state.( <code>SHUTDOWN</code> Bit = 1 ) </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success. Otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<p><a class="el" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095" title="A state value that enables a task.">qEnabled</a> : Task will be able to catch all the events. ( <code>ENABLE_Bit=1</code> )</p>
+<p ><a class="el" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037" title="A state value that disables a task.">qDisabled</a> : Time events will be discarded. The task catch asynchronous events. ( <code>ENABLE_Bit=0</code>)</p>
+<p ><a class="el" href="group__qtypes.html#ga5d9893f747787aa03a8fad79f2fb4797" title="A state value that put a task in sleep mode.">qAsleep</a> : Put the task into a sleep operability state. The task can't be triggered by the lower precedence events. ( <code>SHUTDOWN_Bit=0</code>)</p>
+<p ><a class="el" href="group__qtypes.html#gadb2d0f8a8cafab2a1fbd2b05c89820f2" title="A state value that awakes a task.">qAwake</a> : Put the task into the previous state before it was put in the sleep state.( <code>SHUTDOWN_Bit=1</code> ) </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success. Otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>
@@ -1041,7 +1041,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">Task</td><td>Pointer to the task node. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (tValue = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>Execution interval defined in seconds (floating-point format). For immediate execution (<em>tValue</em> = <a class="el" href="group__qclock.html#gadec796ce357ca94b4d6a2444f3a46939" title="To specify a non-wait time value.">qTimeImmediate</a>). </td></tr>
   </table>
   </dd>
 </dl>

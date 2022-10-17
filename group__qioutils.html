@@ -330,12 +330,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to function that perform a single character I/O operation. </p>
-<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example 1: Input operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ){</div>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example 1: Input operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ) {</div>
 <div class="line">      (void)sp;</div>
 <div class="line">      (void)in;</div>
 <div class="line">      <span class="keywordflow">return</span> HAL_UARTReceiveByte( );</div>
 <div class="line">}</div>
-</div><!-- fragment --> Example 2: Ouput operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ){</div>
+</div><!-- fragment --> Example 2: Ouput operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ) {</div>
 <div class="line">      (void)sp;</div>
 <div class="line">      HAL_UARTPutByte( in );</div>
 <div class="line">      <span class="keywordflow">return</span> 0u;</div>
@@ -364,7 +364,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Pointer to function that write-out a single character. </p>
-<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_PutChar( <span class="keywordtype">void</span> *sp, <span class="keyword">const</span> <span class="keywordtype">char</span> c ){</div>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_PutChar( <span class="keywordtype">void</span> *sp, <span class="keyword">const</span> <span class="keywordtype">char</span> c ) {</div>
 <div class="line">      (void)sp;</div>
 <div class="line">      HAL_UARTWriteByte( c );</div>
 <div class="line">}</div>

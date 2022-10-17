@@ -172,7 +172,7 @@ About the OS</h1>
 <h2><a class="anchor" id="q_license"></a>
 License</h2>
 <p >QuarkTS is licensed under the MIT License. You may copy, distribute and modify the software without any restriction, including without limitation the rights to to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the OS, and to permit persons to whom the OS is furnished to do so. This OS is provided as is in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE .</p>
-<p >For more details, see the MIT License line by line here. <a href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html" style="font-weight:bold">MIT License</a></p>
+<p >For more details, see the <a href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html" style="font-weight:bold">MIT License</a> line by line.</p>
 <h2><a class="anchor" id="q_hardwarecompatibility"></a>
 Hardware compatibility</h2>
 <p >QuarkTS has no direct hardware dependencies, so it is portable to many platforms and C compilers.</p>
@@ -395,7 +395,7 @@ Additional operational states</h3>
 <li><code>qDisabled</code> : In this state the time events will be discarded. This operational state is available when the <code>ENABLE</code> bit is cleared.</li>
 </ul>
 </li>
-<li><code>qAsleep</code> : Task operability is put into a deep doze mode, so the task can not be triggered by the lower precedence events. This operational state is available when the <code>SHUTDOWN</code> bit is cleared. The task can exit from this operational state when it receives a high precedence event (a queued notification) or using the <a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state (Enabled or Disabled)">qTask_Set_State()</a> API.</li>
+<li><code>qAsleep</code> : Task operability is put into a deep doze mode, so the task can not be triggered by the lower precedence events. This operational state is available when the <code>SHUTDOWN</code> bit is cleared. The task can exit from this operational state when it receives a high precedence event (a queued notification) or using the <a class="el" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a" title="Set the task operational state.">qTask_Set_State()</a> API.</li>
 </ul>
 <p >The figure bellow shows a better representation of how the event flow can be affected by this operational states.</p>
 <div class="image">
