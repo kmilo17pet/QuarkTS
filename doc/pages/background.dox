@@ -225,7 +225,21 @@
 * information also includes link-pointers that allows it to be part of one of 
 * the lists available in the Kernel Control Block (KCB).
 * 
-* \image html https://user-images.githubusercontent.com/11412210/195989613-5b4f8970-2645-4324-a11b-70c9ce52061b.png "Task node illustration"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>tasknode</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:11:02.654Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;QycpXy9CV1RyLdRAMmhi\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;Wp6tzC3tOU-Ykbh8yUCR\&quot; name=\&quot;Página-1\&quot;&gt;7VtRb5s6FP41eZm0CHBoyGOTNrfSuulqne62Rw/c4NXBEThNcn/9tcEOYENC2gTQbtpKxQfbsc/3HfvwmQzAbLn9K4ar8DMNEBk4VrAdgLuB49jAdvk/YdlJi+14mWUR40DacsMT/hdJoyWtaxygpFSRUUoYXpWNPo0i5LOSDcYx3ZSrPVNS/tQVXCDD8ORDYlq/44CFaho3k/zGA8KLUH6054yzG0uoKsuZJCEM6KZgAvcDMIspZdnVcjtDRHhP+SVrN6+5ux9YjCLWpMEo+riZh8t/vpCnr3SC0G/iPXyUvbxCspYTloNlO+WBmK6jAIlOrAGYbkLM0NMK+uLuhoPObSFbEl6y+eUzJmRGCY3TtsCyxvP5XNhpxAr27IfbExbTF1TZgvf0JEcRQuaHspc5XGIi2PSAyCti2If7bhRA3LVTOS8UM7StdZi9h4ETGNElYvGOV1ENJhI5xV0HZOVNkQiyTljggEIcSu4t9l3n8PALidAJaDkGWhGPOG4hOHpJ3ofcYSSUPaIRMuH0LPEr7Qo0u3vARl0DBgzA+MpCfkH/5QqWDtZN12CNDLBwxFDMy1ewdLC8rsFyTbA4VpBhGl0XQh0ux+oarhsDLspCFItsDiYvIkGEDA6Hwyt0OnSdJx3ja4pYixYAx1NEr02wvDODdXJEdej7imyvyve2dSnnT66RUouW17NAUUtoARsU8Cd/WaQxC+mCRpDc59ZpGb28ziOlK4nZb8TYTsoYcM1oGVG0xexH4fqn7Epc322LhZ0qRHy2P4qFn8VC3igtqVYHmFCHur+OX9Op2QcoIFx0mADco3Qd++iQ65WOA+MFYgcqOtWMihHhed5reSDnJ8i5pZEeL6V6cHa+ktqm0mGGaxTcCoGPl3wCkwT7ZX+XwblGXq4fHQ08r5otBTq4FXRQtsbxKT/hb8qfswv7+kjLgMeg3EU2TdmqKHjqHdk1tFYdZX4wOkoZu5/2O0hsqj/vJbGipF2i5NBxj7BSsd8qsl82qw2A7qjcFfVqNalTqWffHOno0tQztazLUK/Hq+HRVQ50usrpTy9vpRrQqea2TDVTiXtfnlSRDb2BRm3kSeOun2FMVW37iBPWsv/7J6JpOLld49RAQjtPItA0D2ieBfc6n500XOmzQOlqqXfGZTpO3rrSO+V+GqaznFZwV6i2EhWSE5IgmcfWDcuxKlfFPGCyAZx302mgc176+bDXkdFtGq0R3gZnSqMbZtGnMt6ZVAZoLeFHHRC+gbZcILzctw/sH8EcixH8idwfd8n9kZZ7OP2mPjiR+l7lqC5KfbXrXdf6Pqp1Iy0p2b8ZcirhR67WUctqndNA738bzawz0Gz/8qjVwVFNZxqJllkCnRKNudUxtZxWqDU8LOfWnGccF4+1Y+jARV4w6iVbpR5y9Hlw8iey+lIpgntoyz8aalYbGYJ50LL9lr5WpgUZQ1tmEFeduJqyFyR4EfEiQc+imZCk+N5ObqV5iYMgfS0gWUEfR4vHtNrdKLd8leQRJsqbP5M0KkLeEPEeptL1fGzulP9x181EFLt8rDNetvMy/xPVYzajER8+xGlsIJiwDUpYuj4wyOCvdKZWMQSV+lan0lUmL+XV5iIanaMnDiosjqh0Sjc//8v15pnJh0+z6QDccuMnFEeIDGbO4JZ/vsVR4D4RXU4JFS9z85VHHDeC6YdvqknGQLPqlZN31gFOlqnXrm6sP94AUzjeq13tcPL/e7hS4ftWRXvHPFwRq8E1fPu7pdiWvqVcakfhxfyLe1kak3//Edz/Bw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Task node illustration</em>
+* </center>
 *
 * Each task performs its activities via a callback function and each of them is 
 * responsible for supporting cooperative multitasking by being “good neighbors”,
@@ -368,7 +382,21 @@
 *
 * These global states are described below:
 *
-* \image html https://user-images.githubusercontent.com/11412210/195989701-2b393456-db3c-42e8-b104-b99ce9f80f94.png "Task global states"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>globalstates</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:19:49.977Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;oSuMqHCIxHJLwsXvollB\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;yUrP7yZJVmdYKEqsLdOd\&quot; name=\&quot;Página-1\&quot;&gt;7Vtdb+MoFP01eWxljJ3Yj5O03VlpVqqa3Z2ZfRlRm8ZosEkx+dpfv2DjT5wmzThJs0pbqeYaMNx7OFyOkwGcxOvfOJpHf7AQ04FthesBvBvYNoDAlf+UZaMtwPZyy4yTUNsqw5T8i7XR0tYFCXHaqCgYo4LMm8aAJQkORMOGOGerZrUXRptPnaMZNgzTAFHT+pWEIiqmMfSrG58xmUX60Z49ym/EqKisZ5JGKGSrmgneD+CEMybyq3g9wVR5r/BL3u5hy91yYBwnYp8Gzp//IHbz+9pBkx+vfz/N/uI38Y3uZYnoQk94YA+p7G/8LC9m6qIwvDD5HOVoynhWdfi6YHkF6Fnqt27K274+LZKEJLOiDzm6vJtm19Jce1zmLLEpIsDZIgmxmoQlb68iIvB0jgJ1dyVBJ22RiKksAXmZCs5+4kk5RmhZo4eHBzV8QmlhT1iC9YweUEyoAudnTJdYkACVvRTxtstRLTEXeL3V/6CMqlwPmMVY8I2sUjSwNBD0UoA2zMurCle+rhLVEAW1DWkkz8qeq2DLCx3vd8Te7oh9r773s59f9n2I0igbA+gnEF4zDg6wjThA2BEI4IIjRQIakbgj6RyJIMLciImcuDC8XXjVdDSiZJbIIsUvqpnynHQ0/aTNMQlD1fNYPi+QK/VLVu3OqSxP2gPKxGTzF5qxWCQbYtnDeM5IIjKPuGP5Jx03sW7dgSvHOpFlUJXln6rOxYQlcviIZPHCKBUrnKrBcSaQQM/ZTBXgSsoEGjE1cGnKeQNJTfCauFINp9qvoA9cOQ1c2Z65vr1Trm9n9/rGSfhJbZKyFFCUpiRoLukuF3aRaxkoVS1Y8GW5Xk234zUR33RVdf29dn23rheUI21Xlx4xJ9IvmJeDQVwUg9dYz+eHQ2NLb4VQ+oAteIDf2hi3xLoWTLcjmIWNY4oEWTbH0RVh/YRHtYgqKJWgKPYK6DW7yMevW9U3/VZHwN/RkfTiDAujowxw5bQPx6C7G4MFI31Bz5g+spQIwhQzPTMhWNxBWYK1N54IzVVn8XqmstDbZySBfEvRBnMc/uBZWjjOclKgkMMWgpJE4rjIGC0D6Rk15LkoGL6NfJNWahwsa04m925WsweGsUd+M5rApJgyzajDcngsjhka8X19wijcXHetS9m1bH+4My096bY1ulJGj5Thu81kd3RuxvBMxpgu0jnOXHlljQthjfZh1vHMQ5Q3OiFr+FfW6DPR8ECLNszwnpY2Cj2wzhtfkQyhEpeurHEZrGH78GOxBujSP39FA2uv520hec86p4qvxij4OcuGUmsEoe+X4mYRqJRRNec2PZQP6COO7eNp5znEjKN7tDjuoWXWtA698C9D6Bj0J2roXDA/8+9cFmcTP9qn3EsVP4Cp6/7v2SXboPK86sa3+qEbaLeykQ7F/rR007u0upMrHLdOFv2SVJtxZFj45lu9kA3n1i2KFXtlpWJEPTKVvy9TwfMyVQOX5Uvh9xJVyRTbOjo2Ue0h0x6GZ1DH86072Lb79QfoHkF4XnBBuynMOdaB6Gp3BEfuadFlisR9sWWJqO81rF0KuvakuNFZQQhbIAQHghA4LSESwtOC0JSV000qcDxQH5uRk4SZZIOWiNDsfN2TqBBIXKiN9SordMsKZVmntT19xgO0dO+zv4wHpu6NlzhbITX4BSwJc1mysr0sqMJXf+r4FZJngSR02qeY4V6QdNxjQdLUzBOmABljLGoAFJFkQ6sGzSsMLxiGwG+qKw4cnReGtqns95Ue7iW8ATvLIo93nO4xZ9z3WOx9qJzRsQ88uLQ6gt5+BxcJFbSpVdN0sP0Y77ReZuqX5BWq8x57TUgLv364j+d1iz9vSD9wVClDh2N/J6b9c2K6LSW7oHV8+eiYdu1TYNo2MD0NIhwu6PVzzJfzlrZ8TVJAB5757GT3/R7lQr+p0HWI7f6mAniD4LaEQhar7yLlhFB9pQve/wc=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Task global states</em>
+* </center>
 *
 * - @c qWaiting : The task cannot run because the conditions for running are 
 * not in place.
@@ -387,7 +415,21 @@
 * priority levels or ready lists: 0 (lowest priority), 1, 2, 3, and 4 (highest 
 * priority).
 *
-* \image html https://user-images.githubusercontent.com/11412210/195989816-e03a419e-795f-4afc-8152-0ff45cef87c4.png "OS lists"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>oslist</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:21:59.751Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;qu1SGjoOBtXo91H1rG-O\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;a3gmjD7FvNUACDKGX7UC\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>OS lists</em>
+* </center>
 *
 * Except for the idle task, a task exists in one of these states. As the 
 * real-time embedded system runs, each task moves from one state to another 
@@ -422,8 +464,21 @@
 * way, if events of different nature converge to a single task, these will be 
 * served according to the following flowchart:
 *
-* \image html https://user-images.githubusercontent.com/11412210/195989877-d4b36a38-6a91-4615-967a-7b78898b96ec.png "Event precedence"
-*
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>evenprecedence</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.45,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:23:50.297Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;-HzyQrBmOm1BBi3Kbblc\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;rtI5oX9UaKnuX4kORaYA\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Event precedence</em>
+* </center>
 *
 * @subsubsection q_os_operational_states Additional operational states
 * Each task has independent operating states from those globally controlled by 
@@ -447,7 +502,21 @@
 * The figure bellow shows a better representation of how the event flow can be 
 * affected by this operational states.
 *
-* @image html https://user-images.githubusercontent.com/11412210/195989955-464a3eaf-c19f-4f27-bf83-21953358b3c2.png "Event flow according operational states"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>operationalstates</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:150%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.45,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:25:47.962Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;9dMBppV9Mj4qN3SqXlf-\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;FMHORikkxHPTSQ5eLvpY\&quot; name=\&quot;Página-1\&quot;&gt;7VrbcqM4EP0aP8bFHfsxdpLNQ+ZS69nKzKMMslGNQA7It/n6bYEAgyDGjokrUyGpMmokIfqcPpIaBuY03P0To1XwhfmYDgzN3w3Mu4Fh6KZuw4+w7KVFN0aZZRkTX9pKw4z8wdKoSeua+DipVOSMUU5WVaPHogh7vGJDccy21WoLRqt3XaElVgwzD1HV+kx8HuSP4YzLC4+YLAN565HhZhdClFeWT5IEyGfbA5N5PzCnMWM8Owt3U0yF93K/ZO0eWq4WA4txxLs0eJruX6I/X54Z5+bE+7EO1t+8G9nLBtG1fODbZB95Qcwitk4GhkOh78k8FuPne+kU52UtBj1ZsIjfJClkt1BB11aA+6S8DmdL+fvZzYfrpt1iVO5hxGwd+ViwTIfL24BwPFshT1zdgiqALeAhlZcXhNIpoyyGcsQiqDRJeMx+49w4MMyRJv7ksNvsMzkAXZYfUEioUJlHTDeYEw8VXeeBa+RNM5XRteJpNjjmeNcaWHoRriB0mIWYx3uoIhtYIxnhUuPMPOK3h4IhbcGBVui61AokRWpZ9F3GMZzIUD4hrA0lrHMcxfNfhiK54WWN14C+NMNw5+3ciRgnC4CGExYlB02yUb0XvzTNfXh46Mgv7Wx+jS5Er3GNXpYxtBWCjRv4Zdh5xYsTzFQIxlHy+xXotOPQvYKTCuqJkHRF+cLS4OZNJHaWpSvIWU4DclpPuFkNwvAWzA6RAd9Op/d2U2Rlx1GMczQSRsVTnAJyH2CZ3cDS+wLLblXxeScJN1oknJOwTbD/EunVL0SJuvZalnN97XUUWjyxLRYLv1WMPezjCAAyNLyBh0wUSMEZXEEmF1UVQUTJMoIixQvRTHgT/E9vpTkkvk9TpIEWJFo+pdXurNLyr/SJMDFovqDpJiiAhhh6mKwYEcOEsdkT+AdXTjVwnQ1jnUJZL8vwL6rHwJsIho9IiiFGCd/iRAwuZhxxNC+4U+y49COEayRYVQffZyXp2lW6uaMGuulG01py1BPb3AvPGIokjNPjzbO8j5KgUKqLYFFbdrmOioTZhITRV+CPjkMBlF+J03C3FAmZIabY47GIWHnKbkLsBShKTXzLntF+tiXcC0SsJ6sshbIgO+HKCabZtRnEFW6hfbvE9zJJO/meKQ8R21JgMd08aiq4mD3BMv6ExXCcmnJZ42vDki/LXsMFR/6tSBJCyaMoSYhXFaumOaDRp/lMI6p563hTKFGbt7Gv5B2P+vrAl3aD8OS2GFPYYG+q3Te5V97hu5iBSyjtWjrDcmrr24StYw/LVocJx1pHjnGkI47iJeZKRynaxWO/gQBqclOdugIWztdJh8XtlePLtoa1CLO1prVB04TU1/5Eb0ozvSnCattJ38Yj37pY5OEd4T/lVXH+SzQDJ2alu53sJS3sZeHDRauu1TcenePVqXVld4tXwBftD6rJFX3rkBVd0LXTxlV90QEn2QguKx5qhutz9ujAR2fstMnUqXx06zyxa6Ppe/7okCz76PIGpIn3Pw8Lv/IeRKFslJZOFUVwVYr1K06WLs2gfKWedVWRraeBjPNF1j1vUXSyyJq17at9RGTr4zLfQ2TVDOf919vJ0/1AhD4IiZmuteaEK4F3ZhrLA4Li+DOR1ZLIGve0SXdk+TCTbqrhavS2F1RzprPH/37cfXv++smzD8yzfEVQ8ExNBrkN04Lh9MWzDtnSgyWDJE0lddm+eCjd5zatGQqAyjl96OjFVC7m9RttqGujI5N7WvqOYwIuERQ+ccY/OpNnon+19akxqm+kHePMqdxSunJrXfW9Qu2QEf6r6XY1FrnO0LTH5VGlge2CK7Ti0M/k11gf6qZZXy4Obc2s3/i9+KamuhMSrqh43dj4ac8bP0dLPy1Ke0D8Yl8jpu9FocKCoqX6evTDvvG+1CvI+tdGefnI+27r9CQjFMuvXzOKlh8Rm/f/Aw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Event flow according operational states</em>
+* </center>
 *
 * @remark Queued notifications are the only event that can wake up sleeping tasks
 * @note The @c qAsleep operational state overrides the @c qEnabled and 

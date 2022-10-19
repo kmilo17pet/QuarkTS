@@ -54,7 +54,21 @@
 * considered a soft real-time scheduler, however, it cannot meet a deadline
 * deterministically like a hard real-time OS.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004475-5994a065-d4a3-4c88-93f3-9106122daea6.png "Inherit time lag"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>timeelapsed</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.45,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:35:18.615Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;EeRctC5N0PFVppZPymKI\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;oOqhLhwujFYqv80jWMrG\&quot; name=\&quot;Página-1\&quot;&gt;7Vtdk6I4FP01Vs0+jAUJCD6OdjuzVTtbU9sPO7NvaUgr1UisEFvdX783GAQSFHT9aLvQrmpzQy7knpObyxF7eDxff+VkMfvOQhr3kBWue/ihh5CNbRf+SctGWWzkby1THoXKVhieon+pMlrKuoxCmlYOFIzFIlpUjQFLEhqIio1wzlbVw15YXD3rgkypYXgKSGxa/45CMcunMRgWHd9oNJ2pU/vI23bMSX6wmkk6IyFblUz4sYfHnDGx/TRfj2kso5fHZTtusqd3d2GcJqLNgAfy++L75B80HK2p+9NZjuif6Wfl5Y3ESzVhdbFik0eAz9j8eQlhHK1mkaBPCxLInhUADraZmMfQsuHjC0uEAhDQw6NUcPZKxyxmPPOEfUu+dz15PJEcG8Vx6cjHgXyDXV0e5YKu987b3kUTeEjZnAq+gUPyAUhxUFEQYwXIqsAzx2hWQjK3EcWg6c5zEWT4oOJ8RMxRc8xpEn6R5IVWEJM0jYJqqDlbJiGVJ6kNtGV5k8lE9uSck4cFS/6WjbFrIdheBA2N9dAY6FIg3ZpA5jZOYyKit6r7uuiqM/xgEZx4h6Ovwzjse7ZVvJyqw5QteUCVj/Ky0Nya9DjsVxA+pcLwmzFhF5PTyYGPIkfCEjCOQpLOdsiWaCLtP4gQlCeZBVm4FvoqnUrr2IMmoM83P2Vf382bv9QJssbDWg3ctjb7WLlb/m2ZBqk+C3ZT/roVI21cpY7rWKdx0PErfpBnXZVzTpeQToO/CptjnQi/PTQc9UsJyEJXZYP7PtlQyXHvnhraitY3FTQ4jSmuvlnpGefC3Bg0c+Puy0VtMeLhjctFz4i5iOb0MxB0kdKeZBLO4kffqAK9DAcEQhjBVWVDOYrKROJoKmuFAHxRsI9kLCO4HfqiOuZRGErfoxSAjZLpH/RFBsApLH+pmEgTg+EvcbbEZzCQgofRQpIzC5I7gj8I21hWFi5c7RjadtGGP3k4F2OWwARIlCFISSpWNBVZnhFEkOdsrlY5n+T8qmOTtE/IPIolwN9o/EblBPdkrQrpCsL6Z+Kab/e1BT0w2ebiGrYN84Fn55v/PvP/e0/5yNI38fOkfMPvlVP+0KBDTKZm1q8g3pT5q9l7PH50MzpoK3b7Okgg6elJXUXKYjmR/eu7cUVnTeXNOsPy3gvdrbaSXFQr7yUkfQULZPj4mQSv/w/Yw0Dpu89xOO1L5QVgFTyH58nQCDVD6F0VQlOxA0g4ZC6WSBwBLrlxF2VBSAMOWybtKoN7qgygNNCr0HzDLzFv4F21MrBN5VKlD1mRljj3aUF5xMLfOs7dE+dq9Iwazl25GrWPE0S7cjRPILqmNDhRnMKu4eiG4pTdQqu8dwXCiLh767LRlAQ7CeKDJH3s6BKEg9pJEPhidDNVxq7E/YDM84w0V1NueFcucU21tSs3WpQbeKCB6R2sEloXH5pbF0pS5A+LlyaqXbr6MLXRTgxru9xNKG9c1ZjKZieGHYbQb4bwqmIYMvXMLlu3yNaOdofh6gi1/j7aNhzd8OYQmdpop099nILRlDRsI/3Uq1OXSj+dHvqR+bY3S97qxhh1D4fefu/Us9DJD302KrSX3i2Pe+yzY9NVKrGTHyFuKukuzSZTI04DYMoSqARDk0hUBLuYbLrN8J42Q9+q0As7bh+1/HLQ6XvHy3XQLH4atSVp8Qsz/Pgf&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Inherent time lag</em>
+* </center>
 *
 * - The most significant delay times are produced inside the callbacks. As 
 * mentioned before, use short efficient callback methods written for cooperative
@@ -62,7 +76,21 @@
 * - If two tasks have the same time-interval, the scheduler executes first, the
 * task with the highest priority value (see figure below). 
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004529-9aa2bc56-c7ff-4aa1-974f-26b77b353fee.png "Priority scheduling example with three (3) tasks attached triggered by timeelapsed events"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>prioschedexample</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.45,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:54:32.313Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;sqcTudeh-RC4iZqWvrwE\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;lSolJ4cWtxMTfHfqADTA\&quot; name=\&quot;Página-1\&quot;&gt;7Zxtb6s2FIB/TaTtwyK/QAgfb3KbddruNO1Wuvfb5IIbWAmOiNu099fPBhNeTGlhMU0lt5Uaju3j4PP42D4Yz/B69/RrRvbRFxbSZIZA+DTDn2cIQQxd8U9KngsJBrAQbLM4VJkqwdf4B1VCoKQPcUgPjYycsYTH+6YwYGlKA96QkSxjx2a2O5Y0a92TLdUEXwOS6NJvccgjJYULv0q4pvE2UlUvkVck7EiZWd3JISIhO9ZE+GqG1xljvPi0e1rTRDZe2S5Fuc0LqacvltGUv6UA+s1Z/u7Dfz9/D27u2Zd//ry+/faL0vJIkgd1w+rL8ueyBWgafpINKa5SlgrhKuK7RFxB8TFjD2lIZQ1AXB14xu7pmiUsy8viJZC/MqW8eXkRPGSPeRl4KlO2rWiVlahwEyeJylx8HxpqZqruG55aU2BI2Y7y7FlkOVb2cpUNopqlSllGE8Ljx6Z6orDZntSdaviLxaJiBErE0XLuueD0oxQo3H3ozz1YpeKm+gN7yAKqNNZt164Ev15JUzMn2ZZyTbP4UGujSpSzMoAbpHGTCPO20eH0iWtYKIjuhIlbIpLE21RcBsKyVMhXjzTjseiLn1TCLg5DqXt12JMgTrd/0DtpTKeS/K3sK0VMFL9LcuoiUZAKDau9bJC8idyV+BMIrMHcnbni267FNayuxZ/MnvE1S8UNkDinjZIDP9IDz9HnhJPb/F4biEuq71jKu/qBlG/ILk6k6a5p8kjlDb7QkeqdQhZU3hFW3UI2EH0a2jHKAsARUDVIgsBVglrnEYC7evcp3VpXT2nQNhQtrKEViVotWx+MLdByUeC9uXI0rvZZzLKYP5+klrFJGJMVRKLlfwgZKcf5PINqengOAiGcN52b7+oMQk8n0DdFoKsReJPPZ+OdQA/kEnCDTxIL4wQwLs/k7xyvPZb6vqfh5i3mC6QTJ+ZvriHmFjpzsCRMXop0nDv9n2RF+GeJILIIfkgE0Ry1p3NId3lex1oIm3J5no6fBWvSydy5x1UM/HmbMk+nzIGTTu6WGmcaY7U4xm3CgvubKE7NBzMOYiHOu+rNE1ScAzaiHvADRD2QKygALwUkZMCjqfE8gQ5dr+Ewh2+xmhYr2I9V23+8GSsHzMEAvYaxKhfDlqupuPLNcCUGtIvialg433L1f7nCnhmuMLgsrvRwv+XKJFeO2z8NGs2V4BUN0GuaKz3Wb7kyyZWL/UF+5a1cOa8sB6bmSo/1W67MjoNLI8tB5HqXtByEegTfcmXUXwHYO16N5Uo08iBeTXOlR+n7uFJR0JAcohMSNb6adOjE1SKEXi+AH4GOPu/gjaSjX6+P3Wnh0GPofXAECTkc4sC8y7l0OiBqjR1nw8PpH5Taek3zMSz2bZ1HOWXtX2KNpaNf7+TOY1gE28JRzWeh51c/2hMvOI6OXPGyosNp0bGYlI5yWWbpGEQHes11jISjX+/kcIzaG27hkJuxTcDRq3dyOJCFY8y4AoChcUUqvpxxZVhc1y5Z3rj7wfPH0QFxX9jfnzjagYZFZ63vUG3pLcwMLL16J3cdHZukoYZH08THKOb0654EMvWYkX0XITWTA+BtNptZc2uhkK/XV24hf2nzXfd2u5f275Xb7loY+rOz7PcsJgQtCMqNnPUt7ksdSWP78FDHfmO9d1vzld3u0szXsV/X9r7ubbDgAs2nhwJvsDVfl/nyjRDNkc7RX32c1np6rM52vk7rFTHWC+t8WA+m2c7Xab7i+dpldT5so12zEYsS7Hu9D+jHPkVp63W9Ji4TP0bBerjLuubugdXXXoS8ANesx6PsqqR7ZIXuBZrPBozG+GbX0JOIfr1TB4xw91v1tm/r065XeHj3bt4RO7IT6M7Ykb7+ef8JdEfoSJ5lUTtkZYYWW563QHHGAEnDmTrxosp1OpAgP6egXlrqLApW0hYc9j1yE++Rn+mAAuQ5c9yaxwP3FIapg4s7RkU05pAMcVmdsFcMOdU5hfjqPw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Priority scheduling example with three (3) tasks attached triggered by timeelapsed events</em>
+* </center>
 *
 * @section q_asyncevents Asynchronous events and inter-task communication
 * Applications existing in heavy environments require tasks and ISR interacting
@@ -72,7 +100,21 @@
 * user-generated actions or messages coming from components of the application 
 * itself. 
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004598-7050cfc2-5633-4aeb-a94d-d1232589c64d.png "Heavy cooperative environment"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>heavycoop</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.45,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T13:56:52.698Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;f6hQf5cA3uO1kCzOuRZq\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;dQCMjJpXo0cRyXTNmdZn\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Heavy cooperative environment</em>
+* </center>
 *
 * As shown in figure above, two main scenarios are presented, ISR-to-task and 
 * task-to-task interaction.
@@ -107,7 +149,21 @@
 * an event and related data to the receiving task. This is depicted in the 
 * figure below.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004730-92eec132-d2e3-441f-9fc7-ccbfb71fd874.png "A notification used to send an event directly from one task to another"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>notification</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T14:00:10.088Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;ysBPIzVtP6O5RqbeWd5f\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;bzXds8BJJDB5ZaY9h85V\&quot; name=\&quot;Página-1\&quot;&gt;7VnbcpswEP0aP9aDhAHzGDtxL9NOO3WnTZ86CshGExm5QvjSr+8KxM1A6qR2nZnG8UzQQVqkPUe7izywp6vda0nW0QcRUj7AVrgb2NcDjJGNHPinkX2O2BbKgaVkoelUAXP2ixrQMmjKQpo0OiohuGLrJhiIOKaBamBESrFtdlsI3nzqmixpC5gHhLfRbyxUkUGR61c33lC2jMyjx9jLb6xI0dmsJIlIKLY1yL4Z2FMphMqvVrsp5dp5hV/ycbOeu+XEJI3VMQPiux/vUpF6t9+Ct7+S4Ov1YnH/yljZEJ6aBQ+wy8He5A4ulvqiABYCnqMdzYXMuro/U5F3sMeW/qtD+dgvJLm/KgzA1HIbTbsA156VeUrtC/dLkcYh1Suw4PY2YorO1yTQd7cgOMAiteLQQnCZKCnu6bScoG1Z3mw203NnnBd4LGJqljMjK8a1MN9QvqGKBaS0UpCNy1ltqFR01+t8VFIKe4GKFVVyD12KAZZRwb5oj+2hZ/bGthKWP8qhqCYp2wwlRsrL0nrFNlwYwh9BPu4g/2/8X/cyeH86vXFy74Ora3j++SNfczOLRHC9iosT5h1NGDoXYfafCaNxeKXDHrQCTpKEBU2OmoT2M1BGK90tSOUmG4M63Q0ulftbaLyyhhZyC+S7Hj3EPiqA652xl7f29dYnKhk4iUoD5gujYSs6HxAI6YDIJVUPeG3UTXSNRMdqk1hgknKi2KY5jS5mzRM+CZbFyUJHvnOgI98fYqdpJhGpDKgZWQ/hB8awPTo0Nm4Zy/3RMpYJrlz+0zU46s0YT0kQvdnmTp4a+TjPywSQr14kJ3squ3NQT7o6aWrys89zSE3Y8Q8jndUKc8jr2CKgZKd/P/xVpHPOq7J5ENEw5c9OAIdZ8x+qwG2pwO/Kd6grVmJ0NiG45xXCNUvWRIEaXpTQqwSEO+JBlwzQ+eKB9zwrn2OrlEtVH/YIDT0oZctPq36oNvljixF7hFs6+dfFyLgliwRk0JIGbAbV4rxItu38SzhbxlpGQKIuSCd6P8GO41fmxoqFobY9geARsHj5ni40b6MK+Wyo1JCA4QueSSqCgRQsTNbaI5mPnAl8ge2pBZvHgdlOoY2qNnx1dwlvUDEsgLBMWJQkaksTlelaEUXusrVadf2i9quXiYsPhJSuXXLqVyv/QDhdBYeLO9JMW18nCzB+b5452UFIfzr5nw9CEIQofOGDkOKF/eUk5CjG7LLcu9RBCGqfW4aUQ540tl+C//MN/s7w4EQEQkCHnlyvIwGcK/qjI45CH1df0h1Tt7Xr/DDMMa3qJEw39oNL1KSwuKzSe8At7iVrV1zJolSK4wx992nlKvI7zLlDu1Yc4xPVrtCsftbJu1c/jtk3vwE=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>A notification used to send an event directly from one task to another</em>
+* </center>
 *
 * @subsubsection q_simplenot Simple Notifications
 * Each task node has a 32-bit notification value which is initialized to zero 
@@ -136,7 +192,21 @@
 * the FIFO form according to their order inside the queue. Figure below 
 * illustrates this behavior.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004845-d9844b94-d633-441f-9f59-8906dbc838b6.png "Priority-queue behavior"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>prioqueuebehav</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T06:02:45.638Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;W1UZFGIu4Q-80y2Y9Taj\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;HkzHWOtI2eNu7o9rykcJ\&quot; name=\&quot;Página-1\&quot;&gt;7Vtbc+I2FP41PC5j+Yb9mEDo7kx6mU2n2/ZNwQI0MRYriwD763tk5OtxCGkJOFMDM0jHkiyd75N09GEGzni1+0nS9fJnEbF4YFvRbuBMBrZNLG8EX9qyN5bQOhgWkkfGVBoe+A+W1zTWDY9YWiuohIgVX9eNM5EkbKZqNiql2NaLzUVcv+uaLhgyPMxojK3feKSWxkr8sLzwmfHF0tw6sM2AVzQvbEaSLmkkthWTczdwxlIIdUitdmMWa+flfjnUm75wteiYZIk6pQL/4t7vfxkx9+7vP+a3X3+E4/Dxk2nlmcYbM2Db9FbtcxdIsUkipluxBs7tdskVe1jTmb66BdDBtlSrGHIEkqmS4omNRSxkVtsJLP2GK3Mex7k9EQnTJpGoKV3xWJPjM4ufmeIzWrSSO9w2RVtbBfuD6SvJ8wcWEX3djI9JxXYvOo4UcACPmVgxJfdQxFTwHINgTmGSQ7otGZGblhUu5DZqOLgomi5hgoRB6g2o2Qg15xKogf3O1++PA53XNegcBJ3bT7gmaqOuoeZeB7UPOOHCrkHn9Tvcq6j5djgkdgM4/8rA+dfZ5D4+cMGVgRtdLTqZuHdk6n1o9GyLXBe9AKFH+ml3CnD2lYELEXBWD9wpwLlXBi6XOirIeT1yTeQ6dyYgWDvpj3IIts6dB/Lp35/lXsNuRDqHHVZP+jMBgq1zciXB8kl/ImjHrnN6JcH6Sa81t2PXvQgFSyi99oVg616EggWU/gjehC3oXnCClZP+AI5g615wgnUThBpLohv9LAHkxJoldZTqkBa/8ltNTO43Mx5RaHgsklTErMXBDWBus3cbESxrNJ1OW8FNFZUq763hRmabcu2YrF8wnmpux9WfZjA6/Ze2Dz2Tm+wqxSZ7kzm4iEXo4YkGEcCNYiNn7AgAbjthKnzwWviQ2ySLqeLP9W60kcTc4TfBoYPl+ZRYQ6vyIg12OmToNho9DMi0U5IPN42o7jU4DKgsmEItAXh0Xym21gXSI2NAN3JqT4JA4tBkOUkKP/+HZxCwavU/mzenzoGrcdsNXyHgyVRGoa3zTlR2W37PugibsZjHk5lY8WQB1u8btgGm2hBPOxnhFE2fwJ4IxeewyyoO1ETsh11SIRLmuzXewGnMFzBFJvJAhFu9z0Lb8Y2xr3gUZexPIWCAft2zueaLW1q+Ggppk4Dq8zgj8xIqZpPPeB86593CB9w61uu8B50dQ56Uefjo4lLpOack5RmhGU3VlqUqm7yKKvqYDbU2fQmejrX4ojVEaSwFaG6eIfBwR16DVi4OPAhpizzCYa7Hn/9BLixGSpZuYnXgnaFZxDICQkrIiMmeaF0mmj9ym+uXi4kWXJpoWDmdbWQ2pnJVMywr8rD9KXYutsUZi3qynZlszc0y8BHZPL8lxAjfi2hY6z0WFj7GYvb0+5Ifjw1fPAfXokYg9HNWh7S6+20BHvkAAZ4XWEPfD4tX0OBCczU5NdzzguYxyGq09EK4d7ZoDIvOa8mF5GpfWPtN8L3WpaoMVOTf+blsKwjQujW6pAxkY618+mX6K+yGsUbgUdbY5n/f6L9tZK75lGa+uYECwXqX+Se/DKmF/i7Je47WzDZ9+d9gTtUM3yBDGl4FZ9oOm6JwwaEKrfwWWrnvRius5V8CuYom/BpoR5eKo6Cd7RkRJOV7p6FG/sVqANnyL1eH/ar845pz9w8=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Priority-queue behavior</em>
+* </center>
 *
 * The scheduler always checks the queue state first, being this event the one 
 * with more precedence among the others. If the queue has elements, the 
@@ -154,7 +224,22 @@
 * reordering, so the next queue extraction will be for @c Task-D, @c Task-C, and
 * @c Task-B sequentially.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196004951-b9d8702a-02c7-4775-9355-671c1c5e918a.png "Priority-queue example"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>prioqueueexample</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.25,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T13:49:00.096Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;Ipjzsf3okBnyOX0M9dau\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;2zsWuzHaEYU_EfIRHtfG\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Priority-queue example</em>
+* </center>
+* 
 *
 * @note Any queue extraction involves an activation to the receiving task. The 
 * extracted data will be available inside the qEvent_t structure.
@@ -276,7 +361,21 @@
 * called its length. Both the length  and the size of each data item are set 
 * when the queue is created.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196005112-f1c85491-98b7-4d2b-872d-7923ae1cc2bf.png "qQueues conceptual representation"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>queues</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T14:39:29.978Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;poeP1qF8UpQnuG3sVoca\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;txs8vVA5wulF-spgP7-0\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>qQueues conceptual representation</em>
+* </center>
 *
 * As shown above , the last position is connected back to the first 
 * position to make a circle. It is also called ring-buffer or circular-queue.
@@ -433,7 +532,21 @@
 * combination of event flags. Another task may read the event flag group at any 
 * time or may wait for a specific pattern of flags.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196005333-ab5d72ae-348d-4277-8577-0134f07bfb1b.png "Task event flags"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>eventflags</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.25,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T13:56:56.208Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;ioWXi7ZzjvlYkIrrLvh0\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;_ToeAvv05QZHaTr5tAgO\&quot; name=\&quot;Página-1\&quot;&gt;7Vxtb6M4EP41+XgRGEjIx23abD90ddV2pdvdLycXXOKrgyNw83K//mxiB8iQtw2cWMltpeLBHvA8z0zGg8nAmy42nzO8nH/hMWED5MSbgXc/QMh1fST/Kcl2J/F0O8lorPuUghf6L9FCR0s/aEzyWkfBORN0WRdGPE1JJGoynGV8Xe/2xln9qkucECB4iTCD0r9oLOZmWqNJeeKR0GSuLx2i8e7EApvOeib5HMd8XRF5DwNvmnEudkeLzZQwZTtjl9242ZGz+xvLSCouGUAff66evqV04X//h+b58kv4PP9Da1lh9qEnPEAjJvXdvcqDRB0YwRuX19Gybzh/33fMDnteIpH3WVVYEVcuXJhNbA0WGf9IY6Km48jT6zkV5GWJI3V2LcknZXOxYLLlysNcZPydTDnjWTHac5zxbDZTE6GMGXnKU6LnNsMLyhRJHwlbEUEjvNdikEe6a0Vr6Kjf/d1W4TC2JZkgm4pIw/OZ8AUR2VZ20WeDYBjsxmhfcaVsONaydUk/FGr2zSvMG/ma9ZrxyV5/SQp5oHlxBUdQA0duQaZqf2nB6fQh2OFyxLKnkXzRd5FzpmZxDZTdQOZeDpkJcq1D5gHInNsw69KbdNCfnKBA0U3fekPguxq2kQNgCyZDBGFz/SbUzODWcfMtbidxG/v9xC2wuJ3ELQz7idvI4nYSN9dB/QRuDIBz/w/gDtOVnqPnjvqJXmjd7jRwXk/zk4kF7jRwfk8TFLPSsMgdQy7oaYriwhKNRa6G3LinOYoLCycWuRpyYU/zE9fWT04jh5yeJiiuraCcQc7ta4ZiayhnkEN9zVBgFcUuxiF8fl/TFFhLsY5XQy7oa5pi6yhnkBv3NU2BhRQbMiF8YU9zFQSrKRY+CN+kpwnLfio2bjYj57k9zVWQLamcQQ71NFdBsKTysJLznDGc5ABCOVsBwDEgQFwwo0kqm5FUSKT8ThlMIsM+6RMLGsdK910uiUDT5Im8qSn7peSrtoIScTn8jRV79eZyIJEa7pacpqIwSnAn/yTrpspYgbzbqWy7ZVv+qe6ZxDuVE8C0AJPgXKxJrmaVcYEFfi3mWuxvMhsD3TNEaaRene1nidgCx/wJoJg3adrzNBpDiqHOCAYrP4BWhhZP+JWwZ55TQbmixysXgi+qUChbxjif7w0LKFaJIYdsE3y507VU111sErUzdkgYiUSm+g0ZT2j0d4IFySvHinlLkmF9U4oCR3e4XRBaQGSbFD/NJIE+1UYwatiuM/KbmBI0MMUre7ZPFlhsAmQhafxJbSAuTVKBvO51HSBy1Pwkrm1YhsavmtWBZjWyjDDJtFU9fW0ytL7CswqAVWzHANtx+UFjFOX8I4uIHluCBtWFF6kTOEuIAOoKDuxNcAMtYCXL0uJmWoRBq7RoUNc1LWCFzNLidlqgdmkB1XVNC1h+s7S4/UNk1O6HCFTXNS1gbc/S4kpawEVsGN5Ai4vUdUwLD9YMAS2ufo2mraXBvuhxemlQ7XmURDeuDxrfnvEg17zO3p1peifuAKjoI1sVOCkgKs4cMZznNDrmz243EEkEsu13zZqi8UM1pG11835TPXm/Na0NFd8rxz/MhORxOUQ1zAizpmU0fT9cLh8lxM5PT1jcbLfZeeAFPtSTOOXC5xOuPwGr1kvjlFrxHqhzJlDdkTglKYi3lW66YHX05pEDnS90zNVKB9rpbTcUwirun1+Bj9kaYGs1wDZidcOzuDEaGtetxmoEHQ51FqxhWRk+ibNM6qKa7B4+v0Bt0KzhhaMjxeVGmoGsrj2mwfpyw7MnS7XfhmrBxclnQwbRKdOuK06fyTnPJJPVDK6W1bbwzQc9SdN8BHcBhe5wMvq1NM33G9ShobTp/gddlLG1lk7BqjVRj1ZtcPqtnqqaV7TK5/b7AFXxE79hKfwLkUg2y2+e2RGx/Poe7+E/&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Task event flags</em>
+* </center>
 *
 * Up to twenty(20) bit-flags are available per task and whenever the scheduler 
 * sees that one event-flag is set, the kernel will trigger the task execution.

@@ -15,7 +15,21 @@
 * \f$ t_{sys}\f$ , allowing timer functionality to be added to an application 
 * with minimal impact.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196007003-b9fc5317-6b92-4983-961f-2054fc18db8d.png "STimers operation"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>stimer</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T15:06:53.012Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;D0ASMuxQqJpFRMXpmBB_\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;rcvfuREYuiKnwBi7l4OG\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>STimers operation</em>
+* </center>
 *
 * As illustrated in the figure, the time expiration check is roll-over safe 
 * by restricting it, to the only calculation that make sense for timestamps, 
@@ -117,7 +131,21 @@
 * In QuarkTS, a state-machine must be instantiated with an object of type qSM_t.
 * States are represented as instances of the qSM_State_t object.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196007494-b68728bc-e690-4462-94ef-f99234e044f3.png "FSM module design"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>fsmdesign</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T18:10:14.990Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;Pus0kYQw-gJYphxEF1EV\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;64UyDokTRLeBllNpieF3\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>FSM module design</em>
+* </center>
 *
 * One important attribute of the qSM_State_t object is the callback function, 
 * which is used to describe the behavior specific to the state. Also there is a 
@@ -266,7 +294,21 @@
 * through its state callback. The behavior of this surrounding callback must be 
 * defined by the programmer.
 *
-* \image html https://user-images.githubusercontent.com/11412210/196009040-bf314b36-4ff8-4d3d-84cf-377fba2453d1.png " Surrounding callback invocation after and before the current state"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>surrounding</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T05:34:37.293Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;poDBqKg0qx6tawrUZqnR\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;4V9vBTZxQXj7jBstcZzX\&quot; name=\&quot;Página-1\&quot;&gt;7Zpdb6M4FIZ/TS7HMgaDuWzSdEejdlRttZqdq5ULboLGwZEx+dhfvzYxgWDSyc6kKbuTpFLx8fd5H7CPycifLDa/SbqcP4iU8RGC6Wbk344Q8iCO9D9j2VpLDHeGmcxSa2oMT9nfrK5prWWWsuKgoBKCq2x5aExEnrNEHdiolGJ9WOxF8MNel3TGHMNTQrlr/ZKlam6tXhg3GR9ZNpvbrgmyE17QurCdSTGnqVi3TP505E+kEGp3tdhMGDfOq/2yq3d3JHc/MMlydUqFh+jz/GG6Wtze/5X+8eUTI58W+INtZUV5aSdsB6u2tQekKPOUmUbgyB+v55liT0uamNy11lzb5mrBdcrTl4WS4hubCC5kVduPq4/Oeck4r+25yJkxiVzd0UXGDRsfGV8xlSV030rtb+2pcUqLeTUG04kdM5OKbY46w9u7WLPJxIIpudVFbIUwhICQXa2aTIz8nWHdCK15BZ71ybwlc00xtXjN9j00CugLK8K/EAQ5gjw6iuhmNP7s+2pw+sz4mCbfZpWIXfdrRZ5sq4XgZliHktyXSZZS3fdE5LpALZm9ST1s0y21CTTfPg4gjO7u7nq1bZOhS04mU1yVrPqy4/POoHmEESCoo7nvA0Qc2QMMfM9VPfABjN5IeN8R/mmEQq6My8pnfTkzl2Vt0320zP8LRDo5ryAyDc33DRAhKNwrPDxEgisi749IGBG9csD9xxsqLbhvJXFoGaGxdwWmtSFpWDn/riOGROvdsDPYxSg8iZ0PV3IuRU4IIYDwP0BO5JAzKWU1yy4U2hnKcXxL6Y6J8myW62Si22LaPjb+1OECv7EZiyxNK8kLjVeWz+7Zi5lv0Fh+ty4wJqGrv/AqHpvriky3MF6KLFeVQ/BY/+kt/gQCPMJ6tBOd9pq0/jPFpTKgKUmzSkVGC7VmhZmVFIoq+lzNtYKoDv68Vxg8Gg8dhmAukGfZHMMOUgQ6PGFvHzS1eUIQIPxGPBGHpzF7EZLd5NsrUYMmKozM1L7LVBhcnKm4b3WDkqlS5iNziqKXP98zjtkVuXI2ZM6IFwEUnABaDLzIBc1/q5Oc+gSzhdlnA86VpkHTRHyAg+PhXQ9YcQzCCz/BPPfc9lGyVSbK4srXoPnCelV0DiEHApV79uxGcnl6Y96qGEA4LYosOQzg+jzYewpc62SKJaVc7YMl1+vas3L7py1bJb6aBMB18nbTzrzd2tRu8Cx1XvB0tEJQUTlj6hXXBP2atrfG0BWrtknGqcpWh8Pok8/28Gjuj9ZGKghA90wSBwCTw4YKUcqE2brt90Dd5kLS11zsxftPp+Wde5yWK8j23vgJ7tyj70Fwdyo/78UFjsIeKqJGRvyDgMBuKGjwQJdlwj3rHgQTA3gWofdkLkI+6K5e56EuwhHwm2bCbuioeyEeviyE7hH6LwHhu8EVE4De5plGUARI0wzqYfjidLmH7L8EXSc84vB7UkjMDj0+HgGeB0jdAcCwAXIAPLpH9wAAB8lrOHm2cLL1bgqd6T0RDrrr5pE3Qz33DwpBhI7fLUdiS51sfsO2Y7H5JaA//Qc=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Surrounding callback invocation after and before the current state</em>
+* </center>
 *
 * The surrounding callback \f$ S_u \f$ invocation occurs afther and befor the
 * current state \f$ P \f$. When the surrounding callback is executed, indicates 
@@ -356,11 +398,21 @@
 * inactivity. If the button hasn't been pressed in the last 10 seconds, the 
 * LED will turn off.
 * 
-* @image html https://user-images.githubusercontent.com/11412210/196019529-4effa4e7-8449-4747-8a74-8add637ab395.png "A simple FSM example with three states"
-* States \f$ S_i \f$  and transitions \f$ t_i \f$ are described as follows:
-*
-* - \f$ S_1 \f$ LED Off, \f$ S_2 \f$ LED On and \f$ S_3 \f$ LED Blink
-* - \f$ t_1 \f$ Button press (rising edge) and \f$ t_2 \f$ Timeout 10s
+* <center>
+* @htmlonly
+* <html>
+* <head>
+* <title>fsmled</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T16:44:19.377Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;2qA6oxdCwsuBkRDcJq6T\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;rT_7VhNZph5krCK22-1H\&quot; name=\&quot;Página-1\&quot;&gt;7VrbUts6FP2azLQPeOSr5Edyg85wgDacOfSJMbGSaOpYqaJA0q+vZEuOLZtgKAk9TAgD1pa0tb0vS0t2Om5vvj5j0WL2D41x0nFAvO64/Y7j2J4fin9SssklfpC3p4zEasxWMCK/sBICJV2RGC8rAzmlCSeLqnBM0xSPeUUWMUYfq8MmNKmuuoimuCYYjaOkLv2PxHympHYQbjvOMZnO1NLIgXnHPNKD1Z0sZ1FMH0sid9Bxe4xSnl/N1z2cSN9pv+Tzhk/0FoYxnPI2E06cL+TXl68L1D2/+upfuPAyuD6xvVzNQ5Ss1B13nCARCrsTKvQ6wVRea9m9FlxNJlomVrw3xwlZdXrmAL7RXmV0lcZYGgZE9+OMcDxaRGPZ+yjSSMhmfJ6Ili0ul5zRH7hHE8qy2S4C8iNNJElSkg8C+VGmD6M5SWTOnePkAXMyjgpVOpCOGtqkWrkFM47XTzrcLsIo0h/TOeZsI4aoCVDn8EbXAkC54LGUSUANmpWSSKdMpJJ3WujexldcqBC/JNx+U7ijufR4er9cNIVa3K1cuSHY7mkxmJUyoKKuO7q+uxj0766Gw0+fD5QKKU2xmQUXqzGJI7F0j6ZLKhdvSIYoIdNUXCd4oitAIZINDp0rTstc8faWK8EroSE9IsMz0UbIiLbrO7VoO4dFBvhuyHCpgOG5CT9HN2SO2d0I808d6QjVnf/loo+uRGKJ+wc2sIDYoMARcV6Qg7BlDu4PcdDrEKebkPTHEXSeC7jjGVsMBPWAw4OCTnho0Hk1hjQortplrhTjSbSSQ5qtasrVynwykQZqe4cM42+rtMHme5n8YkxuNLD8yefMaDEQtgDVssKnRRqrb67Ozi4GLfG6A/tH7G1ZimHLUkT7KkVd45VSNII3XrGHLHZ2VofxqTxfi+Y4iZZLMq4Grxrp4vALWoSqbSRq+QEAHA6HjcHGa8Jv5fqWr1rflTXyur8uNza6IaHmttzI5liOr9vbeVlLT8w9h+PaowUjQYR36YqN8S6IVJnCIzbF/FkCV0+5Ukb5DQmlZQwnEScPVYObskytcE2J3FB1RofAYBMO9C2/qiW/VzWx/KDC0GUD11Bm+zVluT9qykRKRpvSsIUcsHzabuSZLCioPEURF7nKbWUVvv2DYrM/eLEVhWN5QVguHtsCgfdM9WSta8zEpsYxKxXmben6e6WWm+v3LcswbFuG/nuWITLL0PeNDaN9EdpIAl11m0LC5Wg/heiYlrtgp4EwMCc4h6hcp1a53X9vbq4u766/DUajQT/jXT35m7GogiKVSjv4uaKacJwss9ITHBGgxTonUapb0ypNAQfrBWE43kVbJe0zYESQFF7FCk17WJ59XclkxHEkOVXyOYnjDBkYFsZF95kmWU4qhEKt3+34falqxelSYUcNIjQva6ZqCnJQS4TaExELfN/MOtsKvBoXs4OGmnX3xsXcD749FFwsQF4Jz8XmAOBuRiYa5s7wligP/x8o77kWQgZvQd7rgB7ZgWW7Bs57zr5wPgyBuRbabZ9vTjgIQ6u/Fzvi8B4PxAAaQXbrB+JGEN7bsymn6VXZRwLhEkeHxYE2p9XAKUj7Szh6WyR+L9y0gS84LQxc24co9KBrwp4NLGhobc+XTQIrTj6WE+4FRG0QQAua5NxB2vr9QmPTe8FjYewqjKWIO9c+oMJxWjYkifbC3148AQytsPRj8o/wlQdNCHbq9QBs6n7jggrMl2EeOATJqL9zNQ+TRxbxki9RPPUwr1wi4duQCNHcfnUrT4jt99/cwW8=&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Flat FSM example with three states</em>
+* </center>
+* 
 *
 * To start the implementation, let's define the necessary global variables...
 *
@@ -750,7 +802,21 @@
 * This example takes the "Cruise Control" study case, a real-time system that
 * manages the speed of an automobile based on inputs from the driver.
 * 
-* @image html https://user-images.githubusercontent.com/11412210/196015032-22fc6ddb-c161-4248-a566-488bd1adac1b.png "Cruise control FSM example"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>hsm</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T16:51:35.501Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;QdIZd3r2DwtN3vC1hyVB\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;Ucjj-E1xw4AO6E8yxrXi\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Cruise control FSM example</em>
+* </center>
 *
 * The behavior of this system is state-dependent in that the executed actions
 * correspond not only to the driver input, but also on the current state of the 
@@ -792,35 +858,35 @@
 *  
 *  qSM_Transition_t initial_transitions[] =
 *  {
-*  { SIGNAL_ACCEL,     SigAct_BrakeOff,          &state_accelerating ,0 },  
+*  { SIGNAL_ACCEL,     SigAct_BrakeOff,          &state_accelerating ,0 },
 *  };
 *  
 *  qSM_Transition_t accel_transitions[] =
 *  {
-*  { SIGNAL_CRUISE,     NULL,                    &state_cruising     ,0 },    
+*  { SIGNAL_CRUISE,     NULL,                    &state_cruising     ,0 },
 *  };
 *  
 *  qSM_Transition_t cruising_transitions[] =
 *  {
-*  { SIGNAL_OFF,       NULL,                     &state_cruisingoff  ,0 },    
-*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },    
+*  { SIGNAL_OFF,       NULL,                     &state_cruisingoff  ,0 },
+*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },
 *  };
 *  
 *  qSM_Transition_t resuming_transitions[] =
 *  {
-*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },       
+*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },
 *  };
 *  
 *  qSM_Transition_t cruisingoff_transitions[] =
 *  {   
-*  { SIGNAL_ACCEL,      SigAct_BrakeOff,         &state_accelerating ,0 },       
-*  { SIGNAL_RESUME,     SigAct_BrakeOff,         &state_resuming     ,0 },              
-*  { SIGNAL_ENGINE_OFF, NULL,                    &state_idle         ,0 },           
+*  { SIGNAL_ACCEL,      SigAct_BrakeOff,         &state_accelerating ,0 },
+*  { SIGNAL_RESUME,     SigAct_BrakeOff,         &state_resuming     ,0 },
+*  { SIGNAL_ENGINE_OFF, NULL,                    &state_idle         ,0 },
 *  };
 *  
 *  qSM_Transition_t automated_transitions[] =
 *  {       
-*  { SIGNAL_BRAKE_PRESSED,   NULL,               &state_cruisingoff  ,0 },   
+*  { SIGNAL_BRAKE_PRESSED,   NULL,               &state_cruisingoff  ,0 },
 *  };
 *  /*---------------------------------------------------------------------*/
 *  @endcode 
@@ -939,8 +1005,22 @@
 * @a "shallow history" and @a "deep history"( denoted as the circled H and H* 
 * icon respectively in figure).
 *
-* @image html https://user-images.githubusercontent.com/11412210/196015221-683b944f-6e27-4575-855e-50fcde5cdb4f.png "Example with history pseudo-states"
-*
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>fsmhist</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T18:43:21.516Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;Ch7yXC-GbSBqROWlSNdq\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;sgRdDsJHhmN2pV4VL9Bt\&quot; name=\&quot;Página-1\&quot;&gt;7Vtbb+o4EP41vKzUKLbjXB4bWrYr7UpH6sOe87TKIS5YJ8QoMS3tr18bbHKxUQM9AUoDEoonyRjP92VmPHZGaLxY/1kky/k/LCXZCLrpeoTuRhBi6ItfKXjdCm5QEG4ls4KmWxmoBI/0jSihq6QrmpKycSFnLON02RROWZ6TKW/IkqJgL83LnljW7HWZzIgheJwmmSn9l6Z8rqTAj6oTD4TO5qrrEAbbE4tEX6xGUs6TlL3UROh+hMYFY3x7tFiPSSaNp+2yvW+y5+zujxUk511u8P5b+GGcv/21uP1RrPO3+/U4vlFanpNspQas/ix/1RYo2CpPiVTijlD8MqecPC6TqTz7IjAXsjlfZKIFxGHJC/aLjFnGis3dKHTlV5x5olmm5TnLiRSxnE+SBc0kOf5eTWmaiK7HLC+Z7Fwp02YXBouTjM5ycZyRJ64UKMoAV7VtfatBkoKT9V7rgR0mgsyELQgvXsUl6gYUKRgVkQF0PQcqLr/UmKHhntdIAYDneJ4ipSLkbNdFhZk4ULAdACG0QOhn0jw/xcFMHjzyhBOsxaKX3ZlToC3k9778tiF/INkz4XSaWLHuEUwPBC0wgRVMLzSx1Pj+dhxRRxz9Acf9OAb+eUH0Bn96LHRRN+hAX9Dh96EjeXorcwrRmmZJWdJpE60mtLuA73bA5h3Tx5uvjRCuG0wmEyu6JU8Krv+w4shGNqHSNJv/JYakWnIAZE35d3nGiVyk2j9E+8Z1XAHYVnC31vfKxmut8Y0UVIBBCiXbGpCkRor1LktqJMCWgKplBckSTp+b6m3MUD18Y1R0XJHQEwMF7u4DWpT0oBOhaPcJm/pLtiqmRKmsJ16WXoJaLzonNpyWViwgmhFuKBZIJq+1y5bygtLg/c6Kxz8K/uDFjvViqHMi0ZsjC0z0cDwZ4TsDRDFw3kSqZUppHBHXs1slXtA03YBQkJK+JT83iqQtFReFVhzLnoSmFWelQsGggIbajr4CL+zoNvvC1sNtdxBZsbX4p97yi/C6gxQTA2sFKWAGqVxY8nu98WMTsrBuVgFq09IR6uKjUdQmHEROFB0ZdPwOys4eaCILnW1zHm+Y8+wtRICweyGiN7+kg9m7SKIByR2S7gVWIcBQETwavgvI/YCtGnhFCUKnWeylB3qEjdgcOQE8LtCjCDhu7QPbpGxR7ewxH9gKnVdE0S+dwyLQKm6AMDye2m1lECAnAJfGZ1vN15b6wCH1qWJnO4nF0AicMDhpBmvWfx9Mv5RldFmSPoCx2/9R9Q36xQNDIxVFju+ZkNgWN6O+EDHLkA9/fGFIPMsjclI8LIXFYWrQzb0FHd0bwL4RLn8fgLbqoS1SgSFSaSj9NpTQtVeBTzpJt9XNhiexE3ywM3xR1OOmHVu97IomQd1Wm690EmSSDoOjJ0HYa+cBGDog2rsqffb5EOxQQfzM1P7S83sfeo29DKiV58i1iCNXrN5RXY+7l8P1odx6PNf1ZiO5uQh7o2q3kev4eHRte42wTCfcoPLbLXqHwPGA3y7jHhwtdHmsrlcvVFzOY2MpAeP4ftiicug8028nGsA9+xYV2GEP7OATP2v8N/ZIQviB1DZsK0OXndpa9gjj+HbwW4fWNoP2Aqj9ZZrT+i3LrlccxwO4HwZ3z76Ik4Jr3RQ7HsD9MLg4dPCZsT1sU6yy6SfJNqr0aH/BYZdGDJOwj03CEIC9TMKk3subhFkWEXB8N7jEg12i8SYb6Mshimb1wviWCNVr9+j+fw==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Example with history pseudo-states</em>
+* </center>
+* 
 * - @a Shallow @a history :  A transition to the shallow history state in a 
 * composite state invokes the last state that was active, at the same depth as 
 * the history state itself, prior to the most recent exit of the composite state.
@@ -1014,7 +1094,21 @@
 * code execution for event-driven systems without complex state machines or full
 * multithreading.
 * 
-* @image html https://user-images.githubusercontent.com/11412210/196015888-68556734-dd55-4fcc-b4ef-b797b744b539.png "Coroutines in QuarkTS"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>coroutines</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T18:53:51.655Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;TUBuhUjvMgM2ZADYfpx0\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;9UbcoEgD98S6Um2omTv-\&quot; name=\&quot;Página-1\&quot;&gt;7Vhdb5swFP01PC4yEELy2NBk1bpO1TJp614mB1ywauzMOF/79bsOhmBI0mZVtapqeIjvse+9vj72scDxo3zzUeJFdiMSwhwPJRvHv3Q8z3VRAH8a2VbIoARSSRMD7YEZ/UMMiAy6pAkprIFKCKbowgZjwTmJlYVhKcXaHnYvmJ11gVPSAWYxZl30O01UVlcx2ndcEZpmJvXQC8uOHFeDTSVFhhOxbkD+xPEjKYQqW/kmIkwvXrUupd/0SG89MUm4eorDdZwOiPfz+svlchV94jdzMbr9YKKsMFuagh1vgPOF44/5vNB/v6Ovv8YkpRyGOeEYuhmkG88ltFLdajvocY9DvV7vFYbSxd5RovfIe6UvNL0QdhnS6Se8TL47HGpbnTgpljwhetMi6F5nVJHZAse6dw0aA1imcgaWC81CSfFAIsGE3Hn7CIXTKRyB8T1lrMK54ERDgqspzinTWvR5GdMEQ+pI8ELo5CZYdcw949EIPkT6MfjMTLm2S+1ytY0ZTTkYjNyrusYVkYpsjp5et9YEEFMicqLkFoYYh6FRESOjo8DI6LohSmhYYllDj1yvb8TQCGFah95rBTSMXJwhHV5HOr7h4gGQi+dR2iQO1jyKJkFJ6BEuTm+BiiWgWFdj74ErwlZE0RgfJb9yd1+Awj56IoWDF2LQfxf/N6eubz7U+/XxL9rj9Uev7f7oH7s/nsnpm70/Ohz+9wskOHCBtKgjPLnQr2FgzZmIH75lcJlYfNnk1m9J6Aknrn1uWhSPd88hilvkV6yVkoClqqYsoLQKm1JWTRmKalobqn402nd69r0wMOblxlSzM7bGKBeKJJ23z0d3Q4PtAHXJrjBJGFZ0ZYc/tANMhltBIXG92dxw2EONn+fbey90e31/VP+GdvxCLGVMTMjmO2k3ixXWRSGyI8HKp0R1IgFBeNsYttADipPltBIhdHJmXjBsF3zWeBe5pxN0Z3S2Q/+8ElzU/kLwqMPg3CkFlgM0SqL2ElNv5EOqA+b+e0g5fP9VyZ/8BQ==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>Coroutines in QuarkTS</em>
+* </center>
 * 
 * The QuarkTS implementation uses the Duff's device approach, and is heavily
 * inspired by the Knuth method, <a style="font-weight:bold" href="https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html">Simon Tatham's Co-Routines in C</a>
@@ -1306,7 +1400,21 @@
 * The provided development API parses and handles input commands, following a 
 * simplified form of the extended AT-commands syntax.
 *
-* @image html https://user-images.githubusercontent.com/11412210/196017347-ca8e75a9-599a-4057-83f6-227d2060ba51.png "AT parser for a CLI implementation"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>atcli</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T19:31:39.234Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;iXCP-aXpe9eB9d0tPXyv\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;o9YKW9kYFg2IcPfcP6fb\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>AT CLI implementation</em>
+* </center>
 * 
 * As seen in figure, the CLI has a few components described below:
 *
@@ -1642,7 +1750,22 @@
 * The allocation scheme works by subdividing a static array into smaller blocks
 * and using the First-Fit approach.
 *
-* @image html https://user-images.githubusercontent.com/11412210/196018966-b6fe7dbe-4136-4198-aee1-f6c6adb2a95b.png "First-fit allocation policy"
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>memmang</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T19:51:25.020Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;0et5L84sQ8dq70hh7EnJ\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;qnkYvIl8hSz6jSiMQ8AJ\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>First-fit allocation policy</em>
+* </center>
+* 
 *
 * If adjacent free blocks are available, the implementation combines them into 
 * a single larger block, minimizing the risk of fragmentation, making it 

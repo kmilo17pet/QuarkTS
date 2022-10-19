@@ -23,10 +23,11 @@
 *
 * QuarkTS is developed using a formal and rigorous process framed in compliance
 * of the MISRA-C-2012 and CERT coding standard guidelines and complemented with
-* multiple static-analysis checks targeted to safe critical applications.
+* multiple static-analysis checks targeted to safe critical applicatiosns.
 *
-* 
+* The documentation is organized as follows:
 * - @subpage q_background "Background"
 * - @subpage q_events "Events"
 * - @subpage q_extensions "Extensions"
+* - \htmlonly<a href="modules.html">API Reference(Modules)</a>\endhtmlonly \latexonly\hyperlink{...}\endlatexonly
 */
