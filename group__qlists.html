@@ -66,7 +66,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7</span>
+   &#160;<span id="projectnumber">v7.2.4</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -258,18 +258,25 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >The provided list implementation uses a generic doubly-linked approach in which each node, apart from storing its data, has two link pointers. The first link points to the previous node in the list and the second link, points to the next node in the list. The first node of the list has its previous link pointing to <code>NULL</code>, similarly, the last node of the list has its next node pointing to <code>NULL</code>. </p>
 <p >The list data-structure, referenced through an object of type <a class="el" href="structq_list__t.html" title="A list object (Generic double-linked)">qList_t</a> also has a head and a tail pointer, to allow fast operations on boundary nodes.</p>
-<div class="image">
-<img src="https://user-images.githubusercontent.com/11412210/196058097-978ccf69-6d3e-41c3-aaed-91a71234e1c3.png" alt=""/>
-<div class="caption">
-Doubly-linked list implementation</div></div>
-<p >Nodes should be an user-defined data structure of any number of members, however, they must be specially defined to be compatible with the provided APIs. All the user-defined nodes must have the <a class="el" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11" title="This macro can be used to create custom data that can be used as node of a list. User should locate t...">qNode_MinimalFields</a> definition on top of the structure. An example is shown below:</p>
+<center>  
+<!DOCTYPE html>
+<html>
+<head>
+<title>qlist</title>
+<meta charset="utf-8"/>
+</head>
+<body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T20:37:00.387Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;KSbS3wh_9uupMrEyc6ED\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;mmlpRbxcPcDZs_50ANYI\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+</body>
+</html>
+ <em>Doubly-linked list implementation</em> </center><p >Nodes should be an user-defined data structure of any number of members, however, they must be specially defined to be compatible with the provided APIs. All the user-defined nodes must have the <a class="el" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11" title="This macro can be used to create custom data that can be used as node of a list. User should locate t...">qNode_MinimalFields</a> definition on top of the structure. An example is shown below:</p>
 <div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line">    <a class="code hl_define" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>; <span class="comment">// required for lists</span></div>
 <div class="line">    <span class="keywordtype">int</span> a;</div>
 <div class="line">    <span class="keywordtype">int</span> b;</div>
 <div class="line">    <span class="keywordtype">float</span> y;</div>
 <div class="line">} userdata_t;</div>
-<div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:81</div></div>
+<div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:95</div></div>
 </div><!-- fragment --><p >With this special type definition on all custom data, the application writer can take advantage of this powerful data structure. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga4e8a2d40891d2463b41fcf02ce482d11" name="ga4e8a2d40891d2463b41fcf02ce482d11"></a>
@@ -314,9 +321,9 @@ Doubly-linked list implementation</div></div>
 <div class="line">      <span class="keywordflow">return</span> (<a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>)( n1-&gt;x &gt; n2-&gt;x );</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
-<div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort() API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:135</div></div>
-<div class="ttc" id="astructq_list___compare_handle__t_html_a3448184cc3864a59ca4757a9d3a3da0d"><div class="ttname"><a href="structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d">qList_CompareHandle_t::n1</a></div><div class="ttdeci">const void * n1</div><div class="ttdef"><b>Definition:</b> qlists.h:136</div></div>
-<div class="ttc" id="astructq_list___compare_handle__t_html_a6ca17a8286aea578f473c9e6b669528b"><div class="ttname"><a href="structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b">qList_CompareHandle_t::n2</a></div><div class="ttdeci">const void * n2</div><div class="ttdef"><b>Definition:</b> qlists.h:137</div></div>
+<div class="ttc" id="astructq_list___compare_handle__t_html"><div class="ttname"><a href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></div><div class="ttdoc">Handle of the qList_Sort() API that is passed as an argument to the compare function.</div><div class="ttdef"><b>Definition:</b> qlists.h:149</div></div>
+<div class="ttc" id="astructq_list___compare_handle__t_html_a3448184cc3864a59ca4757a9d3a3da0d"><div class="ttname"><a href="structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d">qList_CompareHandle_t::n1</a></div><div class="ttdeci">const void * n1</div><div class="ttdef"><b>Definition:</b> qlists.h:150</div></div>
+<div class="ttc" id="astructq_list___compare_handle__t_html_a6ca17a8286aea578f473c9e6b669528b"><div class="ttname"><a href="structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b">qList_CompareHandle_t::n2</a></div><div class="ttdeci">const void * n2</div><div class="ttdef"><b>Definition:</b> qlists.h:151</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The handler object containing the objects being compared. </td></tr>
@@ -354,11 +361,11 @@ Doubly-linked list implementation</div></div>
 <div class="line"> </div>
 <div class="line">      }</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a></div><div class="ttdeci">@ qList_WalkEnd</div><div class="ttdef"><b>Definition:</b> qlists.h:107</div></div>
-<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a></div><div class="ttdeci">@ qList_WalkInit</div><div class="ttdef"><b>Definition:</b> qlists.h:105</div></div>
-<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a></div><div class="ttdeci">@ qList_WalkThrough</div><div class="ttdef"><b>Definition:</b> qlists.h:106</div></div>
-<div class="ttc" id="astructq_list___for_each_handle__t_html"><div class="ttname"><a href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a></div><div class="ttdoc">Handle of the qList_ForEach() API that is passed as an argument to the function that operates on each...</div><div class="ttdef"><b>Definition:</b> qlists.h:117</div></div>
-<div class="ttc" id="astructq_list___for_each_handle__t_html_a3a0029b84cc61be4b552d11e6770fb6f"><div class="ttname"><a href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">qList_ForEachHandle_t::stage</a></div><div class="ttdeci">qList_WalkStage_t stage</div><div class="ttdef"><b>Definition:</b> qlists.h:120</div></div>
+<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161">qList_WalkEnd</a></div><div class="ttdeci">@ qList_WalkEnd</div><div class="ttdef"><b>Definition:</b> qlists.h:121</div></div>
+<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf">qList_WalkInit</a></div><div class="ttdeci">@ qList_WalkInit</div><div class="ttdef"><b>Definition:</b> qlists.h:119</div></div>
+<div class="ttc" id="agroup__qlists_html_ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4"><div class="ttname"><a href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a></div><div class="ttdeci">@ qList_WalkThrough</div><div class="ttdef"><b>Definition:</b> qlists.h:120</div></div>
+<div class="ttc" id="astructq_list___for_each_handle__t_html"><div class="ttname"><a href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a></div><div class="ttdoc">Handle of the qList_ForEach() API that is passed as an argument to the function that operates on each...</div><div class="ttdef"><b>Definition:</b> qlists.h:131</div></div>
+<div class="ttc" id="astructq_list___for_each_handle__t_html_a3a0029b84cc61be4b552d11e6770fb6f"><div class="ttname"><a href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">qList_ForEachHandle_t::stage</a></div><div class="ttdeci">qList_WalkStage_t stage</div><div class="ttdef"><b>Definition:</b> qlists.h:134</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>A handle to the list iterator. </td></tr>
