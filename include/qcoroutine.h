@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 3.74
  * @note This file is part of the QuarkTS distribution.
- * @brief  API interface for the Co-Routine module.
+ * @brief  API interface for the @ref q_qcoroutines extension.
  **/
 #ifndef QCOROUTINE_H
     #define QCOROUTINE_H
@@ -16,7 +16,7 @@
     #endif
 
     /** \addtogroup  qcoroutines
-    * @brief API interface for the Co-Routine module.
+    * @brief API interface for the @ref q_qcoroutines extension.
     *  @{
     */
 

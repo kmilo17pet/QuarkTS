@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 2.07
  * @note This file is part of the QuarkTS distribution.
- * @brief API interface to create and handle queues.
+ * @brief API interface to create and handle @ref q_queues.
  **/
 #ifndef QQUEUES_H
     #define QQUEUES_H
@@ -21,7 +21,7 @@
     #endif
 
     /** @addtogroup qqueues
-    * @brief API interface to create and handle queues.
+    * @brief API interface to create and handle @ref  q_queues.
     * @{
     */
 
@@ -47,7 +47,7 @@
     * initialize the instance.
     * The required RAM for the queue data should be provided by the application
     * writer and could be statically allocated at compile time or in run-time
-    * using the memory management module.
+    * using the memory management extension.
     * @note Do not access any member of this structure directly.
     */
     typedef struct _qQueue_s {

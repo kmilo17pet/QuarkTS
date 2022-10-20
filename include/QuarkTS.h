@@ -144,7 +144,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 /**
 *  @defgroup qmodules Kernel extensions
 *  This section contains the documentation related to all the extensions that 
-*  add additional functionality to the operating system.
+*  adds additional functionality to the operating system.
 */
 
 /**

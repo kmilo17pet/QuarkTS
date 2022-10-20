@@ -17,7 +17,7 @@
 
 
     /** @addtogroup qcritical
-    * @brief APIs to handle entry/exit actions in critical sections.
+    * @brief APIs to handle entry/exit actions in @ref q_critical.
     *  @{
     */
 

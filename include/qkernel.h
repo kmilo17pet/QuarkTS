@@ -60,6 +60,8 @@
     /** @addtogroup qtaskcreation
      * @brief Kernel API interface to create/remove tasks and perform special
      * OS operations.
+     * @pre Before using any scheduler interface, you must first configure and 
+     * initialize the operating system using qOS_Setup()
      *  @{
      */
 

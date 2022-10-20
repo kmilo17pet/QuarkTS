@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 5.35
  * @note This file is part of the QuarkTS distribution.
- * @brief  API interface of the Finite State Machine (FSM) module.
+ * @brief  API interface of the @ref q_fsm extension.
  **/
 #ifndef Q_FSM_H
     #define Q_FSM_H
@@ -38,7 +38,7 @@
     #endif
 
     /** @addtogroup  qfsm Finite State Machines
-     * @brief API interface of the Finite State Machine (FSM) module.
+     * @brief API interface of the @ref q_fsm extension.
      *  @{
      */
 
@@ -314,7 +314,7 @@
     * and defining callback functions.
     *
     * State  machines  are constructed by composition, therefore, the topology
-    * of a state machine is determined upon construction. In this module
+    * of a state machine is determined upon construction. In this FSM
     * implementation, there are not distinction between composite states(states
     * containing sub-states) and leaf states. All states are potentially
     * composite.
@@ -489,7 +489,7 @@
     * @brief Install a signal queue to the provided Finite State Machine (FSM).
     * @pre Queue object should be previously initialized by using
     * qQueue_Setup()
-    * @attention Queue item size == qSM_Signal_t
+    * @attention Queue item size = sizeof( @ref qSM_Signal_t )
     * @param[in] m A pointer to the FSM object.
     * @param[in] q A pointer to the queue object.
     * @return #qTrue on success, otherwise return #qFalse.
@@ -520,6 +520,8 @@
     * timed signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ).
     * @attention This feature its only available if the FSM has a signal-queue
     * installed.
+    * @pre This feature depends on the @ref q_stimer extension. Make sure the 
+    * time base is functional.
     * @note You can increase the number of available timeouts instances by
     * changing the @c Q_FSM_MAX_TIMEOUTS configuration macro inside @c qconfig.h
     * @see qStateMachine_InstallSignalQueue()

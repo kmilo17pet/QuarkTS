@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 1.12
  * @note This file is part of the QuarkTS distribution.
- * @brief API interface for the Software-Timers module.
+ * @brief API interface for the @ref q_stimers extension.
  **/
 #ifndef QSTIMERS_H
     #define QSTIMERS_H
@@ -16,7 +16,10 @@
     #endif
 
     /** @addtogroup qstimers Software Timers (STimers)
-    * @brief API interface for the Software-Timers module.
+    * @brief API interface for the @ref q_stimers extension.
+    * @pre This extension requires the operating system is previously initialized
+    * with qOS_Setup() with a functional time-base. Please read @ref q_timmingapproach
+    * and @ref q_setupkernel
     *  @{
     */
 

@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 2.62
  * @note This file is part of the QuarkTS distribution.
- * @brief API for the AT Command Line Interface(AT-CLI) module.
+ * @brief API for the @ref qatcli  extension.
  **/
 #ifndef QATCLI_H
     #define QATCLI_H
@@ -20,7 +20,7 @@
     #endif
 
     /** @addtogroup  qatcli AT Command Line Interface
-    * @brief API for the AT Command Line Interface(AT-CLI) module.
+    * @brief API for the @ref qatcli extension.
     *  @{
     */
 
@@ -315,7 +315,7 @@
     * @brief This function subscribes the CLI instance to a specific command
     * with an associated @a Callback function, so that next time the required
     * command is sent to the CLI input, the callback function will be executed.
-    * The CLI module only analyze commands that follows the extended AT-Commands
+    * The CLI parser only analyze commands that follows the extended AT-Commands
     * syntax (the + char can be ignored).
     * @param[in] cli A pointer to the AT Command Line Interface instance
     * @param[in] cmd A pointer to the AT command object.

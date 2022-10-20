@@ -3,7 +3,7 @@
  * @author J. Camilo Gomez C.
  * @version 2.09
  * @note This file is part of the QuarkTS distribution.
- * @brief API interface for the Memory Management module.
+ * @brief API interface for the @ref q_memmang extension.
  **/
 #ifndef QMEMMANG_H
     #define  QMEMMANG_H
@@ -39,7 +39,7 @@
 
 
     /** @addtogroup qmemmang
-    * @brief API interface for the Memory Management module.
+    * @brief API interface for the @ref q_memmang extension.
     *  @{
     */
 

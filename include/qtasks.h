@@ -30,6 +30,9 @@
 
     /** @addtogroup qtaskmanip
     * @brief API interface to manage tasks.
+    * @pre In order to be able to manage a task, make sure the task has already 
+    * been added to the scheduling schemE BY using qOS_Add_Task(), 
+    * qOS_Add_EventTask, qOS_Add_StateMachineTask() or qOS_Add_ATCLITask().
     *  @{
     */
 
@@ -313,7 +316,7 @@
     /** @}*/
 
     /** @addtogroup qnot
-    * @brief API interface for task notifications
+    * @brief API interface for task @ref q_notifications
     *  @{
     */
 
@@ -585,7 +588,7 @@
 
     #if ( Q_QUEUES == 1 )
         /** @addtogroup qqueues
-        * @brief API interface to create and handle queues.
+        * @brief API interface to create and handle @ref q_queues.
         * @{
         */
 
@@ -629,7 +632,7 @@
 
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /** @addtogroup qeventflags
-        * @brief API interface for the built-in-task Event-Flags.
+        * @brief API interface for the built-in-task @ref qeventflags.
         *  @{
         */
 
