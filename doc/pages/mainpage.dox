@@ -15,11 +15,11 @@
 * <b>Features:</b>
 *
 * - Prioritized cooperative scheduling.
-* - Time control (Timed tasks and software timers)
-* - Inter-Task communication primitives, queues, notifications and event-flags.
-* - State-Machines ( hierarchical support )
-* - Co-routines.
-* - AT Command Line Interface (CLI)
+* - Time control (Timed tasks and @ref q_stimers)
+* - Inter-Task communication primitives, @ref q_queues, @ref q_notifications and @ref qeventflags.
+* - @ref q_fsm ( with hierarchical support )
+* - @ref q_qcoroutines.
+* - @ref q_atcli
 *
 * QuarkTS is developed using a formal and rigorous process framed in compliance
 * of the MISRA-C-2012 and CERT coding standard guidelines and complemented with

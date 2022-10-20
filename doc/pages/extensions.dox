@@ -164,7 +164,7 @@
 *
 * @subsection q_fsm_subscribe_states Subscribing states and defining callbacks
 * State machines are constructed by composition, therefore, the topology of a 
-* state machine is determined upon construction. In this module implementation, 
+* state machine is determined upon construction. In this FSM implementation, 
 * there are not distinction between composite states(states containing substates) 
 * and leaf states. All states are potentially composite. The API 
 * qStateMachine_StateSubscribe() should be used to initialize the state and 
@@ -1489,7 +1489,7 @@
 *
 * This function subscribes the CLI instance to a specific command with an associated
 * callback function, so that next time the required command is sent to the CLI input,
-* the callback function will be executed. The CLI module only analyzes commands that
+* the callback function will be executed. The CLI parser only analyzes commands that
 * follow the simplified AT-Commands syntax already described.
 *
 * @subsection q_atcli_cmd_callback Writting a command callback
@@ -1617,7 +1617,7 @@
 * using the UART peripheral with two subscribed commands :
 * - A command to write and read the state of a GPIO pin @c "at+gpio".
 * - A command to retrieve the compilation timestamp @c "at+info".
-* First, lets get started defining the required objects to setup the CLI module:
+* First, lets get started defining the required objects to setup the CLI instance:
 *
 *  @code{.c}
 *  #define CLI_MAX_INPUT_BUFF_SIZE         (128)
@@ -1741,7 +1741,7 @@
 * suffer from fragmentation.
 *
 * To get around this problem, the OS provides its own memory-management 
-* interface for dynamic allocation as a fully kernel-independent module. When 
+* interface for dynamic allocation as a fully kernel-independent extension. When 
 * the application requires RAM, instead of calling @c malloc(), call qMalloc().
 * When RAM is being freed, instead of calling @c free(), use qFree(). Both 
 * functions have the same prototype as the standard C library counterparts.

@@ -21,7 +21,7 @@
 * small, simple, and (most importantly) robust implementation to make it 
 * suitable on resourceconstrained microcontrollers, where a full-preemptive RTOS
 * is an overkill and their inclusion adds unnecessary complexity to the firmware 
-* development. In addition with a state-machines support, co-routines, time 
+* development. In addition with a @ref q_fsm support, @ref q_qcoroutines, time 
 * control and the inter-task communication primitives, QuarkTS provides a modern
 * environment to build stable and predictable event-driven multitasking embedded
 * software. Their modularity and reliability make this OS a great choice to 
@@ -139,9 +139,8 @@
 *
 * @note Although the kernel does not use dynamically-allocated resources 
 * internally, the application writer can create an object in run-time using the
-* safe-heap implementation provided by the memory management module, later 
-* described here. Of course, additional checks must be performed to keep the
-* solution safe.
+* safe-heap implementation provided by the @ref q_memmang extension. Of course, 
+* additional checks must be performed to keep the solution safe.
 *
 * @section q_timmingapproach Timming Approach
 * The kernel implements a <a style="font-weight:bold" href="https://en.wikipedia.org/wiki/Time-triggered_architecture">Time-Triggered Architecture (TTA)</a>
@@ -775,8 +774,8 @@
 * - @c Q_PRESERVE_TASK_ENTRY_ORDER : @a Default: @c 0(disabled). If enabled, 
 * the kernel will preserve the tasks entry order every OS scheduling cycle.
 * - @c Q_MEMORY_MANAGER : @a Default: @c 1(enabled).  Used to enable or disable 
-* the memory management module.
-* - @c Q_BYTE_ALIGNMENT : @a Default: @c 8. Used by the memory management module 
+* the @ref q_memmang extension.
+* - @c Q_BYTE_ALIGNMENT : @a Default: @c 8. Used by the @ref q_memmang extension 
 * to perform the byte-alignment.
 * - @c Q_DEFAULT_HEAP_SIZE : @a Default: @c 2048.  The total amount of heap size
 * for the default memory pool.
@@ -787,7 +786,7 @@ State Machine (FSM) extension.
 * - @c Q_FSM_MAX_NEST_DEPTH : @a Default: @c 5. The max depth of nesting in
 * Finite State Machines (FSM).
 * - @c Q_FSM_MAX_TIMEOUTS : @a Default: @c 3. Max number of timeouts inside a 
-* timeout specification for the Finite State machine (FSM) module.
+* timeout specification for the @ref q_fsm extension.
 * - @c Q_QUEUES : @a Default: @c 1(enabled). Used to enable or disable the 
 * queues APIs for inter-task communication.
 * - @c Q_TRACE_VARIABLES : @a Default: @c 1(enabled). Used to enable or disable 
@@ -796,8 +795,8 @@ State Machine (FSM) extension.
 * trace macros
 * - @c Q_DEBUGTRACE_FULL : @a Default: @c 1(enabled). Used to enable of disable 
 * the extended output for trace macros.
-* - @c Q_ATCLI : @a Default: @c 1(enabled). Used to enable or disable the AT
-* Command Line Interface (CLI) module.
+* - @c Q_ATCLI : @a Default: @c 1(enabled). Used to enable or disable the 
+* @ref q_atcli extension.
 * - @c Q_TASK_COUNT_CYCLES : @a Default: @c 0(disabled). Used to enable or 
 * disable the counting of cycler of a task.
 * - @c Q_TASK_EVENT_FLAGS : @a Default: @c 1(enabled). Used to enable or disable 
