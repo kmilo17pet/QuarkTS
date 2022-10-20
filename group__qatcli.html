@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('group__qatcli.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>API for the AT Command Line Interface(AT-CLI) module.  
+<p>API for the <a class="el" href="group__qatcli.html">AT Command Line Interface</a> extension.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -212,7 +212,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga3a268bc78e828ca17067f89614f61756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup an instance of the AT Command Command Line Interface.  <a href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756">More...</a><br /></td></tr>
 <tr class="separator:ga3a268bc78e828ca17067f89614f61756"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">qATCLI_CmdSubscribe</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, <a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *const cmd, char *textCommand, const <a class="el" href="group__qatcli.html#ga3985464bdb30735d016eb56745622f94">qATCLI_CommandCallback_t</a> cFcn, <a class="el" href="group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144">qATCLI_Options_t</a> cmdOpt, void *param)</td></tr>
-<tr class="memdesc:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI module only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored).  <a href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">More...</a><br /></td></tr>
+<tr class="memdesc:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI parser only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored).  <a href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">More...</a><br /></td></tr>
 <tr class="separator:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2c47148bfb29111e0607a5de910f7dfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga2c47148bfb29111e0607a5de910f7dfc">qATCLI_CmdIterate</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> reload)</td></tr>
 <tr class="memdesc:ga2c47148bfb29111e0607a5de910f7dfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga2c47148bfb29111e0607a5de910f7dfc">More...</a><br /></td></tr>
@@ -237,7 +237,7 @@ Functions</h2></td></tr>
 <tr class="separator:gaa6cb92f56f3bfd470c76fee6d68d5e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p >API for the AT Command Line Interface(AT-CLI) module. </p>
+<p >API for the <a class="el" href="group__qatcli.html">AT Command Line Interface</a> extension. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="gaf24e23cde8cd2566c1971a161b4b689a" name="gaf24e23cde8cd2566c1971a161b4b689a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf24e23cde8cd2566c1971a161b4b689a">&#9670;&nbsp;</a></span>qATCLI_ERRORCODE</h2>
@@ -481,7 +481,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI module only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored). </p>
+<p>This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI parser only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cli</td><td>A pointer to the AT Command Line Interface instance </td></tr>

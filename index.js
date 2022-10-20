@@ -34,16 +34,15 @@ var index =
     ] ],
     [ "Events", "q_events.html", [
       [ "Retrieving the event data", "q_events.html#eventdata", null ],
-      [ "Time Elapsed", "q_events.html#q_event_timeelapsed", null ],
+      [ "The Time-Elapsed event", "q_events.html#q_event_timeelapsed", null ],
       [ "Asynchronous events and inter-task communication", "q_events.html#q_asyncevents", [
         [ "Notifications", "q_events.html#q_notifications", [
           [ "Simple Notifications", "q_events.html#q_simplenot", null ],
-          [ "Queued Notifications", "q_events.html#q_queuednot", null ]
+          [ "Queued Notifications", "q_events.html#q_queuednot", null ],
+          [ "Sending notifications", "q_events.html#q_notificationsend", null ],
+          [ "Spread a notification", "q_events.html#qnotspread", null ]
         ] ],
-        [ "Spread a notification", "q_events.html#qnotspread", [
-          [ "Sending notifications", "q_events.html#q_notificationsend", null ]
-        ] ],
-        [ "Queues", "q_events.html#Queues", [
+        [ "Queues", "q_events.html#q_queues", [
           [ "Setting up a queue", "q_events.html#q_queuesetup", null ],
           [ "Attach a queue to a task", "q_events.html#q_attachqueue", null ],
           [ "A queue example", "q_events.html#q_queueexample", null ]

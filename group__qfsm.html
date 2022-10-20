@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('group__qfsm.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 
-<p>API interface of the Finite State Machine (FSM) module.  
+<p>API interface of the <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> extension.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -316,7 +316,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga1643d2ede924352195fbeafe16d11b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p >API interface of the Finite State Machine (FSM) module. </p>
+<p >API interface of the <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> extension. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ga66ead48ca76fb2f583f2c7aef8371062" name="ga66ead48ca76fb2f583f2c7aef8371062"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga66ead48ca76fb2f583f2c7aef8371062">&#9670;&nbsp;</a></span>QSM_SIGNAL_ENTRY</h2>
@@ -828,7 +828,7 @@ Functions</h2></td></tr>
 
 <p>Install a signal queue to the provided Finite State Machine (FSM). </p>
 <dl class="section pre"><dt>Precondition</dt><dd>Queue object should be previously initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> </dd></dl>
-<dl class="section attention"><dt>Attention</dt><dd>Queue item size == qSM_Signal_t </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>Queue item size = sizeof( <a class="el" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> ) </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>A pointer to the FSM object. </td></tr>
@@ -868,6 +868,7 @@ Functions</h2></td></tr>
 
 <p>Install the Timeout-specification object to target FSM to allow timed signals within states ( See the <a class="el" href="group__qfsm.html#ga53dd98439f50052d457f50f0fccccec4" title="Built-in signal to indicate that a timeout expiration event occurs.">QSM_SIGNAL_TIMEOUT</a> signal ). </p>
 <dl class="section attention"><dt>Attention</dt><dd>This feature its only available if the FSM has a signal-queue installed. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>This feature depends on the q_stimer extension. Make sure the time base is functional. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>You can increase the number of available timeouts instances by changing the <code>Q_FSM_MAX_TIMEOUTS</code> configuration macro inside <code>qconfig.h</code> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556" title="Install a signal queue to the provided Finite State Machine (FSM).">qStateMachine_InstallSignalQueue()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
