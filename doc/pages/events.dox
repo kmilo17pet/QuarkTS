@@ -34,7 +34,7 @@
 * Running tasks at pre-determined rates is desirable in many situations, like 
 * sensory data acquisition, low-level servoing, control loops, action planning
 * and system monitoring.
-* As previusly explained in @ref q_addtasks, you can schedule tasks at any interval 
+* As previously explained in @ref q_addtasks, you can schedule tasks at any interval 
 * your design demands, at least, if the time specification is lower than the 
 * scheduler tick. When an application consists of several periodic tasks with
 * individual timing constraints, a few points must  be taken:
@@ -128,7 +128,7 @@
 * in the base-level instead of the interrupt-level, so interrupt handler only 
 * collect event data and clear the interrupt source and therefore exit promptly 
 * by deferring the processing of the event data to a task, this is also called 
-* Deferred Interrupt Handling.
+* <em>Deferred Interrupt Handling</em>.
 *
 * The other scenario is when a task is performing a specific job and another 
 * task must be awakened to perform some activities when the other task finishes.

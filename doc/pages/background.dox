@@ -3,7 +3,7 @@
 *
 * @section q_about About the OS
 * QuarkTS is an open-source operating system that is built on top of a 
-* cooperative quasistatic scheduler. Its simplified kernel implements a 
+* <em>cooperative quasistatic scheduler</em>. Its simplified kernel implements a 
 * specialized round-robin scheme using a linked-chain approach and an 
 * event-queue to provide true FIFO priority scheduling.
 * 
@@ -80,9 +80,10 @@
 * Besides the previous information, the OS sets the following clarifications 
 * regarding coding policies and naming convention:
 *
-* - All the QuarkTS implementation follows the ANSI C99 standard strictly.
+* - All the QuarkTS implementation follows the <b>ANSI C99</b> standard strictly.
 * - Dynamic memory allocation is banned to conform the industry standards for
-* safety-critical software: MISRA-C, DO178B, IEC 61508, ISO 26262 and so on.
+* safety-critical software: @b MISRA-C, @b DO178B, @b IEC 61508, @b ISO 26262 
+* and so on.
 * - Because errors in string manipulation have long been recognized as a leading
 * source of buffer overflows in C, a number of mitigation strategies have been
 * devised. These include mitigation strategies designed to prevent buffer 
@@ -91,7 +92,7 @@
 * - In line with MISRA guides and for portability between platforms, we use the
 * @c stdint.h with typedefs that indicate size and signedness in place of the basic
 * types.
-* - In line with MISRA guides, unqualified standard @c char and @c char* types 
+* - In line with @b MISRA guides, unqualified standard @c char and @c char* types 
 * are only permitted to hold ASCII characters and strings respectively.
 * - The @c _t suffix its used to denote a type definition (i.e @c qBool_t , 
 * @c qTask_t , @c size_t, ...).
@@ -120,19 +121,19 @@
 * <caption id="multi_row">OS Memory footprint (Measured in a 32-bit MCU)</caption>
 * <tr><th>Functionality  <th>Size(bytes)
 * <tr><td> Kernel, scheduler and task management <td>2637
-* <tr><td> A task node (@c qTask_t) <td>68
+* <tr><td> A task node @c qTask_t <td>68
 * <tr><td> Finite State machines(FSM) handling and related APIs <td>314
-* <tr><td> A FSM object (@c qSM_t) <td> 100
-* <tr><td> A state object (@c qSM_State_t) <td> 36
+* <tr><td> A FSM object @c qSM_t <td> 100
+* <tr><td> A state object @c qSM_State_t <td> 36
 * <tr><td> STimers handling and related APIs <td> 258
-* <tr><td> A STimer object (@c qSTimer_t) <td> 8
+* <tr><td> A STimer object @c qSTimer_t <td> 8
 * <tr><td> Queues handling and related APIs <td> 544
-* <tr><td> A queue object (@c qQueue_t) <td> 28
+* <tr><td> A queue object @c qQueue_t <td> 28
 * <tr><td> Memory management <td> 407
 * <tr><td> A memory pool <td> 28
 * <tr><td> The AT Command Line Interface <td> 1724
-* <tr><td> An AT-CLI instance (@c qATCLI_t) <td> 112
-* <tr><td> An AT-CLI command instance (@c qATCLI_Command_t) <td> 24
+* <tr><td> An AT-CLI instance @c qATCLI_t <td> 112
+* <tr><td> An AT-CLI command instance @c qATCLI_Command_t <td> 24
 * <tr><td> Remaining utilities <td> 2980
 * </table>
 * </center>
@@ -153,15 +154,15 @@
 * For this, the kernel allows you to select the reference clock source among 
 * these two scenarios:
 *
-* - When tick already provided: The reference is supplied by the Hardware 
+* - <b>When tick already provided</b>: The reference is supplied by the Hardware 
 * Abstraction Layer (HAL) of the device. It is the simplest scenario and it 
 * occurs when the framework or SDK of the embedded system includes a HAL-API 
 * that obtains the time elapsed since the system starts, usually in milliseconds
 * and taking a 32-bit counter variable.
-* - When the tick is not provided: The application writer should use bare-metal 
+* - <b>When the tick is not provided</b>: The application writer should use bare-metal 
 * code to configure the device and feed the reference clock manually. Here, a 
-* hardware timer should raise an interrupt periodically. After the Interrupt 
-* Service Routine(ISR) has been implemented using the platform-dependent code, 
+* hardware timer should raise an interrupt periodically. After the <em>Interrupt 
+* Service Routine(ISR)</em> has been implemented using the platform-dependent code, 
 * the qClock_SysTick() API must be called inside. It is recommended that the 
 * reserved ISR should only be used by QuarkTS.
 * 
@@ -219,10 +220,10 @@
 * - Number of execution (iterations)
 * - Event-based data
 *
-* The OS uses a Task Control Block (TCB) to represent each task, storing 
+* The OS uses a <b>Task Control Block (TCB)</b> to represent each task, storing 
 * essential information about task management and execution. Part of this 
 * information also includes link-pointers that allows it to be part of one of 
-* the lists available in the Kernel Control Block (KCB).
+* the lists available in the <b>Kernel Control Block (KCB)</b>.
 * 
 * <center>
 * @htmlonly
@@ -240,7 +241,7 @@
 * <em>Task node illustration</em>
 * </center>
 *
-* Each task performs its activities via a callback function and each of them is 
+* Each task performs its activities via a @a callback function and each of them is 
 * responsible for supporting cooperative multitasking by being “good neighbors”,
 * i.e., running their callback methods quickly in a non-blocking way and 
 * releasing control back to the scheduler as soon as possible (returning).
@@ -248,7 +249,7 @@
 * Every task node, must be defined using the qTask_t data-type and the callback
 * is defined as a function that returns void and takes a qEvent_t data structure
 * as its only parameter (This input argument can be used later to get event 
-* information, see XXX).
+* information, see @ref eventdata).
 *
 *  @code{.c}
 *  qTask_t UserTask;
@@ -337,9 +338,9 @@
 * qOS_Run() is required to execute the scheduling scheme. This function is 
 * responsible to run the following OS main components:
 *
-* - The Scheduler : Select the tasks to be submitted into the system and decide 
+* - <b>The Scheduler</b> : Select the tasks to be submitted into the system and decide 
 * with of them are able to run.
-* - The Dispatcher : When the scheduler completes its job of selecting ready 
+* - <b>The Dispatcher</b> : When the scheduler completes its job of selecting ready 
 * tasks, it is the dispatcher which takes that task to the running state. This 
 * procedure gives a task control over the CPU after it has been selected by the
 * scheduler. This involves the following:
@@ -433,7 +434,7 @@
 * Except for the idle task, a task exists in one of these states. As the 
 * real-time embedded system runs, each task moves from one state to another 
 * (moving it from a list to another), according to the logic of a simple finite
-* state machine (FSM). The figure below illustrates the typical flowchart used 
+* state machine (FSM). The figure above illustrates the typical flowchart used 
 * by QuarkTS to handle the task's states, with brief descriptions of state 
 * transitions, additionally you may also notice the interaction between the 
 * scheduler and the dispatcher.

@@ -265,14 +265,14 @@
 *  @endcode 
 *
 * As shown above, the return value represents the exit status of the state, and 
-* it can be handled with an additionalsurrounding callback function \f$ S_u \f$ 
+* it can be handled with an additional surrounding callback function \f$ S_u \f$ 
 * established at the moment of the FSM setup. The values allowed to return are
 * listed below.
 *
-* - ::qSM_STATUS_EXIT_SUCCESS.
-* - ::qSM_STATUS_EXIT_FAILURE.
-* - ::qSM_STATUS_SIGNAL_HANDLED.
-* - Any other integer value between @c -32762 and @c 32767 .
+* - ::qSM_STATUS_EXIT_SUCCESS
+* - ::qSM_STATUS_EXIT_FAILURE
+* - ::qSM_STATUS_SIGNAL_HANDLED
+* - Any other integer value between @c -32762 and @c 32767
 *
 * To code initial transitions, application writer should catch the 
 * #QSM_SIGNAL_START, perform the required actions and then designate the target 
@@ -343,7 +343,7 @@
 *  @endcode 
 *
 * As you can see in the example below, the surrounding execution case its 
-* checked through the FSM handle by reading the @c Status field.
+* verified through the FSM handle by reading the @c Status field.
 *
 * @subsection q_fsm_astask Adding a state machine as a task
 * The best strategy to run a FSM is delegating it to a task. For this, the 
@@ -514,21 +514,21 @@
 *
 * To send a signal to a state machine, use the qStateMachine_SendSignal() API.
 * This API can manage their delivery to one of these possible destinations: 
-* an exclusion variable or a signal queue:
-* - An exclusion variable its a variable with an important distinction, it can 
-* only be written if it is empty. The empty situation only happens, if the 
-* engine has already propagated the signal within the state machine. If the 
+* an <em>exclusion variable</em> or a <em>signal queue</em>:
+* - An <em>exclusion variable</em> its a variable with an important distinction,
+* it can only be written if it is empty. The empty situation only happens, if 
+* the engine has already propagated the signal within the state machine. If the 
 * signal has not yet propagated, the signal sending cannot be carried out.
-* - When a signal queue is used, the signal is put into a FIFO structure and 
-* the engine takes care of dispatching the signal in an orderly manner. The only
-* situation where the signal cannot be delivered is if the queue is full. 
+* - When a <em>signal queue</em> is used, the signal is put into a FIFO structure
+* and the engine takes care of dispatching the signal in an orderly manner. The 
+* only situation where the signal cannot be delivered is if the queue is full. 
 * This its the preferred destination, as long as there is a previously 
 * installed signal queue.
 *
 * @note If the signal-queue its available, the qStateMachine_SendSignal() will
 * always select it as destination.
 * @warning If a state-machine, a task, or another context sends a signal to a 
-* full queue, an queue-overflow occurs. The result of the queue overflow it that
+* full queue, a queue-overflow occurs. The result of the queue overflow it that
 * the state-machine drops the new signal.
 * 
 * @subsection q_fsminstallsignalqueue Installing a signal queue
@@ -609,10 +609,10 @@
 *  @endcode 
 *
 * The return value is checked after to allow or reject the state transition. The
-* application writer can code a boolean expression to implement statechart 
-* guards or perform some pre-transition procedure.
+* application writer can code a boolean expression to implement 
+* <em>statechart guards</em> or perform some pre-transition procedure.
 * 
-* @remark If a signal-action returns qFalse, the event-signal is rejected, 
+* @remark If a signal-action returns \ref qFalse, the event-signal is rejected, 
 * preventing the state transition to be performed in the calling FSM.
 * @note When a transition entry is defined. the signal-action should be located
 * as the third parameter of the entry. Please see the transition layout. A
