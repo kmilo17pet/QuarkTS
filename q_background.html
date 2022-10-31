@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 </div>
 <div class="textblock"><h1><a class="anchor" id="q_about"></a>
 About the OS</h1>
-<p >QuarkTS is an open-source operating system that is built on top of a cooperative quasistatic scheduler. Its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority scheduling.</p>
+<p >QuarkTS is an open-source operating system that is built on top of a <em>cooperative quasistatic scheduler</em>. Its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority scheduling.</p>
 <p ><b> <b>Why</b> cooperative? </b></p>
 <p >Rather than having preemption, tasks manage their own life-cycle. This bring significant benefits, fewer re-entrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer, so you mostly do not need to worry about pitfalls of the concurrent approach(resourcesharing, races, deadlocks, etc...).</p>
 <p ><b> What is it made for? </b></p>
@@ -189,11 +189,11 @@ Development process and coding starndard</h2>
 <p >Simply using QuarkTS in an application, does not mean developers can make a claim related to the development process and compliance of the OS to any requirements or product specification, without first, following a recognized system wide conformance verification process. Conformance evidence must then be presented, audited and accepted by a recognized and relevant independent assessment organization. Without undergoing this process of due diligence, no claim can be made as to the suitability of QuarkTS to be used in any safety or otherwise commercially critical application.</p>
 <p >Besides the previous information, the OS sets the following clarifications regarding coding policies and naming convention:</p>
 <ul>
-<li>All the QuarkTS implementation follows the ANSI C99 standard strictly.</li>
-<li>Dynamic memory allocation is banned to conform the industry standards for safety-critical software: MISRA-C, DO178B, IEC 61508, ISO 26262 and so on.</li>
+<li>All the QuarkTS implementation follows the <b>ANSI C99</b> standard strictly.</li>
+<li>Dynamic memory allocation is banned to conform the industry standards for safety-critical software: <b>MISRA-C</b>, <b>DO178B</b>, <b>IEC</b> 61508, <b>ISO</b> 26262 and so on.</li>
 <li>Because errors in string manipulation have long been recognized as a leading source of buffer overflows in C, a number of mitigation strategies have been devised. These include mitigation strategies designed to prevent buffer overflows from occurring and strategies designed to detect buffer overflows and securely recover without allowing the failure to be exploited.</li>
 <li>In line with MISRA guides and for portability between platforms, we use the <code>stdint.h</code> with typedefs that indicate size and signedness in place of the basic types.</li>
-<li>In line with MISRA guides, unqualified standard <code>char</code> and <code>char*</code> types are only permitted to hold ASCII characters and strings respectively.</li>
+<li>In line with <b>MISRA</b> guides, unqualified standard <code>char</code> and <code>char*</code> types are only permitted to hold ASCII characters and strings respectively.</li>
 <li>The <code>_t</code> suffix its used to denote a type definition (i.e <code>qBool_t</code> , <code><a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a></code> , <code>size_t</code>, ...).</li>
 <li>Functions, macros, enum values and data-types are prefixed q. (i.e. <code>qFunction</code>, <code>qEnumValue</code>, <code>QCONSTANT</code>, <code>qType_t</code>, ...)</li>
 <li>Other than the pre-fix, most macros used for constants are written in all upper case.</li>
@@ -211,21 +211,21 @@ Memory usage</h2>
 <tr>
 <td>Kernel, scheduler and task management </td><td>2637 </td></tr>
 <tr>
-<td>A task node (<code><a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a></code>) </td><td>68 </td></tr>
+<td>A task node <code><a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a></code> </td><td>68 </td></tr>
 <tr>
 <td>Finite State machines(FSM) handling and related APIs </td><td>314 </td></tr>
 <tr>
-<td>A FSM object (<code><a class="el" href="structq_s_m__t.html" title="A FSM(Finite State Machine) object.">qSM_t</a></code>) </td><td>100 </td></tr>
+<td>A FSM object <code><a class="el" href="structq_s_m__t.html" title="A FSM(Finite State Machine) object.">qSM_t</a></code> </td><td>100 </td></tr>
 <tr>
-<td>A state object (<code><a class="el" href="structq_s_m___state__t.html" title="A state object.">qSM_State_t</a></code>) </td><td>36 </td></tr>
+<td>A state object <code><a class="el" href="structq_s_m___state__t.html" title="A state object.">qSM_State_t</a></code> </td><td>36 </td></tr>
 <tr>
 <td>STimers handling and related APIs </td><td>258 </td></tr>
 <tr>
-<td>A STimer object (<code><a class="el" href="structq_s_timer__t.html" title="A STimer(Software Timer) object.">qSTimer_t</a></code>) </td><td>8 </td></tr>
+<td>A STimer object <code><a class="el" href="structq_s_timer__t.html" title="A STimer(Software Timer) object.">qSTimer_t</a></code> </td><td>8 </td></tr>
 <tr>
 <td>Queues handling and related APIs </td><td>544 </td></tr>
 <tr>
-<td>A queue object (<code><a class="el" href="structq_queue__t.html" title="A Queue object.">qQueue_t</a></code>) </td><td>28 </td></tr>
+<td>A queue object <code><a class="el" href="structq_queue__t.html" title="A Queue object.">qQueue_t</a></code> </td><td>28 </td></tr>
 <tr>
 <td>Memory management </td><td>407 </td></tr>
 <tr>
@@ -233,9 +233,9 @@ Memory usage</h2>
 <tr>
 <td>The AT Command Line Interface </td><td>1724 </td></tr>
 <tr>
-<td>An AT-CLI instance (<code><a class="el" href="structq_a_t_c_l_i__t.html" title="An AT Command Line Interface (CLI) object.">qATCLI_t</a></code>) </td><td>112 </td></tr>
+<td>An AT-CLI instance <code><a class="el" href="structq_a_t_c_l_i__t.html" title="An AT Command Line Interface (CLI) object.">qATCLI_t</a></code> </td><td>112 </td></tr>
 <tr>
-<td>An AT-CLI command instance (<code><a class="el" href="structq_a_t_c_l_i___command__t.html" title="An AT-Command object.">qATCLI_Command_t</a></code>) </td><td>24 </td></tr>
+<td>An AT-CLI command instance <code><a class="el" href="structq_a_t_c_l_i___command__t.html" title="An AT-Command object.">qATCLI_Command_t</a></code> </td><td>24 </td></tr>
 <tr>
 <td>Remaining utilities </td><td>2980 </td></tr>
 </table>
@@ -245,8 +245,8 @@ Timming Approach</h1>
 <p >The kernel implements a <a href="https://en.wikipedia.org/wiki/Time-triggered_architecture" style="font-weight:bold">Time-Triggered Architecture (TTA)</a> , in which the tasks are triggered by comparing the corresponding task-time with a reference clock. The reference clock must be real-time and follow a monotonic behavior. Usually, all embedded systems can provide this kind of reference with a constant tick generated by a periodic background hardware-timer, typically, at 1Khz (1mS tick).</p>
 <p >For this, the kernel allows you to select the reference clock source among these two scenarios:</p>
 <ul>
-<li>When tick already provided: The reference is supplied by the Hardware Abstraction Layer (HAL) of the device. It is the simplest scenario and it occurs when the framework or SDK of the embedded system includes a HAL-API that obtains the time elapsed since the system starts, usually in milliseconds and taking a 32-bit counter variable.</li>
-<li>When the tick is not provided: The application writer should use bare-metal code to configure the device and feed the reference clock manually. Here, a hardware timer should raise an interrupt periodically. After the Interrupt Service Routine(ISR) has been implemented using the platform-dependent code, the <a class="el" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53" title="Feed the system tick.">qClock_SysTick()</a> API must be called inside. It is recommended that the reserved ISR should only be used by QuarkTS.</li>
+<li><b>When tick already provided</b>: The reference is supplied by the Hardware Abstraction Layer (HAL) of the device. It is the simplest scenario and it occurs when the framework or SDK of the embedded system includes a HAL-API that obtains the time elapsed since the system starts, usually in milliseconds and taking a 32-bit counter variable.</li>
+<li><b>When the tick is not provided</b>: The application writer should use bare-metal code to configure the device and feed the reference clock manually. Here, a hardware timer should raise an interrupt periodically. After the <em>Interrupt Service Routine(ISR)</em> has been implemented using the platform-dependent code, the <a class="el" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53" title="Feed the system tick.">qClock_SysTick()</a> API must be called inside. It is recommended that the reserved ISR should only be used by QuarkTS.</li>
 </ul>
 <h1><a class="anchor" id="q_setupkernel"></a>
 Setting up the OS kernel</h1>
@@ -292,7 +292,7 @@ Tasks</h1>
 <li>Number of execution (iterations)</li>
 <li>Event-based data</li>
 </ul>
-<p >The OS uses a Task Control Block (TCB) to represent each task, storing essential information about task management and execution. Part of this information also includes link-pointers that allows it to be part of one of the lists available in the Kernel Control Block (KCB).</p>
+<p >The OS uses a <b>Task Control Block (TCB)</b> to represent each task, storing essential information about task management and execution. Part of this information also includes link-pointers that allows it to be part of one of the lists available in the <b>Kernel Control Block (KCB)</b>.</p>
 <center>  
   <!DOCTYPE html>
   <html>
@@ -304,8 +304,8 @@ Tasks</h1>
   <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
   </body>
   </html>
-   <em>Task node illustration</em> </center><p >Each task performs its activities via a callback function and each of them is responsible for supporting cooperative multitasking by being “good neighbors”, i.e., running their callback methods quickly in a non-blocking way and releasing control back to the scheduler as soon as possible (returning).</p>
-<p >Every task node, must be defined using the <a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a> data-type and the callback is defined as a function that returns void and takes a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> data structure as its only parameter (This input argument can be used later to get event information, see XXX).</p>
+   <em>Task node illustration</em> </center><p >Each task performs its activities via a <em>callback</em> function and each of them is responsible for supporting cooperative multitasking by being “good neighbors”, i.e., running their callback methods quickly in a non-blocking way and releasing control back to the scheduler as soon as possible (returning).</p>
+<p >Every task node, must be defined using the <a class="el" href="structq_task__t.html" title="A task node object.">qTask_t</a> data-type and the callback is defined as a function that returns void and takes a <a class="el" href="structq_event__t.html" title="The task argument with all the regarding information of the task execution.">qEvent_t</a> data structure as its only parameter (This input argument can be used later to get event information, see <a class="el" href="q_events.html#eventdata">Retrieving the event data</a>).</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> UserTask;</div>
 <div class="line"><span class="keywordtype">void</span> UserTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> eventdata ) {</div>
 <div class="line">    <span class="comment">// TODO : Task code</span></div>
@@ -345,8 +345,8 @@ Removing a task</h2>
 Running the OS</h1>
 <p >After preparing the multitasking environment for your application, a call to <a class="el" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a" title="Executes the scheduling scheme. It must be called once after the task pool has been defined.">qOS_Run()</a> is required to execute the scheduling scheme. This function is responsible to run the following OS main components:</p>
 <ul>
-<li>The Scheduler : Select the tasks to be submitted into the system and decide with of them are able to run.</li>
-<li>The Dispatcher : When the scheduler completes its job of selecting ready tasks, it is the dispatcher which takes that task to the running state. This procedure gives a task control over the CPU after it has been selected by the scheduler. This involves the following:<ol type="1">
+<li><b>The Scheduler</b> : Select the tasks to be submitted into the system and decide with of them are able to run.</li>
+<li><b>The Dispatcher</b> : When the scheduler completes its job of selecting ready tasks, it is the dispatcher which takes that task to the running state. This procedure gives a task control over the CPU after it has been selected by the scheduler. This involves the following:<ol type="1">
 <li>Preparing the resources before the task execution</li>
 <li>Execute the task activities (via the callback function)</li>
 <li>Releasing the resources after the task execution</li>
@@ -394,7 +394,7 @@ Global states and scheduling rules</h1>
   <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
   </body>
   </html>
-   <em>OS lists</em> </center><p >Except for the idle task, a task exists in one of these states. As the real-time embedded system runs, each task moves from one state to another (moving it from a list to another), according to the logic of a simple finite state machine (FSM). The figure below illustrates the typical flowchart used by QuarkTS to handle the task's states, with brief descriptions of state transitions, additionally you may also notice the interaction between the scheduler and the dispatcher.</p>
+   <em>OS lists</em> </center><p >Except for the idle task, a task exists in one of these states. As the real-time embedded system runs, each task moves from one state to another (moving it from a list to another), according to the logic of a simple finite state machine (FSM). The figure above illustrates the typical flowchart used by QuarkTS to handle the task's states, with brief descriptions of state transitions, additionally you may also notice the interaction between the scheduler and the dispatcher.</p>
 <p >The OS assumes that none of the tasks does a block anywhere during the <code>qRunning</code> state. Based on the round-robin fashion, each ready task runs in turn from every ready lists. The developer should take care to monitor their system execution times to make sure during the worst case, when all tasks have to execute, all of the deadlines are still met.</p>
 <h2><a class="anchor" id="q_osrules"></a>
 Rules</h2>
