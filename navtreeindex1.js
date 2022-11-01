@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"group__qmemmang.html":[1,1,4],
 "group__qmemmang.html#ga3e181f0109a557d2466895b5ea44bc98":[1,1,4,1],
 "group__qmemmang.html#ga3f069d7c779da101ca694b5d630e6233":[1,1,4,2],
 "group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4":[1,1,4,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "q_extensions.html#q_fsmhandler":[0,2,1,3],
 "q_extensions.html#q_fsminstallsignalqueue":[0,2,1,8],
 "q_extensions.html#q_fsmsendsignals":[0,2,1,7],
-"q_extensions.html#q_fsmsetup":[0,2,1,1],
-"q_extensions.html#q_memmang":[0,2,4]
+"q_extensions.html#q_fsmsetup":[0,2,1,1]
 };

@@ -164,6 +164,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a> (char *dst, const char *src, size_t maxlen)</td></tr>
 <tr class="memdesc:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies up to <em></em>(maxlen - 1) characters from the null-terminated string <em>src</em> to <em>dst</em>, null-terminating the result.  <a href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">More...</a><br /></td></tr>
 <tr class="separator:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91f6e5f106debf94a14eb1f510f1788c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga91f6e5f106debf94a14eb1f510f1788c">qIOUtil_StrlCat</a> (char *dst, const char *src, size_t maxlen)</td></tr>
+<tr class="memdesc:ga91f6e5f106debf94a14eb1f510f1788c"><td class="mdescLeft">&#160;</td><td class="mdescRight">appends no more than <em>maxlen−len(dst)−1</em> characters pointed to by <em>src</em> into the array pointed to by <em>dst</em> and always terminates the result with a null character if <em>maxlen</em> is greater than zero. Both the strings <em>dst</em> and <em>src</em> must be terminated with a null character on entry the function and a byte for the terminating null should be included in <em>maxlen</em>.  <a href="group__qioutils.html#ga91f6e5f106debf94a14eb1f510f1788c">More...</a><br /></td></tr>
+<tr class="separator:ga91f6e5f106debf94a14eb1f510f1788c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaa3da2ef013ab5c1c2c52a18bdb1b87b8">qIOUtil_SwapBytes</a> (void *pData, const size_t n)</td></tr>
 <tr class="memdesc:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the endianess for n bytes of the specified memory location.  <a href="group__qioutils.html#gaa3da2ef013ab5c1c2c52a18bdb1b87b8">More...</a><br /></td></tr>
 <tr class="separator:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -940,6 +943,52 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the first occurrence of character in <em>s</em>. If the character is not found, the function returns a null pointer. </dd></dl>
+
+</div>
+</div>
+<a id="ga91f6e5f106debf94a14eb1f510f1788c" name="ga91f6e5f106debf94a14eb1f510f1788c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91f6e5f106debf94a14eb1f510f1788c">&#9670;&nbsp;</a></span>qIOUtil_StrlCat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t qIOUtil_StrlCat </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>appends no more than <em>maxlen−len(dst)−1</em> characters pointed to by <em>src</em> into the array pointed to by <em>dst</em> and always terminates the result with a null character if <em>maxlen</em> is greater than zero. Both the strings <em>dst</em> and <em>src</em> must be terminated with a null character on entry the function and a byte for the terminating null should be included in <em>maxlen</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The behavior of this function is undefined if copying takes place between objects that overlap. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>The destination string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>The source string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to copy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the number of characters it tried to copy, which is the sum of the lengths of the strings <em>dst</em> and <em>src</em> or <em>n</em>, whichever is smaller. </dd></dl>
 
 </div>
 </div>

@@ -18,6 +18,7 @@ var group__qioutils =
     [ "qIOUtil_PrintXData", "group__qioutils.html#ga47255c3d0056220a3ae9080ed42da6f3", null ],
     [ "qIOUtil_QBtoA", "group__qioutils.html#ga9c88ddfabf9c7d92e6fd41f4086103aa", null ],
     [ "qIOUtil_StrChr", "group__qioutils.html#ga224f984a4fd30697a57a3fa87fac0865", null ],
+    [ "qIOUtil_StrlCat", "group__qioutils.html#ga91f6e5f106debf94a14eb1f510f1788c", null ],
     [ "qIOUtil_StrlCpy", "group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d", null ],
     [ "qIOUtil_StrLen", "group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f", null ],
     [ "qIOUtil_SwapBytes", "group__qioutils.html#gaa3da2ef013ab5c1c2c52a18bdb1b87b8", null ],
