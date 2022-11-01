@@ -114,6 +114,31 @@ size_t qIOUtil_StrlCpy( char * dst,
     return srclen;
 }
 /*============================================================================*/
+size_t qIOUtil_StrlCat( char *dst,
+                       const char *src,
+                       size_t maxlen )
+{
+    const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+    const size_t dstlen = qIOUtil_StrLen( dst, maxlen);
+    size_t retVal;
+
+    if ( dstlen == maxlen ) {
+        retVal = maxlen + srclen;
+    }
+    else {
+        if ( srclen < ( maxlen - dstlen ) ) {
+            (void)memcpy( &dst[ dstlen ], src, srclen + 1u ) ;
+        } 
+        else {
+            (void)memcpy( &dst[ dstlen ], src, maxlen - 1u );
+            dst[ dstlen + maxlen - 1u ] = '\0';
+        }
+        retVal = dstlen + srclen;
+    }
+
+    return retVal;
+}
+/*============================================================================*/
 /*perform conversion of unsigned integer to ASCII. NULL Terminator not included*/
 static size_t qIOUtil_xBase_U32toA( qUINT32_t num,
                                     char* str,

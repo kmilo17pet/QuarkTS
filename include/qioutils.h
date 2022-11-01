@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.66
+ * @version 4.67
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/
@@ -124,6 +124,26 @@
     */
     size_t qIOUtil_StrlCpy( char * dst,
                             const char * src,
+                            size_t maxlen );
+
+    /**
+    * @brief appends no more than @a maxlen−len(dst)−1 characters pointed to by 
+    * @a src into the array pointed to by @a dst and always terminates the 
+    * result with a null character if @a maxlen is greater than zero. Both 
+    * the strings @a dst and @a src must be terminated with a null character on
+    * entry the function and a byte for the terminating null should be included 
+    * in @a maxlen. 
+    * @note The behavior of this function is undefined if copying takes
+    * place between objects that overlap.
+    * @param[out] dst The destination string
+    * @param[in] src The source string
+    * @param[in] maxlen Maximum number of characters to copy
+    * @return returns the number of characters it tried to copy, which is the 
+    * sum of the lengths of the strings @a dst and @a src or @a n, whichever 
+    * is smaller.
+    */
+    size_t qIOUtil_StrlCat( char *dst,
+                            const char *src,
                             size_t maxlen );
 
     /**
