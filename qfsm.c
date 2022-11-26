@@ -39,7 +39,7 @@ static void qStateMachine_TracePathAndRetraceEntry( qSM_t * const m,
 static void qStateMachine_TraceOnStart( qSM_t * const m,
                                         qSM_State_t **entryPath );
 static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m,
-                                                      const qSM_Signal_t sig );
+                                                   const qSM_Signal_t sig );
 static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState,
                                                 qSM_UnprotectedHandler_t h );
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );

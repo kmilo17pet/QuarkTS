@@ -31,8 +31,8 @@
     /** @addtogroup qtaskmanip
     * @brief API interface to manage tasks.
     * @pre In order to be able to manage a task, make sure the task has already 
-    * been added to the scheduling schemE BY using qOS_Add_Task(), 
-    * qOS_Add_EventTask, qOS_Add_StateMachineTask() or qOS_Add_ATCLITask().
+    * been added to the scheduling scheme bt using qOS_Add_Task(), 
+    * qOS_Add_EventTask(), qOS_Add_StateMachineTask() or qOS_Add_ATCLITask().
     *  @{
     */
 
