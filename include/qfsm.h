@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.35
+ * @version 5.40
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the @ref q_fsm extension.
  **/
@@ -59,30 +59,30 @@
     * @note Transitions by setting the qSM_Handler_t::NextState member are not
     * allowed here
     */
-    #define QSM_SIGNAL_START        ( (qSM_Signal_t)0xFFFFFFFFuL )
+    #define QSM_SIGNAL_START        ( (qSM_SigId_t)0xFFFFFFFFuL )
     /**
     * @brief Built-in signal to indicate if the current state has just exit to
     * another state.
     * @note Transitions are not allowed here
     */
-    #define QSM_SIGNAL_EXIT         ( (qSM_Signal_t)0xFFFFFFFEuL )
+    #define QSM_SIGNAL_EXIT         ( (qSM_SigId_t)0xFFFFFFFEuL )
     /**
     * @brief Built-in signal to indicate if the current state has just entered
     * from another state.
     * @note Transitions are not allowed here
     */
-    #define QSM_SIGNAL_ENTRY        ( (qSM_Signal_t)0xFFFFFFFDuL )
+    #define QSM_SIGNAL_ENTRY        ( (qSM_SigId_t)0xFFFFFFFDuL )
     /**
     * @brief Built-in signal to indicate that there is not signal available.
     */
-    #define QSM_SIGNAL_NONE         ( (qSM_Signal_t)0xFFFFFFFCuL )
+    #define QSM_SIGNAL_NONE         ( (qSM_SigId_t)0xFFFFFFFCuL )
     /**
     * @brief Built-in signal to indicate that a timeout expiration event occurs.
     * @param index The index of the timeout (0, 1, 2... ( @c Q_FSM_MAX_TIMEOUTS-1 ) )
     */
     #define QSM_SIGNAL_TIMEOUT(index)                                       \
-    ( (qSM_Signal_t)0xFFFFFFFBuL - (qSM_Signal_t)( Q_FSM_MAX_TIMEOUTS - 1 ) \
-    + (qSM_Signal_t)(index) )                                               \
+    ( (qSM_SigId_t)0xFFFFFFFBuL - (qSM_SigId_t)( Q_FSM_MAX_TIMEOUTS - 1 )   \
+    + (qSM_SigId_t)(index) )                                                \
 
     /**
     * @brief Timeout-specification option. Should be used to specify the timeout
@@ -132,12 +132,15 @@
     /**
     * @brief Minimum value that can be used for an user-defined signal
     */
-    #define QSM_SIGNAL_RANGE_MIN        ( (qSM_Signal_t)0u )
+    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_SigId_t)0u )
     /**
     * @brief Maximum value that can be used for an user-defined signal
     */
     #define QSM_SIGNAL_RANGE_MAX                                            \
-    ( (qSM_Signal_t)( 0xFFFFFFFBuL - (qSM_Signal_t)Q_FSM_MAX_TIMEOUTS ) )   \
+    ( (qSM_SigId_t)( 0xFFFFFFFBuL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )   \
+
+    #define QSM_SIGNAL_TM_RMAX      ( (qSM_SigId_t)0xFFFFFFFBuL )
+    #define QSM_SIGNAL_TM_RMIN      QSM_SIGNAL_TIMEOUT(0)
 
     /**
     * @brief The start value for an user-defined signal
@@ -145,9 +148,17 @@
     #define QSM_SIGNAL_USER             ( QSM_SIGNAL_RANGE_MIN )
 
     /**
+     * @brief The type for signal ID.
+     */
+    typedef qUINT32_t qSM_SigId_t;
+
+    /**
      * @brief The type to be used as a container variable for a signal.
      */
-    typedef qUINT32_t qSM_Signal_t;
+    typedef struct _qSM_Signal_s {
+        qSM_SigId_t id;                         /**< The ID of the signal */
+        void *sigData;                          /**< The data associated to the signal*/
+    } qSM_Signal_t;
 
     /**
     * @brief This enumeration defines the built-in state-execution status values
@@ -183,7 +194,8 @@
         pAttrib void *state;                                                \
         pAttrib void *Data;                                                 \
         pAttrib void *StateData;                                            \
-        pAttrib qSM_Signal_t Signal;                                        \
+        pAttrib void *SignalData;                                           \
+        pAttrib qSM_SigId_t Signal;                                         \
         pAttrib qSM_Status_t Status;                                        \
         qSM_TransitionHistoryMode_t TransitionHistory;                      \
     }                                                                       \
@@ -217,7 +229,8 @@
         const void *state;                              /**< A pointer to the state that its currently evaluated.*/
         const void *Data;                               /**< The user storage pointer. If the FSM its running as a task, this will point to the qEvent_t structure*/
         const void *StateData;                          /**< The state user storage pointer*/
-        const qSM_Signal_t Signal;                      /**< The signal that its currently evaluated*/
+        const void *SignalData;                         /**< The data with which the signal is associated*/
+        const qSM_SigId_t Signal;                       /**< The signal that its currently evaluated*/
         const qSM_Status_t Status;                      /**< The last state return status. Only available in the surrounding callback. */
         qSM_TransitionHistoryMode_t TransitionHistory;  /**< Used to set the behavior of a transition to history. ::qSM_TRANSITION_NO_HISTORY by default*/
     }
@@ -391,10 +404,11 @@
     * transition table.
     */
     typedef struct _qSM_Transition_s {
-        qSM_Signal_t xSignal;                               /**< The signal that will produce the transition*/
+        qSM_SigId_t xSignal;                                /**< The signal that will produce the transition*/
         qSM_SignalAction_t guard;                           /**< The signal guard/action*/
         qSM_State_t *nextState;                             /**< A pointer to the next state after the transition*/
         qSM_TransitionHistoryMode_t historyMode;            /**< To set the history mode for a transition*/
+        void *signalData;                                   /**< Data associated with the signal*/
     }
     qSM_Transition_t;
 
@@ -505,6 +519,7 @@
     * @note The signal-queue has the highest precedence.
     * @param[in] m A pointer to the FSM object.
     * @param[in] sig The user-defined signal.
+    * @param[in] sData The data associated to the signal.
     * @param[in] isUrgent If #qTrue, the signal will be sent to the front of the
     * queue. (only if the there is a signal-queue available)
     * @return #qTrue if the provided signal was successfully delivered to the
@@ -512,7 +527,8 @@
     * cannot be inserted because it is full.
     */
     qBool_t qStateMachine_SendSignal( qSM_t * const m,
-                                      qSM_Signal_t sig,
+                                      qSM_SigId_t sig,
+                                      void *sData,
                                       const qBool_t isUrgent );
 
     /**

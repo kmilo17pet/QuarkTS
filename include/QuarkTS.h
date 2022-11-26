@@ -1,13 +1,13 @@
 /*!
  * @file QuarkTS.h
  * @author J. Camilo Gomez C.
- * @version 2.11
+ * @version 2.12
  * @note This file is part of the QuarkTS distribution.
  * @brief Global inclusion header
  **/
 
 /*
-QuarkTS V7.2.4 - An open-source OS for small embedded applications.
+QuarkTS V7.3.1 - An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant
 
@@ -45,8 +45,8 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 #ifndef QuarkTS_H
     #define QuarkTS_H
 
-    #define QUARKTS_VERSION         "7.2.2"
-    #define QUARKTS_VERNUM          ( 0722u )
+    #define QUARKTS_VERSION         "7.3.1"
+    #define QUARKTS_VERNUM          ( 0731u )
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"
