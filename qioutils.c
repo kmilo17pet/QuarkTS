@@ -434,50 +434,47 @@ char* qIOUtil_FtoA( qFloat32_t num,
                     qUINT8_t precision ) /*limited to precision=10*/
 {
     if ( NULL != str ) {
-        if ( ( num >= 0.0f ) && ( num < 1.0E-38 ) ) { /*handle the 0.0f*/
+        qUINT32_t u = 0u;
+
+        (void)memcpy( &u, &num, sizeof(qUINT32_t) );
+        u &= 0x7FFFFFFFu;
+
+        if ( 0u == u ) {
             (void)qIOUtil_StrlCpy( str, "0.0", 4 );
         }
-        else if ( qTrue == qIOUtil_IsInf( num ) ) { /*handle the infinity*/
-            str[ 0 ] = ( num > 0.0f )? '+' : '-'; /*MISRAC2004-17.4_b deviation allowed*/
-            (void)qIOUtil_StrlCpy( &str[1] , "inf", 4 );
-        }
-        else if ( qTrue == qIOUtil_IsNan( num ) ) { /*handle the NAN*/
-            (void)qIOUtil_StrlCpy( str, "nan", 4 );
-        }
-        else {
+        else if ( u < 0x7F800000u ) {
             qUINT32_t intPart;
             size_t i = 0u;
 
             precision = qFLM_ClipUpper( precision, Q_MAX_FTOA_PRECISION );
-            if ( num < 0.0f ) { /*handle the negative numbers*/
-                num = -num; /*leave it positive for the convert method*/
-                str[ i++ ] = '-'; /*add the negative sign*/
+            if ( num < 0.0f ) {
+                num = -num;
+                str[ i++ ] = '-';
             }
 
-            intPart = (qUINT32_t)num; /*get the integer parts*/
+            intPart = (qUINT32_t)num;
             /*cstat -CERT-FLP36-C*/
-            /*
-            get the floating-point part subtracting the integer part from the
-            original value
-            */
-            num -= (qFloat32_t)intPart; /*CERT-FLP36-C deviation allowed*/
-            /*convert the integer part in decimal form*/
+            num -= (qFloat32_t)intPart;
             i += qIOUtil_xBase_U32toA( intPart, &str[ i ], 10u );
-            if ( precision > 0u ) { /*decimal part*/
-                str[ i++ ] = '.'; /*MISRAC2004-17.4_b deviation allowed*/
-                while ( 0u != precision-- ) { /*convert until precision reached*/
+            if ( precision > 0u ) {
+                str[ i++ ] = '.';
+                while ( 0u != precision-- ) {
                     char c;
-                    /*start moving the float part one by one multiplying by 10*/
                     num *= 10.0f;
-                    c = (char)num; /*get the bcd byte*/
-                    /*convert to ASCII and put it inside the buffer*/
+                    c = (char)num;
                     str[ i++ ] = (char)( (qUINT8_t)c + '0' );
                     num -= (qFloat32_t)c;
                 }
             }
             /*cstat +CERT-FLP36-C*/
-            /*put the null char*/
-            str[ i ] = (char)'\0'; /*MISRAC2004-17.4_b deviation allowed*/
+            str[ i ] = (char)'\0';
+        }
+        else if ( 0x7F800000U == u ) {
+            str[ 0 ] = ( num > 0.0f )? '+' : '-';
+            (void)qIOUtil_StrlCpy( &str[1] , "inf", 4 );
+        }
+        else {
+            (void)qIOUtil_StrlCpy( str, "nan", 4 );
         }
     }
 
@@ -581,29 +578,5 @@ char* qIOUtil_QBtoA( const qBool_t num,
     }
 
     return str;
-}
-/*============================================================================*/
-qBool_t qIOUtil_IsInf( const qFloat32_t f )
-{
-    qUINT32_t u = 0uL;
-    const qUINT32_t infP = 0x7F800000uL;
-    const qUINT32_t infN = 0xFF800000uL;
-
-    (void)memcpy( &u, &f, sizeof(u) );
-
-    return ( ( infP == u ) || ( infN == u ) )? qTrue : qFalse;
-}
-/*============================================================================*/
-qBool_t qIOUtil_IsNan( const qFloat32_t f )
-{
-    qUINT32_t u = 0uL;
-    const qUINT32_t mask1 = 0x7F800000uL;
-    const qUINT32_t mask2 = 0x007FFFFFuL;
-    const qUINT32_t xNaNv = 0x7F800000uL;
-
-    (void)memcpy( &u, &f, sizeof(u) );
-
-    return ( ( xNaNv == ( u & mask1 ) ) && ( 0uL != ( u & mask2 ) ) )? qTrue
-                                                                     : qFalse;
 }
 /*============================================================================*/

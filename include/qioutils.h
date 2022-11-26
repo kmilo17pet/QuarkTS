@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.67
+ * @version 4.68
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/
@@ -394,22 +394,6 @@
     */
     char* qIOUtil_QBtoA( const qBool_t num,
                          char *str );
-
-    /**
-    * @brief Determines if the given floating point number arg is positive or
-    * negative infinity.
-    * @param[in] f Floating point value(32bits).
-    * @return #qTrue is argument has an infinite value, otherwise #qFalse.
-    */
-    qBool_t qIOUtil_IsInf( const qFloat32_t f );
-
-    /**
-    * @brief Determines if the given floating point number arg is a not-a-number
-    * (NaN) value.
-    * @param[in] f Floating point value(32bits).
-    * @return #qTrue is argument is @c NaN, otherwise #qFalse
-    */
-    qBool_t qIOUtil_IsNan( const qFloat32_t f );
 
     /** @}*/
 
