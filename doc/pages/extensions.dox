@@ -205,6 +205,9 @@
 *     - #QSM_SIGNAL_EXIT if the current state has just exit to another state.
 *     - Any other user-defined signal will reside here, including the 
 *     #QSM_SIGNAL_TIMEOUT signals.
+* - qSM_Handler_t::SignalData (read-only) : Pointer to the data associated with
+* the signal. For internal signals, including timeout signals, its value will 
+* be @c NULL.
 * - qSM_Handler_t::TransitionHistory : Use this option if the transition is to 
 * a composite state. This attribute defines how the story should be handled. 
 * If this field is not established, ::qSM_TRANSITION_NO_HISTORY is assumed. 
@@ -310,7 +313,7 @@
 * <em>Surrounding callback invocation after and before the current state</em>
 * </center>
 *
-* The surrounding callback \f$ S_u \f$ invocation occurs afther and befor the
+* The surrounding callback \f$ S_u \f$ invocation occurs after and before the
 * current state \f$ P \f$. When the surrounding callback is executed, indicates 
 * its own checkpoint through the @c Status attribute of the qSM_Handler_t 
 * argument.
@@ -622,7 +625,7 @@
 * A timeout specification is mechanism to simplify the notion of time passage
 * inside states. The basic usage model of the timeout signals is as follows:
 *
-* An timeout specification allocates one or more timer objects. The user relates
+* A timeout specification allocates one or more timer objects. The user relates
 * in a table each specific timeout operations within the state where are they 
 * going to operate. So, according to the table, when a state needs to arrange 
 * for a timeout, the engine can set or reset the given timer. When the FSM 
@@ -654,7 +657,7 @@
 * detailed as follows:
 *
 * - #QSM_TSOPT_INDEX(index) : To select the timeout to be used in the 
-* specification. Should be a value between 0 and @c Q_FSM_MAX_TIMEOUTS-1 
+* specification. Should be a value between @c 0 and @c Q_FSM_MAX_TIMEOUTS-1 
 * - #QSM_TSOPT_SET_ENTRY : To set the timeout when the specified state its 
 * entering.
 * - #QSM_TSOPT_RST_ENTRY : To reset the timeout when the specified state its 
@@ -1004,8 +1007,8 @@
 * events that require immediate attention; however, after handling them, the 
 * system should return to the most recent substate of the given composite state.
 * UML statecharts address this situation with two kinds of history pseudostates:
-* @a "shallow history" and @a "deep history"( denoted as the circled H and H* 
-* icon respectively in figure).
+* @a "shallow history" and @a "deep history"( denoted as the circled @c H and 
+* @c H* icon respectively in figure).
 *
 * <center>
 * @htmlonly
@@ -1420,22 +1423,22 @@
 * 
 * As seen in figure, the CLI has a few components described below:
 *
-* - Input Handler : It is responsible for collecting incoming data from the input 
-* in the form of ASCII characters inside a buffer. When this buffer is ready by 
-* receiving an EOL(End-Of-Line) byte, it notifies the validator to perform the
-* initial checks.
-* - Validator: Take the input string and perform three checks over it:
+* - <b>Input Handler</b> : It is responsible for collecting incoming data from 
+* the input in the form of ASCII characters inside a buffer. When this buffer is
+* ready by receiving an EOL(End-Of-Line) byte, it notifies the validator to 
+* perform the initial checks.
+* - <b>Validator</b> : Take the input string and perform three checks over it:
 *   -# The input matches one of the subscribed commands.
 *   -# The input matches one of the default commands.
 *   -# The input is unknown
-* - Pre-Parser: Takes the input if the validator asserts the first check. It is 
-* responsible for syntax validation and classification. Also, prepares the input 
-* argument for the next component.
-* - Callback or Post-Parser: If input at the pre-parser is valid, the respective 
-* command callback is invoked. Here, the application writer is free to handle 
-* the command execution and the output response.
-* - Output printer : Takes all the return status of the previous components to 
-* print out a response at the output.
+* - <b>Pre-Parser</b> : Takes the input if the validator asserts the first check.
+* It is responsible for syntax validation and classification. Also, prepares the
+* input argument for the next component.
+* - <b>Callback or Post-Parser</b> : If input at the pre-parser is valid, the 
+* respective command callback is invoked. Here, the application writer is free 
+* to handle the command execution and the output response.
+* - <b>Output printer</b> : Takes all the return status of the previous 
+* components to print out a response at the output.
 * 
 * @remark Here, @a Input and @a Output should be provided by the application 
 * writer, for example, if a UART interface is chosen, the input should take 
@@ -1462,7 +1465,8 @@
 *     here. Example @c "AT+CMD=?"
 *     - Parameter Set (::qATCLI_CMDTYPE_PARA) : These types of commands allow 
 *     n arguments to be passed for setting parameters, for example: @c AT+CMD=x,y
-*  If none of the types is given at the input, the command response will be ERROR
+*  If none of the types is given at the input, the command response will be 
+*  @c ERROR
 * - The possible output responses are:
 *     - @c OK: Indicates the successful execution of the command.
 *     - @c ERROR: A generalized message to indicate failure in executing the command.

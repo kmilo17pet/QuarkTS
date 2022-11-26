@@ -40,7 +40,7 @@
 * individual timing constraints, a few points must  be taken:
 *
 * - When the time interval of a certain task has elapsed, the scheduler triggers
-*  an event (@c byTimeElapsed) that put the task in a @c qReady state (see 
+* the @c byTimeElapsed event that put the task in a @c qReady state (see 
 * figure below).
 * - If a task has a finite number iterations, the scheduler will disable the 
 * task when the number of iterations reaches the programmed value.
