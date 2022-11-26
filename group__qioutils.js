@@ -10,8 +10,6 @@ var group__qioutils =
     [ "qIOUtil_CheckEndianness", "group__qioutils.html#ga6f949b6b5a55df6cbb2ebe783bc95cd9", null ],
     [ "qIOUtil_FtoA", "group__qioutils.html#gadec86fa22eb276b21ecd4df7e3e1892f", null ],
     [ "qIOUtil_InputRaw", "group__qioutils.html#ga6eef53910a05cdb0cd397d987c24b4b0", null ],
-    [ "qIOUtil_IsInf", "group__qioutils.html#ga8974070a4de1db1c262aaf0588d00ff5", null ],
-    [ "qIOUtil_IsNan", "group__qioutils.html#gad3073092ea9146fa38affefe9535e825", null ],
     [ "qIOUtil_ItoA", "group__qioutils.html#ga8402e8689f7dd1426ca948641f50c264", null ],
     [ "qIOUtil_OutputRaw", "group__qioutils.html#gade873a18491ec4f390ab0d66deed194b", null ],
     [ "qIOUtil_OutputString", "group__qioutils.html#ga5bdd96cb8c361417efb8d318cebc42ad", null ],

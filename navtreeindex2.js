@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"q_extensions.html#q_memmang":[0,2,4],
-"q_extensions.html#q_memmang_pools":[0,2,4,1],
 "q_extensions.html#q_memmang_principle":[0,2,4,0],
 "q_extensions.html#q_memmang_usage":[0,2,4,2],
 "q_extensions.html#q_qcoroutines":[0,2,2],

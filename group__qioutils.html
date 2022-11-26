@@ -212,12 +212,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9c88ddfabf9c7d92e6fd41f4086103aa"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga9c88ddfabf9c7d92e6fd41f4086103aa">qIOUtil_QBtoA</a> (const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
 <tr class="memdesc:ga9c88ddfabf9c7d92e6fd41f4086103aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#ga9c88ddfabf9c7d92e6fd41f4086103aa">More...</a><br /></td></tr>
 <tr class="separator:ga9c88ddfabf9c7d92e6fd41f4086103aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8974070a4de1db1c262aaf0588d00ff5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga8974070a4de1db1c262aaf0588d00ff5">qIOUtil_IsInf</a> (const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
-<tr class="memdesc:ga8974070a4de1db1c262aaf0588d00ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is positive or negative infinity.  <a href="group__qioutils.html#ga8974070a4de1db1c262aaf0588d00ff5">More...</a><br /></td></tr>
-<tr class="separator:ga8974070a4de1db1c262aaf0588d00ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad3073092ea9146fa38affefe9535e825"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gad3073092ea9146fa38affefe9535e825">qIOUtil_IsNan</a> (const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> f)</td></tr>
-<tr class="memdesc:gad3073092ea9146fa38affefe9535e825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given floating point number arg is a not-a-number (NaN) value.  <a href="group__qioutils.html#gad3073092ea9146fa38affefe9535e825">More...</a><br /></td></tr>
-<tr class="separator:gad3073092ea9146fa38affefe9535e825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >API for input/output utilities and safe string interfaces. </p>
@@ -598,60 +592,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga8974070a4de1db1c262aaf0588d00ff5" name="ga8974070a4de1db1c262aaf0588d00ff5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8974070a4de1db1c262aaf0588d00ff5">&#9670;&nbsp;</a></span>qIOUtil_IsInf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_IsInf </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines if the given floating point number arg is positive or negative infinity. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> is argument has an infinite value, otherwise <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
-
-</div>
-</div>
-<a id="gad3073092ea9146fa38affefe9535e825" name="gad3073092ea9146fa38affefe9535e825"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad3073092ea9146fa38affefe9535e825">&#9670;&nbsp;</a></span>qIOUtil_IsNan()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_IsNan </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines if the given floating point number arg is a not-a-number (NaN) value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">f</td><td>Floating point value(32bits). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> is argument is <code>NaN</code>, otherwise <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a> </dd></dl>
 
 </div>
 </div>
