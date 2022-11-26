@@ -28,7 +28,7 @@ var searchData=
   ['qpriority_5ft_25',['qPriority_t',['../group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2',1,'qtypes.h']]],
   ['qputchar_5ft_26',['qPutChar_t',['../group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa',1,'qioutils.h']]],
   ['qqueue_5finsertmode_5ft_27',['qQueue_InsertMode_t',['../group__qqueues.html#ga7fc63ce02ccc6ca801196aa9b14f5640',1,'qqueues.h']]],
-  ['qsm_5fsignal_5ft_28',['qSM_Signal_t',['../group__qfsm.html#gaf19fbacba114204700f6936eb61479fb',1,'qfsm.h']]],
+  ['qsm_5fsigid_5ft_28',['qSM_SigId_t',['../group__qfsm.html#ga1dd47988fd805a6d7d7a963af1ab9ad7',1,'qfsm.h']]],
   ['qsm_5fsignalaction_5ft_29',['qSM_SignalAction_t',['../group__qfsm.html#gacbb2c4ce06048d51d94ba78c92876c99',1,'qfsm.h']]],
   ['qsm_5fstatecallback_5ft_30',['qSM_StateCallback_t',['../group__qfsm.html#gaaa9971018b89acab7942d851ce860faa',1,'qfsm.h']]],
   ['qsm_5fsurroundingcallback_5ft_31',['qSM_SurroundingCallback_t',['../group__qfsm.html#gabbed841c155309d2af238b0e8a69a22b',1,'qfsm.h']]],

@@ -17,6 +17,7 @@ var annotated_dup =
     [ "qQueue_t", "structq_queue__t.html", null ],
     [ "qResponse_t", "structq_response__t.html", null ],
     [ "qSM_Handler_t", "structq_s_m___handler__t.html", "structq_s_m___handler__t" ],
+    [ "qSM_Signal_t", "structq_s_m___signal__t.html", "structq_s_m___signal__t" ],
     [ "qSM_State_t", "structq_s_m___state__t.html", null ],
     [ "qSM_t", "structq_s_m__t.html", null ],
     [ "qSM_TimeoutSpec_t", "structq_s_m___timeout_spec__t.html", null ],

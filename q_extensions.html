@@ -271,16 +271,16 @@ Subscribing states and defining callbacks</h2>
 <div class="line">    <span class="comment">/* TODO: State code */</span></div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as return value ...</div><div class="ttdef"><b>Definition:</b> qfsm.h:156</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:160</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:213</div></div>
+<div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as return value ...</div><div class="ttdef"><b>Definition:</b> qfsm.h:167</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:171</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:225</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="q_fsmhandler"></a>
 The state callback handler: performing transitions and retreiving data</h2>
 <p >Because callback functions are methods derived from the state-machine object, they have direct access to some attributes via the <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument. The usage of this object it's required to make the FSM moves between states and additionally get extra data. The provided attributes are:</p>
 <ul>
 <li><a class="el" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">qSM_Handler_t::NextState</a> : Desired next state. The application writer should change this field to another state to produce a state transition in the next FSM's cycle. Changing this field will only take effect when the state is executed under user custom-defined signals or in the absence of signals <a class="el" href="group__qfsm.html#ga411e8ec0a25cfb3c039c1eeb26984280" title="Built-in signal to indicate that there is not signal available.">QSM_SIGNAL_NONE</a>.</li>
 <li><a class="el" href="structq_s_m___handler__t.html#a10e59c21e0e6763803fcb9f4414858ef">qSM_Handler_t::StartState</a> : Desired nested initial state (substate). The application writer should change this field to set the initial transition if the current state its a parent(or composite state). Changing this field attribute only take effect when the state is executed under the <a class="el" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368" title="Built-in signal that can be used to set a nested initial-transition (aka default transition) by writi...">QSM_SIGNAL_START</a> signal.</li>
-<li><a class="el" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">qSM_Handler_t::Signal</a> (read-only) : Received signal. Can have any of the following values:<ul>
+<li><a class="el" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">qSM_Handler_t::Signal</a> (read-only) : Received signal. Can have any of the following values:<ul>
 <li><a class="el" href="group__qfsm.html#ga411e8ec0a25cfb3c039c1eeb26984280" title="Built-in signal to indicate that there is not signal available.">QSM_SIGNAL_NONE</a> if no signal available.</li>
 <li><a class="el" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062" title="Built-in signal to indicate if the current state has just entered from another state.">QSM_SIGNAL_ENTRY</a> if the current state has just entered from another state.</li>
 <li><a class="el" href="group__qfsm.html#ga8ddab447f500ece9fc2c0264b9af7368" title="Built-in signal that can be used to set a nested initial-transition (aka default transition) by writi...">QSM_SIGNAL_START</a> to set nested initial transitions by using the <a class="el" href="structq_s_m___handler__t.html#a10e59c21e0e6763803fcb9f4414858ef">qSM_Handler_t::StartState</a> attribute.</li>
@@ -368,10 +368,10 @@ The surrounding callback</h2>
 <div class="line">            <span class="keywordflow">break</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a></div><div class="ttdeci">@ qSM_STATUS_BEFORE_ANY</div><div class="ttdef"><b>Definition:</b> qfsm.h:157</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e">qSM_STATUS_EXIT_FAILURE</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_FAILURE</div><div class="ttdef"><b>Definition:</b> qfsm.h:159</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:161</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:221</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a></div><div class="ttdeci">@ qSM_STATUS_BEFORE_ANY</div><div class="ttdef"><b>Definition:</b> qfsm.h:168</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e">qSM_STATUS_EXIT_FAILURE</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_FAILURE</div><div class="ttdef"><b>Definition:</b> qfsm.h:170</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:172</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:234</div></div>
 </div><!-- fragment --><p >As you can see in the example below, the surrounding execution case its verified through the FSM handle by reading the <code>Status</code> field.</p>
 <h2><a class="anchor" id="q_fsm_astask"></a>
 Adding a state machine as a task</h2>
@@ -382,7 +382,7 @@ Adding a state machine as a task</h2>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> Example_State( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e = h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">Data</a>; </div>
 <div class="line">    <span class="comment">/* Get the event info of the task that owns this state-machine*/</span></div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
@@ -409,8 +409,8 @@ Adding a state machine as a task</h2>
 <div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a></div><div class="ttdeci">@ byNotificationSimple</div><div class="ttdoc">When the execution chain does, according to a requirement of asynchronous notification event prompted...</div><div class="ttdef"><b>Definition:</b> qtasks.h:65</div></div>
 <div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a></div><div class="ttdeci">@ byTimeElapsed</div><div class="ttdoc">When the time specified for the task elapsed.</div><div class="ttdef"><b>Definition:</b> qtasks.h:51</div></div>
 <div class="ttc" id="astructq_event__t_html_a61ae4900215e528bd801c8ee156ac0df"><div class="ttname"><a href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">qEvent_t::Trigger</a></div><div class="ttdeci">qTrigger_t Trigger</div><div class="ttdoc">This member indicates the event source that triggers the task execution. Possible values are describe...</div><div class="ttdef"><b>Definition:</b> qtasks.h:180</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_af9ba73bb4b2088f86d19a0ade45975b6"><div class="ttname"><a href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_Signal_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:220</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_afd75d67662a1d310a64c44f30a50f088"><div class="ttname"><a href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a></div><div class="ttdeci">const void * Data</div><div class="ttdef"><b>Definition:</b> qfsm.h:218</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a185fb13f4184b5f4cc05b01059e31964"><div class="ttname"><a href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_SigId_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:233</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_afd75d67662a1d310a64c44f30a50f088"><div class="ttname"><a href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t::Data</a></div><div class="ttdeci">const void * Data</div><div class="ttdef"><b>Definition:</b> qfsm.h:230</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="q_fsm_example1"></a>
 A demonstrative example for a FSM</h2>
 <p >In this example, one press of the button turn on the LED, a second push of the button will make the LED blink and if the button is pressed again, the LED will turn off. Also, our system must turn off the LED after a period of inactivity. If the button hasn't been pressed in the last 10 seconds, the LED will turn off.</p>
@@ -428,12 +428,12 @@ A demonstrative example for a FSM</h2>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> LED_Task; <span class="comment">/*The task node*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> LED_FSM; <span class="comment">/*The state -machine handle*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff , State_LEDOn , State_LEDBlink ;</div>
-<div class="ttc" id="astructq_s_m___state__t_html"><div class="ttname"><a href="structq_s_m___state__t.html">qSM_State_t</a></div><div class="ttdoc">A state object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:326</div></div>
-<div class="ttc" id="astructq_s_m__t_html"><div class="ttname"><a href="structq_s_m__t.html">qSM_t</a></div><div class="ttdoc">A FSM(Finite State Machine) object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:367</div></div>
+<div class="ttc" id="astructq_s_m___state__t_html"><div class="ttname"><a href="structq_s_m___state__t.html">qSM_State_t</a></div><div class="ttdoc">A state object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:339</div></div>
+<div class="ttc" id="astructq_s_m__t_html"><div class="ttname"><a href="structq_s_m__t.html">qSM_t</a></div><div class="ttdoc">A FSM(Finite State Machine) object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:380</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:268</div></div>
 </div><!-- fragment --><p >Then, we define our states as the flow-diagram showed in the figure above.</p>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOff_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            BSP_LED_OFF();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -450,7 +450,7 @@ A demonstrative example for a FSM</h2>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOn_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout;</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 10.0 ); <span class="comment">/*STimer gets armed*/</span></div>
 <div class="line">            BSP_LED_ON();</div>
@@ -473,7 +473,7 @@ A demonstrative example for a FSM</h2>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout; </div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> blinktime;</div>
 <div class="line">    </div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 10.0 );</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -491,7 +491,7 @@ A demonstrative example for a FSM</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qstimers_html_ga7b25e8ad7bb0b4e87bc07262a6f402d0"><div class="ttname"><a href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a></div><div class="ttdeci">qBool_t qSTimer_FreeRun(qSTimer_t *const t, const qTime_t tTime)</div><div class="ttdoc">Non-Blocking STimer check with automatic arming.</div><div class="ttdef"><b>Definition:</b> qstimers.c:36</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_a4c1b6f2888b8fd07e4bb8ec65d85b86a"><div class="ttname"><a href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">qSM_Handler_t::NextState</a></div><div class="ttdeci">void * NextState</div><div class="ttdef"><b>Definition:</b> qfsm.h:215</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a4c1b6f2888b8fd07e4bb8ec65d85b86a"><div class="ttname"><a href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">qSM_Handler_t::NextState</a></div><div class="ttdeci">void * NextState</div><div class="ttdef"><b>Definition:</b> qfsm.h:227</div></div>
 </div><!-- fragment --><p >Finally, we add the task to the scheduling scheme running the dedicated state machine. Remember that you must set up the scheduler before adding a task to the scheduling scheme.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a>( &amp;LED_FSM , NULL , &amp;State_LEDOff , NULL , NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;LED_FSM , &amp;State_LEDOff , NULL ,</div>
@@ -502,27 +502,27 @@ A demonstrative example for a FSM</h2>
 <div class="line">                              State_LEDBlink_Callback , NULL , NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">qOS_Add_StateMachineTask</a>( &amp;LED_Task , &amp;LED_FSM , <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a> ,</div>
 <div class="line">                          0.1, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a> , NULL );</div>
-<div class="ttc" id="agroup__qfsm_html_ga723ec7aca70eb94880625d78bbe3cac3"><div class="ttname"><a href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a></div><div class="ttdeci">qBool_t qStateMachine_StateSubscribe(qSM_t *const m, qSM_State_t *const s, qSM_State_t *const parent, qSM_StateCallback_t sFcn, qSM_State_t *const init, void *pData)</div><div class="ttdoc">This function subscribes the FSM instance to a specific state with an associated callback function.</div><div class="ttdef"><b>Definition:</b> qfsm.c:408</div></div>
-<div class="ttc" id="agroup__qfsm_html_gabf14a12eeeb56b06ffca7341c302293c"><div class="ttname"><a href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a></div><div class="ttdeci">qBool_t qStateMachine_Setup(qSM_t *const m, qSM_StateCallback_t topFcn, qSM_State_t *const init, qSM_SurroundingCallback_t sFcn, void *pData)</div><div class="ttdoc">Initializes a Finite State Machine (FSM).</div><div class="ttdef"><b>Definition:</b> qfsm.c:374</div></div>
+<div class="ttc" id="agroup__qfsm_html_ga723ec7aca70eb94880625d78bbe3cac3"><div class="ttname"><a href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a></div><div class="ttdeci">qBool_t qStateMachine_StateSubscribe(qSM_t *const m, qSM_State_t *const s, qSM_State_t *const parent, qSM_StateCallback_t sFcn, qSM_State_t *const init, void *pData)</div><div class="ttdoc">This function subscribes the FSM instance to a specific state with an associated callback function.</div><div class="ttdef"><b>Definition:</b> qfsm.c:413</div></div>
+<div class="ttc" id="agroup__qfsm_html_gabf14a12eeeb56b06ffca7341c302293c"><div class="ttname"><a href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a></div><div class="ttdeci">qBool_t qStateMachine_Setup(qSM_t *const m, qSM_StateCallback_t topFcn, qSM_State_t *const init, qSM_SurroundingCallback_t sFcn, void *pData)</div><div class="ttdoc">Initializes a Finite State Machine (FSM).</div><div class="ttdef"><b>Definition:</b> qfsm.c:379</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga32c8bd0870414e10a6e72b743627da5a"><div class="ttname"><a href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a></div><div class="ttdeci">#define qHigh_Priority</div><div class="ttdoc">A macro directive to indicate the highest priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:77</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_gaeea76a6e287011694689c658f7e204ca"><div class="ttname"><a href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">qOS_Add_StateMachineTask</a></div><div class="ttdeci">qBool_t qOS_Add_StateMachineTask(qTask_t *const Task, qSM_t *m, const qPriority_t p, const qTime_t t, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme running a dedicated state-machine. The task is scheduled to run e...</div><div class="ttdef"><b>Definition:</b> qkernel.c:482</div></div>
 <div class="ttc" id="agroup__qtypes_html_ga1743f4a545347fa50ab81f1e4e21b095"><div class="ttname"><a href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a></div><div class="ttdeci">#define qEnabled</div><div class="ttdoc">A state value that enables a task.</div><div class="ttdef"><b>Definition:</b> qtypes.h:167</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="q_fsmsendsignals"></a>
 Sending signals</h2>
 <p >To communicate within and between state-machines or even other contexts, use signals. A signal is a simple value who can be used to abstract an incoming event. In the receiving state-machine, a queue or a exclusion variable receives the signal and holds it until the state-machine can evaluate it.</p>
-<p >When coding state-machines, the application writer can benefit from this simple eventabstraction mechanism. On the one hand, there would be a more uniform programming when writing states callbacks and on the other hand, the communication of the state machine from other contexts becomes easier.</p>
-<p >To send a signal to a state machine, use the <a class="el" href="group__qfsm.html#gae06c4374fa93535058f9080505c88394" title="Sends a signal to the provided state machine.">qStateMachine_SendSignal()</a> API. This API can manage their delivery to one of these possible destinations: an <em>exclusion variable</em> or a <em>signal queue</em>:</p><ul>
+<p >When coding state-machines, the application writer can benefit from this simple event-abstraction mechanism. On the one hand, there would be a more uniform programming when writing states callbacks and on the other hand, the communication of the state machine from other contexts becomes easier.</p>
+<p >To send a signal to a state machine, use the <a class="el" href="group__qfsm.html#gaba0e1b16789eb0c7c0a45e924c272e7e" title="Sends a signal to the provided state machine.">qStateMachine_SendSignal()</a> API. This API can manage their delivery to one of these possible destinations: an <em>exclusion variable</em> or a <em>signal queue</em>:</p><ul>
 <li>An <em>exclusion variable</em> its a variable with an important distinction, it can only be written if it is empty. The empty situation only happens, if the engine has already propagated the signal within the state machine. If the signal has not yet propagated, the signal sending cannot be carried out.</li>
 <li>When a <em>signal queue</em> is used, the signal is put into a FIFO structure and the engine takes care of dispatching the signal in an orderly manner. The only situation where the signal cannot be delivered is if the queue is full. This its the preferred destination, as long as there is a previously installed signal queue.</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd>If the signal-queue its available, the <a class="el" href="group__qfsm.html#gae06c4374fa93535058f9080505c88394" title="Sends a signal to the provided state machine.">qStateMachine_SendSignal()</a> will always select it as destination. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the signal-queue its available, the <a class="el" href="group__qfsm.html#gaba0e1b16789eb0c7c0a45e924c272e7e" title="Sends a signal to the provided state machine.">qStateMachine_SendSignal()</a> will always select it as destination. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>If a state-machine, a task, or another context sends a signal to a full queue, a queue-overflow occurs. The result of the queue overflow it that the state-machine drops the new signal.</dd></dl>
 <h2><a class="anchor" id="q_fsminstallsignalqueue"></a>
 Installing a signal queue</h2>
 <p >A state machine can have a FIFO queue to allow the delivery of signals from another contexts. If the signal queue its installed, the state-machine engine constantly monitors the queue for available signals. The engine then propagates the signal through the hierarchy until it is processed. To enable this functionality in your state machine, the queue must be installed by using the <a class="el" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556" title="Install a signal queue to the provided Finite State Machine (FSM).">qStateMachine_InstallSignalQueue()</a> API.</p>
 <p >The install operation should be performed after both, the queue and the FSM are correctly initialized by using <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> and <a class="el" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c" title="Initializes a Finite State Machine (FSM).">qStateMachine_Setup()</a> respectively.</p>
 <dl class="section note"><dt>Note</dt><dd>Make sure that queues are enabled in the <code>qconfig.h</code> header file </dd></dl>
-<dl class="section attention"><dt>Attention</dt><dd>When configuring a signal queue with <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a>, remember to size it based on the type <a class="el" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a>. </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>When configuring a signal queue with <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a>, remember to size it based on the type <a class="el" href="structq_s_m___signal__t.html">qSM_Signal_t</a>. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If the state-machines its delegated to a task, make sure to install the queue prior to setting up the task. In this way, a kernel connection can be performed between the FSM signal-queue and the FSM-task, allowing the OS to catch signals to produce a task event, this prevents the wait of the task for the specified period, resulting in a faster handling of incoming signals.</dd></dl>
 <h2><a class="anchor" id="q_fsm_ttable"></a>
 Using a transition table</h2>
@@ -533,15 +533,15 @@ Using a transition table</h2>
 <table class="doxtable">
 <caption>Transition table layout for a state</caption>
 <tr>
-<th>Signal </th><th>Signal action/guard </th><th>Target state </th><th>History mode </th></tr>
+<th>Signal Id </th><th>Signal action/guard </th><th>Target state </th><th>History mode </th><th>Signal data </th></tr>
 <tr>
-<td><code>Signal1</code> </td><td><code>NULL</code> </td><td><code>StateB</code> </td><td><code>0</code> </td></tr>
+<td><code>Signal1</code> </td><td><code>NULL</code> </td><td><code>StateB</code> </td><td><code>0</code> </td><td><code>NULL</code> </td></tr>
 <tr>
-<td><code>Signal3</code> </td><td><code>DoOnSignal3</code> </td><td><code>StateD</code> </td><td><code>0</code> </td></tr>
+<td><code>Signal3</code> </td><td><code>DoOnSignal3</code> </td><td><code>StateD</code> </td><td><code>0</code> </td><td><code>&amp;sig3data</code> </td></tr>
 <tr>
-<td>... </td><td>... </td><td>... </td><td>... </td></tr>
+<td>... </td><td>... </td><td>... </td><td>... </td><td>... </td></tr>
 <tr>
-<td><code>Signal6</code> </td><td><code>NULL</code> </td><td><code>StateA</code> </td><td><code>0</code> </td></tr>
+<td><code>Signal6</code> </td><td><code>NULL</code> </td><td><code>StateA</code> </td><td><code>0</code> </td><td><code>NULL</code> </td></tr>
 </table>
 </center><p ><b> Caveats: </b></p>
 <ul>
@@ -583,6 +583,7 @@ FSM Timeout specification</h2>
 <li><a class="el" href="group__qfsm.html#gaee44e3c75626ba161a51a82a86f934bd" title="This timeout-specification option its used to specify that the engine should set the timeout only if ...">QSM_TSOPT_KEEP_IF_SET</a> : To apply the Set operation only if the timeout its in a reset state.</li>
 <li><a class="el" href="group__qfsm.html#gac93b670decc866ef1148f59648f1efd2" title="This timeout-specification option its used setup the timeout in periodic mode.">QSM_TSOPT_PERIODIC</a> : To put the timeout in periodic mode.</li>
 </ul>
+<dl class="section note"><dt>Note</dt><dd>Data associated to timeout signals should be set to <code>NULL</code>. Any other value will be ignored and will be passed as <code>NULL</code> to the FSM handler. </dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>The user is responsible for writing timeout specifications correctly. Care must be taken that the specifications do not collide between hierarchical states to avoid overwriting operations. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>You can increase the number of available timeouts instances by changing the <code>Q_FSM_MAX_TIMEOUTS</code> configuration macro inside <code>qconfig.h</code>.</dd></dl>
 <h2><a class="anchor" id="q_fsm_example2"></a>
@@ -590,7 +591,7 @@ Demonstrative example using transition tables</h2>
 <p >The following example shows the implementation of the led-button FSM presented above by using the transition table approach with signal-queue and a timeout specification.</p>
 <p >Before getting started, the required variables should be defined:</p>
 <div class="fragment"><div class="line"><span class="comment">/*define the FSM application event-signals*/</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_BUTTON_PRESSED   ( (qSM_Signal_t)1 )</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_BUTTON_PRESSED   ( (qSM_SigId_t)1 )</span></div>
 <div class="line"><span class="preprocessor">#define SIGNAL_TIMEOUT          (QSM_SIGNAL_TIMEOUT(0))</span></div>
 <div class="line"><span class="preprocessor">#define SIGNAL_BLINK            (QSM_SIGNAL_TIMEOUT(1))</span></div>
 <div class="line"> </div>
@@ -598,22 +599,22 @@ Demonstrative example using transition tables</h2>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> LED_FSM; <span class="comment">/*The state-machine handler*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff, State_LEDOn, State_LEDBlink;</div>
 <div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> LEDsigqueue; <span class="comment">/*the signal-queue*/</span> </div>
-<div class="line"><a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> led_sig_stack[5];  <span class="comment">/*the signal-queue storage area*/</span></div>
+<div class="line"><a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a> led_sig_stack[5];  <span class="comment">/*the signal-queue storage area*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> tm_spectimeout;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*create the transition tables for every state*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> LEDOff_transitions[] = {</div>
-<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDOn    ,0},</div>
+<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDOn    , 0, NULL}</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> LEDOn_transitions[] = {</div>
-<div class="line">    { SIGNAL_TIMEOUT,        NULL, &amp;State_LEDOff   ,0},</div>
-<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDBlink ,0},</div>
+<div class="line">    { SIGNAL_TIMEOUT,        NULL, &amp;State_LEDOff   , 0, NULL},</div>
+<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDBlink , 0, NULL}</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> LEDBlink_transitions[] = {</div>
-<div class="line">    { SIGNAL_TIMEOUT,        NULL, &amp;State_LEDOff   ,0},</div>
-<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDOff   ,0}</div>
+<div class="line">    { SIGNAL_TIMEOUT,        NULL, &amp;State_LEDOff   , 0, NULL},</div>
+<div class="line">    { SIGNAL_BUTTON_PRESSED, NULL, &amp;State_LEDOff   , 0, NULL}</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*define the timeout specifications */</span></div>
@@ -623,20 +624,20 @@ Demonstrative example using transition tables</h2>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a> LEDBlink_timeouts[]={</div>
 <div class="line">    { 10.0f,  <a class="code hl_define" href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">QSM_TSOPT_INDEX</a>(0) | <a class="code hl_define" href="group__qfsm.html#gae435e391de4b3994106042603697b663">QSM_TSOPT_SET_ENTRY</a> | <a class="code hl_define" href="group__qfsm.html#ga92cba13d703eed68d7534c1ab188c8cd">QSM_TSOPT_RST_EXIT</a>  },</div>
-<div class="line">    { 0.5f,   <a class="code hl_define" href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">QSM_TSOPT_INDEX</a>(1) | <a class="code hl_define" href="group__qfsm.html#gae435e391de4b3994106042603697b663">QSM_TSOPT_SET_ENTRY</a> | <a class="code hl_define" href="group__qfsm.html#ga92cba13d703eed68d7534c1ab188c8cd">QSM_TSOPT_RST_EXIT</a> | <a class="code hl_define" href="group__qfsm.html#gac93b670decc866ef1148f59648f1efd2">QSM_TSOPT_PERIODIC</a>  },</div>
+<div class="line">    { 0.5f,   <a class="code hl_define" href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">QSM_TSOPT_INDEX</a>(1) | <a class="code hl_define" href="group__qfsm.html#gae435e391de4b3994106042603697b663">QSM_TSOPT_SET_ENTRY</a> | <a class="code hl_define" href="group__qfsm.html#ga92cba13d703eed68d7534c1ab188c8cd">QSM_TSOPT_RST_EXIT</a> | <a class="code hl_define" href="group__qfsm.html#gac93b670decc866ef1148f59648f1efd2">QSM_TSOPT_PERIODIC</a>  }</div>
 <div class="line">};</div>
 <div class="ttc" id="agroup__qfsm_html_ga92cba13d703eed68d7534c1ab188c8cd"><div class="ttname"><a href="group__qfsm.html#ga92cba13d703eed68d7534c1ab188c8cd">QSM_TSOPT_RST_EXIT</a></div><div class="ttdeci">#define QSM_TSOPT_RST_EXIT</div><div class="ttdoc">This timeout-specification option its used to specify that the engine should reset the timeout when t...</div><div class="ttdef"><b>Definition:</b> qfsm.h:118</div></div>
 <div class="ttc" id="agroup__qfsm_html_gab629172b64616333ffd6c69206a52538"><div class="ttname"><a href="group__qfsm.html#gab629172b64616333ffd6c69206a52538">QSM_TSOPT_INDEX</a></div><div class="ttdeci">#define QSM_TSOPT_INDEX(index)</div><div class="ttdoc">Timeout-specification option. Should be used to specify the timeout index.</div><div class="ttdef"><b>Definition:</b> qfsm.h:92</div></div>
 <div class="ttc" id="agroup__qfsm_html_gac93b670decc866ef1148f59648f1efd2"><div class="ttname"><a href="group__qfsm.html#gac93b670decc866ef1148f59648f1efd2">QSM_TSOPT_PERIODIC</a></div><div class="ttdeci">#define QSM_TSOPT_PERIODIC</div><div class="ttdoc">This timeout-specification option its used setup the timeout in periodic mode.</div><div class="ttdef"><b>Definition:</b> qfsm.h:130</div></div>
 <div class="ttc" id="agroup__qfsm_html_gae435e391de4b3994106042603697b663"><div class="ttname"><a href="group__qfsm.html#gae435e391de4b3994106042603697b663">QSM_TSOPT_SET_ENTRY</a></div><div class="ttdeci">#define QSM_TSOPT_SET_ENTRY</div><div class="ttdoc">This timeout-specification option its used to specify that the engine should set the timeout when the...</div><div class="ttdef"><b>Definition:</b> qfsm.h:100</div></div>
-<div class="ttc" id="agroup__qfsm_html_gaf19fbacba114204700f6936eb61479fb"><div class="ttname"><a href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a></div><div class="ttdeci">qUINT32_t qSM_Signal_t</div><div class="ttdoc">The type to be used as a container variable for a signal.</div><div class="ttdef"><b>Definition:</b> qfsm.h:150</div></div>
 <div class="ttc" id="astructq_queue__t_html"><div class="ttname"><a href="structq_queue__t.html">qQueue_t</a></div><div class="ttdoc">A Queue object.</div><div class="ttdef"><b>Definition:</b> qqueues.h:53</div></div>
-<div class="ttc" id="astructq_s_m___timeout_spec__t_html"><div class="ttname"><a href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a></div><div class="ttdoc">A FSM Timeout-specification object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:348</div></div>
-<div class="ttc" id="astructq_s_m___timeout_state_definition__t_html"><div class="ttname"><a href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a></div><div class="ttdoc">This structure should be used to define an item for a timeout-specification table.</div><div class="ttdef"><b>Definition:</b> qfsm.h:299</div></div>
-<div class="ttc" id="astructq_s_m___transition__t_html"><div class="ttname"><a href="structq_s_m___transition__t.html">qSM_Transition_t</a></div><div class="ttdoc">This structure should be used to define an item for a state transition table.</div><div class="ttdef"><b>Definition:</b> qfsm.h:393</div></div>
+<div class="ttc" id="astructq_s_m___signal__t_html"><div class="ttname"><a href="structq_s_m___signal__t.html">qSM_Signal_t</a></div><div class="ttdoc">The type to be used as a container variable for a signal.</div><div class="ttdef"><b>Definition:</b> qfsm.h:158</div></div>
+<div class="ttc" id="astructq_s_m___timeout_spec__t_html"><div class="ttname"><a href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a></div><div class="ttdoc">A FSM Timeout-specification object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:361</div></div>
+<div class="ttc" id="astructq_s_m___timeout_state_definition__t_html"><div class="ttname"><a href="structq_s_m___timeout_state_definition__t.html">qSM_TimeoutStateDefinition_t</a></div><div class="ttdoc">This structure should be used to define an item for a timeout-specification table.</div><div class="ttdef"><b>Definition:</b> qfsm.h:312</div></div>
+<div class="ttc" id="astructq_s_m___transition__t_html"><div class="ttname"><a href="structq_s_m___transition__t.html">qSM_Transition_t</a></div><div class="ttdoc">This structure should be used to define an item for a state transition table.</div><div class="ttdef"><b>Definition:</b> qfsm.h:406</div></div>
 </div><!-- fragment --><p >Then, we define the callback for the states.</p>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOff_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            BSP_LED_OFF();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -647,7 +648,7 @@ Demonstrative example using transition tables</h2>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDOn_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            BSP_LED_ON();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -658,7 +659,7 @@ Demonstrative example using transition tables</h2>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDBlink_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> SIGNAL_BLINK:</div>
 <div class="line">            BSP_LED_TOGGLE();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -674,7 +675,7 @@ Demonstrative example using transition tables</h2>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;LED_FSM, &amp;State_LEDOn, <a class="code hl_define" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a>, State_LEDOn_Callback, NULL, NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;LED_FSM, &amp;State_LEDBlink, <a class="code hl_define" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a>, State_LEDBlink_Callback, NULL, NULL ); </div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;LEDsigqueue, led_sig_stack, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(led_sig_stack) );</div>
+<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;LEDsigqueue, led_sig_stack, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(led_sig_stack) );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556">qStateMachine_InstallSignalQueue</a>( &amp;LED_FSM, &amp;LEDsigqueue );</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a">qStateMachine_InstallTimeoutSpec</a>( &amp;LED_FSM, &amp;tm_spectimeout );</div>
@@ -688,10 +689,10 @@ Demonstrative example using transition tables</h2>
 <div class="line"><a class="code hl_function" href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">qOS_Add_StateMachineTask</a>(  &amp;LED_Task, &amp;LED_FSM, <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL  );   </div>
 <div class="ttc" id="agroup__qflm_html_gacb974430bc61fdee7a601e8ea98b0f18"><div class="ttname"><a href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a></div><div class="ttdeci">#define qFLM_ArraySize(x)</div><div class="ttdoc">Returns the number of elements in an array x.</div><div class="ttdef"><b>Definition:</b> qflm.h:234</div></div>
 <div class="ttc" id="agroup__qfsm_html_ga07476c08b51bd61cdb87e161ae717d6c"><div class="ttname"><a href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a></div><div class="ttdeci">#define QSM_STATE_TOP</div><div class="ttdoc">This macro can be used to reference the top state when using the qStateMachine_StateSubscribe() API.</div><div class="ttdef"><b>Definition:</b> qfsm.h:49</div></div>
-<div class="ttc" id="agroup__qfsm_html_ga238feabe2db7825556f716c6a403a556"><div class="ttname"><a href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556">qStateMachine_InstallSignalQueue</a></div><div class="ttdeci">qBool_t qStateMachine_InstallSignalQueue(qSM_t *const m, qQueue_t *q)</div><div class="ttdoc">Install a signal queue to the provided Finite State Machine (FSM).</div><div class="ttdef"><b>Definition:</b> qfsm.c:449</div></div>
-<div class="ttc" id="agroup__qfsm_html_ga243c71753d0b5d1a402c9bda5c7bc727"><div class="ttname"><a href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727">qStateMachine_Set_StateTransitions</a></div><div class="ttdeci">qBool_t qStateMachine_Set_StateTransitions(qSM_State_t *const s, qSM_Transition_t *const table, const size_t n)</div><div class="ttdoc">Installs a table with the outgoing transitions for the supplied state.</div><div class="ttdef"><b>Definition:</b> qfsm.c:434</div></div>
-<div class="ttc" id="agroup__qfsm_html_ga81a3c55cd5811420bdbb4383eabd542a"><div class="ttname"><a href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a">qStateMachine_InstallTimeoutSpec</a></div><div class="ttdeci">qBool_t qStateMachine_InstallTimeoutSpec(qSM_t *const m, qSM_TimeoutSpec_t *const ts)</div><div class="ttdoc">Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...</div><div class="ttdef"><b>Definition:</b> qfsm.c:598</div></div>
-<div class="ttc" id="agroup__qfsm_html_gacb92e74ae8f68e2535a81860600f876f"><div class="ttname"><a href="group__qfsm.html#gacb92e74ae8f68e2535a81860600f876f">qStateMachine_Set_StateTimeouts</a></div><div class="ttdeci">qBool_t qStateMachine_Set_StateTimeouts(qSM_State_t *const s, qSM_TimeoutStateDefinition_t *tdef, const size_t n)</div><div class="ttdoc">Setup fixed timeouts for the specified state using a lookup-table.</div><div class="ttdef"><b>Definition:</b> qfsm.c:617</div></div>
+<div class="ttc" id="agroup__qfsm_html_ga238feabe2db7825556f716c6a403a556"><div class="ttname"><a href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556">qStateMachine_InstallSignalQueue</a></div><div class="ttdeci">qBool_t qStateMachine_InstallSignalQueue(qSM_t *const m, qQueue_t *q)</div><div class="ttdoc">Install a signal queue to the provided Finite State Machine (FSM).</div><div class="ttdef"><b>Definition:</b> qfsm.c:454</div></div>
+<div class="ttc" id="agroup__qfsm_html_ga243c71753d0b5d1a402c9bda5c7bc727"><div class="ttname"><a href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727">qStateMachine_Set_StateTransitions</a></div><div class="ttdeci">qBool_t qStateMachine_Set_StateTransitions(qSM_State_t *const s, qSM_Transition_t *const table, const size_t n)</div><div class="ttdoc">Installs a table with the outgoing transitions for the supplied state.</div><div class="ttdef"><b>Definition:</b> qfsm.c:439</div></div>
+<div class="ttc" id="agroup__qfsm_html_ga81a3c55cd5811420bdbb4383eabd542a"><div class="ttname"><a href="group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a">qStateMachine_InstallTimeoutSpec</a></div><div class="ttdeci">qBool_t qStateMachine_InstallTimeoutSpec(qSM_t *const m, qSM_TimeoutSpec_t *const ts)</div><div class="ttdoc">Install the Timeout-specification object to target FSM to allow timed signals within states ( See the...</div><div class="ttdef"><b>Definition:</b> qfsm.c:610</div></div>
+<div class="ttc" id="agroup__qfsm_html_gacb92e74ae8f68e2535a81860600f876f"><div class="ttname"><a href="group__qfsm.html#gacb92e74ae8f68e2535a81860600f876f">qStateMachine_Set_StateTimeouts</a></div><div class="ttdeci">qBool_t qStateMachine_Set_StateTimeouts(qSM_State_t *const s, qSM_TimeoutStateDefinition_t *tdef, const size_t n)</div><div class="ttdoc">Setup fixed timeouts for the specified state using a lookup-table.</div><div class="ttdef"><b>Definition:</b> qfsm.c:629</div></div>
 <div class="ttc" id="agroup__qqueues_html_gac7b44df16c76bdf45d82f3b7621eec63"><div class="ttname"><a href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a></div><div class="ttdeci">qBool_t qQueue_Setup(qQueue_t *const q, void *pData, const size_t itemSize, const size_t itemsCount)</div><div class="ttdoc">Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...</div><div class="ttdef"><b>Definition:</b> qqueues.c:32</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga13bec7f4284d45c97f512c83ed9b7744"><div class="ttname"><a href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a></div><div class="ttdeci">#define qMedium_Priority</div><div class="ttdoc">A macro directive to indicate the medium priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:74</div></div>
 </div><!-- fragment --><h2><a class="anchor" id="qfsm_happroach"></a>
@@ -714,14 +715,14 @@ Example usign a hierarchical FSM</h3>
 </html>
  <em>Cruise control FSM example</em> </center><p >The behavior of this system is state-dependent in that the executed actions correspond not only to the driver input, but also on the current state of the system and with the status of the engine and the brake. The figure above illustrate the modeling of this system with the "Automated Control" state acting as composite.</p>
 <p >Before getting started, the required user-defined signals, variables, and entries of the transition table should be defined:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#define  SIGNAL_ENGINE_ON           ((qSM_Signal_t)(1))   </span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_ACCEL               ((qSM_Signal_t)(2))</span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_RESUME              ((qSM_Signal_t)(3))</span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_OFF                 ((qSM_Signal_t)(4))</span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_BRAKE_PRESSED       ((qSM_Signal_t)(5))</span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_CRUISE              ((qSM_Signal_t)(6))     </span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_REACHED_CRUISING    ((qSM_Signal_t)(7))</span></div>
-<div class="line"><span class="preprocessor">#define  SIGNAL_ENGINE_OFF          ((qSM_Signal_t)(8))</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#define  SIGNAL_ENGINE_ON           ((qSM_SigId_t)(1))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_ACCEL               ((qSM_SigId_t)(2))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_RESUME              ((qSM_SigId_t)(3))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_OFF                 ((qSM_SigId_t)(4))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_BRAKE_PRESSED       ((qSM_SigId_t)(5))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_CRUISE              ((qSM_SigId_t)(6))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_REACHED_CRUISING    ((qSM_SigId_t)(7))</span></div>
+<div class="line"><span class="preprocessor">#define  SIGNAL_ENGINE_OFF          ((qSM_SigId_t)(8))</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> CruiseControlTask;</div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> Top_SM;</div>
@@ -732,47 +733,47 @@ Example usign a hierarchical FSM</h3>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> state_accelerating, state_cruising, state_resuming;</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> top_sigqueue;</div>
-<div class="line"><a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> topsm_sig_stack[10];</div>
+<div class="line"><a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a> topsm_sig_stack[10];</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*=======================================================================*/</span></div>
 <div class="line"><span class="comment">/*                             TRANSITION TABLES                         */</span></div>
 <div class="line"><span class="comment">/*=======================================================================*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> idle_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_ENGINE_ON, SigAct_ClearDesiredSpeed, &amp;state_initial      ,0 },</div>
+<div class="line">{ SIGNAL_ENGINE_ON, SigAct_ClearDesiredSpeed, &amp;state_initial      , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> initial_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_ACCEL,     SigAct_BrakeOff,          &amp;state_accelerating ,0 },</div>
+<div class="line">{ SIGNAL_ACCEL,     SigAct_BrakeOff,          &amp;state_accelerating , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> accel_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_CRUISE,     NULL,                    &amp;state_cruising     ,0 },</div>
+<div class="line">{ SIGNAL_CRUISE,     NULL,                    &amp;state_cruising     , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> cruising_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_OFF,       NULL,                     &amp;state_cruisingoff  ,0 },</div>
-<div class="line">{ SIGNAL_ACCEL,     NULL,                     &amp;state_accelerating ,0 },</div>
+<div class="line">{ SIGNAL_OFF,       NULL,                     &amp;state_cruisingoff  , 0, NULL },</div>
+<div class="line">{ SIGNAL_ACCEL,     NULL,                     &amp;state_accelerating , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> resuming_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_ACCEL,     NULL,                     &amp;state_accelerating ,0 },</div>
-<div class="line">};</div>
+<div class="line">{ SIGNAL_ACCEL,     NULL,                     &amp;state_accelerating , 0, NULL }</div>
+<div class="line">, NULL };</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> cruisingoff_transitions[] =</div>
 <div class="line">{   </div>
-<div class="line">{ SIGNAL_ACCEL,      SigAct_BrakeOff,         &amp;state_accelerating ,0 },</div>
-<div class="line">{ SIGNAL_RESUME,     SigAct_BrakeOff,         &amp;state_resuming     ,0 },</div>
-<div class="line">{ SIGNAL_ENGINE_OFF, NULL,                    &amp;state_idle         ,0 },</div>
+<div class="line">{ SIGNAL_ACCEL,      SigAct_BrakeOff,         &amp;state_accelerating , 0, NULL },</div>
+<div class="line">{ SIGNAL_RESUME,     SigAct_BrakeOff,         &amp;state_resuming     , 0, NULL },</div>
+<div class="line">{ SIGNAL_ENGINE_OFF, NULL,                    &amp;state_idle         , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> automated_transitions[] =</div>
 <div class="line">{       </div>
-<div class="line">{ SIGNAL_BRAKE_PRESSED,   NULL,               &amp;state_cruisingoff  ,0 },</div>
+<div class="line">{ SIGNAL_BRAKE_PRESSED,   NULL,               &amp;state_cruisingoff  , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 </div><!-- fragment --><p >Then, signal-actions and state callbacks are later defined</p>
@@ -794,7 +795,7 @@ Example usign a hierarchical FSM</h3>
 <div class="line"><span class="comment">/*=======================================================================*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> state_top_callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> RetVal = <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
@@ -828,7 +829,7 @@ Example usign a hierarchical FSM</h3>
 <div class="line"><span class="comment">/*          STATE CALLBACKS FOR THE AUTOMATED CONTROL FSM                */</span></div>
 <div class="line"><span class="comment">/*=======================================================================*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> state_accelerating_callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#af9ba73bb4b2088f86d19a0ade45975b6">Signal</a> ) {</div>
+<div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
 <div class="line">            Speed_SelectDesired();</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -861,7 +862,7 @@ Example usign a hierarchical FSM</h3>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;Top_SM, &amp;state_resuming, &amp;state_automatedcontrol, state_resuming_callback, NULL, NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;Top_SM, &amp;state_cruising, &amp;state_automatedcontrol, state_cruising_callback, NULL, NULL );</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;top_sigqueue, topsm_sig_stack, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(topsm_sig_stack) );</div>
+<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;top_sigqueue, topsm_sig_stack, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(topsm_sig_stack) );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556">qStateMachine_InstallSignalQueue</a>( &amp;Top_SM, &amp;top_sigqueue );</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727">qStateMachine_Set_StateTransitions</a>( &amp;state_idle, idle_transitions, <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(idle_transitions) );</div>
@@ -892,38 +893,38 @@ Example with history pseudo-states</h3>
 <li><em>Deep</em> <em>history</em> : A transition to the deep history state within a composite state invokes the state that was active, immediately before the most recent exit of the composite state. The last active state can be nested at any depth.</li>
 </ul>
 <p >Here, the way to specify this type of transitions in QuarkTS is very straightforward, you only need to assign the history-mode in the last entry of the transition as shown below:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#define SIGNAL_A ((qSM_Signal_t)(1))</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_B ((qSM_Signal_t)(2))</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_C ((qSM_Signal_t)(3))</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_D ((qSM_Signal_t)(4))</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_E ((qSM_Signal_t)(5))</span></div>
-<div class="line"><span class="preprocessor">#define SIGNAL_F ((qSM_Signal_t)(6))</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#define SIGNAL_A ((qSM_SigId_t)(1))</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_B ((qSM_SigId_t)(2))</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_C ((qSM_SigId_t)(3))</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_D ((qSM_SigId_t)(4))</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_E ((qSM_SigId_t)(5))</span></div>
+<div class="line"><span class="preprocessor">#define SIGNAL_F ((qSM_SigId_t)(6))</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> sigqueue;</div>
-<div class="line"><a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a> topsm_sig_stack [10];</div>
+<div class="line"><a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a> topsm_sig_stack [10];</div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> super;</div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> state1 , state2 , state3 , state4 , state5 , state6;</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> state1_transitions [] = {</div>
-<div class="line">    { SIGNAL_A , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a> },</div>
-<div class="line">    { SIGNAL_B , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253">qSM_TRANSITION_DEEP_HISTORY</a> },</div>
-<div class="line">    { SIGNAL_C , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7">qSM_TRANSITION_NO_HISTORY</a> },</div>
+<div class="line">    { SIGNAL_A , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a>, NULL },</div>
+<div class="line">    { SIGNAL_B , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253">qSM_TRANSITION_DEEP_HISTORY</a>, NULL },</div>
+<div class="line">    { SIGNAL_C , NULL , &amp;state2 , <a class="code hl_enumvalue" href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7">qSM_TRANSITION_NO_HISTORY</a>, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> state2_transitions [] = {</div>
-<div class="line">    { SIGNAL_D , NULL , &amp;state1 , 0 },</div>
+<div class="line">    { SIGNAL_D , NULL , &amp;state1 , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> state3_transitions [] = {</div>
-<div class="line">    { SIGNAL_E , NULL , &amp;state4 , 0 },</div>
+<div class="line">    { SIGNAL_E , NULL , &amp;state4 , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> state5_transitions [] = {</div>
-<div class="line">    { SIGNAL_F , NULL , &amp;state6 , 0 },</div>
+<div class="line">    { SIGNAL_F , NULL , &amp;state6 , 0, NULL }</div>
 <div class="line">};</div>
-<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253">qSM_TRANSITION_DEEP_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_DEEP_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:172</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_SHALLOW_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:171</div></div>
-<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7">qSM_TRANSITION_NO_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_NO_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:170</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253">qSM_TRANSITION_DEEP_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_DEEP_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:183</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba713b2659619305f641ed9531081573e9">qSM_TRANSITION_SHALLOW_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_SHALLOW_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:182</div></div>
+<div class="ttc" id="agroup__qfsm_html_ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7"><div class="ttname"><a href="group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230bab923ff14a3651b5af267827a6ad08dd7">qSM_TRANSITION_NO_HISTORY</a></div><div class="ttdeci">@ qSM_TRANSITION_NO_HISTORY</div><div class="ttdef"><b>Definition:</b> qfsm.h:181</div></div>
 </div><!-- fragment --><p >Next, the configuration and topology of the state-machine is presented, including the default transitions (the small circles filled with black). Please do not forget to define the callbacks for each state.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a>( &amp;super , state_top_callback , &amp;state1 , NULL , NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;super , &amp;state1 , <a class="code hl_define" href="group__qfsm.html#ga07476c08b51bd61cdb87e161ae717d6c">QSM_STATE_TOP</a> , state1_callback , NULL , NULL );</div>
@@ -933,7 +934,7 @@ Example with history pseudo-states</h3>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;super , &amp;state5 , &amp;state4 , state5_callback , NULL , NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;super , &amp;state6 , &amp;state4 , state6_callback , NULL , NULL );</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;sigqueue , topsm_sig_stack , <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qfsm.html#gaf19fbacba114204700f6936eb61479fb">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(topsm_sig_stack ) );</div>
+<div class="line"><a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;sigqueue , topsm_sig_stack , <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a>), <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>(topsm_sig_stack ) );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga238feabe2db7825556f716c6a403a556">qStateMachine_InstallSignalQueue</a>( &amp;super , &amp;sigqueue );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727">qStateMachine_Set_StateTransitions</a>( &amp;state1 , state1_transitions , <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>( state1_transitions ) );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727">qStateMachine_Set_StateTransitions</a>( &amp;state2 , state2_transitions , <a class="code hl_define" href="group__qflm.html#gacb974430bc61fdee7a601e8ea98b0f18">qFLM_ArraySize</a>( state2_transitions ) );</div>
@@ -1095,7 +1096,7 @@ Co-Routine example with semaphores.</h2>
 <div class="ttc" id="agroup__qcoroutines_html_ga48a737b34a6764159b2f1109f4543f99"><div class="ttname"><a href="group__qcoroutines.html#ga48a737b34a6764159b2f1109f4543f99">qCR_SemWait</a></div><div class="ttdeci">#define qCR_SemWait(pSem)</div><div class="ttdoc">Carries out the &quot;wait&quot; operation on the semaphore. The wait operation causes the Co-routine to block ...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:358</div></div>
 <div class="ttc" id="agroup__qcoroutines_html_gacddf33244c5a11f79ae40eaf6d57ab34"><div class="ttname"><a href="group__qcoroutines.html#gacddf33244c5a11f79ae40eaf6d57ab34">qCR_SemInit</a></div><div class="ttdeci">#define qCR_SemInit(pSem, sValue)</div><div class="ttdoc">Initializes a semaphore with a value for the counter. Internally, the semaphores use an &quot;unsigned int...</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:346</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition:</b> qkernel.c:409</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition:</b> qkernel.c:667</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition:</b> qkernel.c:668</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:124</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_gae3758e719245db560b090d90fce96301"><div class="ttname"><a href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a></div><div class="ttdeci">#define qPeriodic</div><div class="ttdoc">A directive indicating that the task will run every time its timeout has expired.</div><div class="ttdef"><b>Definition:</b> qkernel.h:80</div></div>
 <div class="ttc" id="astructq_c_r___semaphore__t_html"><div class="ttname"><a href="structq_c_r___semaphore__t.html">qCR_Semaphore_t</a></div><div class="ttdoc">A typedef to instantiate a Co-Routine Semaphore.</div><div class="ttdef"><b>Definition:</b> qcoroutine.h:45</div></div>
@@ -1337,7 +1338,7 @@ A CLI example</h2>
 <div class="ttc" id="agroup__qatcli_html_ga3a268bc78e828ca17067f89614f61756"><div class="ttname"><a href="group__qatcli.html#ga3a268bc78e828ca17067f89614f61756">qATCLI_Setup</a></div><div class="ttdeci">qBool_t qATCLI_Setup(qATCLI_t *const cli, const qPutChar_t outFcn, char *pInput, const size_t sizeInput, char *pOutput, const size_t sizeOutput)</div><div class="ttdoc">Setup an instance of the AT Command Command Line Interface.</div><div class="ttdef"><b>Definition:</b> qatcli.c:112</div></div>
 <div class="ttc" id="agroup__qatcli_html_gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><div class="ttname"><a href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">qATCLI_CmdSubscribe</a></div><div class="ttdeci">qBool_t qATCLI_CmdSubscribe(qATCLI_t *const cli, qATCLI_Command_t *const cmd, char *textCommand, const qATCLI_CommandCallback_t cFcn, qATCLI_Options_t cmdOpt, void *param)</div><div class="ttdoc">This function subscribes the CLI instance to a specific command with an associated Callback function,...</div><div class="ttdef"><b>Definition:</b> qatcli.c:154</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga33bd7afc6bdd5e8a995d2cb50e006e3a"><div class="ttname"><a href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a></div><div class="ttdeci">#define qLowest_Priority</div><div class="ttdoc">A macro directive to indicate the lowest priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:71</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gaf0b51d7213c21c0afbfd4dbce865c6e2"><div class="ttname"><a href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2">qOS_Add_ATCLITask</a></div><div class="ttdeci">qBool_t qOS_Add_ATCLITask(qTask_t *const Task, qATCLI_t *cli, const qPriority_t p, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as e...</div><div class="ttdef"><b>Definition:</b> qkernel.c:535</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gaf0b51d7213c21c0afbfd4dbce865c6e2"><div class="ttname"><a href="group__qtaskcreation.html#gaf0b51d7213c21c0afbfd4dbce865c6e2">qOS_Add_ATCLITask</a></div><div class="ttdeci">qBool_t qOS_Add_ATCLITask(qTask_t *const Task, qATCLI_t *cli, const qPriority_t p, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme running an AT Command Line Interface. Task will be scheduled as e...</div><div class="ttdef"><b>Definition:</b> qkernel.c:536</div></div>
 </div><!-- fragment --><p >The CLI input its feeded from the interrupt context by using the UART receive ISR:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> interrupt HAL_UART_RxInterrupt( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    <span class="keywordtype">char</span> received;</div>
