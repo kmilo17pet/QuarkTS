@@ -7,7 +7,7 @@
 #include "QuarkTS.h"
 
 
-#define SIGNAL_BUTTON_PRESSED   ( (qSM_Signal_t)1 )
+#define SIGNAL_BUTTON_PRESSED   ( (qSM_SigId_t)1 )
 #define SIGNAL_TIMEOUT          (QSM_SIGNAL_TIMEOUT(0))
 #define SIGNAL_BLINK            (QSM_SIGNAL_TIMEOUT(1))
 
@@ -28,17 +28,17 @@ qSM_Status_t Toasting_State( qSM_Handler_t h );
 qSM_Status_t Baking_State( qSM_Handler_t h );
 
 qSM_Transition_t LEDOff_transitions[] = {
-    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn    ,0},
+    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn    ,0, NULL }
 };
 
 qSM_Transition_t LEDOn_transitions[] = {
-    { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
-    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink ,0},
+    { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0, NULL },
+    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink ,0, NULL }
 };
 
 qSM_Transition_t LEDBlink_transitions[] = {
-    { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
-    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff   ,0}
+    { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0, NULL },
+    { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff   ,0, NULL }
 };
 
 qSM_TimeoutStateDefinition_t LedOn_Timeouts[]={
@@ -58,7 +58,7 @@ qSM_Status_t State_LEDOff_Callback( qSM_Handler_t h ){
             break;
         case QSM_SIGNAL_EXIT:
             puts("x-ledoff");
-            break;    
+            break;   
         default:
             break;
     }
@@ -73,9 +73,9 @@ qSM_Status_t State_LEDOn_Callback( qSM_Handler_t h ){
             break;
         case QSM_SIGNAL_EXIT:
             puts("x-ledon");
-            break;     
+            break;
         default:
-            break;    
+            break;
     }
     return qSM_STATUS_EXIT_SUCCESS;
 }
@@ -89,8 +89,8 @@ qSM_Status_t State_LEDBlink_Callback( qSM_Handler_t h ){
             puts("x-ledblink");
             break; 
         case SIGNAL_BLINK:
-            puts("LED TOGGLE");         
-            break;       
+            puts("LED TOGGLE");
+            break;
     }
     return qSM_STATUS_EXIT_SUCCESS;
 }
@@ -98,7 +98,7 @@ qSM_Status_t State_LEDBlink_Callback( qSM_Handler_t h ){
 void Sig_Handler(int signum ){
     switch( signum){
         case SIGUSR1:
-            qStateMachine_SendSignal( &LED_FSM, SIGNAL_BUTTON_PRESSED, qFalse );
+            qStateMachine_SendSignal( &LED_FSM, SIGNAL_BUTTON_PRESSED, NULL, qFalse );
             break;
         default:
             break;

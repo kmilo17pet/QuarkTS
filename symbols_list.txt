@@ -169,3 +169,5 @@ qSSmoother_LPF1_t qSSmoother_LPF2_t qSSmoother_MWM1_t  qSSmoother_MWM2_t qSSmoot
 qSSmoother_KLMN_t qSSmootherPtr_t _qSSmoother_t
 #qtdl
 qTDL_t
+
+cast_reinterpret

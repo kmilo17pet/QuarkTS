@@ -7,15 +7,15 @@
 #include "QuarkTS.h"
 
 
-#define SIGNAL_A        ((qSM_Signal_t)(1))
-#define SIGNAL_B        ((qSM_Signal_t)(2))
-#define SIGNAL_C        ((qSM_Signal_t)(3))
-#define SIGNAL_D        ((qSM_Signal_t)(4))
-#define SIGNAL_E        ((qSM_Signal_t)(5))
-#define SIGNAL_F        ((qSM_Signal_t)(6))
-#define SIGNAL_G        ((qSM_Signal_t)(7))
-#define SIGNAL_H        ((qSM_Signal_t)(8))
-#define SIGNAL_I        ((qSM_Signal_t)(9))
+#define SIGNAL_A        ((qSM_SigId_t)(1))
+#define SIGNAL_B        ((qSM_SigId_t)(2))
+#define SIGNAL_C        ((qSM_SigId_t)(3))
+#define SIGNAL_D        ((qSM_SigId_t)(4))
+#define SIGNAL_E        ((qSM_SigId_t)(5))
+#define SIGNAL_F        ((qSM_SigId_t)(6))
+#define SIGNAL_G        ((qSM_SigId_t)(7))
+#define SIGNAL_H        ((qSM_SigId_t)(8))
+#define SIGNAL_I        ((qSM_SigId_t)(9))
 
 qSM_t super;
 qSM_State_t s, s1, s11, s2, s21, s211;
@@ -52,39 +52,39 @@ qBool_t fsmguard2( qSM_Handler_t h ){
 }
 
 qSM_Transition_t s_transitions[] = {
-    { SIGNAL_E,        NULL,           &s11,        0  },   
-    { SIGNAL_I,        fsmguard1,      NULL,        0  },
+    { SIGNAL_E,        NULL,           &s11,        0, NULL   },
+    { SIGNAL_I,        fsmguard1,      NULL,        0, NULL   }
 };
 
 qSM_Transition_t s1_transitions[] = { 
-    { SIGNAL_B,        NULL,           &s11,        0  },  
-    { SIGNAL_A,        NULL,           &s1,         0  },   
-    { SIGNAL_D,        fsmguard2,      &s,          0  },  
-    { SIGNAL_C,        NULL,           &s2,         0  },
-    { SIGNAL_F,        NULL,           &s211,       0  },
+    { SIGNAL_B,        NULL,           &s11,        0, NULL   },
+    { SIGNAL_A,        NULL,           &s1,         0, NULL   },
+    { SIGNAL_D,        fsmguard2,      &s,          0, NULL   },
+    { SIGNAL_C,        NULL,           &s2,         0, NULL   },
+    { SIGNAL_F,        NULL,           &s211,       0, NULL   }
 };
 
 qSM_Transition_t s11_transitions[] = {
-    { SIGNAL_D,        fsmguard1,      &s1,         0  },    
-    { SIGNAL_H,        NULL,           &s,          0  },
-    { SIGNAL_G,        NULL,           &s211,       0  },
+    { SIGNAL_D,        fsmguard1,      &s1,         0, NULL   },
+    { SIGNAL_H,        NULL,           &s,          0, NULL   },
+    { SIGNAL_G,        NULL,           &s211,       0, NULL   }
 };
 
 qSM_Transition_t s2_transitions[] = {
-    { SIGNAL_C,        NULL,           &s1,         0  },
-    { SIGNAL_F,        NULL,           &s11,        0  },
-    { SIGNAL_I,        fsmguard2,      NULL,        0  },
+    { SIGNAL_C,        NULL,           &s1,         0, NULL   },
+    { SIGNAL_F,        NULL,           &s11,        0, NULL   },
+    { SIGNAL_I,        fsmguard2,      NULL,        0, NULL   }
 };
 
 qSM_Transition_t s21_transitions[] = {
-    { SIGNAL_G,        NULL,           &s1,         0  },
-    { SIGNAL_B,        NULL,           &s211,       0  },
-    { SIGNAL_A,        NULL,           &s21,        0  },
+    { SIGNAL_G,        NULL,           &s1,         0, NULL   },
+    { SIGNAL_B,        NULL,           &s211,       0, NULL   },
+    { SIGNAL_A,        NULL,           &s21,        0, NULL   }
 };
 
 qSM_Transition_t s211_transitions[] = {
-    { SIGNAL_H,        NULL,           &s,          0  },
-    { SIGNAL_D,        NULL,           &s21,        0  },
+    { SIGNAL_H,        NULL,           &s,          0, NULL   },
+    { SIGNAL_D,        NULL,           &s21,        0, NULL   }
 };
 
 /*=============================================================================*/
@@ -114,31 +114,31 @@ qSM_Status_t statex_callback( qSM_Handler_t h ) {
 void Sig_Handler(int signum ){
     switch( signum){
         case SIGUSR1:
-            qStateMachine_SendSignal( &super, SIGNAL_A, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_A, NULL, qFalse );
             break;
         case SIGUSR2:
-            qStateMachine_SendSignal( &super, SIGNAL_B, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_B, NULL, qFalse );
             break;        
         case SIGQUIT:
-            qStateMachine_SendSignal( &super, SIGNAL_C, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_C, NULL, qFalse );
             break;         
         case SIGALRM:
-            qStateMachine_SendSignal( &super, SIGNAL_D, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_D, NULL, qFalse );
             break;
         case SIGTRAP:
-            qStateMachine_SendSignal( &super, SIGNAL_E, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_E, NULL, qFalse );
             break;       
         case SIGSYS:
-            qStateMachine_SendSignal( &super, SIGNAL_F, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_F, NULL, qFalse );
             break;              
         case SIGTSTP:
-            qStateMachine_SendSignal( &super, SIGNAL_G, qFalse );   
+            qStateMachine_SendSignal( &super, SIGNAL_G, NULL, qFalse );
             break;     
         case SIGCHLD:
-            qStateMachine_SendSignal( &super, SIGNAL_H, qFalse );   
+            qStateMachine_SendSignal( &super, SIGNAL_H, NULL, qFalse );
             break;             
         case SIGSEGV:
-            qStateMachine_SendSignal( &super, SIGNAL_I, qFalse );   
+            qStateMachine_SendSignal( &super, SIGNAL_I, NULL, qFalse );
             break;                    
         default:
             break;

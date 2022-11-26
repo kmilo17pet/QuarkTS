@@ -7,12 +7,12 @@
 #include "QuarkTS.h"
 
 
-#define SIGNAL_A        ((qSM_Signal_t)(1))
-#define SIGNAL_B        ((qSM_Signal_t)(2))
-#define SIGNAL_C        ((qSM_Signal_t)(3))
-#define SIGNAL_D        ((qSM_Signal_t)(4))
-#define SIGNAL_E        ((qSM_Signal_t)(5))
-#define SIGNAL_F        ((qSM_Signal_t)(6))
+#define SIGNAL_A        ((qSM_SigId_t)(1))
+#define SIGNAL_B        ((qSM_SigId_t)(2))
+#define SIGNAL_C        ((qSM_SigId_t)(3))
+#define SIGNAL_D        ((qSM_SigId_t)(4))
+#define SIGNAL_E        ((qSM_SigId_t)(5))
+#define SIGNAL_F        ((qSM_SigId_t)(6))
 
 qSM_t super;
 qSM_State_t state1, state2, state2a, state2b, state3, state4 ;
@@ -30,21 +30,21 @@ qSM_Status_t state2b_callback( qSM_Handler_t h );
 qTask_t SMTask;
 
 qSM_Transition_t state3_transitions[] = {
-    { SIGNAL_A,        NULL,           &state4,     qSM_TRANSITION_SHALLOW_HISTORY  },  
-    { SIGNAL_E,        NULL,           &state4,     qSM_TRANSITION_NO_HISTORY  },  
-    { SIGNAL_F,        NULL,           &state4,     qSM_TRANSITION_DEEP_HISTORY  },      
+    { SIGNAL_A,        NULL,           &state4,     qSM_TRANSITION_SHALLOW_HISTORY, NULL   },
+    { SIGNAL_E,        NULL,           &state4,     qSM_TRANSITION_NO_HISTORY, NULL   },
+    { SIGNAL_F,        NULL,           &state4,     qSM_TRANSITION_DEEP_HISTORY, NULL   }
 };
 
 qSM_Transition_t state4_transitions[] = {
-    { SIGNAL_B,        NULL,           &state3,     0 }, 
+    { SIGNAL_B,        NULL,           &state3,     0, NULL  }
 };
 
 qSM_Transition_t state1_transitions[] = {
-    { SIGNAL_C,        NULL,           &state2,     0 },  
+    { SIGNAL_C,        NULL,           &state2,     0, NULL  }
 };
 
 qSM_Transition_t state2a_transitions[] = {
-    { SIGNAL_D,        NULL,           &state2b,    0 },  
+    { SIGNAL_D,        NULL,           &state2b,    0, NULL  }
 };
 
 qSM_Status_t state_top_callback( qSM_Handler_t h ) {
@@ -153,22 +153,22 @@ qSM_Status_t state2b_callback( qSM_Handler_t h ) {
 void Sig_Handler(int signum ){
     switch( signum){
         case SIGUSR1:
-            qStateMachine_SendSignal( &super, SIGNAL_A, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_A, NULL , qFalse );
             break;
         case SIGUSR2:
-            qStateMachine_SendSignal( &super, SIGNAL_B, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_B, NULL , qFalse );
             break;        
         case SIGQUIT:
-            qStateMachine_SendSignal( &super, SIGNAL_C, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_C, NULL , qFalse );
             break;         
         case SIGALRM:
-            qStateMachine_SendSignal( &super, SIGNAL_D, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_D, NULL , qFalse );
             break;
         case SIGTRAP:
-            qStateMachine_SendSignal( &super, SIGNAL_E, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_E, NULL , qFalse );
             break;       
         case SIGSYS:
-            qStateMachine_SendSignal( &super, SIGNAL_F, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_F, NULL , qFalse );
             break;                     
         default:
             break;

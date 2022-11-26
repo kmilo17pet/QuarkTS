@@ -7,11 +7,11 @@
 #include "QuarkTS.h"
 
 
-#define SIGNAL_CLOSE        ((qSM_Signal_t)(1))
-#define SIGNAL_OPEN         ((qSM_Signal_t)(2))
-#define SIGNAL_OFFTIMEOUT   ((qSM_Signal_t)(3))
-#define SIGNAL_TOAST        ((qSM_Signal_t)(4))
-#define SIGNAL_BAKE         ((qSM_Signal_t)(5))
+#define SIGNAL_CLOSE        ((qSM_SigId_t)(1))
+#define SIGNAL_OPEN         ((qSM_SigId_t)(2))
+#define SIGNAL_OFFTIMEOUT   ((qSM_SigId_t)(3))
+#define SIGNAL_TOAST        ((qSM_SigId_t)(4))
+#define SIGNAL_BAKE         ((qSM_SigId_t)(5))
 
 
 qSM_t super;
@@ -33,14 +33,14 @@ qTask_t SMTask;
 
 
 qSM_Transition_t doorclosed_ttable[] = {
-    { SIGNAL_OPEN,              NULL,           &state_dooropen,        0 },  
-    { QSM_SIGNAL_TIMEOUT(0),    NULL,           &state_off,             0 }, 
-    { SIGNAL_TOAST,             NULL,           &state_toasting,        0 }, 
-    { SIGNAL_BAKE,              NULL,           &state_baking,          0 }, 
+    { SIGNAL_OPEN,              NULL,           &state_dooropen,        0, NULL  },
+    { QSM_SIGNAL_TIMEOUT(0),    NULL,           &state_off,             0, NULL  },
+    { SIGNAL_TOAST,             NULL,           &state_toasting,        0, NULL  },
+    { SIGNAL_BAKE,              NULL,           &state_baking,          0, NULL  }
 };
 
 qSM_Transition_t dooropen_ttable[] = {
-    { SIGNAL_CLOSE,             NULL,           &state_doorclosed,      qSM_TRANSITION_DEEP_HISTORY }, 
+    { SIGNAL_CLOSE,             NULL,           &state_doorclosed,      qSM_TRANSITION_DEEP_HISTORY, NULL  }
 };
 
 
@@ -162,19 +162,19 @@ qSM_Status_t state_baking_callback( qSM_Handler_t h ) {
 void Sig_Handler(int signum ){
     switch( signum){
         case SIGUSR1:
-            qStateMachine_SendSignal( &super, SIGNAL_CLOSE, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_CLOSE, NULL,  qFalse );
             break;
         case SIGUSR2:
-            qStateMachine_SendSignal( &super, SIGNAL_OPEN, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_OPEN, NULL , qFalse );
             break;        
         case SIGQUIT:
-            qStateMachine_SendSignal( &super, QSM_SIGNAL_TIMEOUT(0), qFalse );
+            qStateMachine_SendSignal( &super, QSM_SIGNAL_TIMEOUT(0), NULL , qFalse );
             break;         
         case SIGALRM:
-            qStateMachine_SendSignal( &super, SIGNAL_TOAST, qFalse );
+            qStateMachine_SendSignal( &super, SIGNAL_TOAST, NULL , qFalse );
             break;
         case SIGTRAP:
-            qStateMachine_SendSignal( &super, SIGNAL_BAKE, qFalse );     
+            qStateMachine_SendSignal( &super, SIGNAL_BAKE, NULL , qFalse );
             break;
         default:
             break;

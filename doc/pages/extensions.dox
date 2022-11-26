@@ -508,7 +508,7 @@
 * receives the signal and holds it until the state-machine can evaluate it.
 *
 * When coding state-machines, the application writer can benefit from this 
-* simple eventabstraction mechanism. On the one hand, there would be a more 
+* simple event-abstraction mechanism. On the one hand, there would be a more 
 * uniform programming when writing states callbacks and on the other hand, the 
 * communication of the state machine from other contexts becomes easier.
 *
@@ -570,11 +570,11 @@
 * <center>
 * <table>
 * <caption id="multi_row">Transition table layout for a state</caption>
-* <tr><th>Signal  <th>Signal action/guard <th>Target state   <th>History mode
-* <tr><td> @c Signal1 <td>@c NULL <td>@c StateB <td>@c 0
-* <tr><td> @c Signal3 <td>@c DoOnSignal3 <td>@c StateD <td>@c 0
-* <tr><td> ... <td>... <td> ... <td> ...
-* <tr><td> @c Signal6 <td>@c NULL <td>@c StateA <td>@c 0
+* <tr><th>Signal Id <th>Signal action/guard <th>Target state  <th>History mode  <th>Signal data
+* <tr><td> @c Signal1 <td>@c NULL <td>@c StateB <td>@c 0 <td>@c NULL
+* <tr><td> @c Signal3 <td>@c DoOnSignal3 <td>@c StateD <td>@c 0 <td>@c &sig3data
+* <tr><td> ... <td>... <td> ... <td> ... <td> ...
+* <tr><td> @c Signal6 <td>@c NULL <td>@c StateA <td>@c 0 <td>@c NULL
 * </table>
 * </center>
 *
@@ -666,6 +666,8 @@
 * in a reset state.
 * - #QSM_TSOPT_PERIODIC : To put the timeout in periodic mode.
 * 
+* @note Data associated to timeout signals should be set to @c NULL. Any other
+* value will be ignored and will be passed as @c NULL to the FSM handler.
 * @attention The user is responsible for writing timeout specifications 
 * correctly. Care must be taken that the specifications do not collide between 
 * hierarchical states to avoid overwriting operations.
@@ -681,7 +683,7 @@
 *
 *  @code{.c}
 *  /*define the FSM application event-signals*/
-*  #define SIGNAL_BUTTON_PRESSED   ( (qSM_Signal_t)1 )
+*  #define SIGNAL_BUTTON_PRESSED   ( (qSM_SigId_t)1 )
 *  #define SIGNAL_TIMEOUT          (QSM_SIGNAL_TIMEOUT(0))
 *  #define SIGNAL_BLINK            (QSM_SIGNAL_TIMEOUT(1))
 *  
@@ -694,17 +696,17 @@
 *  
 *  /*create the transition tables for every state*/
 *  qSM_Transition_t LEDOff_transitions[] = {
-*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn    ,0},
+*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOn    , 0, NULL}
 *  };
 *  
 *  qSM_Transition_t LEDOn_transitions[] = {
-*      { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
-*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink ,0},
+*      { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   , 0, NULL},
+*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDBlink , 0, NULL}
 *  };
 *  
 *  qSM_Transition_t LEDBlink_transitions[] = {
-*      { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   ,0},
-*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff   ,0}
+*      { SIGNAL_TIMEOUT,        NULL, &State_LEDOff   , 0, NULL},
+*      { SIGNAL_BUTTON_PRESSED, NULL, &State_LEDOff   , 0, NULL}
 *  };
 *  
 *  /*define the timeout specifications */
@@ -714,7 +716,7 @@
 *  
 *  qSM_TimeoutStateDefinition_t LEDBlink_timeouts[]={
 *      { 10.0f,  QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
-*      { 0.5f,   QSM_TSOPT_INDEX(1) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT | QSM_TSOPT_PERIODIC  },
+*      { 0.5f,   QSM_TSOPT_INDEX(1) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT | QSM_TSOPT_PERIODIC  }
 *  };
 *  @endcode 
 *
@@ -828,14 +830,14 @@
 * transition table should be defined:
 * 
 *  @code{.c}
-*  #define  SIGNAL_ENGINE_ON           ((qSM_Signal_t)(1))   
-*  #define  SIGNAL_ACCEL               ((qSM_Signal_t)(2))
-*  #define  SIGNAL_RESUME              ((qSM_Signal_t)(3))
-*  #define  SIGNAL_OFF                 ((qSM_Signal_t)(4))
-*  #define  SIGNAL_BRAKE_PRESSED       ((qSM_Signal_t)(5))
-*  #define  SIGNAL_CRUISE              ((qSM_Signal_t)(6))     
-*  #define  SIGNAL_REACHED_CRUISING    ((qSM_Signal_t)(7))
-*  #define  SIGNAL_ENGINE_OFF          ((qSM_Signal_t)(8))
+*  #define  SIGNAL_ENGINE_ON           ((qSM_SigId_t)(1))
+*  #define  SIGNAL_ACCEL               ((qSM_SigId_t)(2))
+*  #define  SIGNAL_RESUME              ((qSM_SigId_t)(3))
+*  #define  SIGNAL_OFF                 ((qSM_SigId_t)(4))
+*  #define  SIGNAL_BRAKE_PRESSED       ((qSM_SigId_t)(5))
+*  #define  SIGNAL_CRUISE              ((qSM_SigId_t)(6))
+*  #define  SIGNAL_REACHED_CRUISING    ((qSM_SigId_t)(7))
+*  #define  SIGNAL_ENGINE_OFF          ((qSM_SigId_t)(8))
 *  
 *  qTask_t CruiseControlTask;
 *  qSM_t Top_SM;
@@ -853,40 +855,40 @@
 *  /*=======================================================================*/
 *  qSM_Transition_t idle_transitions[] =
 *  {
-*  { SIGNAL_ENGINE_ON, SigAct_ClearDesiredSpeed, &state_initial      ,0 },
+*  { SIGNAL_ENGINE_ON, SigAct_ClearDesiredSpeed, &state_initial      , 0, NULL }
 *  };
 *  
 *  qSM_Transition_t initial_transitions[] =
 *  {
-*  { SIGNAL_ACCEL,     SigAct_BrakeOff,          &state_accelerating ,0 },
+*  { SIGNAL_ACCEL,     SigAct_BrakeOff,          &state_accelerating , 0, NULL }
 *  };
 *  
 *  qSM_Transition_t accel_transitions[] =
 *  {
-*  { SIGNAL_CRUISE,     NULL,                    &state_cruising     ,0 },
+*  { SIGNAL_CRUISE,     NULL,                    &state_cruising     , 0, NULL }
 *  };
 *  
 *  qSM_Transition_t cruising_transitions[] =
 *  {
-*  { SIGNAL_OFF,       NULL,                     &state_cruisingoff  ,0 },
-*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },
+*  { SIGNAL_OFF,       NULL,                     &state_cruisingoff  , 0, NULL },
+*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating , 0, NULL }
 *  };
 *  
 *  qSM_Transition_t resuming_transitions[] =
 *  {
-*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating ,0 },
-*  };
+*  { SIGNAL_ACCEL,     NULL,                     &state_accelerating , 0, NULL }
+*  , NULL };
 *  
 *  qSM_Transition_t cruisingoff_transitions[] =
 *  {   
-*  { SIGNAL_ACCEL,      SigAct_BrakeOff,         &state_accelerating ,0 },
-*  { SIGNAL_RESUME,     SigAct_BrakeOff,         &state_resuming     ,0 },
-*  { SIGNAL_ENGINE_OFF, NULL,                    &state_idle         ,0 },
+*  { SIGNAL_ACCEL,      SigAct_BrakeOff,         &state_accelerating , 0, NULL },
+*  { SIGNAL_RESUME,     SigAct_BrakeOff,         &state_resuming     , 0, NULL },
+*  { SIGNAL_ENGINE_OFF, NULL,                    &state_idle         , 0, NULL }
 *  };
 *  
 *  qSM_Transition_t automated_transitions[] =
 *  {       
-*  { SIGNAL_BRAKE_PRESSED,   NULL,               &state_cruisingoff  ,0 },
+*  { SIGNAL_BRAKE_PRESSED,   NULL,               &state_cruisingoff  , 0, NULL }
 *  };
 *  /*---------------------------------------------------------------------*/
 *  @endcode 
@@ -1034,12 +1036,12 @@
 * of the transition as shown below:
 *
 *  @code{.c}
-*  #define SIGNAL_A ((qSM_Signal_t)(1))
-*  #define SIGNAL_B ((qSM_Signal_t)(2))
-*  #define SIGNAL_C ((qSM_Signal_t)(3))
-*  #define SIGNAL_D ((qSM_Signal_t)(4))
-*  #define SIGNAL_E ((qSM_Signal_t)(5))
-*  #define SIGNAL_F ((qSM_Signal_t)(6))
+*  #define SIGNAL_A ((qSM_SigId_t)(1))
+*  #define SIGNAL_B ((qSM_SigId_t)(2))
+*  #define SIGNAL_C ((qSM_SigId_t)(3))
+*  #define SIGNAL_D ((qSM_SigId_t)(4))
+*  #define SIGNAL_E ((qSM_SigId_t)(5))
+*  #define SIGNAL_F ((qSM_SigId_t)(6))
 *
 *  qQueue_t sigqueue;
 *  qSM_Signal_t topsm_sig_stack [10];
@@ -1047,21 +1049,21 @@
 *  qSM_State_t state1 , state2 , state3 , state4 , state5 , state6;
 *
 *  qSM_Transition_t state1_transitions [] = {
-*      { SIGNAL_A , NULL , &state2 , qSM_TRANSITION_SHALLOW_HISTORY },
-*      { SIGNAL_B , NULL , &state2 , qSM_TRANSITION_DEEP_HISTORY },
-*      { SIGNAL_C , NULL , &state2 , qSM_TRANSITION_NO_HISTORY },
+*      { SIGNAL_A , NULL , &state2 , qSM_TRANSITION_SHALLOW_HISTORY, NULL },
+*      { SIGNAL_B , NULL , &state2 , qSM_TRANSITION_DEEP_HISTORY, NULL },
+*      { SIGNAL_C , NULL , &state2 , qSM_TRANSITION_NO_HISTORY, NULL }
 *  };
 *
 *  qSM_Transition_t state2_transitions [] = {
-*      { SIGNAL_D , NULL , &state1 , 0 },
+*      { SIGNAL_D , NULL , &state1 , 0, NULL }
 *  };
 *
 *  qSM_Transition_t state3_transitions [] = {
-*      { SIGNAL_E , NULL , &state4 , 0 },
+*      { SIGNAL_E , NULL , &state4 , 0, NULL }
 *  };
 *
 *  qSM_Transition_t state5_transitions [] = {
-*      { SIGNAL_F , NULL , &state6 , 0 },
+*      { SIGNAL_F , NULL , &state6 , 0, NULL }
 *  };
 *  @endcode
 *
