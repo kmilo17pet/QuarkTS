@@ -173,7 +173,7 @@ Retrieving the event data</h1>
 The Time-Elapsed event</h1>
 <p >Running tasks at pre-determined rates is desirable in many situations, like sensory data acquisition, low-level servoing, control loops, action planning and system monitoring. As previously explained in <a class="el" href="q_background.html#q_addtasks">Adding tasks to the scheme</a>, you can schedule tasks at any interval your design demands, at least, if the time specification is lower than the scheduler tick. When an application consists of several periodic tasks with individual timing constraints, a few points must be taken:</p>
 <ul>
-<li>When the time interval of a certain task has elapsed, the scheduler triggers an event (<code>byTimeElapsed</code>) that put the task in a <code>qReady</code> state (see figure below).</li>
+<li>When the time interval of a certain task has elapsed, the scheduler triggers the <code>byTimeElapsed</code> event that put the task in a <code>qReady</code> state (see figure below).</li>
 <li>If a task has a finite number iterations, the scheduler will disable the task when the number of iterations reaches the programmed value.</li>
 <li>Tasks always have an inherent time-lag that can be noticed even more, when the programmed time-interval is too low (see figure below). In a real-time context, it is important to reduce this time-lag or jitter, to an acceptable level for the application.</li>
 </ul>
