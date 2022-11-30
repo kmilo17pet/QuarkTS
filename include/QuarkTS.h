@@ -45,8 +45,8 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 #ifndef QuarkTS_H
     #define QuarkTS_H
 
-    #define QUARKTS_VERSION         "7.3.1"
-    #define QUARKTS_VERNUM          ( 0731u )
+    #define QUARKTS_VERSION         "7.3.2"
+    #define QUARKTS_VERNUM          ( 0732u )
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"

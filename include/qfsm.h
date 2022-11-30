@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.40
+ * @version 5.42
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the @ref q_fsm extension.
  **/
@@ -18,15 +18,23 @@
 
 
     #ifndef Q_FSM
-        #define Q_FSM                   ( 1 )
+        #define Q_FSM                           ( 1 )
     #endif
 
     #ifndef Q_FSM_MAX_NEST_DEPTH
-        #define Q_FSM_MAX_NEST_DEPTH    ( 5 )
+        #define Q_FSM_MAX_NEST_DEPTH            ( 5 )
     #endif
 
     #ifndef Q_FSM_MAX_TIMEOUTS
-        #define Q_FSM_MAX_TIMEOUTS      ( 3 )
+        #define Q_FSM_MAX_TIMEOUTS              ( 3 )
+    #endif
+
+    #ifndef Q_FSM_PS_SIGNALS_MAX
+        #define Q_FSM_PS_SIGNALS_MAX            ( 0 )
+    #endif
+
+    #ifndef Q_FSM_PS_SUB_PER_SIGNAL_MAX
+        #define Q_FSM_PS_SUB_PER_SIGNAL_MAX     ( 0 )
     #endif
 
     #if ( Q_FSM_MAX_NEST_DEPTH < 1 )
@@ -137,7 +145,7 @@
     * @brief Maximum value that can be used for an user-defined signal
     */
     #define QSM_SIGNAL_RANGE_MAX                                            \
-    ( (qSM_SigId_t)( 0xFFFFFFFBuL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )   \
+    ( (qSM_SigId_t)( 0xFFFFFFFBuL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )     \
 
     #define QSM_SIGNAL_TM_RMAX      ( (qSM_SigId_t)0xFFFFFFFBuL )
     #define QSM_SIGNAL_TM_RMIN      QSM_SIGNAL_TIMEOUT(0)
@@ -512,19 +520,29 @@
                                               qQueue_t *q );
 
     /**
-    * @brief Sends a signal to the provided state machine.
+    * @brief Sends a signal to a specific state machine or to all its
+    * subscribers (if available).
     * @note If the signal queue is not available, an exclusion variable will be
     * used.This means that the signal cannot be sent until the variable is empty.
     * (the signal was handled by the state-machine engine).
+    * @remark To enable the functionality of sending signals to subscribers, you
+    * must set the macros #Q_FSM_PS_SIGNALS_MAX and #Q_FSM_PS_SUB_PER_SIGNAL_MAX
+    * in the configuration file @c qconfig.h
+    * @warning Data associated to the signal is not deep-copied to a queue or any 
+    * buffer. It's only data pointer (address in memory) that is shallow-copied
+    * to a signal queue so it has to point to a globally accessible memory. 
+    * If it pointed to a sender's local variable (from the stack) it would be 
+    * invalid after sender returns from the function that sends the signal.
     * @note The signal-queue has the highest precedence.
-    * @param[in] m A pointer to the FSM object.
+    * @param[in] m A pointer to the FSM object to send the signal to a specific
+    * recipient. Pass @c NULL to send the signal to all subscribed state-machines.
     * @param[in] sig The user-defined signal.
     * @param[in] sData The data associated to the signal.
     * @param[in] isUrgent If #qTrue, the signal will be sent to the front of the
     * queue. (only if the there is a signal-queue available)
     * @return #qTrue if the provided signal was successfully delivered to the
-    * FSM, otherwise return #qFalse. #qFalse if there is a queue, and the signal
-    * cannot be inserted because it is full.
+    * FSM or subscribers (if available), otherwise return #qFalse. #qFalse if
+    * there is a queue, and the signal cannot be inserted because it is full.
     */
     qBool_t qStateMachine_SendSignal( qSM_t * const m,
                                       qSM_SigId_t sig,
@@ -635,6 +653,28 @@
     */
     qBool_t qStateMachine_Set_MachineSurrounding( qSM_t * const m,
                                                   qSM_SurroundingCallback_t sFcn );
+
+    /**
+    * @brief Subscribe state machine to a particular signal
+    * @pre Subscriber FSM should be previously initalized with
+    * qStateMachine_Setup()
+    * @param[in] m A pointer to the subscriber FSM.
+    * @param[in] s Signal ID to which the subscriber FSM wants to subscribe.
+    * @return Returns #qTrue on success, otherwise returns #qFalse.
+    */
+    qBool_t qStateMachine_SubscribeToSignal( qSM_t *m,
+                                             qSM_SigId_t s );
+
+    /**
+    * @brief Unsubscribe state machine from a particular signal
+    * @pre Subscriber FSM should be previously initalized with
+    * qStateMachine_Setup()
+    * @param[in] m A pointer to the subscriber FSM.
+    * @param[in] s Signal ID to which the subscriber FSM wants to unsubscribe.
+    * @return Returns #qTrue on success, otherwise returns #qFalse.
+    */
+    qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t *m,
+                                                 qSM_SigId_t s );
 
     /** @}*/
 

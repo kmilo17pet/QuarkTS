@@ -46,9 +46,151 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
 static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
                                                           qSM_State_t *current,
                                                           const qSM_SigId_t sig );
+static qBool_t qStateMachine_SignalSend( qSM_t * const m,
+                                         qSM_SigId_t sig,
+                                         void *sData,
+                                         const qBool_t isUrgent );
 
 #define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
 
+#if ( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
+
+typedef enum {
+    QSM_PS_SIGNAL_NOT_FOUND,
+    QSM_PS_SUBSCRIBER_NOT_FOUND,
+    QSM_PS_SUBSCRIBER_FOUND,
+    QSM_PS_SIGNAL_SLOTS_FULL,
+    QSM_PS_SUBSCRIBER_SLOTS_FULL
+} qSM_PS_ReqStatus_t;
+
+typedef struct {
+    qSM_PS_ReqStatus_t status;
+    size_t sig_slot, sub_slot;
+} qSM_PS_Index_t;
+
+static void qStateMachine_UnsubscribeAll( void );
+static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( qSM_t *m,
+                                                           qSM_SigId_t s );
+
+/*cstat -MISRAC2012-Rule-9.2 -MISRAC2012-Rule-9.3*/
+static qSM_SigId_t psSignals[ Q_FSM_PS_SIGNALS_MAX ] = { 0xFFFFFFFFuL };
+/*cstat +MISRAC2012-Rule-9.2 +MISRAC2012-Rule-9.3*/
+static qSM_t *psSubs[ Q_FSM_PS_SIGNALS_MAX ][ Q_FSM_PS_SUB_PER_SIGNAL_MAX ];
+
+/*============================================================================*/
+static void qStateMachine_UnsubscribeAll( void )
+{
+    size_t i, j;
+
+    for ( i = 0u ; i < (size_t)Q_FSM_PS_SIGNALS_MAX ; ++i ) {
+        psSignals[ i ] = QSM_SIGNAL_NONE;
+        for ( j = 0u; j < (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX; ++j ) {
+            psSubs[ i ][ j ] = NULL;
+        }
+    }
+}
+/*============================================================================*/
+static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( qSM_t *m,
+                                                           qSM_SigId_t s )
+{
+    qSM_PS_Index_t idx = { QSM_PS_SIGNAL_NOT_FOUND, 0u ,0u };
+    size_t i, j = 0u;
+    const size_t maxSig = (size_t)Q_FSM_PS_SIGNALS_MAX;
+    const size_t maxSub = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX;
+    /*cstat -MISRAC2012-Rule-15.4*/
+    for ( i = 0u ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
+        if ( s == psSignals[ i ] ) {
+            idx.status = QSM_PS_SUBSCRIBER_NOT_FOUND;
+            for ( j = 0u ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
+                if ( m == psSubs[ i ][ j ] ) {
+                    idx.status = QSM_PS_SUBSCRIBER_FOUND;
+                    break;
+                }
+            }
+        }
+        if ( QSM_PS_SIGNAL_NOT_FOUND != idx.status ) {
+            break;
+        }
+    }
+    /*cstat +MISRAC2012-Rule-15.4*/
+    if ( i >= maxSig ) {
+        idx.status = QSM_PS_SIGNAL_SLOTS_FULL;
+    }
+    if ( j >= maxSub ) {
+        idx.status = QSM_PS_SUBSCRIBER_SLOTS_FULL;
+    }
+
+    idx.sig_slot = i;
+    idx.sub_slot = j;
+    return idx;
+}
+#endif /*( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )*/
+/*============================================================================*/
+qBool_t qStateMachine_SubscribeToSignal( qSM_t *m,
+                                         qSM_SigId_t s )
+{
+    qBool_t retValue = qFalse;
+
+    #if ( Q_FSM_PS_SIGNALS_MAX > 0 ) && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
+        if ( ( NULL != m ) && ( s < QSM_SIGNAL_RANGE_MAX ) ) {
+            qSM_PS_Index_t r = qStateMachine_GetSubscriptionStatus( m, s );
+
+            retValue = qTrue;
+            switch ( r.status ) {
+                case QSM_PS_SIGNAL_NOT_FOUND:
+                    psSignals[ r.sig_slot ] = s;
+                    psSubs[ r.sig_slot ][ r.sub_slot ] = m;
+                    break;
+                case QSM_PS_SUBSCRIBER_NOT_FOUND:
+                    psSubs[ r.sig_slot ][ r.sub_slot ] = m;
+                    break;
+                case QSM_PS_SUBSCRIBER_FOUND:
+                    break;
+                default:
+                    retValue = qFalse;
+                    break;
+            }
+        }
+    #else
+        Q_UNUSED( m );
+        Q_UNUSED( s );
+    #endif /*( Q_FSM_PS_SIGNALS_MAX > 0 ) && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )*/
+    return retValue;
+}
+/*============================================================================*/
+qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t *m,
+                                             qSM_SigId_t s )
+{
+    qBool_t retValue = qFalse;
+    #if ( Q_FSM_PS_SIGNALS_MAX > 0 ) && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
+        if ( ( NULL != m ) && ( s < QSM_SIGNAL_RANGE_MAX ) ) {
+            qSM_PS_Index_t r = qStateMachine_GetSubscriptionStatus( m, s );
+
+            if ( QSM_PS_SUBSCRIBER_FOUND == r.status ) {
+                size_t i, li = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX - 1u;
+
+                for ( i = r.sub_slot ; i < li ; ++i ) {
+                    psSubs[ r.sig_slot ][ i ] = psSubs[ r.sig_slot ][ i + 1u ];
+                }
+                psSubs[ r.sig_slot ][ li ] = NULL;
+
+                if ( NULL == psSubs[ r.sig_slot ][ 0 ] ) { /*no subscribers left?*/
+                    /*remove the signal from the psSignals list*/
+                    li = (size_t)Q_FSM_PS_SIGNALS_MAX - 1u;
+                    for ( i = r.sig_slot ; i < li ; ++i ) {
+                        psSignals[ i ] = psSignals[ i + 1u ];
+                    }
+                    psSignals[ li ] = QSM_SIGNAL_NONE;
+                }
+                retValue = qTrue;
+            }
+        }
+    #else
+        Q_UNUSED( m );
+        Q_UNUSED( s );
+    #endif /*( Q_FSM_PS_SIGNALS_MAX > 0 ) && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )*/
+    return retValue;
+}
 /*============================================================================*/
 static void qStateMachine_Transition( qSM_t *m,
                                       qSM_State_t *target,
@@ -405,6 +547,11 @@ qBool_t qStateMachine_Setup( qSM_t * const m,
                                                  init,
                                                  NULL );
         m->qPrivate.top.qPrivate.parent = NULL;
+        #if ( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
+        if ( psSignals[ 0 ] > QSM_SIGNAL_NONE ) {
+            qStateMachine_UnsubscribeAll( );
+        }
+        #endif
     }
 
     return retValue;
@@ -506,6 +653,34 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
     }
 }
 /*============================================================================*/
+static qBool_t qStateMachine_SignalSend( qSM_t * const m,
+                                         qSM_SigId_t sig,
+                                         void *sData,
+                                         const qBool_t isUrgent )
+{
+    qBool_t retValue = qFalse;
+    #if ( Q_QUEUES == 1 )
+        /*check if the state-machine has a signal queue*/
+        if ( NULL != m->qPrivate.sQueue ) {
+            qSM_Signal_t sig_msg = { sig, sData };
+
+            retValue = qQueue_Send( m->qPrivate.sQueue,
+                                    &sig_msg,
+                                    (qQueue_InsertMode_t)isUrgent );
+        }
+    #else
+        Q_UNUSED( isUrgent );
+    #endif
+
+    if ( ( qFalse == retValue ) && ( QSM_SIGNAL_NONE == m->qPrivate.signalNot.id ) ) {
+        m->qPrivate.signalNot.id = sig;
+        m->qPrivate.signalNot.sigData = sData;
+        retValue = qTrue;
+    }
+
+    return retValue;
+}
+/*============================================================================*/
 qBool_t qStateMachine_SendSignal( qSM_t * const m,
                                   qSM_SigId_t sig,
                                   void *sData,
@@ -513,25 +688,29 @@ qBool_t qStateMachine_SendSignal( qSM_t * const m,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != m ) && ( sig < QSM_SIGNAL_NONE ) ) {
-        #if ( Q_QUEUES == 1 )
-            /*check if the state-machine has a signal queue*/
-            if ( NULL != m->qPrivate.sQueue ) {
-                qSM_Signal_t sig_msg = { sig, sData };
-
-                retValue = qQueue_Send( m->qPrivate.sQueue,
-                                        &sig_msg,
-                                        (qQueue_InsertMode_t)isUrgent );
-            }
-        #else
-            Q_UNUSED( isUrgent );
-        #endif
-
-        if ( ( qFalse == retValue ) && ( QSM_SIGNAL_NONE == m->qPrivate.signalNot.id ) ) {
-            m->qPrivate.signalNot.id = sig;
-            m->qPrivate.signalNot.sigData = sData;
-            retValue = qTrue;
+    if ( sig < QSM_SIGNAL_NONE ) {
+        if ( NULL != m ) {
+            retValue = qStateMachine_SignalSend( m, sig, sData, isUrgent );
         }
+        #if ( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
+            else {
+                size_t i, j;
+                const size_t maxSig = (size_t)Q_FSM_PS_SIGNALS_MAX;
+                const size_t maxSub = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX;
+
+                for ( i = 0u ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
+                    if ( sig == psSignals[ i ] ) {
+                        retValue = qTrue;
+                        for ( j = 0u ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
+                            /*cstat -MISRAC2012-Rule-10.1_R3 -CERT-EXP46-C*/
+                            retValue &= qStateMachine_SignalSend( psSubs[ i ][ j ], sig, sData, isUrgent );
+                            /*cstat +MISRAC2012-Rule-10.1_R3 +CERT-EXP46-C*/
+                        }
+                        break;
+                    }
+                }
+            }
+        #endif
     }
 
     return retValue;
