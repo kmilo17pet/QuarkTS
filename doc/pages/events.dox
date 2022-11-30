@@ -22,7 +22,7 @@
 *  typedef struct {
 *      qTrigger_t Trigger;
 *      void *TaskData;
-*      void * EventData;
+*      void *EventData;
 *      qBool_t FirstCall, FirstIteration, LastIteration;
 *      qClock_t StartDelay;
 *  } qEvent_t;
@@ -89,7 +89,7 @@
 * </body>
 * </html>
 * @endhtmlonly
-* <em>Priority scheduling example with three (3) tasks attached triggered by timeelapsed events</em>
+* <em>Priority scheduling example with three (3) tasks attached, all triggered by time-elapsed events</em>
 * </center>
 *
 * @section q_asyncevents Asynchronous events and inter-task communication
@@ -125,7 +125,7 @@
 * will tend to lose future events. In some specific situations, in the interest 
 * of stack usage predictability and to facilitate system behavioral analysis, 
 * the best approach is to synchronize the ISR with a task to leave the heavy job
-* in the base-level instead of the interrupt-level, so interrupt handler only 
+* in the base-level instead of the interrupt-level, so the interrupt handler only 
 * collect event data and clear the interrupt source and therefore exit promptly 
 * by deferring the processing of the event data to a task, this is also called 
 * <em>Deferred Interrupt Handling</em>.

@@ -1471,7 +1471,7 @@
 *     - @c OK: Indicates the successful execution of the command.
 *     - @c ERROR: A generalized message to indicate failure in executing the command.
 *     - @c UNKNOWN : The input command its not subscribed.
-*     - @c NOT ALLOWED : The command syntax is not one of the allowed types.
+*     - <tt>NOT ALLOWED</tt> : The command syntax is not one of the allowed types.
 *     - User-defined: A custom output message defined by the application writer.
 *     - @c NONE : No response.
 *
@@ -1660,7 +1660,7 @@
 *      qATCLI_CmdSubscribe( &CLI_Object, &AT_GPIO, "at+gpio", AT_GPIO_Callback, 
 *                           QATCLI_CMDTYPE_ACT | QATCLI_CMDTYPE_READ | 
 *                           QATCLI_CMDTYPE_TEST | QATCLI_CMDTYPE_PARA | 0x22, NULL );
-*      qATCLI_CmdSubscribe( &CLI_Object, &AT_GPIO, "at+gpio", AT_GPIO_Callback, 
+*      qATCLI_CmdSubscribe( &CLI_Object, &AT_INFO, "at+info", AT_INFO_Callback, 
 *                           QATCLI_CMDTYPE_ACT, NULL );
 *      qOS_Add_ATCLITask( &CLI_Task, &CLI_Object, qLowest_Priority );
 *      qOS_Run();

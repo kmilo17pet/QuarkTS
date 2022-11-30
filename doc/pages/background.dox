@@ -19,7 +19,7 @@
 
 * The design goal of QuarkTS is to achieve its stated functionality using a 
 * small, simple, and (most importantly) robust implementation to make it 
-* suitable on resourceconstrained microcontrollers, where a full-preemptive RTOS
+* suitable on resource constrained microcontrollers, where a full-preemptive RTOS
 * is an overkill and their inclusion adds unnecessary complexity to the firmware 
 * development. In addition with a @ref q_fsm support, @ref q_qcoroutines, time 
 * control and the inter-task communication primitives, QuarkTS provides a modern
@@ -281,15 +281,15 @@
 * the multitasking application by adding tasks. If the task node and their 
 * respective callback is already defined, the task can be added to the scheme 
 * using qOS_Add_Task(). This API can schedule a task to run every @c t seconds,
-* @c n exencutions times and executing the @c callbackFcn method on every pass.
+* @c n executions times and invoking the @c callbackFcn method on every pass.
 *
 * <b> Caveats: </b>
 *
-* -# A task with Time argument defined in @c qTimeImmediate, will always get the 
-* @c qReady state in every scheduling cycle, as consequence, the idle task will 
-* never gets dispatched.
+* -# A task with time argument @c t defined as @c qTimeImmediate, will always 
+* get the @c qReady state in every scheduling cycle, as consequence, the idle 
+* task will never gets dispatched.
 * -# Tasks do not remember the number of iteration set initially by the 
-* @c nExecutions argument. After the iterations are done, the internal iteration
+* @c n executions argument. After the iterations are done, the internal iteration
 * counter decreases until reach the zero. If another set of iterations is 
 * needed, the user should set the number of iterations again and resume the 
 * task explicitly.
@@ -548,7 +548,7 @@
 *
 * In the above code, the following considerations should be taken:
 * - The function qOS_Setup() must be called before any interaction with the OS.
-* - The procedure HardwareSetup() should be a function with all the hardware 
+* - The procedure @c HardwareSetup() should be a function with all the hardware 
 * instructions needed to initialize the target system.
 * - The procedure @c Configure_Periodic_Timer_Interrupt_1ms() should be a 
 * function with all the hardware instructions needed to initialize and enable a 
@@ -585,7 +585,7 @@
 * current interrupt configuration. So, when a critical section is performed, 
 * the @c Disabler, in addition to disable the interrupts, returns the current
 * configuration to be retained by the kernel, later when the critical section 
-* finish, this retained value is passed to Restorer to bring back the saved
+* finish, this retained value is passed to @c Restorer to bring back the saved
 * configuration.
 *
 * @section q_os_demo Demonstrative examples
@@ -595,7 +595,7 @@
 * Initially, only @c task1 and @c task2 are enabled. @c task1 runs every 2 
 * seconds 10 times and then stops. @c task2 runs every 3 seconds indefinitely. 
 * @c task1 enables @c task3 at its first run. @c task3 run every  5 seconds. 
-* @c task1 disables @c task3 on its last iteration and changed @c task2 to run 
+* @c task1 disables @c task3 on its last iteration and change @c task2 to run 
 * every 1/2 seconds. In the end, @c task2 is the only task running every 1/2 
 * seconds.
 *
@@ -717,7 +717,7 @@
 *  @endcode
 *
 * Then, three different tasks are created to apply the respective PID controller. 
-* Note that these tasks refer to the same callback methods and we assign 
+* Note that these tasks refer to the same callback method and we assign 
 * pointers to the respective variables.
 *
 *  @code{.c}
