@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"group__qmemmang.html":[1,1,4],
+"group__qmemmang.html#ga3e181f0109a557d2466895b5ea44bc98":[1,1,4,1],
 "group__qmemmang.html#ga3f069d7c779da101ca694b5d630e6233":[1,1,4,2],
 "group__qmemmang.html#ga4d7a16afc6ea85ed3e80560d9f4877f4":[1,1,4,6],
 "group__qmemmang.html#ga52de975439e8d5d7a0a0151ee99f6957":[1,1,4,4],
@@ -172,8 +174,8 @@ var NAVTREEINDEX1 =
 "group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525":[1,0,5,11],
 "group__qtypes.html#gaeec4abe72f63545c1ee405d3866740a6":[1,0,5,10],
 "group__qutility.html":[1,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[1],
 "pages.html":[],
 "q_background.html":[0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "q_extensions.html#q_fsmhandler":[0,2,1,3],
 "q_extensions.html#q_fsminstallsignalqueue":[0,2,1,8],
 "q_extensions.html#q_fsmsendsignals":[0,2,1,7],
-"q_extensions.html#q_fsmsetup":[0,2,1,1],
-"q_extensions.html#q_memmang":[0,2,4],
-"q_extensions.html#q_memmang_pools":[0,2,4,1]
+"q_extensions.html#q_fsmsetup":[0,2,1,1]
 };

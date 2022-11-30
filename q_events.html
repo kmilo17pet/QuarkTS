@@ -160,7 +160,7 @@ Retrieving the event data</h1>
 <p >This data structure is defined as: </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line">    <a class="code hl_enumeration" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a> Trigger;</div>
 <div class="line">    <span class="keywordtype">void</span> *TaskData;</div>
-<div class="line">    <span class="keywordtype">void</span> * EventData;</div>
+<div class="line">    <span class="keywordtype">void</span> *EventData;</div>
 <div class="line">    <a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> FirstCall, FirstIteration, LastIteration;</div>
 <div class="line">    <a class="code hl_typedef" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a> StartDelay;</div>
 <div class="line">} <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a>;</div>
@@ -204,7 +204,7 @@ The Time-Elapsed event</h1>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 </body>
 </html>
- <em>Priority scheduling example with three (3) tasks attached triggered by timeelapsed events</em> </center><h1><a class="anchor" id="q_asyncevents"></a>
+ <em>Priority scheduling example with three (3) tasks attached, all triggered by time-elapsed events</em> </center><h1><a class="anchor" id="q_asyncevents"></a>
 Asynchronous events and inter-task communication</h1>
 <p >Applications existing in heavy environments require tasks and ISR interacting with each other, forcing the application to implement some event model. Here, we understand events, as any identifiable occurrence that has significance for the embedded system. As such, events include changes in hardware, user-generated actions or messages coming from components of the application itself.</p>
 <center>  
@@ -219,7 +219,7 @@ Asynchronous events and inter-task communication</h1>
 </body>
 </html>
  <em>Heavy cooperative environment</em> </center><p >As shown in figure above, two main scenarios are presented, ISR-to-task and task-to-task interaction.</p>
-<p >When using interrupts to catch external events, it is expected to be handled with fast and lightweight code to reduce the variable ISR overhead introduced by the code itself. If too much overhead is used inside an ISR, the system will tend to lose future events. In some specific situations, in the interest of stack usage predictability and to facilitate system behavioral analysis, the best approach is to synchronize the ISR with a task to leave the heavy job in the base-level instead of the interrupt-level, so interrupt handler only collect event data and clear the interrupt source and therefore exit promptly by deferring the processing of the event data to a task, this is also called <em>Deferred Interrupt Handling</em>.</p>
+<p >When using interrupts to catch external events, it is expected to be handled with fast and lightweight code to reduce the variable ISR overhead introduced by the code itself. If too much overhead is used inside an ISR, the system will tend to lose future events. In some specific situations, in the interest of stack usage predictability and to facilitate system behavioral analysis, the best approach is to synchronize the ISR with a task to leave the heavy job in the base-level instead of the interrupt-level, so the interrupt handler only collect event data and clear the interrupt source and therefore exit promptly by deferring the processing of the event data to a task, this is also called <em>Deferred Interrupt Handling</em>.</p>
 <p >The other scenario is when a task is performing a specific job and another task must be awakened to perform some activities when the other task finishes.</p>
 <p >Both scenarios require some ways in which tasks can communicate with each other. For this, the OS does not impose any specific event processing strategy to the application designer but does provide features that allow the chosen strategy to be implemented in a simple and maintainable way. From the OS perspective, these features are just sources of asynchronous events with specific triggers and related data.</p>
 <p >The OS provides the following features for inter-task communication:</p>
