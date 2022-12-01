@@ -268,7 +268,7 @@ Setting up the OS kernel</h1>
 <li>Scenario 2 : When the tick is not provided <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;DeviceHeader.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK 0.001 </span><span class="comment">/* 1ms */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">/* 1ms */</span><span class="preprocessor"></span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> Interrupt_Timer0( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    <a class="code hl_function" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
@@ -443,7 +443,7 @@ Additional operational states</h3>
 Getting started</h1>
 <p >Unpack the source files and copy them into your project. Also, add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
 <p >File <code>main.c</code> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK 0.001 </span><span class="comment">// 1ms</span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">// 1ms</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    <span class="comment">//device startup with hardware-specific code</span></div>
@@ -477,19 +477,19 @@ A simple scheduling</h2>
 <div class="line"><span class="preprocessor">#include &quot;BSP.h&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001   </span><span class="comment">/* 1ms */</span><span class="preprocessor"> </span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f )   </span><span class="comment">/* 1ms */</span><span class="preprocessor"> </span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> task1, task2, task3; <span class="comment">/*task nodes*/</span></div>
 <div class="line"><span class="comment">/*==================================================================*/</span></div>
 <div class="line"><span class="keywordtype">void</span> interrupt Timer0_ISR( <span class="keywordtype">void</span> ) {</div>
-<div class="line">    <a class="code hl_function" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();   </div>
+<div class="line">    <a class="code hl_function" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a>();</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*==================================================================*/</span></div>
 <div class="line"><span class="keywordtype">void</span> Task1_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    BSP_UART1_WriteString( <span class="stringliteral">&quot;Task1&quot;</span> );</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#a7b0ca3c3b637735eeee1f1e9d1105726">FirstIteration</a> ) {</div>
-<div class="line">        <a class="code hl_define" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">qTask_Resume</a>( &amp;Task3 );    </div>
+<div class="line">        <a class="code hl_define" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">qTask_Resume</a>( &amp;Task3 );</div>
 <div class="line">    }</div>
 <div class="line">    </div>
 <div class="line">    <span class="keywordflow">if</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#af000312a956c600f57074345a75536bf">LastIteration</a> ) {</div>
@@ -506,15 +506,15 @@ A simple scheduling</h2>
 <div class="line">    BSP_UART1_WriteString( <span class="stringliteral">&quot;Task3&quot;</span> );</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*==================================================================*/</span></div>
-<div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {    </div>
+<div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    HardwareSetup();  <span class="comment">/*hardware initialization function*/</span></div>
 <div class="line">    <span class="comment">/*function to fire an interrupt at 1ms - timer tick*/</span></div>
-<div class="line">    Configure_Periodic_Timer0_Interrupt_1ms(); </div>
+<div class="line">    Configure_Periodic_Timer0_Interrupt_1ms();</div>
 <div class="line">    </div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, NULL );     </div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task1, Task1_Callback, 50, 2.0, 10, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task2, Task2_Callback, 50, 3.0, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task2, Task3_Callback, 50, 5.0, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037">qDisabled</a>, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task1, Task1_Callback, 50, 2.0f, 10, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task2, Task2_Callback, 50, 3.0f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;Task2, Task3_Callback, 50, 5.0f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga269b67aecf99613cea9e19c1c20a3037">qDisabled</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
@@ -541,46 +541,46 @@ Using the task argument</h2>
 <div class="line">     <span class="keywordtype">float</span> pe; <span class="comment">/*Previous error*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> dt; <span class="comment">/*Controller Time Step*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> sp; <span class="comment">/*Set-Point*/</span></div>
-<div class="line">     <span class="keywordtype">float</span> Kc, Ki, Kd; <span class="comment">/*PID Gains*/</span> </div>
+<div class="line">     <span class="keywordtype">float</span> Kc, Ki, Kd; <span class="comment">/*PID Gains*/</span></div>
 <div class="line"> }PID_Params_t;</div>
 <div class="line"> </div>
 <div class="line"> PID_Params_t TemperatureControl = {</div>
-<div class="line">    0,0,0,0, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
-<div class="line">    1.5, <span class="comment">/*time step*/</span></div>
-<div class="line">    28.5, <span class="comment">/*Set-Point*/</span></div>
-<div class="line">    0.89, 0.122, 0.001 <span class="comment">/*Kc, Ki, Kd*/</span></div>
+<div class="line">    0.0f, 0.0f, 0.0f, 0.0f, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
+<div class="line">    1.5f, <span class="comment">/*time step*/</span></div>
+<div class="line">    28.5f, <span class="comment">/*Set-Point*/</span></div>
+<div class="line">    0.89f, 0.122f, 0.001f <span class="comment">/*Kc, Ki, Kd*/</span></div>
 <div class="line"> };</div>
 <div class="line"> PID_Params_t HumidityControl= {</div>
-<div class="line">    0,0,0,0, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
-<div class="line">    1, <span class="comment">/*time step*/</span></div>
-<div class="line">    60.0, <span class="comment">/*Set-Point*/</span></div>
-<div class="line">    2.5, 0.2354, 0.0015 <span class="comment">/*Kc, Ki, Kd*/</span></div>
+<div class="line">    0.0f, 0.0f, 0.0f, 0.0f, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
+<div class="line">    1.0f, <span class="comment">/*time step*/</span></div>
+<div class="line">    60.0f, <span class="comment">/*Set-Point*/</span></div>
+<div class="line">    2.5f, 0.2354f, 0.0015f <span class="comment">/*Kc, Ki, Kd*/</span></div>
 <div class="line"> };</div>
 <div class="line"> PID_Params_t LightControl= {</div>
-<div class="line">    0,0,0,0, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
-<div class="line">    0.5, <span class="comment">/*time step*/</span></div>
-<div class="line">    45.0, <span class="comment">/*Set-Point*/</span></div>
-<div class="line">    5.36, 0.0891, 0.0 <span class="comment">/*Kc, Ki, Kd*/</span></div>
+<div class="line">    0.0f, 0.0f, 0.0f, 0.0f, <span class="comment">/*Initial IO state of yt and ut*/</span></div>
+<div class="line">    0.5f, <span class="comment">/*time step*/</span></div>
+<div class="line">    45.0f, <span class="comment">/*Set-Point*/</span></div>
+<div class="line">    5.36f, 0.0891f, 0.0f <span class="comment">/*Kc, Ki, Kd*/</span></div>
 <div class="line"> };</div>
 </div><!-- fragment --><p >A task will be added to the scheme to collect the sensor data and apply the respective control output.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;IO_TASK , IO_TASK_Callback , <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a> , 0.1, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a> , <span class="stringliteral">&quot;iotask&quot;</span>);</div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga13bec7f4284d45c97f512c83ed9b7744"><div class="ttname"><a href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a></div><div class="ttdeci">#define qMedium_Priority</div><div class="ttdoc">A macro directive to indicate the medium priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:74</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="keywordtype">void</span> IO_TASK_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
-<div class="line">    TemperatureControl.yt  = SampleTemperatureSensor();</div>
-<div class="line">    HumidityControl.yt  = SampleHumiditySensor();</div>
-<div class="line">    LightControl.yt  = SampleLightSensor();</div>
+<div class="line">    TemperatureControl.yt = SampleTemperatureSensor();</div>
+<div class="line">    HumidityControl.yt = SampleHumiditySensor();</div>
+<div class="line">    LightControl.yt = SampleLightSensor();</div>
 <div class="line">    WriteTemperatureActuatorValue( TemperatureControl.ut );</div>
 <div class="line">    WriteHumidityActuatorValue( HumidityControl.ut );</div>
-<div class="line">    WriteLightActuatorValue( LightControl.ut ); </div>
+<div class="line">    WriteLightActuatorValue( LightControl.ut );</div>
 <div class="line">}</div>
 </div><!-- fragment --><p >Then, three different tasks are created to apply the respective PID controller. Note that these tasks refer to the same callback method and we assign pointers to the respective variables.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;TEMPERATURE_CONTROL_TASK, PIDControl_Callback,</div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, TemperatureControl.dt , </div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, &amp;TemperatureControl );</div>
-<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;HUMIDITY_CONTROL_TASK, PIDControl_Callback, </div>
+<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;HUMIDITY_CONTROL_TASK, PIDControl_Callback,</div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, HumidityControl.dt, </div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, &amp;HumidityControl );</div>
-<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;LIGHT_CONTROL_TASK, PIDControl_Callback, </div>
+<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;LIGHT_CONTROL_TASK, PIDControl_Callback,</div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, LightControl.dt, </div>
 <div class="line">              <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, &amp;LightControl );</div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga32c8bd0870414e10a6e72b743627da5a"><div class="ttname"><a href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a></div><div class="ttdeci">#define qHigh_Priority</div><div class="ttdoc">A macro directive to indicate the highest priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:77</div></div>
@@ -599,9 +599,7 @@ Using the task argument</h2>
 <div class="line">    <span class="comment">/*update the previous error*/</span></div>
 <div class="line">    Controller-&gt;pe = Error;</div>
 <div class="line">    <span class="comment">/*compute the pid control law*/</span></div>
-<div class="line">    Controller-&gt;ut = Controller-&gt;Kc*Error  +  </div>
-<div class="line">                     Controller-&gt;Ki*Controller-&gt;ie + </div>
-<div class="line">                     Controller-&gt;Kd*derivative;</div>
+<div class="line">    Controller-&gt;ut = Controller-&gt;Kc*Error + Controller-&gt;Ki*Controller-&gt;ie + Controller-&gt;Kd*derivative;</div>
 <div class="line">}</div>
 <div class="ttc" id="astructq_event__t_html_a191262c05958798bbb47391043170b2a"><div class="ttname"><a href="structq_event__t.html#a191262c05958798bbb47391043170b2a">qEvent_t::TaskData</a></div><div class="ttdeci">void * TaskData</div><div class="ttdoc">Task arguments defined at the time of its creation. (Storage-Pointer)</div><div class="ttdef"><b>Definition:</b> qtasks.h:167</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="q_configmacros"></a>
@@ -620,6 +618,8 @@ Configuration macros</h1>
 <li><code>Q_FSM</code> : <em>Default:</em> <code>1</code>(enabled). Used to enable or disable the Finite State Machine (FSM) extension.</li>
 <li><code>Q_FSM_MAX_NEST_DEPTH</code> : <em>Default:</em> <code>5</code>. The max depth of nesting in Finite State Machines (FSM).</li>
 <li><code>Q_FSM_MAX_TIMEOUTS</code> : <em>Default:</em> <code>3</code>. Max number of timeouts inside a timeout specification for the <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> extension.</li>
+<li><code>Q_FSM_PS_SIGNALS_MAX</code> : <em>Default:</em> <code>8</code>. Max number of signals to subscribe for a Finite State Machine (FSM).</li>
+<li><code>Q_FSM_PS_SUB_PER_SIGNAL_MAX</code> : <em>Default:</em> <code>4</code>. Max number of FSM subscribers per signal.</li>
 <li><code>Q_QUEUES</code> : <em>Default:</em> <code>1</code>(enabled). Used to enable or disable the queues APIs for inter-task communication.</li>
 <li><code>Q_TRACE_VARIABLES</code> : <em>Default:</em> <code>1</code>(enabled). Used to enable or disable debug and trace macros.</li>
 <li><code>Q_DEBUGTRACE_BUFSIZE</code> : <em>Default:</em> <code>36</code>. The buffer size for debug and trace macros</li>

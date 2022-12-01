@@ -286,9 +286,9 @@ Sending notifications</h3>
 <div class="line"><span class="keywordtype">void</span> taskB_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e );</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *app_events[] = {</div>
-<div class="line">                            <span class="stringliteral">&quot;Timer1seg&quot;</span>, </div>
-<div class="line">                            <span class="stringliteral">&quot;ButtonRisingEdge&quot;</span>, </div>
-<div class="line">                            <span class="stringliteral">&quot;ButtonFallingEdge&quot;</span>, </div>
+<div class="line">                            <span class="stringliteral">&quot;Timer1seg&quot;</span>,</div>
+<div class="line">                            <span class="stringliteral">&quot;ButtonRisingEdge&quot;</span>,</div>
+<div class="line">                            <span class="stringliteral">&quot;ButtonFallingEdge&quot;</span>,</div>
 <div class="line">                            <span class="stringliteral">&quot;3Count_ButtonPush&quot;</span></div>
 <div class="line">                           };</div>
 <div class="line"> </div>
@@ -300,7 +300,7 @@ Sending notifications</h3>
 <div class="line"><span class="comment">/*==================================================================*/</span></div>
 <div class="line"><span class="keywordtype">void</span> interrupt ExternalInput_ISR( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    <span class="keywordflow">if</span> ( RISING_EDGE == HAL_GetInputEdge() ) { <span class="comment">/*hardware dependent code*/</span></div>
-<div class="line">        <a class="code hl_function" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a>( &amp;taskA, app_events[1] );    </div>
+<div class="line">        <a class="code hl_function" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a>( &amp;taskA, app_events[1] );</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span> {</div>
 <div class="line">        <a class="code hl_function" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a>( &amp;taskA, app_events[2] );</div>
@@ -311,7 +311,7 @@ Sending notifications</h3>
 <div class="line"><span class="keywordtype">void</span> taskA_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <span class="keyword">static</span> <span class="keywordtype">int</span> press_counter = 0;</div>
 <div class="line">    </div>
-<div class="line">    <span class="keywordflow">switch</span> (e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a>) { <span class="comment">/*check the source of the event*/</span></div>
+<div class="line">    <span class="keywordflow">switch</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ) { <span class="comment">/*check the source of the event*/</span></div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>: </div>
 <div class="line">            <span class="comment">/*</span></div>
 <div class="line"><span class="comment">            * Do something here to process the timer event</span></div>
@@ -348,7 +348,7 @@ Sending notifications</h3>
 <div class="line">    HAL_Setup_MCU(); <span class="comment">/*hardware dependent code*/</span></div>
 <div class="line">    <a class="code hl_function" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">qTrace_Set_OutputFcn</a>( HAL_OutPutChar );</div>
 <div class="line">    <span class="comment">/* setup the scheduler to handle up to 10 queued notifications*/</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001, NULL ); </div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001f, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;taskB, taskB_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
@@ -409,7 +409,7 @@ A queue example</h3>
 <div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001   </span><span class="comment">/* 1ms */</span><span class="preprocessor"> </span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f )  </span><span class="comment">/* 1ms */</span><span class="preprocessor"></span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> interrupt Timer0_ISR( <span class="keywordtype">void</span> ) {</div>
@@ -425,19 +425,19 @@ A queue example</h3>
 <div class="line"><span class="comment"> * is empty to resume. */</span></div>
 <div class="line"><span class="keywordtype">void</span> TSK_Producer_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a> unData = 0;</div>
-<div class="line">    unData++;   </div>
+<div class="line">    unData++;</div>
 <div class="line">    <span class="comment">/*Queue is empty, enable the producer if it was disabled*/</span></div>
-<div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a> == e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ){</div>
+<div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a> == e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ) {</div>
 <div class="line">        <a class="code hl_define" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">qTask_Resume</a>( <a class="code hl_function" href="group__qtaskmanip.html#ga86293c10ab9d96da60d5d81867ad8f7c">qTask_Self</a>() );</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/*send data to the queue*/</span></div>
-<div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_define" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a> == qQueue_SendToBack( &amp;UserQueue, &amp;unData ) ) { </div>
+<div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_define" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a> == qQueue_SendToBack( &amp;UserQueue, &amp;unData ) ) {</div>
 <div class="line">        <span class="comment">/*</span></div>
 <div class="line"><span class="comment">        * if the data insertion fails, the queue is full </span></div>
 <div class="line"><span class="comment">        * and the task disables itself</span></div>
 <div class="line"><span class="comment">        */</span></div>
-<div class="line">           <a class="code hl_define" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a>( <a class="code hl_function" href="group__qtaskmanip.html#ga86293c10ab9d96da60d5d81867ad8f7c">qTask_Self</a>() ); </div>
+<div class="line">        <a class="code hl_define" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a>( <a class="code hl_function" href="group__qtaskmanip.html#ga86293c10ab9d96da60d5d81867ad8f7c">qTask_Self</a>() );</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
@@ -454,10 +454,10 @@ A queue example</h3>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> IdleTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <span class="comment">/*nothing to do...*/</span></div>
-<div class="line">}   </div>
+<div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {</div>
-<div class="line">    <a class="code hl_typedef" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> BufferMem[ 16*<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a>) ] = {0};  </div>
+<div class="line">    <a class="code hl_typedef" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> BufferMem[ 16*<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a>) ] = { 0u };</div>
 <div class="line">    HardwareSetup();  <span class="comment">//hardware specific code</span></div>
 <div class="line">    <span class="comment">/* next line is used to setup hardware with specific code to fire</span></div>
 <div class="line"><span class="comment">     * interrupts at 1ms - timer tick*/</span></div>
@@ -470,14 +470,11 @@ A queue example</h3>
 <div class="line">                  16 <span class="comment">/* element count*/</span> );</div>
 <div class="line">                 </div>
 <div class="line">    <span class="comment">/*  Append the producer task with 100mS rate. */</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;TSK_PRODUCER, TSK_Producer_Callback, </div>
-<div class="line">                  <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, 0.1, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, </div>
-<div class="line">                  <span class="stringliteral">&quot;producer&quot;</span> );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;TSK_PRODUCER, TSK_Producer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, <span class="stringliteral">&quot;producer&quot;</span> );</div>
 <div class="line">    <span class="comment">/* Append the consumer as an event task. The consumer will</span></div>
 <div class="line"><span class="comment">     * wait until an event trigger their execution</span></div>
 <div class="line"><span class="comment">     */</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TSK_CONSUMER, TSK_Consumer_Callback,</div>
-<div class="line">                       <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, <span class="stringliteral">&quot;consumer&quot;</span> );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TSK_CONSUMER, TSK_Consumer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, <span class="stringliteral">&quot;consumer&quot;</span> );</div>
 <div class="line">    <span class="comment">/* the queue will be attached to the consumer task </span></div>
 <div class="line"><span class="comment">     * in qQueueMode_Count mode. This mode sends an event to the consumer</span></div>
 <div class="line"><span class="comment">     * task when the queue fills to a level of 4 elements</span></div>
@@ -534,13 +531,13 @@ Using the task Event-flags</h3>
 <div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#define TIMER_TICK   0.001   </span><span class="comment">/* 1ms */</span><span class="preprocessor"> </span></div>
+<div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">/* 1ms */</span><span class="preprocessor"></span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*event flags application definitions */</span></div>
-<div class="line"><span class="preprocessor">#define SWITCH_CHANGED  QEVENTFLAG_01</span></div>
-<div class="line"><span class="preprocessor">#define TIMER_EXPIRED   QEVENTFLAG_02</span></div>
-<div class="line"><span class="preprocessor">#define DATA_READY      QEVENTFLAG_03</span></div>
-<div class="line"><span class="preprocessor">#define DATA_TXMIT      QEVENTFLAG_04</span></div>
+<div class="line"><span class="preprocessor">#define SWITCH_CHANGED   QEVENTFLAG_01</span></div>
+<div class="line"><span class="preprocessor">#define TIMER_EXPIRED    QEVENTFLAG_02</span></div>
+<div class="line"><span class="preprocessor">#define DATA_READY       QEVENTFLAG_03</span></div>
+<div class="line"><span class="preprocessor">#define DATA_TXMIT       QEVENTFLAG_04</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> TaskDataProducer; </div>
 <div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> dataToTransmit[10] = {0};</div>
@@ -551,39 +548,33 @@ Using the task Event-flags</h3>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> interrupt Timer1_ISR( <span class="keywordtype">void</span> ) {</div>
-<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, TIMER_EXPIRED, </div>
-<div class="line">                             <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
+<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, TIMER_EXPIRED, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> interrupt EXTI_ISR( <span class="keywordtype">void</span> ) {</div>
-<div class="line">    <span class="keywordflow">if</span> ( EXTI_IsRisingEdge() ){</div>
-<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, SWITCH_CHANGED, </div>
-<div class="line">                                 <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
+<div class="line">    <span class="keywordflow">if</span> ( EXTI_IsRisingEdge() ) {</div>
+<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, SWITCH_CHANGED, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> TaskDataProducer_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> condition;</div>
-<div class="line">    condition = <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, </div>
-<div class="line">                                        DATA_TXMIT, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
+<div class="line">     </div>
+<div class="line">    condition = <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
 <div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> == condition) {</div>
 <div class="line">        GenerateData( dataToTransmit );</div>
-<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_READY, </div>
-<div class="line">                                 <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
+<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_READY, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
 <div class="line">    }</div>
-<div class="line">    <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, </div>
-<div class="line">                            DATA_READY | SWITCH_CHANGED | TIMER_EXPIRED,</div>
-<div class="line">                            <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
+<div class="line">    <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, DATA_READY | SWITCH_CHANGED | TIMER_EXPIRED, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> IdleTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    </div>
 <div class="line">    TransmitData( dataToTransmit );</div>
-<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, </div>
-<div class="line">                             DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
+<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
-<div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {    </div>
+<div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    HardwareSetup();  <span class="comment">//hardware specific code</span></div>
 <div class="line">    <span class="comment">/* next line is used to setup hardware with specific code to fire</span></div>
 <div class="line"><span class="comment">     * interrupts at 1ms - timer tick*/</span></div>
@@ -596,14 +587,13 @@ Using the task Event-flags</h3>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
 <div class="line">    <span class="comment">/* The task will wait until data is transmitted to generate another set of</span></div>
 <div class="line"><span class="comment">     * data */</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TaskDataProducer, TaskDataProducer_Callback,</div>
-<div class="line">                       <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, <span class="stringliteral">&quot;DATAPRODUCER&quot;</span> );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TaskDataProducer, TaskDataProducer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, <span class="stringliteral">&quot;DATAPRODUCER&quot;</span> );</div>
 <div class="line">    <span class="comment">/* Set the flag DATA_TXMIT as initial condition to allow the data </span></div>
 <div class="line"><span class="comment">     * generation at startup</span></div>
 <div class="line"><span class="comment">    */</span></div>
 <div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
-<div class="line">    <span class="keywordflow">for</span>(;;){}</div>
+<div class="line">    <span class="keywordflow">for</span>( ;; ) {}</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qeventflags_html_ga2784e9105dbff4d18965af5c09abc167"><div class="ttname"><a href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a></div><div class="ttdeci">qBool_t qTask_EventFlags_Modify(qTask_t *const Task, const qTask_Flag_t flags, const qBool_t action)</div><div class="ttdoc">Modify the EventFlags for the provided task.</div><div class="ttdef"><b>Definition:</b> qtasks.c:277</div></div>
