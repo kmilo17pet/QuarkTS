@@ -5,44 +5,204 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\src\os\include\qtrace.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qmemmang.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qqueues.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qresponse.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qstimers.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qtasks.h</file>
-            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
-            <file>$PROJ_DIR$\..\src\os\qqueues.c</file>
-            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
-            <file>$PROJ_DIR$\..\src\os\include\qtypes.h</file>
-            <file>$PROJ_DIR$\..\src\os\qbsbuffers.c</file>
-            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
-            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
-            <file>$PROJ_DIR$\..\src\os\qfsm.c</file>
-            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
-            <file>$PROJ_DIR$\..\src\os\qclock.c</file>
-            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
-            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
-            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
-            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
-            <file>$PROJ_DIR$\..\src\os\qcritical.c</file>
-            <file>$PROJ_DIR$\..\src\os\qcoroutine.c</file>
-            <file>$PROJ_DIR$\..\src\os\include\QuarkTS.h</file>
-            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
             <file>$PROJ_DIR$\..\src\os\include\qkernel.h</file>
+            <file>$PROJ_DIR$\..\src\os\qlists.c</file>
+            <file>$PROJ_DIR$\..\src\os\include\qresponse.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qtrace.h</file>
+            <file>$PROJ_DIR$\..\src\os\qcoroutine.c</file>
+            <file>$PROJ_DIR$\..\src\os\qatcli.c</file>
+            <file>$PROJ_DIR$\..\src\os\qtasks.c</file>
+            <file>$PROJ_DIR$\..\src\os\qresponse.c</file>
+            <file>$PROJ_DIR$\..\src\os\qbsbuffers.c</file>
+            <file>$PROJ_DIR$\..\src\os\qmemmang.c</file>
+            <file>$PROJ_DIR$\..\src\os\qstimers.c</file>
+            <file>$PROJ_DIR$\..\src\os\include\qstimers.h</file>
+            <file>$PROJ_DIR$\..\src\os\qtrace.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qresponse.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qcoroutine.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qcritical.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qclock.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qioutils.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qkernel.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qtrace.o</file>
+            <file>$PROJ_DIR$\..\src\os\include\qkshared.h</file>
+            <file>$PROJ_DIR$\..\src\os\qfsm.c</file>
+            <file>$PROJ_DIR$\..\src\os\qclock.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qmemmang.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qatcli.o</file>
+            <file>$PROJ_DIR$\..\src\os\qioutils.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qlists.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qtasks.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qbsbuffers.o</file>
+            <file>$PROJ_DIR$\..\src\os\include\qqueues.h</file>
             <file>$PROJ_DIR$\..\src\os\include\qlists.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qbsbuffers.h</file>
-            <file>$PROJ_DIR$\..\src\config\qconfig.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qcoroutine.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qtypes.h</file>
+            <file>$PROJ_DIR$\..\src\os\qedgecheck.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qqueues.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qedgecheck.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qfsm.o</file>
+            <file>$PROJ_DIR$\..\src\os\include\qmemmang.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\QuarkTS.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qtasks.h</file>
+            <file>$PROJ_DIR$\..\src\os\qcritical.c</file>
+            <file>$PROJ_DIR$\..\src\os\qkernel.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\src\qstimers.o</file>
+            <file>$PROJ_DIR$\..\src\os\qqueues.c</file>
+            <file>$PROJ_DIR$\..\src\os\include\qcritical.h</file>
             <file>$PROJ_DIR$\..\src\os\include\qedgecheck.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qbsbuffers.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qcoroutine.h</file>
             <file>$PROJ_DIR$\..\src\os\include\qflm.h</file>
             <file>$PROJ_DIR$\..\src\os\include\qfsm.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qkshared.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qatcli.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qcritical.h</file>
-            <file>$PROJ_DIR$\..\src\os\include\qclock.h</file>
             <file>$PROJ_DIR$\..\src\os\include\qioutils.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qatcli.h</file>
+            <file>$PROJ_DIR$\..\src\os\include\qclock.h</file>
+            <file>$PROJ_DIR$\..\src\config\qconfig.h</file>
         </outputs>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qlists.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 26</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qcoroutine.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 14</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qatcli.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 24</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qtasks.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 27</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qresponse.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 13</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qbsbuffers.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 28</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qmemmang.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 23</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qstimers.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 41</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qtrace.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 19</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qfsm.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 35</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qclock.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 16</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qioutils.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 17</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qedgecheck.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 34</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qcritical.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 15</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qkernel.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 18</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\src\os\qqueues.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 33</file>
+                </tool>
+            </outputs>
+        </file>
     </configuration>
     <configuration>
         <name>Release</name>

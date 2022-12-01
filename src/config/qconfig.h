@@ -22,7 +22,7 @@
     #define Q_FSM                       ( 1 )       /**< Used to enable or disable the Finite State Machine (FSM) module */
     #define Q_FSM_MAX_NEST_DEPTH        ( 5 )       /**< The max depth of nesting for the Finite State Machines (FSM) module*/
     #define Q_FSM_MAX_TIMEOUTS          ( 3 )       /**< Max number of timeouts inside a timeout specification for the Finite State machine (FSM) module*/
-    #define Q_FSM_PS_SIGNALS_MAX        ( 8 )       /**< Max number of signals to subscribe for a Finite State Machine (FSM)/
+    #define Q_FSM_PS_SIGNALS_MAX        ( 8 )       /**< Max number of signals to subscribe for a Finite State Machine (FSM)*/
     #define Q_FSM_PS_SUB_PER_SIGNAL_MAX ( 4 )       /**< Max number of FSM subscribers per signal*/
     #define Q_QUEUES                    ( 1 )       /**< Used to enable or disable the qQueues*/
     #define Q_TRACE_VARIABLES           ( 1 )       /**< Used to enable or disable variable tracing and debugging*/
