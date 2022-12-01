@@ -271,9 +271,9 @@
 *  void taskB_Callback( qEvent_t e );
 *  
 *  const char *app_events[] = {
-*                              "Timer1seg", 
-*                              "ButtonRisingEdge", 
-*                              "ButtonFallingEdge", 
+*                              "Timer1seg",
+*                              "ButtonRisingEdge",
+*                              "ButtonFallingEdge",
 *                              "3Count_ButtonPush"
 *                             };
 *  
@@ -285,7 +285,7 @@
 *  /*==================================================================*/
 *  void interrupt ExternalInput_ISR( void ) {
 *      if ( RISING_EDGE == HAL_GetInputEdge() ) { /*hardware dependent code*/
-*          qTask_Notification_Queue( &taskA, app_events[1] );    
+*          qTask_Notification_Queue( &taskA, app_events[1] );
 *      }
 *      else {
 *          qTask_Notification_Queue( &taskA, app_events[2] );
@@ -296,7 +296,7 @@
 *  void taskA_Callback( qEvent_t e ) {
 *      static int press_counter = 0;
 *      
-*      switch (e->Trigger) { /*check the source of the event*/
+*      switch ( e->Trigger ) { /*check the source of the event*/
 *          case byNotificationSimple: 
 *              /*
 *              * Do something here to process the timer event
@@ -333,7 +333,7 @@
 *      HAL_Setup_MCU(); /*hardware dependent code*/
 *      qTrace_Set_OutputFcn( HAL_OutPutChar );
 *      /* setup the scheduler to handle up to 10 queued notifications*/
-*      qOS_Setup( HAL_GetTick, 0.001, NULL ); 
+*      qOS_Setup( HAL_GetTick, 0.001f, NULL );
 *      qOS_Add_EventTask( &taskA, taskA_Callback, qLowest_Priority, NULL );
 *      qOS_Add_EventTask( &taskB, taskB_Callback, qLowest_Priority, NULL );
 *      qOS_Run();
@@ -438,7 +438,7 @@
 *  #include <stdlib.h>
 *  #include <stdint.h>
 *  #include "QuarkTS.h"
-*  #define TIMER_TICK   0.001   /* 1ms */ 
+*  #define TIMER_TICK       ( 0.001f )  /* 1ms */
 *  
 *  /*-----------------------------------------------------------------------*/
 *  void interrupt Timer0_ISR( void ) {
@@ -454,19 +454,19 @@
 *   * is empty to resume. */
 *  void TSK_Producer_Callback( qEvent_t e ) {
 *      static qUINT16_t unData = 0;
-*      unData++;	
+*      unData++;
 *      /*Queue is empty, enable the producer if it was disabled*/
-*      if ( byQueueEmpty == e->Trigger ){
+*      if ( byQueueEmpty == e->Trigger ) {
 *          qTask_Resume( qTask_Self() );
 *      }
 *  
 *      /*send data to the queue*/
-*      if ( qFalse == qQueue_SendToBack( &UserQueue, &unData ) ) { 
+*      if ( qFalse == qQueue_SendToBack( &UserQueue, &unData ) ) {
 *          /*
 *          * if the data insertion fails, the queue is full 
 *          * and the task disables itself
 *          */
-*  	       qTask_Suspend( qTask_Self() ); 
+*          qTask_Suspend( qTask_Self() );
 *      }
 *  }
 *  /*-----------------------------------------------------------------------*/
@@ -483,10 +483,10 @@
 *  /*-----------------------------------------------------------------------*/
 *  void IdleTask_Callback( qEvent_t e ) {
 *      /*nothing to do...*/
-*  }	
+*  }
 *  /*-----------------------------------------------------------------------*/
 *  int main( void ) {
-*      qUINT8_t BufferMem[ 16*sizeof(qUINT16_t) ] = {0};  
+*      qUINT8_t BufferMem[ 16*sizeof(qUINT16_t) ] = { 0u };
 *      HardwareSetup();  //hardware specific code
 *      /* next line is used to setup hardware with specific code to fire
 *       * interrupts at 1ms - timer tick*/
@@ -499,14 +499,11 @@
 *                    16 /* element count*/ );
 *                   
 *      /*  Append the producer task with 100mS rate. */
-*      qOS_Add_Task( &TSK_PRODUCER, TSK_Producer_Callback, 
-*                    qMedium_Priority, 0.1, qPeriodic, qEnabled, 
-*                    "producer" );
+*      qOS_Add_Task( &TSK_PRODUCER, TSK_Producer_Callback, qMedium_Priority, 0.1f, qPeriodic, qEnabled, "producer" );
 *      /* Append the consumer as an event task. The consumer will
 *       * wait until an event trigger their execution
 *       */
-*      qOS_Add_EventTask( &TSK_CONSUMER, TSK_Consumer_Callback,
-*                         qMedium_Priority, "consumer" );
+*      qOS_Add_EventTask( &TSK_CONSUMER, TSK_Consumer_Callback, qMedium_Priority, "consumer" );
 *      /* the queue will be attached to the consumer task 
 *       * in qQueueMode_Count mode. This mode sends an event to the consumer
 *       * task when the queue fills to a level of 4 elements
@@ -567,13 +564,13 @@
 *  #include <stdlib.h>
 *  #include <stdint.h>
 *  #include "QuarkTS.h"
-*  #define TIMER_TICK   0.001   /* 1ms */ 
+*  #define TIMER_TICK       ( 0.001f ) /* 1ms */
 *  
 *  /*event flags application definitions */
-*  #define SWITCH_CHANGED  QEVENTFLAG_01
-*  #define TIMER_EXPIRED   QEVENTFLAG_02
-*  #define DATA_READY      QEVENTFLAG_03
-*  #define DATA_TXMIT      QEVENTFLAG_04
+*  #define SWITCH_CHANGED   QEVENTFLAG_01
+*  #define TIMER_EXPIRED    QEVENTFLAG_02
+*  #define DATA_READY       QEVENTFLAG_03
+*  #define DATA_TXMIT       QEVENTFLAG_04
 *  
 *  qTask_t TaskDataProducer; 
 *  qUINT8_t dataToTransmit[10] = {0};
@@ -584,39 +581,33 @@
 *  }
 *  /*-----------------------------------------------------------------------*/
 *  void interrupt Timer1_ISR( void ) {
-*      qTask_EventFlags_Modify( &TaskDataProducer, TIMER_EXPIRED, 
-*                               QEVENTFLAG_SET );
+*      qTask_EventFlags_Modify( &TaskDataProducer, TIMER_EXPIRED, QEVENTFLAG_SET );
 *  }
 *  /*-----------------------------------------------------------------------*/
 *  void interrupt EXTI_ISR( void ) {
-*      if ( EXTI_IsRisingEdge() ){
-*          qTask_EventFlags_Modify( &TaskDataProducer, SWITCH_CHANGED, 
-*                                   QEVENTFLAG_SET );
+*      if ( EXTI_IsRisingEdge() ) {
+*          qTask_EventFlags_Modify( &TaskDataProducer, SWITCH_CHANGED, QEVENTFLAG_SET );
 *      }
 *  }
 *  /*-----------------------------------------------------------------------*/
 *  void TaskDataProducer_Callback( qEvent_t e ) {
 *      qBool_t condition;
-*      condition = qTask_EventFlags_Check( &TaskDataProducer, 
-*                                          DATA_TXMIT, qTrue, qTrue );
+*       
+*      condition = qTask_EventFlags_Check( &TaskDataProducer, DATA_TXMIT, qTrue, qTrue );
 *      if ( qTrue == condition) {
 *          GenerateData( dataToTransmit );
-*          qTask_EventFlags_Modify( &TaskDataProducer, DATA_READY, 
-*                                   QEVENTFLAG_SET ); 
+*          qTask_EventFlags_Modify( &TaskDataProducer, DATA_READY, QEVENTFLAG_SET ); 
 *      }
-*      qTask_EventFlags_Check( &TaskDataProducer, 
-*                              DATA_READY | SWITCH_CHANGED | TIMER_EXPIRED,
-*                              qTrue, qTrue );
+*      qTask_EventFlags_Check( &TaskDataProducer, DATA_READY | SWITCH_CHANGED | TIMER_EXPIRED, qTrue, qTrue );
 *  }
 *  /*-----------------------------------------------------------------------*/
 *  void IdleTask_Callback( qEvent_t e ) {
 *      
 *      TransmitData( dataToTransmit );
-*      qTask_EventFlags_Modify( &TaskDataProducer, 
-*                               DATA_TXMIT, QEVENTFLAG_SET ); 
+*      qTask_EventFlags_Modify( &TaskDataProducer, DATA_TXMIT, QEVENTFLAG_SET );
 *  }
 *  /*-----------------------------------------------------------------------*/
-*  int main( void ) {    
+*  int main( void ) {
 *      HardwareSetup();  //hardware specific code
 *      /* next line is used to setup hardware with specific code to fire
 *       * interrupts at 1ms - timer tick*/
@@ -629,14 +620,13 @@
 *      qOS_Setup( NULL, TIMER_TICK, IdleTask_Callback );
 *      /* The task will wait until data is transmitted to generate another set of
 *       * data */
-*      qOS_Add_EventTask( &TaskDataProducer, TaskDataProducer_Callback,
-*                         qHigh_Priority, "DATAPRODUCER" );
+*      qOS_Add_EventTask( &TaskDataProducer, TaskDataProducer_Callback, qHigh_Priority, "DATAPRODUCER" );
 *      /* Set the flag DATA_TXMIT as initial condition to allow the data 
 *       * generation at startup
 *      */
 *      qTask_EventFlags_Modify( &TaskDataProducer, DATA_TXMIT, QEVENTFLAG_SET ); 
 *      qOS_Run();
-*      for(;;){}
+*      for( ;; ) {}
 *      return 0;
 *  }
 *  @endcode

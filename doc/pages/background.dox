@@ -194,7 +194,7 @@
 *  #include "QuarkTS.h"
 *  #include "DeviceHeader.h"
 *
-*  #define TIMER_TICK 0.001 /* 1ms */
+*  #define TIMER_TICK       ( 0.001f ) /* 1ms */
 *
 *  void Interrupt_Timer0( void ) {
 *      qClock_SysTick();
@@ -534,7 +534,7 @@
 * File @c main.c
 *  @code{.c}
 *  #include "QuarkTS.h"
-*  #define TIMER_TICK 0.001 // 1ms
+*  #define TIMER_TICK       ( 0.001f ) // 1ms
 * 
 *  void main( void ) {
 *      //device startup with hardware-specific code
@@ -606,19 +606,19 @@
 *  #include "BSP.h"
 *  
 *  #include "QuarkTS.h"
-*  #define TIMER_TICK   0.001   /* 1ms */ 
+*  #define TIMER_TICK       ( 0.001f )   /* 1ms */ 
 *  
 *  qTask_t task1, task2, task3; /*task nodes*/
 *  /*==================================================================*/
 *  void interrupt Timer0_ISR( void ) {
-*      qClock_SysTick();   
+*      qClock_SysTick();
 *  }
 *  /*==================================================================*/
 *  void Task1_Callback( qEvent_t e ) {
 *      BSP_UART1_WriteString( "Task1" );
 *  
 *      if ( e->FirstIteration ) {
-*          qTask_Resume( &Task3 );    
+*          qTask_Resume( &Task3 );
 *      }
 *      
 *      if ( e->LastIteration ) {
@@ -635,15 +635,15 @@
 *      BSP_UART1_WriteString( "Task3" );
 *  }
 *  /*==================================================================*/
-*  int main( void ) {    
+*  int main( void ) {
 *      HardwareSetup();  /*hardware initialization function*/
 *      /*function to fire an interrupt at 1ms - timer tick*/
-*      Configure_Periodic_Timer0_Interrupt_1ms(); 
+*      Configure_Periodic_Timer0_Interrupt_1ms();
 *      
-*      qOS_Setup( NULL, TIMER_TICK, NULL );     
-*      qOS_Add_Task( &Task1, Task1_Callback, 50, 2.0, 10, qEnabled, NULL );
-*      qOS_Add_Task( &Task2, Task2_Callback, 50, 3.0, qPeriodic, qEnabled, NULL );
-*      qOS_Add_Task( &Task2, Task3_Callback, 50, 5.0, qPeriodic, qDisabled, NULL );
+*      qOS_Setup( NULL, TIMER_TICK, NULL );
+*      qOS_Add_Task( &Task1, Task1_Callback, 50, 2.0f, 10, qEnabled, NULL );
+*      qOS_Add_Task( &Task2, Task2_Callback, 50, 3.0f, qPeriodic, qEnabled, NULL );
+*      qOS_Add_Task( &Task2, Task3_Callback, 50, 5.0f, qPeriodic, qDisabled, NULL );
 *      qOS_Run();
 *
 *      return 0;
@@ -675,26 +675,26 @@
 *       float pe; /*Previous error*/
 *       float dt; /*Controller Time Step*/
 *       float sp; /*Set-Point*/
-*       float Kc, Ki, Kd; /*PID Gains*/ 
+*       float Kc, Ki, Kd; /*PID Gains*/
 *   }PID_Params_t;
 *   
 *   PID_Params_t TemperatureControl = {
-*      0,0,0,0, /*Initial IO state of yt and ut*/
-*      1.5, /*time step*/
-*      28.5, /*Set-Point*/
-*      0.89, 0.122, 0.001 /*Kc, Ki, Kd*/
+*      0.0f, 0.0f, 0.0f, 0.0f, /*Initial IO state of yt and ut*/
+*      1.5f, /*time step*/
+*      28.5f, /*Set-Point*/
+*      0.89f, 0.122f, 0.001f /*Kc, Ki, Kd*/
 *   };
 *   PID_Params_t HumidityControl= {
-*      0,0,0,0, /*Initial IO state of yt and ut*/
-*      1, /*time step*/
-*      60.0, /*Set-Point*/
-*      2.5, 0.2354, 0.0015 /*Kc, Ki, Kd*/
+*      0.0f, 0.0f, 0.0f, 0.0f, /*Initial IO state of yt and ut*/
+*      1.0f, /*time step*/
+*      60.0f, /*Set-Point*/
+*      2.5f, 0.2354f, 0.0015f /*Kc, Ki, Kd*/
 *   };
 *   PID_Params_t LightControl= {
-*      0,0,0,0, /*Initial IO state of yt and ut*/
-*      0.5, /*time step*/
-*      45.0, /*Set-Point*/
-*      5.36, 0.0891, 0.0 /*Kc, Ki, Kd*/
+*      0.0f, 0.0f, 0.0f, 0.0f, /*Initial IO state of yt and ut*/
+*      0.5f, /*time step*/
+*      45.0f, /*Set-Point*/
+*      5.36f, 0.0891f, 0.0f /*Kc, Ki, Kd*/
 *   };
 *  @endcode
 *
@@ -707,12 +707,12 @@
 *
 *  @code{.c}
 *  void IO_TASK_Callback( qEvent_t e ) {
-*      TemperatureControl.yt  = SampleTemperatureSensor();
-*      HumidityControl.yt  = SampleHumiditySensor();
-*      LightControl.yt  = SampleLightSensor();
+*      TemperatureControl.yt = SampleTemperatureSensor();
+*      HumidityControl.yt = SampleHumiditySensor();
+*      LightControl.yt = SampleLightSensor();
 *      WriteTemperatureActuatorValue( TemperatureControl.ut );
 *      WriteHumidityActuatorValue( HumidityControl.ut );
-*      WriteLightActuatorValue( LightControl.ut ); 
+*      WriteLightActuatorValue( LightControl.ut );
 *  }
 *  @endcode
 *
@@ -724,10 +724,10 @@
 *  qOS_Add_Task( &TEMPERATURE_CONTROL_TASK, PIDControl_Callback,
 *                qHigh_Priority, TemperatureControl.dt , 
 *                qPeriodic, qEnabled, &TemperatureControl );
-*  qOS_Add_Task( &HUMIDITY_CONTROL_TASK, PIDControl_Callback, 
+*  qOS_Add_Task( &HUMIDITY_CONTROL_TASK, PIDControl_Callback,
 *                qHigh_Priority, HumidityControl.dt, 
 *                qPeriodic, qEnabled, &HumidityControl );
-*  qOS_Add_Task( &LIGHT_CONTROL_TASK, PIDControl_Callback, 
+*  qOS_Add_Task( &LIGHT_CONTROL_TASK, PIDControl_Callback,
 *                qHigh_Priority, LightControl.dt, 
 *                qPeriodic, qEnabled, &LightControl );
 *  @endcode
@@ -748,9 +748,7 @@
 *      /*update the previous error*/
 *      Controller->pe = Error;
 *      /*compute the pid control law*/
-*      Controller->ut = Controller->Kc*Error  +  
-*                       Controller->Ki*Controller->ie + 
-*                       Controller->Kd*derivative;
+*      Controller->ut = Controller->Kc*Error + Controller->Ki*Controller->ie + Controller->Kd*derivative;
 *  }
 *  @endcode
 *
@@ -788,6 +786,10 @@ State Machine (FSM) extension.
 * Finite State Machines (FSM).
 * - @c Q_FSM_MAX_TIMEOUTS : @a Default: @c 3. Max number of timeouts inside a 
 * timeout specification for the @ref q_fsm extension.
+* - @c Q_FSM_PS_SIGNALS_MAX : @a Default: @c 8. Max number of signals to 
+* subscribe for a Finite State Machine (FSM).
+* - @c Q_FSM_PS_SUB_PER_SIGNAL_MAX : @a Default: @c 4. Max number of FSM
+* subscribers per signal.
 * - @c Q_QUEUES : @a Default: @c 1(enabled). Used to enable or disable the 
 * queues APIs for inter-task communication.
 * - @c Q_TRACE_VARIABLES : @a Default: @c 1(enabled). Used to enable or disable 
@@ -802,7 +804,7 @@ State Machine (FSM) extension.
 * disable the counting of cycler of a task.
 * - @c Q_TASK_EVENT_FLAGS : @a Default: @c 1(enabled). Used to enable or disable 
 * the task event flags.
-* - @c Q_MAX_FTOA_PRECISION : @a Default: @c 10.  The default precision used to 
+* - @c Q_MAX_FTOA_PRECISION : @a Default: @c 10. The default precision used to 
 * perform float to ASCII conversions. 
 * - @c Q_ATOF_FULL : @a Default: @c 0(disabled). Used to enable or disable the 
 * scientific notation in ASCII to float conversions.
