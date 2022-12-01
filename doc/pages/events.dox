@@ -49,6 +49,8 @@
 * context, it is important to reduce this time-lag or jitter, to an acceptable
 * level for the application.
 *
+* @remark QuarkTS uses the TTA aproach to trigger time-elapsed events as 
+* explained here @ref q_timmingapproach
 * @note QuarkTS can generally meet a time deadline if you use lightweight code
 * in the callbacks and there is a reduced pool of pending tasks, so it can be
 * considered a soft real-time scheduler, however, it cannot meet a deadline

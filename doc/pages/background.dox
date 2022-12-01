@@ -143,22 +143,22 @@
 * safe-heap implementation provided by the @ref q_memmang extension. Of course, 
 * additional checks must be performed to keep the solution safe.
 *
-* @subsection q_getos Getting the OS
+* @section q_getos Getting the OS
 * Download the latest release from the official repository :
 *
 * <a style="font-weight:bold" href="https://github.com/kmilo17pet/QuarkTS/releases">QuarkTS Releases</a>
 * 
-* Unpack the release and add the sources files to your project.
+* Unpack the release package and add the sources files to your project.
 *
-* @subsubsection q_cloneos Cloning QuarkTS
+* @subsection q_cloneos Cloning QuarkTS
 * You only need to clone the @c kernel branch as follows:
 *
 * @code{.sh}
 * git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git
 * @endcode
 *
-* @subsubsection q_submodule Including QuarkTS as a git sub-module
-* Add the kernel as a submodule to your project:
+* @subsection q_submodule Including QuarkTS as a git sub-module
+* Add the OS kernel as a submodule to your project:
 *
 * @code{.sh}
 * git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git <destination path>
@@ -176,8 +176,8 @@
 * git submodule update --remote
 * @endcode
 *
-* @subsubsection q_getqconfig Get a copy of the OS configuration file
-* The file @c qconfig.h provides specific configuration macros to customize 
+* @subsection q_getqconfig Get a copy of the OS configuration file
+* The file @c qconfig.h provides specific @ref q_configmacros to customize 
 * several aspects of OS. In order to build your solution with QuarkTS, you should
 * provided your own copy of this configuration file. You can obtain a copy
 * with the default configuration by issuing the following command:
@@ -566,9 +566,10 @@
 * @c qDisabled states.
 *
 * @section q_gettingstarted Getting started
-* Unpack the source files and copy them into your project. Also, add a copy of 
-* the file @c qconfig.h and modify it according to your needs. Setup your
-* compiler include path with the corresponding OS directory. Include the header 
+* Obtain a copy of the latest OS as described here: @ref q_getos . Include the
+* the source files to your project. Also, make sure you add a copy of the file 
+* @c qconfig.h and modify it according to your needs. Setup your compiler 
+* include path with the corresponding OS directory. Include the header 
 * file @c QuarkTS.h and setup the instance of the kernel using the qOS_Setup() 
 * inside the main thread. Additional configuration to the target compiler may be
 * required to add the path to the directory of header files. The code below 
