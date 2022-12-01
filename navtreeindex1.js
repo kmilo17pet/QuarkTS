@@ -181,10 +181,13 @@ var NAVTREEINDEX1 =
 "q_background.html":[0,0],
 "q_background.html#q_about":[0,0,0],
 "q_background.html#q_addtasks":[0,0,3,1],
+"q_background.html#q_cloneos":[0,0,0,4,0],
 "q_background.html#q_codstandard":[0,0,0,2],
 "q_background.html#q_configmacros":[0,0,9],
 "q_background.html#q_critical":[0,0,7],
 "q_background.html#q_eventtasks":[0,0,3,2],
+"q_background.html#q_getos":[0,0,0,4],
+"q_background.html#q_getqconfig":[0,0,0,4,2],
 "q_background.html#q_gettingstarted":[0,0,6],
 "q_background.html#q_globalstates":[0,0,5],
 "q_background.html#q_hardwarecompatibility":[0,0,0,1],
@@ -201,6 +204,7 @@ var NAVTREEINDEX1 =
 "q_background.html#q_removetask":[0,0,3,3],
 "q_background.html#q_runos":[0,0,4],
 "q_background.html#q_setupkernel":[0,0,2],
+"q_background.html#q_submodule":[0,0,0,4,1],
 "q_background.html#q_tasks":[0,0,3],
 "q_background.html#q_timmingapproach":[0,0,1],
 "q_events.html":[0,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "q_extensions.html#q_fsm_subscribe_states":[0,2,1,2],
 "q_extensions.html#q_fsm_surrounding":[0,2,1,4],
 "q_extensions.html#q_fsm_timeout":[0,2,1,11],
-"q_extensions.html#q_fsm_ttable":[0,2,1,9],
-"q_extensions.html#q_fsmhandler":[0,2,1,3],
-"q_extensions.html#q_fsminstallsignalqueue":[0,2,1,8],
-"q_extensions.html#q_fsmsendsignals":[0,2,1,7],
-"q_extensions.html#q_fsmsetup":[0,2,1,1]
+"q_extensions.html#q_fsm_ttable":[0,2,1,9]
 };

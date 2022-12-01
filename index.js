@@ -5,7 +5,12 @@ var index =
         [ "License", "q_background.html#q_license", null ],
         [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
         [ "Development process and coding starndard", "q_background.html#q_codstandard", null ],
-        [ "Memory usage", "q_background.html#q_memusage", null ]
+        [ "Memory usage", "q_background.html#q_memusage", null ],
+        [ "Getting the OS", "q_background.html#q_getos", [
+          [ "Cloning QuarkTS", "q_background.html#q_cloneos", null ],
+          [ "Including QuarkTS as a git sub-module", "q_background.html#q_submodule", null ],
+          [ "Get a copy of the OS configuration file", "q_background.html#q_getqconfig", null ]
+        ] ]
       ] ],
       [ "Timming Approach", "q_background.html#q_timmingapproach", null ],
       [ "Setting up the OS kernel", "q_background.html#q_setupkernel", null ],

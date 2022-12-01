@@ -42,7 +42,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qmemmang.html",
-"q_extensions.html#q_memmang"
+"q_extensions.html#q_fsmhandler"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

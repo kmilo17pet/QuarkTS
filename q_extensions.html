@@ -218,7 +218,7 @@ STimer example</h2>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout = <a class="code hl_define" href="group__qstimers.html#ga7cf1635dc6c882c4db956c25d53f7874">QSTIMER_INITIALIZER</a>;</div>
 <div class="line">    <span class="keywordflow">if</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04">FirstCall</a> ) {</div>
 <div class="line">        <span class="comment">/*Arming the stimer for  3.5 seg*/</span></div>
-<div class="line">        <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 3.5 );</div>
+<div class="line">        <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 3.5f );</div>
 <div class="line">    }</div>
 <div class="line">    </div>
 <div class="line">    <span class="comment">/*non-blocking delay, true when timeout expires*/</span></div>
@@ -429,7 +429,7 @@ A demonstrative example for a FSM</h2>
  <em>Flat FSM example with three states</em> </center><p >To start the implementation, let's define the necessary global variables...</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> LED_Task; <span class="comment">/*The task node*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> LED_FSM; <span class="comment">/*The state -machine handle*/</span></div>
-<div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff , State_LEDOn , State_LEDBlink ;</div>
+<div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff, State_LEDOn, State_LEDBlink;</div>
 <div class="ttc" id="astructq_s_m___state__t_html"><div class="ttname"><a href="structq_s_m___state__t.html">qSM_State_t</a></div><div class="ttdoc">A state object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:347</div></div>
 <div class="ttc" id="astructq_s_m__t_html"><div class="ttname"><a href="structq_s_m__t.html">qSM_t</a></div><div class="ttdoc">A FSM(Finite State Machine) object.</div><div class="ttdef"><b>Definition:</b> qfsm.h:388</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:268</div></div>
@@ -471,7 +471,7 @@ A demonstrative example for a FSM</h2>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
-<div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDBlink_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ){</div>
+<div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDBlink_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout; </div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> blinktime;</div>
 <div class="line">    </div>
@@ -485,7 +485,7 @@ A demonstrative example for a FSM</h2>
 <div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout ) || BUTTON_PRESSED ) {</div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDOff;</div>
 <div class="line">            }</div>
-<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a>( &amp;blinktime, 0.5 ) ) {</div>
+<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a>( &amp;blinktime, 0.5f ) ) {</div>
 <div class="line">               BSP_LED_TOGGLE();</div>
 <div class="line">            }</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -501,8 +501,7 @@ A demonstrative example for a FSM</h2>
 <div class="line">                              State_LEDOn_Callback , NULL , NULL );</div>
 <div class="line"><a class="code hl_function" href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a>( &amp;LED_FSM , &amp;State_LEDBlink , NULL ,</div>
 <div class="line">                              State_LEDBlink_Callback , NULL , NULL );</div>
-<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">qOS_Add_StateMachineTask</a>( &amp;LED_Task , &amp;LED_FSM , <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a> ,</div>
-<div class="line">                          0.1f, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a> , NULL );</div>
+<div class="line"><a class="code hl_function" href="group__qtaskcreation.html#gaeea76a6e287011694689c658f7e204ca">qOS_Add_StateMachineTask</a>( &amp;LED_Task , &amp;LED_FSM , <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a> , 0.1f, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a> , NULL );</div>
 <div class="ttc" id="agroup__qfsm_html_ga723ec7aca70eb94880625d78bbe3cac3"><div class="ttname"><a href="group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3">qStateMachine_StateSubscribe</a></div><div class="ttdeci">qBool_t qStateMachine_StateSubscribe(qSM_t *const m, qSM_State_t *const s, qSM_State_t *const parent, qSM_StateCallback_t sFcn, qSM_State_t *const init, void *pData)</div><div class="ttdoc">This function subscribes the FSM instance to a specific state with an associated callback function.</div><div class="ttdef"><b>Definition:</b> qfsm.c:560</div></div>
 <div class="ttc" id="agroup__qfsm_html_gabf14a12eeeb56b06ffca7341c302293c"><div class="ttname"><a href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a></div><div class="ttdeci">qBool_t qStateMachine_Setup(qSM_t *const m, qSM_StateCallback_t topFcn, qSM_State_t *const init, qSM_SurroundingCallback_t sFcn, void *pData)</div><div class="ttdoc">Initializes a Finite State Machine (FSM).</div><div class="ttdef"><b>Definition:</b> qfsm.c:521</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga32c8bd0870414e10a6e72b743627da5a"><div class="ttname"><a href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a></div><div class="ttdeci">#define qHigh_Priority</div><div class="ttdoc">A macro directive to indicate the highest priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:77</div></div>
@@ -1471,8 +1470,8 @@ Usage example</h2>
 <div class="line">    <a class="code hl_function" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">qTrace_Set_OutputFcn</a>( OutPutChar );</div>
 <div class="line">    <span class="comment">/*Create a memory heap*/</span></div>
 <div class="line">    <a class="code hl_function" href="group__qmemmang.html#gab6eda783bf043945f75582f1ad580209">qMemMang_Pool_Setup</a>( &amp;another_heap, area_another_heap, 512);</div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001, IdleTaskCallback );</div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, 0.1, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001f, IdleTaskCallback );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
