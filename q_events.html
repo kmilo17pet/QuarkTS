@@ -177,6 +177,7 @@ The Time-Elapsed event</h1>
 <li>If a task has a finite number iterations, the scheduler will disable the task when the number of iterations reaches the programmed value.</li>
 <li>Tasks always have an inherent time-lag that can be noticed even more, when the programmed time-interval is too low (see figure below). In a real-time context, it is important to reduce this time-lag or jitter, to an acceptable level for the application.</li>
 </ul>
+<dl class="section remark"><dt>Remarks</dt><dd>QuarkTS uses the TTA aproach to trigger time-elapsed events as explained here <a class="el" href="q_background.html#q_timmingapproach">Timming Approach</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>QuarkTS can generally meet a time deadline if you use lightweight code in the callbacks and there is a reduced pool of pending tasks, so it can be considered a soft real-time scheduler, however, it cannot meet a deadline deterministically like a hard real-time OS.</dd></dl>
 <center>  
 <!DOCTYPE html>

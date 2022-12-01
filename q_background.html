@@ -132,11 +132,11 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 <li class="level2"><a href="#q_hardwarecompatibility">Hardware compatibility</a></li>
 <li class="level2"><a href="#q_codstandard">Development process and coding starndard</a></li>
 <li class="level2"><a href="#q_memusage">Memory usage</a></li>
-<li class="level2"><a href="#q_getos">Getting the OS</a><ul><li class="level3"><a href="#q_cloneos">Cloning QuarkTS</a></li>
-<li class="level3"><a href="#q_submodule">Including QuarkTS as a git sub-module</a></li>
-<li class="level3"><a href="#q_getqconfig">Get a copy of the OS configuration file</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#q_getos">Getting the OS</a><ul><li class="level2"><a href="#q_cloneos">Cloning QuarkTS</a></li>
+<li class="level2"><a href="#q_submodule">Including QuarkTS as a git sub-module</a></li>
+<li class="level2"><a href="#q_getqconfig">Get a copy of the OS configuration file</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#q_timmingapproach">Timming Approach</a></li>
@@ -245,26 +245,26 @@ Memory usage</h2>
 <td>Remaining utilities </td><td>2980 </td></tr>
 </table>
 </center><dl class="section note"><dt>Note</dt><dd>Although the kernel does not use dynamically-allocated resources internally, the application writer can create an object in run-time using the safe-heap implementation provided by the <a class="el" href="q_extensions.html#q_memmang">Memory Management</a> extension. Of course, additional checks must be performed to keep the solution safe.</dd></dl>
-<h2><a class="anchor" id="q_getos"></a>
-Getting the OS</h2>
+<h1><a class="anchor" id="q_getos"></a>
+Getting the OS</h1>
 <p >Download the latest release from the official repository :</p>
 <p ><a href="https://github.com/kmilo17pet/QuarkTS/releases" style="font-weight:bold">QuarkTS Releases</a></p>
-<p >Unpack the release and add the sources files to your project.</p>
-<h3><a class="anchor" id="q_cloneos"></a>
-Cloning QuarkTS</h3>
+<p >Unpack the release package and add the sources files to your project.</p>
+<h2><a class="anchor" id="q_cloneos"></a>
+Cloning QuarkTS</h2>
 <p >You only need to clone the <code>kernel</code> branch as follows:</p>
 <div class="fragment"><div class="line">git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git</div>
-</div><!-- fragment --><h3><a class="anchor" id="q_submodule"></a>
-Including QuarkTS as a git sub-module</h3>
-<p >Add the kernel as a submodule to your project:</p>
+</div><!-- fragment --><h2><a class="anchor" id="q_submodule"></a>
+Including QuarkTS as a git sub-module</h2>
+<p >Add the OS kernel as a submodule to your project:</p>
 <div class="fragment"><div class="line">git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git &lt;destination path&gt;</div>
 </div><!-- fragment --><p >Then, run the initialize command to fetch the code for the first time:</p>
 <div class="fragment"><div class="line">git submodule update --init</div>
 </div><!-- fragment --><p >To update the submodule to the latest just run:</p>
 <div class="fragment"><div class="line">git submodule update --remote</div>
-</div><!-- fragment --><h3><a class="anchor" id="q_getqconfig"></a>
-Get a copy of the OS configuration file</h3>
-<p >The file <code>qconfig.h</code> provides specific configuration macros to customize several aspects of OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
+</div><!-- fragment --><h2><a class="anchor" id="q_getqconfig"></a>
+Get a copy of the OS configuration file</h2>
+<p >The file <code>qconfig.h</code> provides specific <a class="el" href="q_background.html#q_configmacros">Configuration macros</a> to customize several aspects of OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
 <div class="fragment"><div class="line">curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o &lt;destination path&gt;/qconfig.h</div>
 </div><!-- fragment --><h1><a class="anchor" id="q_timmingapproach"></a>
 Timming Approach</h1>
@@ -467,7 +467,7 @@ Additional operational states</h3>
 <dl class="section note"><dt>Note</dt><dd>The <code>qAsleep</code> operational state overrides the <code>qEnabled</code> and <code>qDisabled</code> states.</dd></dl>
 <h1><a class="anchor" id="q_gettingstarted"></a>
 Getting started</h1>
-<p >Unpack the source files and copy them into your project. Also, add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
+<p >Obtain a copy of the latest OS as described here: <a class="el" href="q_background.html#q_getos">Getting the OS</a> . Include the the source files to your project. Also, make sure you add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
 <p >File <code>main.c</code> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">// 1ms</span></div>
 <div class="line"> </div>
