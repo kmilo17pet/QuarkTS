@@ -137,11 +137,54 @@
 * <tr><td> Remaining utilities <td> 2980
 * </table>
 * </center>
-*
+* 
 * @note Although the kernel does not use dynamically-allocated resources 
 * internally, the application writer can create an object in run-time using the
 * safe-heap implementation provided by the @ref q_memmang extension. Of course, 
 * additional checks must be performed to keep the solution safe.
+*
+* @subsection q_getos Getting the OS
+* Download the latest release from the official repository :
+*
+* <a style="font-weight:bold" href="https://github.com/kmilo17pet/QuarkTS/releases">QuarkTS Releases</a>
+* 
+* Unpack the release and add the sources files to your project.
+*
+* @subsubsection q_cloneos Cloning QuarkTS
+* You only need to clone the @c kernel branch as follows:
+*
+* @code{.sh}
+* git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git
+* @endcode
+*
+* @subsubsection q_submodule Including QuarkTS as a git sub-module
+* Add the kernel as a submodule to your project:
+*
+* @code{.sh}
+* git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git <destination path>
+* @endcode
+*
+* Then, run the initialize command to fetch the code for the first time:
+*
+* @code{.sh}
+* git submodule update --init
+* @endcode
+*
+* To update the submodule to the latest just run:
+*
+* @code{.sh}
+* git submodule update --remote
+* @endcode
+*
+* @subsubsection q_getqconfig Get a copy of the OS configuration file
+* The file @c qconfig.h provides specific configuration macros to customize 
+* several aspects of OS. In order to build your solution with QuarkTS, you should
+* provided your own copy of this configuration file. You can obtain a copy
+* with the default configuration by issuing the following command:
+*
+* @code{.sh}
+* curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
+* @endcode
 *
 * @section q_timmingapproach Timming Approach
 * The kernel implements a <a style="font-weight:bold" href="https://en.wikipedia.org/wiki/Time-triggered_architecture">Time-Triggered Architecture (TTA)</a>

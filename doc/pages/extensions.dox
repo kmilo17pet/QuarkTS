@@ -90,7 +90,7 @@
 *      static qSTimer_t timeout = QSTIMER_INITIALIZER;
 *      if ( e->FirstCall ) {
 *          /*Arming the stimer for  3.5 seg*/
-*          qSTimer_Set( &timeout, 3.5 );
+*          qSTimer_Set( &timeout, 3.5f );
 *      }
 *      
 *      /*non-blocking delay, true when timeout expires*/
@@ -422,7 +422,7 @@
 *  @code{.c}
 *  qTask_t LED_Task; /*The task node*/
 *  qSM_t LED_FSM; /*The state -machine handle*/
-*  qSM_State_t State_LEDOff , State_LEDOn , State_LEDBlink ;
+*  qSM_State_t State_LEDOff, State_LEDOn, State_LEDBlink;
 *  @endcode 
 *
 * Then, we define our states as the flow-diagram showed in the figure above.
@@ -465,7 +465,7 @@
 *      return qSM_STATUS_EXIT_SUCCESS;
 *  }
 *  /*---------------------------------------------------------------------*/
-*  qSM_Status_t State_LEDBlink_Callback( qSM_Handler_t h ){
+*  qSM_Status_t State_LEDBlink_Callback( qSM_Handler_t h ) {
 *      static qSTimer_t timeout; 
 *      static qSTimer_t blinktime;
 *      
@@ -479,7 +479,7 @@
 *              if ( qSTimer_Expired( &timeout ) || BUTTON_PRESSED ) {
 *                  h->NextState = &State_LEDOff;
 *              }
-*              if ( qSTimer_FreeRun( &blinktime, 0.5 ) ) {
+*              if ( qSTimer_FreeRun( &blinktime, 0.5f ) ) {
 *                 BSP_LED_TOGGLE();
 *              }
 *              break;
@@ -500,8 +500,7 @@
 *                                State_LEDOn_Callback , NULL , NULL );
 *  qStateMachine_StateSubscribe( &LED_FSM , &State_LEDBlink , NULL ,
 *                                State_LEDBlink_Callback , NULL , NULL );
-*  qOS_Add_StateMachineTask( &LED_Task , &LED_FSM , qHigh_Priority ,
-*                            0.1f, qEnabled , NULL );
+*  qOS_Add_StateMachineTask( &LED_Task , &LED_FSM , qHigh_Priority , 0.1f, qEnabled , NULL );
 *  @endcode 
 *
 * @subsection q_fsmsendsignals Sending signals
@@ -1867,8 +1866,8 @@
 *      qTrace_Set_OutputFcn( OutPutChar );
 *      /*Create a memory heap*/
 *      qMemMang_Pool_Setup( &another_heap, area_another_heap, 512);
-*      qOS_Setup( HAL_GetTick, 0.001, IdleTaskCallback );
-*      qOS_Add_Task( &taskA, taskA_Callback, qLowest_Priority, 0.1, qPeriodic, qEnabled, NULL );
+*      qOS_Setup( HAL_GetTick, 0.001f, IdleTaskCallback );
+*      qOS_Add_Task( &taskA, taskA_Callback, qLowest_Priority, 0.1f, qPeriodic, qEnabled, NULL );
 *      qOS_Run();
 *      return 0;
 *  }

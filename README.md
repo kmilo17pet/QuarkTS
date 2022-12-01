@@ -46,37 +46,3 @@ The design goal of QuarkTS is to achieve its stated functionality using a small,
 
 QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer, but want to avoid the space and complexity of a full RTOS, keeping the taste of a robust and safe one. 
 
-## Cloning QuarkTS
-
-You only need to clone the kernel branch as follows:
-
-```
-git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git
-```
-
-
-## QuarkTS as a git submodule :
-
-### Creating
-
-```
-git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git <destination path>
-```
-
-Then, run the initialize command to fetch the code for the first time:
-
-```
-git submodule update --init
-```
-
-### Updating
-
-```
-git submodule update --remote
-```
-
-### Get a copy of the configuration file (qconfig.h):
-
-```
-curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
-```
