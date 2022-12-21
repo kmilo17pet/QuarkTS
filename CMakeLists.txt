@@ -15,7 +15,7 @@
 cmake_minimum_required( VERSION 3.2 )
 project( quarkts VERSION 7.3.2 DESCRIPTION "An open-source OS for small embedded applications")
 
-add_library( quarkts
+add_library( ${PROJECT_NAME}
              qlists.c
              qclock.c
              qstimers.c
@@ -34,9 +34,9 @@ add_library( quarkts
              qresponse.c
            )
 set( QUARKTS_CONFIG_PATH ../os_config )
-set_target_properties( quarkts PROPERTIES PUBLIC_HEADER include/QuarkTS.h )
-target_include_directories( quarkts PUBLIC include )
-target_include_directories( quarkts PUBLIC ../os_config )
+set_target_properties( ${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/QuarkTS.h )
+target_include_directories( ${PROJECT_NAME} PUBLIC include )
+target_include_directories( ${PROJECT_NAME} PUBLIC ../os_config )
 
 if( NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${QUARKTS_CONFIG_PATH}/qconfig.h" )
     message( STATUS "QuarkTS qconfig.h file not found, downloading default on ${QUARKTS_CONFIG_PATH}..." )
