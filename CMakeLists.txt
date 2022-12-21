@@ -13,7 +13,10 @@
 # This file is part of the QuarkTS OS distribution.
 
 cmake_minimum_required( VERSION 3.2 )
-project( quarkts VERSION 7.3.2 DESCRIPTION "An open-source OS for small embedded applications")
+project( quarkts 
+         VERSION 7.3.2 
+         DESCRIPTION "An open-source OS for small embedded applications" 
+         LANGUAGES C )
 
 add_library( ${PROJECT_NAME}
              qlists.c
