@@ -5,7 +5,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/kmilo17pet/quarkts/badge)](https://www.codefactor.io/repository/github/kmilo17pet/quarkts)
 [![CodeInspectorScore](https://api.codiga.io/project/27196/score/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
 [![CodeInspectorGrade](https://api.codiga.io/project/27196/status/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
-[![Softacheck](https://softacheck.com/app/repository/kmilo17pet/QuarkTS/badge)](https://softacheck.com/app/repository/kmilo17pet/QuarkTS/issues)
+[![codebeat badge](https://codebeat.co/badges/1f19102c-d660-4529-8cad-da5c7b578913)](https://codebeat.co/projects/github-com-kmilo17pet-quarkts-kernel)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/context:cpp)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/alerts/)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/TECREA/QuarkTS?logo=webpack)](https://github.com/TECREA/QuarkTS/releases)
