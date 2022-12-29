@@ -21,7 +21,7 @@ static qCritical_Handler_t critical = { NULL, NULL , 0uL };
 void qCritical_Enter( void )
 {
     if ( NULL != critical.disable ) {
-        const qInt_Disabler_t xDisabler = critical.disable;
+        qInt_Disabler_t xDisabler = critical.disable;
 
         critical.flags = xDisabler();
     }
@@ -30,7 +30,7 @@ void qCritical_Enter( void )
 void qCritical_Exit( void )
 {
     if ( NULL != critical.restore ) {
-        const qInt_Restorer_t xRestorer = critical.restore;
+        qInt_Restorer_t xRestorer = critical.restore;
 
         xRestorer( critical.flags );
     }

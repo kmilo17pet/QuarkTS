@@ -240,7 +240,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
         }
 
         if ( pSize > 0u ) {
-            const size_t additional = heapStructSize + (size_t)Q_BYTE_ALIGNMENT
+            size_t additional = heapStructSize + (size_t)Q_BYTE_ALIGNMENT
                                       - ( pSize & byteAlignmentMask );
             /*check for heap overflow*/
             if ( pSize > ( ( ~( ( size_t )0u ) ) - additional ) ) {

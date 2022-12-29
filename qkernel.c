@@ -519,9 +519,9 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_FSM_TaskCallback( qEvent_t e )
 {
-    qTask_t * const xTask = qTask_Self();
+    qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qSM_t * const sm = (qSM_t *)xTask->qPrivate.aObj;
+    qSM_t *sm = (qSM_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qSM_Signal_t sig = { QSM_SIGNAL_NONE, NULL };
     /*cstat -MISRAC2012-Rule-11.8*/
@@ -554,9 +554,9 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 {
-    qTask_t * const xTask = qTask_Self();
+    qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-    qATCLI_t * const cli = (qATCLI_t *)xTask->qPrivate.aObj;
+    qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*cstat -MISRAC2012-Rule-11.8*/
     cli->qPrivate.xPublic.Data = (void*)e;
@@ -657,7 +657,7 @@ static void qOS_TriggerReleaseSchedEvent( void )
     eventInfo->Trigger = bySchedulingRelease;
     eventInfo->TaskData = NULL;
     if ( NULL != kernel.releaseSchedCallback ) {
-        const qTaskFcn_t callback = kernel.releaseSchedCallback;
+        qTaskFcn_t callback = kernel.releaseSchedCallback;
         /*some low-end compilers cant deal with function-pointers inside structs*/
         callback( eventInfo );
     }
@@ -988,7 +988,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task )
     qBool_t retValue = qFalse;
 
     if ( qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) {
-        const qIteration_t iters = Task->qPrivate.iterations;
+        qIteration_t iters = Task->qPrivate.iterations;
         /*task should be periodic or must have available iters*/
         if ( ( QTASK_ITER_VALUE( iters ) > 0 ) || ( qPeriodic == iters ) ) {
             qClock_t interval = Task->qPrivate.timer.tv;
@@ -1011,7 +1011,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
 
     if ( NULL != Task ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        const qList_t * const xList = (const qList_t * const)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        const qList_t *xList = (const qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( kernel.currentTask == Task ) {
             retValue = qRunning;

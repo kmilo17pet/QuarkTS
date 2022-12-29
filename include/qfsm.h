@@ -195,7 +195,6 @@
     /*fields for the qSM_Handler_t pointer*/
     /*! @cond  */
     #define _qSM_HANDLER_FIELDS( pAttrib )                                  \
-    struct {                                                                \
         void *StartState;                                                   \
         void *NextState;                                                    \
         pAttrib void *machine;                                              \
@@ -205,8 +204,7 @@
         pAttrib void *SignalData;                                           \
         pAttrib qSM_SigId_t Signal;                                         \
         pAttrib qSM_Status_t Status;                                        \
-        qSM_TransitionHistoryMode_t TransitionHistory;                      \
-    }                                                                       \
+        qSM_TransitionHistoryMode_t TransitionHistory                       \
     /*! @endcond */
 
     /*! @cond  */

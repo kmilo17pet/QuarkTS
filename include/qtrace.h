@@ -30,7 +30,7 @@
     #endif
 
     #if ( Q_DEBUGTRACE_BUFSIZE < 36 )
-        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greather o equal to 36.
+        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greater o equal to 36.
     #endif
 
     #define _qSTRINGIFY(x) #x
@@ -44,7 +44,11 @@
                 #define _QFCN    __func__
             #endif
         #elif defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
-            #define _QFCN       __PRETTY_FUNCTION__
+            #ifndef __PRETTY_FUNCTION__
+                #define _QFCN       ""
+            #else
+                #define _QFCN       __PRETTY_FUNCTION__
+            #endif
         #elif defined(__DMC__) && (__DMC__ >= 0x810)
             #define _QFCN       __PRETTY_FUNCTION__
         #elif defined(__FUNCSIG__)

@@ -15,6 +15,7 @@ qBool_t qCR_ExternControl( qCR_Handle_t h,
 
     if ( NULL != h ) {
         retValue = qTrue;
+
         switch ( action ) {
             case qCR_RESTART:
                 h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL;

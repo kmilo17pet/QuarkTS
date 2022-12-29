@@ -98,7 +98,7 @@ size_t qIOUtil_StrlCpy( char * dst,
                         const char * src,
                         size_t maxlen )
 {
-    const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+    size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
 
     if ( ( srclen + 1u ) < maxlen ) {
         (void)memcpy( dst, src, srclen + 1u );
@@ -118,8 +118,8 @@ size_t qIOUtil_StrlCat( char *dst,
                        const char *src,
                        size_t maxlen )
 {
-    const size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
-    const size_t dstlen = qIOUtil_StrLen( dst, maxlen);
+    size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+    size_t dstlen = qIOUtil_StrLen( dst, maxlen);
     size_t retVal;
 
     if ( dstlen == maxlen ) {

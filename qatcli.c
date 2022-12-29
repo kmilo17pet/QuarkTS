@@ -551,7 +551,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
                 break;
             default: /*AT_ERRORCODE(#) */
                 if ( (qBase_t)retval < 0 ) {
-                    const qINT32_t errorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
+                    qINT32_t errorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
 
                     (void)qIOUtil_ItoA( errorCode, cli->qPrivate.xPublic.Output, 10u );
                     (void)qIOUtil_OutputString( putChar,

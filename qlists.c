@@ -289,7 +289,7 @@ qBool_t qList_IsMember( const qList_t * const l,
 
     if ( NULL != node ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        const qList_Node_t * const xNode = (const qList_Node_t * const)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+        const qList_Node_t *xNode = (const qList_Node_t *)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 
         if ( l == (const qList_t * const)xNode->container ) { /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             retValue = qTrue;

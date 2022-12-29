@@ -20,9 +20,9 @@ _QEDGECHECK_REG_FCN_DEC(NAME)                                               \
 
 /*! @cond  */
 /*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t );
-QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t );
-QEDGECHECK_REG_FCN_DEF( _qReg_08Bits, qUINT8_t );
+QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t )
+QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t )
+QEDGECHECK_REG_FCN_DEF( _qReg_08Bits, qUINT8_t )
 /*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*! @endcond  */
 
@@ -63,7 +63,7 @@ qBool_t qEdgeCheck_Add_Node( qEdgeCheck_t * const ec,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != n ) && ( NULL != ec ) ) {
-        const qCoreRegSize_t pinReader = ec->qPrivate.reader;
+        qCoreRegSize_t pinReader = ec->qPrivate.reader;
 
         (void)memset( n, 0, sizeof(qEdgeCheck_IONode_t) );
         n->qPrivate.xPort = portAddress;
@@ -88,7 +88,7 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec )
 /*============================================================================*/
 static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg )
 {
-    const qCoreRegSize_t pinReader = ec->qPrivate.reader;
+    qCoreRegSize_t pinReader = ec->qPrivate.reader;
     qEdgeCheck_IONode_t *n;
 
     for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {

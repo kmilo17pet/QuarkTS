@@ -211,7 +211,7 @@ static void qStateMachine_Transition( qSM_t *m,
     }
     else if ( qSM_TRANSITION_SHALLOW_HISTORY == mHistory ) {
         if ( NULL != target->qPrivate.lastRunningChild ) {
-            qSM_State_t * const lrc = target->qPrivate.lastRunningChild;
+            qSM_State_t * lrc = target->qPrivate.lastRunningChild;
             /*restore the default transition in the last running nested state*/
             lrc->qPrivate.lastRunningChild = lrc->qPrivate.initState;
         }
@@ -756,8 +756,8 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
             resetCheck = QSM_TSOPT_RST_EXIT;
         }
         for ( i = 0u ; i < n ; ++i ) { /*loop table */
-            const qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
-            const qIndex_t index = opt & QSM_TSOPT_INDEX_MASK;
+            qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
+            qIndex_t index = (qIndex_t)( opt & QSM_TSOPT_INDEX_MASK );
             /*state match and index is valid?*/
             if ( index < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) {
                 qSTimer_t *tmr = &m->qPrivate.timeSpec->builtin_timeout[ index ];
