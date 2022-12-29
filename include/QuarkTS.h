@@ -7,11 +7,11 @@
  **/
 
 /*
-QuarkTS V7.3.1 - An open-source OS for small embedded applications.
+QuarkTS - An open-source OS for small embedded applications.
 MIT License
 C99 and MISRAC 2012 Compliant
 
-Copyright (C) 2012 Eng. Juan Camilo Gómez Cadavid MSc. All Rights Reserved.
+Copyright (C) 2012 Eng. Juan Camilo Gomez Cadavid MSc. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -46,7 +46,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
     #define QuarkTS_H
 
     #define QUARKTS_VERSION         "7.3.2"
-    #define QUARKTS_VERNUM          ( 0732u )
+    #define QUARKTS_VERNUM          ( 732u )
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"

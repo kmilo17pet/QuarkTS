@@ -217,7 +217,7 @@
     }
     _qSM_ProtectedPublicData_t;
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;
-    typedef _qSM_ProtectedPublicData_t* const qSM_Handler_t;
+    typedef _qSM_ProtectedPublicData_t* qSM_Handler_t;
     /*! @endcond */
 
     #ifdef DOXYGEN
