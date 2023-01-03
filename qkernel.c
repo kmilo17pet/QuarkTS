@@ -238,7 +238,7 @@ qBool_t qOS_Notification_Spread( void *eventData,
         }
 
     #else
-        Q_UNUSED( eventdata );
+        Q_UNUSED( eventData );
         Q_UNUSED( mode );
         _QTRACE_KERNEL( "(E)Notification spread its disabled. Request ignored",
                         NULL,
@@ -309,7 +309,7 @@ qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task,
         return retValue;
     #else
         Q_UNUSED( Task );
-        Q_UNUSED( Data );
+        Q_UNUSED( pData );
         _QTRACE_KERNEL( "(E)Event not inserted inserted on priority queue. "
                         "Queue its disabled",
                         NULL,
