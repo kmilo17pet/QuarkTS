@@ -695,7 +695,7 @@ qBool_t qOS_Run( void )
         if ( suspendedList->size > (size_t)0u ) {
             /*move the remaining suspended tasks to the waiting-list*/
             (void)qList_Move( waitingList, suspendedList, QLIST_ATBACK );
-            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1)
+            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
                 /*preseve the entry order by sorting the new waiting-list*/
                 (void)qList_Sort( waitingList, qOS_TaskEntryOrderPreserver );
             #endif

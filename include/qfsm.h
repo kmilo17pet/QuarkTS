@@ -1,7 +1,7 @@
 /*!
  * @file qfsm.h
  * @author J. Camilo Gomez C.
- * @version 5.42
+ * @version 5.43
  * @note This file is part of the QuarkTS distribution.
  * @brief  API interface of the @ref q_fsm extension.
  **/
