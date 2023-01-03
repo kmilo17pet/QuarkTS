@@ -611,7 +611,7 @@ qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m,
         }
     #else
         Q_UNUSED( m );
-        Q_UNUSED( queue );
+        Q_UNUSED( q );
     #endif
 
     return retValue;
@@ -876,9 +876,11 @@ void* qStateMachine_Get_Machine( qSM_t * const m,
             case qSM_ATTRIB_STATE_CURRENT:
                 xAttribute = m->qPrivate.current;
                 break;
+            #if ( Q_QUEUES == 1 )
             case qSM_ATTRIB_SIGNAL_QUEUE:
                 xAttribute = m->qPrivate.sQueue;
                 break;
+            #endif
             case qSM_ATTRIB_TIMESPEC:
                 xAttribute = m->qPrivate.timeSpec;
                 break;
