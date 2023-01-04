@@ -195,13 +195,13 @@
     * @brief This macro should be used to define the destination position of a
     * node in front of a list
     */
-    #define QLIST_ATFRONT           ( (qList_Position_t)( -1 ) )
+    #define QLIST_AT_FRONT          ( (qList_Position_t)( -1 ) )
 
     /**
     * @brief This macro should be used to define the destination position of a
     * node at the end of a list
     */
-    #define QLIST_ATBACK            ( (qList_Position_t)( 2147483647 ) )
+    #define QLIST_AT_BACK           ( (qList_Position_t)( 2147483647 ) )
 
 
     /**

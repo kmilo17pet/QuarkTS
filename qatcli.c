@@ -14,14 +14,14 @@
 #define QATCLI_DEFAULT_ERROR_RSP_STRING         "ERROR"
 #define QATCLI_DEFAULT_OK_RSP_STRING            "OK"
 #define QATCLI_DEFAULT_NOTFOUND_RSP_STRING      "UNKNOWN"
-#define QATCLI_DEAFULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
+#define QATCLI_DEFAULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
 #define QATCLI_DEFAULT_DEVID_STRING             "QuarkTS CLI"
 #define QATCLI_DEFAULT_EOL_STRING               "\r\n"
 #define QATCLI_MIN_INPUT_LENGTH                 ( 3u )
 #define QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
 
-#define QATCLI_CMDMASK_ARG_MAXNUM(opt)          ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
-#define QATCLI_CMDMASK_ARG_MINNUM(opt)          ( (opt) & (qATCLI_Options_t)0x000Fu )
+#define QATCLI_CMD_MASK_ARG_MAX_NUM(opt)        ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
+#define QATCLI_CMD_MASK_ARG_MIN_NUM(opt)        ( (opt) & (qATCLI_Options_t)0x000Fu )
 
 static qPutChar_t cli_OutCharFcn = NULL;
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
@@ -415,8 +415,8 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
                         size_t argMin, argMax;
                         /*get the args count using the default delimiter*/
                         params->NumArgs = qATCLI_NumOfArgs( params->StrData );
-                        argMin = QATCLI_CMDMASK_ARG_MINNUM( (size_t)cmd->qPrivate.cmdOpt );
-                        argMax = QATCLI_CMDMASK_ARG_MAXNUM( (size_t)cmd->qPrivate.cmdOpt );
+                        argMin = QATCLI_CMD_MASK_ARG_MIN_NUM( (size_t)cmd->qPrivate.cmdOpt );
+                        argMax = QATCLI_CMD_MASK_ARG_MAX_NUM( (size_t)cmd->qPrivate.cmdOpt );
                         if ( ( params->NumArgs >= argMin ) && ( params->NumArgs <= argMax ) ) {
                             params->Type = qATCLI_CMDTYPE_PARA; /*set the type to PARA*/
                             ++params->StrData; /*move string pointer once*/
@@ -528,7 +528,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
                                             qFalse );
                 (void)qIOUtil_OutputString( putChar,
                                             NULL,
-                                            QATCLI_DEAFULT_NOTALLOWED_RSP_STRING,
+                                            QATCLI_DEFAULT_NOTALLOWED_RSP_STRING,
                                             qFalse );
                 break;
             case qATCLI_DEVID:
@@ -549,9 +549,9 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
                                             cli->qPrivate.xPublic.Output,
                                             qFalse );
                 break;
-            default: /*AT_ERRORCODE(#) */
+            default: /*AT_ERROR_CODE(#) */
                 if ( (qBase_t)retval < 0 ) {
-                    qINT32_t errorCode = qATCLI_ERRORCODE( (qINT32_t)retval );
+                    qINT32_t errorCode = qATCLI_ERROR_CODE( (qINT32_t)retval );
 
                     (void)qIOUtil_ItoA( errorCode, cli->qPrivate.xPublic.Output, 10u );
                     (void)qIOUtil_OutputString( putChar,

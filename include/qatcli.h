@@ -45,10 +45,10 @@
     * This code is defined by the application writer and should be a value
     * between @c 1 and @c 32766.
     *
-    * For example, a return value of #qATCLI_ERRORCODE(15), will print out the
+    * For example, a return value of #qATCLI_ERROR_CODE(15), will print out the
     * string @c ERROR:15.
     */
-    #define     qATCLI_ERRORCODE(ecode)     (-(ecode) )
+    #define     qATCLI_ERROR_CODE(ecode)     (-(ecode) )
 
 
     /*! @cond  */
@@ -273,7 +273,7 @@
     typedef enum {
         QATCLI_BUILTIN_STR_IDENTIFIER,                  /**< To select the device identifier string. This string will be printed-out after a call to the @c ATCLI_DEFAULT_ID_COMMAND -> default @c ATID*/
         QATCLI_BUILTIN_STR_OK_RESPONSE,                 /**< To select the output message when a command callback returns ::qATCLI_OK.*/
-        QATCLI_BUILTIN_STR_ERROR_RESPONSE,              /**< To select the output message when a command callback returns ::qATCLI_ERROR or any #qATCLI_ERRORCODE(#)*/
+        QATCLI_BUILTIN_STR_ERROR_RESPONSE,              /**< To select the output message when a command callback returns ::qATCLI_ERROR or any #qATCLI_ERROR_CODE(#)*/
         QATCLI_BUILTIN_STR_NOTFOUND_RESPONSE,           /**< To select the output message when input does not match with any of the available commands */
         QATCLI_BUILTIN_STR_TERM_EOL,                    /**< To select the End-Of-Line string printed out after any of the CLI messages */
     }

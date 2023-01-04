@@ -50,10 +50,10 @@
     qCR_Semaphore_t;
 
     /*! @cond  */
-    #define QCR_RESTART     ( 0 )
-    #define QCR_POSITIONSET ( 1 )
-    #define QCR_SUSPEND     ( 2 )
-    #define QCR_RESUME      ( 3 )
+    #define QCR_RESTART         ( 0 )
+    #define QCR_POSITION_SET    ( 1 )
+    #define QCR_SUSPEND         ( 2 )
+    #define QCR_RESUME          ( 3 )
     /*! @endcond  */
 
     /**
@@ -61,18 +61,18 @@
     * outside the context of a Co-Routine
     */
     typedef enum {
-        qCR_RESTART = QCR_RESTART,          /**< Restart the coroutine execution at the place of the #qCR_BeginWithHandle statement.*/
-        qCR_POSITIONSET = QCR_POSITIONSET,  /**< Force the coroutine execution at the position specified in qCR_ExternControl(). If a non-valid position is supplied, the Co-routine segment will be suspended.*/
-        qCR_SUSPEND = QCR_SUSPEND,          /**< Suspend the entire coroutine segment. The task will still running instructions outside the segment. */
-        qCR_RESUME = QCR_RESUME             /**< Resume the entire coroutine segment at the point where it had been left before the suspension. */
+        qCR_RESTART = QCR_RESTART,              /**< Restart the coroutine execution at the place of the #qCR_BeginWithHandle statement.*/
+        qCR_POSITION_SET = QCR_POSITION_SET,    /**< Force the coroutine execution at the position specified in qCR_ExternControl(). If a non-valid position is supplied, the Co-routine segment will be suspended.*/
+        qCR_SUSPEND = QCR_SUSPEND,              /**< Suspend the entire coroutine segment. The task will still running instructions outside the segment. */
+        qCR_RESUME = QCR_RESUME                 /**< Resume the entire coroutine segment at the point where it had been left before the suspension. */
     }
     qCR_ExternAction_t;
 
     /*! @cond  */
     typedef enum {
         _qCR_UNDEFINED = 0,
-        _qCR_PC_INITVAL = -1,
-        _qCR_PC_SUSPENDEDVAL = -2,
+        _qCR_PC_INIT_VAL = -1,
+        _qCR_PC_SUSPENDED_VAL = -2,
         _qCR_SEM_SIGNAL = -3,
         _qCR_SEM_TRYLOCK = -4
     }
@@ -80,7 +80,7 @@
 
     /*Construction statements*/
     #define _qCR_LCInit                                                     \
-    { _qCR_PC_INITVAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }                \
+    { _qCR_PC_INIT_VAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }               \
 
     #define _qCR_RT( _PT_ )                                                 \
     case (_qCR_TaskPC_t)(_PT_) :                                            \
@@ -106,7 +106,7 @@
     #define _qCR_Start                                                      \
     _qCR_DEF;                                                               \
     _qCR_JUMP( _qcr->instr ) {                                              \
-        _qCR_RT( _qCR_PC_INITVAL )                                          \
+        _qCR_RT( _qCR_PC_INIT_VAL )                                         \
 
 
     /*=======================================================================*/
@@ -117,11 +117,11 @@
     }                                                                       \
     _qCR_JUMP( _qcr->instr ) {                                              \
         default: _qCR_EXIT;  /*suspend point*/                              \
-        _qCR_RT( _qCR_PC_INITVAL )                                          \
+        _qCR_RT( _qCR_PC_INIT_VAL )                                         \
 
     /*=======================================================================*/
     #define _qCR_Dispose                                                    \
-        _qcr->instr = _qCR_PC_INITVAL;                                      \
+        _qcr->instr = _qCR_PC_INIT_VAL;                                     \
     }                                                                       \
     _qCR_ExitPoint: Q_UNUSED(0)                                             \
 
@@ -136,7 +136,7 @@
     /*=======================================================================*/
     #define _qCR_Restart                                                    \
     do {                                                                    \
-        _qCR_LCON( _qcr->instr, _qCR_PC_INITVAL, Q_NONE, _qCR_EXIT );       \
+        _qCR_LCON( _qcr->instr, _qCR_PC_INIT_VAL, Q_NONE, _qCR_EXIT );      \
     } while( qFalse )                                                       \
 
 
@@ -170,7 +170,7 @@
     do {                                                                    \
         qCR_TimeoutSet( dTime );                                            \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
-        if ( !qCR_TimeoutExpired() ) {                                       \
+        if ( !qCR_TimeoutExpired() ) {                                      \
             _qCR_EXIT;                                                      \
         }                                                                   \
     } while( qFalse )                                                       \
@@ -399,7 +399,7 @@
     * @param[in,out] p The variable of type #qCR_Position_t to reset.
     * @return none.
     */
-    #define qCR_PositionReset( p )      (p) = _qCR_PC_INITVAL
+    #define qCR_PositionReset( p )      (p) = _qCR_PC_INIT_VAL
 
     /**
     * @brief Delay a coroutine for a given number of time
@@ -428,8 +428,8 @@
     * @param[in] h The Co-routine handle.
     * @param[in] action The specific action to perform, should be one of the
     * following:
-    * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITIONSET.
-    * @param[in] pos The required position if @a action = ::qCR_POSITIONSET. For
+    * ::qCR_RESTART, ::qCR_SUSPEND, ::qCR_RESUME or ::qCR_POSITION_SET.
+    * @param[in] pos The required position if @a action = ::qCR_POSITION_SET. For
     * other actions this argument its ignored.
     * @return #qTrue on success, otherwise returns #qFalse.
     */

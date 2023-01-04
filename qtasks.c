@@ -257,7 +257,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
 
     if ( ( NULL != q ) && ( NULL != Task ) && ( NULL != q->qPrivate.head ) ) {
         qOS_Set_TaskFlags( Task,
-                           (qUINT32_t)mode & QTASK_QUEUEFLAGS_MASK,
+                           (qUINT32_t)mode & QTASK_QUEUE_FLAGS_MASK,
                            ( ( 0u != arg )? qATTACH : qDETACH ) );
         if ( mode == qQueueMode_Count ) {
             /*if mode is qQUEUE_COUNT, use their arg value as count*/
@@ -281,7 +281,7 @@ qBool_t qTask_EventFlags_Modify( qTask_t * const Task,
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        qTask_Flag_t flagsToSet = flags & QTASK_EVENTFLAGS_RMASK;
+        qTask_Flag_t flagsToSet = flags & QTASK_EVENT_FLAGS_MASK;
         qOS_Set_TaskFlags( Task, flagsToSet, action );
         retValue = qTrue;
     }
@@ -294,7 +294,7 @@ qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task )
     qTask_Flag_t retValue = 0u;
 
     if ( NULL != Task ) {
-        retValue = Task->qPrivate.flags & QTASK_EVENTFLAGS_RMASK;
+        retValue = Task->qPrivate.flags & QTASK_EVENT_FLAGS_MASK;
     }
 
     return retValue;
@@ -308,9 +308,9 @@ qBool_t qTask_EventFlags_Check( qTask_t * const Task,
     qBool_t retValue = qFalse;
 
     if ( NULL != Task ) {
-        qTask_Flag_t cEventBits = Task->qPrivate.flags & QTASK_EVENTFLAGS_RMASK;
+        qTask_Flag_t cEventBits = Task->qPrivate.flags & QTASK_EVENT_FLAGS_MASK;
 
-        flagsToCheck &= QTASK_EVENTFLAGS_RMASK;
+        flagsToCheck &= QTASK_EVENT_FLAGS_MASK;
         if ( qFalse == checkForAll ) {
             if ( (qTask_Flag_t)0 != ( cEventBits & flagsToCheck ) ) {
                 retValue = qTrue;

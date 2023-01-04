@@ -10,17 +10,17 @@
 #include "qflm.h"
 
 #define QKERNEL_BIT_INIT                     ( 0x00000001uL )
-#define QKERNEL_BIT_FCALLIDLE                ( 0x00000002uL )
-#define QKERNEL_BIT_RELEASESCHED             ( 0x00000004uL )
-#define QKERNEL_BIT_FCALLRELEASED            ( 0x00000008uL )
+#define QKERNEL_BIT_FCALL_IDLE               ( 0x00000002uL )
+#define QKERNEL_BIT_RELEASE_SCHED            ( 0x00000004uL )
+#define QKERNEL_BIT_FCALL_RELEASED           ( 0x00000008uL )
 
-#define QKERNEL_COREFLAG_SET( FLAG, BIT )                                   \
+#define QKERNEL_CORE_FLAG_SET( FLAG, BIT )                                  \
 ( FLAG ) |= (qCoreFlags_t)( BIT )                                           \
 
-#define QKERNEL_COREFLAG_CLEAR( FLAG, BIT )                                 \
+#define QKERNEL_CORE_FLAG_CLEAR( FLAG, BIT )                                \
 ( FLAG ) &= (qCoreFlags_t)( ~BIT )                                          \
 
-#define QKERNEL_COREFLAG_GET( FLAG, BIT )                                   \
+#define QKERNEL_CORE_FLAG_GET( FLAG, BIT )                                  \
 ( ( 0uL != ( (FLAG) & (BIT) ) )? qTrue : qFalse )                           \
 
 #define QTASK_ITER_VALUE( x )                                               \
@@ -191,7 +191,7 @@ qBool_t qOS_Set_IdleTask( qTaskFcn_t callbackFcn )
 /*============================================================================*/
 qBool_t qOS_Scheduler_Release( void )
 {
-    QKERNEL_COREFLAG_SET( kernel.flag, QKERNEL_BIT_RELEASESCHED );
+    QKERNEL_CORE_FLAG_SET( kernel.flag, QKERNEL_BIT_RELEASE_SCHED );
     _QTRACE_KERNEL( "(>)Scheduler release has been requested", NULL, NULL );
 
     return qTrue; /*only for API compatibility*/
@@ -452,7 +452,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
         #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
             Task->qPrivate.entry = kernel.taskEntries++;
         #endif
-        retValue = qList_Insert( waitingList, Task, QLIST_ATBACK );
+        retValue = qList_Insert( waitingList, Task, QLIST_AT_BACK );
         _QTRACE_KERNEL( "(*)Insertion Performed to waiting-list for task ",
                         Task,
                         NULL );
@@ -651,9 +651,9 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task )
 static void qOS_TriggerReleaseSchedEvent( void )
 {
     _QTRACE_KERNEL( "(*)Dispatching scheduler release event...", NULL, NULL );
-    QKERNEL_COREFLAG_CLEAR( kernel.flag, QKERNEL_BIT_INIT );
-    QKERNEL_COREFLAG_CLEAR( kernel.flag, QKERNEL_BIT_RELEASESCHED );
-    eventInfo->FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLRELEASED ) );
+    QKERNEL_CORE_FLAG_CLEAR( kernel.flag, QKERNEL_BIT_INIT );
+    QKERNEL_CORE_FLAG_CLEAR( kernel.flag, QKERNEL_BIT_RELEASE_SCHED );
+    eventInfo->FirstCall = ( qFalse == QKERNEL_CORE_FLAG_GET( kernel.flag, QKERNEL_BIT_FCALL_RELEASED ) );
     eventInfo->Trigger = bySchedulingRelease;
     eventInfo->TaskData = NULL;
     if ( NULL != kernel.releaseSchedCallback ) {
@@ -661,7 +661,7 @@ static void qOS_TriggerReleaseSchedEvent( void )
         /*some low-end compilers cant deal with function-pointers inside structs*/
         callback( eventInfo );
     }
-    QKERNEL_COREFLAG_SET( kernel.flag, QKERNEL_BIT_FCALLIDLE ); /*MISRAC2012-Rule-11.3 allowed*/
+    QKERNEL_CORE_FLAG_SET( kernel.flag, QKERNEL_BIT_FCALL_IDLE ); /*MISRAC2012-Rule-11.3 allowed*/
 }
 #endif
 /*============================================================================*/
@@ -694,7 +694,7 @@ qBool_t qOS_Run( void )
         /*check for a non-empty suspended-list*/
         if ( suspendedList->size > (size_t)0u ) {
             /*move the remaining suspended tasks to the waiting-list*/
-            (void)qList_Move( waitingList, suspendedList, QLIST_ATBACK );
+            (void)qList_Move( waitingList, suspendedList, QLIST_AT_BACK );
             #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
                 /*preseve the entry order by sorting the new waiting-list*/
                 (void)qList_Sort( waitingList, qOS_TaskEntryOrderPreserver );
@@ -702,7 +702,7 @@ qBool_t qOS_Run( void )
         }
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
-        while ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_RELEASESCHED ) );
+        while ( qFalse == QKERNEL_CORE_FLAG_GET( kernel.flag, QKERNEL_BIT_RELEASE_SCHED ) );
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
         retValue = qTrue;
     #else
@@ -782,7 +782,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
                 xReady = qTrue;
             }
             #if ( Q_TASK_EVENT_FLAGS == 1 )
-            else if ( 0uL != (QTASK_EVENTFLAGS_RMASK & xTask->qPrivate.flags ) ) {
+            else if ( 0uL != ( QTASK_EVENT_FLAGS_MASK & xTask->qPrivate.flags ) ) {
                 _QTRACE_KERNEL( "(<)Event {byEventFlags} detected on task ",
                                 xTask,
                                 NULL );
@@ -795,7 +795,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
                 /*task has no available events, put it into a suspended state*/
             }
         }
-        (void)qList_Remove( waitingList, NULL, QLIST_ATFRONT );
+        (void)qList_Remove( waitingList, NULL, QLIST_AT_FRONT );
         /*check if the task has a removal request*/
         if ( qOS_Get_TaskFlag( xTask, QTASK_BIT_REMOVE_REQUEST) ) {
             #if ( Q_PRIO_QUEUE_SIZE > 0 )
@@ -817,7 +817,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
             else {
                 xList = suspendedList;
             }
-            (void)qList_Insert( xList, xTask, QLIST_ATBACK );
+            (void)qList_Insert( xList, xTask, QLIST_AT_BACK );
         }
     }
     else if ( qList_WalkInit == h->stage ) {
@@ -949,9 +949,9 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
 
             kernel.currentTask = NULL;
             /*remove the task from the ready-list*/
-            (void)qList_Remove( xList, NULL, QLIST_ATFRONT );
+            (void)qList_Remove( xList, NULL, QLIST_AT_FRONT );
             /*and insert the task back to the waiting-list*/
-            (void)qList_Insert( waitingList, xTask, QLIST_ATBACK );
+            (void)qList_Insert( waitingList, xTask, QLIST_AT_BACK );
             #if ( Q_QUEUES == 1 )
                 if ( byQueueReceiver == xTask->qPrivate.trigger ) {
                     /*remove the data from the attached Queue*/
@@ -970,13 +970,13 @@ static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
             xTask->qPrivate.trigger = qTriggerNULL;
         }
         else { /*run the idle*/
-            eventInfo->FirstCall = ( qFalse == QKERNEL_COREFLAG_GET( kernel.flag, QKERNEL_BIT_FCALLIDLE ) );
+            eventInfo->FirstCall = ( qFalse == QKERNEL_CORE_FLAG_GET( kernel.flag, QKERNEL_BIT_FCALL_IDLE ) );
             eventInfo->TaskData = NULL;
             eventInfo->Trigger = byNoReadyTasks;
             taskActivities = kernel.idleCallback;
             /*some compilers can not deal with function pointers inside structs*/
             taskActivities( eventInfo ); /*run the idle callback*/
-            QKERNEL_COREFLAG_SET( kernel.flag, QKERNEL_BIT_FCALLIDLE );
+            QKERNEL_CORE_FLAG_SET( kernel.flag, QKERNEL_BIT_FCALL_IDLE );
         }
     }
 

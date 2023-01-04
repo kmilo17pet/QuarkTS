@@ -18,21 +18,21 @@ qBool_t qCR_ExternControl( qCR_Handle_t h,
 
         switch ( action ) {
             case qCR_RESTART:
-                h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL;
+                h->instr = (_qCR_TaskPC_t)_qCR_PC_INIT_VAL;
                 break;
-            case qCR_POSITIONSET:
+            case qCR_POSITION_SET:
                 h->instr = pos;
                 break;
             case qCR_SUSPEND:
                 h->prev = h->instr;
-                h->instr = (_qCR_TaskPC_t)_qCR_PC_SUSPENDEDVAL;
+                h->instr = (_qCR_TaskPC_t)_qCR_PC_SUSPENDED_VAL;
                 break;
             case qCR_RESUME:
                 if ( (_qCR_TaskPC_t)_qCR_UNDEFINED != h->prev ) {
                     h->instr = h->prev;
                 }
                 else {
-                    h->instr = (_qCR_TaskPC_t)_qCR_PC_INITVAL;
+                    h->instr = (_qCR_TaskPC_t)_qCR_PC_INIT_VAL;
                 }
                 h->prev = (_qCR_TaskPC_t)_qCR_UNDEFINED;
                 break;
