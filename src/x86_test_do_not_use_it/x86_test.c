@@ -87,7 +87,7 @@ qBool_t mylist_binremove( qList_ForEachHandle_t h ){
         case qList_WalkThrough:
             if( xnode->value & 1 ){
                 TEST_ASSERT_NOT_NULL( qList_Remove( h->arg, h->node, 0 ) );
-                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, h->node, QLIST_ATBACK ) );
+                TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &otherlist, h->node, QLIST_AT_BACK ) );
             }
             break;
         case qList_WalkEnd:
@@ -142,18 +142,18 @@ void test_qList_API(void){
  
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, qFalse, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_IsMember(&mylist, &n1) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n2, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n3, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n4, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n5, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n6, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n7, QLIST_ATBACK ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n8, QLIST_ATBACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n1, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n2, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n3, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n4, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n5, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n6, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n7, QLIST_AT_BACK ) );
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n8, QLIST_AT_BACK ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_IsMember(&mylist, &n1) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n9, QLIST_ATBACK )  );
-    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, QLIST_ATBACK ) ); /*node n9 its already a member*/
-    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, QLIST_ATBACK ) ); 
+    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Insert( &mylist, &n9, QLIST_AT_BACK )  );
+    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, QLIST_AT_BACK ) ); /*node n9 its already a member*/
+    TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, QLIST_AT_BACK ) ); 
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Sort( &mylist, comparator ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
