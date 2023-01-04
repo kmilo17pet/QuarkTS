@@ -214,7 +214,7 @@ typedef _qCR_Instance_t *&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga9f8cd9253ebd062b2b6d18eb6125d9dd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd">qCR_ExternAction_t</a> { <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc">qCR_RESTART</a>
-, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>
+, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746">qCR_POSITION_SET</a>
 , <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf">qCR_SUSPEND</a>
 , <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749">qCR_RESUME</a>
  }</td></tr>
@@ -750,7 +750,7 @@ Functions</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc" name="gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc"></a>qCR_RESTART&#160;</td><td class="fielddoc"><p >Restart the coroutine execution at the place of the <a class="el" href="group__qcoroutines.html#ga644e5aee7ee2555bf064cce65116e0b8" title="Defines a Coroutine segment with a supplied external handle. The qCR_BeginWithHandle statement is use...">qCR_BeginWithHandle</a> statement. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf" name="gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf"></a>qCR_POSITIONSET&#160;</td><td class="fielddoc"><p >Force the coroutine execution at the position specified in <a class="el" href="group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e" title="Perform an external action over the requested Co-routine.">qCR_ExternControl()</a>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
+<tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746" name="gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746"></a>qCR_POSITION_SET&#160;</td><td class="fielddoc"><p >Force the coroutine execution at the position specified in <a class="el" href="group__qcoroutines.html#ga528c3a62c9ab72ba87a66c0dcec0329e" title="Perform an external action over the requested Co-routine.">qCR_ExternControl()</a>. If a non-valid position is supplied, the Co-routine segment will be suspended. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf" name="gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf"></a>qCR_SUSPEND&#160;</td><td class="fielddoc"><p >Suspend the entire coroutine segment. The task will still running instructions outside the segment. </p>
 </td></tr>
@@ -798,8 +798,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>The Co-routine handle. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">action</td><td>The specific action to perform, should be one of the following: <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc">qCR_RESTART</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf">qCR_SUSPEND</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749">qCR_RESUME</a> or <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pos</td><td>The required position if <em>action</em> = <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf">qCR_POSITIONSET</a>. For other actions this argument its ignored. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">action</td><td>The specific action to perform, should be one of the following: <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc">qCR_RESTART</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf">qCR_SUSPEND</a>, <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749">qCR_RESUME</a> or <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746">qCR_POSITION_SET</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pos</td><td>The required position if <em>action</em> = <a class="el" href="group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746">qCR_POSITION_SET</a>. For other actions this argument its ignored. </td></tr>
   </table>
   </dd>
 </dl>

@@ -21,7 +21,7 @@ var group__qatcli =
       [ "param", "structq_a_t_c_l_i___command__t.html#a13623f1d68513495c21f8b061b1a5aec", null ],
       [ "Text", "structq_a_t_c_l_i___command__t.html#a47d78e3fdac68cc14477265ae43253d6", null ]
     ] ],
-    [ "qATCLI_ERRORCODE", "group__qatcli.html#gaf24e23cde8cd2566c1971a161b4b689a", null ],
+    [ "qATCLI_ERROR_CODE", "group__qatcli.html#gafe4bf6fdb07128030a5bb3c14866d810", null ],
     [ "qATCLI_CommandCallback_t", "group__qatcli.html#ga3985464bdb30735d016eb56745622f94", null ],
     [ "qATCLI_Options_t", "group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144", null ],
     [ "qATCLI_BuiltInString_t", "group__qatcli.html#ga54a1c9850d136f1390c28dbcef7ac404", [

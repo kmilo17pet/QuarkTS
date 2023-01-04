@@ -164,14 +164,14 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_INITIALIZER</b></td></tr>
 <tr class="memdesc:ga0281056dbf82517b975635ed7553498e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro can be used to initialize empty lists. <br /></td></tr>
 <tr class="separator:ga0281056dbf82517b975635ed7553498e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga25d0f55cad603f81ab1b9d3bd55d38cb"><td class="memItemLeft" align="right" valign="top"><a id="ga25d0f55cad603f81ab1b9d3bd55d38cb" name="ga25d0f55cad603f81ab1b9d3bd55d38cb"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_ATFRONT</b></td></tr>
-<tr class="memdesc:ga25d0f55cad603f81ab1b9d3bd55d38cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro should be used to define the destination position of a node in front of a list. <br /></td></tr>
-<tr class="separator:ga25d0f55cad603f81ab1b9d3bd55d38cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga62c608a95723c015026fa6a9d2e24cca"><td class="memItemLeft" align="right" valign="top"><a id="ga62c608a95723c015026fa6a9d2e24cca" name="ga62c608a95723c015026fa6a9d2e24cca"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_ATBACK</b></td></tr>
-<tr class="memdesc:ga62c608a95723c015026fa6a9d2e24cca"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro should be used to define the destination position of a node at the end of a list. <br /></td></tr>
-<tr class="separator:ga62c608a95723c015026fa6a9d2e24cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ac10e1f970071083e544b5943c2cb12"><td class="memItemLeft" align="right" valign="top"><a id="ga4ac10e1f970071083e544b5943c2cb12" name="ga4ac10e1f970071083e544b5943c2cb12"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_AT_FRONT</b></td></tr>
+<tr class="memdesc:ga4ac10e1f970071083e544b5943c2cb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro should be used to define the destination position of a node in front of a list. <br /></td></tr>
+<tr class="separator:ga4ac10e1f970071083e544b5943c2cb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf97560f5644785364d4fa39252a565b"><td class="memItemLeft" align="right" valign="top"><a id="gadf97560f5644785364d4fa39252a565b" name="gadf97560f5644785364d4fa39252a565b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_AT_BACK</b></td></tr>
+<tr class="memdesc:gadf97560f5644785364d4fa39252a565b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro should be used to define the destination position of a node at the end of a list. <br /></td></tr>
+<tr class="separator:gadf97560f5644785364d4fa39252a565b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5365ab050c7da9fb0b835f48d042ad61"><td class="memItemLeft" align="right" valign="top"><a id="ga5365ab050c7da9fb0b835f48d042ad61" name="ga5365ab050c7da9fb0b835f48d042ad61"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>QLIST_FORWARD</b></td></tr>
 <tr class="memdesc:ga5365ab050c7da9fb0b835f48d042ad61"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro should be used to define the direction of travel of the list forward. <br /></td></tr>
@@ -585,7 +585,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">l</td><td>Pointer to the list </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be inserted </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position where the node will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the node will be inserted after. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position where the node will be inserted. Could be #QLIST_ATFRONT, #QLIST_ATBACK or any other index number where the node will be inserted after. </td></tr>
   </table>
   </dd>
 </dl>
@@ -801,7 +801,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">dst</td><td>Pointer to the list where the <em>src</em> nodes are to be moved. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>Pointer to the source list to be moved. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position where <em>src</em> list will be inserted. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number where the list will be inserted after. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position where <em>src</em> list will be inserted. Could be #QLIST_ATFRONT, #QLIST_ATBACK or any other index number where the list will be inserted after. </td></tr>
   </table>
   </dd>
 </dl>
@@ -846,7 +846,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">l</td><td>Pointer to the list. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>A pointer to the node to be deleted (to ignore pass <code>NULL</code> ). If the node is member or the list, use <a class="el" href="group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a" title="If the node is member of a list, the node will be removed from it.">qList_RemoveItself()</a> to avoid overhead </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position of the node that will be removed. Could be <a class="el" href="group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb" title="This macro should be used to define the destination position of a node in front of a list.">QLIST_ATFRONT</a>, <a class="el" href="group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca" title="This macro should be used to define the destination position of a node at the end of a list.">QLIST_ATBACK</a> or any other index number. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The position of the node that will be removed. Could be #QLIST_ATFRONT, #QLIST_ATBACK or any other index number. </td></tr>
   </table>
   </dd>
 </dl>

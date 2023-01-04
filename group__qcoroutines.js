@@ -23,7 +23,7 @@ var group__qcoroutines =
     [ "qCR_Handle_t", "group__qcoroutines.html#gafc285a882ecb225cffa4f5dee1479aa5", null ],
     [ "qCR_ExternAction_t", "group__qcoroutines.html#ga9f8cd9253ebd062b2b6d18eb6125d9dd", [
       [ "qCR_RESTART", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddaf2a8bebd046be9446caf5699b9d483dc", null ],
-      [ "qCR_POSITIONSET", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda182fbdcab24f0e39bae964e57f9feeaf", null ],
+      [ "qCR_POSITION_SET", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9ddab941b65f2c61f96941fb9e1365a71746", null ],
       [ "qCR_SUSPEND", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda780e5ce4a9a17017800ebb53cb559caf", null ],
       [ "qCR_RESUME", "group__qcoroutines.html#gga9f8cd9253ebd062b2b6d18eb6125d9dda4fa20825a73a83717d2766e30ed5e749", null ]
     ] ],

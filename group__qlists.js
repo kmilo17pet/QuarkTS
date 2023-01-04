@@ -12,8 +12,8 @@ var group__qlists =
       [ "n2", "structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b", null ]
     ] ],
     [ "qList_Iterator_t", "structq_list___iterator__t.html", null ],
-    [ "QLIST_ATBACK", "group__qlists.html#ga62c608a95723c015026fa6a9d2e24cca", null ],
-    [ "QLIST_ATFRONT", "group__qlists.html#ga25d0f55cad603f81ab1b9d3bd55d38cb", null ],
+    [ "QLIST_AT_BACK", "group__qlists.html#gadf97560f5644785364d4fa39252a565b", null ],
+    [ "QLIST_AT_FRONT", "group__qlists.html#ga4ac10e1f970071083e544b5943c2cb12", null ],
     [ "QLIST_BACKWARD", "group__qlists.html#ga2446c3162503fa5f1a078fbbd2519fab", null ],
     [ "QLIST_FORWARD", "group__qlists.html#ga5365ab050c7da9fb0b835f48d042ad61", null ],
     [ "QLIST_INITIALIZER", "group__qlists.html#ga0281056dbf82517b975635ed7553498e", null ],
