@@ -7,6 +7,8 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+check/Debug/
+check/settings/c-stat-check.wsdt
 
 # Windows Installer files
 *.cab
