@@ -122,11 +122,11 @@
             void _qTrace_krn( const char *msg,
                               const void *id,
                               const void *obj );
-            #define _QTRACE_KERNEL( msg, id, obj )                          \
+            #define _qTrace_Kernel( msg, id, obj )                          \
             _qTrace_krn( (char*)(msg), (id), (obj) );                       \
 
         #else
-            #define _QTRACE_KERNEL( msg, id, obj )
+            #define _qTrace_Kernel( msg, id, obj )
         #endif
 
         extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];

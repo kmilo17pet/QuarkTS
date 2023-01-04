@@ -378,7 +378,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     char c;
 
     #if ( Q_ATOF_FULL == 1 )
-        int power2, powerSign = 1;
+        int power2 = 0, powerSign = 1;
         qFloat64_t power = 1.0, eFactor;
     #endif
 
@@ -412,13 +412,17 @@ qFloat64_t qIOUtil_AtoF( const char *s )
             powerSign = ( '-' == *s )? -1 : 1;
             s++;
         }
-        for ( power2 = 0 ; isdigit( *s ) ; s++ ) {
-            power2 = power2 * 10 + ( *s - '0' );
+        /*cstat -MISRAC2012-Dir-4.11_h*/
+        while ( 0 != isdigit( (int)*s ) ) {
+            power2 = ( 10*power2 ) + ( *s - '0' );
+            s++;
         }
+        /*cstat +MISRAC2012-Dir-4.11_h*/
         if ( power2 > 0 ) {
             eFactor = ( -1 == powerSign )? 0.1 : 10.0;
-            for ( power = 1; 0 != power2; power2-- ) {
+            while ( 0 != power2 ) {
                 power *= eFactor;
+                --power2;
             }
         }
     }

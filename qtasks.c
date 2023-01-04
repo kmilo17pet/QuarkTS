@@ -18,7 +18,7 @@ qBool_t qTask_Notification_Send( qTask_t * const Task,
         if ( Task->qPrivate.notification < QMAX_NOTIFICATION_VALUE ) {
             ++Task->qPrivate.notification;
             Task->qPrivate.asyncData = eventData;
-            _QTRACE_KERNEL( "(>)Notification sended to task ",
+            _qTrace_Kernel( "(>)Notification sended to task ",
                             Task,
                             eventData );
             retValue = qTrue;
@@ -34,7 +34,7 @@ qBool_t qTask_Notification_Queue( qTask_t * const Task,
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         return qOS_PriorityQueue_Insert( Task, eventData );
     #else
-        _QTRACE_KERNEL( "(E)Priority queue disabled. Notification can't be"
+        _qTrace_Kernel( "(E)Priority queue disabled. Notification can't be"
                         "queued for task ",
                         Task,
                         NULL );
@@ -266,7 +266,7 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
         /*reject, if no valid arg input*/
         Task->qPrivate.aQueue = ( arg > 0u )? q : NULL;
         retValue = qTrue;
-        _QTRACE_KERNEL( "(>)Queue successfully attached to task ", Task, q );
+        _qTrace_Kernel( "(>)Queue successfully attached to task ", Task, q );
     }
 
     return retValue;

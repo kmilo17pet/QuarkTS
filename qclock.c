@@ -59,7 +59,9 @@ qTime_t qClock_Convert2Time( const qClock_t t )
         return (qTime_t)t;
     #else
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-            return (qTime_t)( t/TimingBase );
+            /*cstat -CERT-FLP34-C -MISRAC2012-Rule-10.8 -ATH-div-0-unchk-global -MISRAC2012-Rule-1.3_g -CERT-INT33-C_f -CERT-FLP36-C*/
+            return (qTime_t)( t/timingBase );
+            /*cstat +CERT-FLP34-C +MISRAC2012-Rule-10.8 +ATH-div-0-unchk-global +MISRAC2012-Rule-1.3_g +CERT-INT33-C_f +CERT-FLP36-C*/
         #else
             /*cstat -CERT-FLP36-C*/
             return (qTime_t)( timingBase*( (qTime_t)t) ); /*CERT-FLP36-C deviation allowed*/
@@ -74,7 +76,9 @@ qClock_t qClock_Convert2Clock( const qTime_t t )
         return (qClock_t)t;
     #else
         #if ( Q_SETUP_TICK_IN_HERTZ == 1 )
-            return (qClock_t)( t*TimingBase );
+            /*cstat -CERT-FLP34-C*/
+            return (qClock_t)( (qClock_t)t*timingBase );
+            /*cstat +CERT-FLP34-C*/
         #else
             qTime_t epochs = qTimeImmediate;
 
