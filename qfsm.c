@@ -69,7 +69,7 @@ typedef struct {
 } qSM_PS_Index_t;
 
 static void qStateMachine_UnsubscribeAll( void );
-static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( qSM_t *m,
+static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( const qSM_t * const m,
                                                            qSM_SigId_t s );
 
 /*cstat -MISRAC2012-Rule-9.2 -MISRAC2012-Rule-9.3*/
@@ -90,7 +90,7 @@ static void qStateMachine_UnsubscribeAll( void )
     }
 }
 /*============================================================================*/
-static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( qSM_t *m,
+static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( const qSM_t * const m,
                                                            qSM_SigId_t s )
 {
     qSM_PS_Index_t idx = { QSM_PS_SIGNAL_NOT_FOUND, 0u ,0u };
@@ -126,7 +126,7 @@ static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( qSM_t *m,
 }
 #endif /*( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )*/
 /*============================================================================*/
-qBool_t qStateMachine_SubscribeToSignal( qSM_t *m,
+qBool_t qStateMachine_SubscribeToSignal( qSM_t * const m,
                                          qSM_SigId_t s )
 {
     qBool_t retValue = qFalse;
@@ -158,7 +158,7 @@ qBool_t qStateMachine_SubscribeToSignal( qSM_t *m,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t *m,
+qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t * const m,
                                              qSM_SigId_t s )
 {
     qBool_t retValue = qFalse;

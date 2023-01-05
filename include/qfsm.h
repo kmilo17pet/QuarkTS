@@ -366,8 +366,8 @@
     */
     typedef struct _qSM_TimeoutSpec_s {
         /*! @cond  */
-        qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/
         qUINT32_t isPeriodic;                               /*< witch one is periodic*/
+        qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/
         /*! @endcond  */
     }
     qSM_TimeoutSpec_t;
@@ -660,7 +660,7 @@
     * @param[in] s Signal ID to which the subscriber FSM wants to subscribe.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */
-    qBool_t qStateMachine_SubscribeToSignal( qSM_t *m,
+    qBool_t qStateMachine_SubscribeToSignal( qSM_t * const m,
                                              qSM_SigId_t s );
 
     /**
@@ -671,7 +671,7 @@
     * @param[in] s Signal ID to which the subscriber FSM wants to unsubscribe.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */
-    qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t *m,
+    qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t * const m,
                                                  qSM_SigId_t s );
 
     /** @}*/

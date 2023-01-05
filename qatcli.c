@@ -390,7 +390,7 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
             retValue = qTrue;
         }
     }
-    else if ( params->StrLen > 0u ) {
+    else {
         if ( '?' == params->StrData[ 0 ] ) { /*command should be READ command */
             if ( 0u != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_READ ) ) {
                 params->Type = qATCLI_CMDTYPE_READ; /*set the type to READ*/
@@ -430,9 +430,6 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
         else {
           /*nothing to do*/
         }
-    }
-    else {
-        /*nothing to do*/
     }
 
     return retValue;
@@ -668,7 +665,7 @@ static char* GetArgString( qIndex_t n,
             for ( i = 0u ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                 if ( argc == n ) {
                     retPtr = pOut;
-                    if ( ( argc > n ) || ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) ) {
+                    if ( QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
                         break;
                     }
                     pOut[ j++ ] = param->StrData[ i ];
