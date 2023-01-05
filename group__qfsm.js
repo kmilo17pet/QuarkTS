@@ -86,8 +86,8 @@ var group__qfsm =
     [ "qStateMachine_Set_StateTransitions", "group__qfsm.html#ga243c71753d0b5d1a402c9bda5c7bc727", null ],
     [ "qStateMachine_Setup", "group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c", null ],
     [ "qStateMachine_StateSubscribe", "group__qfsm.html#ga723ec7aca70eb94880625d78bbe3cac3", null ],
-    [ "qStateMachine_SubscribeToSignal", "group__qfsm.html#gab7d9bf0d4e250b87f65cc53ff896e076", null ],
+    [ "qStateMachine_SubscribeToSignal", "group__qfsm.html#ga5a1bf822dc4ab8b1d0dc6ede032f3e64", null ],
     [ "qStateMachine_TimeoutSet", "group__qfsm.html#ga6801604dbc14494201068e324fe23868", null ],
     [ "qStateMachine_TimeoutStop", "group__qfsm.html#ga23612fa79cada9557ba5f0c644da9c26", null ],
-    [ "qStateMachine_UnsubscribeFromSignal", "group__qfsm.html#ga7f106d39e8c654b04f6676bac2ef5310", null ]
+    [ "qStateMachine_UnsubscribeFromSignal", "group__qfsm.html#ga2b58dfaf923ec82a8a9e849dda72ab88", null ]
 ];
