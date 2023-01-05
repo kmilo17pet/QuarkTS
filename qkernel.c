@@ -422,6 +422,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
         (void)qSTimer_Set( &Task->qPrivate.timer, t );
         Task->qPrivate.taskData = arg;
         Task->qPrivate.priority = qFLM_ClipUpper( p, maxPriorityValue );
+        /* cppcheck-suppress integerOverflow*/
         Task->qPrivate.iterations = ( qPeriodic == n )? qPeriodic : -n;
         Task->qPrivate.notification = 0uL;
         Task->qPrivate.trigger = qTriggerNULL;

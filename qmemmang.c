@@ -134,7 +134,6 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
 
     mPool->qPrivate.start.blockSize = (size_t)0u;
     mPool->qPrivate.start.next = NULL;
-    mPool->qPrivate.freeBytesRemaining = (size_t)0u;
     /*cstat -MISRAC2012-Rule-11.4 -CERT-INT36-C -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     address = (qAddress_t)mPool->qPrivate.poolMemory; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
     if ( 0uL != ( address & byteAlignmentMask ) ) {
