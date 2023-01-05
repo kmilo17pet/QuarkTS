@@ -26,11 +26,11 @@ jobs:
         sudo apt-get install -y cppcheck python3
         mkdir sa_results
     - name: General checks 
-      run: cppcheck --enable=all --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/general.txt --suppress=missingIncludeSystem
+      run: cppcheck --enable=all --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/general.txt --suppress=missingIncludeSystem
     - name: CERT checks 
-      run: cppcheck --addon=cert.py --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/cert.txt --suppress=missingIncludeSystem
+      run: cppcheck --addon=cert.py --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/cert.txt --suppress=missingIncludeSystem
     - name: MISRA checks 
-      run: cppcheck --addon=./check/misra.json --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include  --output-file=./sa_results/misra.txt --suppress=missingIncludeSystem      
+      run: cppcheck --addon=./check/misra.json --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include  --output-file=./sa_results/misra.txt --suppress=missingIncludeSystem
     - uses: actions/upload-artifact@v3
       with:
         name: Static_Analisys_Results
