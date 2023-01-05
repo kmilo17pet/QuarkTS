@@ -1,6 +1,7 @@
 [![Built for](https://img.shields.io/badge/built%20for-microcontrollers-lightgrey?logo=WhiteSource)](https://github.com/kmilo17pet/QuarkTS)
 [![Build Status](https://travis-ci.org/kmilo17pet/QuarkTS.svg?branch=master)](https://travis-ci.org/kmilo17pet/QuarkTS)
 [![C/C++ CI](https://github.com/kmilo17pet/QuarkTS/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/kmilo17pet/QuarkTS/actions/workflows/c-cpp.yml)
+[![Static-Analisys](https://github.com/kmilo17pet/QuarkTS/actions/workflows/static-analisys.yml/badge.svg)](https://github.com/kmilo17pet/QuarkTS/actions/workflows/static-analisys.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dafb526ca7674630901e873b713c2047)](https://www.codacy.com/gh/kmilo17pet/QuarkTS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kmilo17pet/QuarkTS&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/kmilo17pet/quarkts/badge)](https://www.codefactor.io/repository/github/kmilo17pet/quarkts)
 [![CodeInspectorScore](https://api.codiga.io/project/27196/score/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
