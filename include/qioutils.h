@@ -1,7 +1,7 @@
 /*!
  * @file qioutils.h
  * @author J. Camilo Gomez C.
- * @version 4.68
+ * @version 4.69
  * @note This file is part of the QuarkTS distribution.
  * @brief API for input/output utilities and safe string interfaces.
  **/
@@ -27,7 +27,7 @@
         #define Q_ATOF_FULL             ( 0 )
     #endif
 
-    #define Q_IOUTIL_MAX_STRLEN         ( (size_t)512u )
+    #define Q_IO_UTIL_MAX_STRLEN        ( (size_t)512u )
 
     /** @addtogroup qioutils I/O Utils
     * @brief API for input/output utilities and safe string interfaces.

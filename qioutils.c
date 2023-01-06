@@ -22,6 +22,7 @@ static qBool_t qIOUtil_IOOperation( const qIOFcn_t fcn,
                                     const size_t n,
                                     qBool_t aip,
                                     qBool_t operation );
+static qUINT8_t qIOUtil_cXtoU8( const char c );
 
 /*============================================================================*/
 static const char * qIOUtil_DiscardWhitespaces( const char *s,
@@ -98,7 +99,7 @@ size_t qIOUtil_StrlCpy( char * dst,
                         const char * src,
                         size_t maxlen )
 {
-    size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+    size_t srclen = qIOUtil_StrLen( src, Q_IO_UTIL_MAX_STRLEN );
 
     if ( ( srclen + 1u ) < maxlen ) {
         (void)memcpy( dst, src, srclen + 1u );
@@ -118,7 +119,7 @@ size_t qIOUtil_StrlCat( char *dst,
                        const char *src,
                        size_t maxlen )
 {
-    size_t srclen = qIOUtil_StrLen( src, Q_IOUTIL_MAX_STRLEN );
+    size_t srclen = qIOUtil_StrLen( src, Q_IO_UTIL_MAX_STRLEN );
     size_t dstlen = qIOUtil_StrLen( dst, maxlen);
     size_t retVal;
 
@@ -328,6 +329,12 @@ char* qIOUtil_U32toX( qUINT32_t value,
     return str;
 }
 /*============================================================================*/
+static qUINT8_t qIOUtil_cXtoU8( const char c ) /* <c> should only contain a valid hex character*/
+{
+    qUINT8_t b = (qUINT8_t)c;
+    return (qUINT8_t)( ( ( b & 0xFu ) + ( b >> 6u ) ) | ( ( b >> 3u ) & 0x8u ) );
+}
+/*============================================================================*/
 qUINT32_t qIOUtil_XtoU32( const char *s )
 {
     qUINT32_t val = 0uL;
@@ -339,31 +346,19 @@ qUINT32_t qIOUtil_XtoU32( const char *s )
         the 32bit notation
         */
         while ( ( (char)'\0' != *s ) && ( nParsed < 8u ) ) {
-            /*get the hex char, considerate only upper case*/
-            qUINT8_t xByte = (qUINT8_t)toupper( (int)*s++ ); /*MISRAC2004-17.4_a deviation allowed*/
+            char c = *s++;
             /*cstat -MISRAC2012-Dir-4.11_h*/
-            if ( 0 != isxdigit( (int)xByte ) ) { /*if is a valid hex digit*/
-                ++nParsed; /*increase the parsed char count*/
-                if ( ( (char)xByte >= '0' ) && ( (char)xByte <= '9' ) ) {
-                    xByte = (qUINT8_t)( xByte - (qUINT8_t)48u );
-                }
-                else if ( ( (char)xByte >= 'A' ) && ( (char)xByte <='F' ) ) {
-                    xByte = (qUINT8_t)( xByte - (qUINT8_t)75u );
-                }
-                else {
-                    /*nothing to do */
-                }
-                /*add the corresponding nibble to the output*/
-                val = (qUINT32_t)((qUINT32_t)(val << 4uL) |
-                      ((qUINT32_t)xByte & 0xFuL) );
+            if ( 0 != isxdigit( (int)c ) ) {
+                val = ( val << 4uL ) | (qUINT32_t)qIOUtil_cXtoU8( c );
+                ++nParsed;
             }
-            else if ( 0 != isspace( (int)xByte ) ) {
-            /*cstat +MISRAC2012-Dir-4.11_h*/
-                /*discard any white-space char*/
+            else if ( 0 != isspace( (int)c ) ) {
+                /*discard any white-space character*/
             }
             else {
-                break;  /*not valid char, break the conversion*/
+                break; /*not valid character, break the conversion*/
             }
+            /*cstat +MISRAC2012-Dir-4.11_h*/
         }
     }
 
@@ -382,7 +377,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
         qFloat64_t power = 1.0, eFactor;
     #endif
 
-    s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
+    s = qIOUtil_DiscardWhitespaces( s, Q_IO_UTIL_MAX_STRLEN );
     s = qIOUtil_CheckStrSign( s, &sgn );
     /*cstat -CERT-FLP36-C*/
     fact = ( qFloat64_t )sgn; /*CERT-FLP36-C deviation allowed*/
@@ -493,7 +488,7 @@ int qIOUtil_AtoI( const char *s )
         int res = 0; /*holds the resulting integer*/
         int sgn = 1; /*only to hold the sign*/
 
-        s = qIOUtil_DiscardWhitespaces( s, Q_IOUTIL_MAX_STRLEN );
+        s = qIOUtil_DiscardWhitespaces( s, Q_IO_UTIL_MAX_STRLEN );
         s = qIOUtil_CheckStrSign( s, &sgn );
         while ( '\0' != *s ) { /*iterate until null char is found*/
             if ( ( *s < '0' ) || ( *s > '9' ) ) {
