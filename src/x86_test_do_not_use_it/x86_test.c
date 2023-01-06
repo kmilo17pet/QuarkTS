@@ -527,7 +527,7 @@ void test_OS_API( void ){
     qTrace_Variable( 1.0f/0.0f, Float );
     qTrace_Variable( -1.0f/0.0f, Float );
     qTrace_Variable( -0.0f/0.0f, Float );
-    TEST_ASSERT_EQUAL_size_t( 10, qIOUtil_StrLen("hola q tal", Q_IOUTIL_MAX_STRLEN)  );
+    TEST_ASSERT_EQUAL_size_t( 10, qIOUtil_StrLen("hola q tal", Q_IO_UTIL_MAX_STRLEN)  );
 
     TEST_MESSAGE( "qEdgeCheck_Module.." ); 
     TEST_ASSERT_EQUAL_UINT8( qTrue, qEdgeCheck_Setup(&INPUTS, QREG_32BIT, 10) );
