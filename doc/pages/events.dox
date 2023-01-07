@@ -308,7 +308,7 @@
 *              /*here, we only care the Falling Edge events*/
 *              if( 0 == strcmp( e->EventData, "ButtonFallingEdge" ) ) {
 *                  press_counter++; /*count the button press*/
-*                  if( 3 == press_counter ){ /*after 3 presses*/
+*                  if( 3 == press_counter ) { /*after 3 presses*/
 *                      /*send the notification of 3 presses to taskB*/
 *                      qTask_Notification_Send( &taskB, app_events[3] );
 *                      press_counter = 0;
@@ -575,7 +575,7 @@
 *  #define DATA_TXMIT       QEVENTFLAG_04
 *  
 *  qTask_t TaskDataProducer; 
-*  qUINT8_t dataToTransmit[10] = {0};
+*  qUINT8_t dataToTransmit[ 10 ] = { 0 };
 *  
 *  /*-----------------------------------------------------------------------*/
 *  void interrupt Timer0_ISR( void ) {
@@ -628,7 +628,7 @@
 *      */
 *      qTask_EventFlags_Modify( &TaskDataProducer, DATA_TXMIT, QEVENTFLAG_SET ); 
 *      qOS_Run();
-*      for( ;; ) {}
+*      for ( ;; ) {}
 *      return 0;
 *  }
 *  @endcode

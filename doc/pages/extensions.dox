@@ -250,7 +250,7 @@
 *
 *  @code{.c}
 *  qSM_Status_t ExampleState_Callback ( qSM_Handler_t h ) {
-*      switch( h ) {
+*      switch ( h ) {
 *          case QSM_SIGNAL_START:
 *              break;
 *          case QSM_SIGNAL_ENTRY:
@@ -909,7 +909,7 @@
 *  /*---------------------------------------------------------------------*/
 *  qBool_t SigAct_BrakeOff( qSM_Handler_t h ) {
 *      (void)h; /*unused*/
-*      return ( BSP_BREAK_READ() == OFF )? qTrue : qFalse;  /*check guard*/
+*      return ( BSP_BREAK_READ() == OFF ) ? qTrue : qFalse;  /*check guard*/
 *  }
 *  /*=======================================================================*/
 *  /*                  STATE CALLBACK FOR THE TOP FSM                      */
