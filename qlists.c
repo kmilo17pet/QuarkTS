@@ -41,6 +41,7 @@ qBool_t qList_Initialize( qList_t * const l )
 static qList_Node_t* qList_NodeInit( void * const node )
 {
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     qList_Node_t *xNode = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     xNode->prev = NULL;
@@ -129,9 +130,11 @@ qBool_t qList_Insert( qList_t *const l,
             }
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             else if ( QLIST_AT_FRONT == p ) {
+                /*cppcheck-suppress misra-c2012-11.5 */
                 qList_InsertAtFront( l, (qList_Node_t*)node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             else if ( p >= ( (qList_Position_t)l->size - 1 ) ) {
+                /*cppcheck-suppress misra-c2012-11.5 */
                 qList_InsertAtBack( l, (qList_Node_t*)node ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -158,11 +161,12 @@ qBool_t qList_RemoveItself( void * const node )
 
     if ( NULL != node ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qList_Node_t *toRemove = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 
         if ( NULL != toRemove->container ) {
             qList_t *l;
-
+            /*cppcheck-suppress misra-c2012-11.5 */
             l = (qList_t*)toRemove->container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if ( toRemove == l->head ) {
@@ -196,6 +200,7 @@ void* qList_Remove( qList_t * const l,
         if ( qList_IsMember( l, node ) ) {
             if ( qList_RemoveItself( node ) ) {
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                /*cppcheck-suppress misra-c2012-11.5 */
                 removed = (qList_Node_t*)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             }
@@ -274,6 +279,7 @@ static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h )
     if ( qList_WalkThrough == h->stage ) {
         qList_Node_t *xNode;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         xNode = (qList_Node_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         xNode->container = h->arg; /*new container stored into <arg>*/
@@ -289,8 +295,9 @@ qBool_t qList_IsMember( const qList_t * const l,
 
     if ( NULL != node ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         const qList_Node_t *xNode = (const qList_Node_t *)node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
-
+        /*cppcheck-suppress misra-c2012-11.5 */
         if ( l == (const qList_t * const)xNode->container ) { /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             retValue = qTrue;
         }
@@ -424,6 +431,7 @@ qBool_t qList_IteratorSet( qList_Iterator_t *i,
 
         i->direction = d;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         offset = (qList_Node_t*)nodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( NULL != offset ) {
@@ -472,6 +480,7 @@ qBool_t qList_ForEach( qList_t *const l,
             adjacent = ( &QLIST_FORWARD == d ) ? l->head : l->tail;
             if ( NULL != nodeOffset ) { /*offset request?*/
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+                /*cppcheck-suppress misra-c2012-11.5 */
                 iNode = (qList_Node_t*)nodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                 if ( iNode->container == l ) { /*the offset belongs to the list?*/
@@ -529,7 +538,9 @@ qBool_t qList_Swap( void *node1,
             qList_Node_t *tmp1, *tmp2;
 
             if ( n2->next == n1 ) {
+                /*cppcheck-suppress misra-c2012-11.5 */
                 n1 = (qList_Node_t*)node2; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+                /*cppcheck-suppress misra-c2012-11.5 */
                 n2 = (qList_Node_t*)node1; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             }
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
@@ -552,6 +563,7 @@ static void qList_GivenNodes_SwapBoundaries( qList_Node_t *n1,
 {
     qList_t *list;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     list = (qList_t*)n1->container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*update the list links*/

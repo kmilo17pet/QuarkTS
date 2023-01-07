@@ -173,6 +173,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
                 cmd->param = param;
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                 if ( NULL != cli->qPrivate.first ) { /*list already has items*/
+                    /*cppcheck-suppress misra-c2012-11.5 */
                     for ( iCmd = (qATCLI_Command_t*)cli->qPrivate.first ; NULL != iCmd ; iCmd = iCmd->qPrivate.next ) {
                         if ( cmd == iCmd ) {
                             break;
@@ -180,6 +181,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
                     }
                 }
                 if ( cmd != iCmd ) {
+                    /*cppcheck-suppress misra-c2012-11.5 */
                     cmd->qPrivate.next = (qATCLI_Command_t*)cli->qPrivate.first; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
                     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                     /*command inserted at the beginning of the list*/
@@ -201,6 +203,7 @@ qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli,
     if ( NULL != cli ) {
         if ( qTrue == reload ) {
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+            /*cppcheck-suppress misra-c2012-11.5 */
             iterator = (qATCLI_Command_t*)cli->qPrivate.first; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         }
@@ -343,6 +346,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli,
         qATCLI_Command_t *iCmd;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*loop over the subscribed commands*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         for ( iCmd = (qATCLI_Command_t*)cli->qPrivate.first ; NULL != iCmd ; iCmd = iCmd->qPrivate.next ) { /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             /*check if the input matches the subscribed command */

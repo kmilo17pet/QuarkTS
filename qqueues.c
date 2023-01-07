@@ -42,6 +42,7 @@ qBool_t qQueue_Setup( qQueue_t * const q,
         q->qPrivate.itemSize = itemSize;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /* Set the head to the start of the storage area */
+        /*cppcheck-suppress misra-c2012-11.5 */
         q->qPrivate.head = (qUINT8_t*)pData; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         (void)qQueue_Reset( q );

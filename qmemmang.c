@@ -57,6 +57,7 @@ qBool_t qMemMang_Pool_Setup( qMemMang_Pool_t * const mPool,
 
     if ( NULL != mPool ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         mPool->qPrivate.poolMemory = (qUINT8_t*)pArea; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         mPool->qPrivate.poolMemSize = pSize;
@@ -91,6 +92,7 @@ qBool_t qMemMang_Free( qMemMang_Pool_t *mPool,
 
     if ( NULL != mPool ) {
         /*cstat -MISRAC2012-Rule-18.4 -MISRAC2012-Rule-11.3 -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *pToFree = (qUINT8_t*)ptr; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         if ( NULL != ptr ) {
             qMemMang_BlockConnect_t *xConnect;

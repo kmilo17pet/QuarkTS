@@ -20,8 +20,11 @@ _QEDGECHECK_REG_FCN_DEC(NAME)                                               \
 
 /*! @cond  */
 /*cstat -CERT-INT34-C_a -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+/*cppcheck-suppress misra-c2012-11.5 */
 QEDGECHECK_REG_FCN_DEF( _qReg_32Bits, qUINT32_t )
+/*cppcheck-suppress misra-c2012-11.5 */
 QEDGECHECK_REG_FCN_DEF( _qReg_16Bits, qUINT16_t )
+/*cppcheck-suppress misra-c2012-11.5 */
 QEDGECHECK_REG_FCN_DEF( _qReg_08Bits, qUINT8_t )
 /*cstat +CERT-INT34-C_a +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
 /*! @endcond  */
@@ -100,6 +103,7 @@ static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_N
 static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, void *arg )
 {
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     size_t *nodeChange = (size_t *)arg;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*check if input level change since the last inputs-sweep*/

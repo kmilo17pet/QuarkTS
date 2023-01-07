@@ -56,8 +56,8 @@ typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/
     #endif
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         void *queueData;                                /*< Hold temporarily one item-data of the FIFO queue.*/
-        qQueueStack_t queueStack[ Q_PRIO_QUEUE_SIZE ];  /*< The required stack to build the FIFO priority queue. */
         volatile qBase_t queueIndex;                    /*< The current index of the FIFO priority queue. */
+        qQueueStack_t queueStack[ Q_PRIO_QUEUE_SIZE ];  /*< The required stack to build the FIFO priority queue. */
     #endif
     _qEvent_t_ eventInfo;                               /*< Used to hold the event info for a task that will be changed to the qRunning state.*/
     volatile qCoreFlags_t flag;                         /*< The scheduler Core-Flags. */
@@ -422,7 +422,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
         (void)qSTimer_Set( &Task->qPrivate.timer, t );
         Task->qPrivate.taskData = arg;
         Task->qPrivate.priority = qFLM_ClipUpper( p, maxPriorityValue );
-        /* cppcheck-suppress integerOverflow*/
+        /*cppcheck-suppress integerOverflow*/
         Task->qPrivate.iterations = ( qPeriodic == n ) ? qPeriodic : -n;
         Task->qPrivate.notification = 0uL;
         Task->qPrivate.trigger = qTriggerNULL;
@@ -522,6 +522,7 @@ static void qOS_FSM_TaskCallback( qEvent_t e )
 {
     qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     qSM_t *sm = (qSM_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qSM_Signal_t sig = { QSM_SIGNAL_NONE, NULL };
@@ -558,6 +559,7 @@ static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback 
 {
     qTask_t *xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*cstat -MISRAC2012-Rule-11.8*/
@@ -572,6 +574,7 @@ static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli )
 {
     qTask_t *xTask;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     xTask = (qTask_t *)cli->qPrivate.owner; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*
@@ -738,6 +741,7 @@ static qBool_t qOS_CheckIfReady( qList_ForEachHandle_t h )
 
     if ( qList_WalkThrough == h->stage ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
@@ -917,10 +921,12 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task )
 static qBool_t qOS_Dispatch( qList_ForEachHandle_t h ) {
     /*cstat -MISRAC2012-Rule-11.5 -MISRAC2012-Rule-14.3_a -MISRAC2012-Rule-14.3_b -CERT-EXP36-C_b*/
     if ( qList_WalkThrough == h->stage ) { /*#!OK: false-positive can be reported here*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qList_t *xList = (qList_t*)h->arg; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         qTaskFcn_t taskActivities;
 
         if ( NULL != xList ) { /*#!OK* false-positive can be reported here*/
+            /*cppcheck-suppress misra-c2012-11.5 */
             qTask_t *xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +MISRAC2012-Rule-14.3_a +MISRAC2012-Rule-14.3_b +CERT-EXP36-C_b*/
             qOS_Dispatch_xTask_FillEventInfo( xTask );
@@ -1014,6 +1020,7 @@ qTask_GlobalState_t qOS_GetTaskGlobalState( const qTask_t * const Task )
 
     if ( NULL != Task ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         const qList_t *xList = (const qList_t *)Task->qPrivate.container; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( kernel.currentTask == Task ) {
@@ -1066,7 +1073,9 @@ static qBool_t qOS_TaskNameLookup( qList_ForEachHandle_t h )
     if ( qList_WalkThrough == h->stage ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         void **xLookupData = (void**)h->arg;
+        /*cppcheck-suppress misra-c2012-11.5 */
         const char *name = (const char*)xLookupData[ 0 ];
+        /*cppcheck-suppress misra-c2012-11.5 */
         qTask_t *xTask = (qTask_t*)h->node; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 
         if ( NULL != xTask->qPrivate.name ) {
@@ -1102,7 +1111,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
                                NULL );
             if ( qTrue == r ) {
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.8*/
-                /*cppcheck-suppress cert-EXP05-C */
+                /*cppcheck-suppress [cert-EXP05-C, misra-c2012-11.5] */
                 found = (qTask_t*)xLookupData[ 1 ];
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.8b*/
                 break;

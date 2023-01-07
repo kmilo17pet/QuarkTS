@@ -184,6 +184,7 @@ qBool_t qIOUtil_SwapBytes( void *pData,
 
     if ( ( NULL != pData ) && ( n > 0u ) ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *p = (qUINT8_t*)pData; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         size_t lo, hi;
@@ -217,6 +218,7 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn,
 
     if ( ( NULL != fcn ) && ( NULL != s ) ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         char *xPtr = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         if ( ( qTrue == AIP ) && ( NULL != xPtr ) ) {
@@ -247,6 +249,7 @@ qBool_t qIOUtil_PrintXData( qPutChar_t fcn,
 
     if ( ( NULL != fcn ) && ( n > 0u ) ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *pdat =(qUINT8_t*)pData;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         size_t i;
@@ -276,9 +279,13 @@ static qBool_t qIOUtil_IOOperation( const qIOFcn_t fcn,
     if ( ( NULL != fcn ) && ( pData != NULL ) && ( n > 0u ) ) {
         size_t i;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         char *cdata = (char*)pData; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         char *iStg = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         char *nStg = (char*)pStorage;
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         char tmp;
         char *ptmp = &tmp;
         char **dstDat, **dstStg;

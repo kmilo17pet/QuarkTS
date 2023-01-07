@@ -105,6 +105,7 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const b,
     if ( n > 0u ) {
         size_t i;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *pData = (qUINT8_t*)dst; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         retValue = qTrue;

@@ -367,6 +367,7 @@ static qSM_State_t* qStateMachine_StateOnStart( qSM_t * const m,
     if ( NULL != h->StartState ) {
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*changes from callback takes more precedence*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         m->qPrivate.next = (qSM_State_t*)h->StartState;
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     }
@@ -396,6 +397,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
 
     if ( NULL != h->NextState ) { /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cppcheck-suppress misra-c2012-11.5 */
         qStateMachine_Transition( m,
                                   (qSM_State_t*)h->NextState,
                                   h->TransitionHistory );
@@ -623,6 +625,7 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
     size_t i, n;
     const qSM_Transition_t *iTransition;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+    /*cppcheck-suppress misra-c2012-11.5 */
     const qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
