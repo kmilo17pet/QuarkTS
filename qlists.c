@@ -305,6 +305,7 @@ void* qList_GetFront( const qList_t * const l )
     void *retValue = NULL;
 
     if ( NULL != l ) {
+        /*cppcheck-suppress cert-EXP05-C */
         retValue = (void*)l->head;
     }
 
@@ -316,6 +317,7 @@ void* qList_GetBack( const qList_t * const l )
     void *retValue = NULL;
 
     if ( NULL != l ) {
+        /*cppcheck-suppress cert-EXP05-C */
         retValue = (void*)l->tail;
     }
 
@@ -327,7 +329,7 @@ qBool_t qList_IsEmpty( const qList_t * const l )
     qBool_t retValue = qTrue;
 
     if ( NULL != l ) {
-        retValue = ( NULL == l->head )? qTrue : qFalse;
+        retValue = ( NULL == l->head ) ? qTrue : qFalse;
     }
     return retValue;
 }
@@ -431,7 +433,7 @@ qBool_t qList_IteratorSet( qList_Iterator_t *i,
             }
         }
         else {
-            i->next = ( QLIST_FORWARD == d )? l->head : l->tail;
+            i->next = ( QLIST_FORWARD == d ) ? l->head : l->tail;
             retValue = qTrue;
         }
     }
@@ -467,12 +469,12 @@ qBool_t qList_ForEach( qList_t *const l,
             qList_Node_t *adjacent; /*to allow i-node links to be changed in the walk-through*/
             _qList_ForEachHandle_t xHandle = { NULL, arg, qList_WalkInit };
             /*select starting point*/
-            adjacent = ( &QLIST_FORWARD == d )? l->head : l->tail;
+            adjacent = ( &QLIST_FORWARD == d ) ? l->head : l->tail;
             if ( NULL != nodeOffset ) { /*offset request?*/
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                 iNode = (qList_Node_t*)nodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-                if( iNode->container == l ){ /*the offset belongs to the list?*/
+                if ( iNode->container == l ) { /*the offset belongs to the list?*/
                     adjacent = iNode; /*take offset as a starting point*/
                 }
             }

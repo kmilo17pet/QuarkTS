@@ -65,12 +65,13 @@ char* qIOUtil_StrChr( const char *s,
     do {
         if ( (int)(*s) == c ) {
             /*cstat -MISRAC2012-Rule-11.8*/
+            /*cppcheck-suppress cert-EXP05-C */
             retValue = (char*)s; /*MISRAC2012-Rule-11.8 deviation allowed*/
             /*cstat +MISRAC2012-Rule-11.8*/
             break;
         }
         --maxlen;
-    } while( ( '\0' != ( *s++ ) ) && ( maxlen > 0u ) );
+    } while ( ( '\0' != ( *s++ ) ) && ( maxlen > 0u ) );
 
     return retValue;
 }
@@ -155,7 +156,7 @@ static size_t qIOUtil_xBase_U32toA( qUINT32_t num,
         while ( 0uL != num ) { /*Process individual digits*/
             qUINT32_t rem = num % (qUINT32_t)base;
             /*cstat -CERT-INT30-C_a*/
-            str[ i++ ] = ( rem > 9uL )?
+            str[ i++ ] = ( rem > 9uL ) ?
                          (char)( (qUINT8_t)( rem - 10uL ) + 'A' ) :
                          (char)( (qUINT8_t)rem + '0' );
             /*cstat +CERT-INT30-C_a*/
@@ -173,7 +174,7 @@ static char qIOUtil_NibbleToX( qUINT8_t value )
 
     ch = (char)( (qUINT8_t)( value & 0x0Fu ) + '0' );
 
-    return (char)( ( ch > '9' )? (char)( ch + 7 ) : ch );
+    return (char)( ( ch > '9' ) ? (char)( ch + 7 ) : ch );
 }
 /*============================================================================*/
 qBool_t qIOUtil_SwapBytes( void *pData,
@@ -253,7 +254,7 @@ qBool_t qIOUtil_PrintXData( qPutChar_t fcn,
         for ( i = 0u ; i < n ; ++i ) {
             fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] >> 4u ) );   /*MISRAC2004-17.4_b deviation allowed*/
             fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] & 0x0Fu ) ); /*MISRAC2004-17.4_b deviation allowed*/
-            fcn( pStorage, ' ');
+            fcn( pStorage, ' ' );
         }
         fcn( pStorage, '\r' );
         fcn( pStorage, '\n' );
@@ -404,7 +405,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
     if ( ( 'e' == *s ) || ( 'E' == *s ) ) {
         s++;
         if ( ( '-' == *s ) || ( '+' == *s ) ) {
-            powerSign = ( '-' == *s )? -1 : 1;
+            powerSign = ( '-' == *s ) ? -1 : 1;
             s++;
         }
         /*cstat -MISRAC2012-Dir-4.11_h*/
@@ -414,7 +415,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
         }
         /*cstat +MISRAC2012-Dir-4.11_h*/
         if ( power2 > 0 ) {
-            eFactor = ( -1 == powerSign )? 0.1 : 10.0;
+            eFactor = ( -1 == powerSign ) ? 0.1 : 10.0;
             while ( 0 != power2 ) {
                 power *= eFactor;
                 --power2;
@@ -469,8 +470,8 @@ char* qIOUtil_FtoA( qFloat32_t num,
             str[ i ] = (char)'\0';
         }
         else if ( 0x7F800000U == u ) {
-            str[ 0 ] = ( num > 0.0f )? '+' : '-';
-            (void)qIOUtil_StrlCpy( &str[1] , "inf", 4 );
+            str[ 0 ] = ( num > 0.0f ) ? '+' : '-';
+            (void)qIOUtil_StrlCpy( &str[ 1 ] , "inf", 4 );
         }
         else {
             (void)qIOUtil_StrlCpy( str, "nan", 4 );

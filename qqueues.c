@@ -73,7 +73,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const q )
     qBool_t retValue = qTrue;
 
     if ( NULL != q ) {
-        retValue = ( 0u == q->qPrivate.itemsWaiting )? qTrue : qFalse;
+        retValue = ( 0u == q->qPrivate.itemsWaiting ) ? qTrue : qFalse;
     }
 
     return retValue;
@@ -124,6 +124,7 @@ void* qQueue_Peek( const qQueue_t * const q )
         itemsWaiting = q->qPrivate.itemsWaiting; /*to avoid side effects*/
         if ( itemsWaiting > 0u ) {
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+            /*cppcheck-suppress cert-EXP05-C */
             retValue = (qUINT8_t *)( q->qPrivate.reader + q->qPrivate.itemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if ( retValue >= q->qPrivate.tail ) {

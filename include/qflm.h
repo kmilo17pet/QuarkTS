@@ -63,7 +63,7 @@
     * @return The value of the requested bit.
     */
     #define qFLM_BitRead( dst, xBit )                                       \
-    ( ( qFalse == ( (dst) & ( 1 << (xBit) ) ) )? qFalse : qTrue )           \
+    ( ( qFalse == ( (dst) & ( 1 << (xBit) ) ) ) ? qFalse : qTrue )          \
 
     /**
     * @brief Uses the bitwise XOR operator to toggle the value of a single bit
@@ -216,7 +216,7 @@
     * @param[in] b A numeric value
     * @return The minimum of @a a and @a b.
     */
-    #define qFLM_Min( a, b )                ( ( (a) < (b) )? (a) : (b) )
+    #define qFLM_Min( a, b )                ( ( (a) < (b) ) ? (a) : (b) )
 
     /**
     * @brief Calculates the maximum  of @a a and @a b.
@@ -224,7 +224,7 @@
     * @param[in] b A numeric value
     * @return The maximum  of @a a and @a b.
     */
-    #define qFLM_Max( a, b )                ( ( (a) > (b) )? (a) : (b) )
+    #define qFLM_Max( a, b )                ( ( (a) > (b) ) ? (a) : (b) )
 
     /**
     * @brief Returns the number of elements in an array @a x.

@@ -18,12 +18,12 @@
         #define Q_USE_STDINT_H      ( 1 )
     #endif
 
-    #if( Q_USE_STDINT_H != 1 )
+    #if ( Q_USE_STDINT_H != 1 )
         #warning Disposing standard types can cause portability issues and undefined behaviors. QuarkTS produce similar definitions based on the common sizes of native types, however, this sizes can vary because they are implementation-defined  across different compilers and cores. Use this setting at your own risk.
     #endif
 
     #ifndef NULL
-        #define NULL ((void*)0)
+        #define NULL ( (void*)0 )
     #endif
 
     #define     Q_UNUSED(arg)     (void)(arg)

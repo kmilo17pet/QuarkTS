@@ -258,13 +258,13 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
     if ( ( NULL != q ) && ( NULL != Task ) && ( NULL != q->qPrivate.head ) ) {
         qOS_Set_TaskFlags( Task,
                            (qUINT32_t)mode & QTASK_QUEUE_FLAGS_MASK,
-                           ( ( 0u != arg )? qATTACH : qDETACH ) );
+                           ( ( 0u != arg ) ? qATTACH : qDETACH ) );
         if ( mode == qQueueMode_Count ) {
             /*if mode is qQUEUE_COUNT, use their arg value as count*/
             Task->qPrivate.aQueueCount = (qUINT32_t)arg;
         }
         /*reject, if no valid arg input*/
-        Task->qPrivate.aQueue = ( arg > 0u )? q : NULL;
+        Task->qPrivate.aQueue = ( arg > 0u ) ? q : NULL;
         retValue = qTrue;
         _qTrace_Kernel( "(>)Queue successfully attached to task ", Task, q );
     }

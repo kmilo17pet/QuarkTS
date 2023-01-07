@@ -22,7 +22,7 @@
     | (31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
     |------------------------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    #define QTASK_EVENT_FLAGS_MASK      ( 0xFFFFF000uL )
+    #define QTASK_EVENT_FLAGS_MASK      ( (qTask_Flag_t)0xFFFFF000uL )
     #define QTASK_QUEUE_FLAGS_MASK      ( 0x0000003CuL )
 
     #define QTASK_BIT_INIT              ( 0x00000001uL )

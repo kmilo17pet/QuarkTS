@@ -26,8 +26,8 @@ void _qTrace_krn( const char *msg,
         (void)qIOUtil_OutputString( qDebug, NULL, msg, qFalse );
         if ( NULL != id ) {
             qUINT32_t val = 0;
-            const size_t n = ( sizeof(val) < sizeof(void*) )? sizeof(val)
-                                                            : sizeof(void*);
+            const size_t n = ( sizeof(val) < sizeof(void*) ) ? sizeof(val)
+                                                             : sizeof(void*);
 
             (void)memcpy( &val, &id, n);
             (void)qIOUtil_UtoA( val, obuf, 16 );

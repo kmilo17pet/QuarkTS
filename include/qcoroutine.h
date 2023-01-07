@@ -130,14 +130,14 @@
     #define _qCR_Yield                                                      \
     do {                                                                    \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), _qCR_EXIT );   \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
     #define _qCR_Restart                                                    \
     do {                                                                    \
         _qCR_LCON( _qcr->instr, _qCR_PC_INIT_VAL, Q_NONE, _qCR_EXIT );      \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
@@ -147,7 +147,7 @@
         if ( !(condition) ) {                                               \
             _qCR_EXIT;                                                      \
         }                                                                   \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
@@ -155,14 +155,14 @@
     do {                                                                    \
         _qCR_LCON( position, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) );    \
         Q_UNUSED( (position) );                                             \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
     #define _qCR_RestoreFromPosition( position )                            \
     do {                                                                    \
         _qCR_LCON( _qcr->instr, (position), Q_NONE, _qCR_EXIT );            \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
@@ -173,7 +173,7 @@
         if ( !qCR_TimeoutExpired() ) {                                      \
             _qCR_EXIT;                                                      \
         }                                                                   \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
@@ -184,7 +184,7 @@
         if ( !( (condition) || qCR_TimeoutExpired() ) ) {                   \
             _qCR_EXIT;                                                      \
         }                                                                   \
-    } while( qFalse )                                                       \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
@@ -198,7 +198,7 @@
         if ( !(condition) ) {                                               \
             _qCR_EXIT;                                                      \
         }                                                                   \
-    }while( qFalse )                                                        \
+    } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/

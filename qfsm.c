@@ -572,7 +572,7 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
         s->qPrivate.lastRunningChild = init;
         s->qPrivate.initState = init;
         s->qPrivate.sCallback = sFcn;
-        s->qPrivate.parent = ( NULL == parent )? &m->qPrivate.top : parent;
+        s->qPrivate.parent = ( NULL == parent ) ? &m->qPrivate.top : parent;
         s->qPrivate.tTable = NULL;
         s->qPrivate.tEntries = (size_t)0u;
         s->qPrivate.tdef = NULL;

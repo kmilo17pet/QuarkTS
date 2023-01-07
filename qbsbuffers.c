@@ -28,7 +28,7 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
         k = (size_t)( ( k + 1u ) >> 1u );
     }
 
-    return ( k < r )? ( k * 2u ) : k;
+    return ( k < r ) ? ( k * 2u ) : k;
 }
 /*============================================================================*/
 size_t qBSBuffer_Count( const qBSBuffer_t * const b )
@@ -50,7 +50,7 @@ qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const b )
     qBool_t retValue = qFalse;
 
     if ( NULL != b ) {
-        retValue = ( b->qPrivate.length == qBSBuffer_Count( b ) )? qTrue : qFalse;
+        retValue = ( b->qPrivate.length == qBSBuffer_Count( b ) ) ? qTrue : qFalse;
     }
 
     return retValue;
@@ -61,7 +61,7 @@ qBool_t qBSBuffer_Empty( const qBSBuffer_t * const b )
     qBool_t retValue = qTrue;
 
     if ( NULL != b ) {
-        retValue = ( 0u == qBSBuffer_Count( b ) )? qTrue : qFalse;
+        retValue = ( 0u == qBSBuffer_Count( b ) ) ? qTrue : qFalse;
     }
 
     return retValue;

@@ -109,7 +109,7 @@ qBool_t qSTimer_Status( const qSTimer_t * const t )
     qBool_t retValue = qFalse;
 
     if ( NULL != t ) {
-        retValue = ( t->tv != QSTIMER_DISARM_VALUE )? qTrue : qFalse;
+        retValue = ( t->tv != QSTIMER_DISARM_VALUE ) ? qTrue : qFalse;
     }
 
     return retValue;

@@ -21,10 +21,10 @@
 ( FLAG ) &= (qCoreFlags_t)( ~BIT )                                          \
 
 #define QKERNEL_CORE_FLAG_GET( FLAG, BIT )                                  \
-( ( 0uL != ( (FLAG) & (BIT) ) )? qTrue : qFalse )                           \
+( ( 0uL != ( (FLAG) & (BIT) ) ) ? qTrue : qFalse )                          \
 
 #define QTASK_ITER_VALUE( x )                                               \
-( ( ( (x) < 0 ) && ( (x) != qPeriodic ) )? -(x) : (x) )                     \
+( ( ( (x) < 0 ) && ( (x) != qPeriodic ) ) ? -(x) : (x) )                    \
 
 /*an item of the priority-queue*/
 /*! @cond  */
@@ -138,7 +138,7 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
         _qTrace_Kernel( "(*)Initializing QuarkTS kernel...", NULL, NULL );
         (void)qList_Initialize( suspendedList );
         (void)qList_Initialize( waitingList );
-        for ( i = (qIndex_t)0 ; i < (qIndex_t)Q_PRIORITY_LEVELS ; i++ ) {
+        for ( i = (qIndex_t)0 ; i < (qIndex_t)Q_PRIORITY_LEVELS ; ++i ) {
             (void)qList_Initialize( &readyList[ i ] );
         }
         #if ( Q_SETUP_TIME_CANONICAL != 1 )
@@ -220,7 +220,7 @@ qBool_t qOS_Notification_Spread( void *eventData,
         /*do not proceed if any previous operation is in progress*/
         if ( NULL == kernel.nSpreader.mode ) {
             if ( ( qTask_NotifySimple == mode ) || ( qTask_NotifyQueued == mode ) ) {
-                kernel.nSpreader.mode = ( qTask_NotifySimple == mode )?
+                kernel.nSpreader.mode = ( qTask_NotifySimple == mode ) ?
                                         &qTask_Notification_Send :
                                         &qTask_Notification_Queue;
                 kernel.nSpreader.eventData = eventData;
@@ -361,8 +361,8 @@ static qTask_t* qOS_PriorityQueue_Get( void )
         maxPriority = kernel.queueStack[ 0 ].Task->qPrivate.priority;
         /*walk through the queue to find the task with the highest priority*/
         /*loop until all items are checked or if the tail is reached*/
-        for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.queueStack[i].Task ) ; ++i ) {
-            qPriority_t iPriorityValue = kernel.queueStack[i].Task->qPrivate.priority;
+        for ( i = 1u ; ( i < (qIndex_t)Q_PRIO_QUEUE_SIZE ) && ( NULL != kernel.queueStack[ i ].Task ) ; ++i ) {
+            qPriority_t iPriorityValue = kernel.queueStack[ i ].Task->qPrivate.priority;
             /*check if the queued task has the max priority value*/
             if ( iPriorityValue > maxPriority ) {
                 maxPriority = iPriorityValue; /*Reassign the max value*/
@@ -396,7 +396,7 @@ void qOS_PriorityQueue_Init( void )
 {
     size_t i;
     qCritical_Enter();
-    for ( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; i++ ) {
+    for ( i = 0u ; i < (qIndex_t)Q_PRIO_QUEUE_SIZE ; ++i ) {
         kernel.queueStack[ i ].Task = NULL;  /*set the priority queue as empty*/
     }
     kernel.queueIndex = -1;
@@ -423,7 +423,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
         Task->qPrivate.taskData = arg;
         Task->qPrivate.priority = qFLM_ClipUpper( p, maxPriorityValue );
         /* cppcheck-suppress integerOverflow*/
-        Task->qPrivate.iterations = ( qPeriodic == n )? qPeriodic : -n;
+        Task->qPrivate.iterations = ( qPeriodic == n ) ? qPeriodic : -n;
         Task->qPrivate.notification = 0uL;
         Task->qPrivate.trigger = qTriggerNULL;
         Task->qPrivate.flags = 0uL;
@@ -431,7 +431,7 @@ qBool_t qOS_Add_Task( qTask_t * const Task,
                            QTASK_BIT_INIT | QTASK_BIT_QUEUE_RECEIVER |
                            QTASK_BIT_QUEUE_FULL | QTASK_BIT_QUEUE_COUNT |
                            QTASK_BIT_QUEUE_EMPTY | QTASK_BIT_REMOVE_REQUEST,
-                           qFalse);
+                           qFalse );
         /*task will be awaken and enabled*/
         qOS_Set_TaskFlags( Task,
                            QTASK_BIT_SHUTDOWN | QTASK_BIT_ENABLED,
@@ -526,6 +526,7 @@ static void qOS_FSM_TaskCallback( qEvent_t e )
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     qSM_Signal_t sig = { QSM_SIGNAL_NONE, NULL };
     /*cstat -MISRAC2012-Rule-11.8*/
+    /*cppcheck-suppress cert-EXP05-C */
     sm->qPrivate.handler.Data = (void*)e;
     /*cstat +MISRAC2012-Rule-11.8*/
     _qTrace_Kernel( "(^)Running state-machine from task ", xTask, sm );
@@ -560,6 +561,7 @@ static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback 
     qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     /*cstat -MISRAC2012-Rule-11.8*/
+    /*cppcheck-suppress cert-EXP05-C */
     cli->qPrivate.xPublic.Data = (void*)e;
     /*cstat +MISRAC2012-Rule-11.8*/
     _qTrace_Kernel( "(^)Running AT-CLI from task ", xTask, cli );
@@ -707,7 +709,7 @@ qBool_t qOS_Run( void )
         qOS_TriggerReleaseSchedEvent(); /*check for a scheduling-release request*/
         retValue = qTrue;
     #else
-        while( qTrue == qTrue );
+        while ( qTrue == qTrue );
     #endif
 
     return retValue;
@@ -864,7 +866,7 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task )
             taskIteration = Task->qPrivate.iterations;
             eventInfo->FirstIteration = ( ( qPeriodic != taskIteration )
                                                 && ( taskIteration < 0 ) );
-            Task->qPrivate.iterations = ( eventInfo->FirstIteration )?
+            Task->qPrivate.iterations = ( eventInfo->FirstIteration ) ?
                                         -Task->qPrivate.iterations :
                                         Task->qPrivate.iterations;
             if ( qPeriodic != Task->qPrivate.iterations ) {
@@ -997,7 +999,7 @@ static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task )
 
             deadLineReached = qSTimer_Expired( &Task->qPrivate.timer );
             /*check the time deadline*/
-            if( ( 0uL == interval ) || deadLineReached ) {
+            if ( ( 0uL == interval ) || deadLineReached ) {
                 retValue = qTrue;
             }
         }
@@ -1041,7 +1043,7 @@ qBool_t qOS_Get_TaskFlag( const qTask_t * const Task,
 
     xBit = Task->qPrivate.flags & flag;
 
-    return ( ( 0uL != xBit )? qTrue : qFalse );
+    return ( ( 0uL != xBit ) ? qTrue : qFalse );
 }
 /*========================== Shared Private Method ===========================*/
 void qOS_Set_TaskFlags( qTask_t * const Task,
@@ -1092,6 +1094,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
 
         for ( i = 0u ; i < maxLists ; ++i ) {
             qBool_t r;
+            /*cppcheck-suppress cert-EXP05-C */
             r = qList_ForEach( &kernel.coreLists[ i ],
                                qOS_TaskNameLookup,
                                &xLookupData,
@@ -1099,6 +1102,7 @@ qTask_t* qOS_FindTaskByName( const char *name )
                                NULL );
             if ( qTrue == r ) {
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.8*/
+                /*cppcheck-suppress cert-EXP05-C */
                 found = (qTask_t*)xLookupData[ 1 ];
                 /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.8b*/
                 break;

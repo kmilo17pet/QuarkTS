@@ -46,7 +46,7 @@ qBool_t qEdgeCheck_Setup( qEdgeCheck_t * const ec,
         (void)memset( ec, 0, sizeof(qEdgeCheck_t) );
         ec->qPrivate.head = NULL;
         ec->qPrivate.debounceTime = debounceTime;
-        ec->qPrivate.reader = ( NULL == rSize )? &QREG_32BIT : rSize;
+        ec->qPrivate.reader = ( NULL == rSize ) ? &QREG_32BIT : rSize;
         ec->qPrivate.state = &qEdgeCheck_StateCheck;
         ec->qPrivate.start = qClock_GetTick();
         retValue = qTrue;
@@ -123,7 +123,7 @@ static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, qBool_t v, v
     Q_UNUSED( arg );
     if ( n->qPrivate.prevPinValue != v ) {
         /*set the edge status*/
-        n->qPrivate.status = ( v )? qRising : qFalling;
+        n->qPrivate.status = ( v ) ? qRising : qFalling;
     }
     /*keep the previous level*/
     n->qPrivate.prevPinValue = v;
