@@ -156,8 +156,8 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greater o equal to 36.</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">    #define _qSTRINGIFY(x) #x</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">    #define _qTOSTRING(x) _qSTRINGIFY(x)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">    #define _qSTRINGIFY(x)              #x</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">    #define _qTOSTRING(x)               _qSTRINGIFY( x )</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">    #ifndef _QTRACE_FUNC</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">        #if defined __cplusplus &amp;&amp; defined __GNUC__ </span><span class="comment">/* Use g++&#39;s demangled names in C++.  */</span><span class="preprocessor"></span></div>
@@ -166,308 +166,304 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">            #else</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">                #define _QFCN    __func__</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">            #endif</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">        #elif defined(__GNUC__) || (defined(__MWERKS__) &amp;&amp; (__MWERKS__ &gt;= 0x3000)) || (defined(__ICC) &amp;&amp; (__ICC &gt;= 600)) || defined(__ghs__)</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">            #ifndef __PRETTY_FUNCTION__</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">                #define _QFCN       &quot;&quot;</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">            #else</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">                #define _QFCN       __PRETTY_FUNCTION__</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">            #endif</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">        #elif defined(__DMC__) &amp;&amp; (__DMC__ &gt;= 0x810)</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">        #elif defined(__FUNCSIG__)</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">            #define _QFCN       __FUNCSIG__</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">        #elif (defined(__INTEL_COMPILER) &amp;&amp; (__INTEL_COMPILER &gt;= 600)) || (defined(__IBMCPP__) &amp;&amp; (__IBMCPP__ &gt;= 500))</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">            #define _QFCN       __FUNCTION__</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">        #elif defined(__BORLANDC__) &amp;&amp; (__BORLANDC__ &gt;= 0x550)</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">            #define _QFCN       __FUNC__</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">        #elif defined(__STDC_VERSION__) &amp;&amp; (__STDC_VERSION__ &gt;= 199901)</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">            #define _QFCN       __func__</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">        #elif defined(__cplusplus) &amp;&amp; (__cplusplus &gt;= 201103)</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">            #define _QFCN    __func__</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">        #else </span><span class="comment">/* failed to detect __func__ support.  */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">            #define _QFCN       ( (char *)0 )</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">        #endif</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">    #define _qAT() &quot;:&quot;</span> _qTOSTRING(__LINE__) &quot; &quot;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">    #ifndef Message</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">        #define Message             Message</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">    #ifndef String</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">        #define String              String</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">    #ifndef Bool</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">        #define Bool                Bool</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">    #ifndef qBool</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">        #define qBool               qBool</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">    #ifndef Float</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">        #define Float               Float</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">    #ifndef Binary</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">        #define Binary              Binary</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">    #ifndef Octal</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">        #define Octal               Octal</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">    #ifndef Decimal</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">        #define Decimal             Decimal</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">    #ifndef Hexadecimal</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">        #define Hexadecimal         Hexadecimal</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">    #ifndef UnsignedBinary</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">        #define UnsignedBinary      UnsignedBinary</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">    #ifndef UnsignedOctal</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">        #define UnsignedOctal       UnsignedOctal</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">    #ifndef UnsignedDecimal</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">        #define UnsignedDecimal     UnsignedDecimal</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">    #ifndef UnsignedHexadecimal</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">        #define UnsignedHexadecimal UnsignedHexadecimal</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">    #if ( Q_TRACE_VARIABLES == 1 )</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">        #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>            <span class="keywordtype">void</span> _qTrace_krn( <span class="keyword">const</span> <span class="keywordtype">char</span> *msg,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *<span class="keywordtype">id</span>,</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *obj );</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )                          \</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">            _qTrace_krn( (char*)(msg), (id), (obj) );                       \</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor"></span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">        #else</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">        #endif</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keyword">extern</span> <span class="keywordtype">char</span> qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordtype">void</span> _qTrace_dgb( <span class="keyword">const</span> <span class="keywordtype">char</span> *loc,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* fcn,</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span> *vName,</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* vValue,</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                          <span class="keywordtype">void</span>* ptr,</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                          <span class="keyword">const</span> <span class="keywordtype">size_t</span> blockSize );</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">  146</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">qTrace_Set_OutputFcn</a>( <a class="code hl_typedef" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn );</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="comment">/*On-demand debug/trace macros*/</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga9e61c6c7a1926f5fc69d922b3168b7fc">  155</a></span><span class="preprocessor">        #define qTrace()                                                    \</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, &quot;&quot;</span>, &quot;&quot;, NULL, 0 )                       \</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga0a311cfe8ed2d05b9d0affbbb6da4595">  164</a></span><span class="preprocessor">        #define qDebug_Caller()                                             \</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, _QFCN, &quot;&quot;, &quot;&quot;, NULL, 0 )                           \</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">        #elif defined( __GNUC__ ) || ( defined( __MWERKS__ ) &amp;&amp; ( __MWERKS__ &gt;= 0x3000 ) ) || ( defined( __ICC ) &amp;&amp; ( __ICC &gt;= 600 ) ) || defined( __ghs__ )</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">        #elif defined( __DMC__ ) &amp;&amp; ( __DMC__ &gt;= 0x810 )</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">        #elif defined( __FUNCSIG__ )</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">            #define _QFCN       __FUNCSIG__</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">        #elif ( defined( __INTEL_COMPILER ) &amp;&amp; ( __INTEL_COMPILER &gt;= 600 ) ) || ( defined( __IBMCPP__ ) &amp;&amp; ( __IBMCPP__ &gt;= 500 ) )</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">            #define _QFCN       __FUNCTION__</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">        #elif defined( __BORLANDC__ ) &amp;&amp; ( __BORLANDC__ &gt;= 0x550 )</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">            #define _QFCN       __FUNC__</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">        #elif defined( __STDC_VERSION__ ) &amp;&amp; ( __STDC_VERSION__ &gt;= 199901 )</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">            #define _QFCN       __func__</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">        #elif defined( __cplusplus ) &amp;&amp; ( __cplusplus &gt;= 201103 )</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">            #define _QFCN       __func__</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">        #else </span><span class="comment">/* failed to detect __func__ support.  */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">            #define _QFCN       ( (char *)0 )</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">        #endif</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">    #define _qAT() &quot;:&quot;</span> _qTOSTRING(__LINE__) &quot; &quot;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">    #ifndef Message</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">        #define Message             Message</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">    #ifndef String</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">        #define String              String</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">    #ifndef Bool</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">        #define Bool                Bool</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">    #ifndef qBool</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">        #define qBool               qBool</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">    #ifndef Float</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">        #define Float               Float</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #ifndef Binary</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">        #define Binary              Binary</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">    #ifndef Octal</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">        #define Octal               Octal</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">    #ifndef Decimal</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">        #define Decimal             Decimal</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">    #ifndef Hexadecimal</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">        #define Hexadecimal         Hexadecimal</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    #ifndef UnsignedBinary</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">        #define UnsignedBinary      UnsignedBinary</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">    #ifndef UnsignedOctal</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">        #define UnsignedOctal       UnsignedOctal</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">    #ifndef UnsignedDecimal</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">        #define UnsignedDecimal     UnsignedDecimal</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">    #ifndef UnsignedHexadecimal</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">        #define UnsignedHexadecimal UnsignedHexadecimal</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">    #if ( Q_TRACE_VARIABLES == 1 )</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">        #if ( Q_TRACE_KERNEL_AND_MODULES == 1 )</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            <span class="keywordtype">void</span> _qTrace_krn( <span class="keyword">const</span> <span class="keywordtype">char</span> *msg,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *<span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                              <span class="keyword">const</span> <span class="keywordtype">void</span> *obj );</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )                          \</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">            _qTrace_krn( (char*)(msg), (id), (obj) );                       \</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor"></span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">        #else</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">        #endif</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">extern</span> <span class="keywordtype">char</span> qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordtype">void</span> _qTrace_dgb( <span class="keyword">const</span> <span class="keywordtype">char</span> *loc,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* fcn,</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span> *vName,</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* vValue,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                          <span class="keywordtype">void</span>* ptr,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                          <span class="keyword">const</span> <span class="keywordtype">size_t</span> blockSize );</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">  142</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">qTrace_Set_OutputFcn</a>( <a class="code hl_typedef" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn );</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="comment">/*On-demand debug/trace macros*/</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga9e61c6c7a1926f5fc69d922b3168b7fc">  151</a></span><span class="preprocessor">        #define qTrace()                                                    \</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, &quot;&quot;</span>, &quot;&quot;, NULL, 0 )                       \</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga0a311cfe8ed2d05b9d0affbbb6da4595">  160</a></span><span class="preprocessor">        #define qDebug_Caller()                                             \</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, _QFCN, &quot;&quot;, &quot;&quot;, NULL, 0 )                           \</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">        #define qDebug_Message( v )                                         \</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, &quot;&quot;, (char*)(v), NULL, 0 )                    \</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">        #define qDebug_Message( v )                                         \</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, &quot;&quot;, (char*)(v), NULL, 0 )                    \</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">        #define qDebug_String( v )                                          \</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot; , (char*)(v), NULL, 0 )               \</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">        #define qDebug_String( v )                                          \</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot; , (char*)(v), NULL, 0 )               \</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">        #define qDebug_Bool( v )                                            \</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">        #define qDebug_Bool( v )                                            \</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="preprocessor">        #define qDebug_qBool( v )                                           \</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="preprocessor">        #define qDebug_qBool( v )                                           \</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="preprocessor">        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="preprocessor">        #define qDebug_Binary( v )                                          \</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0b&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="preprocessor">        #define qDebug_Binary( v )                                          \</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0b&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">        #define qDebug_Octal( v )                                           \</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0&quot;, qTrace_PublicBuffer, NULL, 0 )      \</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="preprocessor">        #define qDebug_Octal( v )                                           \</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0&quot;, qTrace_PublicBuffer, NULL, 0 )      \</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">        #define qDebug_Hexadecimal( v )                                     \</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0x&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="preprocessor">        #define qDebug_Hexadecimal( v )                                     \</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0x&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">        #define qDebug_Decimal( v )                                         \</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="preprocessor">        #define qDebug_Decimal( v )                                         \</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="preprocessor">        #define qDebug_Float( v )                                           \</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">        #define qDebug_Float( v )                                           \</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">        #define qDebug_FloatPrec( v , prec )                                \</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">        #define qDebug_FloatPrec( v , prec )                                \</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, qTrace_PublicBuffer, NULL, 0 )       \</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">        #define qDebug_UnsignedBinary( v )                                  \</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0b&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="preprocessor">        #define qDebug_UnsignedBinary( v )                                  \</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0b&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">        #define qDebug_UnsignedOctal( v )                                   \</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0&quot;, qTrace_PublicBuffer, NULL, 0 )      \</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">        #define qDebug_UnsignedOctal( v )                                   \</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0&quot;, qTrace_PublicBuffer, NULL, 0 )      \</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="preprocessor">        #define qDebug_UnsignedHexadecimal( v )                             \</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0x&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="preprocessor">        #define qDebug_UnsignedHexadecimal( v )                             \</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=0x&quot;, qTrace_PublicBuffer, NULL, 0 )     \</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="preprocessor">        #define qDebug_UnsignedDecimal( v )                                 \</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, , NULL, 0 )                          \</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="preprocessor">        #define qDebug_UnsignedDecimal( v )                                 \</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #v &quot;=&quot;, , NULL, 0 )                          \</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="preprocessor">        #define qTrace_Message( v )                                         \</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, &quot;&quot;</span>, (char*)(v), NULL, 0 )               \</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">        #define qTrace_Message( v )                                         \</span></div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, &quot;&quot;</span>, (char*)(v), NULL, 0 )               \</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">        #define qTrace_String( v )                                          \</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span> , (char*)(v), NULL, 0 )          \</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="preprocessor">        #define qTrace_String( v )                                          \</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span> , (char*)(v), NULL, 0 )          \</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="preprocessor">        #define qTrace_Bool( v )                                            \</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="preprocessor">        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">        #define qTrace_Bool( v )                                            \</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="preprocessor">        qIOUtil_BtoA( (qBool_t)(v), qTrace_PublicBuffer );                  \</span></div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="preprocessor">        #define qTrace_qBool( v )                                           \</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="preprocessor">        #define qTrace_qBool( v )                                           \</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">        qIOUtil_QBtoA( (qBool_t)(v), qTrace_PublicBuffer );                 \</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">        #define qTrace_Binary( v )                                          \</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0b&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">        #define qTrace_Binary( v )                                          \</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 2 );              \</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0b&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">        #define qTrace_Octal( v )                                           \</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0&quot;</span>, qTrace_PublicBuffer, NULL, 0 ) \</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="preprocessor">        #define qTrace_Octal( v )                                           \</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 8 );              \</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0&quot;</span>, qTrace_PublicBuffer, NULL, 0 ) \</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor">        #define qTrace_Hexadecimal( v )                                     \</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0x&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="preprocessor">        #define qTrace_Hexadecimal( v )                                     \</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 16 );             \</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0x&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="preprocessor">        #define qTrace_Decimal( v )                                         \</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="preprocessor">        #define qTrace_Decimal( v )                                         \</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="preprocessor">        qIOUtil_ItoA( (qINT32_t)(v), qTrace_PublicBuffer, 10 );             \</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="preprocessor">        #define qTrace_Float( v )                                           \</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="preprocessor">        #define qTrace_Float( v )                                           \</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, 10 );           \</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="preprocessor">        #define qTrace_FloatPrec( v , prec )                                \</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="preprocessor">        #define qTrace_FloatPrec( v , prec )                                \</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">        qIOUtil_FtoA( (qFloat32_t)(v), qTrace_PublicBuffer, (prec) );       \</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">        #define qTrace_UnsignedBinary( v )                                  \</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0b&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="preprocessor">        #define qTrace_UnsignedBinary( v )                                  \</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 2 );             \</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0b&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="preprocessor">        #define qTrace_UnsignedOctal( v )                                   \</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0&quot;</span>, qTrace_PublicBuffer, NULL, 0 ) \</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="preprocessor">        #define qTrace_UnsignedOctal( v )                                   \</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 8 );             \</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0&quot;</span>, qTrace_PublicBuffer, NULL, 0 ) \</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor">        #define qTrace_UnsignedHexadecimal( v )                             \</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0x&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="preprocessor">        #define qTrace_UnsignedHexadecimal( v )                             \</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 16 );            \</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=0x&quot;</span>, qTrace_PublicBuffer, NULL, 0 )\</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )                                 \</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )                                 \</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">        qIOUtil_UtoA( (qUINT32_t)(v), qTrace_PublicBuffer, 10 );            \</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="preprocessor">        _qTrace_dgb( _qAT(), _QFCN, #v &quot;=&quot;</span>, qTrace_PublicBuffer, NULL, 0 )  \</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="group__qtrace.html#gaa89bbcc66af880556169fe2b06ec8d4b">  315</a></span><span class="preprocessor">        #define qTrace_Mem( pMem, bSize )       qTrace_Memory( (pMem), (bSize) )</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga16ae911a9298262345256bcfc426681b">  323</a></span><span class="preprocessor">        #define qTrace_Memory(pMem, bSize )                                 \</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="preprocessor">        _qTrace_dgb( _qAT(),                                                \</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="preprocessor">                     _QFCN,                                                 \</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="preprocessor">                     #pMem &quot;=&quot;</span>,                                             \</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                     NULL,                                                  \</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                     (pMem),                                                \</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                     (bSize) )                                              \</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga9330e798a61ecb14fac4436f8a0167ca">  340</a></span><span class="preprocessor">        #define qDebug_Mem( pMem, bSize )       qDebug_Memory( (pMem), (bSize) )</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga88a14dc79a8460e2db357396b52e758a">  350</a></span><span class="preprocessor">        #define qDebug_Memory( pMem, bSize )                                \</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #pMem &quot;=&quot;, NULL, (pMem), (bSize) )           \</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga545321ecdfacab3859e0f96585169b11">  376</a></span><span class="preprocessor">        #define qTrace_Var( v, mode )           qTrace_##mode( v )</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="group__qtrace.html#gafcaae3d6fc24d431f13facd6a90414b5">  386</a></span><span class="preprocessor">        #define qTrace_Variable( v, mode )      qTrace_##mode( v )</span></div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga0a0cd2d65d2b667c19ea20116d37d60c">  410</a></span><span class="preprocessor">        #define qDebug_Var( v, mode )           qDebug_##mode( v )</span></div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga1c8874f1907fd20ae2cf43613fd210dc">  420</a></span><span class="preprocessor">        #define qDebug_Variable( v, mode )      qDebug_##mode( v )</span></div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="preprocessor">    #else</span></div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">        #define qTrace_Set_OutputFcn( fcn )</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="preprocessor">        #define _QTRACE_KERNEL( msg, id, obj )</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span><span class="preprocessor">        #define qTrace()</span></div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span><span class="preprocessor">        #define qTrace_Message( v )</span></div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="preprocessor">        #define qTrace_String( v )</span></div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="preprocessor">        #define qTrace_Var( v, mode )</span></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">        #define qTrace_Variable( v, mode )</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><span class="preprocessor">        #define qTrace_Bool( v )</span></div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">        #define qTrace_qBool( v )</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="preprocessor">        #define qTrace_Binary( v )</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="preprocessor">        #define qTrace_Octal( v )</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="preprocessor">        #define qTrace_Hexadecimal( v )</span></div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="preprocessor">        #define qTrace_Decimal( v )</span></div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="preprocessor">        #define qTrace_Float( v )</span></div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="preprocessor">        #define qDebug_FloatPrec( v, prec )</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">        #define qTrace_UnsignedBinary( v )</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="preprocessor">        #define qTrace_UnsignedOctal( v )</span></div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">        #define qTrace_UnsignedHexadecimal( v )</span></div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="preprocessor">        #define qTrace_Memory( pMem, bSize )</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="preprocessor">        #define qTrace_Mem( pMem, bSize )</span></div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="preprocessor">        #define qTrace_Variable( v , mode )</span></div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="preprocessor">        #define qTrace_Var( v , mode )</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="preprocessor">        #define qDebug_Caller()</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="preprocessor">        #define qDebug_Message( v )</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="preprocessor">        #define qDebug_String( v )</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="preprocessor">        #define qDebug_Bool( v )</span></div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="preprocessor">        #define qDebug_qBool( v )</span></div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="preprocessor">        #define qDebug_Binary( v )</span></div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="preprocessor">        #define qDebug_Octal( v )</span></div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="preprocessor">        #define qDebug_Hexadecimal( v )</span></div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="preprocessor">        #define qDebug_Decimal( v )</span></div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="preprocessor">        #define qDebug_Float( v )</span></div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span><span class="preprocessor">        #define qDebug_FloatPrec( v , prec )</span></div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="preprocessor">        #define qDebug_UnsignedBinary( v )</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="preprocessor">        #define qDebug_UnsignedOctal( v )</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="preprocessor">        #define qDebug_UnsignedHexadecimal( v )</span></div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="preprocessor">        #define qDebug_UnsignedDecimal( v )</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="preprocessor">        #define qDebug_Memory( pMem, bSize )</span></div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="preprocessor">        #define qDebug_Mem( pMem, bSize )</span></div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="preprocessor">        #define qDebug_Var( v , mode )</span></div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><span class="preprocessor">        #define qDebug_Variable( v , mode )</span></div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span> </div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="preprocessor">    #ifdef __cplusplus</span></div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    }</div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno"><a class="line" href="group__qtrace.html#gaa89bbcc66af880556169fe2b06ec8d4b">  311</a></span><span class="preprocessor">        #define qTrace_Mem( pMem, bSize )       qTrace_Memory( (pMem), (bSize) )</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga16ae911a9298262345256bcfc426681b">  319</a></span><span class="preprocessor">        #define qTrace_Memory(pMem, bSize )                                 \</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="preprocessor">        _qTrace_dgb( _qAT(),                                                \</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="preprocessor">                     _QFCN,                                                 \</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="preprocessor">                     #pMem &quot;=&quot;</span>,                                             \</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                     NULL,                                                  \</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                     (pMem),                                                \</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                     (bSize) )                                              \</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga9330e798a61ecb14fac4436f8a0167ca">  336</a></span><span class="preprocessor">        #define qDebug_Mem( pMem, bSize )       qDebug_Memory( (pMem), (bSize) )</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga88a14dc79a8460e2db357396b52e758a">  346</a></span><span class="preprocessor">        #define qDebug_Memory( pMem, bSize )                                \</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="preprocessor">        _qTrace_dgb( &quot;&quot;</span>, NULL, #pMem &quot;=&quot;, NULL, (pMem), (bSize) )           \</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga545321ecdfacab3859e0f96585169b11">  372</a></span><span class="preprocessor">        #define qTrace_Var( v, mode )           qTrace_##mode( v )</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="group__qtrace.html#gafcaae3d6fc24d431f13facd6a90414b5">  382</a></span><span class="preprocessor">        #define qTrace_Variable( v, mode )      qTrace_##mode( v )</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga0a0cd2d65d2b667c19ea20116d37d60c">  406</a></span><span class="preprocessor">        #define qDebug_Var( v, mode )           qDebug_##mode( v )</span></div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno"><a class="line" href="group__qtrace.html#ga1c8874f1907fd20ae2cf43613fd210dc">  416</a></span><span class="preprocessor">        #define qDebug_Variable( v, mode )      qDebug_##mode( v )</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span><span class="preprocessor">    #else</span></div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span><span class="preprocessor">        #define qTrace_Set_OutputFcn( fcn )</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="preprocessor">        #define _QTRACE_KERNEL( msg, id, obj )</span></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="preprocessor">        #define qTrace()</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="preprocessor">        #define qTrace_Message( v )</span></div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">        #define qTrace_String( v )</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="preprocessor">        #define qTrace_Var( v, mode )</span></div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span><span class="preprocessor">        #define qTrace_Variable( v, mode )</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span><span class="preprocessor">        #define qTrace_Bool( v )</span></div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="preprocessor">        #define qTrace_qBool( v )</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="preprocessor">        #define qTrace_Binary( v )</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">        #define qTrace_Octal( v )</span></div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><span class="preprocessor">        #define qTrace_Hexadecimal( v )</span></div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">        #define qTrace_Decimal( v )</span></div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="preprocessor">        #define qTrace_Float( v )</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="preprocessor">        #define qDebug_FloatPrec( v, prec )</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="preprocessor">        #define qTrace_UnsignedBinary( v )</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="preprocessor">        #define qTrace_UnsignedOctal( v )</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="preprocessor">        #define qTrace_UnsignedHexadecimal( v )</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )</span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">        #define qTrace_UnsignedDecimal( v )</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="preprocessor">        #define qTrace_Memory( pMem, bSize )</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">        #define qTrace_Mem( pMem, bSize )</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="preprocessor">        #define qTrace_Variable( v , mode )</span></div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="preprocessor">        #define qTrace_Var( v , mode )</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="preprocessor">        #define qDebug_Caller()</span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="preprocessor">        #define qDebug_Message( v )</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="preprocessor">        #define qDebug_String( v )</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="preprocessor">        #define qDebug_Bool( v )</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="preprocessor">        #define qDebug_qBool( v )</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="preprocessor">        #define qDebug_Binary( v )</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="preprocessor">        #define qDebug_Octal( v )</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="preprocessor">        #define qDebug_Hexadecimal( v )</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="preprocessor">        #define qDebug_Decimal( v )</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="preprocessor">        #define qDebug_Float( v )</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="preprocessor">        #define qDebug_FloatPrec( v , prec )</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="preprocessor">        #define qDebug_UnsignedBinary( v )</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="preprocessor">        #define qDebug_UnsignedOctal( v )</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="preprocessor">        #define qDebug_UnsignedHexadecimal( v )</span></div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span><span class="preprocessor">        #define qDebug_UnsignedDecimal( v )</span></div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="preprocessor">        #define qDebug_Memory( pMem, bSize )</span></div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="preprocessor">        #define qDebug_Mem( pMem, bSize )</span></div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="preprocessor">        #define qDebug_Var( v , mode )</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="preprocessor">        #define qDebug_Variable( v , mode )</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span><span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>    }</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__qioutils_html_ga87913d4fc8c8ef183f0bc2927906d2aa"><div class="ttname"><a href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a></div><div class="ttdeci">void(* qPutChar_t)(void *arg1, const char arg2)</div><div class="ttdoc">Pointer to function that write-out a single character.</div><div class="ttdef"><b>Definition:</b> qioutils.h:52</div></div>
 <div class="ttc" id="agroup__qtrace_html_ga88f22f8c295a457f692adc670fcc391f"><div class="ttname"><a href="group__qtrace.html#ga88f22f8c295a457f692adc670fcc391f">qTrace_Set_OutputFcn</a></div><div class="ttdeci">void qTrace_Set_OutputFcn(qPutChar_t fcn)</div><div class="ttdoc">This API set the output method for debug/trace messages.</div></div>
 </div><!-- fragment --></div><!-- contents -->

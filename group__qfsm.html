@@ -212,12 +212,12 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_RANGE_MAX</b></td></tr>
 <tr class="memdesc:ga3c5bbf1db7a4b7c6c1b2bf1b69cacf9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum value that can be used for an user-defined signal. <br /></td></tr>
 <tr class="separator:ga3c5bbf1db7a4b7c6c1b2bf1b69cacf9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaafdc9ec6fa370822b33fab40468dc9ba"><td class="memItemLeft" align="right" valign="top"><a id="gaafdc9ec6fa370822b33fab40468dc9ba" name="gaafdc9ec6fa370822b33fab40468dc9ba"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_TM_RMAX</b></td></tr>
-<tr class="separator:gaafdc9ec6fa370822b33fab40468dc9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2f8a2af98508b7662120a1622b0f5233"><td class="memItemLeft" align="right" valign="top"><a id="ga2f8a2af98508b7662120a1622b0f5233" name="ga2f8a2af98508b7662120a1622b0f5233"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_TM_RMIN</b></td></tr>
-<tr class="separator:ga2f8a2af98508b7662120a1622b0f5233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadaaf6c2c04593f7723c1cb44b753a64c"><td class="memItemLeft" align="right" valign="top"><a id="gadaaf6c2c04593f7723c1cb44b753a64c" name="gadaaf6c2c04593f7723c1cb44b753a64c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_TM_MAX</b></td></tr>
+<tr class="separator:gadaaf6c2c04593f7723c1cb44b753a64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7e92c4ffa9fe26dbe9e96f27194cf1f4"><td class="memItemLeft" align="right" valign="top"><a id="ga7e92c4ffa9fe26dbe9e96f27194cf1f4" name="ga7e92c4ffa9fe26dbe9e96f27194cf1f4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_TM_MIN</b></td></tr>
+<tr class="separator:ga7e92c4ffa9fe26dbe9e96f27194cf1f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4f0214482784bb1c4f115290992383ce"><td class="memItemLeft" align="right" valign="top"><a id="ga4f0214482784bb1c4f115290992383ce" name="ga4f0214482784bb1c4f115290992383ce"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>QSM_SIGNAL_USER</b></td></tr>
 <tr class="memdesc:ga4f0214482784bb1c4f115290992383ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start value for an user-defined signal. <br /></td></tr>
@@ -558,7 +558,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
 <div class="ttc" id="agroup__qtypes_html_ga9cd31c446d7a5ead8f65aa28e4d1f2cd"><div class="ttname"><a href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a></div><div class="ttdeci">#define qTrue</div><div class="ttdoc">A boolean value that represents true/success/On or High.</div><div class="ttdef"><b>Definition:</b> qtypes.h:162</div></div>
 <div class="ttc" id="agroup__qtypes_html_gabcfc51cee68e399f81b5c109c8e615c7"><div class="ttname"><a href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div><div class="ttdeci">#define qFalse</div><div class="ttdoc">A boolean value that represents false/failure/Off or Low.</div><div class="ttdef"><b>Definition:</b> qtypes.h:157</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:231</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html"><div class="ttname"><a href="structq_s_m___handler__t.html">qSM_Handler_t</a></div><div class="ttdoc">The callback argument to handle the state-machine dynamics and provide execution information....</div><div class="ttdef"><b>Definition:</b> qfsm.h:232</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -601,7 +601,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__qfsm_html_gae3b8425bb28440f3b2d9decfb65ec5bb"><div class="ttname"><a href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a></div><div class="ttdeci">qSM_Status_t</div><div class="ttdoc">This enumeration defines the built-in state-execution status values that can be used as return value ...</div><div class="ttdef"><b>Definition:</b> qfsm.h:175</div></div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_SUCCESS</div><div class="ttdef"><b>Definition:</b> qfsm.h:179</div></div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbafd557f39ede0a55582ca9103a169e39e">qSM_STATUS_SIGNAL_HANDLED</a></div><div class="ttdeci">@ qSM_STATUS_SIGNAL_HANDLED</div><div class="ttdef"><b>Definition:</b> qfsm.h:180</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_a185fb13f4184b5f4cc05b01059e31964"><div class="ttname"><a href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_SigId_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:239</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a185fb13f4184b5f4cc05b01059e31964"><div class="ttname"><a href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">qSM_Handler_t::Signal</a></div><div class="ttdeci">const qSM_SigId_t Signal</div><div class="ttdef"><b>Definition:</b> qfsm.h:240</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
@@ -638,7 +638,7 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bba8a53c46b5ae14d7e952b5619c94364cc">qSM_STATUS_BEFORE_ANY</a></div><div class="ttdeci">@ qSM_STATUS_BEFORE_ANY</div><div class="ttdef"><b>Definition:</b> qfsm.h:176</div></div>
 <div class="ttc" id="agroup__qfsm_html_ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e"><div class="ttname"><a href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbad2d1f8cd380738706b06dc39aa44788e">qSM_STATUS_EXIT_FAILURE</a></div><div class="ttdeci">@ qSM_STATUS_EXIT_FAILURE</div><div class="ttdef"><b>Definition:</b> qfsm.h:178</div></div>
-<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:240</div></div>
+<div class="ttc" id="astructq_s_m___handler__t_html_a9a9b417b18be359dcef7d0c979db078a"><div class="ttname"><a href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t::Status</a></div><div class="ttdeci">const qSM_Status_t Status</div><div class="ttdef"><b>Definition:</b> qfsm.h:241</div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">h</td><td>The object that handles the state machine </td></tr>
