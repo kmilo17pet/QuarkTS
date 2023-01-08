@@ -67,14 +67,14 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
             r->qPrivate.matchedCount = 0u; /*reinitialize the chars match count*/
             r->qPrivate.responseReceived = qFalse; /*clear the ready flag*/
             if ( t > qTimeImmediate ) {
-                (void)qSTimer_Set( &r->qPrivate.timeout, t);
+                (void)qSTimer_Set( &r->qPrivate.timeout, t );
             }
         }
-        else if ( qSTimer_Expired( &r->qPrivate.timeout ) ) {
+        else if ( qTrue == qSTimer_Expired( &r->qPrivate.timeout ) ) {
             (void)qResponse_Reset( r );
             retValue = qResponseTimeout;
         }
-        else if ( r->qPrivate.responseReceived ) {
+        else if ( qTrue == r->qPrivate.responseReceived ) {
             retValue = qResponse_Reset( r );
         }
         else {

@@ -75,6 +75,7 @@
     qEdgeCheck_t;
 
     /*! @cond  */
+    /*cppcheck-suppress misra-c2012-20.7 */
     #define _QEDGECHECK_REG_FCN_DEC(NAME)                                   \
     qBool_t NAME( const void *addr, qBool_t pinNumber )                     \
 

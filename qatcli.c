@@ -352,7 +352,7 @@ qATCLI_Response_t qATCLI_Exec( qATCLI_t * const cli,
             /*check if the input matches the subscribed command */
             if ( 0 == strncmp( cmd, iCmd->Text, iCmd->qPrivate.cmdLen ) ) {
                 retValue = qATCLI_NOTALLOWED;
-                if ( qATCLI_PreProcessing( iCmd, (char*)cmd, &cli->qPrivate.xPublic ) ) {
+                if ( qTrue == qATCLI_PreProcessing( iCmd, (char*)cmd, &cli->qPrivate.xPublic ) ) {
                     /*if success, proceed with the user pos-processing*/
                     qATCLI_CommandCallback_t cmdCallback = iCmd->qPrivate.cmdCallback;
 
@@ -462,7 +462,7 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
     if ( NULL != cli ) {
         qATCLI_Input_t *xInput = &cli->qPrivate.xInput;
         /*cstat -CERT-STR32-C*/
-        if ( xInput->ready ) { /*a new input has arrived*/
+        if ( qTrue == xInput->ready ) { /*a new input has arrived*/
             qATCLI_Response_t outRetval, cliRetVal;
             char *inputBuffer = xInput->storage; /*to conform MISRAC2012-Rule-13.2_b*/
 
@@ -603,7 +603,7 @@ static char* GetArgPtr( qIndex_t n )
                 for ( i = 0u ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
                         if ( ++argc >= (qIndex_t)n ) {
-                            retPtr = param->StrData + i + 1;
+                            retPtr = &param->StrData[ i + 1u ];
                             break;
                         }
                     }

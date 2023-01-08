@@ -98,7 +98,7 @@
     * @note Can be combined with a bitwise OR
     */
     #define QSM_TSOPT_INDEX(index)                                          \
-    ( ( QSM_TSOPT_MASK & (qSM_TimeoutSpecOptions_t)index) )                 \
+    ( ( QSM_TSOPT_MASK & (qSM_TimeoutSpecOptions_t)(index) ) )              \
 
     /**
     * @brief This timeout-specification option its used to specify that the
@@ -147,13 +147,13 @@
     #define QSM_SIGNAL_RANGE_MAX                                            \
     ( (qSM_SigId_t)( 0xFFFFFFFBuL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )     \
 
-    #define QSM_SIGNAL_TM_RMAX      ( (qSM_SigId_t)0xFFFFFFFBuL )
-    #define QSM_SIGNAL_TM_RMIN      QSM_SIGNAL_TIMEOUT(0)
+    #define QSM_SIGNAL_TM_MAX       ( (qSM_SigId_t)0xFFFFFFFBuL )
+    #define QSM_SIGNAL_TM_MIN       QSM_SIGNAL_TIMEOUT(0)
 
     /**
     * @brief The start value for an user-defined signal
     */
-    #define QSM_SIGNAL_USER             ( QSM_SIGNAL_RANGE_MIN )
+    #define QSM_SIGNAL_USER         ( QSM_SIGNAL_RANGE_MIN )
 
     /**
      * @brief The type for signal ID.
@@ -194,6 +194,7 @@
 
     /*fields for the qSM_Handler_t pointer*/
     /*! @cond  */
+    /*cppcheck-suppress misra-c2012-20.7 */
     #define _qSM_HANDLER_FIELDS( pAttrib )                                  \
         void *StartState;                                                   \
         void *NextState;                                                    \

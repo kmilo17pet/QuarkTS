@@ -24,7 +24,7 @@ qBool_t qSTimer_Set( qSTimer_t * const t,
 {
     qBool_t retValue = qFalse;
 
-    if ( qSTimer_Reload( t ) ) {
+    if ( qTrue == qSTimer_Reload( t ) ) {
         /*set the STimer time in epochs*/
         t->tv = qClock_Convert2Clock( tTime );
         retValue = qTrue;
@@ -40,7 +40,7 @@ qBool_t qSTimer_FreeRun( qSTimer_t * const t,
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {
-            if ( qSTimer_Expired( t ) ) {
+            if ( qTrue == qSTimer_Expired( t ) ) {
                 retValue = qSTimer_Reload( t );
             }
         }
@@ -67,7 +67,7 @@ qBool_t qSTimer_Expired( const qSTimer_t * const t )
 /*============================================================================*/
 qClock_t qSTimer_Elapsed( const qSTimer_t * const t )
 {
-    qClock_t retValue = 0uL;
+    qClock_t retValue = 0u;
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {

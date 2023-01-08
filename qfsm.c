@@ -73,6 +73,7 @@ static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( const qSM_t * const m
                                                            qSM_SigId_t s );
 
 /*cstat -MISRAC2012-Rule-9.2 -MISRAC2012-Rule-9.3*/
+/*cppcheck-suppress misra-c2012-9.3 */
 static qSM_SigId_t psSignals[ Q_FSM_PS_SIGNALS_MAX ] = { 0xFFFFFFFFuL };
 /*cstat +MISRAC2012-Rule-9.2 +MISRAC2012-Rule-9.3*/
 static qSM_t *psSubs[ Q_FSM_PS_SIGNALS_MAX ][ Q_FSM_PS_SUB_PER_SIGNAL_MAX ];
@@ -298,13 +299,15 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m,
     if ( NULL != m->qPrivate.surrounding ) {
         h->Status = qSM_STATUS_BEFORE_ANY;
         /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        /*cppcheck-suppress [ misra-c2012-11.3, misra-c2012-11.7 ] */
         m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
         /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
     }
     if ( NULL != s->qPrivate.sCallback ) {
         h->Status = qSM_STATUS_NULL;
-        /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
         /*execute the state callback (Transitions here are not allowed)*/
+        /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        /*cppcheck-suppress [ misra-c2012-11.3, misra-c2012-11.7 ] */
         h->Status = s->qPrivate.sCallback( (qSM_Handler_t)h ); /*cast allowed, struct layout its compatible*/
         /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
     }
@@ -317,6 +320,7 @@ static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m,
             h->Status = qSM_STATUS_EXIT_FAILURE;
         }
         /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+        /*cppcheck-suppress [ misra-c2012-11.3, misra-c2012-11.7 ] */
         m->qPrivate.surrounding( (qSM_Handler_t)h ); /*cast allowed, struct layout compatible*/
         /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
     }
@@ -398,9 +402,7 @@ static qSM_Status_t qStateMachine_StateOnSignal( qSM_t * const m,
     if ( NULL != h->NextState ) { /*perform the transition if available*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*cppcheck-suppress misra-c2012-11.5 */
-        qStateMachine_Transition( m,
-                                  (qSM_State_t*)h->NextState,
-                                  h->TransitionHistory );
+        qStateMachine_Transition( m, (qSM_State_t*)h->NextState, h->TransitionHistory );
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         /*the signal is assumed to be handled if the transition occurs*/
         status = qSM_STATUS_SIGNAL_HANDLED;
@@ -413,7 +415,6 @@ static void qStateMachine_TracePathAndRetraceEntry( qSM_t * const m,
                                                     qSM_State_t **trace )
 {
     qSM_State_t *s;
-
     /*
     Entry actions must be executed in order form the least deeply nested to the
     most deeply nested state. This is opposite to the normal navigability of the
@@ -633,13 +634,14 @@ static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState
         qBool_t transitionAllowed = qTrue; /*allow the transition by default*/
 
         iTransition = &table[ i ]; /*get the i-element from the table*/
-        if ( ( h->Signal >= QSM_SIGNAL_TM_RMIN ) && ( h->Signal <= QSM_SIGNAL_TM_RMAX ) ) {
+        if ( ( h->Signal >= QSM_SIGNAL_TM_MIN ) && ( h->Signal <= QSM_SIGNAL_TM_MAX ) ) {
             h->SignalData = NULL; /*ignore signal data on timeout signals*/
         }
         if ( ( h->Signal == iTransition->xSignal ) && ( h->SignalData == iTransition->signalData ) ) { /*table entry match*/
             if ( NULL != iTransition->guard ) {
-                /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
                 /*if signal-guard available, run the guard function*/
+                /*cstat -MISRAC2012-Rule-11.3 -CERT-EXP39-C_d*/
+                /*cppcheck-suppress [ misra-c2012-11.3, misra-c2012-11.7 ] */
                 transitionAllowed = iTransition->guard( (qSM_Handler_t)h ); /*cast allowed, struct layout compatible*/
                 /*cstat +MISRAC2012-Rule-11.3 +CERT-EXP39-C_d*/
             }

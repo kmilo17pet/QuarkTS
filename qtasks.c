@@ -77,7 +77,7 @@ qState_t qTask_Get_State( const qTask_t * const Task )
 #if ( Q_TASK_COUNT_CYCLES == 1 )
 qCycles_t qTask_Get_Cycles( const qTask_t * const Task )
 {
-    qCycles_t retValue = 0uL;
+    qCycles_t retValue = 0u;
 
     if ( NULL != Task ) {
         retValue = Task->qPrivate.cycles;

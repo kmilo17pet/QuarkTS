@@ -33,8 +33,8 @@
         #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greater o equal to 36.
     #endif
 
-    #define _qSTRINGIFY(x) #x
-    #define _qTOSTRING(x) _qSTRINGIFY(x)
+    #define _qSTRINGIFY(x)              #x
+    #define _qTOSTRING(x)               _qSTRINGIFY( x )
 
     #ifndef _QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
@@ -43,24 +43,20 @@
             #else
                 #define _QFCN    __func__
             #endif
-        #elif defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
-            #ifndef __PRETTY_FUNCTION__
-                #define _QFCN       ""
-            #else
-                #define _QFCN       __PRETTY_FUNCTION__
-            #endif
-        #elif defined(__DMC__) && (__DMC__ >= 0x810)
+        #elif defined( __GNUC__ ) || ( defined( __MWERKS__ ) && ( __MWERKS__ >= 0x3000 ) ) || ( defined( __ICC ) && ( __ICC >= 600 ) ) || defined( __ghs__ )
             #define _QFCN       __PRETTY_FUNCTION__
-        #elif defined(__FUNCSIG__)
+        #elif defined( __DMC__ ) && ( __DMC__ >= 0x810 )
+            #define _QFCN       __PRETTY_FUNCTION__
+        #elif defined( __FUNCSIG__ )
             #define _QFCN       __FUNCSIG__
-        #elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
+        #elif ( defined( __INTEL_COMPILER ) && ( __INTEL_COMPILER >= 600 ) ) || ( defined( __IBMCPP__ ) && ( __IBMCPP__ >= 500 ) )
             #define _QFCN       __FUNCTION__
-        #elif defined(__BORLANDC__) && (__BORLANDC__ >= 0x550)
+        #elif defined( __BORLANDC__ ) && ( __BORLANDC__ >= 0x550 )
             #define _QFCN       __FUNC__
-        #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)
+        #elif defined( __STDC_VERSION__ ) && ( __STDC_VERSION__ >= 199901 )
             #define _QFCN       __func__
-        #elif defined(__cplusplus) && (__cplusplus >= 201103)
-            #define _QFCN    __func__
+        #elif defined( __cplusplus ) && ( __cplusplus >= 201103 )
+            #define _QFCN       __func__
         #else /* failed to detect __func__ support.  */
             #define _QFCN       ( (char *)0 )
         #endif
