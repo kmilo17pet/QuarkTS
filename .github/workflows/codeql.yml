@@ -71,3 +71,42 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+
+  run-cpptest-make:
+    name: Analyze project with C/C++test
+    runs-on: ubuntu-latest
+    steps:
+
+    # Checks out your repository under $GITHUB_WORKSPACE, so that your job can access it.
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    # Builds your Make project using 'cpptesttrace' to collect input data for code analysis.
+    # Be sure 'cpptesttrace' is available on $PATH.
+    - name: Build project
+      run: cpptesttrace make 
+
+    # Runs code analysis with C/C++test.
+    - name: Run C/C++test
+      # Use the 'run-cpptest-action' GitHub action.
+      uses: parasoft/run-cpptest-action@1.0.1
+      # Uncomment if you are using C/C++test 2020.2 to generate a SARIF report:
+      # with:
+      #   reportFormat: xml,html,custom
+      #   additionalParams: '-property report.custom.extension=sarif -property report.custom.xsl.file=${PARASOFT_SARIF_XSL}'
+
+    # Uploads analysis results in the SARIF format, so that they are displayed as GitHub code scanning alerts.
+    - name: Upload results (SARIF)
+      if: always()
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: reports/report.sarif
+    
+    # Uploads an archive that includes all report files (.xml, .html, .sarif).
+    - name: Archive reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: CpptestReports
+        path: reports/*.*
