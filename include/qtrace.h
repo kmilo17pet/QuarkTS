@@ -416,7 +416,7 @@
         #define qDebug_Variable( v, mode )      qDebug_##mode( v )
     #else
         #define qTrace_Set_OutputFcn( fcn )
-        #define _QTRACE_KERNEL( msg, id, obj )
+        #define _qTrace_Kernel( msg, id, obj )
         #define qTrace()
         #define qTrace_Message( v )
         #define qTrace_String( v )
