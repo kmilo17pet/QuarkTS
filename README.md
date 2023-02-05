@@ -9,8 +9,6 @@
 [![CodeInspectorScore](https://api.codiga.io/project/27196/score/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
 [![CodeInspectorGrade](https://api.codiga.io/project/27196/status/svg)](https://frontend.code-inspector.com/project/27196/dashboard)
 [![codebeat badge](https://codebeat.co/badges/1f19102c-d660-4529-8cad-da5c7b578913)](https://codebeat.co/projects/github-com-kmilo17pet-quarkts-kernel)
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/context:cpp)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/TECREA/QuarkTS.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TECREA/QuarkTS/alerts/)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/TECREA/QuarkTS?logo=webpack)](https://github.com/TECREA/QuarkTS/releases)
 [![MISRAC2012](https://img.shields.io/badge/MISRAC2012-Compliant-blue.svg?logo=verizon)](https://www.misra.org.uk/)
 [![CERT](https://img.shields.io/badge/CERT-Compliant-blue.svg?logo=c)](https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards)
