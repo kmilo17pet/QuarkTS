@@ -1,0 +1,7 @@
+<map id="Inter&#45;Task communication" name="Inter&#45;Task communication">
+<area shape="rect" id="node1" href="$group__qeventflags.html" title="API interface for the built&#45;in&#45;task Event Flags." alt="" coords="401,5,491,31"/>
+<area shape="rect" id="node2" href="$group__qnot.html" title="API interface for task Notifications." alt="" coords="399,55,493,80"/>
+<area shape="rect" id="node3" href="$group__qos.html" title=" " alt="" coords="5,55,131,80"/>
+<area shape="rect" id="node4" title="Inter&#45;Task communication primitives : Queues, Notifications and Event&#45;flags." alt="" coords="179,55,351,80"/>
+<area shape="rect" id="node5" href="$group__qqueues.html" title="API interface to create and handle Queues." alt="" coords="413,104,479,129"/>
+</map>

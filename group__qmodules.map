@@ -1,0 +1,8 @@
+<map id="Kernel extensions" name="Kernel extensions">
+<area shape="rect" id="node1" href="$group__qatcli.html" title="API for the AT Command Line Interface extension." alt="" coords="177,5,360,31"/>
+<area shape="rect" id="node2" href="$group__qcoroutines.html" title="API interface for the Co&#45;Routines extension." alt="" coords="222,55,315,80"/>
+<area shape="rect" id="node3" href="$group__qfsm.html" title="API interface of the Finite State Machines (FSM) extension." alt="" coords="195,104,342,129"/>
+<area shape="rect" id="node4" href="$group__qmemmang.html" title="API interface for the Memory Management extension." alt="" coords="195,153,342,179"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,104,129,129"/>
+<area shape="rect" id="node6" href="$group__qstimers.html" title="API interface for the STimers extension." alt="" coords="209,203,328,228"/>
+</map>

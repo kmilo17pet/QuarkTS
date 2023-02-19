@@ -1,0 +1,10 @@
+<map id="Utilities" name="Utilities">
+<area shape="rect" id="node1" href="$group__qbsbuffers.html" title="An interrupt&#45;safe byte&#45;sized ring buffer interface." alt="" coords="138,5,265,31"/>
+<area shape="rect" id="node2" href="$group__qedgecheck.html" title="An interface to manage and simplify the value(with edge&#45;checking) of incoming digital&#45;signal groups." alt="" coords="134,55,269,95"/>
+<area shape="rect" id="node3" href="$group__qflm.html" title="General purpose Function&#45;like Macros." alt="" coords="120,120,283,145"/>
+<area shape="rect" id="node4" href="$group__qioutils.html" title="API for input/output utilities and safe string interfaces." alt="" coords="166,169,237,195"/>
+<area shape="rect" id="node5" href="$group__qlists.html" title="The provided list implementation uses a generic doubly&#45;linked approach in which each node,..." alt="" coords="128,219,275,259"/>
+<area shape="rect" id="node6" href="$group__qresponse.html" title="API to simplify the handling of requested responses from terminal interfaces." alt="" coords="139,284,264,309"/>
+<area shape="rect" id="node7" href="$group__qtrace.html" title="API interfaces to print out trace and debug messages." alt="" coords="174,333,229,359"/>
+<area shape="rect" id="node8" title=" " alt="" coords="5,169,72,195"/>
+</map>

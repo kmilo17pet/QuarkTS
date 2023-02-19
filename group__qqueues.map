@@ -1,0 +1,4 @@
+<map id="Queues" name="Queues">
+<area shape="rect" id="node1" href="$group__qpriv.html" title="Inter&#45;Task communication primitives : Queues, Notifications and Event&#45;flags." alt="" coords="5,5,177,31"/>
+<area shape="rect" id="node2" title="API interface to create and handle Queues." alt="" coords="225,5,292,31"/>
+</map>

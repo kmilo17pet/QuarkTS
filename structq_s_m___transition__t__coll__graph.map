@@ -1,0 +1,5 @@
+<map id="qSM_Transition_t" name="qSM_Transition_t">
+<area shape="rect" id="node1" title="This structure should be used to define an item for a state transition table." alt="" coords="63,95,187,121"/>
+<area shape="rect" id="node2" href="$structq_s_m___handler__t.html" title="The callback argument to handle the state&#45;machine dynamics and provide execution information...." alt="" coords="5,5,117,32"/>
+<area shape="rect" id="node3" href="$structq_s_m___state__t.html" title="A state object." alt="" coords="141,5,240,32"/>
+</map>

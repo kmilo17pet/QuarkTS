@@ -1,0 +1,4 @@
+<map id="Event Flags" name="Event Flags">
+<area shape="rect" id="node1" title="API interface for the built&#45;in&#45;task Event Flags." alt="" coords="225,5,316,31"/>
+<area shape="rect" id="node2" href="$group__qpriv.html" title="Inter&#45;Task communication primitives : Queues, Notifications and Event&#45;flags." alt="" coords="5,5,177,31"/>
+</map>

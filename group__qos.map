@@ -1,0 +1,9 @@
+<map id="Operative System" name="Operative System">
+<area shape="rect" id="node1" href="$group__qclock.html" title="Clock and time manipulation interface used by the entire OS." alt="" coords="237,5,292,31"/>
+<area shape="rect" id="node2" href="$group__qcritical.html" title="APIs to handle entry/exit actions in Critical sections." alt="" coords="233,55,296,80"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,129,131,155"/>
+<area shape="rect" id="node4" href="$group__qpriv.html" title="Inter&#45;Task communication primitives : Queues, Notifications and Event&#45;flags." alt="" coords="179,104,351,129"/>
+<area shape="rect" id="node5" href="$group__qtaskcreation.html" title="Kernel API interface to create/remove tasks and perform special OS operations." alt="" coords="197,153,332,179"/>
+<area shape="rect" id="node6" href="$group__qtaskmanip.html" title="API interface to manage tasks." alt="" coords="208,203,321,228"/>
+<area shape="rect" id="node7" href="$group__qtypes.html" title="Sets of types having specified widths used to design the entire OS. It also define macros directives ..." alt="" coords="201,252,328,277"/>
+</map>
