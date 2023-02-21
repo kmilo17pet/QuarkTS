@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quarkts_20os_0',['QuarkTS OS',['../index.html',1,'']]]
+  ['user_20manual_0',['User manual',['../index.html',1,'']]]
 ];

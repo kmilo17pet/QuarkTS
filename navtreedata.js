@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "OS", "index.html", [
-    [ "QuarkTS OS", "index.html", "index" ],
+    [ "User manual", "index.html", "index" ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
