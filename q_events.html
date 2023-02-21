@@ -322,9 +322,9 @@ Sending notifications</h3>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a>:</div>
 <div class="line">            <span class="comment">/*here, we only care the Falling Edge events*/</span></div>
-<div class="line">            <span class="keywordflow">if</span>( 0 == strcmp( e-&gt;<a class="code hl_variable" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">EventData</a>, <span class="stringliteral">&quot;ButtonFallingEdge&quot;</span> ) ) {</div>
+<div class="line">            <span class="keywordflow">if</span> ( 0 == strcmp( e-&gt;<a class="code hl_variable" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">EventData</a>, <span class="stringliteral">&quot;ButtonFallingEdge&quot;</span> ) ) {</div>
 <div class="line">                press_counter++; <span class="comment">/*count the button press*/</span></div>
-<div class="line">                <span class="keywordflow">if</span>( 3 == press_counter ) { <span class="comment">/*after 3 presses*/</span></div>
+<div class="line">                <span class="keywordflow">if</span> ( 3 == press_counter ) { <span class="comment">/*after 3 presses*/</span></div>
 <div class="line">                    <span class="comment">/*send the notification of 3 presses to taskB*/</span></div>
 <div class="line">                    <a class="code hl_function" href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">qTask_Notification_Send</a>( &amp;taskB, app_events[3] );</div>
 <div class="line">                    press_counter = 0;</div>
