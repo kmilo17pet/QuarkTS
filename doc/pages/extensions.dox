@@ -250,7 +250,7 @@
 *
 *  @code{.c}
 *  qSM_Status_t ExampleState_Callback ( qSM_Handler_t h ) {
-*      switch ( h ) {
+*      switch ( h->Signal ) {
 *          case QSM_SIGNAL_START:
 *              break;
 *          case QSM_SIGNAL_ENTRY:
@@ -321,7 +321,7 @@
 * thus, the callback should be written as:
 *
 *  @code{.c}
-*  void SurroundingCallback_Example( qSM_Handler_t m ) {
+*  void SurroundingCallback_Example( qSM_Handler_t h ) {
 *      switch ( h->Status ) {
 *          case qSM_STATUS_BEFORE_ANY:
 *              /* TODO: before any code */
@@ -457,7 +457,7 @@
 *              if ( qSTimer_Expired( &timeout) ) { /*check if the timeout expired*/
 *                  h->NextState = &State_LEDOff;
 *              }
-*              if ( BUTTON_PRESSED  {
+*              if ( BUTTON_PRESSED ) {
 *                  h->NextState = &State_LEDBlink;
 *              }
 *              break;
@@ -686,8 +686,8 @@
 *  @code{.c}
 *  /*define the FSM application event-signals*/
 *  #define SIGNAL_BUTTON_PRESSED   ( (qSM_SigId_t)1 )
-*  #define SIGNAL_TIMEOUT          ( QSM_SIGNAL_TIMEOUT(0) )
-*  #define SIGNAL_BLINK            ( QSM_SIGNAL_TIMEOUT(1) )
+*  #define SIGNAL_TIMEOUT          ( QSM_SIGNAL_TIMEOUT( 0 ) )
+*  #define SIGNAL_BLINK            ( QSM_SIGNAL_TIMEOUT( 1 ) )
 *  
 *  qTask_t LED_Task; /*The task node*/
 *  qSM_t LED_FSM; /*The state-machine handler*/
@@ -713,12 +713,12 @@
 *  
 *  /*define the timeout specifications */
 *  qSM_TimeoutStateDefinition_t LedOn_Timeouts[] = {
-*      { 10.0f,  QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
+*      { 10.0f,  QSM_TSOPT_INDEX( 0 ) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
 *  };
 *  
 *  qSM_TimeoutStateDefinition_t LEDBlink_timeouts[] = {
-*      { 10.0f,  QSM_TSOPT_INDEX(0) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
-*      { 0.5f,   QSM_TSOPT_INDEX(1) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT | QSM_TSOPT_PERIODIC  }
+*      { 10.0f,  QSM_TSOPT_INDEX( 0 ) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT  },
+*      { 0.5f,   QSM_TSOPT_INDEX( 1 ) | QSM_TSOPT_SET_ENTRY | QSM_TSOPT_RST_EXIT | QSM_TSOPT_PERIODIC  }
 *  };
 *  @endcode 
 *
@@ -1210,7 +1210,7 @@
 *           */
 *          qSTimer_Set( &timeout, TIMEOUT_TIME );
 *          qCR_WaitUntil( PacketACK_Received() || qSTimer_Expired(&timeout));
-*      }qCR_End;
+*      } qCR_End;
 *  }
 *  /*===================================================================*/
 *  void Receiver_Task( qEvent_t e ) {
@@ -1274,8 +1274,8 @@
 *  #include "QuarkTS.h"
 *  #include "AppLibrary.h"
 *  
-*  #define NUM_ITEMS 32
-*  #define BUFSIZE 8
+*  #define NUM_ITEMS    ( 32 )
+*  #define BUFSIZE      ( 8 )
 *  
 *  qTask_t ProducerTask, ConsumerTask;
 *  qCR_Semaphore_t mutex, full, empty;
@@ -1284,7 +1284,7 @@
 *      static int produced;
 *      
 *      qCR_Begin {
-*          for ( produced = 0; produced < NUM_ITEMS; ++produced ) {
+*          for ( produced = 0 ; produced < NUM_ITEMS ; ++produced ) {
 *              qCR_SemWait( &full );
 *              qCR_SemWait( &mutex );
 *      
@@ -1300,7 +1300,7 @@
 *      static int consumed;
 *      
 *      qCR_Begin {
-*          for ( consumed = 0; consumed < NUM_ITEMS; ++consumed ) {
+*          for ( consumed = 0 ; consumed < NUM_ITEMS ; ++consumed ) {
 *              qCR_SemWait( &empty );
 *              qCR_SemWait( &mutex );
 *      
@@ -1317,8 +1317,8 @@
 *  /*===================================================================*/
 *  int main(void) {
 *      HAL_Init();
-*    
-*      qOS_Setup( HAL_GetTick, 0.001, IdleTask_Callback );
+* 
+*      qOS_Setup( HAL_GetTick, 0.001f, IdleTask_Callback );
 *      qCR_SemInit( &empty, 0 );
 *      qCR_SemInit( &full, BUFSIZE );
 *      qCR_SemInit( &mutex, 1 );
@@ -1541,17 +1541,19 @@
 *                   arg1 = h->GetArgInt( 1 ); /*get the first argument as integer*/
 *                   if ( h->NumArgs > 1 ) {
 *                       arg2 = h->GetArgFlt( 2 ); /*get the second argument as float*/
-*                   }
+*                       sprintf( h->Output, "arg1 = %d arg2 = %f", arg1, arg2 );
+*                       Response = qATCLI_NORESPONSE;
 *              }
-*              sprintf( h->Output, "arg1 = %d arg2 = %f", arg1, arg2 );
-*              Response = qATCLI_NORESPONSE;
+*              else {
+*                   Response = qATCLI_ERROR;
+*              }
 *              break;
 *          case qATCLI_CMDTYPE_TEST:
 *              h->puts( "inmediate message" );
 *              Response = qATCLI_OK;
 *              break;
 *          case qATCLI_CMDTYPE_READ:
-*              strcpy( h->Output , "Test message after the callback");
+*              strcpy( h->Output , "Test message after the callback" );
 *              Response = qATCLI_OK;
 *              break;
 *          case qATCLI_CMDTYPE_ACT:
@@ -1865,7 +1867,7 @@
 *      char area_another_heap[ 512 ] = { 0 };
 *      qTrace_Set_OutputFcn( OutPutChar );
 *      /*Create a memory heap*/
-*      qMemMang_Pool_Setup( &another_heap, area_another_heap, 512);
+*      qMemMang_Pool_Setup( &another_heap, area_another_heap, 512 );
 *      qOS_Setup( HAL_GetTick, 0.001f, IdleTaskCallback );
 *      qOS_Add_Task( &taskA, taskA_Callback, qLowest_Priority, 0.1f, qPeriodic, qEnabled, NULL );
 *      qOS_Run();

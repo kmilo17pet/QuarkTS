@@ -306,9 +306,9 @@
 *              break;
 *          case byNotificationQueued:
 *              /*here, we only care the Falling Edge events*/
-*              if( 0 == strcmp( e->EventData, "ButtonFallingEdge" ) ) {
+*              if ( 0 == strcmp( e->EventData, "ButtonFallingEdge" ) ) {
 *                  press_counter++; /*count the button press*/
-*                  if( 3 == press_counter ) { /*after 3 presses*/
+*                  if ( 3 == press_counter ) { /*after 3 presses*/
 *                      /*send the notification of 3 presses to taskB*/
 *                      qTask_Notification_Send( &taskB, app_events[3] );
 *                      press_counter = 0;
