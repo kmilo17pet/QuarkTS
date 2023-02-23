@@ -35,7 +35,7 @@ var NAVTREE =
     ] ],
     [ "Foundations", "q_foundations.html", [
       [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
-      [ "Timming Approach", "q_foundations.html#q_timmingapproach", null ],
+      [ "Timing Approach", "q_foundations.html#q_timmingapproach", null ],
       [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
       [ "Tasks", "q_foundations.html#q_tasks", [
         [ "The idle task", "q_foundations.html#q_idletask", null ],
