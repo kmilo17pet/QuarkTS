@@ -1192,7 +1192,7 @@
 * being performed after the Co-Routine resumes:
 *
 *  @code{.c}
-*  qCR_Do{
+*  qCR_Do {
 *      /* Job : a set of instructions*/
 *  } qCR_Until( Condition );
 *  @endcode

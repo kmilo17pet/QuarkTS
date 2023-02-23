@@ -1,11 +1,11 @@
-/*! @page q_background Background
+/*! @page q_background Overview
 * @tableofcontents
 *
 * @section q_about About the OS
 * QuarkTS is an open-source operating system that is built on top of a 
-* <em>cooperative quasistatic scheduler</em>. Its simplified kernel implements a 
-* specialized round-robin scheme using a linked-chain approach and an 
-* event-queue to provide true FIFO priority scheduling.
+* <em>RTC cooperative quasistatic scheduler</em>. Its simplified kernel 
+* implements a specialized round-robin scheme using a linked-chain approach and 
+* an event-queue to provide true FIFO priority scheduling.
 * 
 * <b> @b Why cooperative? </b>
 *
@@ -142,6 +142,32 @@
 * internally, the application writer can create an object in run-time using the
 * safe-heap implementation provided by the @ref q_memmang extension. Of course, 
 * additional checks must be performed to keep the solution safe.
+*
+* @section rtcmodel RTC(Run To Completion) model
+* In this pattern each task runs until it finishes or explicitly yields control 
+* back to the scheduler. Events are serviced by the kernel in the scheduler 
+* loop. If an event is available, it is posted to the task based on 
+* the scheduling @ref q_osrules "rules", and then the dispatcher triggers the 
+* task. The task executes the actions associated with that event and then 
+* returns back to the scheduler.
+* 
+* This pattern means that in the absence of exceptions or asynchronous 
+* destruction of the task execution, a pending event occurrence is dispatched 
+* only after the processing of the previous occurrence is completed, and a 
+* stable task-scheme configuration has been reached. That is, an event 
+* occurrence will never be dispatched while the task execution is busy 
+* processing the previous one. This behavioral paradigm was chosen to avoid 
+* complications arising from concurrency conflicts that may occur when a task 
+* tries to respond to multiple concurrent or overlapping events. This also 
+* provides better power efficiency. In the absence of events, the developer 
+* can use CPU low-power modes and make the core active only during the 
+* execution of an RTC step.
+*
+* The provided features enables you to implement task procedures that does not 
+* have to execute all the way down to the last line of code. Instead execution 
+* can be break down into different entities by using @ref q_fsm or by using 
+* @ref q_qcoroutines where the procedure execution can be suspended and resumed
+* at defined locations.
 *
 * @section q_getos Getting the OS
 * Download the latest release from the official repository :
@@ -302,8 +328,9 @@
 *  @endcode
 *
 * @note All tasks in QuarkTS must ensure their completion to return the CPU
-* control back to the scheduler, otherwise, the scheduler will hold the 
-* execution state for that task, preventing the activation of other tasks.
+* control back to the scheduler to follow the @rtcmodel, otherwise, the 
+* scheduler will hold the execution state for that task, preventing the 
+* activation of other tasks.
 *
 * @subsection q_idletask The idle task
 * Its a special task loaded by the OS scheduler when there is nothing else to 
