@@ -50,7 +50,7 @@
 * For more details, see the <a style="font-weight:bold" href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html">MIT License</a> line by line.
 * 
 *
-* @subsection q_hardwarecompatibility Hardware compatibility
+* @section q_hardwarecompatibility Hardware compatibility
 * QuarkTS has no direct hardware dependencies, so it is portable to many 
 * platforms and C compilers. 
 * 
@@ -61,7 +61,7 @@
 * - HCS12, ColdFire, MSP430
 * - PIC (PIC24, dsPIC, 32MX, 32MZ)
 *
-* @subsection q_codstandard Development process and coding standard
+* @section q_codstandard Development process and coding standard
 * QuarkTS is developed using a formal and rigorous process framed in compliance
 * of the <a style="font-weight:bold" href="https://www.misra.org.uk/">MISRA C 2012</a>
 * and <a style="font-weight:bold" href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT coding standard</a>
@@ -105,7 +105,7 @@
 * value indicates a successful procedure and @c qFalse - @c 0u, the failure of 
 * the procedure
 * 
-* @subsection q_memusage Memory usage
+* @section q_memusage Memory usage
 * As a quasi-static scheduler is implemented here, dynamic scheduling is not 
 * required and the assignment of tasks must be done before program execution 
 * begins. The kernel is designed to allow unlimited tasks and kernel objects, 
@@ -138,48 +138,4 @@
 * </table>
 * </center>
 * 
-* @section q_getos Getting the OS
-* Download the latest release from the official repository :
-*
-* <a style="font-weight:bold" href="https://github.com/kmilo17pet/QuarkTS/releases">QuarkTS Releases</a>
-* 
-* Unpack the release package and add the sources files to your project.
-*
-* @subsection q_cloneos Cloning QuarkTS
-* You only need to clone the @c kernel branch as follows:
-*
-* @code{.sh}
-* git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git
-* @endcode
-*
-* @subsection q_submodule Including QuarkTS as a git sub-module
-* Add the OS kernel as a submodule to your project:
-*
-* @code{.sh}
-* git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git <destination path>
-* @endcode
-*
-* Then, run the initialize command to fetch the code for the first time:
-*
-* @code{.sh}
-* git submodule update --init
-* @endcode
-*
-* To update the submodule to the latest just run:
-*
-* @code{.sh}
-* git submodule update --remote
-* @endcode
-*
-* @subsection q_getqconfig Get a copy of the OS configuration file
-* The file @c qconfig.h provides specific @ref q_configmacros to customize 
-* several aspects of OS. In order to build your solution with QuarkTS, you should
-* provided your own copy of this configuration file. You can obtain a copy
-* with the default configuration by issuing the following command:
-*
-* @code{.sh}
-* curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
-* @endcode
-*
-*
 */
