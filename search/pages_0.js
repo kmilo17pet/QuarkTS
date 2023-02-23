@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['events_0',['Events',['../q_events.html',1,'index']]],
-  ['extensions_1',['Extensions',['../q_extensions.html',1,'index']]]
+  ['_22getting_20started_22_0',['&quot;Getting Started&quot;',['../q_gettingstarted.html',1,'index']]]
 ];

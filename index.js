@@ -2,16 +2,11 @@ var index =
 [
     [ "Overview", "q_background.html", [
       [ "About the OS", "q_background.html#q_about", [
-        [ "License", "q_background.html#q_license", null ],
-        [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
-        [ "Development process and coding standard", "q_background.html#q_codstandard", null ],
-        [ "Memory usage", "q_background.html#q_memusage", null ]
+        [ "License", "q_background.html#q_license", null ]
       ] ],
-      [ "Getting the OS", "q_background.html#q_getos", [
-        [ "Cloning QuarkTS", "q_background.html#q_cloneos", null ],
-        [ "Including QuarkTS as a git sub-module", "q_background.html#q_submodule", null ],
-        [ "Get a copy of the OS configuration file", "q_background.html#q_getqconfig", null ]
-      ] ]
+      [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
+      [ "Development process and coding standard", "q_background.html#q_codstandard", null ],
+      [ "Memory usage", "q_background.html#q_memusage", null ]
     ] ],
     [ "Foundations", "q_foundations.html", [
       [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
@@ -32,13 +27,20 @@ var index =
           [ "Additional operational states", "q_foundations.html#q_os_operational_states", null ]
         ] ]
       ] ],
-      [ "Getting started", "q_foundations.html#q_gettingstarted", null ],
-      [ "Critical sections", "q_foundations.html#q_critical", null ],
-      [ "Demonstrative examples", "q_foundations.html#q_os_demo", [
-        [ "A simple scheduling", "q_foundations.html#q_os_example1", null ],
-        [ "Using the task argument", "q_foundations.html#q_os_example2", null ]
-      ] ],
       [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
+    ] ],
+    [ "\"Getting Started\"", "q_gettingstarted.html", [
+      [ "Getting the OS", "q_gettingstarted.html#q_getos", [
+        [ "Cloning QuarkTS", "q_gettingstarted.html#q_cloneos", null ],
+        [ "Including QuarkTS as a git sub-module", "q_gettingstarted.html#q_submodule", null ],
+        [ "Get a copy of the OS configuration file", "q_gettingstarted.html#q_getqconfig", null ]
+      ] ],
+      [ "Getting started", "q_gettingstarted.html#q_gettingstarted", null ],
+      [ "Critical sections", "q_gettingstarted.html#q_critical", null ],
+      [ "Two simple demonstrative examples", "q_gettingstarted.html#q_os_demo", [
+        [ "A simple scheduling", "q_gettingstarted.html#q_os_example1", null ],
+        [ "Using the task argument", "q_gettingstarted.html#q_os_example2", null ]
+      ] ]
     ] ],
     [ "Events", "q_events.html", [
       [ "Retrieving the event data", "q_events.html#eventdata", null ],

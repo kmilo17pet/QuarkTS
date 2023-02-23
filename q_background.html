@@ -131,16 +131,11 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#q_about">About the OS</a><ul><li class="level2"><a href="#q_license">License</a></li>
-<li class="level2"><a href="#q_hardwarecompatibility">Hardware compatibility</a></li>
-<li class="level2"><a href="#q_codstandard">Development process and coding standard</a></li>
-<li class="level2"><a href="#q_memusage">Memory usage</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#q_getos">Getting the OS</a><ul><li class="level2"><a href="#q_cloneos">Cloning QuarkTS</a></li>
-<li class="level2"><a href="#q_submodule">Including QuarkTS as a git sub-module</a></li>
-<li class="level2"><a href="#q_getqconfig">Get a copy of the OS configuration file</a></li>
-</ul>
-</li>
+<li class="level1"><a href="#q_hardwarecompatibility">Hardware compatibility</a></li>
+<li class="level1"><a href="#q_codstandard">Development process and coding standard</a></li>
+<li class="level1"><a href="#q_memusage">Memory usage</a></li>
 </ul>
 </div>
 <div class="textblock"><h1><a class="anchor" id="q_about"></a>
@@ -156,8 +151,8 @@ About the OS</h1>
 License</h2>
 <p >QuarkTS is licensed under the MIT License. You may copy, distribute and modify the software without any restriction, including without limitation the rights to to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the OS, and to permit persons to whom the OS is furnished to do so. This OS is provided as is in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE .</p>
 <p >For more details, see the <a href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html" style="font-weight:bold">MIT License</a> line by line.</p>
-<h2><a class="anchor" id="q_hardwarecompatibility"></a>
-Hardware compatibility</h2>
+<h1><a class="anchor" id="q_hardwarecompatibility"></a>
+Hardware compatibility</h1>
 <p >QuarkTS has no direct hardware dependencies, so it is portable to many platforms and C compilers.</p>
 <p >The following cores have been powered with QuarkTS successfully:</p>
 <ul>
@@ -166,8 +161,8 @@ Hardware compatibility</h2>
 <li>HCS12, ColdFire, MSP430</li>
 <li>PIC (PIC24, dsPIC, 32MX, 32MZ)</li>
 </ul>
-<h2><a class="anchor" id="q_codstandard"></a>
-Development process and coding standard</h2>
+<h1><a class="anchor" id="q_codstandard"></a>
+Development process and coding standard</h1>
 <p >QuarkTS is developed using a formal and rigorous process framed in compliance of the <a href="https://www.misra.org.uk/" style="font-weight:bold">MISRA C 2012</a> and <a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard" style="font-weight:bold">SEI CERT coding standard</a> guidelines and complemented with multiple static-analysis checks targered to safe critical applications.</p>
 <p >Simply using QuarkTS in an application, does not mean developers can make a claim related to the development process and compliance of the OS to any requirements or product specification, without first, following a recognized system wide conformance verification process. Conformance evidence must then be presented, audited and accepted by a recognized and relevant independent assessment organization. Without undergoing this process of due diligence, no claim can be made as to the suitability of QuarkTS to be used in any safety or otherwise commercially critical application.</p>
 <p >Besides the previous information, the OS sets the following clarifications regarding coding policies and naming convention:</p>
@@ -182,8 +177,8 @@ Development process and coding standard</h2>
 <li>Other than the pre-fix, most macros used for constants are written in all upper case.</li>
 <li>Almost all functions returns a boolean value of type <code>qBool_t</code>, where a <code>qTrue</code> - <code>1u</code> value indicates a successful procedure and <code>qFalse</code> - <code>0u</code>, the failure of the procedure</li>
 </ul>
-<h2><a class="anchor" id="q_memusage"></a>
-Memory usage</h2>
+<h1><a class="anchor" id="q_memusage"></a>
+Memory usage</h1>
 <p >As a quasi-static scheduler is implemented here, dynamic scheduling is not required and the assignment of tasks must be done before program execution begins. The kernel is designed to allow unlimited tasks and kernel objects, but of course, the whole application will be constrained by the memory specifications of the embedded system.</p>
 <p >The kernel's memory footprint can be scaled down to contain only the features required for your application, typically 3.7 KBytes of code space and less than 1 KByte of data space.</p>
 <center> <a class="anchor" id="multi_row"></a>
@@ -222,28 +217,7 @@ Memory usage</h2>
 <tr>
 <td>Remaining utilities </td><td>2980 </td></tr>
 </table>
-</center><h1><a class="anchor" id="q_getos"></a>
-Getting the OS</h1>
-<p >Download the latest release from the official repository :</p>
-<p ><a href="https://github.com/kmilo17pet/QuarkTS/releases" style="font-weight:bold">QuarkTS Releases</a></p>
-<p >Unpack the release package and add the sources files to your project.</p>
-<h2><a class="anchor" id="q_cloneos"></a>
-Cloning QuarkTS</h2>
-<p >You only need to clone the <code>kernel</code> branch as follows:</p>
-<div class="fragment"><div class="line">git clone -b kernel https://github.com/kmilo17pet/QuarkTS.git</div>
-</div><!-- fragment --><h2><a class="anchor" id="q_submodule"></a>
-Including QuarkTS as a git sub-module</h2>
-<p >Add the OS kernel as a submodule to your project:</p>
-<div class="fragment"><div class="line">git submodule add -b kernel https://github.com/kmilo17pet/QuarkTS.git &lt;destination path&gt;</div>
-</div><!-- fragment --><p >Then, run the initialize command to fetch the code for the first time:</p>
-<div class="fragment"><div class="line">git submodule update --init</div>
-</div><!-- fragment --><p >To update the submodule to the latest just run:</p>
-<div class="fragment"><div class="line">git submodule update --remote</div>
-</div><!-- fragment --><h2><a class="anchor" id="q_getqconfig"></a>
-Get a copy of the OS configuration file</h2>
-<p >The file <code>qconfig.h</code> provides specific <a class="el" href="q_foundations.html#q_configmacros">Configuration macros</a> to customize several aspects of OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
-<div class="fragment"><div class="line">curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o &lt;destination path&gt;/qconfig.h</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+</center> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
