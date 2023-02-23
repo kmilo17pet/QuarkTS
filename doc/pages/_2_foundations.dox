@@ -27,7 +27,7 @@
 * @ref q_qcoroutines where the procedure execution can be suspended and resumed
 * at defined locations.
 *
-* @section q_timmingapproach Timming Approach
+* @section q_timmingapproach Timing Approach
 * The kernel implements a <a style="font-weight:bold" href="https://en.wikipedia.org/wiki/Time-triggered_architecture">Time-Triggered Architecture (TTA)</a>
 * , in which the tasks are triggered by comparing the corresponding task-time 
 * with a reference clock. The reference clock must be real-time and follow a
@@ -125,7 +125,7 @@
 * <em>Task node illustration</em>
 * </center>
 *
-* Each task performs its activities via a @a callback function and each of them is 
+* Each task performs its activities via a @a callback function and each of them is
 * responsible for supporting cooperative multitasking by being “good neighbors”,
 * i.e., running their callback methods quickly in a non-blocking way and 
 * releasing control back to the scheduler as soon as possible (returning).
@@ -499,7 +499,7 @@ State Machine (FSM) extension.
 * - @c Q_RESPONSE_HANDLER : @a Default: @c 1(enabled). Used to enable or disable
 * the response handler functionality.
 * - @c Q_EDGE_CHECK_IOGROUPS : @a Default: @c 1(enabled). Used to enable or 
-* disable the edge check functionality for I/O groups .
+* disable the edge check functionality for I/O groups.
 * - @c Q_BYTE_SIZED_BUFFERS : @a Default: @c 1(enabled). Used to enable or 
 * disable the usage of Byte-sized buffers.
 * - @c Q_USE_STDINT_H : @a Default: @c 1(enabled).  Use the @c stdint.h header 
