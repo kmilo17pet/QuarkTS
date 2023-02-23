@@ -27,12 +27,45 @@ var NAVTREE =
   [ "OS", "index.html", [
     [ "User manual", "index.html", null ],
     [ "Overview", "q_background.html", [
-      [ "About the OS", "q_background.html#q_about", [
-        [ "License", "q_background.html#q_license", null ]
-      ] ],
+      [ "About the OS", "q_background.html#q_about", null ],
+      [ "License", "q_background.html#q_license", null ],
       [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
       [ "Development process and coding standard", "q_background.html#q_codstandard", null ],
       [ "Memory usage", "q_background.html#q_memusage", null ]
+    ] ],
+    [ "Foundations", "q_foundations.html", [
+      [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
+      [ "Timming Approach", "q_foundations.html#q_timmingapproach", null ],
+      [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
+      [ "Tasks", "q_foundations.html#q_tasks", [
+        [ "The idle task", "q_foundations.html#q_idletask", null ],
+        [ "Adding tasks to the scheme", "q_foundations.html#q_addtasks", null ],
+        [ "Event-triggered tasks", "q_foundations.html#q_eventtasks", null ],
+        [ "Removing a task", "q_foundations.html#q_removetask", null ]
+      ] ],
+      [ "Running the OS", "q_foundations.html#q_runos", [
+        [ "Releasing the scheduler", "q_foundations.html#q_releasescheduler", null ]
+      ] ],
+      [ "Global states and scheduling rules", "q_foundations.html#q_globalstates", [
+        [ "Rules", "q_foundations.html#q_osrules", [
+          [ "Event precedence", "q_foundations.html#q_os_evenprecedence", null ],
+          [ "Additional operational states", "q_foundations.html#q_os_operational_states", null ]
+        ] ]
+      ] ],
+      [ "Critical sections", "q_foundations.html#q_critical", null ],
+      [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
+    ] ],
+    [ "Getting-Started", "q_gettingstarted.html", [
+      [ "Getting the OS", "q_gettingstarted.html#q_getos", [
+        [ "Cloning QuarkTS", "q_gettingstarted.html#q_cloneos", null ],
+        [ "Including QuarkTS as a git sub-module", "q_gettingstarted.html#q_submodule", null ],
+        [ "Get a copy of the OS configuration file", "q_gettingstarted.html#q_getqconfig", null ]
+      ] ],
+      [ "First steps", "q_gettingstarted.html#q_firststeps", null ],
+      [ "Two simple demonstrative examples", "q_gettingstarted.html#q_os_demo", [
+        [ "A simple scheduling", "q_gettingstarted.html#q_os_example1", null ],
+        [ "Using the task argument", "q_gettingstarted.html#q_os_example2", null ]
+      ] ]
     ] ],
     [ "Events", "q_events.html", [
       [ "Retrieving the event data", "q_events.html#eventdata", null ],
@@ -106,40 +139,6 @@ var NAVTREE =
         [ "Viewing variables", "q_extensions.html#q_trace_viewvars", null ],
         [ "Viewing a memory block", "q_extensions.html#q_trace_mblock", null ],
         [ "Usage", "q_extensions.html#q_trace_usage", null ]
-      ] ]
-    ] ],
-    [ "Foundations", "q_foundations.html", [
-      [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
-      [ "Timming Approach", "q_foundations.html#q_timmingapproach", null ],
-      [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
-      [ "Tasks", "q_foundations.html#q_tasks", [
-        [ "The idle task", "q_foundations.html#q_idletask", null ],
-        [ "Adding tasks to the scheme", "q_foundations.html#q_addtasks", null ],
-        [ "Event-triggered tasks", "q_foundations.html#q_eventtasks", null ],
-        [ "Removing a task", "q_foundations.html#q_removetask", null ]
-      ] ],
-      [ "Running the OS", "q_foundations.html#q_runos", [
-        [ "Releasing the scheduler", "q_foundations.html#q_releasescheduler", null ]
-      ] ],
-      [ "Global states and scheduling rules", "q_foundations.html#q_globalstates", [
-        [ "Rules", "q_foundations.html#q_osrules", [
-          [ "Event precedence", "q_foundations.html#q_os_evenprecedence", null ],
-          [ "Additional operational states", "q_foundations.html#q_os_operational_states", null ]
-        ] ]
-      ] ],
-      [ "Critical sections", "q_foundations.html#q_critical", null ],
-      [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
-    ] ],
-    [ "Getting-Started", "q_gettingstarted.html", [
-      [ "Getting the OS", "q_gettingstarted.html#q_getos", [
-        [ "Cloning QuarkTS", "q_gettingstarted.html#q_cloneos", null ],
-        [ "Including QuarkTS as a git sub-module", "q_gettingstarted.html#q_submodule", null ],
-        [ "Get a copy of the OS configuration file", "q_gettingstarted.html#q_getqconfig", null ]
-      ] ],
-      [ "Getting started", "q_gettingstarted.html#q_gettingstarted", null ],
-      [ "Two simple demonstrative examples", "q_gettingstarted.html#q_os_demo", [
-        [ "A simple scheduling", "q_gettingstarted.html#q_os_example1", null ],
-        [ "Using the task argument", "q_gettingstarted.html#q_os_example2", null ]
       ] ]
     ] ],
     [ "Modules", "modules.html", "modules" ],

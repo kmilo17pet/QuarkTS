@@ -130,9 +130,8 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#q_about">About the OS</a><ul><li class="level2"><a href="#q_license">License</a></li>
-</ul>
-</li>
+<ul><li class="level1"><a href="#q_about">About the OS</a></li>
+<li class="level1"><a href="#q_license">License</a></li>
 <li class="level1"><a href="#q_hardwarecompatibility">Hardware compatibility</a></li>
 <li class="level1"><a href="#q_codstandard">Development process and coding standard</a></li>
 <li class="level1"><a href="#q_memusage">Memory usage</a></li>
@@ -147,8 +146,8 @@ About the OS</h1>
 <p >The design goal of QuarkTS is to achieve its stated functionality using a small, simple, and (most importantly) robust implementation to make it suitable on resource constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. In addition with a <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> support, <a class="el" href="q_extensions.html#q_qcoroutines">Co-Routines</a>, time control and the inter-task communication primitives, QuarkTS provides a modern environment to build stable and predictable event-driven multitasking embedded software. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things</p>
 <p ><b>Why should I choose it?</b></p>
 <p >QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example FreeRTOS or MicroC/OS-II, in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer, but want to avoid the space and complexity of a full RTOS, but keeping the taste of a robust and safe one.</p>
-<h2><a class="anchor" id="q_license"></a>
-License</h2>
+<h1><a class="anchor" id="q_license"></a>
+License</h1>
 <p >QuarkTS is licensed under the MIT License. You may copy, distribute and modify the software without any restriction, including without limitation the rights to to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the OS, and to permit persons to whom the OS is furnished to do so. This OS is provided as is in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE .</p>
 <p >For more details, see the <a href="https://writing.kemitchell.com/2016/09/21/MIT-License-Line-by-Line.html" style="font-weight:bold">MIT License</a> line by line.</p>
 <h1><a class="anchor" id="q_hardwarecompatibility"></a>

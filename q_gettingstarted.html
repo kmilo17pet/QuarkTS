@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('q_gettingstarted.html',''); initResiza
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Getting started </div></div>
+  <div class="headertitle"><div class="title">Getting-Started </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('q_gettingstarted.html',''); initResiza
 <li class="level2"><a href="#q_getqconfig">Get a copy of the OS configuration file</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#q_gettingstarted">Getting started</a></li>
+<li class="level1"><a href="#q_firststeps">First steps</a></li>
 <li class="level1"><a href="#q_os_demo">Two simple demonstrative examples</a><ul><li class="level2"><a href="#q_os_example1">A simple scheduling</a></li>
 <li class="level2"><a href="#q_os_example2">Using the task argument</a></li>
 </ul>
@@ -163,8 +163,8 @@ Including QuarkTS as a git sub-module</h2>
 Get a copy of the OS configuration file</h2>
 <p >The file <code>qconfig.h</code> provides specific <a class="el" href="q_foundations.html#q_configmacros">Configuration macros</a> to customize several aspects of OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
 <div class="fragment"><div class="line">curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o &lt;destination path&gt;/qconfig.h</div>
-</div><!-- fragment --><h1><a class="anchor" id="q_gettingstarted"></a>
-Getting started</h1>
+</div><!-- fragment --><h1><a class="anchor" id="q_firststeps"></a>
+First steps</h1>
 <p >Obtain a copy of the latest OS as described here: <a class="el" href="q_gettingstarted.html#q_getos">Getting the OS</a> . Include the the source files to your project. Also, make sure you add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
 <p >File <code>main.c</code> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">// 1ms</span></div>
