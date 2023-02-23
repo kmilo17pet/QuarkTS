@@ -17,8 +17,7 @@
 *
 * QuarkTS also complies with most of the Motor Industry Software Reliability 
 * Association (MISRA) MISRA-C:2012 and the SEI CERT C coding standards in order 
-* to provide a safe, reliable, and secure foundation for any MCU-based embedded
-* application.
+* to provide a safe, reliable, and secure foundation for embedded applications.
 *
 * The documentation is organized as follows:
 * - @ref q_background "Overview"
