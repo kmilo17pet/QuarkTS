@@ -27,6 +27,7 @@
 *
 * The documentation is organized as follows:
 * - @subpage q_background "Overview"
+* - @subpage q_foundations "Foundations"
 * - @subpage q_events "Events"
 * - @subpage q_extensions "Extensions"
 * - \htmlonly<a href="modules.html">API Reference(Modules)</a>\endhtmlonly \latexonly\hyperlink{...}\endlatexonly
