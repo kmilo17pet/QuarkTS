@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['clock_0',['Clock',['../group__qclock.html',1,'']]],
-  ['co_2droutines_1',['Co-Routines',['../group__qcoroutines.html',1,'']]],
-  ['command_2',['Command',['../structq_a_t_c_l_i___handler__t.html#aa4dad4783e4d65b4cb04e96e3ccc8ed5',1,'qATCLI_Handler_t']]],
-  ['critical_3',['Critical',['../group__qcritical.html',1,'']]]
+  ['data_0',['Data',['../structq_a_t_c_l_i___handler__t.html#a93462051e04a57e2459e6a2ab149a01c',1,'qATCLI_Handler_t::Data()'],['../structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088',1,'qSM_Handler_t::Data()']]]
 ];

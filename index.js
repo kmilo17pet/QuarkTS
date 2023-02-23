@@ -27,16 +27,16 @@ var index =
           [ "Additional operational states", "q_foundations.html#q_os_operational_states", null ]
         ] ]
       ] ],
+      [ "Critical sections", "q_foundations.html#q_critical", null ],
       [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
     ] ],
-    [ "\"Getting Started\"", "q_gettingstarted.html", [
+    [ "Getting-Started", "q_gettingstarted.html", [
       [ "Getting the OS", "q_gettingstarted.html#q_getos", [
         [ "Cloning QuarkTS", "q_gettingstarted.html#q_cloneos", null ],
         [ "Including QuarkTS as a git sub-module", "q_gettingstarted.html#q_submodule", null ],
         [ "Get a copy of the OS configuration file", "q_gettingstarted.html#q_getqconfig", null ]
       ] ],
       [ "Getting started", "q_gettingstarted.html#q_gettingstarted", null ],
-      [ "Critical sections", "q_gettingstarted.html#q_critical", null ],
       [ "Two simple demonstrative examples", "q_gettingstarted.html#q_os_demo", [
         [ "A simple scheduling", "q_gettingstarted.html#q_os_example1", null ],
         [ "Using the task argument", "q_gettingstarted.html#q_os_example2", null ]

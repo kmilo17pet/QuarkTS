@@ -247,7 +247,7 @@ var NAVTREEINDEX1 =
 "q_extensions.html#qfsm_happroach":[0,4,1,13],
 "q_foundations.html":[0,1],
 "q_foundations.html#q_addtasks":[0,1,3,1],
-"q_foundations.html#q_configmacros":[0,1,6],
-"q_foundations.html#q_eventtasks":[0,1,3,2],
-"q_foundations.html#q_globalstates":[0,1,5]
+"q_foundations.html#q_configmacros":[0,1,7],
+"q_foundations.html#q_critical":[0,1,6],
+"q_foundations.html#q_eventtasks":[0,1,3,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"q_foundations.html#q_globalstates":[0,1,5],
 "q_foundations.html#q_idletask":[0,1,3,0],
 "q_foundations.html#q_os_evenprecedence":[0,1,5,0,0],
 "q_foundations.html#q_os_operational_states":[0,1,5,0,1],
@@ -13,13 +14,12 @@ var NAVTREEINDEX2 =
 "q_foundations.html#rtcmodel":[0,1,0],
 "q_gettingstarted.html":[0,2],
 "q_gettingstarted.html#q_cloneos":[0,2,0,0],
-"q_gettingstarted.html#q_critical":[0,2,2],
 "q_gettingstarted.html#q_getos":[0,2,0],
 "q_gettingstarted.html#q_getqconfig":[0,2,0,2],
 "q_gettingstarted.html#q_gettingstarted":[0,2,1],
-"q_gettingstarted.html#q_os_demo":[0,2,3],
-"q_gettingstarted.html#q_os_example1":[0,2,3,0],
-"q_gettingstarted.html#q_os_example2":[0,2,3,1],
+"q_gettingstarted.html#q_os_demo":[0,2,2],
+"q_gettingstarted.html#q_os_example1":[0,2,2,0],
+"q_gettingstarted.html#q_os_example2":[0,2,2,1],
 "q_gettingstarted.html#q_submodule":[0,2,0,1],
 "structq_a_t_c_l_i___command__t.html":[1,1,3,2],
 "structq_a_t_c_l_i___command__t.html#a13623f1d68513495c21f8b061b1a5aec":[1,1,3,2,0],

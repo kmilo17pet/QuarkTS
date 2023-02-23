@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>OS: &quot;Getting Started&quot;</title>
+<title>OS: Getting-Started</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -136,7 +136,6 @@ $(document).ready(function(){initNavTree('q_gettingstarted.html',''); initResiza
 </ul>
 </li>
 <li class="level1"><a href="#q_gettingstarted">Getting started</a></li>
-<li class="level1"><a href="#q_critical">Critical sections</a></li>
 <li class="level1"><a href="#q_os_demo">Two simple demonstrative examples</a><ul><li class="level2"><a href="#q_os_example1">A simple scheduling</a></li>
 <li class="level2"><a href="#q_os_example2">Using the task argument</a></li>
 </ul>
@@ -185,13 +184,6 @@ Getting started</h1>
 <li>The procedure <code>Configure_Periodic_Timer_Interrupt_1ms()</code> should be a function with all the hardware instructions needed to initialize and enable a timer with an overflow tick of one millisecond.</li>
 </ul>
 <p >Tasks can be later added to the scheduling scheme by simply calling <a class="el" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2" title="Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...">qOS_Add_Task()</a> or any of the other available APIs for specific purpose tasks.</p>
-<h1><a class="anchor" id="q_critical"></a>
-Critical sections</h1>
-<p >Since the kernel is non-preemptive, the only critical section that must be handled are the shared resources accessed from the ISR context. Perhaps, the most obvious way of achieving mutual exclusion is to allow the kernel to disable interrupts before it enters its critical section and then, enable interrupts after it leaves its critical section.</p>
-<p >By disabling interrupts, the CPU will be unable to change the current context. This guarantees that the currently running job can use a shared resource without another context accessing it. But, disabling interrupts, is a major undertaking. At best, the system will not be able to service interrupts for the time the current job is doing in its critical section, however, in QuarkTS, these critical sections are handled as quickly as possible.</p>
-<p >Considering that the kernel is hardware-independent, the application writer should provide the necessary piece of code to enable and disable interrupts.</p>
-<p >For this, the <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to commun...">qCritical_SetInterruptsED()</a> API should be used. In this way, communication between ISR and tasks using queued notifications or data queues is performed safely.</p>
-<p >In some systems, disabling the global IRQ flags is not enough, as they don't save/restore state of interrupt, so here, the <code>qUINT32_t</code> argument and return value in both functions (<code>Disabler</code> and <code>Restorer</code>) becomes relevant, because they can be used by the application writer to save and restore the current interrupt configuration. So, when a critical section is performed, the <code>Disabler</code>, in addition to disable the interrupts, returns the current configuration to be retained by the kernel, later when the critical section finish, this retained value is passed to <code>Restorer</code> to bring back the saved configuration.</p>
 <h1><a class="anchor" id="q_os_demo"></a>
 Two simple demonstrative examples</h1>
 <h2><a class="anchor" id="q_os_example1"></a>

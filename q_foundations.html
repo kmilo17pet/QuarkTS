@@ -148,6 +148,7 @@ $(document).ready(function(){initNavTree('q_foundations.html',''); initResizable
 </li>
 </ul>
 </li>
+<li class="level1"><a href="#q_critical">Critical sections</a></li>
 <li class="level1"><a href="#q_configmacros">Configuration macros</a></li>
 </ul>
 </div>
@@ -355,6 +356,13 @@ Additional operational states</h3>
   </html>
    <em>Event flow according operational states</em> </center><dl class="section remark"><dt>Remarks</dt><dd>Queued notifications are the only event that can wake up sleeping tasks </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The <code>qAsleep</code> operational state overrides the <code>qEnabled</code> and <code>qDisabled</code> states.</dd></dl>
+<h1><a class="anchor" id="q_critical"></a>
+Critical sections</h1>
+<p >Since the kernel is non-preemptive, the only critical section that must be handled are the shared resources accessed from the ISR context. Perhaps, the most obvious way of achieving mutual exclusion is to allow the kernel to disable interrupts before it enters its critical section and then, enable interrupts after it leaves its critical section.</p>
+<p >By disabling interrupts, the CPU will be unable to change the current context. This guarantees that the currently running job can use a shared resource without another context accessing it. But, disabling interrupts, is a major undertaking. At best, the system will not be able to service interrupts for the time the current job is doing in its critical section, however, in QuarkTS, these critical sections are handled as quickly as possible.</p>
+<p >Considering that the kernel is hardware-independent, the application writer should provide the necessary piece of code to enable and disable interrupts.</p>
+<p >For this, the <a class="el" href="group__qcritical.html#gab60b5a86642800f3c4d733167d79dace" title="Set the hardware-specific code for global interrupt enable/disable. Setting this allows you to commun...">qCritical_SetInterruptsED()</a> API should be used. In this way, communication between ISR and tasks using queued notifications or data queues is performed safely.</p>
+<p >In some systems, disabling the global IRQ flags is not enough, as they don't save/restore state of interrupt, so here, the <code>qUINT32_t</code> argument and return value in both functions (<code>Disabler</code> and <code>Restorer</code>) becomes relevant, because they can be used by the application writer to save and restore the current interrupt configuration. So, when a critical section is performed, the <code>Disabler</code>, in addition to disable the interrupts, returns the current configuration to be retained by the kernel, later when the critical section finish, this retained value is passed to <code>Restorer</code> to bring back the saved configuration.</p>
 <h1><a class="anchor" id="q_configmacros"></a>
 Configuration macros</h1>
 <p >Some OS features can be customized using a set of macros located in the header file <code>qconfig.h</code>. Here is the default configuration, followed by an explanation of each macro:</p>
