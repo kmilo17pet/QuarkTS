@@ -6,24 +6,21 @@
 *
 * <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download the PDF version of the user manual</a>
 *
-* QuarkTS is an operating system that provides a modern environment to build
-* stable and predictable event-driven multitasking embedded software. The OS is
-* built on top of a cooperative quasi-static scheduler and its simplified kernel
-* implements a specialized round-robin scheme using a linked-chain approach and
-* an event-queue to provide true FIFO priority-scheduling.
+* QuarkTS is lightweight operating system that provides a modern environment 
+* to build stable and predictable event-driven multitasking embedded software
+* with the following features:
 *
-* <b>Features:</b>
-*
-* - Prioritized cooperative scheduling.
+* - Prioritized RTC cooperative scheduling.
 * - Time control (Timed tasks and @ref q_stimers)
 * - Inter-Task communication primitives, @ref q_queues, @ref q_notifications and @ref qeventflags.
 * - @ref q_fsm ( with hierarchical support )
 * - @ref q_qcoroutines.
 * - @ref q_atcli
 *
-* QuarkTS is developed using a formal and rigorous process framed in compliance
-* of the MISRA-C-2012 and CERT coding standard guidelines and complemented with
-* multiple static-analysis checks targeted to safe critical applicatiosns.
+* QuarkTS also complies with most of the Motor Industry Software Reliability 
+* Association (MISRA) MISRA-C:2012 and the SEI CERT C Coding Standard coding 
+* standards in order to privde a safe, reliable, and secure foundation for your
+* solution.
 *
 * The documentation is organized as follows:
 * - @ref q_background "Overview"
