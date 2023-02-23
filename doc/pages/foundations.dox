@@ -407,6 +407,36 @@
 * @note The @c qAsleep operational state overrides the @c qEnabled and 
 * @c qDisabled states.
 *
+* @section q_critical Critical sections
+* Since the kernel is non-preemptive, the only critical section that must be 
+* handled are the shared resources accessed from the ISR context. Perhaps, the 
+* most obvious way of achieving mutual exclusion is to allow the kernel to 
+* disable interrupts before it enters its critical section and then, enable
+* interrupts after it leaves its critical section.
+*
+* By disabling interrupts, the CPU will be unable to change the current context.
+* This guarantees that the currently running job can use a shared resource 
+* without another context accessing it. But, disabling interrupts, is a major 
+* undertaking. At best, the system will not be able to service interrupts for 
+* the time the current job is doing in its critical section, however, in QuarkTS,
+* these critical sections are handled as quickly as possible.
+*
+* Considering that the kernel is hardware-independent, the application writer 
+* should provide the necessary piece of code to enable and disable interrupts.
+*
+* For this, the qCritical_SetInterruptsED() API should be used. In this way, 
+* communication between ISR and tasks using queued notifications or data queues 
+* is performed safely.
+*
+* In some systems, disabling the global IRQ flags is not enough, as they don't
+* save/restore  state of interrupt, so here, the @c qUINT32_t argument and 
+* return value in both functions (@c Disabler and @c Restorer) becomes relevant,
+* because they can be used by the application writer to save and restore the 
+* current interrupt configuration. So, when a critical section is performed, 
+* the @c Disabler, in addition to disable the interrupts, returns the current
+* configuration to be retained by the kernel, later when the critical section 
+* finish, this retained value is passed to @c Restorer to bring back the saved
+* configuration.
 *
 * @section q_configmacros Configuration macros
 * Some OS features can be customized using a set of macros located in the header 
