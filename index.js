@@ -4,39 +4,41 @@ var index =
       [ "About the OS", "q_background.html#q_about", [
         [ "License", "q_background.html#q_license", null ],
         [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
-        [ "Development process and coding starndard", "q_background.html#q_codstandard", null ],
+        [ "Development process and coding standard", "q_background.html#q_codstandard", null ],
         [ "Memory usage", "q_background.html#q_memusage", null ]
       ] ],
-      [ "RTC(Run To Completion) model", "q_background.html#rtcmodel", null ],
       [ "Getting the OS", "q_background.html#q_getos", [
         [ "Cloning QuarkTS", "q_background.html#q_cloneos", null ],
         [ "Including QuarkTS as a git sub-module", "q_background.html#q_submodule", null ],
         [ "Get a copy of the OS configuration file", "q_background.html#q_getqconfig", null ]
+      ] ]
+    ] ],
+    [ "Foundations", "q_foundations.html", [
+      [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
+      [ "Timming Approach", "q_foundations.html#q_timmingapproach", null ],
+      [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
+      [ "Tasks", "q_foundations.html#q_tasks", [
+        [ "The idle task", "q_foundations.html#q_idletask", null ],
+        [ "Adding tasks to the scheme", "q_foundations.html#q_addtasks", null ],
+        [ "Event-triggered tasks", "q_foundations.html#q_eventtasks", null ],
+        [ "Removing a task", "q_foundations.html#q_removetask", null ]
       ] ],
-      [ "Timming Approach", "q_background.html#q_timmingapproach", null ],
-      [ "Setting up the OS kernel", "q_background.html#q_setupkernel", null ],
-      [ "Tasks", "q_background.html#q_tasks", [
-        [ "The idle task", "q_background.html#q_idletask", null ],
-        [ "Adding tasks to the scheme", "q_background.html#q_addtasks", null ],
-        [ "Event-triggered tasks", "q_background.html#q_eventtasks", null ],
-        [ "Removing a task", "q_background.html#q_removetask", null ]
+      [ "Running the OS", "q_foundations.html#q_runos", [
+        [ "Releasing the scheduler", "q_foundations.html#q_releasescheduler", null ]
       ] ],
-      [ "Running the OS", "q_background.html#q_runos", [
-        [ "Releasing the scheduler", "q_background.html#q_releasescheduler", null ]
-      ] ],
-      [ "Global states and scheduling rules", "q_background.html#q_globalstates", [
-        [ "Rules", "q_background.html#q_osrules", [
-          [ "Event precedence", "q_background.html#q_os_evenprecedence", null ],
-          [ "Additional operational states", "q_background.html#q_os_operational_states", null ]
+      [ "Global states and scheduling rules", "q_foundations.html#q_globalstates", [
+        [ "Rules", "q_foundations.html#q_osrules", [
+          [ "Event precedence", "q_foundations.html#q_os_evenprecedence", null ],
+          [ "Additional operational states", "q_foundations.html#q_os_operational_states", null ]
         ] ]
       ] ],
-      [ "Getting started", "q_background.html#q_gettingstarted", null ],
-      [ "Critical sections", "q_background.html#q_critical", null ],
-      [ "Demonstrative examples", "q_background.html#q_os_demo", [
-        [ "A simple scheduling", "q_background.html#q_os_example1", null ],
-        [ "Using the task argument", "q_background.html#q_os_example2", null ]
+      [ "Getting started", "q_foundations.html#q_gettingstarted", null ],
+      [ "Critical sections", "q_foundations.html#q_critical", null ],
+      [ "Demonstrative examples", "q_foundations.html#q_os_demo", [
+        [ "A simple scheduling", "q_foundations.html#q_os_example1", null ],
+        [ "Using the task argument", "q_foundations.html#q_os_example2", null ]
       ] ],
-      [ "Configuration macros", "q_background.html#q_configmacros", null ]
+      [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
     ] ],
     [ "Events", "q_events.html", [
       [ "Retrieving the event data", "q_events.html#eventdata", null ],
