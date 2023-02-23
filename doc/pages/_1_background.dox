@@ -38,7 +38,7 @@
 * what existing task schedulers offer, but want to avoid the space and
 * complexity of a full RTOS, but keeping the taste of a robust and safe one.
 *
-* @subsection q_license License
+* @section q_license License
 * QuarkTS is licensed under the MIT License. You may copy, distribute and modify
 * the software without any restriction, including without limitation the rights 
 * to to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 

@@ -44,7 +44,7 @@
 * curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o <destination path>/qconfig.h
 * @endcode
 *
- @section q_gettingstarted Getting started
+ @section q_firststeps First steps
 * Obtain a copy of the latest OS as described here: @ref q_getos . Include the
 * the source files to your project. Also, make sure you add a copy of the file 
 * @c qconfig.h and modify it according to your needs. Setup your compiler 
