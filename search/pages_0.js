@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['background_0',['Background',['../q_background.html',1,'index']]]
+  ['events_0',['Events',['../q_events.html',1,'index']]],
+  ['extensions_1',['Extensions',['../q_extensions.html',1,'index']]]
 ];

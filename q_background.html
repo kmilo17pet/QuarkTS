@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>OS: Background</title>
+<title>OS: Overview</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Background </div></div>
+  <div class="headertitle"><div class="title">Overview </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -136,6 +136,7 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 <li class="level2"><a href="#q_memusage">Memory usage</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#rtcmodel">RTC(Run To Completion) model</a></li>
 <li class="level1"><a href="#q_getos">Getting the OS</a><ul><li class="level2"><a href="#q_cloneos">Cloning QuarkTS</a></li>
 <li class="level2"><a href="#q_submodule">Including QuarkTS as a git sub-module</a></li>
 <li class="level2"><a href="#q_getqconfig">Get a copy of the OS configuration file</a></li>
@@ -169,7 +170,7 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 </div>
 <div class="textblock"><h1><a class="anchor" id="q_about"></a>
 About the OS</h1>
-<p >QuarkTS is an open-source operating system that is built on top of a <em>cooperative quasistatic scheduler</em>. Its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority scheduling.</p>
+<p >QuarkTS is an open-source operating system that is built on top of a <em>RTC cooperative quasistatic scheduler</em>. Its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority scheduling.</p>
 <p ><b> <b>Why</b> cooperative? </b></p>
 <p >Rather than having preemption, tasks manage their own life-cycle. This bring significant benefits, fewer re-entrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer, so you mostly do not need to worry about pitfalls of the concurrent approach(resource sharing, races, deadlocks, etc...).</p>
 <p ><b> What is it made for? </b></p>
@@ -247,6 +248,11 @@ Memory usage</h2>
 <td>Remaining utilities </td><td>2980 </td></tr>
 </table>
 </center><dl class="section note"><dt>Note</dt><dd>Although the kernel does not use dynamically-allocated resources internally, the application writer can create an object in run-time using the safe-heap implementation provided by the <a class="el" href="q_extensions.html#q_memmang">Memory Management</a> extension. Of course, additional checks must be performed to keep the solution safe.</dd></dl>
+<h1><a class="anchor" id="rtcmodel"></a>
+RTC(Run To Completion) model</h1>
+<p >In this pattern each task runs until it finishes or explicitly yields control back to the scheduler. Events are serviced by the kernel in the scheduler loop. If an event is available, it is posted to the task based on the scheduling <a class="el" href="q_background.html#q_osrules">rules</a>, and then the dispatcher triggers the task. The task executes the actions associated with that event and then returns back to the scheduler.</p>
+<p >This pattern means that in the absence of exceptions or asynchronous destruction of the task execution, a pending event occurrence is dispatched only after the processing of the previous occurrence is completed, and a stable task-scheme configuration has been reached. That is, an event occurrence will never be dispatched while the task execution is busy processing the previous one. This behavioral paradigm was chosen to avoid complications arising from concurrency conflicts that may occur when a task tries to respond to multiple concurrent or overlapping events. This also provides better power efficiency. In the absence of events, the developer can use CPU low-power modes and make the core active only during the execution of an RTC step.</p>
+<p >The provided features enables you to implement task procedures that does not have to execute all the way down to the last line of code. Instead execution can be break down into different entities by using <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> or by using <a class="el" href="q_extensions.html#q_qcoroutines">Co-Routines</a> where the procedure execution can be suspended and resumed at defined locations.</p>
 <h1><a class="anchor" id="q_getos"></a>
 Getting the OS</h1>
 <p >Download the latest release from the official repository :</p>
@@ -340,7 +346,7 @@ Tasks</h1>
 <div class="line">}</div>
 <div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:162</div></div>
 <div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:268</div></div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler, otherwise, the scheduler will hold the execution state for that task, preventing the activation of other tasks.</dd></dl>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>All tasks in QuarkTS must ensure their completion to return the CPU control back to the scheduler to follow the @rtcmodel, otherwise, the scheduler will hold the execution state for that task, preventing the activation of other tasks.</dd></dl>
 <h2><a class="anchor" id="q_idletask"></a>
 The idle task</h2>
 <p >Its a special task loaded by the OS scheduler when there is nothing else to do (no task in the whole scheme has reached the ready state). The idle task is already hard-coded into the kernel, ensuring that at least, one task is able to run. Additionally, the OS setup this task with the lowest possible priority to ensure that does not use any CPU time if there are higher priority application tasks able to run. The idle task doesn't perform any active functions, but the user can decide if it should perform some activities defining a callback function for it. This could be done at the beginning of the kernel setup. Of course, the callback must follow the same function prototype for tasks. </p><dl class="section note"><dt>Note</dt><dd>To disable the idle-task activities, a <code>NULL</code> should be passed as argument on <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a>.</dd></dl>

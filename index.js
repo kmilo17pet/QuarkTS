@@ -1,12 +1,13 @@
 var index =
 [
-    [ "Background", "q_background.html", [
+    [ "Overview", "q_background.html", [
       [ "About the OS", "q_background.html#q_about", [
         [ "License", "q_background.html#q_license", null ],
         [ "Hardware compatibility", "q_background.html#q_hardwarecompatibility", null ],
         [ "Development process and coding starndard", "q_background.html#q_codstandard", null ],
         [ "Memory usage", "q_background.html#q_memusage", null ]
       ] ],
+      [ "RTC(Run To Completion) model", "q_background.html#rtcmodel", null ],
       [ "Getting the OS", "q_background.html#q_getos", [
         [ "Cloning QuarkTS", "q_background.html#q_cloneos", null ],
         [ "Including QuarkTS as a git sub-module", "q_background.html#q_submodule", null ],
