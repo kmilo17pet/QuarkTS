@@ -328,7 +328,7 @@
 *  @endcode
 *
 * @note All tasks in QuarkTS must ensure their completion to return the CPU
-* control back to the scheduler to follow the @rtcmodel, otherwise, the 
+* control back to the scheduler to follow the @ref rtcmodel, otherwise, the 
 * scheduler will hold the execution state for that task, preventing the 
 * activation of other tasks.
 *
