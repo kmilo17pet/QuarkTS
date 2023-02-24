@@ -13,11 +13,13 @@ jobs:
     - name: Checkout repository and submodules
       uses: actions/checkout@v2
       with:
-        submodules: recursive      
+        submodules: recursive
     - name: create dirs
       run: mkdir docout
+    - name: set repo url on corner
+      run: sed -i 's,https://github.com/jothepro/doxygen-awesome-css,https://github.com/kmilo17pet/QuarkTS,g' doc/stylesheet/doxygen-custom/header.html
     - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.9.2
+      uses: mattnotmitt/doxygen-action@edge
       with:
         doxyfile-path: './doc/Doxygen'
     - name: rm gitignore
@@ -26,4 +28,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./doxyout/html    
+        publish_dir: ./doxyout/html
