@@ -157,7 +157,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qmemmang.html",
-"q_foundations.html#q_globalstates"
+"q_gettingstarted.html#q_submodule"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
