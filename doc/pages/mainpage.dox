@@ -2,18 +2,18 @@
 *
 * @image html https://user-images.githubusercontent.com/11412210/198933603-64c6da08-aeec-4d19-a415-ee3d4bf27879.jpg
 * 
-* <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download the PDF version of the user manual</a>
+* @emoji :page_with_curl: <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download the PDF version of the user manual</a>
 *
 * QuarkTS is an open-source operating system that provides a modern and lightweight 
 * environment to build stable and predictable event-driven multitasking embedded
 * software with the following features:
 *
-* - Prioritized RTC cooperative scheduling.
-* - Time control (Timed tasks and @ref q_stimers)
-* - Inter-Task communication primitives, @ref q_queues, @ref q_notifications and @ref qeventflags.
-* - @ref q_fsm ( with hierarchical support )
-* - @ref q_qcoroutines.
-* - @ref q_atcli
+* - @emoji :1234: Prioritized RTC cooperative scheduling.
+* - @emoji :watch: Time control (Timed tasks and @ref q_stimers)
+* - @emoji :incoming_envelope: Inter-Task communication primitives, @ref q_queues, @ref q_notifications and @ref qeventflags.
+* - @emoji :arrows_counterclockwise: @ref q_fsm ( with hierarchical support )
+* - @emoji :arrows_clockwise: @ref q_qcoroutines.
+* - @emoji :tophat: @ref q_atcli
 *
 * QuarkTS also complies with most of the Motor Industry Software Reliability 
 * Association (MISRA) MISRA-C:2012 and the SEI CERT C coding standards in order 
