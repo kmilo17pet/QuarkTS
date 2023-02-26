@@ -147,10 +147,10 @@ $(document).ready(function(){initNavTree('q_background.html',''); initResizable(
 <div class="textblock"><h1><a class="anchor" id="q_about"></a>
 About the OS</h1>
 <p>QuarkTS is an open-source operating system that is built on top of a <em>RTC cooperative quasistatic scheduler</em>. Its simplified kernel implements a specialized round-robin scheme using a linked-chain approach and an event-queue to provide true FIFO priority scheduling.</p>
-<p><b> <b>Why</b> cooperative? </b></p>
+<p><b> Why cooperative? </b></p>
 <p>Rather than having preemption, tasks manage their own life-cycle. This bring significant benefits, fewer re-entrance problems are encountered, because tasks cannot be interrupted arbitrarily by other tasks, but only at positions permitted by the programmer, so you mostly do not need to worry about pitfalls of the concurrent approach(resource sharing, races, deadlocks, etc...).</p>
 <p><b> What is it made for? </b></p>
-<p>The design goal of QuarkTS is to achieve its stated functionality using a small, simple, and (most importantly) robust implementation to make it suitable on resource constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. In addition with a <a class="el" href="q_extensions.html#q_fsm">Finite State Machines (FSM)</a> support, <a class="el" href="q_extensions.html#q_qcoroutines">Co-Routines</a>, time control and the inter-task communication primitives, QuarkTS provides a modern environment to build stable and predictable event-driven multitasking embedded software. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things</p>
+<p>The design goal of QuarkTS is to achieve its stated functionality using a small, simple, and (most importantly) robust implementation to make it suitable on resource constrained microcontrollers, where a full-preemptive RTOS is an overkill and their inclusion adds unnecessary complexity to the firmware development. In addition with a <a class="el" href="q_fsm.html">Finite State Machines (FSM)</a> support, <a class="el" href="q_qcoroutines.html">Co-Routines</a>, time control and the inter-task communication primitives, QuarkTS provides a modern environment to build stable and predictable event-driven multitasking embedded software. Their modularity and reliability make this OS a great choice to develop efficiently a wide range of applications in low-cost devices, including automotive controls, monitoring and Internet of Things</p>
 <p><b>Why should I choose it?</b></p>
 <p>QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example FreeRTOS or MicroC/OS-II, in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer, but want to avoid the space and complexity of a full RTOS, but keeping the taste of a robust and safe one.</p>
 <h1><a class="anchor" id="q_license"></a>
@@ -186,7 +186,7 @@ Development process and coding standard</h1>
 <h1><a class="anchor" id="q_memusage"></a>
 Memory usage</h1>
 <p>As a quasi-static scheduler is implemented here, dynamic scheduling is not required and the assignment of tasks must be done before program execution begins. The kernel is designed to allow unlimited tasks and kernel objects, but of course, the whole application will be constrained by the memory specifications of the embedded system.</p>
-<p>The kernel's memory footprint can be scaled down to contain only the features required for your application, typically 3.7 KBytes of code space and less than 1 KByte of data space.</p>
+<p>The kernel's memory footprint can be scaled down to contain only the features required for your application, typically <code>3.7Kb</code> of code space and less than <code>1Kb</code> of data space.</p>
 <center> <a class="anchor" id="multi_row"></a>
 <table class="doxtable">
 <caption>OS Memory footprint (Measured in a 32-bit MCU)</caption>

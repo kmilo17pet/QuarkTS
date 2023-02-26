@@ -7,6 +7,6 @@ var searchData=
   ['getargint_4',['GetArgInt',['../structq_a_t_c_l_i___handler__t.html#a24ac6c293d1f9fcd96c4df2395ae495c',1,'qATCLI_Handler_t']]],
   ['getargptr_5',['GetArgPtr',['../structq_a_t_c_l_i___handler__t.html#a2564469222e06928e516cbabef18e6d9',1,'qATCLI_Handler_t']]],
   ['getargstring_6',['GetArgString',['../structq_a_t_c_l_i___handler__t.html#ab6755a847edb0a7791c8abd5301557c2',1,'qATCLI_Handler_t']]],
-  ['getting_2dstarted_7',['Getting-Started',['../q_gettingstarted.html',1,'']]],
+  ['getting_20started_7',['Getting started',['../q_gettingstarted.html',1,'']]],
   ['guard_8',['guard',['../structq_s_m___transition__t.html#a73d9dad6ac4a679ce7e37b3af9b6987c',1,'qSM_Transition_t']]]
 ];

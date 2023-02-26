@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.6"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>OS: Memory Management</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/kmilo17pet/QuarkTS" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OS
+   &#160;<span id="projectnumber">v7.3.2</span>
+   </div>
+   <div id="projectbrief">Documentation</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.6 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('q_memmang.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Memory Management </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#q_memmang_overview">Overview</a></li>
+<li class="level1"><a href="#q_memmang_principle">Principle of operation</a></li>
+<li class="level1"><a href="#q_memmang_pools">Memory pools</a></li>
+<li class="level1"><a href="#q_memmang_usage">Usage example</a></li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="q_memmang_overview"></a>
+Overview</h1>
+<p>The QuarkTS OS is designed to support the development of safe-critical embedded applications. Dynamic memory allocation is not permitted for kernel design, as it may result in out-of-storage run-time failures that are undesirable. However, some applications can be easily deployed using this allocation scheme, making a safe and portable implementation crucial for user code.</p>
+<p>In a typical C environment, memory allocation can be achieved using standard library functions like <code>malloc()</code> and <code>free()</code>. However, they may not be appropriate for most embedded applications, as they may not be available on small microcontrollers or could consume a substantial amount of code space. Furthermore, dynamic memory allocation has several implementation-defined behaviors and potential issues such as fragmentation.</p>
+<p>To address these concerns, the OS offers its own memory management interface for dynamic allocation as a fully kernel-independent extension. Instead of calling <code>malloc()</code> or <code>free()</code>, the application can use qMalloc() to allocate RAM, and qFree() to free it when necessary. These functions have the same prototypes as their standard C library counterparts.</p>
+<h1><a class="anchor" id="q_memmang_principle"></a>
+Principle of operation</h1>
+<p>The allocation scheme works by subdividing a static array into smaller blocks and using the First-Fit approach.</p>
+<center>  
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <title>memmang</title>
+  <meta charset="utf-8"/>
+  </head>
+  <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T19:51:25.020Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;0et5L84sQ8dq70hh7EnJ\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;qnkYvIl8hSz6jSiMQ8AJ\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+  <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+  </body>
+  </html>
+   <em>First-fit allocation policy</em> </center><p>If adjacent free blocks are available, the implementation combines them into a single larger block, minimizing the risk of fragmentation, making it suitable for applications that repeatedly allocate and free different sized blocks of RAM.</p>
+<dl class="section note"><dt>Note</dt><dd>Because memory is statically declared, it will make the application appear to consume a lot of RAM, even before any memory has been allocated from it.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>All the memory management APIs are NOT interrupt-safe. Use these APIs only from the base context.</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>The application is not exempt from memory leaks if the user does not perform adequate memory management. Here, the worst case scenario can occur in the absence of free memory.</dd></dl>
+<h1><a class="anchor" id="q_memmang_pools"></a>
+Memory pools</h1>
+<p>A memory pool its a special resource that allows memory blocks to be dynamically allocated from a user-designated memory region. Instead of typical pools with fixedsize block allocation, the pools in QuarkTS can be of any size, thereby the user is responsible for selecting the appropriate memory pool to allocate data with the same size.</p>
+<p>The default memory management unit resides in a memory pool object. Also called the <em>"default pool"</em>. The total amount of available heap space in the default memory pool is set by <code>Q_DEFAULT_HEAP_SIZE</code>, which is defined in <code>qconfig.h</code>.</p>
+<p>Besides the default pool, any number of additional memory pools can be defined. Like any other object in QuarkTS, memory pools are referenced by handles, a variable of type qMemMang_Pool_t and should be initialized before use with the qMemMang_Pool_Setup() API function.</p>
+<p>To perform operations in another memory pool, besides the default pool, an explicit switch should be performed using qMemMang_Pool_Select() . Here, a pointer to the target pool should be passed as input argument. From now on, every call to qMalloc(), or qFree() will run over the newly selected memory pool. To return to the default pool, a new call to qMemMang_Pool_Select() is required passing <code>NULL</code> as input argument.</p>
+<p>To keep track of the memory usage, the qMemMang_Get_FreeSize() API function returns the number of free bytes in the memory pool at the time the function is called.</p>
+<h1><a class="anchor" id="q_memmang_usage"></a>
+Usage example</h1>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;HAL.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;Core.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> taskA;</div>
+<div class="line">qMemMang_Pool_t another_heap;</div>
+<div class="line"><span class="keywordtype">void</span> taskA_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e );</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> taskA_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
+<div class="line">    <span class="keywordtype">int</span> *xdata = NULL;</div>
+<div class="line">    <span class="keywordtype">int</span> *ydata = NULL;</div>
+<div class="line">    <span class="keywordtype">int</span> *xyoper = NULL;</div>
+<div class="line">    <span class="keywordtype">int</span> n = 20;</div>
+<div class="line">    <span class="keywordtype">int</span> i;</div>
+<div class="line">    </div>
+<div class="line">    xyoper = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) );</div>
+<div class="line">    xdata = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) );</div>
+<div class="line">    qMemMang_Pool_Select( &amp;another_heap ); <span class="comment">/*change the memory pool*/</span></div>
+<div class="line">    <span class="comment">/*ydata will point to a segment allocated in another pool*/</span></div>
+<div class="line">    ydata = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) ); </div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">/*use the memory if could be allocated*/</span></div>
+<div class="line">    <span class="keywordflow">if</span> ( xdata &amp;&amp; ydata &amp;&amp; xyoper ) {</div>
+<div class="line">        <span class="keywordflow">for</span> ( i = 0 ; i &lt; n ; i++ ) {</div>
+<div class="line">            xdata[ i ] = GetXData();</div>
+<div class="line">            ydata[ i ] = GetYData();</div>
+<div class="line">            xyoper[ i ] = xdata[ i ]*ydata[ i ];</div>
+<div class="line">        }</div>
+<div class="line">        UseTheMemmory(xyoper);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">else</span> {</div>
+<div class="line">        qTrace_Message(<span class="stringliteral">&quot;ERROR:ALLOCATION_FAIL&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    qFree( ydata );</div>
+<div class="line">    qMemMang_Pool_Select( NULL ); <span class="comment">/*return to the default pool*/</span></div>
+<div class="line">    qFree( xdata );</div>
+<div class="line">    qFree( xyoper );</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
+<div class="line">    <span class="keywordtype">char</span> area_another_heap[ 512 ] = { 0 };</div>
+<div class="line">    qTrace_Set_OutputFcn( OutPutChar );</div>
+<div class="line">    <span class="comment">/*Create a memory heap*/</span></div>
+<div class="line">    qMemMang_Pool_Setup( &amp;another_heap, area_another_heap, 512 );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001f, IdleTaskCallback );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition:</b> qkernel.c:409</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga33bd7afc6bdd5e8a995d2cb50e006e3a"><div class="ttname"><a href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a></div><div class="ttdeci">#define qLowest_Priority</div><div class="ttdoc">A macro directive to indicate the lowest priority level.</div><div class="ttdef"><b>Definition:</b> qkernel.h:71</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition:</b> qkernel.c:674</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition:</b> qkernel.c:124</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gae3758e719245db560b090d90fce96301"><div class="ttname"><a href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a></div><div class="ttdeci">#define qPeriodic</div><div class="ttdoc">A directive indicating that the task will run every time its timeout has expired.</div><div class="ttdef"><b>Definition:</b> qkernel.h:80</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga1743f4a545347fa50ab81f1e4e21b095"><div class="ttname"><a href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a></div><div class="ttdeci">#define qEnabled</div><div class="ttdoc">A state value that enables a task.</div><div class="ttdef"><b>Definition:</b> qtypes.h:167</div></div>
+<div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:162</div></div>
+<div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:268</div></div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="q_extensions.html">Extensions</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+  </ul>
+</div>
+</body>
+</html>

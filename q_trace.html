@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>OS: Extensions</title>
+<title>OS: Trace/Debugging</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -107,7 +107,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('q_extensions.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('q_trace.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -133,30 +133,70 @@ $(document).ready(function(){initNavTree('q_extensions.html',''); initResizable(
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Extensions </div></div>
+  <div class="headertitle"><div class="title">Trace/Debugging </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>The QuarkTS extensions are interfaces that are integrated into the kernel to provide additional and important functionalities.</p>
-<p><b> To improve the cooperative model </b></p>
-<p><a class="el" href="q_fsm.html">Finite State Machines (FSM)</a> and <a class="el" href="q_qcoroutines.html">Co-Routines</a> are two important extensions for a cooperative RTOS because they can enable more efficient and predictable multitasking behavior.</p>
-<p>In a cooperative RTOS, tasks must voluntarily yield control to the scheduler in order to allow other tasks to run. This means that it can be difficult to manage complex systems with many different states or to coordinate multiple tasks that need to communicate with each other.</p>
-<p>Finite state machines provide a useful tool for modeling complex systems that have many different states and transitions. By implementing an FSM, an application can more easily manage state transitions and respond to different input events.</p>
-<p>Coroutines, on the other hand, provide a programming construct that can improve the behavior of the RTC cooperative multitasking model. By allowing a task to suspend and resume its execution at specific points, coroutines can enable multiple tasks to run in a cooperative manner without requiring explicit context switching.</p>
-<p>Overall, finite state machines and coroutines can be valuable tools for managing complex systems in a cooperative RTOS environment. By providing standardized ways to manage state transitions and enable cooperative multitasking, these tools can help simplify application development and improve system performance and reliability.</p>
-<p><b> The overall timing primitive </b></p>
-<p>A <a class="el" href="q_stimers.html">STimer</a> beyond being a simple extension, is a direct dependency on the kernel. In fact, each task has an instance of STimer within its TCB (Task Control Block) to measure the passage of time and determine when a "time-elapsed" event needs to be generated. In summary, STimers are a non-blocking time measurement mechanism ideal for use in cooperative RTOS environments</p>
-<p>By using STimers for delays, tasks can continue to execute while waiting for the delay to expire, allowing other tasks to run. STimers are also a dependency for coroutines and FSMs in order to manage timed operations efficiently.</p>
-<p>Always consider using STimers for operations that require elapsed time measurement or intra-task delays to efficiently preserve the cooperative multitasking scheme.</p>
-<p><b> Last but not least </b></p>
-<p><a class="el" href="q_atcli.html">AT Command Line Interface (CLI)</a></p>
-<p><a class="el" href="q_memmang.html">Memory Management</a></p>
-<p><a class="el" href="q_trace.html">Trace/Debugging</a> </p>
-</div></div><!-- contents -->
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#q_trace_overview">Overview</a></li>
+<li class="level1"><a href="#q_trace_viewvars">Viewing variables</a></li>
+<li class="level1"><a href="#q_trace_mblock">Viewing a memory block</a></li>
+<li class="level1"><a href="#q_trace_usage">Usage</a></li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="q_trace_overview"></a>
+Overview</h1>
+<p>QuarkTS include some basic macros to print out debugging messages. Messages can be simple text or the value of variables in specific base-formats. To use the trace macros, a single-char output function must be defined using the qTrace_Set_OutputFcn() macro.</p>
+<p>A single-char output function should follow this prototype:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> SingleChar_OutputFcn ( <span class="keywordtype">void</span> *sp , <span class="keyword">const</span> <span class="keywordtype">char</span> c ) {</div>
+<div class="line">    <span class="comment">/* TODO : print out the c variable using the</span></div>
+<div class="line"><span class="comment">     * selected peripheral.</span></div>
+<div class="line"><span class="comment">     */</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><p>The body of this user-defined function should have a hardware-dependent code to print out the <code>c</code> variable through a specific peripheral.</p>
+<h1><a class="anchor" id="q_trace_viewvars"></a>
+Viewing variables</h1>
+<p>For viewing or tracing a variable (up to 32-bit data) through debug, one of the following macros are available: qTrace_Var or qDebug_Var.</p>
+<p>The only difference between qTrace_ and Debug, is that <code>qTrace_</code> macros, print out additional information provided by the <code>__FILE__</code> , <code>__LINE__</code> and <code>__func__</code> built-in preprocessing macros, mostly available in common C compilers.</p>
+<h1><a class="anchor" id="q_trace_mblock"></a>
+Viewing a memory block</h1>
+<p>For tracing memory from a specified target address, one of the following macros are available: qTrace_Mem or qDebug_Mem.</p>
+<h1><a class="anchor" id="q_trace_usage"></a>
+Usage</h1>
+<p>In the example below, an UART output function is coded to act as the printer. Here, the target MCU is an ARM-Cortex M0 with the UART1 as the selected peripheral for this purpose.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> putUART1 ( <span class="keywordtype">void</span> *sp , <span class="keyword">const</span> <span class="keywordtype">char</span> c ) {</div>
+<div class="line">    <span class="comment">/* hardware specific code */</span></div>
+<div class="line">    UART1_D = c;</div>
+<div class="line">    <span class="keywordflow">while</span> ( !( UART1_S1 &amp; UART_S1_TC_MASK ) ) {} <span class="comment">/*wait until TX is done*/</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><p>As seen above, the function follows the required prototype. Later, in the main thread, a call to qTrace_Set_OutputFcn() is used to set up the output-function.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">void</span> ) {</div>
+<div class="line">    qTrace_Set_OutputFcn( putUART1 );</div>
+<div class="line">    ...</div>
+<div class="line">    ...</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>After that, trace macros will be available for use.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> IO_TASK_Callback ( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
+<div class="line">    <span class="keyword">static</span> <a class="code hl_typedef" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> Counter = 0;</div>
+<div class="line">    <span class="keywordtype">float</span> Sample;</div>
+<div class="line">    ...</div>
+<div class="line">    ...</div>
+<div class="line">    qTrace_Message( <span class="stringliteral">&quot;IO TASK running...&quot;</span> );</div>
+<div class="line">    Counter++;</div>
+<div class="line">    qTrace_Variable( Counter , UnsignedDecimal );</div>
+<div class="line">    Sample = SensorGetSample ();</div>
+<div class="line">    qTrace_Variable( Sample , Float );</div>
+<div class="line">    ...</div>
+<div class="line">    ...</div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
+<div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:162</div></div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="q_extensions.html">Extensions</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>

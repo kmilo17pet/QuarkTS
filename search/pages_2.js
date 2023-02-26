@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['getting_2dstarted_0',['Getting-Started',['../q_gettingstarted.html',1,'']]]
+  ['events_0',['Events',['../q_events.html',1,'']]],
+  ['extensions_1',['Extensions',['../q_extensions.html',1,'']]]
 ];

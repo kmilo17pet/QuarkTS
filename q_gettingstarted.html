@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>OS: Getting-Started</title>
+<title>OS: Getting started</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('q_gettingstarted.html',''); initResiza
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Getting-Started </div></div>
+  <div class="headertitle"><div class="title">Getting started </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -168,11 +168,11 @@ Including QuarkTS as a git sub-module</h2>
 <div class="fragment"><div class="line">git submodule update --remote</div>
 </div><!-- fragment --><h2><a class="anchor" id="q_getqconfig"></a>
 Get a copy of the OS configuration file</h2>
-<p>The file <code>qconfig.h</code> provides specific <a class="el" href="q_foundations.html#q_configmacros">Configuration macros</a> to customize several aspects of OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
+<p>The file <code>qconfig.h</code> provides specific <a class="el" href="q_foundations.html#q_configmacros">Configuration macros</a> to customize several aspects of the OS. In order to build your solution with QuarkTS, you should provided your own copy of this configuration file. You can obtain a copy with the default configuration by issuing the following command:</p>
 <div class="fragment"><div class="line">curl https://raw.githubusercontent.com/kmilo17pet/QuarkTS/master/src/config/qconfig.h -o &lt;destination path&gt;/qconfig.h</div>
 </div><!-- fragment --><h1><a class="anchor" id="q_firststeps"></a>
 First steps</h1>
-<p>Obtain a copy of the latest OS as described here: <a class="el" href="q_gettingstarted.html#q_getos">Getting the OS</a> . Include the the source files to your project. Also, make sure you add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
+<p>Include the source files to your project. Also, make sure you add a copy of the file <code>qconfig.h</code> and modify it according to your needs. Setup your compiler include path with the corresponding OS directory. Include the header file <code><a class="el" href="_quark_t_s_8h_source.html">QuarkTS.h</a></code> and setup the instance of the kernel using the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> inside the main thread. Additional configuration to the target compiler may be required to add the path to the directory of header files. The code below shows a common initialization in the main source file.</p>
 <p>File <code>main.c</code> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#define TIMER_TICK       ( 0.001f ) </span><span class="comment">// 1ms</span></div>
 <div class="line"> </div>
@@ -262,7 +262,7 @@ Using the task argument</h2>
 <p>When adding tasks, they can accept a parameter of type pointer to void <code>void*</code> also called the storage pointer. This parameter could be used for multiple applications, including storage, task identification, duplication removal and others. The following example shows the usage of this argument to avoid callback duplication among tasks with the same behavior.</p>
 <p>Consider a scenario where you have to build a digital controller for several physical variables, for example, a PID controller for temperature, humidity and light. The PID algorithm will be the same for all variables. The only difference will be the variable input, the controlled output action and the PID gains. In this case, each of the PID tasks will utilize the same callback methods. The only difference will be the I/O parameters (specific for each PID controller).</p>
 <p>Let’s define a PID data structure with the I/O variables and gains.</p>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>{</div>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
 <div class="line">     <span class="keywordtype">float</span> yt; <span class="comment">/*Measured variable (Controller Input)*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> ut; <span class="comment">/*Controlled variable (Controller Output)*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> ie; <span class="comment">/*Accumulated error*/</span></div>
@@ -270,7 +270,7 @@ Using the task argument</h2>
 <div class="line">     <span class="keywordtype">float</span> dt; <span class="comment">/*Controller Time Step*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> sp; <span class="comment">/*Set-Point*/</span></div>
 <div class="line">     <span class="keywordtype">float</span> Kc, Ki, Kd; <span class="comment">/*PID Gains*/</span></div>
-<div class="line"> }PID_Params_t;</div>
+<div class="line"> } PID_Params_t;</div>
 <div class="line"> </div>
 <div class="line"> PID_Params_t TemperatureControl = {</div>
 <div class="line">    0.0f, 0.0f, 0.0f, 0.0f, <span class="comment">/*Initial IO state of yt and ut*/</span></div>

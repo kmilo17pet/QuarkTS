@@ -33,7 +33,7 @@ var NAVTREE =
       [ "Development process and coding standard", "q_background.html#q_codstandard", null ],
       [ "Memory usage", "q_background.html#q_memusage", null ]
     ] ],
-    [ "Foundations", "q_foundations.html", [
+    [ "Fundamentals", "q_foundations.html", [
       [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
       [ "Timing Approach", "q_foundations.html#q_timmingapproach", null ],
       [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
@@ -55,7 +55,7 @@ var NAVTREE =
       [ "Critical sections", "q_foundations.html#q_critical", null ],
       [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
     ] ],
-    [ "Getting-Started", "q_gettingstarted.html", [
+    [ "Getting started", "q_gettingstarted.html", [
       [ "Getting the OS", "q_gettingstarted.html#q_getos", [
         [ "Cloning QuarkTS", "q_gettingstarted.html#q_cloneos", null ],
         [ "Including QuarkTS as a git sub-module", "q_gettingstarted.html#q_submodule", null ],
@@ -87,60 +87,7 @@ var NAVTREE =
         ] ]
       ] ]
     ] ],
-    [ "Extensions", "q_extensions.html", [
-      [ "STimers", "q_extensions.html#q_stimers", [
-        [ "Using a STimer", "q_extensions.html#q_stimerusage", null ],
-        [ "STimer example", "q_extensions.html#q_stimerexample", null ]
-      ] ],
-      [ "Finite State Machines (FSM)", "q_extensions.html#q_fsm", [
-        [ "The provided approach", "q_extensions.html#qfsm_approach", null ],
-        [ "Setting up a state machine", "q_extensions.html#q_fsmsetup", null ],
-        [ "Subscribing states and defining callbacks", "q_extensions.html#q_fsm_subscribe_states", null ],
-        [ "The state callback handler: performing transitions and retreiving data", "q_extensions.html#q_fsmhandler", null ],
-        [ "The surrounding callback", "q_extensions.html#q_fsm_surrounding", null ],
-        [ "Adding a state machine as a task", "q_extensions.html#q_fsm_astask", null ],
-        [ "A demonstrative example for a FSM", "q_extensions.html#q_fsm_example1", null ],
-        [ "Sending signals", "q_extensions.html#q_fsmsendsignals", null ],
-        [ "Installing a signal queue", "q_extensions.html#q_fsminstallsignalqueue", null ],
-        [ "Using a transition table", "q_extensions.html#q_fsm_ttable", null ],
-        [ "Signal actions and guards", "q_extensions.html#q_fsm_sigactions", null ],
-        [ "FSM Timeout specification", "q_extensions.html#q_fsm_timeout", null ],
-        [ "Demonstrative example using transition tables", "q_extensions.html#q_fsm_example2", null ],
-        [ "Using the hierarchical approach", "q_extensions.html#qfsm_happroach", [
-          [ "Example usign a hierarchical FSM", "q_extensions.html#q_fsm_example3", null ],
-          [ "Example with history pseudo-states", "q_extensions.html#q_fsm_example4", null ]
-        ] ]
-      ] ],
-      [ "Co-Routines", "q_extensions.html#q_qcoroutines", [
-        [ "Coding a Co-Routine", "q_extensions.html#q_coroutine_code", null ],
-        [ "Blocking calls in a Co-routine", "q_extensions.html#q_coroutine_blocking", null ],
-        [ "Co-Routine usage example", "q_extensions.html#q_coroutine_example1", null ],
-        [ "Positional jumps", "q_extensions.html#q_coroutine_positions", null ],
-        [ "Semaphores", "q_extensions.html#q_coroutine_semaphores", null ],
-        [ "Co-Routine example with semaphores.", "q_extensions.html#q_coroutine_example2", null ],
-        [ "External control", "q_extensions.html#q_coroutine_ext", null ]
-      ] ],
-      [ "AT Command Line Interface (CLI)", "q_extensions.html#q_atcli", [
-        [ "The components of the CLI", "q_extensions.html#q_atcli_components", null ],
-        [ "Supported syntax", "q_extensions.html#q_atcli_syntax", null ],
-        [ "Setting up an AT-CLI instance", "q_extensions.html#q_atcli_setup", null ],
-        [ "Subscribing commands to the parser", "q_extensions.html#q_atcli_sub_commands", null ],
-        [ "Writting a command callback", "q_extensions.html#q_atcli_cmd_callback", null ],
-        [ "Handling the input", "q_extensions.html#q_atcli_inputh", null ],
-        [ "Running the CLI parser", "q_extensions.html#q_atcli_run", null ],
-        [ "A CLI example", "q_extensions.html#q_atcli_example1", null ]
-      ] ],
-      [ "Memory Management", "q_extensions.html#q_memmang", [
-        [ "Principle of operation", "q_extensions.html#q_memmang_principle", null ],
-        [ "Memory pools", "q_extensions.html#q_memmang_pools", null ],
-        [ "Usage example", "q_extensions.html#q_memmang_usage", null ]
-      ] ],
-      [ "Trace and debugging", "q_extensions.html#q_trace", [
-        [ "Viewing variables", "q_extensions.html#q_trace_viewvars", null ],
-        [ "Viewing a memory block", "q_extensions.html#q_trace_mblock", null ],
-        [ "Usage", "q_extensions.html#q_trace_usage", null ]
-      ] ]
-    ] ],
+    [ "Extensions", "q_extensions.html", "q_extensions" ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -157,7 +104,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qmemmang.html",
-"q_gettingstarted.html#q_submodule"
+"q_stimers.html#q_stimers_overview"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

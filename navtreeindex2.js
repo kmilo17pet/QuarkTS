@@ -1,6 +1,12 @@
 var NAVTREEINDEX2 =
 {
-"q_gettingstarted.html#q_submodule":[3,0,1],
+"q_stimers.html#q_stimers_overview":[5,2,0],
+"q_stimers.html#q_stimerusage":[5,2,1],
+"q_trace.html":[5,5],
+"q_trace.html#q_trace_mblock":[5,5,2],
+"q_trace.html#q_trace_overview":[5,5,0],
+"q_trace.html#q_trace_usage":[5,5,3],
+"q_trace.html#q_trace_viewvars":[5,5,1],
 "structq_a_t_c_l_i___command__t.html":[6,1,3,2],
 "structq_a_t_c_l_i___command__t.html#a13623f1d68513495c21f8b061b1a5aec":[6,1,3,2,0],
 "structq_a_t_c_l_i___command__t.html#a47d78e3fdac68cc14477265ae43253d6":[6,1,3,2,1],

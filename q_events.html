@@ -400,7 +400,7 @@ Queues</h2>
 <h3><a class="anchor" id="q_queuesetup"></a>
 Setting up a queue</h3>
 <p>A queue must be explicitly initialized before it can be used. These objects are referenced by handles, which are variables of type <a class="el" href="structq_queue__t.html" title="A Queue object.">qQueue_t</a>. The <a class="el" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63" title="Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...">qQueue_Setup()</a> API function configures the queue and initialize the instance.</p>
-<p>The required RAM for the queue data should be provided by the application writer and could be statically allocated at compile time or in run-time using the <a class="el" href="q_extensions.html#q_memmang">Memory Management</a> extension.</p>
+<p>The required RAM for the queue data should be provided by the application writer and could be statically allocated at compile time or in run-time using the <a class="el" href="q_memmang.html">Memory Management</a> extension.</p>
 <h3><a class="anchor" id="q_attachqueue"></a>
 Attach a queue to a task</h3>
 <p>Additional features are provided by the kernel when the queues are attached to tasks; this allows the scheduler to pass specific queue events to it, usually, states of the object itself that needs to be handled, in this case by a task. For this, use the <a class="el" href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe" title="Attach a Queue to the Task.">qTask_Attach_Queue()</a> API.</p>

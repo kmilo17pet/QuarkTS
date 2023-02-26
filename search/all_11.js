@@ -12,6 +12,7 @@ var searchData=
   ['state_9',['state',['../structq_s_m___handler__t.html#a4ab71110ab86b6df4d2a2edd3e5f9c2f',1,'qSM_Handler_t']]],
   ['statedata_10',['StateData',['../structq_s_m___handler__t.html#a1e16ba53a2dd6f04b0ce0d8ecf128542',1,'qSM_Handler_t']]],
   ['status_11',['Status',['../structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a',1,'qSM_Handler_t']]],
-  ['strdata_12',['StrData',['../structq_a_t_c_l_i___handler__t.html#ad5fcdcc3a862a1907c088abf07aa30fe',1,'qATCLI_Handler_t']]],
-  ['strlen_13',['StrLen',['../structq_a_t_c_l_i___handler__t.html#aa0d42278e492e50a660824c4b1ddaa7f',1,'qATCLI_Handler_t']]]
+  ['stimers_12',['STimers',['../q_stimers.html',1,'q_extensions']]],
+  ['strdata_13',['StrData',['../structq_a_t_c_l_i___handler__t.html#ad5fcdcc3a862a1907c088abf07aa30fe',1,'qATCLI_Handler_t']]],
+  ['strlen_14',['StrLen',['../structq_a_t_c_l_i___handler__t.html#aa0d42278e492e50a660824c4b1ddaa7f',1,'qATCLI_Handler_t']]]
 ];
