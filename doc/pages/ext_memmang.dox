@@ -1,0 +1,146 @@
+/*! @page q_memmang Memory Management
+* @tableofcontents
+* 
+* @section q_memmang_overview Overview
+* The QuarkTS OS is designed to support the development of safe-critical 
+* embedded applications. Dynamic memory allocation is not permitted for kernel 
+* design, as it may result in out-of-storage run-time failures that are 
+* undesirable. However, some applications can be easily deployed using this
+* allocation scheme, making a safe and portable implementation crucial for user
+* code.
+* 
+* In a typical C environment, memory allocation can be achieved using standard 
+* library functions like @c malloc() and @c free(). However, they may not be 
+* appropriate for most embedded applications, as they may not be available on 
+* small microcontrollers or could consume a substantial amount of code space. 
+* Furthermore, dynamic memory allocation has several implementation-defined behaviors and potential issues such as fragmentation.
+
+To address these concerns, the OS offers its own memory management interface 
+* for dynamic allocation as a fully kernel-independent extension. Instead of 
+* calling @c malloc() or @c free(), the application can use qMalloc() to allocate
+* RAM, and  qFree() to free it when necessary. These functions have the same 
+* prototypes as their standard C library counterparts.
+*
+* @section q_memmang_principle Principle of operation
+* The allocation scheme works by subdividing a static array into smaller blocks
+* and using the First-Fit approach.
+*
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>memmang</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T19:51:25.020Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;0et5L84sQ8dq70hh7EnJ\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;qnkYvIl8hSz6jSiMQ8AJ\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>First-fit allocation policy</em>
+* </center>
+* 
+*
+* If adjacent free blocks are available, the implementation combines them into 
+* a single larger block, minimizing the risk of fragmentation, making it 
+* suitable for applications that repeatedly allocate and free different sized 
+* blocks of RAM.
+*
+* @note Because memory is statically declared, it will make the application
+* appear to consume a lot of RAM, even before any memory has been allocated
+* from it.
+* 
+* @warning All the memory management APIs are NOT interrupt-safe. Use these APIs
+* only from the base context.
+*
+* @attention The application is not exempt from memory leaks if the user does
+* not perform adequate memory management. Here, the worst case scenario can
+* occur in the absence of free memory.
+* 
+* @section q_memmang_pools Memory pools
+* A memory pool its a special resource that allows memory blocks to be dynamically
+* allocated from a user-designated memory region. Instead of typical pools with
+* fixedsize block allocation, the pools in QuarkTS can be of any size, thereby
+* the user is responsible for selecting the appropriate memory pool to allocate 
+* data with the same size.
+*
+* The default memory management unit resides in a memory pool object. Also 
+* called the @a "default pool". The total amount of available heap space in the 
+* default memory pool is set by @c Q_DEFAULT_HEAP_SIZE, which is defined in 
+* @c qconfig.h.
+*
+* Besides the default pool, any number of additional memory pools can be defined. 
+* Like any other object in QuarkTS, memory pools are referenced by handles, a 
+* variable of type @ref qMemMang_Pool_t and should be initialized before use 
+* with the qMemMang_Pool_Setup() API function.
+*
+* To perform operations in another memory pool, besides the default pool, an 
+* explicit switch should be performed using qMemMang_Pool_Select() . Here, a 
+* pointer to the target pool should be passed as input argument. From now on, 
+* every call to qMalloc(), or qFree() will run over the newly selected memory 
+* pool. To return to the default pool, a new call to qMemMang_Pool_Select() is 
+* required passing @c NULL as input argument.
+* 
+* To keep track of the memory usage, the qMemMang_Get_FreeSize() API function 
+* returns the number of free bytes in the memory pool at the time the function 
+* is called.
+*
+* @section q_memmang_usage Usage example
+*
+*  @code{.c}
+*  #include <stdio.h>
+*  #include <stdlib.h>
+*  #include "QuarkTS.h"
+*  #include "HAL.h"
+*  #include "Core.h"
+*  
+*  qTask_t taskA;
+*  qMemMang_Pool_t another_heap;
+*  void taskA_Callback( qEvent_t e );
+*  
+*  void taskA_Callback( qEvent_t e ) {
+*      int *xdata = NULL;
+*      int *ydata = NULL;
+*      int *xyoper = NULL;
+*      int n = 20;
+*      int i;
+*      
+*      xyoper = (int*)qMalloc( n*sizeof(int) );
+*      xdata = (int*)qMalloc( n*sizeof(int) );
+*      qMemMang_Pool_Select( &another_heap ); /*change the memory pool*/
+*      /*ydata will point to a segment allocated in another pool*/
+*      ydata = (int*)qMalloc( n*sizeof(int) ); 
+*      
+*      /*use the memory if could be allocated*/
+*      if ( xdata && ydata && xyoper ) {
+*          for ( i = 0 ; i < n ; i++ ) {
+*              xdata[ i ] = GetXData();
+*              ydata[ i ] = GetYData();
+*              xyoper[ i ] = xdata[ i ]*ydata[ i ];
+*          }
+*          UseTheMemmory(xyoper);
+*      }
+*      else {
+*          qTrace_Message("ERROR:ALLOCATION_FAIL");
+*      }
+*  
+*      qFree( ydata );
+*      qMemMang_Pool_Select( NULL ); /*return to the default pool*/
+*      qFree( xdata );
+*      qFree( xyoper );
+*  }
+*  
+*  int main(void) {
+*      char area_another_heap[ 512 ] = { 0 };
+*      qTrace_Set_OutputFcn( OutPutChar );
+*      /*Create a memory heap*/
+*      qMemMang_Pool_Setup( &another_heap, area_another_heap, 512 );
+*      qOS_Setup( HAL_GetTick, 0.001f, IdleTaskCallback );
+*      qOS_Add_Task( &taskA, taskA_Callback, qLowest_Priority, 0.1f, qPeriodic, qEnabled, NULL );
+*      qOS_Run();
+*      return 0;
+*  }
+*  @endcode
+*
+*/

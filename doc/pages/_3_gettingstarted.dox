@@ -1,4 +1,4 @@
-/*! @page q_gettingstarted Getting-Started
+/*! @page q_gettingstarted Getting started
 * @tableofcontents
 *
 * @section q_getos Getting the OS
@@ -36,8 +36,8 @@
 *
 * @subsection q_getqconfig Get a copy of the OS configuration file
 * The file @c qconfig.h provides specific @ref q_configmacros to customize 
-* several aspects of OS. In order to build your solution with QuarkTS, you should
-* provided your own copy of this configuration file. You can obtain a copy
+* several aspects of the OS. In order to build your solution with QuarkTS, you 
+* should provided your own copy of this configuration file. You can obtain a copy
 * with the default configuration by issuing the following command:
 *
 * @code{.sh}
@@ -45,10 +45,9 @@
 * @endcode
 *
  @section q_firststeps First steps
-* Obtain a copy of the latest OS as described here: @ref q_getos . Include the
-* the source files to your project. Also, make sure you add a copy of the file 
-* @c qconfig.h and modify it according to your needs. Setup your compiler 
-* include path with the corresponding OS directory. Include the header 
+* Include the source files to your project. Also, make sure you add a copy of 
+* the file @c qconfig.h and modify it according to your needs. Setup your 
+* compiler include path with the corresponding OS directory. Include the header 
 * file @c QuarkTS.h and setup the instance of the kernel using the qOS_Setup() 
 * inside the main thread. Additional configuration to the target compiler may be
 * required to add the path to the directory of header files. The code below 
@@ -160,7 +159,7 @@
 * Let’s define a PID data structure with the I/O variables and gains.
 *
 *  @code{.c}
-*  typedef struct{
+*  typedef struct {
 *       float yt; /*Measured variable (Controller Input)*/
 *       float ut; /*Controlled variable (Controller Output)*/
 *       float ie; /*Accumulated error*/
@@ -168,7 +167,7 @@
 *       float dt; /*Controller Time Step*/
 *       float sp; /*Set-Point*/
 *       float Kc, Ki, Kd; /*PID Gains*/
-*   }PID_Params_t;
+*   } PID_Params_t;
 *   
 *   PID_Params_t TemperatureControl = {
 *      0.0f, 0.0f, 0.0f, 0.0f, /*Initial IO state of yt and ut*/

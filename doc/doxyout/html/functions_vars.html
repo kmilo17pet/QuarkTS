@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>OS: Data Fields - Variables</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OS
+   &#160;<span id="projectnumber">v7.2.4</span>
+   </div>
+   <div id="projectbrief">Documentation</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('functions_vars.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a id="index_a"></a>- a -</h3><ul>
+<li>arg
+: <a class="el" href="structq_list___for_each_handle__t.html#a9ce2ec4812a92cb6ab39f6e81e9173a9">qList_ForEachHandle_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_c"></a>- c -</h3><ul>
+<li>Command
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#aa4dad4783e4d65b4cb04e96e3ccc8ed5">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>Data
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a93462051e04a57e2459e6a2ab149a01c">qATCLI_Handler_t</a>
+, <a class="el" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">qSM_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_e"></a>- e -</h3><ul>
+<li>EventData
+: <a class="el" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">qEvent_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_f"></a>- f -</h3><ul>
+<li>FirstCall
+: <a class="el" href="structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04">qEvent_t</a>
+</li>
+<li>FirstIteration
+: <a class="el" href="structq_event__t.html#a7b0ca3c3b637735eeee1f1e9d1105726">qEvent_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_g"></a>- g -</h3><ul>
+<li>GetArgFlt
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#ab14ba7f0bc38949d572f65e399820e88">qATCLI_Handler_t</a>
+</li>
+<li>GetArgHex
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a1288e8e58a584a7a4d4847a414dcce07">qATCLI_Handler_t</a>
+</li>
+<li>GetArgInt
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a24ac6c293d1f9fcd96c4df2395ae495c">qATCLI_Handler_t</a>
+</li>
+<li>GetArgPtr
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#ad547a085de5f7734a26050f0bf8e591e">qATCLI_Handler_t</a>
+</li>
+<li>GetArgString
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a8c40d7b727c19aff4b6524fa8978e2e3">qATCLI_Handler_t</a>
+</li>
+<li>guard
+: <a class="el" href="structq_s_m___transition__t.html#a73d9dad6ac4a679ce7e37b3af9b6987c">qSM_Transition_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_h"></a>- h -</h3><ul>
+<li>historyMode
+: <a class="el" href="structq_s_m___transition__t.html#afc0d4dc47dbcf3e55479775b78234465">qSM_Transition_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_i"></a>- i -</h3><ul>
+<li>id
+: <a class="el" href="structq_s_m___signal__t.html#a983342900016ccb7114d5b3746baf5d6">qSM_Signal_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_l"></a>- l -</h3><ul>
+<li>LastIteration
+: <a class="el" href="structq_event__t.html#af000312a956c600f57074345a75536bf">qEvent_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_m"></a>- m -</h3><ul>
+<li>machine
+: <a class="el" href="structq_s_m___handler__t.html#ad5adc63e3c09cd2b4239310d6668e31c">qSM_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_n"></a>- n -</h3><ul>
+<li>n1
+: <a class="el" href="structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d">qList_CompareHandle_t</a>
+</li>
+<li>n2
+: <a class="el" href="structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b">qList_CompareHandle_t</a>
+</li>
+<li>NextState
+: <a class="el" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">qSM_Handler_t</a>
+</li>
+<li>nextState
+: <a class="el" href="structq_s_m___transition__t.html#a82884c556b31767feeeb9f5234f94976">qSM_Transition_t</a>
+</li>
+<li>node
+: <a class="el" href="structq_list___for_each_handle__t.html#a77f6e46cab1968644fb698bf8c4b2876">qList_ForEachHandle_t</a>
+</li>
+<li>NumArgs
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a4e0dcf7af0c2eddf1d9e3e88adda2ff2">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_o"></a>- o -</h3><ul>
+<li>options
+: <a class="el" href="structq_s_m___timeout_state_definition__t.html#a84fd6c1f3959fda6b8cc73aa5b4fd118">qSM_TimeoutStateDefinition_t</a>
+</li>
+<li>Output
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#a36853d82cd782a15d6909ec210081791">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_p"></a>- p -</h3><ul>
+<li>param
+: <a class="el" href="structq_a_t_c_l_i___command__t.html#a13623f1d68513495c21f8b061b1a5aec">qATCLI_Command_t</a>
+</li>
+<li>putch
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b">qATCLI_Handler_t</a>
+</li>
+<li>puts
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_s"></a>- s -</h3><ul>
+<li>sigData
+: <a class="el" href="structq_s_m___signal__t.html#a868ff63ba89752ded52f670ee830b57c">qSM_Signal_t</a>
+</li>
+<li>Signal
+: <a class="el" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">qSM_Handler_t</a>
+</li>
+<li>SignalData
+: <a class="el" href="structq_s_m___handler__t.html#a57bd1782dce058f1af8d9ac429ae8e7c">qSM_Handler_t</a>
+</li>
+<li>signalData
+: <a class="el" href="structq_s_m___transition__t.html#a1d558129fce0870a2746d3aafce08726">qSM_Transition_t</a>
+</li>
+<li>stage
+: <a class="el" href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">qList_ForEachHandle_t</a>
+</li>
+<li>StartDelay
+: <a class="el" href="structq_event__t.html#aee880e0bf7834b8ca68c2bcd6ddab532">qEvent_t</a>
+</li>
+<li>StartState
+: <a class="el" href="structq_s_m___handler__t.html#a10e59c21e0e6763803fcb9f4414858ef">qSM_Handler_t</a>
+</li>
+<li>state
+: <a class="el" href="structq_s_m___handler__t.html#a4ab71110ab86b6df4d2a2edd3e5f9c2f">qSM_Handler_t</a>
+</li>
+<li>StateData
+: <a class="el" href="structq_s_m___handler__t.html#a1e16ba53a2dd6f04b0ce0d8ecf128542">qSM_Handler_t</a>
+</li>
+<li>Status
+: <a class="el" href="structq_s_m___handler__t.html#a9a9b417b18be359dcef7d0c979db078a">qSM_Handler_t</a>
+</li>
+<li>StrData
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#ad5fcdcc3a862a1907c088abf07aa30fe">qATCLI_Handler_t</a>
+</li>
+<li>StrLen
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#aa0d42278e492e50a660824c4b1ddaa7f">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_t"></a>- t -</h3><ul>
+<li>TaskData
+: <a class="el" href="structq_event__t.html#a191262c05958798bbb47391043170b2a">qEvent_t</a>
+</li>
+<li>Text
+: <a class="el" href="structq_a_t_c_l_i___command__t.html#a47d78e3fdac68cc14477265ae43253d6">qATCLI_Command_t</a>
+</li>
+<li>TransitionHistory
+: <a class="el" href="structq_s_m___handler__t.html#acde5467a47c845d8f84629204ffb0a9d">qSM_Handler_t</a>
+</li>
+<li>Trigger
+: <a class="el" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">qEvent_t</a>
+</li>
+<li>Type
+: <a class="el" href="structq_a_t_c_l_i___handler__t.html#ace2594f0621470e85de85c9c5ee9c06d">qATCLI_Handler_t</a>
+</li>
+</ul>
+
+
+<h3><a id="index_x"></a>- x -</h3><ul>
+<li>xSignal
+: <a class="el" href="structq_s_m___transition__t.html#abaf2e7dca09c125e0755f189d36e8104">qSM_Transition_t</a>
+</li>
+<li>xTimeout
+: <a class="el" href="structq_s_m___timeout_state_definition__t.html#afb96f6137915206759987e4003c2138d">qSM_TimeoutStateDefinition_t</a>
+</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 26 2023 00:33:37 for OS by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

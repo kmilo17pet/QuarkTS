@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>OS: qtasks.h Source File</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OS
+   &#160;<span id="projectnumber">v7.2.4</span>
+   </div>
+   <div id="projectbrief">Documentation</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('qtasks_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">qtasks.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef QTASKS_H</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">    #define QTASKS_H</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">    #include &quot;qtypes.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #include &quot;qstimers.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">    #include &quot;qlists.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    #if ( Q_QUEUES == 1 )</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">        #include &quot;qqueues.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    #if ( Q_FSM == 1 )</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">        #include &quot;qfsm.h&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">    #if ( Q_ATCLI == 1 )</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">        #include &quot;qatcli.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">   43</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9">   47</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9">qTriggerNULL</a>,</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">   51</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a>,</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">   58</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a>,</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">   65</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>,</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7">   72</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7">byQueueReceiver</a>,</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b">   77</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b">byQueueFull</a>,</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb">   83</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb">byQueueCount</a>,</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">   88</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a>,</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244">   92</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244">byEventFlags</a>,</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084">   96</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084">bySchedulingRelease</a>,</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">  100</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">byNoReadyTasks</a>,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga7a0424005455a88f8452e4f8d4ca0734">  105</a></span>&#160;    <span class="keyword">typedef</span> <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> <a class="code" href="group__qtaskmanip.html#ga7a0424005455a88f8452e4f8d4ca0734">qNotifier_t</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">  108</a></span>&#160;    <span class="keyword">typedef</span> <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> <a class="code" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga777c5313fa5c748c2335b693da62c43e">  111</a></span>&#160;<span class="preprocessor">    #define QMAX_NOTIFICATION_VALUE         ( UINT32_MAX - 1uL )</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">  116</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">  117</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a>,  </div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">  118</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">qReady</a>,                 </div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">  119</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">qWaiting</a>,               </div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">  120</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">qSuspended</a>,             </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <a class="code" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">qRunning</a>                </div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">  122</a></span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">    #if ( Q_TASK_EVENT_FLAGS == 1 )</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="comment">/*The task Bit-Flag definitions*/</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_01               ( 0x00001000uL )</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_02               ( 0x00002000uL )</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_03               ( 0x00004000uL )</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_04               ( 0x00008000uL )</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_05               ( 0x00010000uL )</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_06               ( 0x00020000uL )</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_07               ( 0x00040000uL )</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_08               ( 0x00080000uL )</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_09               ( 0x00100000uL )</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_10               ( 0x00200000uL )</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_11               ( 0x00400000uL )</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_12               ( 0x00800000uL )</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_13               ( 0x01000000uL )</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_14               ( 0x02000000uL )</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_15               ( 0x04000000uL )</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_16               ( 0x08000000uL )</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_17               ( 0x10000000uL )</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_18               ( 0x20000000uL )</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_19               ( 0x40000000uL )</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">        #define QEVENTFLAG_20               ( 0x80000000uL )</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gaa439991cf29879ac4ec1a65f47eedef4">  150</a></span>&#160;<span class="preprocessor">        #define QEVENTFLAG_CLEAR            ( qFalse )</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">  153</a></span>&#160;<span class="preprocessor">        #define QEVENTFLAG_SET              ( qTrue )</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="structq_event__t.html">  162</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qEvent_s {</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="structq_event__t.html#a191262c05958798bbb47391043170b2a">  167</a></span>&#160;        <span class="keywordtype">void</span> *<a class="code" href="structq_event__t.html#a191262c05958798bbb47391043170b2a">TaskData</a>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">  174</a></span>&#160;        <span class="keywordtype">void</span> *<a class="code" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">EventData</a>;</div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">  180</a></span>&#160;        <a class="code" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a> <a class="code" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a>;</div>
+<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04">  185</a></span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04">FirstCall</a>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="structq_event__t.html#a7b0ca3c3b637735eeee1f1e9d1105726">  193</a></span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="structq_event__t.html#a7b0ca3c3b637735eeee1f1e9d1105726">FirstIteration</a>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="structq_event__t.html#af000312a956c600f57074345a75536bf">  201</a></span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="structq_event__t.html#af000312a956c600f57074345a75536bf">LastIteration</a>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="structq_event__t.html#aee880e0bf7834b8ca68c2bcd6ddab532">  211</a></span>&#160;        <a class="code" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a> <a class="code" href="structq_event__t.html#aee880e0bf7834b8ca68c2bcd6ddab532">StartDelay</a>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="preprocessor">    #ifdef DOXYGEN</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="structq_event__t.html">qEvent_t</a>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    _qEvent_t_<span class="comment">/*, *const qEvent_t*/</span>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">const</span> _qEvent_t_ *<a class="code" href="structq_event__t.html">qEvent_t</a>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">  223</a></span>&#160;    <span class="keyword">typedef</span> void (*<a class="code" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a>)( <a class="code" href="structq_event__t.html">qEvent_t</a> arg );</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="structq_task__t.html">  268</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">struct </span>_qTask_s { <span class="comment">/*Task node definition*/</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <span class="keyword">struct </span>_qTask_Private_s {    <span class="comment">/*Task control block - TCB*/</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <a class="code" href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a>;                    </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordtype">void</span> *taskData, *asyncData;             </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <a class="code" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> callback;                    </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">            #if ( ( Q_FSM == 1 ) || ( Q_ATCLI == 1 ) )</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                <span class="keywordtype">void</span> *aObj;                        </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="preprocessor">            #if ( Q_QUEUES == 1 )</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                <a class="code" href="structq_queue__t.html">qQueue_t</a> *aQueue;                    </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> aQueueCount;               </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="preprocessor">            #if ( Q_ALLOW_TASK_NAMING == 1 )</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="keyword">const</span> <span class="keywordtype">char</span> *name;                         </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <a class="code" href="structq_s_timer__t.html">qSTimer_t</a> timer;                        </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">            #if ( Q_TASK_COUNT_CYCLES == 1 )</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                <a class="code" href="group__qtypes.html#ga0deaa6502f8c26904a4d2fe6755806b8">qCycles_t</a> cycles;                   </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">            #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                <span class="keywordtype">size_t</span> entry;                       <span class="comment">/*&lt; To allow the OS maintain the task entry order. */</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <a class="code" href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a> iterations;                </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keyword">volatile</span> <a class="code" href="group__qtaskmanip.html#ga7a0424005455a88f8452e4f8d4ca0734">qNotifier_t</a> notification;      </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keyword">volatile</span> <a class="code" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> flags;            </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            <a class="code" href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a> trigger;                     </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            <a class="code" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> priority;                   </div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        }</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        qPrivate;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    }</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <a class="code" href="structq_task__t.html">qTask_t</a>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor">    #if ( Q_QUEUES == 1 )</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">  307</a></span>&#160;        <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">  308</a></span>&#160;            <a class="code" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">qQueueMode_Receiver</a> = 4,    </div>
+<div class="line"><a name="l00309"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">  309</a></span>&#160;            <a class="code" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">qQueueMode_Full</a> = 8,        </div>
+<div class="line"><a name="l00310"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">  310</a></span>&#160;            <a class="code" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a> = 16,      </div>
+<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">  311</a></span>&#160;            <a class="code" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a> = 32,      </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        }</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <a class="code" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28">  327</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2">  328</a></span>&#160;        <a class="code" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2">qTask_NotifyNULL</a>,               </div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">  329</a></span>&#160;        <a class="code" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a>,             </div>
+<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">  330</a></span>&#160;        <a class="code" href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a>,             </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    }</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a>;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
+<div class="line"><a name="l00337"></a><span class="lineno"><a class="line" href="group__qnot.html#ga187184b382e15081e789b3a06732f6e3">  337</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00338"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3ac68daffb1b7b942c296eb3c06a028a56">  338</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3ac68daffb1b7b942c296eb3c06a028a56">qTask_ClearIterations</a>,          </div>
+<div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3aca66fc6400868c473c36664ea6f82ebc">  339</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3aca66fc6400868c473c36664ea6f82ebc">qTask_ClearTimeElapsed</a>,         </div>
+<div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a8404d81c6e51a040267c6e9727d5aeb0">  340</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a8404d81c6e51a040267c6e9727d5aeb0">qTask_ClearCycles</a>,              </div>
+<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a5b5f9ed2ce0b3c0aa497cb18944b2bc0">  341</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a5b5f9ed2ce0b3c0aa497cb18944b2bc0">qTask_ClearSimpleNotifications</a>, </div>
+<div class="line"><a name="l00342"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3afba9e370fd5dd2b1e9cae908a7e6f8db">  342</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3afba9e370fd5dd2b1e9cae908a7e6f8db">qTask_ClearQueuedNotifications</a>, </div>
+<div class="line"><a name="l00343"></a><span class="lineno"><a class="line" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3abd11903c541d33a22dc7d6a287f5b4c2">  343</a></span>&#160;        <a class="code" href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3abd11903c541d33a22dc7d6a287f5b4c2">qTask_ClearNotifications</a>,       </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    }</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="group__qnot.html#ga187184b382e15081e789b3a06732f6e3">qTask_ClrParam_t</a>;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">qTask_Notification_Send</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                                     <span class="keywordtype">void</span>* eventData );</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                                      <span class="keywordtype">void</span>* eventData );</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">qTask_HasPendingNotifications</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task );</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <a class="code" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> <a class="code" href="group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308">qTask_Get_State</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">    #if ( Q_TASK_COUNT_CYCLES == 1 )</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <a class="code" href="group__qtypes.html#ga0deaa6502f8c26904a4d2fe6755806b8">qCycles_t</a> <a class="code" href="group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4">qTask_Get_Cycles</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task );</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <a class="code" href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a> <a class="code" href="group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc">qTask_Get_GlobalState</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task );</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160; </div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga27aa23ec76dae5afb4c1a4d8b8d8e256">qTask_Set_Time</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                            <span class="keyword">const</span> <a class="code" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> tValue );</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; </div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#gae104f1b7613ac41e4cdea23a34601dea">qTask_Set_Iterations</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                                  <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a> iValue );</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160; </div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga3e42aa373e2e7eeed774814f8f2a978f">qTask_Set_Priority</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;                                <span class="keyword">const</span> <a class="code" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> pValue );</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160; </div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga8fa6e27f8abd9af718ad722c3a36012a">qTask_Set_Callback</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;                                <span class="keyword">const</span> <a class="code" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> cFcn );</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a">qTask_Set_State</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;                             <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> s );</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774">qTask_Set_Data</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;                            <span class="keywordtype">void</span>* arg );</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160; </div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga518f2f49aafa6d160b235110f8aca178">qTask_Clear</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;                         <span class="keyword">const</span> <a class="code" href="group__qnot.html#ga187184b382e15081e789b3a06732f6e3">qTask_ClrParam_t</a> param );</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160; </div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    <a class="code" href="structq_task__t.html">qTask_t</a>* <a class="code" href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a>( <span class="keywordtype">void</span> );</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
+<div class="line"><a name="l00533"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">  533</a></span>&#160;<span class="preprocessor">    #define qTask_Suspend( Task )     qTask_Set_State( (Task), qDisabled )</span></div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160; </div>
+<div class="line"><a name="l00541"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gae6a5d46741694d47d7a521a6360b960b">  541</a></span>&#160;<span class="preprocessor">    #define qTask_Disable( Task )     qTask_Set_State( (Task), qDisabled )</span></div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160; </div>
+<div class="line"><a name="l00549"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gae5b5bcd7257f31ec290b600fe306adbe">  549</a></span>&#160;<span class="preprocessor">    #define qTask_Resume( Task )      qTask_Set_State( (Task), qEnabled )</span></div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160; </div>
+<div class="line"><a name="l00557"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga3e627c1487e57b485f9d1b7252c80dc3">  557</a></span>&#160;<span class="preprocessor">    #define qTask_Enable( Task )      qTask_Set_State( (Task), qEnabled )</span></div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160; </div>
+<div class="line"><a name="l00568"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#gac5daf7435704726af13127c87bb2f43c">  568</a></span>&#160;<span class="preprocessor">    #define qTask_ASleep( Task )      qTask_Set_State( (Task), qAsleep )</span></div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160; </div>
+<div class="line"><a name="l00577"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga2bd9c2e2584a627a824099eaaa3062b6">  577</a></span>&#160;<span class="preprocessor">    #define qTask_Awake( Task )       qTask_Set_State( (Task), qAwake )</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160; </div>
+<div class="line"><a name="l00585"></a><span class="lineno"><a class="line" href="group__qtaskmanip.html#ga6d966e86daeae3bbef9fe770c5f97c83">  585</a></span>&#160;<span class="preprocessor">    #define qTask_IsEnabled( Task )   ( qEnabled == qTask_Get_State( (Task) ) )</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160; </div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="preprocessor">    #if ( Q_QUEUES == 1 )</span></div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe">qTask_Attach_Queue</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;                                    <a class="code" href="structq_queue__t.html">qQueue_t</a> * <span class="keyword">const</span> q,</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a> mode,</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;                                    <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a> arg );</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160; </div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;<span class="preprocessor">    #endif  </span><span class="comment">/*Q_QUEUES*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160; </div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160; </div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;<span class="preprocessor">    #if ( Q_TASK_EVENT_FLAGS == 1 )</span></div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;                                         <span class="keyword">const</span> <a class="code" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> flags,</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;                                         <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> action );</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160; </div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <a class="code" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> <a class="code" href="group__qeventflags.html#ga4ff86473ecbab720beb77745566c1cb7">qTask_EventFlags_Read</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task );</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160; </div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                                        <a class="code" href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a> flagsToCheck,</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;                                        <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> clearOnExit,</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;                                        <span class="keyword">const</span> <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> checkForAll );</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160; </div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="preprocessor">    #endif </span><span class="comment">/*Q_TASK_EVENT_FLAGS*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160; </div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;<span class="preprocessor">    #if ( Q_ALLOW_TASK_NAMING == 1 )</span></div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> <a class="code" href="group__qtaskmanip.html#ga610d3e350ae08d5d66c14351468ba27c">qTask_Set_Name</a>( <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task,</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">char</span> *name );</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160; </div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="group__qtaskmanip.html#gad21be21c06cd67abe0cee678f40bd8e7">qTask_Get_Name</a>( <span class="keyword">const</span> <a class="code" href="structq_task__t.html">qTask_t</a> * <span class="keyword">const</span> Task );</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160; </div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <a class="code" href="structq_task__t.html">qTask_t</a>* <a class="code" href="group__qtaskmanip.html#ga1aff17c8ce258c4c756638e2dd7b3349">qTask_Find_ByName</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *name );</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="preprocessor">    #endif </span><span class="comment">/*Q_ALLOW_TASK_NAMING*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="preprocessor">    #ifdef __cplusplus</span></div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    }</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160; </div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* QTASKS_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__qclock_html_ga166565f14c43c0fb055b6f1f73f8b910"><div class="ttname"><a href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a></div><div class="ttdeci">qUINT32_t qClock_t</div><div class="ttdoc">A 32-bit unsigned integer to hold ticks count. Epochs counter.</div><div class="ttdef"><b>Definition:</b> qclock.h:66</div></div>
+<div class="ttc" id="agroup__qclock_html_gac7b81fb14df7cba7c4bc212c6226e1ec"><div class="ttname"><a href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a></div><div class="ttdeci">qFloat32_t qTime_t</div><div class="ttdoc">The typedef that specified an time quantity, usually expressed in seconds.</div><div class="ttdef"><b>Definition:</b> qclock.h:33</div></div>
+<div class="ttc" id="agroup__qeventflags_html_ga2784e9105dbff4d18965af5c09abc167"><div class="ttname"><a href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a></div><div class="ttdeci">qBool_t qTask_EventFlags_Modify(qTask_t *const Task, const qTask_Flag_t flags, const qBool_t action)</div><div class="ttdoc">Modify the EventFlags for the provided task.</div><div class="ttdef"><b>Definition:</b> qtasks.c:277</div></div>
+<div class="ttc" id="agroup__qeventflags_html_ga4ff86473ecbab720beb77745566c1cb7"><div class="ttname"><a href="group__qeventflags.html#ga4ff86473ecbab720beb77745566c1cb7">qTask_EventFlags_Read</a></div><div class="ttdeci">qTask_Flag_t qTask_EventFlags_Read(const qTask_t *const Task)</div><div class="ttdoc">Returns the current value of the task's EventFlags.</div><div class="ttdef"><b>Definition:</b> qtasks.c:292</div></div>
+<div class="ttc" id="agroup__qeventflags_html_gadd4ede23427b94c25a064cb097f10b26"><div class="ttname"><a href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a></div><div class="ttdeci">qBool_t qTask_EventFlags_Check(qTask_t *const Task, qTask_Flag_t flagsToCheck, const qBool_t clearOnExit, const qBool_t checkForAll)</div><div class="ttdoc">Check for flags set to qTrue inside the task Event-Flags.</div><div class="ttdef"><b>Definition:</b> qtasks.c:303</div></div>
+<div class="ttc" id="agroup__qlists_html_ga4e8a2d40891d2463b41fcf02ce482d11"><div class="ttname"><a href="group__qlists.html#ga4e8a2d40891d2463b41fcf02ce482d11">qNode_MinimalFields</a></div><div class="ttdeci">#define qNode_MinimalFields</div><div class="ttdoc">This macro can be used to create custom data that can be used as node of a list. User should locate t...</div><div class="ttdef"><b>Definition:</b> qlists.h:96</div></div>
+<div class="ttc" id="agroup__qnot_html_ga187184b382e15081e789b3a06732f6e3"><div class="ttname"><a href="group__qnot.html#ga187184b382e15081e789b3a06732f6e3">qTask_ClrParam_t</a></div><div class="ttdeci">qTask_ClrParam_t</div><div class="ttdoc">An enum that defines the parameters than can be cleared for a task.</div><div class="ttdef"><b>Definition:</b> qtasks.h:337</div></div>
+<div class="ttc" id="agroup__qnot_html_ga7c6b45789367b815f17c1a346014256b"><div class="ttname"><a href="group__qnot.html#ga7c6b45789367b815f17c1a346014256b">qTask_HasPendingNotifications</a></div><div class="ttdeci">qBool_t qTask_HasPendingNotifications(const qTask_t *const Task)</div><div class="ttdoc">Check if the task has pending notifications.</div><div class="ttdef"><b>Definition:</b> qtasks.c:45</div></div>
+<div class="ttc" id="agroup__qnot_html_ga9c4db20c03003d10e10b617abcb2cf28"><div class="ttname"><a href="group__qnot.html#ga9c4db20c03003d10e10b617abcb2cf28">qTask_NotifyMode_t</a></div><div class="ttdeci">qTask_NotifyMode_t</div><div class="ttdoc">An enum that defines the modes in which a notification can be spread.</div><div class="ttdef"><b>Definition:</b> qtasks.h:327</div></div>
+<div class="ttc" id="agroup__qnot_html_gaa0897bb00bc0e8b090397e7632f61f7b"><div class="ttname"><a href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a></div><div class="ttdeci">qBool_t qTask_Notification_Queue(qTask_t *const Task, void *eventData)</div><div class="ttdoc">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...</div><div class="ttdef"><b>Definition:</b> qtasks.c:31</div></div>
+<div class="ttc" id="agroup__qnot_html_gab793f72b9f447c74fbabb876fd7aea4c"><div class="ttname"><a href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">qTask_Notification_Send</a></div><div class="ttdeci">qBool_t qTask_Notification_Send(qTask_t *const Task, void *eventData)</div><div class="ttdoc">Sends a simple notification generating an asynchronous event. This method marks the task as ready for...</div><div class="ttdef"><b>Definition:</b> qtasks.c:12</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3a5b5f9ed2ce0b3c0aa497cb18944b2bc0"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a5b5f9ed2ce0b3c0aa497cb18944b2bc0">qTask_ClearSimpleNotifications</a></div><div class="ttdeci">@ qTask_ClearSimpleNotifications</div><div class="ttdef"><b>Definition:</b> qtasks.h:341</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3a8404d81c6e51a040267c6e9727d5aeb0"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3a8404d81c6e51a040267c6e9727d5aeb0">qTask_ClearCycles</a></div><div class="ttdeci">@ qTask_ClearCycles</div><div class="ttdef"><b>Definition:</b> qtasks.h:340</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3abd11903c541d33a22dc7d6a287f5b4c2"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3abd11903c541d33a22dc7d6a287f5b4c2">qTask_ClearNotifications</a></div><div class="ttdeci">@ qTask_ClearNotifications</div><div class="ttdef"><b>Definition:</b> qtasks.h:343</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3ac68daffb1b7b942c296eb3c06a028a56"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3ac68daffb1b7b942c296eb3c06a028a56">qTask_ClearIterations</a></div><div class="ttdeci">@ qTask_ClearIterations</div><div class="ttdef"><b>Definition:</b> qtasks.h:338</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3aca66fc6400868c473c36664ea6f82ebc"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3aca66fc6400868c473c36664ea6f82ebc">qTask_ClearTimeElapsed</a></div><div class="ttdeci">@ qTask_ClearTimeElapsed</div><div class="ttdef"><b>Definition:</b> qtasks.h:339</div></div>
+<div class="ttc" id="agroup__qnot_html_gga187184b382e15081e789b3a06732f6e3afba9e370fd5dd2b1e9cae908a7e6f8db"><div class="ttname"><a href="group__qnot.html#gga187184b382e15081e789b3a06732f6e3afba9e370fd5dd2b1e9cae908a7e6f8db">qTask_ClearQueuedNotifications</a></div><div class="ttdeci">@ qTask_ClearQueuedNotifications</div><div class="ttdef"><b>Definition:</b> qtasks.h:342</div></div>
+<div class="ttc" id="agroup__qnot_html_gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b"><div class="ttname"><a href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a2d2754dd7aa3d31e6831879a5461b23b">qTask_NotifyQueued</a></div><div class="ttdeci">@ qTask_NotifyQueued</div><div class="ttdef"><b>Definition:</b> qtasks.h:330</div></div>
+<div class="ttc" id="agroup__qnot_html_gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e"><div class="ttname"><a href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28a54d4e8429226131252e9e06aef64d81e">qTask_NotifySimple</a></div><div class="ttdeci">@ qTask_NotifySimple</div><div class="ttdef"><b>Definition:</b> qtasks.h:329</div></div>
+<div class="ttc" id="agroup__qnot_html_gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2"><div class="ttname"><a href="group__qnot.html#gga9c4db20c03003d10e10b617abcb2cf28af2a76d031d4b77d43ed82977fd480ce2">qTask_NotifyNULL</a></div><div class="ttdeci">@ qTask_NotifyNULL</div><div class="ttdef"><b>Definition:</b> qtasks.h:328</div></div>
+<div class="ttc" id="agroup__qqueues_html_ga7f3a6f120028be075a4e8ca5431445fe"><div class="ttname"><a href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe">qTask_Attach_Queue</a></div><div class="ttdeci">qBool_t qTask_Attach_Queue(qTask_t *const Task, qQueue_t *const q, const qQueueLinkMode_t mode, const qUINT16_t arg)</div><div class="ttdoc">Attach a Queue to the Task.</div><div class="ttdef"><b>Definition:</b> qtasks.c:251</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga0ae8d90f1972bf0573af9aeafd6342d4"><div class="ttname"><a href="group__qtaskmanip.html#ga0ae8d90f1972bf0573af9aeafd6342d4">qTask_Get_Cycles</a></div><div class="ttdeci">qCycles_t qTask_Get_Cycles(const qTask_t *const Task)</div><div class="ttdoc">Retrieve the number of task activations.</div><div class="ttdef"><b>Definition:</b> qtasks.c:78</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga1aff17c8ce258c4c756638e2dd7b3349"><div class="ttname"><a href="group__qtaskmanip.html#ga1aff17c8ce258c4c756638e2dd7b3349">qTask_Find_ByName</a></div><div class="ttdeci">qTask_t * qTask_Find_ByName(const char *name)</div><div class="ttdoc">Tries to find the first task that matches the name provided.</div><div class="ttdef"><b>Definition:</b> qtasks.c:361</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga21c4afe2aee58e88e1a0a22cf4431308"><div class="ttname"><a href="group__qtaskmanip.html#ga21c4afe2aee58e88e1a0a22cf4431308">qTask_Get_State</a></div><div class="ttdeci">qState_t qTask_Get_State(const qTask_t *const Task)</div><div class="ttdoc">Retrieve the task operational state.</div><div class="ttdef"><b>Definition:</b> qtasks.c:63</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga27aa23ec76dae5afb4c1a4d8b8d8e256"><div class="ttname"><a href="group__qtaskmanip.html#ga27aa23ec76dae5afb4c1a4d8b8d8e256">qTask_Set_Time</a></div><div class="ttdeci">qBool_t qTask_Set_Time(qTask_t *const Task, const qTime_t tValue)</div><div class="ttdoc">Set/Change the Task execution interval.</div><div class="ttdef"><b>Definition:</b> qtasks.c:95</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga3e42aa373e2e7eeed774814f8f2a978f"><div class="ttname"><a href="group__qtaskmanip.html#ga3e42aa373e2e7eeed774814f8f2a978f">qTask_Set_Priority</a></div><div class="ttdeci">qBool_t qTask_Set_Priority(qTask_t *const Task, const qPriority_t pValue)</div><div class="ttdoc">Set/Change the task priority value.</div><div class="ttdef"><b>Definition:</b> qtasks.c:128</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga40a8db6d8907f27b81a8b43572ba319a"><div class="ttname"><a href="group__qtaskmanip.html#ga40a8db6d8907f27b81a8b43572ba319a">qTask_GlobalState_t</a></div><div class="ttdeci">qTask_GlobalState_t</div><div class="ttdoc">An enum to describe the task global states.</div><div class="ttdef"><b>Definition:</b> qtasks.h:116</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga4ef3d3efb0a0379f677f8a5744ebb9b4"><div class="ttname"><a href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a></div><div class="ttdeci">void(* qTaskFcn_t)(qEvent_t arg)</div><div class="ttdoc">Pointer to a task callback.</div><div class="ttdef"><b>Definition:</b> qtasks.h:223</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga518f2f49aafa6d160b235110f8aca178"><div class="ttname"><a href="group__qtaskmanip.html#ga518f2f49aafa6d160b235110f8aca178">qTask_Clear</a></div><div class="ttdeci">qBool_t qTask_Clear(qTask_t *const Task, const qTask_ClrParam_t param)</div><div class="ttdoc">Clear the specified parameter for the task.</div><div class="ttdef"><b>Definition:</b> qtasks.c:200</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga5d9970617573cd8c14ed9a905d9c6a3a"><div class="ttname"><a href="group__qtaskmanip.html#ga5d9970617573cd8c14ed9a905d9c6a3a">qTask_Set_State</a></div><div class="ttdeci">qBool_t qTask_Set_State(qTask_t *const Task, const qState_t s)</div><div class="ttdoc">Set the task operational state.</div><div class="ttdef"><b>Definition:</b> qtasks.c:157</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga610d3e350ae08d5d66c14351468ba27c"><div class="ttname"><a href="group__qtaskmanip.html#ga610d3e350ae08d5d66c14351468ba27c">qTask_Set_Name</a></div><div class="ttdeci">qBool_t qTask_Set_Name(qTask_t *const Task, const char *name)</div><div class="ttdoc">Set the task name.</div><div class="ttdef"><b>Definition:</b> qtasks.c:335</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga6a915d3ae55fdd4d60c0b4ab54a3fd58"><div class="ttname"><a href="group__qtaskmanip.html#ga6a915d3ae55fdd4d60c0b4ab54a3fd58">qQueueLinkMode_t</a></div><div class="ttdeci">qQueueLinkMode_t</div><div class="ttdoc">An enum that defines the modes in which a queue can be linked to a task.</div><div class="ttdef"><b>Definition:</b> qtasks.h:307</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga7a0424005455a88f8452e4f8d4ca0734"><div class="ttname"><a href="group__qtaskmanip.html#ga7a0424005455a88f8452e4f8d4ca0734">qNotifier_t</a></div><div class="ttdeci">qUINT32_t qNotifier_t</div><div class="ttdoc">A 32-bit unsigned integer type to hold a notification value.</div><div class="ttdef"><b>Definition:</b> qtasks.h:105</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ga8fa6e27f8abd9af718ad722c3a36012a"><div class="ttname"><a href="group__qtaskmanip.html#ga8fa6e27f8abd9af718ad722c3a36012a">qTask_Set_Callback</a></div><div class="ttdeci">qBool_t qTask_Set_Callback(qTask_t *const Task, const qTaskFcn_t cFcn)</div><div class="ttdoc">Set/Change the task callback function.</div><div class="ttdef"><b>Definition:</b> qtasks.c:141</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gabfaeec714c50c26881ba1d2411b0a7dd"><div class="ttname"><a href="group__qtaskmanip.html#gabfaeec714c50c26881ba1d2411b0a7dd">qTask_Flag_t</a></div><div class="ttdeci">qUINT32_t qTask_Flag_t</div><div class="ttdoc">A 32-bit unsigned integer type to hold the task flags.</div><div class="ttdef"><b>Definition:</b> qtasks.h:108</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gad21be21c06cd67abe0cee678f40bd8e7"><div class="ttname"><a href="group__qtaskmanip.html#gad21be21c06cd67abe0cee678f40bd8e7">qTask_Get_Name</a></div><div class="ttdeci">const char * qTask_Get_Name(const qTask_t *const Task)</div><div class="ttdoc">Retrieves the task name.</div><div class="ttdef"><b>Definition:</b> qtasks.c:350</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gae104f1b7613ac41e4cdea23a34601dea"><div class="ttname"><a href="group__qtaskmanip.html#gae104f1b7613ac41e4cdea23a34601dea">qTask_Set_Iterations</a></div><div class="ttdeci">qBool_t qTask_Set_Iterations(qTask_t *const Task, const qIteration_t iValue)</div><div class="ttdoc">Set/Change the number of task iterations.</div><div class="ttdef"><b>Definition:</b> qtasks.c:106</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gae48cb3c880e716d9336250027ecd4924"><div class="ttname"><a href="group__qtaskmanip.html#gae48cb3c880e716d9336250027ecd4924">qTask_Self</a></div><div class="ttdeci">qTask_t * qTask_Self(void)</div><div class="ttdoc">Get the current running-task handle.</div><div class="ttdef"><b>Definition:</b> qtasks.c:245</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gaf2a7c1e32a2b2407447bac214bae1774"><div class="ttname"><a href="group__qtaskmanip.html#gaf2a7c1e32a2b2407447bac214bae1774">qTask_Set_Data</a></div><div class="ttdeci">qBool_t qTask_Set_Data(qTask_t *const Task, void *arg)</div><div class="ttdoc">Set the task data.</div><div class="ttdef"><b>Definition:</b> qtasks.c:187</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gaf68e9306308b42db48932211e1c40334"><div class="ttname"><a href="group__qtaskmanip.html#gaf68e9306308b42db48932211e1c40334">qTrigger_t</a></div><div class="ttdeci">qTrigger_t</div><div class="ttdoc">An enum with all the possible values for the qEvent_t::Trigger member.</div><div class="ttdef"><b>Definition:</b> qtasks.h:43</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gafee29dfbdfaf03969ce74ace0c8d78cc"><div class="ttname"><a href="group__qtaskmanip.html#gafee29dfbdfaf03969ce74ace0c8d78cc">qTask_Get_GlobalState</a></div><div class="ttdeci">qTask_GlobalState_t qTask_Get_GlobalState(const qTask_t *const Task)</div><div class="ttdoc">Retrieve the task global-state.</div><div class="ttdef"><b>Definition:</b> qtasks.c:90</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f"><div class="ttname"><a href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa04bc5e2756ced435ecb7a87c4f2ac82f">qSuspended</a></div><div class="ttdeci">@ qSuspended</div><div class="ttdef"><b>Definition:</b> qtasks.h:120</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170"><div class="ttname"><a href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa2dce2254c90938d830d1947ca7182170">qUndefinedGlobalState</a></div><div class="ttdeci">@ qUndefinedGlobalState</div><div class="ttdef"><b>Definition:</b> qtasks.h:117</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7"><div class="ttname"><a href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa395181dff01bd64ce2738698c0defbe7">qReady</a></div><div class="ttdeci">@ qReady</div><div class="ttdef"><b>Definition:</b> qtasks.h:118</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5"><div class="ttname"><a href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aa3fc6a14155be4ce0f962412b6a9d87c5">qRunning</a></div><div class="ttdeci">@ qRunning</div><div class="ttdef"><b>Definition:</b> qtasks.h:121</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048"><div class="ttname"><a href="group__qtaskmanip.html#gga40a8db6d8907f27b81a8b43572ba319aae1f43a75fce5e44aeba3d859da802048">qWaiting</a></div><div class="ttdeci">@ qWaiting</div><div class="ttdef"><b>Definition:</b> qtasks.h:119</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6"><div class="ttname"><a href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a0c4a64dba03ef78084fb763460048fa6">qQueueMode_Count</a></div><div class="ttdeci">@ qQueueMode_Count</div><div class="ttdef"><b>Definition:</b> qtasks.h:310</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598"><div class="ttname"><a href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a></div><div class="ttdeci">@ qQueueMode_Empty</div><div class="ttdef"><b>Definition:</b> qtasks.h:311</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6"><div class="ttname"><a href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a77d2be2a10f114da8faf9c824f2ee4b6">qQueueMode_Full</a></div><div class="ttdeci">@ qQueueMode_Full</div><div class="ttdef"><b>Definition:</b> qtasks.h:309</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628"><div class="ttname"><a href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a88ea1fb236aeaf87f62aec4893468628">qQueueMode_Receiver</a></div><div class="ttdeci">@ qQueueMode_Receiver</div><div class="ttdef"><b>Definition:</b> qtasks.h:308</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a04d54962b41b3c9b7a4ec2a254ffe244">byEventFlags</a></div><div class="ttdeci">@ byEventFlags</div><div class="ttdoc">When any event-flag is set.</div><div class="ttdef"><b>Definition:</b> qtasks.h:92</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a28053191c67dbab95a5c2e84b6f82c9f">byQueueEmpty</a></div><div class="ttdeci">@ byQueueEmpty</div><div class="ttdoc">When the attached queue is empty. A pointer to the queue will be available in the qEvent_t::EventData...</div><div class="ttdef"><b>Definition:</b> qtasks.h:88</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a2cf6d5803cff0645fbffb3661e8d83c9">qTriggerNULL</a></div><div class="ttdeci">@ qTriggerNULL</div><div class="ttdoc">To indicate the absence of trigger. Reserved for internal use.</div><div class="ttdef"><b>Definition:</b> qtasks.h:47</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a31e56cd844dd0d7435636c2fce26ce4b">byQueueFull</a></div><div class="ttdeci">@ byQueueFull</div><div class="ttdoc">When the attached queue is full. A pointer to the queue will be available in the qEvent_t::EventData ...</div><div class="ttdef"><b>Definition:</b> qtasks.h:77</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a5cca2035a03a57321d1dddef51f50af7">byQueueReceiver</a></div><div class="ttdeci">@ byQueueReceiver</div><div class="ttdoc">When there are elements available in the attached qQueue, the scheduler make a data dequeue (auto-rec...</div><div class="ttdef"><b>Definition:</b> qtasks.h:72</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a></div><div class="ttdeci">@ byNotificationQueued</div><div class="ttdoc">When there is a queued notification in the FIFO priority queue. For this trigger, the dispatcher perf...</div><div class="ttdef"><b>Definition:</b> qtasks.h:58</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a73d699577722ae6a161b16885ff18212">byNoReadyTasks</a></div><div class="ttdeci">@ byNoReadyTasks</div><div class="ttdoc">Only available when the Idle Task is triggered.</div><div class="ttdef"><b>Definition:</b> qtasks.h:100</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a890d2e612bdf3c6214a5668c71f09acb">byQueueCount</a></div><div class="ttdeci">@ byQueueCount</div><div class="ttdoc">When the element-count of the attached queue reaches the specified value. A pointer to the queue will...</div><div class="ttdef"><b>Definition:</b> qtasks.h:83</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a></div><div class="ttdeci">@ byNotificationSimple</div><div class="ttdoc">When the execution chain does, according to a requirement of asynchronous notification event prompted...</div><div class="ttdef"><b>Definition:</b> qtasks.h:65</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334ad121a63949a9381862459ba87962e084">bySchedulingRelease</a></div><div class="ttdeci">@ bySchedulingRelease</div><div class="ttdoc">When the scheduler is released.</div><div class="ttdef"><b>Definition:</b> qtasks.h:96</div></div>
+<div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334af1705218462d9dc718e24c89fd141e18">byTimeElapsed</a></div><div class="ttdeci">@ byTimeElapsed</div><div class="ttdoc">When the time specified for the task elapsed.</div><div class="ttdef"><b>Definition:</b> qtasks.h:51</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga0deaa6502f8c26904a4d2fe6755806b8"><div class="ttname"><a href="group__qtypes.html#ga0deaa6502f8c26904a4d2fe6755806b8">qCycles_t</a></div><div class="ttdeci">qUINT32_t qCycles_t</div><div class="ttdoc">A type to instantiate a variable that hold the number of task cycles.</div><div class="ttdef"><b>Definition:</b> qtypes.h:152</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga7104c6d2e5b76f7396a9b44201d22020"><div class="ttname"><a href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a></div><div class="ttdeci">qINT32_t qIteration_t</div><div class="ttdoc">A type to instantiate a variable that hold the number of task iterations.</div><div class="ttdef"><b>Definition:</b> qtypes.h:129</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga7782cda8db3a7769f684ab5f36b4d04f"><div class="ttname"><a href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a></div><div class="ttdeci">qUINT8_t qState_t</div><div class="ttdoc">A type to instantiate an OS state value.</div><div class="ttdef"><b>Definition:</b> qtypes.h:134</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga8a02cfd33d0381ed5c690db1e385626b"><div class="ttname"><a href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a></div><div class="ttdeci">uint16_t qUINT16_t</div><div class="ttdoc">Unsigned integer type with width of exactly 16 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:46</div></div>
+<div class="ttc" id="agroup__qtypes_html_gacd76ccab9232e6e9e64683f162c4d2b2"><div class="ttname"><a href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a></div><div class="ttdeci">qUINT8_t qPriority_t</div><div class="ttdoc">A type to instantiate a variable to hold the priority value of a task.</div><div class="ttdef"><b>Definition:</b> qtypes.h:123</div></div>
+<div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition:</b> qtasks.h:162</div></div>
+<div class="ttc" id="astructq_event__t_html_a191262c05958798bbb47391043170b2a"><div class="ttname"><a href="structq_event__t.html#a191262c05958798bbb47391043170b2a">qEvent_t::TaskData</a></div><div class="ttdeci">void * TaskData</div><div class="ttdoc">Task arguments defined at the time of its creation. (Storage-Pointer)</div><div class="ttdef"><b>Definition:</b> qtasks.h:167</div></div>
+<div class="ttc" id="astructq_event__t_html_a61ae4900215e528bd801c8ee156ac0df"><div class="ttname"><a href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">qEvent_t::Trigger</a></div><div class="ttdeci">qTrigger_t Trigger</div><div class="ttdoc">This member indicates the event source that triggers the task execution. Possible values are describe...</div><div class="ttdef"><b>Definition:</b> qtasks.h:180</div></div>
+<div class="ttc" id="astructq_event__t_html_a7b0ca3c3b637735eeee1f1e9d1105726"><div class="ttname"><a href="structq_event__t.html#a7b0ca3c3b637735eeee1f1e9d1105726">qEvent_t::FirstIteration</a></div><div class="ttdeci">qBool_t FirstIteration</div><div class="ttdoc">Indicates whether current pass is the first iteration of the task. This flag will be only set when ti...</div><div class="ttdef"><b>Definition:</b> qtasks.h:193</div></div>
+<div class="ttc" id="astructq_event__t_html_aa8774ca79810e9df25e2743501ee6b74"><div class="ttname"><a href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">qEvent_t::EventData</a></div><div class="ttdeci">void * EventData</div><div class="ttdoc">Associated data of the event. Specific data will reside here according to the event source....</div><div class="ttdef"><b>Definition:</b> qtasks.h:174</div></div>
+<div class="ttc" id="astructq_event__t_html_ab6b771f59e71f08d49c14466b88edb04"><div class="ttname"><a href="structq_event__t.html#ab6b771f59e71f08d49c14466b88edb04">qEvent_t::FirstCall</a></div><div class="ttdeci">qBool_t FirstCall</div><div class="ttdoc">This field indicates that a task is running for the first time. Can be used for data initialization p...</div><div class="ttdef"><b>Definition:</b> qtasks.h:185</div></div>
+<div class="ttc" id="astructq_event__t_html_aee880e0bf7834b8ca68c2bcd6ddab532"><div class="ttname"><a href="structq_event__t.html#aee880e0bf7834b8ca68c2bcd6ddab532">qEvent_t::StartDelay</a></div><div class="ttdeci">qClock_t StartDelay</div><div class="ttdoc">The number of epochs between current system time and point in time when the task was marked as Ready....</div><div class="ttdef"><b>Definition:</b> qtasks.h:211</div></div>
+<div class="ttc" id="astructq_event__t_html_af000312a956c600f57074345a75536bf"><div class="ttname"><a href="structq_event__t.html#af000312a956c600f57074345a75536bf">qEvent_t::LastIteration</a></div><div class="ttdeci">qBool_t LastIteration</div><div class="ttdoc">Indicates whether current pass is the last iteration of the task. This flag will be only set when tim...</div><div class="ttdef"><b>Definition:</b> qtasks.h:201</div></div>
+<div class="ttc" id="astructq_queue__t_html"><div class="ttname"><a href="structq_queue__t.html">qQueue_t</a></div><div class="ttdoc">A Queue object.</div><div class="ttdef"><b>Definition:</b> qqueues.h:53</div></div>
+<div class="ttc" id="astructq_s_timer__t_html"><div class="ttname"><a href="structq_s_timer__t.html">qSTimer_t</a></div><div class="ttdoc">A STimer(Software Timer) object.</div><div class="ttdef"><b>Definition:</b> qstimers.h:33</div></div>
+<div class="ttc" id="astructq_task__t_html"><div class="ttname"><a href="structq_task__t.html">qTask_t</a></div><div class="ttdoc">A task node object.</div><div class="ttdef"><b>Definition:</b> qtasks.h:268</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a71443761d886d6152d96ebd3fda63af.html">os</a></li><li class="navelem"><a class="el" href="dir_2025fe1dde05fb63d1c608d2a99c3643.html">include</a></li><li class="navelem"><b>qtasks.h</b></li>
+    <li class="footer">Generated on Sun Feb 26 2023 00:33:36 for OS by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

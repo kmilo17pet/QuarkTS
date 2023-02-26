@@ -7,7 +7,7 @@
 * implements a specialized round-robin scheme using a linked-chain approach and 
 * an event-queue to provide true FIFO priority scheduling.
 * 
-* <b> @b Why cooperative? </b>
+* <b> Why cooperative? </b>
 *
 * Rather than having preemption, tasks manage their own life-cycle. This bring 
 * significant benefits, fewer re-entrance problems are encountered, because 
@@ -113,8 +113,8 @@
 * specifications of the embedded system.
 *
 * The kernel's memory footprint can be scaled down to contain only the features 
-* required for your application, typically 3.7 KBytes of code space and less 
-* than 1 KByte of data space.
+* required for your application, typically @c 3.7Kb of code space and less 
+* than @c 1Kb of data space.
 *
 * <center>
 * <table>

@@ -1,0 +1,115 @@
+/*! @page q_stimers STimers
+* @tableofcontents
+*
+* @section q_stimers_overview Overview
+* STimers are an essential extension as they allow for accurate and efficient 
+* timekeeping without blocking tasks. Using STimers enables the embedded 
+* application to perform other critical tasks while the timer is running in the
+* background. STimers also provide flexibility in the event that the timer 
+* needs to be paused, restarted, or adjusted on the fly. This can be 
+* particularly useful in applications that require dynamic timing or have 
+* unpredictable event intervals.
+*
+* The Non-blocking design of the STimer is particularly important in 
+* cooperative scheduling because the tasks and operations of the OS are 
+* dependent on the cooperation of other tasks. Blocking timers can be 
+* problematic in a cooperative model because they halt the execution of the
+* task, preventing other tasks from running. This can cause delays, missed 
+* deadlines, and other performance issues.
+* 
+* The STimers implementation does not access resources from the interrupt 
+* context, does not consume any significant processing time unless a timer has 
+* actually expired, does not add any processing overhead to the sys-tick 
+* interrupt, and does not walk any other data structures. The timer service 
+* just takes the value of the existing kernel clock source for reference 
+* \f$ t_{sys}\f$ , allowing timer functionality to be added to an application 
+* with minimal impact.
+*
+* <center>
+* @htmlonly
+* <!DOCTYPE html>
+* <html>
+* <head>
+* <title>stimer</title>
+* <meta charset="utf-8"/>
+* </head>
+* <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-18T15:06:53.012Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;D0ASMuxQqJpFRMXpmBB_\&quot; version=\&quot;20.2.2\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;rcvfuREYuiKnwBi7l4OG\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
+* <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+* </body>
+* </html>
+* @endhtmlonly
+* <em>STimers operation</em>
+* </center>
+*
+* As illustrated in the figure, the time expiration check is roll-over safe 
+* by restricting it, to the only calculation that make sense for timestamps, 
+* \f$ t_{sys} − X_{T_x} \f$, that yields a duration namely the amount of time 
+* elapsed between the current instant \f$ t_{sys}\f$ and the later instant, 
+* specifically, the tick taken at the arming instant with qSTimer_Set(), 
+* \f$ X_{t_i}\f$
+* Thanks to modular arithmetic, both of these are guaranteed to work fine across 
+* the clock-source rollover (a 32bit unsigned-counter), at least, as long the 
+* delays involved are shorter than @c 49.7 days.
+*
+* <b> Features </b>
+*
+* - Provides a non-blocking equivalent to delay function.
+* - Each STimer encapsulates its own expiration (timeout) time.
+* - Provides elapsed and remaining time APIs.
+* - As mentioned before, STimers uses the same kernel clock source, this means 
+* the time-elapsed calculation use the qClock_GetTick() API, therefore, the time
+* resolution has the same value passed when the scheduler has been initialized
+* with qOS_Setup()
+*
+* @section q_stimerusage Using a STimer
+* A STimer is referenced by a handle, a variable of type qSTimer_t and 
+* preferably, should be initialized by the @c QSTIMER_INITIALIZER constant
+* before any usage.
+*
+* To use them, the code should follow a specific pattern that deals with the 
+* states of this object. All related APIs are designed to be non-blocking, this
+* means there are ideal for use in cooperative environments as the one provided 
+* by the OS itself. To minimize the implementation, this object is intentionally
+* created to behave like a binary object, this implies that it only handles two 
+* states, @a Armed and @a Disarmed.
+* An @a Armed timer means that it is already running with a specified preset 
+* value and a @a Disarmed timer is the opposite, which means that it does not 
+* have a preset value, so consequently, it is not running at all.
+*
+* The arming action can be performed with qSTimer_Set() or qSTimer_FreeRun() and
+* disarming with qSTimer_Disarm().
+* For qSTimer_FreeRun(), it checks the timer and performs the arming. If
+* disarmed, it gets armed immediately with the specified time. If armed, the 
+* time argument is ignored and the API only checks for expiration. When the time
+* expires,the STimer gets armed immediately taking the specified time.
+*
+* All possible checking actions are also provided for this object, including 
+* qSTimer_Elapsed(), qSTimer_Remaining() and qSTimer_Expired() , with the last 
+* one being the most commonly used for timing applications. Finally, to get the 
+* current status of the STimer (check if is @a Armed or @a Disarmed) the 
+* qSTimer_Status() API should be used.
+*
+* @section q_stimerexample STimer example
+* The example below shows a simple usage of this object. It is noteworthy that
+* arming is performed once using the qEvent_t::FirstCall flag. This prevents the timer
+* from being re-armed every time the task runs. After the timer expires, it
+* should be disarmed explicitly
+*
+*  @code{.c}
+*  void Example_Task( qEvent_t e ) {
+*      static qSTimer_t timeout = QSTIMER_INITIALIZER;
+*      if ( e->FirstCall ) {
+*          /*Arming the stimer for  3.5 seg*/
+*          qSTimer_Set( &timeout, 3.5f );
+*      }
+*      
+*      /*non-blocking delay, true when timeout expires*/
+*      if ( qSTimer_Expired( &timeout ) ) {
+*          /* TODO: Code when STimer expires */
+*          qSTimer_Disarm( &timeout );
+*      }
+*      else return; /*Yield*/
+*  }
+*  @endcode
+*
+*/

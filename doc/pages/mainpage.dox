@@ -1,18 +1,16 @@
 /** @mainpage User manual
 *
 * @image html https://user-images.githubusercontent.com/11412210/198933603-64c6da08-aeec-4d19-a415-ee3d4bf27879.jpg
-* 
-* @emoji :page_with_curl: <a style="font-weight:bold" href="https://github.com/kmilo17pet/quarkts-usermanual/raw/manual/QuarkTS_UserManual.pdf">Download the PDF version of the user manual</a>
 *
 * QuarkTS is an open-source operating system that provides a modern and lightweight 
 * environment to build stable and predictable event-driven multitasking embedded
 * software with the following features:
 *
-* - @emoji :1234: Prioritized RTC cooperative scheduling.
-* - @emoji :watch: Time control (Timed tasks and @ref q_stimers)
-* - @emoji :incoming_envelope: Inter-Task communication primitives, @ref q_queues, @ref q_notifications and @ref qeventflags.
+* - @emoji :1234: Prioritized RTC cooperative scheduling
+* - @emoji :clock4: Time control ( Timed tasks and @ref q_stimers )
+* - @emoji :repeat_one: Inter-Task communication primitives : @ref q_queues, @ref q_notifications and @ref qeventflags.
 * - @emoji :arrows_counterclockwise: @ref q_fsm ( with hierarchical support )
-* - @emoji :arrows_clockwise: @ref q_qcoroutines.
+* - @emoji :arrows_clockwise: @ref q_qcoroutines
 * - @emoji :tophat: @ref q_atcli
 *
 * QuarkTS also complies with most of the Motor Industry Software Reliability 
@@ -20,10 +18,10 @@
 * to provide a safe, reliable, and secure foundation for embedded applications.
 *
 * The documentation is organized as follows:
-* - @ref q_background "Overview"
-* - @ref q_foundations "Foundations"
-* - @ref q_gettingstarted "Getting Started"
-* - @ref q_events "Events"
-* - @ref q_extensions "Extensions"
-* - \htmlonly<a href="modules.html">API Reference(Modules)</a>\endhtmlonly \latexonly\hyperlink{...}\endlatexonly
+* - @emoji :eyeglasses: @ref q_background "Overview"
+* - @emoji :page_facing_up: @ref q_foundations "Fundamentals"
+* - @emoji :pencil: @ref q_gettingstarted "Getting started"
+* - @emoji :sparkles: @ref q_events "Events"
+* - @emoji :calling: @ref q_extensions "Extensions"
+* - @emoji :books: \htmlonly<a href="modules.html">API Reference(Modules)</a>\endhtmlonly \latexonly\hyperlink{...}\endlatexonly
 */

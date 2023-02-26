@@ -1,0 +1,79 @@
+/*! @page q_trace Trace/Debugging
+* @tableofcontents
+*
+* @section q_trace_overview Overview
+* QuarkTS include some basic macros to print out debugging messages. Messages 
+* can be simple text or the value of variables in specific base-formats. 
+* To use the trace macros, a single-char output function must be defined using
+* the qTrace_Set_OutputFcn() macro.
+*
+* A single-char output function should follow this prototype:
+*
+*  @code{.c}
+*  void SingleChar_OutputFcn ( void *sp , const char c ) {
+*      /* TODO : print out the c variable using the
+*       * selected peripheral.
+*       */
+*  }
+*  @endcode
+*
+* The body of this user-defined function should have a hardware-dependent code 
+* to print out the @c c variable through a specific peripheral.
+*
+* @section q_trace_viewvars Viewing variables
+* For viewing or tracing a variable (up to 32-bit data) through debug, one of 
+* the following macros are available: #qTrace_Var or #qDebug_Var.
+*
+* The only difference between qTrace_ and Debug, is that @c qTrace_ macros, 
+* print out additional information provided by the @c __FILE__ , @c __LINE__ and
+* @c __func__ built-in preprocessing macros, mostly available in common C 
+* compilers.
+*
+* @section q_trace_mblock Viewing a memory block
+* For tracing memory from a specified target address, one of the following
+* macros are available: #qTrace_Mem or  #qDebug_Mem.
+*
+* @section q_trace_usage Usage
+* In the example below, an UART output function is coded to act as the printer.
+* Here, the target MCU is an ARM-Cortex M0 with the UART1 as the selected 
+* peripheral for this purpose.
+*
+*  @code{.c}
+*  void putUART1 ( void *sp , const char c ) {
+*      /* hardware specific code */
+*      UART1_D = c;
+*      while ( !( UART1_S1 & UART_S1_TC_MASK ) ) {} /*wait until TX is done*/
+*  }
+*  @endcode
+*
+* As seen above, the function follows the required prototype. Later, in the 
+* main thread, a call to qTrace_Set_OutputFcn() is used to set up the
+* output-function.
+*
+*  @code{.c}
+*  int main( void ) {
+*      qTrace_Set_OutputFcn( putUART1 );
+*      ...
+*      ...
+*  }
+*  @endcode
+*
+* After that, trace macros will be available for use.
+*
+*  @code{.c}
+*  void IO_TASK_Callback ( qEvent_t e ) {
+*      static qUINT32_t Counter = 0;
+*      float Sample;
+*      ...
+*      ...
+*      qTrace_Message( "IO TASK running..." );
+*      Counter++;
+*      qTrace_Variable( Counter , UnsignedDecimal );
+*      Sample = SensorGetSample ();
+*      qTrace_Variable( Sample , Float );
+*      ...
+*      ...
+*  }
+*  @endcode
+*
+*/

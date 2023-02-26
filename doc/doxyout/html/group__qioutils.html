@@ -1,0 +1,1586 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>OS: I/O Utils</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OS
+   &#160;<span id="projectnumber">v7.2.4</span>
+   </div>
+   <div id="projectbrief">Documentation</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('group__qioutils.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle">
+<div class="title">I/O Utils<div class="ingroups"><a class="el" href="group__qutility.html">Utilities</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>API for input/output utilities and safe string interfaces.  
+<a href="#details">More...</a></p>
+<div class="dynheader">
+Collaboration diagram for I/O Utils:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__qioutils.svg" width="194" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga1c42a0a7cc36bc0a8902712435f42d27"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga1c42a0a7cc36bc0a8902712435f42d27">qIOUtil_PrintString</a>(fcn,  pStorage,  s)</td></tr>
+<tr class="memdesc:ga1c42a0a7cc36bc0a8902712435f42d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro interface to write a string through <em>fcn</em>.  <a href="group__qioutils.html#ga1c42a0a7cc36bc0a8902712435f42d27">More...</a><br /></td></tr>
+<tr class="separator:ga1c42a0a7cc36bc0a8902712435f42d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa88bf0341eb09a08add75d38168cd82b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaa88bf0341eb09a08add75d38168cd82b">qIOUtil_PrintRaw</a>(fcn,  pStorage,  Data,  n)</td></tr>
+<tr class="memdesc:gaa88bf0341eb09a08add75d38168cd82b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro interface to write RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gaa88bf0341eb09a08add75d38168cd82b">More...</a><br /></td></tr>
+<tr class="separator:gaa88bf0341eb09a08add75d38168cd82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>) (void *arg1, const char arg2)</td></tr>
+<tr class="memdesc:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function that write-out a single character.  <a href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">More...</a><br /></td></tr>
+<tr class="separator:ga87913d4fc8c8ef183f0bc2927906d2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="memItemLeft" align="right" valign="top">typedef char(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>) (void *arg1, const char arg2)</td></tr>
+<tr class="memdesc:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to function that perform a single character I/O operation.  <a href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">More...</a><br /></td></tr>
+<tr class="separator:ga0ed0793f44f3cdc6ef61f6c0ec96e15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gac21b803d1f824b39b5c1d5a99735d76d"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gac21b803d1f824b39b5c1d5a99735d76d">qIOUtil_StrChr</a> (const char *s, int c, size_t maxlen)</td></tr>
+<tr class="memdesc:gac21b803d1f824b39b5c1d5a99735d76d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the first occurrence of character in the C string <em>s</em>. The terminating null-character is considered part of the C string. Therefore, it can also be located in order to retrieve a pointer to the end of a string.  <a href="group__qioutils.html#gac21b803d1f824b39b5c1d5a99735d76d">More...</a><br /></td></tr>
+<tr class="separator:gac21b803d1f824b39b5c1d5a99735d76d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2fd858056a80f64b74ab977e97ec430f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">qIOUtil_StrLen</a> (const char *s, size_t maxlen)</td></tr>
+<tr class="memdesc:ga2fd858056a80f64b74ab977e97ec430f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the given null-terminated byte string, that is, the number of characters in a character array whose first element is pointed to by <em>str</em> up to and not including the first null character. The function returns zero if <em>str</em> is a null pointer and returns <em>maxlen</em> if the null character was not found in the first <em>maxlen</em> bytes of <em>str</em>.  <a href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">More...</a><br /></td></tr>
+<tr class="separator:ga2fd858056a80f64b74ab977e97ec430f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a> (char *dst, const char *src, size_t maxlen)</td></tr>
+<tr class="memdesc:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies up to <em></em>(maxlen - 1) characters from the null-terminated string <em>src</em> to <em>dst</em>, null-terminating the result.  <a href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">More...</a><br /></td></tr>
+<tr class="separator:ga856aaaddf3c1277e4cb4181e2c604b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91f6e5f106debf94a14eb1f510f1788c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga91f6e5f106debf94a14eb1f510f1788c">qIOUtil_StrlCat</a> (char *dst, const char *src, size_t maxlen)</td></tr>
+<tr class="memdesc:ga91f6e5f106debf94a14eb1f510f1788c"><td class="mdescLeft">&#160;</td><td class="mdescRight">appends no more than <em>maxlen−len(dst)−1</em> characters pointed to by <em>src</em> into the array pointed to by <em>dst</em> and always terminates the result with a null character if <em>maxlen</em> is greater than zero. Both the strings <em>dst</em> and <em>src</em> must be terminated with a null character on entry the function and a byte for the terminating null should be included in <em>maxlen</em>.  <a href="group__qioutils.html#ga91f6e5f106debf94a14eb1f510f1788c">More...</a><br /></td></tr>
+<tr class="separator:ga91f6e5f106debf94a14eb1f510f1788c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gaa3da2ef013ab5c1c2c52a18bdb1b87b8">qIOUtil_SwapBytes</a> (void *pData, const size_t n)</td></tr>
+<tr class="memdesc:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the endianess for n bytes of the specified memory location.  <a href="group__qioutils.html#gaa3da2ef013ab5c1c2c52a18bdb1b87b8">More...</a><br /></td></tr>
+<tr class="separator:gaa3da2ef013ab5c1c2c52a18bdb1b87b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga6f949b6b5a55df6cbb2ebe783bc95cd9">qIOUtil_CheckEndianness</a> (void)</td></tr>
+<tr class="memdesc:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the system endianess.  <a href="group__qioutils.html#ga6f949b6b5a55df6cbb2ebe783bc95cd9">More...</a><br /></td></tr>
+<tr class="separator:ga6f949b6b5a55df6cbb2ebe783bc95cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga5bdd96cb8c361417efb8d318cebc42ad">qIOUtil_OutputString</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, const char *s, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> AIP)</td></tr>
+<tr class="memdesc:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write a string through <em>fcn</em>.  <a href="group__qioutils.html#ga5bdd96cb8c361417efb8d318cebc42ad">More...</a><br /></td></tr>
+<tr class="separator:ga5bdd96cb8c361417efb8d318cebc42ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47255c3d0056220a3ae9080ed42da6f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga47255c3d0056220a3ae9080ed42da6f3">qIOUtil_PrintXData</a> (<a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a> fcn, void *pStorage, void *pData, size_t n)</td></tr>
+<tr class="memdesc:ga47255c3d0056220a3ae9080ed42da6f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write data in HEX notation through <em>fcn</em>.  <a href="group__qioutils.html#ga47255c3d0056220a3ae9080ed42da6f3">More...</a><br /></td></tr>
+<tr class="separator:ga47255c3d0056220a3ae9080ed42da6f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade873a18491ec4f390ab0d66deed194b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gade873a18491ec4f390ab0d66deed194b">qIOUtil_OutputRaw</a> (const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a> oFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> aip)</td></tr>
+<tr class="memdesc:gade873a18491ec4f390ab0d66deed194b"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to write n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#gade873a18491ec4f390ab0d66deed194b">More...</a><br /></td></tr>
+<tr class="separator:gade873a18491ec4f390ab0d66deed194b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga6eef53910a05cdb0cd397d987c24b4b0">qIOUtil_InputRaw</a> (const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a> iFcn, void *pStorage, void *pData, const size_t n, <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> aip)</td></tr>
+<tr class="memdesc:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API interface to get n RAW data through <em>fcn</em>.  <a href="group__qioutils.html#ga6eef53910a05cdb0cd397d987c24b4b0">More...</a><br /></td></tr>
+<tr class="separator:ga6eef53910a05cdb0cd397d987c24b4b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">qIOUtil_U32toX</a> (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> value, char *str, <a class="el" href="group__qtypes.html#ga903e6b3909103df27f390f45f34d5885">qINT8_t</a> n)</td></tr>
+<tr class="memdesc:ga58569cdb08e25554c4b4556e1ba3520b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned integer value to a null-terminated string using the 16 base and stores the result in the array given by <em>str</em> parameter. <em>str</em> should be an array long enough to contain any possible value.  <a href="group__qioutils.html#ga58569cdb08e25554c4b4556e1ba3520b">More...</a><br /></td></tr>
+<tr class="separator:ga58569cdb08e25554c4b4556e1ba3520b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gada839f471006399214084cb0f1e81e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gada839f471006399214084cb0f1e81e57">qIOUtil_XtoU32</a> (const char *s)</td></tr>
+<tr class="memdesc:gada839f471006399214084cb0f1e81e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the input string consisting of hexadecimal digits into an unsigned integer value. The input parameter should consist exclusively of hexadecimal digits, with optional whitespaces. The string will be processed one character at a time, until the function reaches a character which it doesn't recognize (including a null character).  <a href="group__qioutils.html#gada839f471006399214084cb0f1e81e57">More...</a><br /></td></tr>
+<tr class="separator:gada839f471006399214084cb0f1e81e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabbdf7619961ec8fab759375781f9eda3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3">qIOUtil_AtoF</a> (const char *s)</td></tr>
+<tr class="memdesc:gabbdf7619961ec8fab759375781f9eda3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double( <code>qFloat64_t</code>). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function.  <a href="group__qioutils.html#gabbdf7619961ec8fab759375781f9eda3">More...</a><br /></td></tr>
+<tr class="separator:gabbdf7619961ec8fab759375781f9eda3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab22e20e57bf3a25d18cf052821a6ec78"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gab22e20e57bf3a25d18cf052821a6ec78">qIOUtil_FtoA</a> (<a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> precision)</td></tr>
+<tr class="memdesc:gab22e20e57bf3a25d18cf052821a6ec78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a float value to a formatted string.  <a href="group__qioutils.html#gab22e20e57bf3a25d18cf052821a6ec78">More...</a><br /></td></tr>
+<tr class="separator:gab22e20e57bf3a25d18cf052821a6ec78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4669fcd270819f7729ef5d16cc4d123a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a">qIOUtil_AtoI</a> (const char *s)</td></tr>
+<tr class="memdesc:ga4669fcd270819f7729ef5d16cc4d123a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in <code>isspace</code>) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned.  <a href="group__qioutils.html#ga4669fcd270819f7729ef5d16cc4d123a">More...</a><br /></td></tr>
+<tr class="separator:ga4669fcd270819f7729ef5d16cc4d123a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80f3706111a8641f7412e58682663f61"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga80f3706111a8641f7412e58682663f61">qIOUtil_UtoA</a> (<a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> base)</td></tr>
+<tr class="memdesc:ga80f3706111a8641f7412e58682663f61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: <code>"sizeof(int)*8+1"</code> for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms.  <a href="group__qioutils.html#ga80f3706111a8641f7412e58682663f61">More...</a><br /></td></tr>
+<tr class="separator:ga80f3706111a8641f7412e58682663f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#ga9b0271fe5fb2a1909abd47788ef399a9">qIOUtil_ItoA</a> (<a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a> num, char *str, <a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> base)</td></tr>
+<tr class="memdesc:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an integer value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. If base is 10 and value is negative, the resulting string is preceded with a minus sign (-). With any other base, value is always considered unsigned.  <a href="group__qioutils.html#ga9b0271fe5fb2a1909abd47788ef399a9">More...</a><br /></td></tr>
+<tr class="separator:ga9b0271fe5fb2a1909abd47788ef399a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac221ab146c69acb53b342c16820d2edc"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gac221ab146c69acb53b342c16820d2edc">qIOUtil_BtoA</a> (const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
+<tr class="memdesc:gac221ab146c69acb53b342c16820d2edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a boolean value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#gac221ab146c69acb53b342c16820d2edc">More...</a><br /></td></tr>
+<tr class="separator:gac221ab146c69acb53b342c16820d2edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae9a29cdeb06de4df3fc209193fa43275"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">qIOUtil_QBtoA</a> (const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> num, char *str)</td></tr>
+<tr class="memdesc:gae9a29cdeb06de4df3fc209193fa43275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output.  <a href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">More...</a><br /></td></tr>
+<tr class="separator:gae9a29cdeb06de4df3fc209193fa43275"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>API for input/output utilities and safe string interfaces. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gaa88bf0341eb09a08add75d38168cd82b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa88bf0341eb09a08add75d38168cd82b">&#9670;&nbsp;</a></span>qIOUtil_PrintRaw</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define qIOUtil_PrintRaw</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fcn, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pStorage, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Data, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">n&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Macro interface to write RAW data through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to print out. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+
+</div>
+</div>
+<a id="ga1c42a0a7cc36bc0a8902712435f42d27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c42a0a7cc36bc0a8902712435f42d27">&#9670;&nbsp;</a></span>qIOUtil_PrintString</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define qIOUtil_PrintString</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fcn, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">pStorage, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Macro interface to write a string through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string to be written </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga0ed0793f44f3cdc6ef61f6c0ec96e15d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">&#9670;&nbsp;</a></span>qIOFcn_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef char(* qIOFcn_t) (void *arg1, const char arg2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to function that perform a single character I/O operation. </p>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example 1: Input operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ) {</div>
+<div class="line">      (void)sp;</div>
+<div class="line">      (void)in;</div>
+<div class="line">      <span class="keywordflow">return</span> HAL_UARTReceiveByte( );</div>
+<div class="line">}</div>
+</div><!-- fragment --> Example 2: Ouput operation <div class="fragment"><div class="line"><span class="keywordtype">char</span> BSP_GetChar( <span class="keywordtype">void</span> *sp, <span class="keywordtype">char</span> in ) {</div>
+<div class="line">      (void)sp;</div>
+<div class="line">      HAL_UARTPutByte( in );</div>
+<div class="line">      <span class="keywordflow">return</span> 0u;</div>
+<div class="line">}</div>
+</div><!-- fragment --> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If an input operation is performed, this function should return the byte read from the input. </dd></dl>
+
+</div>
+</div>
+<a id="ga87913d4fc8c8ef183f0bc2927906d2aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga87913d4fc8c8ef183f0bc2927906d2aa">&#9670;&nbsp;</a></span>qPutChar_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* qPutChar_t) (void *arg1, const char arg2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to function that write-out a single character. </p>
+<dl class="section note"><dt>Note</dt><dd>User should use bare-metal code to implement this function. Example : <div class="fragment"><div class="line"><span class="keywordtype">void</span> BSP_PutChar( <span class="keywordtype">void</span> *sp, <span class="keyword">const</span> <span class="keywordtype">char</span> c ) {</div>
+<div class="line">      (void)sp;</div>
+<div class="line">      HAL_UARTWriteByte( c );</div>
+<div class="line">}</div>
+</div><!-- fragment --> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>The user storage pointer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The character to write out. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>none. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gabbdf7619961ec8fab759375781f9eda3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabbdf7619961ec8fab759375781f9eda3">&#9670;&nbsp;</a></span>qIOUtil_AtoF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a> qIOUtil_AtoF </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses the C string <em>s</em>, interpreting its content as a floating point number and returns its value as a double( <code>qFloat64_t</code>). The function first discards as many whitespace characters (as in isspace) as necessary until the first non-whitespace character is found. Then, starting from this character, takes as many characters as possible that are valid following a syntax resembling that of floating point literals, and interprets them as a numerical value. The rest of the string after the last valid character is ignored and has no effect on the behavior of this function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a floating-point number. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted floating point number as a double( <code>qFloat64_t</code> ) value. If no valid conversion could be performed, the function returns zero (0.0). If the converted value would be out of the range of representable values by a double( <code>qFloat64_t</code> ), it causes undefined behavior </dd></dl>
+<div class="fragment"><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;{</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a> rez = 0.0, fact;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> point_seen = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a>;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordtype">int</span> sgn = 1;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="keywordtype">char</span> c;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">    #if ( Q_ATOF_FULL == 1 )</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordtype">int</span> power2 = 0, powerSign = 1;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        <a class="code" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a> power = 1.0, eFactor;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    s = qIOUtil_DiscardWhitespaces( s, Q_IO_UTIL_MAX_STRLEN );</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    s = qIOUtil_CheckStrSign( s, &amp;sgn );</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">/*cstat -CERT-FLP36-C*/</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    fact = ( <a class="code" href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a> )sgn; <span class="comment">/*CERT-FLP36-C deviation allowed*/</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keywordflow">while</span> ( (<span class="keywordtype">char</span>)<span class="charliteral">&#39;\0&#39;</span> != ( c = *s ) ) { <span class="comment">/*MISRAC2004-17.4_a deviation allowed*/</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">if</span> ( <span class="charliteral">&#39;.&#39;</span> == c ) {</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            point_seen = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        }</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="comment">/*cstat -MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( 0 != isdigit( (<span class="keywordtype">int</span>)c ) ) {</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="comment">/*cstat +MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            <span class="keywordflow">if</span> ( <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> == point_seen ) {</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                fact *= 0.1;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;            }</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            rez = ( rez * 10.0 ) + ( (<span class="keywordtype">double</span>)c ) - 48.0; <span class="comment">/*CERT-FLP36-C deviation allowed*/</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        }</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        }</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        s++;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    }</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="comment">/*cstat +CERT-FLP36-C*/</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">    #if ( Q_ATOF_FULL == 1 )</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">if</span> ( ( <span class="charliteral">&#39;e&#39;</span> == *s ) || ( <span class="charliteral">&#39;E&#39;</span> == *s ) ) {</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        s++;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">if</span> ( ( <span class="charliteral">&#39;-&#39;</span> == *s ) || ( <span class="charliteral">&#39;+&#39;</span> == *s ) ) {</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            powerSign = ( <span class="charliteral">&#39;-&#39;</span> == *s ) ? -1 : 1;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            s++;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        }</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        <span class="comment">/*cstat -MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        <span class="keywordflow">while</span> ( 0 != isdigit( (<span class="keywordtype">int</span>)*s ) ) {</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            power2 = ( 10*power2 ) + ( *s - <span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            s++;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        }</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        <span class="comment">/*cstat +MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        <span class="keywordflow">if</span> ( power2 &gt; 0 ) {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;            eFactor = ( -1 == powerSign ) ? 0.1 : 10.0;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;            <span class="keywordflow">while</span> ( 0 != power2 ) {</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;                power *= eFactor;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;                --power2;</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;            }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    }</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; </div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keywordflow">return</span> power * rez * fact;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keywordflow">return</span> rez * fact;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;}</div>
+<div class="ttc" id="agroup__qtypes_html_ga01c4e0f8638bd9f11307d2ea1ae16ad2"><div class="ttname"><a href="group__qtypes.html#ga01c4e0f8638bd9f11307d2ea1ae16ad2">qFloat64_t</a></div><div class="ttdeci">double qFloat64_t</div><div class="ttdoc">A type to instantiate a double-precision variable of 64-bits IEEE 754.</div><div class="ttdef"><b>Definition:</b> qtypes.h:117</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga131b2258b5135d0b1e3ded5ecbe309d7"><div class="ttname"><a href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a></div><div class="ttdeci">qUINT8_t qBool_t</div><div class="ttdoc">A type to instantiate an OS boolean variable.</div><div class="ttdef"><b>Definition:</b> qtypes.h:139</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga9cd31c446d7a5ead8f65aa28e4d1f2cd"><div class="ttname"><a href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a></div><div class="ttdeci">#define qTrue</div><div class="ttdoc">A boolean value that represents true/success/On or High.</div><div class="ttdef"><b>Definition:</b> qtypes.h:162</div></div>
+<div class="ttc" id="agroup__qtypes_html_gabcfc51cee68e399f81b5c109c8e615c7"><div class="ttname"><a href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a></div><div class="ttdeci">#define qFalse</div><div class="ttdoc">A boolean value that represents false/failure/Off or Low.</div><div class="ttdef"><b>Definition:</b> qtypes.h:157</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga4669fcd270819f7729ef5d16cc4d123a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4669fcd270819f7729ef5d16cc4d123a">&#9670;&nbsp;</a></span>qIOUtil_AtoI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int qIOUtil_AtoI </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses the C-string <em>s</em> interpreting its content as an integral number, which is returned as a value of type int. The function first discards as many whitespace characters (as in <code>isspace</code>) as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many base-10 digits as possible, and interprets them as a numerical value. The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function. If the first sequence of non-whitespace characters in <em>s</em> is not a valid integral number, or if no such sequence exists because either <em>s</em> is empty or it contains only whitespace characters, no conversion is performed and zero is returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string beginning with the representation of a integer number. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, the function returns the converted integral number as an int value. If the converted value would be out of the range of representable values by an <code>int</code>, it causes undefined behavior. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;{</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keywordtype">int</span> retValue = 0;</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160; </div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keywordflow">if</span> ( NULL != s ) {</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        <span class="keywordtype">int</span> res = 0; <span class="comment">/*holds the resulting integer*/</span></div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordtype">int</span> sgn = 1; <span class="comment">/*only to hold the sign*/</span></div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160; </div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        s = qIOUtil_DiscardWhitespaces( s, Q_IO_UTIL_MAX_STRLEN );</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        s = qIOUtil_CheckStrSign( s, &amp;sgn );</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        <span class="keywordflow">while</span> ( <span class="charliteral">&#39;\0&#39;</span> != *s ) { <span class="comment">/*iterate until null char is found*/</span></div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;            <span class="keywordflow">if</span> ( ( *s &lt; <span class="charliteral">&#39;0&#39;</span> ) || ( *s &gt; <span class="charliteral">&#39;9&#39;</span> ) ) {</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;            }</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;            <span class="comment">/*if the char is digit, compute the resulting integer*/</span></div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;            res = ( res * 10 ) + ( (<span class="keywordtype">int</span>)*s ) - ( (<span class="keywordtype">int</span>)<span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;            ++s; <span class="comment">/*MISRAC2004-17.4_a deviation allowed*/</span></div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        }</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        retValue = sgn * res; <span class="comment">/*return the computed integer with sign*/</span></div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    }</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160; </div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <span class="keywordflow">return</span> retValue;</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gac221ab146c69acb53b342c16820d2edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac221ab146c69acb53b342c16820d2edc">&#9670;&nbsp;</a></span>qIOUtil_BtoA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_BtoA </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a boolean value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;{</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> v = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a> != num;</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160; </div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">qIOUtil_QBtoA</a>( v, str );</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;}</div>
+<div class="ttc" id="agroup__qioutils_html_gae9a29cdeb06de4df3fc209193fa43275"><div class="ttname"><a href="group__qioutils.html#gae9a29cdeb06de4df3fc209193fa43275">qIOUtil_QBtoA</a></div><div class="ttdeci">char * qIOUtil_QBtoA(const qBool_t num, char *str)</div><div class="ttdoc">Converts a qBool_t value to a null-terminated string. Input is considered true with any value differe...</div><div class="ttdef"><b>Definition:</b> qioutils.c:561</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga6f949b6b5a55df6cbb2ebe783bc95cd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f949b6b5a55df6cbb2ebe783bc95cd9">&#9670;&nbsp;</a></span>qIOUtil_CheckEndianness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_CheckEndianness </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check the system endianess. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> if Little-Endian, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;{</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a> i = 1u;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">return</span> (<a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>)( *( (<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>*)&amp;i ) );</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;}</div>
+<div class="ttc" id="agroup__qtypes_html_ga4b730ac4f14a355d39d1daea0a0b4a54"><div class="ttname"><a href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a></div><div class="ttdeci">uint8_t qUINT8_t</div><div class="ttdoc">Unsigned integer type with width of exactly 8 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:44</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga8a02cfd33d0381ed5c690db1e385626b"><div class="ttname"><a href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a></div><div class="ttdeci">uint16_t qUINT16_t</div><div class="ttdoc">Unsigned integer type with width of exactly 16 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:46</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gab22e20e57bf3a25d18cf052821a6ec78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab22e20e57bf3a25d18cf052821a6ec78">&#9670;&nbsp;</a></span>qIOUtil_FtoA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_FtoA </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>&#160;</td>
+          <td class="paramname"><em>precision</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a float value to a formatted string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">precision</td><td>Desired number of significant fractional digits in the string. ( The max allowed precision is <code>MAX_FTOA_PRECISION=10</code> ) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;{</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="keywordflow">if</span> ( NULL != str ) {</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> u = 0u;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160; </div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        (void)memcpy( &amp;u, &amp;num, <span class="keyword">sizeof</span>(<a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>) );</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        u &amp;= 0x7FFFFFFFu;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        <span class="keywordflow">if</span> ( 0u == u ) {</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;0.0&quot;</span>, 4 );</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        }</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( u &lt; 0x7F800000u ) {</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> intPart;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            <span class="keywordtype">size_t</span> i = 0u;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160; </div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            precision = <a class="code" href="group__qflm.html#gaaa2b1454b695ede0218b46839d1bc9ef">qFLM_ClipUpper</a>( precision, Q_MAX_FTOA_PRECISION );</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            <span class="keywordflow">if</span> ( num &lt; 0.0f ) {</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;                num = -num;</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;                str[ i++ ] = <span class="charliteral">&#39;-&#39;</span>;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            }</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160; </div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            intPart = (<a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>)num;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            <span class="comment">/*cstat -CERT-FLP36-C*/</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            num -= (<a class="code" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>)intPart;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            i += qIOUtil_xBase_U32toA( intPart, &amp;str[ i ], 10u );</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            <span class="keywordflow">if</span> ( precision &gt; 0u ) {</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;                str[ i++ ] = <span class="charliteral">&#39;.&#39;</span>;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;                <span class="keywordflow">while</span> ( 0u != precision-- ) {</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;                    <span class="keywordtype">char</span> c;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;                    num *= 10.0f;</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;                    c = (char)num;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;                    str[ i++ ] = (char)( (<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>)c + <span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;                    num -= (<a class="code" href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a>)c;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;                }</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;            }</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;            <span class="comment">/*cstat +CERT-FLP36-C*/</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            str[ i ] = (char)<span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( 0x7F800000U == u ) {</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;            str[ 0 ] = ( num &gt; 0.0f ) ? <span class="charliteral">&#39;+&#39;</span> : <span class="charliteral">&#39;-&#39;</span>;</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;            (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( &amp;str[ 1 ] , <span class="stringliteral">&quot;inf&quot;</span>, 4 );</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;        }</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;            (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;nan&quot;</span>, 4 );</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        }</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    }</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;}</div>
+<div class="ttc" id="agroup__qflm_html_gaaa2b1454b695ede0218b46839d1bc9ef"><div class="ttname"><a href="group__qflm.html#gaaa2b1454b695ede0218b46839d1bc9ef">qFLM_ClipUpper</a></div><div class="ttdeci">#define qFLM_ClipUpper(X, Max)</div><div class="ttdoc">Ensures that X is bellow the limits set by Max.</div><div class="ttdef"><b>Definition:</b> qflm.h:191</div></div>
+<div class="ttc" id="agroup__qioutils_html_ga856aaaddf3c1277e4cb4181e2c604b8d"><div class="ttname"><a href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a></div><div class="ttdeci">size_t qIOUtil_StrlCpy(char *dst, const char *src, size_t maxlen)</div><div class="ttdoc">Copies up to (maxlen - 1) characters from the null-terminated string src to dst, null-terminating the...</div><div class="ttdef"><b>Definition:</b> qioutils.c:99</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga7c9e61aae4eeb8b75a71981eebf317ed"><div class="ttname"><a href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a></div><div class="ttdeci">uint32_t qUINT32_t</div><div class="ttdoc">Unsigned integer type with width of exactly 32 bits respectively.</div><div class="ttdef"><b>Definition:</b> qtypes.h:48</div></div>
+<div class="ttc" id="agroup__qtypes_html_gad0afdbc96f4ac211ac4460ba016d65e1"><div class="ttname"><a href="group__qtypes.html#gad0afdbc96f4ac211ac4460ba016d65e1">qFloat32_t</a></div><div class="ttdeci">float qFloat32_t</div><div class="ttdoc">A type to instantiate a single-precision variable of 32-bits IEEE 754.</div><div class="ttdef"><b>Definition:</b> qtypes.h:111</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga6eef53910a05cdb0cd397d987c24b4b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6eef53910a05cdb0cd397d987c24b4b0">&#9670;&nbsp;</a></span>qIOUtil_InputRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_InputRaw </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>&#160;</td>
+          <td class="paramname"><em>iFcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pStorage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramname"><em>aip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API interface to get n RAW data through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">iFcn</td><td>The basic input byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pData</td><td>A pointer to the block where the read data will be saved </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to get </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aip</td><td>Auto-increment the storage-pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;{</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">return</span> qIOUtil_IOOperation( iFcn, pStorage, pData, n, aip, <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga9b0271fe5fb2a1909abd47788ef399a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9b0271fe5fb2a1909abd47788ef399a9">&#9670;&nbsp;</a></span>qIOUtil_ItoA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_ItoA </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an integer value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. If base is 10 and value is negative, the resulting string is preceded with a minus sign (-). With any other base, value is always considered unsigned. </p>
+<p>The argument <em>str</em> should be an array long enough to contain any possible value: (sizeof(int)*8+1) for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;{</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    <span class="keywordflow">if</span> ( NULL != str ) {</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        <span class="keywordtype">size_t</span> i = 0u;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160; </div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;        <span class="keywordflow">if</span> ( num &lt; 0 ) {</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;            <span class="keywordflow">if</span> ( 10u == base ) { <span class="comment">/*handle negative numbers only with 10-base*/</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;                <span class="comment">/*put the sign at the beginning*/</span></div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;                str[ i++ ] = <span class="charliteral">&#39;-&#39;</span>; <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;            }</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;            num = -num;</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        }</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="comment">/*make the unsigned conversion without the null terminator*/</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        i += qIOUtil_xBase_U32toA( (<a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>)num, &amp;str[ i ], base ); <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        <span class="comment">/*Append string terminator*/</span></div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        str[ i ] = <span class="charliteral">&#39;\0&#39;</span>; <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    }</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160; </div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gade873a18491ec4f390ab0d66deed194b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade873a18491ec4f390ab0d66deed194b">&#9670;&nbsp;</a></span>qIOUtil_OutputRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_OutputRaw </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__qioutils.html#ga0ed0793f44f3cdc6ef61f6c0ec96e15d">qIOFcn_t</a>&#160;</td>
+          <td class="paramname"><em>oFcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pStorage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramname"><em>aip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API interface to write n RAW data through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">oFcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pData</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes that will be transferred to the output </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aip</td><td>Auto-increment the storage-pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;{</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">return</span> qIOUtil_IOOperation( oFcn, pStorage, pData, n, aip, <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a> );</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga5bdd96cb8c361417efb8d318cebc42ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5bdd96cb8c361417efb8d318cebc42ad">&#9670;&nbsp;</a></span>qIOUtil_OutputString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_OutputString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
+          <td class="paramname"><em>fcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pStorage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramname"><em>AIP</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API interface to write a string through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The string to be written </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">AIP</td><td>Auto-Increment the storage-pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;{</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retValue = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a>;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">if</span> ( ( NULL != fcn ) &amp;&amp; ( NULL != s ) ) {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="comment">/*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="comment">/*cppcheck-suppress misra-c2012-11.5 */</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keywordtype">char</span> *xPtr = (<span class="keywordtype">char</span>*)pStorage; <span class="comment">/*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="comment">/*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keywordflow">if</span> ( ( <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> == AIP ) &amp;&amp; ( NULL != xPtr ) ) {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordtype">size_t</span> i = 0u;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <span class="keywordflow">while</span> ( (<span class="keywordtype">char</span>)<span class="charliteral">&#39;\0&#39;</span> != *s ) {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                fcn( &amp;xPtr[ i ] , *s++ );</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                ++i;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            retValue = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            <span class="keywordflow">while</span> ( <span class="charliteral">&#39;\0&#39;</span> != *s ) {</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                fcn( pStorage, *s++ );</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            retValue = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">return</span> retValue;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga47255c3d0056220a3ae9080ed42da6f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga47255c3d0056220a3ae9080ed42da6f3">&#9670;&nbsp;</a></span>qIOUtil_PrintXData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_PrintXData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qioutils.html#ga87913d4fc8c8ef183f0bc2927906d2aa">qPutChar_t</a>&#160;</td>
+          <td class="paramname"><em>fcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pStorage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>API interface to write data in HEX notation through <em>fcn</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fcn</td><td>The basic output byte function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pStorage</td><td>The storage pointer passed to <em>fcn</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pData</td><td>A pointer to the block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to print out </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;{</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retValue = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a>;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keywordflow">if</span> ( ( NULL != fcn ) &amp;&amp; ( n &gt; 0u ) ) {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="comment">/*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="comment">/*cppcheck-suppress misra-c2012-11.5 */</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> *pdat =(<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>*)pData;  <span class="comment">/*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">/*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordtype">size_t</span> i;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keywordflow">for</span> ( i = 0u ; i &lt; n ; ++i ) {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] &gt;&gt; 4u ) );   <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            fcn( pStorage, qIOUtil_NibbleToX( pdat[ i ] &amp; 0x0Fu ) ); <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            fcn( pStorage, <span class="charliteral">&#39; &#39;</span> );</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        fcn( pStorage, <span class="charliteral">&#39;\r&#39;</span> );</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        fcn( pStorage, <span class="charliteral">&#39;\n&#39;</span> );</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        retValue = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordflow">return</span> retValue;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gae9a29cdeb06de4df3fc209193fa43275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae9a29cdeb06de4df3fc209193fa43275">&#9670;&nbsp;</a></span>qIOUtil_QBtoA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_QBtoA </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a qBool_t value to a null-terminated string. Input is considered true with any value different to zero (0). The argument <em>str</em> should be an array long enough to contain the output. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;{</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;    <span class="keywordflow">if</span> ( NULL != str ) {</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        <span class="keywordflow">switch</span> ( (<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>)num ) {</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>:</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;true&quot;</span>, 5 );</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a>:</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;false&quot;</span>, 6 );</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="group__qtypes.html#ga72e854705e3361235266e39ccdf8102a">qResponseTimeout</a>:</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;timeout&quot;</span>, 8 );</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="group__qtypes.html#ga968f1251414574c3a94a424037326d68">qRising</a>:</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;rising&quot;</span>, 7 );</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="group__qtypes.html#ga62f77bbcaf2cb3352a54979f84cc1cd9">qFalling</a>:</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;falling&quot;</span>, 8 );</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;            <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;                (void)<a class="code" href="group__qioutils.html#ga856aaaddf3c1277e4cb4181e2c604b8d">qIOUtil_StrlCpy</a>( str, <span class="stringliteral">&quot;unknown&quot;</span>, 8 );</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        }</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    }</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160; </div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;}</div>
+<div class="ttc" id="agroup__qtypes_html_ga62f77bbcaf2cb3352a54979f84cc1cd9"><div class="ttname"><a href="group__qtypes.html#ga62f77bbcaf2cb3352a54979f84cc1cd9">qFalling</a></div><div class="ttdeci">#define qFalling</div><div class="ttdoc">A status value that indicates a falling-edge condition.</div><div class="ttdef"><b>Definition:</b> qtypes.h:217</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga72e854705e3361235266e39ccdf8102a"><div class="ttname"><a href="group__qtypes.html#ga72e854705e3361235266e39ccdf8102a">qResponseTimeout</a></div><div class="ttdeci">#define qResponseTimeout</div><div class="ttdoc">A status value that indicates a response timeout.</div><div class="ttdef"><b>Definition:</b> qtypes.h:207</div></div>
+<div class="ttc" id="agroup__qtypes_html_ga968f1251414574c3a94a424037326d68"><div class="ttname"><a href="group__qtypes.html#ga968f1251414574c3a94a424037326d68">qRising</a></div><div class="ttdeci">#define qRising</div><div class="ttdoc">A status value that indicates a rising-edge condition.</div><div class="ttdef"><b>Definition:</b> qtypes.h:212</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gac21b803d1f824b39b5c1d5a99735d76d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac21b803d1f824b39b5c1d5a99735d76d">&#9670;&nbsp;</a></span>qIOUtil_StrChr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_StrChr </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the first occurrence of character in the C string <em>s</em>. The terminating null-character is considered part of the C string. Therefore, it can also be located in order to retrieve a pointer to the end of a string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>Character to be located. It is passed as its int promotion, but it is internally converted back to char for the comparison. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the first occurrence of character in <em>s</em>. If the character is not found, the function returns a null pointer. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">char</span> *retValue = NULL;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">if</span> ( (<span class="keywordtype">int</span>)(*s) == c ) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="comment">/*cstat -MISRAC2012-Rule-11.8*/</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="comment">/*cppcheck-suppress cert-EXP05-C */</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            retValue = (<span class="keywordtype">char</span>*)s; <span class="comment">/*MISRAC2012-Rule-11.8 deviation allowed*/</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="comment">/*cstat +MISRAC2012-Rule-11.8*/</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        --maxlen;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } <span class="keywordflow">while</span> ( ( <span class="charliteral">&#39;\0&#39;</span> != ( *s++ ) ) &amp;&amp; ( maxlen &gt; 0u ) );</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> retValue;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga91f6e5f106debf94a14eb1f510f1788c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91f6e5f106debf94a14eb1f510f1788c">&#9670;&nbsp;</a></span>qIOUtil_StrlCat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t qIOUtil_StrlCat </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>appends no more than <em>maxlen−len(dst)−1</em> characters pointed to by <em>src</em> into the array pointed to by <em>dst</em> and always terminates the result with a null character if <em>maxlen</em> is greater than zero. Both the strings <em>dst</em> and <em>src</em> must be terminated with a null character on entry the function and a byte for the terminating null should be included in <em>maxlen</em>. </p>
+<dl class="section note"><dt>Note</dt><dd>The behavior of this function is undefined if copying takes place between objects that overlap. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>The destination string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>The source string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to copy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the number of characters it tried to copy, which is the sum of the lengths of the strings <em>dst</em> and <em>src</em> or <em>n</em>, whichever is smaller. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">size_t</span> srclen = <a class="code" href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">qIOUtil_StrLen</a>( src, Q_IO_UTIL_MAX_STRLEN );</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">size_t</span> dstlen = <a class="code" href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">qIOUtil_StrLen</a>( dst, maxlen);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">size_t</span> retVal;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">if</span> ( dstlen == maxlen ) {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        retVal = maxlen + srclen;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">if</span> ( srclen &lt; ( maxlen - dstlen ) ) {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            (void)memcpy( &amp;dst[ dstlen ], src, srclen + 1u ) ;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        } </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            (void)memcpy( &amp;dst[ dstlen ], src, maxlen - 1u );</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            dst[ dstlen + maxlen - 1u ] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        retVal = dstlen + srclen;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">return</span> retVal;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;}</div>
+<div class="ttc" id="agroup__qioutils_html_ga2fd858056a80f64b74ab977e97ec430f"><div class="ttname"><a href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">qIOUtil_StrLen</a></div><div class="ttdeci">size_t qIOUtil_StrLen(const char *s, size_t maxlen)</div><div class="ttdoc">Returns the length of the given null-terminated byte string, that is, the number of characters in a c...</div><div class="ttdef"><b>Definition:</b> qioutils.c:79</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga856aaaddf3c1277e4cb4181e2c604b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga856aaaddf3c1277e4cb4181e2c604b8d">&#9670;&nbsp;</a></span>qIOUtil_StrlCpy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t qIOUtil_StrlCpy </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies up to <em></em>(maxlen - 1) characters from the null-terminated string <em>src</em> to <em>dst</em>, null-terminating the result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>The destination string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>The source string </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to copy </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The length of <em>src</em> </dd></dl>
+<div class="fragment"><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">size_t</span> srclen = <a class="code" href="group__qioutils.html#ga2fd858056a80f64b74ab977e97ec430f">qIOUtil_StrLen</a>( src, Q_IO_UTIL_MAX_STRLEN );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span> ( ( srclen + 1u ) &lt; maxlen ) {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        (void)memcpy( dst, src, srclen + 1u );</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( 0u != maxlen ) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        (void)memcpy( dst, src, maxlen - 1u );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        dst[ maxlen - 1u ] = (char)<span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="comment">/*nothing to do here*/</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span> srclen;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga2fd858056a80f64b74ab977e97ec430f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2fd858056a80f64b74ab977e97ec430f">&#9670;&nbsp;</a></span>qIOUtil_StrLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t qIOUtil_StrLen </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the length of the given null-terminated byte string, that is, the number of characters in a character array whose first element is pointed to by <em>str</em> up to and not including the first null character. The function returns zero if <em>str</em> is a null pointer and returns <em>maxlen</em> if the null character was not found in the first <em>maxlen</em> bytes of <em>str</em>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>Pointer to the null-terminated byte string to be examined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxlen</td><td>Maximum number of characters to examine </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The length of the null-terminated byte string <em>str</em> on success, zero if <em>str</em> is a null pointer, <em>maxlen</em> if the null character was not found. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">size_t</span> count;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">if</span> ( ( NULL == s ) || ( (<span class="keywordtype">size_t</span>)0u == maxlen ) ) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        count = 0u;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        count = 0u;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">while</span> ( ( (<span class="keywordtype">char</span>)<span class="charliteral">&#39;\0&#39;</span> != *s ) &amp;&amp; ( maxlen &gt; (<span class="keywordtype">size_t</span>)0u ) ) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            ++count;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            --maxlen;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            ++s;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> count;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaa3da2ef013ab5c1c2c52a18bdb1b87b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa3da2ef013ab5c1c2c52a18bdb1b87b8">&#9670;&nbsp;</a></span>qIOUtil_SwapBytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qIOUtil_SwapBytes </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Invert the endianess for n bytes of the specified memory location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pData</td><td>A pointer to block of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of bytes to swap </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;{</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> retValue = <a class="code" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordflow">if</span> ( ( NULL != pData ) &amp;&amp; ( n &gt; 0u ) ) {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="comment">/*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="comment">/*cppcheck-suppress misra-c2012-11.5 */</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> *p = (<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>*)pData; <span class="comment">/*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="comment">/*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="keywordtype">size_t</span> lo, hi;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        hi = n - 1u;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">for</span> ( lo = 0u ; hi &gt; lo ; ++lo ) {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> tmp = p[ lo ];</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            p[ lo ] = p[ hi ];</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            p[ hi ] = tmp;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            --hi;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        retValue = <a class="code" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> retValue;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga58569cdb08e25554c4b4556e1ba3520b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga58569cdb08e25554c4b4556e1ba3520b">&#9670;&nbsp;</a></span>qIOUtil_U32toX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_U32toX </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga903e6b3909103df27f390f45f34d5885">qINT8_t</a>&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an unsigned integer value to a null-terminated string using the 16 base and stores the result in the array given by <em>str</em> parameter. <em>str</em> should be an array long enough to contain any possible value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The number of chars used to represent the value in <em>str</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;{ </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="group__qtypes.html#ga3cd5cf31708c7f08b8e5035d43bb3a22">qBase_t</a> i;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="comment">/*cstat -CERT-STR34-C*/</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    str[ n ] = <span class="charliteral">&#39;\0&#39;</span>; <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span> <span class="comment">/*CERT-STR34-C deviation allowed*/</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">for</span> ( i = ( (<a class="code" href="group__qtypes.html#ga3cd5cf31708c7f08b8e5035d43bb3a22">qBase_t</a>)n - 1 ) ; i &gt;= 0 ; --i ) {</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        str[ i ] = qIOUtil_NibbleToX( (<a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>)value ); <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        value &gt;&gt;= 4uL;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    }</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="comment">/*cstat +CERT-STR34-C*/</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}</div>
+<div class="ttc" id="agroup__qtypes_html_ga3cd5cf31708c7f08b8e5035d43bb3a22"><div class="ttname"><a href="group__qtypes.html#ga3cd5cf31708c7f08b8e5035d43bb3a22">qBase_t</a></div><div class="ttdeci">int qBase_t</div><div class="ttdoc">A type to instantiate a integer-base variable. This type is compiler implementation-defined.</div><div class="ttdef"><b>Definition:</b> qtypes.h:105</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga80f3706111a8641f7412e58682663f61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga80f3706111a8641f7412e58682663f61">&#9670;&nbsp;</a></span>qIOUtil_UtoA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* qIOUtil_UtoA </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a>&#160;</td>
+          <td class="paramname"><em>base</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an unsigned value to a null-terminated string using the specified base and stores the result in the array given by <em>str</em> parameter. The argument <em>str</em> should be an array long enough to contain any possible value: <code>"sizeof(int)*8+1"</code> for radix=2, i.e. 17 bytes in 16-bits platforms and 33 in 32-bits platforms. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">num</td><td>Value to be converted to a string. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">str</td><td>Array in memory where to store the resulting null-terminated string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">base</td><td>Numerical base used to represent the value as a string, between 2 and 36, where 10 means decimal base, 16 hexadecimal, 8 octal, and 2 binary. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the resulting null-terminated string, same as parameter <em>str</em>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;{</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    <span class="keywordflow">if</span> ( NULL != str ) {</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordtype">size_t</span> i;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        <span class="comment">/*make the unsigned conversion without the null terminator*/</span></div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        i = qIOUtil_xBase_U32toA( num, str, base );</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        str[ i ] = (char)<span class="charliteral">&#39;\0&#39;</span>; <span class="comment">/*MISRAC2004-17.4_b deviation allowed*/</span></div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    }</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gada839f471006399214084cb0f1e81e57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gada839f471006399214084cb0f1e81e57">&#9670;&nbsp;</a></span>qIOUtil_XtoU32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> qIOUtil_XtoU32 </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the input string consisting of hexadecimal digits into an unsigned integer value. The input parameter should consist exclusively of hexadecimal digits, with optional whitespaces. The string will be processed one character at a time, until the function reaches a character which it doesn't recognize (including a null character). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The hex string to be converted. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The numeric value as <code>uint32_t</code>. </dd></dl>
+<div class="fragment"><div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;{</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a> val = 0uL;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordflow">if</span> ( NULL != s ) {</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <a class="code" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> nParsed = 0u;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">        loop until the end of the string or the number of parsed chars exceeds</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">        the 32bit notation</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keywordflow">while</span> ( ( (<span class="keywordtype">char</span>)<span class="charliteral">&#39;\0&#39;</span> != *s ) &amp;&amp; ( nParsed &lt; 8u ) ) {</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <span class="keywordtype">char</span> c = *s++;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            <span class="comment">/*cstat -MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            <span class="keywordflow">if</span> ( 0 != isxdigit( (<span class="keywordtype">int</span>)c ) ) {</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                val = ( val &lt;&lt; 4uL ) | (<a class="code" href="group__qtypes.html#ga7c9e61aae4eeb8b75a71981eebf317ed">qUINT32_t</a>)qIOUtil_cXtoU8( c );</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                ++nParsed;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            }</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( 0 != isspace( (<span class="keywordtype">int</span>)c ) ) {</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;                <span class="comment">/*discard any white-space character*/</span></div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            }</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;            <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                <span class="keywordflow">break</span>; <span class="comment">/*not valid character, break the conversion*/</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            }</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="comment">/*cstat +MISRAC2012-Dir-4.11_h*/</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        }</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordflow">return</span> val;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 26 2023 00:33:37 for OS by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>
