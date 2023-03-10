@@ -15,6 +15,7 @@
 [![C Standard](https://img.shields.io/badge/STD-C99-green.svg?logo=c)](https://en.wikipedia.org/wiki/C99)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?logo=textpattern)](https://github.com/TECREA/QuarkTS/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/TECREA/QuarkTS?logo=livejournal)](https://github.com/TECREA/QuarkTS/blob/master/LICENSE) [![Join the chat at https://gitter.im/embedded-c/QuarkTS-OS](https://badges.gitter.im/embedded-c/QuarkTS-OS.svg)](https://gitter.im/embedded-c/QuarkTS-OS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fkmilo17pet%2FQuarkTS&count_bg=%2379C83D&title_bg=%23555555&icon=cliqz.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/kmilo17pet/QuarkTS)
 
 ![Logo](https://github.com/kmilo17pet/QuarkTS/blob/master/doc/quarktslogo.png)
 
