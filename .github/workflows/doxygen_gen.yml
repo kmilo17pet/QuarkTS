@@ -19,7 +19,7 @@ jobs:
     - name: set repo url on corner
       run: sed -i 's,https://github.com/jothepro/doxygen-awesome-css,https://github.com/kmilo17pet/QuarkTS,g' doc/stylesheet/doxygen-custom/header.html
     - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@edge
+      uses: mattnotmitt/doxygen-action@v1.9.2
       with:
         doxyfile-path: './doc/Doxygen'
     - name: rm gitignore
