@@ -13,6 +13,7 @@ var annotated_dup =
     [ "qList_Iterator_t", "structq_list___iterator__t.html", null ],
     [ "qList_Node_t", "structq_list___node__t.html", null ],
     [ "qList_t", "structq_list__t.html", null ],
+    [ "qMemMang_Pool_t", "structq_mem_mang___pool__t.html", null ],
     [ "qQueue_t", "structq_queue__t.html", null ],
     [ "qResponse_t", "structq_response__t.html", null ],
     [ "qSM_Handler_t", "structq_s_m___handler__t.html", "structq_s_m___handler__t" ],

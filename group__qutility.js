@@ -5,6 +5,6 @@ var group__qutility =
     [ "I/O Groups for edge checking", "group__qedgecheck.html", "group__qedgecheck" ],
     [ "I/O Utils", "group__qioutils.html", "group__qioutils" ],
     [ "Response handler", "group__qresponse.html", "group__qresponse" ],
-    [ "Trace", "group__qtrace.html", null ],
+    [ "Trace", "group__qtrace.html", "group__qtrace" ],
     [ "General purpose macros", "group__qflm.html", "group__qflm" ]
 ];
