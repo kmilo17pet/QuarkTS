@@ -36,7 +36,6 @@ var NAVTREE =
     [ "Fundamentals", "q_foundations.html", [
       [ "RTC(Run To Completion) model", "q_foundations.html#rtcmodel", null ],
       [ "Timing Approach", "q_foundations.html#q_timmingapproach", null ],
-      [ "Setting up the OS kernel", "q_foundations.html#q_setupkernel", null ],
       [ "Tasks", "q_foundations.html#q_tasks", [
         [ "The idle task", "q_foundations.html#q_idletask", null ],
         [ "Adding tasks to the scheme", "q_foundations.html#q_addtasks", null ],
@@ -104,7 +103,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qmemmang.html",
-"q_stimers.html#q_stimers_overview"
+"q_stimers.html#q_stimerusage"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -139,7 +139,6 @@ $(document).ready(function(){initNavTree('q_foundations.html',''); initResizable
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#rtcmodel">RTC(Run To Completion) model</a></li>
 <li class="level1"><a href="#q_timmingapproach">Timing Approach</a></li>
-<li class="level1"><a href="#q_setupkernel">Setting up the OS kernel</a></li>
 <li class="level1"><a href="#q_tasks">Tasks</a><ul><li class="level2"><a href="#q_idletask">The idle task</a></li>
 <li class="level2"><a href="#q_addtasks">Adding tasks to the scheme</a></li>
 <li class="level2"><a href="#q_eventtasks">Event-triggered tasks</a></li>
@@ -172,10 +171,9 @@ Timing Approach</h1>
 <li><b>When tick already provided</b>: The reference is supplied by the Hardware Abstraction Layer (HAL) of the device. It is the simplest scenario and it occurs when the framework or SDK of the embedded system includes a HAL-API that obtains the time elapsed since the system starts, usually in milliseconds and taking a 32-bit counter variable.</li>
 <li><b>When the tick is not provided</b>: The application writer should use bare-metal code to configure the device and feed the reference clock manually. Here, a hardware timer should raise an interrupt periodically. After the <em>Interrupt Service Routine(ISR)</em> has been implemented using the platform-dependent code, the <a class="el" href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53" title="Feed the system tick.">qClock_SysTick()</a> API must be called inside. It is recommended that the reserved ISR should only be used by QuarkTS.</li>
 </ul>
-<h1><a class="anchor" id="q_setupkernel"></a>
-Setting up the OS kernel</h1>
 <p>The <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> function should be the first call to the OS APIs. <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> prepares the kernel instance, sets the reference clock, defines the Idle-Task callback and allocates the stack for the internal queue.</p>
-<dl class="section note"><dt>Note</dt><dd>This call is mandatory and must be called once in the application main thread before any kind of interaction with the OS.</dd></dl>
+<p>To establish the reference clock source, the <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> function is used. In fact, this function should be the first call to the operating system API, as it also prepares the kernel, defines the <a class="el" href="q_foundations.html#q_idletask">Idle task</a>, and reserves the required stack for the internal queue.</p>
+<dl class="section note"><dt>Note</dt><dd>A call to <a class="el" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a> is mandatory and must be called once in the application mainthread before any kind of interaction with the OS.</dd></dl>
 <p>Usage example:</p><ul>
 <li>Scenario 1 : When tick is already provided <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;HAL.h&quot;</span></div>
