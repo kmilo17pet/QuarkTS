@@ -1,4 +1,0 @@
-<map id="Scheduler Interface" name="Scheduler Interface">
-<area shape="rect" id="node1" title="Kernel API interface to create/remove tasks and perform special OS operations." alt="" coords="179,5,312,31"/>
-<area shape="rect" id="node2" href="$group__qos.html" title=" " alt="" coords="5,5,131,31"/>
-</map>

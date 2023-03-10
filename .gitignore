@@ -8,6 +8,8 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 check/Debug/
+doc/doxyout/html/
+doc/doxyout/
 check/settings/c-stat-check.wsdt
 
 # Windows Installer files

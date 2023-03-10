@@ -163,7 +163,7 @@
 * the kernel setup. Of course, the callback must follow the same function 
 * prototype for tasks.
 * @note To disable the idle-task activities, a @c NULL should be passed as 
-* argument on qOS_Setup().
+* argument on qOS_Setup() or qOS_Set_IdleTask().
 *
 * @subsection q_addtasks Adding tasks to the scheme
 * After setting up the kernel with qOS_Setup(), the user can proceed to deploy 
