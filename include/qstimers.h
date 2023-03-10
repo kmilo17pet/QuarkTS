@@ -18,8 +18,7 @@
     /** @addtogroup qstimers Software Timers (STimers)
     * @brief API interface for the @ref q_stimers extension.
     * @pre This extension requires the operating system is previously initialized
-    * with qOS_Setup() with a functional time-base. Please read @ref q_timmingapproach
-    * and @ref q_setupkernel
+    * with qOS_Setup() with a functional time-base. Please read @ref q_timmingapproach .
     *  @{
     */
 

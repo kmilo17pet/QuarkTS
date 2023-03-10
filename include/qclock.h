@@ -117,7 +117,6 @@
     *       qClock_SysTick();
     * }
     * @endcode
-    * @return none.
     */
     void qClock_SysTick( void );
 

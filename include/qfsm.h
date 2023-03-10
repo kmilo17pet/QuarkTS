@@ -265,7 +265,7 @@
     * @param h The object that handles the state machine
     * @return The execution status of the state.
     */
-    typedef qSM_Status_t (*qSM_StateCallback_t)( qSM_Handler_t arg );
+    typedef qSM_Status_t (*qSM_StateCallback_t)( qSM_Handler_t h );
 
     /**
     * @brief Pointer to a function that represents a surrounding callback
@@ -285,7 +285,7 @@
     * @param h The object that handles the state machine
     * @return none.
     */
-    typedef void (*qSM_SurroundingCallback_t)( qSM_Handler_t arg );
+    typedef void (*qSM_SurroundingCallback_t)( qSM_Handler_t h );
 
     /**
     * @brief Pointer to a function that represents a signal guard/action
@@ -304,7 +304,7 @@
     * value is #qFalse the event-signal is rejected, preventing the state
     * transition to be performed.
     */
-    typedef qBool_t (*qSM_SignalAction_t)( qSM_Handler_t arg );
+    typedef qBool_t (*qSM_SignalAction_t)( qSM_Handler_t h );
 
     /**
     * @brief A typedef to hold the timeout specification options.
@@ -553,7 +553,7 @@
     * timed signals within states ( See the #QSM_SIGNAL_TIMEOUT signal ).
     * @attention This feature its only available if the FSM has a signal-queue
     * installed.
-    * @pre This feature depends on the @ref q_stimer extension. Make sure the 
+    * @pre This feature depends on the @ref q_stimers extension. Make sure the
     * time base is functional.
     * @note You can increase the number of available timeouts instances by
     * changing the @c Q_FSM_MAX_TIMEOUTS configuration macro inside @c qconfig.h

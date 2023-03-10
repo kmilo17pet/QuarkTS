@@ -37,7 +37,6 @@
     * @endcode
     * @param[in] savedMask The interrupt configuration saved by the "Disabler"
     * function
-    * @return none.
     */
     typedef void (*qInt_Restorer_t)(qUINT32_t arg1);
 
@@ -67,7 +66,6 @@
     * @brief Enter a critical section. This function invokes the @b Disabler
     * function if available.
     * @note  Please see qCritical_SetInterruptsED()
-    * @return none.
     */
     void qCritical_Enter( void );
 
@@ -76,7 +74,6 @@
     * @brief Exit a critical section. This function invokes the @b Enabler
     * function if available.
     * @note  Please see qCritical_SetInterruptsED()
-    * @return none.
     */
     void qCritical_Exit( void );
 
