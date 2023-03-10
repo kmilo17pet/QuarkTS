@@ -47,9 +47,9 @@ var group__qfsm =
     [ "QSM_TSOPT_SET_ENTRY", "group__qfsm.html#gae435e391de4b3994106042603697b663", null ],
     [ "QSM_TSOPT_SET_EXIT", "group__qfsm.html#ga25157125e94e3a2e37ca5d8565814520", null ],
     [ "qSM_SigId_t", "group__qfsm.html#ga1dd47988fd805a6d7d7a963af1ab9ad7", null ],
-    [ "qSM_SignalAction_t", "group__qfsm.html#gacbb2c4ce06048d51d94ba78c92876c99", null ],
-    [ "qSM_StateCallback_t", "group__qfsm.html#gaaa9971018b89acab7942d851ce860faa", null ],
-    [ "qSM_SurroundingCallback_t", "group__qfsm.html#gabbed841c155309d2af238b0e8a69a22b", null ],
+    [ "qSM_SignalAction_t", "group__qfsm.html#gac679ae46876307fd77837c04f8f78690", null ],
+    [ "qSM_StateCallback_t", "group__qfsm.html#ga846415bad187a615ddfdb111279d42c3", null ],
+    [ "qSM_SurroundingCallback_t", "group__qfsm.html#gaa3430eea89b1ece71252fcca57e5e1d3", null ],
     [ "qSM_TimeoutSpecOptions_t", "group__qfsm.html#ga19ca5cb465f8385196f788cff4d78616", null ],
     [ "qSM_Attribute_t", "group__qfsm.html#ga1b1fbda0bf0e715aa1986e21235c6e91", [
       [ "qSM_ATTRIB_STATE_TOP", "group__qfsm.html#gga1b1fbda0bf0e715aa1986e21235c6e91ab6752da4ca41e4f1448bc06dc21a7481", null ],
