@@ -47,11 +47,12 @@
  @section q_firststeps First steps
 * Include the source files to your project. Also, make sure you add a copy of 
 * the file @c qconfig.h and modify it according to your needs. Setup your 
-* compiler include path with the corresponding OS directory. Include the header 
-* file @c QuarkTS.h and setup the instance of the kernel using the qOS_Setup() 
-* inside the main thread. Additional configuration to the target compiler may be
-* required to add the path to the directory of header files. The code below 
-* shows a common initialization in the main source file.
+* compiler including the path of the OS directory. Include the header file 
+* @c QuarkTS.h and setup the instance of the kernel using the qOS_Setup() 
+* inside the main thread to initialize te kernel, specify the reference clock and 
+* the idle-task ( see @ref q_timmingapproach). Additional configuration to the 
+* target compiler may be required to add the path to the directory of header files.
+* The code below shows a common initialization procedure  in the main source file.
 *
 * File @c main.c
 *  @code{.c}

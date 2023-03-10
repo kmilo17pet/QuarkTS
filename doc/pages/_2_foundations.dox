@@ -50,13 +50,17 @@
 * the qClock_SysTick() API must be called inside. It is recommended that the 
 * reserved ISR should only be used by QuarkTS.
 * 
-* @section q_setupkernel Setting up the OS kernel
 * The qOS_Setup() function should be the first call to the OS APIs. qOS_Setup() 
 * prepares the kernel instance, sets the reference clock, defines the Idle-Task 
 * callback and allocates the stack for the internal queue.
 *
-* @note This call is mandatory and must be called once in the application main 
-* thread before any kind of interaction with the OS.
+* To establish the reference clock source, the qOS_Setup() function is used. In 
+* fact, this function should be the first call to the operating system API, as 
+* it also prepares the kernel, defines the @ref q_idletask "Idle task", and 
+* reserves the required stack for the internal queue.
+*
+* @note A call to qOS_Setup() is mandatory and must be called once in the 
+* application mainthread before any kind of interaction with the OS.
 *
 * Usage example:
 * - Scenario 1 : When tick is already provided
