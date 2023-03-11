@@ -5,7 +5,7 @@ var q_extensions =
       [ "The provided approach", "q_fsm.html#qfsm_approach", null ],
       [ "Setting up a state machine", "q_fsm.html#q_fsmsetup", null ],
       [ "Subscribing states and defining callbacks", "q_fsm.html#q_fsm_subscribe_states", null ],
-      [ "The state callback handler: performing transitions and retreiving data", "q_fsm.html#q_fsmhandler", null ],
+      [ "The state callback handler: performing transitions and retrieving data", "q_fsm.html#q_fsmhandler", null ],
       [ "The surrounding callback", "q_fsm.html#q_fsm_surrounding", null ],
       [ "Adding a state machine as a task", "q_fsm.html#q_fsm_astask", null ],
       [ "A demonstrative example for a FSM", "q_fsm.html#q_fsm_example1", null ],
@@ -17,7 +17,7 @@ var q_extensions =
         [ "Demonstrative example using transition tables", "q_fsm.html#q_fsm_example2", null ]
       ] ],
       [ "Using the hierarchical approach", "q_fsm.html#qfsm_happroach", [
-        [ "Example usign a hierarchical FSM", "q_fsm.html#q_fsm_example3", null ],
+        [ "Example using a hierarchical FSM", "q_fsm.html#q_fsm_example3", null ],
         [ "Example with history pseudo-states", "q_fsm.html#q_fsm_example4", null ]
       ] ]
     ] ],
@@ -42,7 +42,7 @@ var q_extensions =
       [ "Supported syntax", "q_atcli.html#q_atcli_syntax", null ],
       [ "Setting up an AT-CLI instance", "q_atcli.html#q_atcli_setup", null ],
       [ "Subscribing commands to the parser", "q_atcli.html#q_atcli_sub_commands", null ],
-      [ "Writting a command callback", "q_atcli.html#q_atcli_cmd_callback", null ],
+      [ "Writing a command callback", "q_atcli.html#q_atcli_cmd_callback", null ],
       [ "Handling the input", "q_atcli.html#q_atcli_inputh", null ],
       [ "Running the CLI parser", "q_atcli.html#q_atcli_run", null ],
       [ "A CLI example", "q_atcli.html#q_atcli_example1", null ]
