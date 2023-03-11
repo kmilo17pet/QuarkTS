@@ -13,7 +13,7 @@
 *
 * In an effort to maximize efficiency and minimize complexity, the extension 
 * implements the basic features of the Harel statecharts to represent
-* hierarchical state machines. This features form a proper subset that 
+* hierarchical state machines. These features form a proper subset that 
 * approaches in a very minimalist way, some of the specifications of the 
 * UML statecharts, including:
 *
@@ -27,7 +27,7 @@
 * statecharts.
 * 
 * @section qfsm_approach The provided approach
-* In QuarkTS, a state-machine must be instantiated with an object of type qSM_t.
+* In QuarkTS, a state machine must be instantiated with an object of type qSM_t.
 * States are represented as instances of the qSM_State_t object.
 *
 * <center>
@@ -47,13 +47,13 @@
 * </center>
 *
 * One important attribute of the qSM_State_t object is the callback function, 
-* which is used to describe the behavior specific to the state. Also there is a 
-* pointer to the parent state to define nesting of the state and its place in 
-* the hierarchical topology. As shown in figure above, a state machine consist 
-* of a least one state, the "top level" state. So concrete state machine are 
-* built by adding an arbitrary number states and defining callback functions.
+* which is used to describe the behavior specific to the state. Also, there is a 
+* pointer to the parent state to define the nesting of the state and its place in 
+* the hierarchical topology. As shown in figure above, a state machine consists 
+* of a least one state, the "top-level" state. So concrete state machine are 
+* built by adding an arbitrary number of states and defining callback functions.
 * The only purpose of the top state is to provide the root of the hierarchy, so 
-* that the highest level can return to top as their parent state.
+* that the highest level can return to the top as their parent state.
 *
 * @section q_fsmsetup Setting up a state machine
 * Like any other OS object, a Finite State Machine (FSM) must be explicitly 
@@ -64,7 +64,7 @@
 * @section q_fsm_subscribe_states Subscribing states and defining callbacks
 * State machines are constructed by composition, therefore, the topology of a 
 * state machine is determined upon construction. In this FSM implementation, 
-* there are not distinction between composite states(states containing substates) 
+* there is no distinction between composite states(states containing substates) 
 * and leaf states. All states are potentially composite. The API 
 * qStateMachine_StateSubscribe() should be used to initialize the state and 
 * define its position in the topology. 
@@ -79,7 +79,7 @@
 *  }
 *  @endcode
 *
-* @section q_fsmhandler The state callback handler: performing transitions and retreiving data
+* @section q_fsmhandler The state callback handler: performing transitions and retrieving data
 * Because callback functions are methods derived from the state-machine object, 
 * they have direct access to some attributes via the qSM_Handler_t argument. 
 * The usage of this object it's required to make the FSM moves between states 
@@ -92,16 +92,16 @@
 * #QSM_SIGNAL_NONE.
 * - qSM_Handler_t::StartState : Desired nested initial state (substate). The 
 * application writer should change this field to set the initial transition if
-* the current state its a parent(or composite state). Changing this field 
-* attribute only take effect when the state is executed under the 
+* the current state is a parent(or composite state). Changing this field 
+* attribute only takes effect when the state is executed under the 
 * #QSM_SIGNAL_START signal. 
 * - qSM_Handler_t::Signal (read-only) : Received signal. Can have any of the 
 * following values:
-*     - #QSM_SIGNAL_NONE if no signal available.
+*     - #QSM_SIGNAL_NONE if no signal is available.
 *     - #QSM_SIGNAL_ENTRY if the current state has just entered from another state.
 *     - #QSM_SIGNAL_START to set nested initial transitions by using the 
 *       qSM_Handler_t::StartState attribute.
-*     - #QSM_SIGNAL_EXIT if the current state has just exit to another state.
+*     - #QSM_SIGNAL_EXIT if the current state has just exited to another state.
 *     - Any other user-defined signal will reside here, including the 
 *     #QSM_SIGNAL_TIMEOUT signals.
 * - qSM_Handler_t::SignalData (read-only) : Pointer to the data associated with
@@ -135,14 +135,14 @@
 * @ref qSM_Status_t.
 *
 * The semantic is simple, if a signal is processed, the callback functions 
-* returns the status value ::qSM_STATUS_SIGNAL_HANDLED. otherwise it throws the
+* returns the status value ::qSM_STATUS_SIGNAL_HANDLED. Otherwise, it throws the
 * signal for further processing by higher-level states. Also, this returning
 * mechanism can be used to handle exceptions by using the surrounding callback.
 *
 * @a Entry/Exit actions and default transitions are also implemented inside the
-* callback function in response of pre-defined signals. #QSM_SIGNAL_ENTRY, 
+* callback function in the response to pre-defined signals. #QSM_SIGNAL_ENTRY, 
 * #QSM_SIGNAL_EXIT and #QSM_SIGNAL_START. The state machine generates and 
-* dispatches this signals to appropriates handlers upon  state transitions.
+* dispatches these signals to appropriate handlers upon state transitions.
 *
 * The example below shows what a status callback should look like including the 
 * use of the handler.
@@ -176,10 +176,10 @@
 * - ::qSM_STATUS_SIGNAL_HANDLED
 * - Any other integer value between @c -32762 and @c 32767
 *
-* To code initial transitions, application writer should catch the 
+* To code initial transitions, the application writer should catch the 
 * #QSM_SIGNAL_START, perform the required actions and then designate the target 
 * sub-state by assigning the @c StartState attribute of the qSM_Handler_t 
-* argument. Regular transitions are coded in a very similar  way, except that 
+* argument. Regular transitions are coded in a very similar way, except that 
 * here, you catch the custom-defined signal and then assign the @c NextState
 * attribute of the qSM_Handler_t argument. The developer is free to write and 
 * control state transitions. Transitions are only allowed under the availability
@@ -234,7 +234,7 @@
 *          case qSM_STATUS_SIGNAL_HANDLED:
 *              /* TODO: signal handled code */
 *              break;
-*          case 5: /*user defined return value*/
+*          case 5: /*user-defined return value*/
 *              /* TODO: used defined*/
 *              break;
 *          default:
@@ -258,7 +258,7 @@
 * By using this API, the kernel will take care of the FSM by itself, so the
 * usage of qStateMachine_Run()  can be omitted.
 * 
-* Now that a task is running a dedicated state-machine, the specific task 
+* Now that a task is running a dedicated state machine, the specific task 
 * event-information can be obtained in every state callback through the @c Data
 * field of the qSM_Handler_t argument.
 *
@@ -267,7 +267,7 @@
 *  @code{.c}
 *  qSM_Status_t Example_State( qSM_Handler_t h ) {
 *      qEvent_t e = h->Data; 
-*      /* Get the event info of the task that owns this state-machine*/
+*      /* Get the event info of the task that owns this state machine*/
 *      switch ( h->Signal ) {
 *          case QSM_SIGNAL_ENTRY:
 *              break;
@@ -294,7 +294,7 @@
 *  @endcode 
 *
 * @section q_fsm_example1 A demonstrative example for a FSM 
-* In this example, one press of the button turn on the LED, a second push of 
+* In this example, one press of the button turns on the LED, a second push of 
 * the button will make the LED blink and if the button is pressed again, the 
 * LED will turn off. Also, our system must turn off the LED after a period of 
 * inactivity. If the button hasn't been pressed in the last 10 seconds, the 
@@ -324,7 +324,7 @@
 *  qSM_State_t State_LEDOff, State_LEDOn, State_LEDBlink;
 *  @endcode 
 *
-* Then, we define our states as the flow-diagram showed in the figure above.
+* Then, we define our states as the flow diagram shown in the figure above.
 *
 *  @code{.c}
 *  qSM_Status_t State_LEDOff_Callback( qSM_Handler_t h ) {
@@ -403,14 +403,14 @@
 *  @endcode 
 *
 * @section q_fsmsendsignals Sending signals
-* To communicate within and between state-machines or even other contexts, use 
-* signals. A signal is a simple value who can be used to abstract an incoming 
-* event. In the receiving state-machine, a queue or a exclusion variable 
-* receives the signal and holds it until the state-machine can evaluate it.
+* To communicate within and between state machines or even other contexts, use 
+* signals. A signal is a simple value that can be used to abstract an incoming 
+* event. In the receiving state machine, a queue or an exclusion variable 
+* receives the signal and holds it until the state machine can evaluate it.
 *
-* When coding state-machines, the application writer can benefit from this 
+* When coding state machines, the application writer can benefit from this 
 * simple event-abstraction mechanism. On the one hand, there would be a more 
-* uniform programming when writing states callbacks and on the other hand, the 
+* uniform programming when writing state callbacks and on the other hand, the 
 * communication of the state machine from other contexts becomes easier.
 *
 * To send a signal to a state machine, use the qStateMachine_SendSignal() API.
@@ -423,18 +423,18 @@
 * - When a <em>signal queue</em> is used, the signal is put into a FIFO structure
 * and the engine takes care of dispatching the signal in an orderly manner. The 
 * only situation where the signal cannot be delivered is if the queue is full. 
-* This its the preferred destination, as long as there is a previously 
+* This is the preferred destination, as long as there is a previously 
 * installed signal queue.
 *
 * @note If the signal-queue its available, the qStateMachine_SendSignal() will
 * always select it as destination.
-* @warning If a state-machine, a task, or another context sends a signal to a 
-* full queue, a queue-overflow occurs. The result of the queue overflow it that
-* the state-machine drops the new signal.
+* @warning If a state machine, a task, or another context sends a signal to a 
+* full queue, a queue overflow occurs. The result of the queue overflow it that
+* the state machine drops the new signal.
 * 
 * @section q_fsminstallsignalqueue Installing a signal queue
 * A state machine can have a FIFO queue to allow the delivery of signals from 
-* another contexts. If the signal queue its installed, the state-machine engine 
+* another contexts. If the signal queue is installed, the state-machine engine 
 * constantly monitors the queue for available signals. The engine then 
 * propagates the signal through the hierarchy until it is processed. To enable 
 * this functionality in your state machine, the queue must be installed by using
@@ -447,11 +447,11 @@
 * @note  Make sure that queues are enabled in the @c qconfig.h header file
 * @attention When configuring a signal queue with qQueue_Setup(), remember to size
 * it based on the type @ref qSM_Signal_t.
-* @note If the state-machines its delegated to a task, make sure to install the 
+* @note If the state machines its delegated to a task, make sure to install the 
 * queue prior to setting up the task. In this way, a kernel connection can be 
-* performed between the FSM signal-queue and the FSM-task, allowing the OS to 
+* performed between the FSM signal queue and the FSM-task, allowing the OS to 
 * catch signals to produce a task event, this prevents the wait of the task for 
-* the specified period, resulting in a faster handling of incoming signals.
+* the specified period, resulting in faster handling of incoming signals.
 *
 * @section q_fsm_ttable Using a transition table
 * In this approach, the FSM is coded in tables with the outgoing transitions of 
@@ -459,7 +459,7 @@
 * This is an elegant method to translate the FSM to actual implementation as the 
 * handling for every state and event combination is encapsulated in the table.
 *
-* Here, the application writer get a quick picture of the FSM and the embedded 
+* Here, the application writer gets a quick picture of the FSM and the embedded 
 * software maintenance is also much more under control. A transition table 
 * should be  explicitly installed in the target state with the corresponding 
 * entries, an n-sized array of qSM_Transition_t elements following the layout
@@ -487,8 +487,8 @@
 * field manipulation in state callbacks to perform a transition to the FSM.
 * - Special care is required when the table grows very large, that is, when 
 * there are many invalid state/event combinations, leading to a waste of memory. 
-* There is also a memory penalty as the number of states and events grow. The 
-* application writer need to accurately account for this during initial design. 
+* There is also a memory penalty as the number of states and events grows. The 
+* application writer needs to accurately account for this during the initial design. 
 * A statechart pattern can be used to improve the design and reduce the number 
 * of transition entries.
 * - The user is responsible for defining the transitions according to the 
@@ -520,11 +520,11 @@
 * @c NULL value will act as a NOT-defined, always allowing the state-transition.
 *
 * @subsection q_fsm_timeout FSM Timeout specification
-* A timeout specification is mechanism to simplify the notion of time passage
+* A timeout specification is a mechanism to simplify the notion of time passage
 * inside states. The basic usage model of the timeout signals is as follows:
 *
 * A timeout specification allocates one or more timer objects. The user relates
-* in a table each specific timeout operations within the state where are they 
+* in a table each specific timeout operation within the state where are they 
 * going to operate. So, according to the table, when a state needs to arrange 
 * for a timeout, the engine can set or reset the given timer. When the FSM 
 * engine detects that the appropriate moment has arrived (a timer expiration 
@@ -539,7 +539,7 @@
 * qStateMachine_InstallTimeoutSpec(). Then, timeout operations can be defined 
 * in a table for each state by using the qStateMachine_Set_StateTimeouts().
 *
-* A timeout specification element is defined as an structure of type 
+* A timeout specification element is defined as a structure of type 
 * qSM_TimeoutStateDefinition_t and should follow this layout:
 *
 * <center>
@@ -551,7 +551,7 @@
 *
 * The options for every timeout its a bitwise value that indicates which timeout
 * should be used and the operations than should be performed internally by the 
-* state-machine engine. This options can be combined with a bitwise OR and are 
+* state-machine engine. These options can be combined with a bitwise OR and are 
 * detailed as follows:
 *
 * - #QSM_TSOPT_INDEX(index) : To select the timeout to be used in the 
@@ -567,7 +567,7 @@
 * in a reset state.
 * - #QSM_TSOPT_PERIODIC : To put the timeout in periodic mode.
 * 
-* @note Data associated to timeout signals should be set to @c NULL. Any other
+* @note Data associated with timeout signals should be set to @c NULL. Any other
 * value will be ignored and will be passed as @c NULL to the FSM handler.
 * @attention The user is responsible for writing timeout specifications 
 * correctly. Care must be taken that the specifications do not collide between 
@@ -690,18 +690,18 @@
 * In real life, many states handle most transitions in similar fashion and 
 * differ only in a few key components. Even when the actual handling differs, 
 * there is still some commonality. It is in these situations where the 
-* hierarchical designs makes the most sense.
+* hierarchical designs make the most sense.
 * 
 * A hierarchical state-machine is characterized by having compound states. A 
 * composite state is defined as state that has inner states and can be used as a
 * decomposition mechanism that allows factoring of common behaviors and their 
 * reuse. And this is the biggest advantage of this design, because it captures
 * the commonality by organizing the states as a hierarchy. The states at the 
-* higher level in hierarchy perform the common handling, while the lower level 
+* higher level in the hierarchy perform the common handling, while the lower level 
 * states inherit the commonality from higher level ones and perform the state 
 * specific functions.
 * 
-* @subsection q_fsm_example3 Example usign a hierarchical FSM
+* @subsection q_fsm_example3 Example using a hierarchical FSM
 * This example takes the "Cruise Control" study case, a real-time system that
 * manages the speed of an automobile based on inputs from the driver.
 * 
@@ -722,9 +722,9 @@
 * </center>
 *
 * The behavior of this system is state-dependent in that the executed actions
-* correspond not only to the driver input, but also on the current state of the 
+* correspond not only to the driver input, but also to the current state of the 
 * system and with the status of the engine and the brake.
-* The figure above illustrate the modeling of this system with the 
+* The figure above illustrates the modeling of this system with the 
 * "Automated Control" state acting as composite.
 *
 * Before getting started, the required user-defined signals, variables, and 
@@ -906,7 +906,7 @@
 * system should return to the most recent substate of the given composite state.
 * UML statecharts address this situation with two kinds of history pseudostates:
 * @a "shallow history" and @a "deep history"( denoted as the circled @c H and 
-* @c H* icon respectively in figure).
+* @c H* icon respectively in the figure).
 *
 * <center>
 * @htmlonly
@@ -932,7 +932,7 @@
 * recent exit of the composite state. The last active state can be nested at any
 * depth.
 * 
-* Here, the way to specify this type of transitions in QuarkTS is very 
+* Here, the way to specify this type of transition in QuarkTS is very 
 * straightforward, you only need to assign the history-mode in the last entry 
 * of the transition as shown below:
 *

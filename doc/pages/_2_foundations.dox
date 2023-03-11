@@ -7,7 +7,7 @@
 * loop. If an event is available, it is posted to the task based on 
 * the scheduling @ref q_osrules "rules", and then the dispatcher triggers the 
 * task. The task executes the actions associated with that event and then 
-* returns back to the scheduler.
+* returns to the scheduler.
 * 
 * This pattern means that in the absence of exceptions or asynchronous 
 * destruction of the task execution, a pending event occurrence is dispatched 
@@ -19,11 +19,11 @@
 * tries to respond to multiple concurrent or overlapping events. This also 
 * provides better power efficiency. In the absence of events, the developer 
 * can use CPU low-power modes and make the core active only during the 
-* execution of an RTC step.
+* execution of a RTC step.
 *
 * The provided features enables you to implement task procedures that does not 
 * have to execute all the way down to the last line of code. Instead execution 
-* can be break down into different entities by using @ref q_fsm or by using 
+* can be broken down into different entities by using @ref q_fsm or by using 
 * @ref q_qcoroutines where the procedure execution can be suspended and resumed
 * at defined locations.
 *
@@ -60,7 +60,7 @@
 * reserves the required stack for the internal queue.
 *
 * @note A call to qOS_Setup() is mandatory and must be called once in the 
-* application mainthread before any kind of interaction with the OS.
+* application main thread before any kind of interaction with the OS.
 *
 * Usage example:
 * - Scenario 1 : When tick is already provided
@@ -99,7 +99,7 @@
 * @section q_tasks Tasks
 * Like many operating systems, the basic unit of work is the task. Tasks can 
 * perform certain functions, which could require periodic or one-time execution,
-* update of specific variables or waiting for specific events. Tasks also could
+* update specific variables or wait for specific events. Tasks also could
 * be controlling specific hardware or be triggered by hardware interrupts. In 
 * the QuarkTS OS, a task is seen as a node concept that links together:
 *
@@ -110,7 +110,7 @@
 *
 * The OS uses a <b>Task Control Block (TCB)</b> to represent each task, storing 
 * essential information about task management and execution. Part of this 
-* information also includes link-pointers that allows it to be part of one of 
+* information also includes link-pointers that allow it to be part of one of 
 * the lists available in the <b>Kernel Control Block (KCB)</b>.
 * 
 * <center>
@@ -134,7 +134,7 @@
 * i.e., running their callback methods quickly in a non-blocking way and 
 * releasing control back to the scheduler as soon as possible (returning).
 *
-* Every task node, must be defined using the qTask_t data-type and the callback
+* Every task node, must be defined using the qTask_t data type and the callback
 * is defined as a function that returns void and takes a qEvent_t data structure
 * as its only parameter (This input argument can be used later to get event 
 * information, see @ref eventdata).
@@ -152,7 +152,7 @@
 * activation of other tasks.
 *
 * @subsection q_idletask The idle task
-* Its a special task loaded by the OS scheduler when there is nothing else to 
+* It's a special task loaded by the OS scheduler when there is nothing else to 
 * do (no task in the whole scheme has reached the ready state). The idle task is
 * already hard-coded into the kernel, ensuring that at least, one task is able 
 * to run. Additionally, the OS setup this task with the lowest possible priority
@@ -176,19 +176,19 @@
 *
 * -# A task with time argument @c t defined as @c qTimeImmediate, will always 
 * get the @c qReady state in every scheduling cycle, as consequence, the idle 
-* task will never gets dispatched.
-* -# Tasks do not remember the number of iteration set initially by the 
+* task will never get dispatched.
+* -# Tasks do not remember the number of iterations set initially by the 
 * @c n executions argument. After the iterations are done, the internal iteration
-* counter decreases until reach the zero. If another set of iterations is 
+* counter decreases until reaches zero. If another set of iterations is 
 * needed, the user should set the number of iterations again and resume the 
 * task explicitly.
 * -# Tasks that performed all their iterations, put their own state to @c 
 * qDisabled. Asynchronous triggers do not affect the iteration counter.
-* -# The @c arg parameter can be used as storage pointer, so, for multiple data, 
+* -# The @c arg parameter can be used as a storage pointer, so, for multiple data,
 * create a structure with the required members and pass a pointer to that
 * structure.
 *
-* Invoking qOS_Add_Task() is the most generic way to adding tasks to the scheme, 
+* Invoking qOS_Add_Task() is the most generic way to add tasks to the scheme, 
 * supporting a mixture of time-triggered and event-triggered tasks, however, 
 * additional simplified API functions are also provided to add specific purpose
 * tasks:
@@ -203,13 +203,13 @@
 *
 * The API qOS_Add_EventTask() is intended to add this kind of tasks, keeping it
 * in a @c qSuspended state. Only asynchronous events followed by their priority
-* value dictates when a task can change to the @c qRunning state.
+* value dictate when a task can change to the @c qRunning state.
 * 
 * @subsection q_removetask Removing a task
 * The qOS_Remove_Task() function removes the task from the scheduling scheme.
 * This means the task node will be disconnected from the kernel chain, 
 * preventing additional overhead provided by the scheduler when it does checks 
-* over it and course, preventing from running.
+* over it and course, preventing it from running.
 *
 * <b> Caveats: </b>
 *
@@ -246,14 +246,14 @@
 *
 * @subsection q_releasescheduler Releasing the scheduler
 * This functionality must be enabled from the @c Q_ALLOW_SCHEDULER_RELEASE 
-* macro. This API stop the kernel scheduling. In consequence, the main thread 
+* macro. This API stops the kernel scheduling. In consequence, the main thread 
 * will continue after the qOS_Run() call.
 *
 * Although producing this action is not a typical desired behavior in any 
 * application, it can be used to handle a critical exception.
 *
 * When used, the release will take place after the current scheduling cycle 
-* finish. The kernel can optionally include a release callback function that can
+* finishes. The kernel can optionally include a release callback function that can
 * be configured to get called if the scheduler is released. Defining the release
 * callback, will help to take actions over the exception that caused the release
 * action. To perform a release action, the qOS_Set_SchedulerReleaseCallback()
@@ -290,15 +290,15 @@
 * - @c qWaiting : The task cannot run because the conditions for running are 
 * not in place.
 * - @c qReady : The task has completed preparations for running, but cannot run 
-* because a task with a higher precedence is running.
+* because a task with higher precedence is running.
 * - @c qRunning : The task is currently being executed.
 * - @c qSuspended : The task doesn't take part in what is going on. Normally 
 * this state is taken after the @c qRunning state or when the task does not 
 * reach the @c qReady state.
 *
 * The presence of a task in a particular list indicates the task's state. There
-* are many ready-lists as defined in the @c Q_PRIORITY_LEVELS macro. To select 
-* the target ready list, the OS use the user-assigned priority between 0 (the 
+* are many ready lists as defined in the @c Q_PRIORITY_LEVELS macro. To select 
+* the target ready list, the OS uses the user-assigned priority between 0 (the 
 * lowest priority) and @c Q_PRIORITY_LEVELS-1 (the highest priority). For 
 * instance, if @c Q_PRIORITY_LEVELS is set to 5, then QuarkTS will use 5 
 * priority levels or ready lists: 0 (lowest priority), 1, 2, 3, and 4 (highest 
@@ -322,15 +322,15 @@
 *
 * Except for the idle task, a task exists in one of these states. As the 
 * real-time embedded system runs, each task moves from one state to another 
-* (moving it from a list to another), according to the logic of a simple finite
+* (moving it from one list to another), according to the logic of a simple finite
 * state machine (FSM). The figure above illustrates the typical flowchart used 
-* by QuarkTS to handle the task's states, with brief descriptions of state 
+* by QuarkTS to handle the task's states, with brief descriptions of the state 
 * transitions, additionally you may also notice the interaction between the 
 * scheduler and the dispatcher.
 *
 * The OS assumes that none of the tasks does a block anywhere during the 
 * @c qRunning state. Based on the round-robin fashion, each ready task runs in 
-* turn from every ready lists. The developer should take care to monitor their 
+* turn from every ready list. The developer should take care to monitor their 
 * system execution times to make sure during the worst case, when all tasks have
 * to execute, all of the deadlines are still met.
 *
@@ -341,16 +341,16 @@
 * able to run, the one with the highest precedence goes to @c qRunning state 
 * first.
 *
-* In determining precedence among tasks, of those tasks having different 
+* In determining precedence among tasks of those tasks having different 
 * priority levels, that with the highest priority has the highest precedence. 
 * Among tasks having the same priority, the one that entered the scheduling 
 * scheme first has the highest precedence if the @c Q_PRESERVE_TASK_ENTRY_ORDER
-* configuration is enabled, otherwise the OS will reserves for himself the order
+* configuration is enabled, otherwise, the OS will reserves for himself the order
 * according to the dynamics of the kernel lists.
 *
 * @subsubsection q_os_evenprecedence Event precedence
 * The scheduler also has an order of precedence for incoming events, in this 
-* way, if events of different nature converge to a single task, these will be 
+* way, if events of different natures converge to a single task, these will be 
 * served according to the following flowchart:
 *
 * <center>
@@ -372,15 +372,15 @@
 * @subsubsection q_os_operational_states Additional operational states
 * Each task has independent operating states from those globally controlled by 
 * the scheduler. These states can be handled by the application writer to modify
-* the event-flow to the task and consequently, affecting the transition to the 
+* the event flow to the task and consequently, affect the transition to the 
 * @c qReady global state. These states are described as follows:
 *
 * - @c qAwake : In this state, the task is conceptually in an alert mode, handling
 * most of the available events. This operational state is available when the 
 * @c SHUTDOWN bit is set, allowing the next operational states to be available:
-*    - @c qEnabled : The task is able to catch all the events. This operational 
+*    - @c qEnabled : The task can catch all the events. This operational 
 * state is available when the @c ENABLE bit is set.
-*    - @c qDisabled : In this state the time events will be discarded. This 
+*    - @c qDisabled : In this state, the time events will be discarded. This 
 * operational state is available when the @c ENABLE bit is cleared.
 * - @c qAsleep : Task operability is put into a deep doze mode, so the task 
 * can not be triggered by the lower precedence events. This operational state 
@@ -388,8 +388,8 @@
 * operational state when it receives a high precedence event (a queued 
 * notification) or using the qTask_Set_State() API.
 * 
-* The figure bellow shows a better representation of how the event flow can be 
-* affected by this operational states.
+* The figure below shows a better representation of how the event flow can be 
+* affected by these operational states.
 *
 * <center>
 * @htmlonly
@@ -415,7 +415,7 @@
 * Since the kernel is non-preemptive, the only critical section that must be 
 * handled are the shared resources accessed from the ISR context. Perhaps, the 
 * most obvious way of achieving mutual exclusion is to allow the kernel to 
-* disable interrupts before it enters its critical section and then, enable
+* disable interrupts before it enters their critical section and then, enable
 * interrupts after it leaves its critical section.
 *
 * By disabling interrupts, the CPU will be unable to change the current context.
@@ -433,11 +433,11 @@
 * is performed safely.
 *
 * In some systems, disabling the global IRQ flags is not enough, as they don't
-* save/restore  state of interrupt, so here, the @c qUINT32_t argument and 
+* save/restore state of interrupt, so here, the @c qUINT32_t argument and 
 * return value in both functions (@c Disabler and @c Restorer) becomes relevant,
 * because they can be used by the application writer to save and restore the 
 * current interrupt configuration. So, when a critical section is performed, 
-* the @c Disabler, in addition to disable the interrupts, returns the current
+* the @c Disabler, in addition to disabling the interrupts, returns the current
 * configuration to be retained by the kernel, later when the critical section 
 * finish, this retained value is passed to @c Restorer to bring back the saved
 * configuration.
@@ -453,10 +453,10 @@
 * kernel assumes the timing base to 1mS(1KHz). So all time specifications for 
 * tasks and STimers must be set in milliseconds(mS). Also can be used to remove
 * the floating-point operations when dealing with time. In some systems, 
-* can reduce the memory usage.
+* can reduce memory usage.
 * - @c Q_SETUP_TICK_IN_HERTZ : @a Default: @c 0(disabled). If enabled, the 
 * timing base will be taken as frequency(Hz) instead of period(S) by qOS_Setup()
-* (In some systems, can reduce the memory usage ).
+* (In some systems, can reduce memory usage ).
 * - @c Q_PRIO_QUEUE_SIZE : @a Default: @c 10. Size of the priority queue for 
 * notifications. This argument should be an integer number greater than zero. 
 * A zero value can be used to disable this functionality.
@@ -465,7 +465,7 @@
 * - @c Q_MEMORY_MANAGER : @a Default: @c 1(enabled).  Used to enable or disable 
 * the @ref q_memmang extension.
 * - @c Q_BYTE_ALIGNMENT : @a Default: @c 8. Used by the @ref q_memmang extension 
-* to perform the byte-alignment.
+* to perform the byte alignment.
 * - @c Q_DEFAULT_HEAP_SIZE : @a Default: @c 2048.  The total amount of heap size
 * for the default memory pool.
 * - @c Q_NOTIFICATION_SPREADER : @a Default: @c 0(disabled). Used to enable or 
@@ -486,12 +486,12 @@ State Machine (FSM) extension.
 * debug and trace macros.
 * - @c Q_DEBUGTRACE_BUFSIZE : @a Default: @c 36. The buffer size for debug and 
 * trace macros
-* - @c Q_DEBUGTRACE_FULL : @a Default: @c 1(enabled). Used to enable of disable 
+* - @c Q_DEBUGTRACE_FULL : @a Default: @c 1(enabled). Used to enable or disable 
 * the extended output for trace macros.
 * - @c Q_ATCLI : @a Default: @c 1(enabled). Used to enable or disable the 
 * @ref q_atcli extension.
 * - @c Q_TASK_COUNT_CYCLES : @a Default: @c 0(disabled). Used to enable or 
-* disable the counting of cycler of a task.
+* disable the counting of cycles of a task.
 * - @c Q_TASK_EVENT_FLAGS : @a Default: @c 1(enabled). Used to enable or disable 
 * the task event flags.
 * - @c Q_MAX_FTOA_PRECISION : @a Default: @c 10. The default precision used to 
@@ -507,6 +507,6 @@ State Machine (FSM) extension.
 * - @c Q_BYTE_SIZED_BUFFERS : @a Default: @c 1(enabled). Used to enable or 
 * disable the usage of Byte-sized buffers.
 * - @c Q_USE_STDINT_H : @a Default: @c 1(enabled).  Use the @c stdint.h header 
-* to define kernel data-types.
+* to define kernel data types.
 *
 */

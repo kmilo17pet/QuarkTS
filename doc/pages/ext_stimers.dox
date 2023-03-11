@@ -42,7 +42,7 @@
 * </center>
 *
 * As illustrated in the figure, the time expiration check is roll-over safe 
-* by restricting it, to the only calculation that make sense for timestamps, 
+* by restricting it, to the only calculation that makes sense for timestamps, 
 * \f$ t_{sys} − X_{T_x} \f$, that yields a duration namely the amount of time 
 * elapsed between the current instant \f$ t_{sys}\f$ and the later instant, 
 * specifically, the tick taken at the arming instant with qSTimer_Set(), 
@@ -57,7 +57,7 @@
 * - Each STimer encapsulates its own expiration (timeout) time.
 * - Provides elapsed and remaining time APIs.
 * - As mentioned before, STimers uses the same kernel clock source, this means 
-* the time-elapsed calculation use the qClock_GetTick() API, therefore, the time
+* the time-elapsed calculation uses the qClock_GetTick() API, therefore, the time
 * resolution has the same value passed when the scheduler has been initialized
 * with qOS_Setup()
 *
@@ -68,7 +68,7 @@
 *
 * To use them, the code should follow a specific pattern that deals with the 
 * states of this object. All related APIs are designed to be non-blocking, this
-* means there are ideal for use in cooperative environments as the one provided 
+* means there are ideal for use in cooperative environments such as the one provided 
 * by the OS itself. To minimize the implementation, this object is intentionally
 * created to behave like a binary object, this implies that it only handles two 
 * states, @a Armed and @a Disarmed.
@@ -81,7 +81,7 @@
 * For qSTimer_FreeRun(), it checks the timer and performs the arming. If
 * disarmed, it gets armed immediately with the specified time. If armed, the 
 * time argument is ignored and the API only checks for expiration. When the time
-* expires,the STimer gets armed immediately taking the specified time.
+* expires, the STimer gets armed immediately taking the specified time.
 *
 * All possible checking actions are also provided for this object, including 
 * qSTimer_Elapsed(), qSTimer_Remaining() and qSTimer_Expired() , with the last 

@@ -3,7 +3,7 @@
 *
 * @section q_trace_overview Overview
 * QuarkTS include some basic macros to print out debugging messages. Messages 
-* can be simple text or the value of variables in specific base-formats. 
+* can be simple text or the value of variables in specific base formats. 
 * To use the trace macros, a single-char output function must be defined using
 * the qTrace_Set_OutputFcn() macro.
 *

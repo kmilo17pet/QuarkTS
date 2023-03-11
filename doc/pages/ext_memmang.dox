@@ -55,13 +55,13 @@ To address these concerns, the OS offers its own memory management interface
 * only from the base context.
 *
 * @attention The application is not exempt from memory leaks if the user does
-* not perform adequate memory management. Here, the worst case scenario can
+* not perform adequate memory management. Here, the worst-case scenario can
 * occur in the absence of free memory.
 * 
 * @section q_memmang_pools Memory pools
-* A memory pool its a special resource that allows memory blocks to be dynamically
+* A memory pool is a special resource that allows memory blocks to be dynamically
 * allocated from a user-designated memory region. Instead of typical pools with
-* fixedsize block allocation, the pools in QuarkTS can be of any size, thereby
+* fixed size block allocation, the pools in QuarkTS can be of any size, thereby
 * the user is responsible for selecting the appropriate memory pool to allocate 
 * data with the same size.
 *
@@ -76,7 +76,7 @@ To address these concerns, the OS offers its own memory management interface
 * with the qMemMang_Pool_Setup() API function.
 *
 * To perform operations in another memory pool, besides the default pool, an 
-* explicit switch should be performed using qMemMang_Pool_Select() . Here, a 
+* explicit switch should be performed using qMemMang_Pool_Select(). Here, a 
 * pointer to the target pool should be passed as input argument. From now on, 
 * every call to qMalloc(), or qFree() will run over the newly selected memory 
 * pool. To return to the default pool, a new call to qMemMang_Pool_Select() is 

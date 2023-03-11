@@ -39,5 +39,11 @@
         "qclock.h": "c",
         "qatparser.h": "c",
         "qmemmang.h": "c"
-    }
+    },
+    "grammarly.selectors": [
+        {
+            "language": "doxygen",
+            "scheme": "file"
+        }
+    ]
 }

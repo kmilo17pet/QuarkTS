@@ -35,7 +35,7 @@
 * <em>AT CLI implementation</em>
 * </center>
 * 
-* As seen in figure, the CLI has a few components described below:
+* As seen in the figure, the CLI has a few components described below:
 *
 * - <b>Input Handler</b> : It is responsible for collecting incoming data from 
 * the input in the form of ASCII characters inside a buffer. When this buffer is
@@ -68,12 +68,12 @@
 * - AT commands are case-insensitive
 * - Only four types of AT commands are allowed:
 *     - Acting (::qATCLI_CMDTYPE_ACT) : This is the simplest type of commands 
-*     that can be subscribed. Its normally used to execute the action that the 
+*     that can be subscribed. It's normally used to execute the action that the 
 *     command should do. This type does not take arguments or modifiers, for 
 *     example : @c AT+CMD
 *     - Read (::qATCLI_CMDTYPE_READ) : This type of command allows you to read 
 *     or test a value already configured for the specified parameter. Only one 
-*     argumentis allowed. for example @c "AT+CMD?" or @c "AT+CMD?PARAM1"
+*     argument is allowed. for example @c "AT+CMD?" or @c "AT+CMD?PARAM1"
 *     - Test (::qATCLI_CMDTYPE_TEST) : These types of commands allow you to get
 *     the values that can be set for its parameters. No parameters are allowed 
 *     here. Example @c "AT+CMD=?"
@@ -84,7 +84,7 @@
 * - The possible output responses are:
 *     - @c OK: Indicates the successful execution of the command.
 *     - @c ERROR: A generalized message to indicate failure in executing the command.
-*     - @c UNKNOWN : The input command its not subscribed.
+*     - @c UNKNOWN : The input command is not subscribed.
 *     - <tt>NOT ALLOWED</tt> : The command syntax is not one of the allowed types.
 *     - User-defined: A custom output message defined by the application writer.
 *     - @c NONE : No response.
@@ -104,16 +104,16 @@
 * initialized using the qATCLI_Setup() API.
 *
 * @section q_atcli_sub_commands  Subscribing commands to the parser
-* The AT CLI is able to subscribe any number of custom AT commands. For this, the
+* The AT CLI is able to subscribe to any number of custom AT commands. For this, the
 * qATCLI_CmdSubscribe() API should be used.
 *
 * This function subscribes the CLI instance to a specific command with an associated
-* callback function, so that next time the required command is sent to the CLI input,
+* callback function, so that the next time the required command is sent to the CLI input,
 * the callback function will be executed. The CLI parser only analyzes commands that
 * follow the simplified AT-Commands syntax already described.
 *
-* @section q_atcli_cmd_callback Writting a command callback
-* The command callback should be coded by the application writter. Here, the 
+* @section q_atcli_cmd_callback Writing a command callback
+* The command callback should be coded by the application writer. Here, the 
 * following prototype should be used:
 *
 *  @code{.c}
@@ -142,7 +142,7 @@
 * out the string @c ERROR:15.
 * - ::qATCLI_NORESPONSE : No response will be printed out.
 * 
-* A simple example of how the command callback should be coded is showed below:
+* A simple example of how the command callback should be coded is shown below:
 *
 *  @code{.c}
 *  qATCLI_Response_t CMD_Callback( qATCLI_Handler_t h ) {
@@ -193,7 +193,7 @@
 * functions from the desired hardware interface, for example, from a UART 
 * receive ISR.
 *
-* If there are no intention to feed the input from the ISR context, the APIs 
+* If there is no intention to feed the input from the ISR context, the APIs 
 * qATCLI_Raise() or qATCLI_Exec() can be called at demand from the base context.
 * As expected, both functions send the string to the specified CLI. The 
 * difference between both APIs is that qATCLI_Raise() sends the command through
@@ -210,7 +210,7 @@
 * @section q_atcli_run Running the CLI parser
 * The parser can be invoked directly using the qATCLI_Run() API. Almost all the 
 * components that make up the CLI are performed by this API, except for the 
-* Input Handler, that should be managed by the application writer itself.
+* Input Handler, which should be managed by the application writer itself.
 *
 * In this way, the writer of the application must implement the logic that leads
 * this function to be called when the input-ready condition is given.
@@ -221,10 +221,10 @@
 * notification variable, running the parser when their value is true, then 
 * clearing the value after to avoid unnecessary overhead.
 *
-* The recommended implementation is to leave this job be handled by a task 
+* The recommended implementation is to leave this job handled by a task 
 * instead of coding the logic to know when the CLI should run. For this, the 
-* qOS_Add_ATCLITask() is provided. This API add a task to the scheduling scheme
-* running an AT Command Line Interface and treated as an event-triggered task. 
+* qOS_Add_ATCLITask() is provided. This API adds a task to the scheduling scheme
+* running an AT Command Line Interface and is treated as an event-triggered task. 
 * The address of the parser instance will be stored in the @c TaskData 
 * storage-Pointer. 
 *
@@ -239,7 +239,7 @@
 * using the UART peripheral with two subscribed commands :
 * - A command to write and read the state of a GPIO pin @c "at+gpio".
 * - A command to retrieve the compilation timestamp @c "at+info".
-* First, lets get started defining the required objects to setup the CLI instance:
+* First, let's get started defining the required objects to set up the CLI instance:
 *
 *  @code{.c}
 *  #define CLI_MAX_INPUT_BUFF_SIZE         ( 128 )
@@ -257,8 +257,8 @@
 *  qATCLI_Response_t AT_INFO_Callback( qATCLI_Handler_t h );
 *  @endcode
 *
-* Then the CLI instance its configured by subscribing commands and adding the task
-* to the OS. A wrapper function its required here to make the UART output-function
+* Then the CLI instance is configured by subscribing commands and adding the task
+* to the OS. A wrapper function is required here to make the UART output-function
 * compatible with the CLI API.
 *
 *  @code{.c}
@@ -285,7 +285,7 @@
 *  }
 *  @endcode
 *
-* The CLI input its feeded from the interrupt context by using the UART receive
+* The CLI input is feeded from the interrupt context by using the UART receive
 * ISR:
 *
 *  @code{.c}
@@ -297,7 +297,7 @@
 *  }
 *  @endcode
 *
-* Finally, the command-callbacks are later defined to perform the requested 
+* Finally, the command callbacks are later defined to perform the requested 
 * operations.
 *
 *  @code{.c}
