@@ -132,7 +132,7 @@
 
     /**
     * @brief Deallocates previously allocated space from the memory pool.
-    * If @a ptr is a @ NULL pointer, the function does nothing.
+    * If @a ptr is a @c NULL pointer, the function does nothing.
     * The behavior is undefined if selected memory pool has not been initialized.
     * The behavior is undefined if the value of ptr does not equal a value
     * returned earlier by qMalloc().
