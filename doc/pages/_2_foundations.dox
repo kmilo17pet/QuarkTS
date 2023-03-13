@@ -50,10 +50,6 @@
 * the qClock_SysTick() API must be called inside. It is recommended that the 
 * reserved ISR should only be used by QuarkTS.
 * 
-* The qOS_Setup() function should be the first call to the OS APIs. qOS_Setup() 
-* prepares the kernel instance, sets the reference clock, defines the Idle-Task 
-* callback and allocates the stack for the internal queue.
-*
 * To establish the reference clock source, the qOS_Setup() function is used. In 
 * fact, this function should be the first call to the operating system API, as 
 * it also prepares the kernel, defines the @ref q_idletask "Idle task", and 
@@ -136,7 +132,7 @@
 *
 * Every task node, must be defined using the qTask_t data type and the callback
 * is defined as a function that returns void and takes a qEvent_t data structure
-* as its only parameter (This input argument can be used later to get event 
+* as its only parameter (This input argument can be used later to get the event 
 * information, see @ref eventdata).
 *
 *  @code{.c}
