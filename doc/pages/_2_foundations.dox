@@ -41,8 +41,9 @@
 * - <b>When tick already provided</b>: The reference is supplied by the Hardware 
 * Abstraction Layer (HAL) of the device. It is the simplest scenario and it 
 * occurs when the framework or SDK of the embedded system includes a HAL-API 
-* that obtains the time elapsed since the system starts, usually in milliseconds
-* and taking a 32-bit counter variable.
+* that provides the time elapsed since the system starts, usually in milliseconds
+* by returning a 32-bit counter variable.
+*
 * - <b>When the tick is not provided</b>: The application writer should use bare-metal 
 * code to configure the device and feed the reference clock manually. Here, a 
 * hardware timer should raise an interrupt periodically. After the <em>Interrupt 
@@ -50,13 +51,13 @@
 * the qClock_SysTick() API must be called inside. It is recommended that the 
 * reserved ISR should only be used by QuarkTS.
 * 
-* To establish the reference clock source, the qOS_Setup() function is used. In 
-* fact, this function should be the first call to the operating system API, as 
-* it also prepares the kernel, defines the @ref q_idletask "Idle task", and 
-* reserves the required stack for the internal queue.
+* The initialization and configuration of QuarkTS through qOS_Setup() will allow
+* you to set the reference clock source in addition to specifying @ref q_idletask "Idle task"
+* activities.
 *
-* @note A call to qOS_Setup() is mandatory and must be called once in the 
-* application main thread before any kind of interaction with the OS.
+* @note The call to qOS_Setup() is mandatory and must be called once in the
+* application main thread before any kind of interaction with the other OS
+* functions.
 *
 * Usage example:
 * - Scenario 1 : When tick is already provided
