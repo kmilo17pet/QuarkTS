@@ -724,7 +724,7 @@ static qBool_t qOS_TaskEntryOrderPreserver( qList_CompareHandle_t h )
     const qTask_t *t1, *t2;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     t1 = (const qTask_t*)h->n1;
-    t2 = (const qTask_t*)h->n1;
+    t2 = (const qTask_t*)h->n2;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     return (qBool_t)( t1->qPrivate.entry > t2->qPrivate.entry );
 }
