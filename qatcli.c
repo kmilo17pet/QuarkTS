@@ -186,6 +186,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
                     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
                     /*command inserted at the beginning of the list*/
                     cli->qPrivate.first = cmd;
+                    retValue = qTrue;
                 }
             }
         }

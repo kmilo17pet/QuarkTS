@@ -400,7 +400,7 @@ qFloat64_t qIOUtil_AtoF( const char *s )
             if ( qTrue == point_seen ) {
                 fact *= 0.1;
             }
-            rez = ( rez * 10.0 ) + ( (double)c ) - 48.0; /*CERT-FLP36-C deviation allowed*/
+            rez = ( rez * 10.0 ) + ( (qFloat64_t)c ) - 48.0; /*CERT-FLP36-C deviation allowed*/
         }
         else {
             break;
