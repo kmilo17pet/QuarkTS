@@ -1,5 +1,4 @@
 [![Built for](https://img.shields.io/badge/built%20for-microcontrollers-lightgrey?logo=WhiteSource)](https://github.com/kmilo17pet/QuarkTS)
-[![Build Status](https://travis-ci.org/kmilo17pet/QuarkTS.svg?branch=master)](https://travis-ci.org/kmilo17pet/QuarkTS)
 [![C/C++ CI](https://github.com/kmilo17pet/QuarkTS/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/kmilo17pet/QuarkTS/actions/workflows/c-cpp.yml)
 [![Static-Analisys](https://github.com/kmilo17pet/QuarkTS/actions/workflows/static-analisys.yml/badge.svg)](https://github.com/kmilo17pet/QuarkTS/actions/workflows/static-analisys.yml)
 [![documentation](https://github.com/kmilo17pet/QuarkTS/actions/workflows/doxygen_gen.yml/badge.svg)](https://github.com/kmilo17pet/QuarkTS/actions/workflows/doxygen_gen.yml)
