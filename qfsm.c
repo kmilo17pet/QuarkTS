@@ -831,7 +831,7 @@ qBool_t qStateMachine_TimeoutSet( qSM_t * const m,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != m ) && ( xTimeout <= (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ) {
+    if ( ( NULL != m ) && ( xTimeout < (qIndex_t)Q_FSM_MAX_TIMEOUTS ) ) {
         if ( NULL != m->qPrivate.timeSpec ) {
             retValue = qSTimer_Set( &m->qPrivate.timeSpec->builtin_timeout[ xTimeout ], t );
         }
