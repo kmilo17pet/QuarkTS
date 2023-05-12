@@ -46,3 +46,7 @@ The design goal of QuarkTS is to achieve its stated functionality using a small,
 
 QuarkTS is not intended to replace o compete with the other great and proven RTOS options already available today, for example [FreeRTOS](https://freertos.org/) or [MicroC/OS-II](https://www.micrium.com/rtos/), in fact, you should check these options first. However, due to its size and features, is intended to play in the space between RTOSes and bare-metal. QuarkTS was written for embedded developers who want more functionality than what existing task schedulers offer, but want to avoid the space and complexity of a full RTOS, keeping the taste of a robust and safe one. 
 
+### Support for C++ and Arduino
+
+Check the C++ port :  **QuarkTS++** [here](https://github.com/kmilo17pet/QuarkTS-cpp) 
+Also available for [Arduino](https://reference.arduino.cc/reference/en/libraries/quarkts/) from the Library Manager
