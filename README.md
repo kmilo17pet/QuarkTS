@@ -48,5 +48,5 @@ QuarkTS is not intended to replace o compete with the other great and proven RTO
 
 ### Support for C++ and Arduino
 
-Check the C++ port :  **QuarkTS++** [here](https://github.com/kmilo17pet/QuarkTS-cpp) 
-Also available for [Arduino](https://reference.arduino.cc/reference/en/libraries/quarkts/) from the Library Manager
+- Check the C++ port :  **QuarkTS++** [here](https://github.com/kmilo17pet/QuarkTS-cpp) 
+- Also available for [Arduino](https://reference.arduino.cc/reference/en/libraries/quarkts/) from the Library Manager
