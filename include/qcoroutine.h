@@ -105,7 +105,7 @@
     /*=======================================================================*/
     #define _qCR_Start                                                      \
     _qCR_DEF;                                                               \
-    _qCR_JUMP( _qcr->instr ) {                                              \
+    _qCR_JUMP( _qcr->instr ) {                                              \  // skipcq: CXX-W1197
         _qCR_RT( _qCR_PC_INIT_VAL )                                         \
 
 
