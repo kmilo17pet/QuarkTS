@@ -125,7 +125,6 @@ void test_qList_API(void){
     mynode_t n1, n2, n3, n4, n5, n6, n7, n8, n9;
 
     qList_Iterator_t iter;
-    mynode_t *inode = NULL;
 
     TEST_MESSAGE( "Executing TEST qList_API..." ); 
     qList_Initialize( &mylist );
@@ -155,6 +154,13 @@ void test_qList_API(void){
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, &n9, QLIST_AT_BACK ) ); /*node n9 its already a member*/
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_Insert( &mylist, NULL, QLIST_AT_BACK ) ); 
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
+
+    for ( iter = qList_Begin( &mylist) ; qListIterator_Until( &iter, NULL ) ; qListIterator_Forward( &iter ) )
+    {
+        mynode_t* i = qListIterator_Get( &iter );
+        printf(" %d \r\n", i->value );
+    }
+
     TEST_ASSERT_EQUAL_UINT8( qTrue, qList_Sort( &mylist, comparator ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &mylist, mylist_visualizer, NULL, QLIST_FORWARD, NULL ) );
@@ -165,12 +171,7 @@ void test_qList_API(void){
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD, NULL ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_FORWARD, &n3 ) );
     TEST_ASSERT_EQUAL_UINT8( qFalse, qList_ForEach( &otherlist, mylist_visualizer, NULL, QLIST_BACKWARD, &n3 ) );
-    TEST_ASSERT_EQUAL_UINT8( qTrue, qList_IteratorSet( &iter, &otherlist, &n3, QLIST_BACKWARD ) );
-    
-    while( NULL != ( inode = (mynode_t*)qList_IteratorGetNext(&iter) ) ){
-        TEST_ASSERT_NOT_NULL( inode );
-        printf("{%d}->\r\n", inode->value );
-    }
+
 }
 /*============================================================================*/
 void test_qMemoryManagement_API(void){

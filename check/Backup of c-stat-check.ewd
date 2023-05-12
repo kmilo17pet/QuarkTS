@@ -88,7 +88,7 @@
                 </option>
                 <option>
                     <name>OCLastSavedByProductVersion</name>
-                    <state>9.32.1.54977</state>
+                    <state>9.10.2.39304</state>
                 </option>
                 <option>
                     <name>UseFlashLoader</name>
@@ -1072,7 +1072,7 @@
             <name>STLINK_ID</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>8</version>
+                <version>7</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -1190,14 +1190,6 @@
                     <version>1</version>
                     <state>2</state>
                 </option>
-                <option>
-                    <name>CCSTLinkTargetVccEnable</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>CCSTLinkTargetVoltage</name>
-                    <state>###Uninitialized###</state>
-                </option>
             </data>
         </settings>
         <settings>
@@ -1300,7 +1292,7 @@
             <name>XDS100_ID</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>9</version>
+                <version>8</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -1425,7 +1417,7 @@
                 </option>
                 <option>
                     <name>CCXds100ResetList</name>
-                    <version>1</version>
+                    <version>0</version>
                     <state>0</state>
                 </option>
                 <option>
@@ -1474,10 +1466,6 @@
                     <name>OCXDSDigitalStatesConfigFile</name>
                     <state>1</state>
                 </option>
-                <option>
-                    <name>OCSelectedCoreName</name>
-                    <state>1</state>
-                </option>
             </data>
         </settings>
         <debuggerPlugins>
@@ -1523,18 +1511,6 @@
             </plugin>
             <plugin>
                 <file>$TOOLKIT_DIR$\plugins\rtos\ThreadX\ThreadXArmPlugin.ENU.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-286-KA-CSpy.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-KA-CSpy.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-III\uCOS-III-KA-CSpy.ewplugin</file>
                 <loadFlag>0</loadFlag>
             </plugin>
             <plugin>
@@ -2622,7 +2598,7 @@
             <name>STLINK_ID</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>8</version>
+                <version>7</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -2740,14 +2716,6 @@
                     <version>1</version>
                     <state>2</state>
                 </option>
-                <option>
-                    <name>CCSTLinkTargetVccEnable</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>CCSTLinkTargetVoltage</name>
-                    <state>###Uninitialized###</state>
-                </option>
             </data>
         </settings>
         <settings>
@@ -2850,7 +2818,7 @@
             <name>XDS100_ID</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>9</version>
+                <version>8</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -2975,7 +2943,7 @@
                 </option>
                 <option>
                     <name>CCXds100ResetList</name>
-                    <version>1</version>
+                    <version>0</version>
                     <state>0</state>
                 </option>
                 <option>
@@ -3024,10 +2992,6 @@
                     <name>OCXDSDigitalStatesConfigFile</name>
                     <state>1</state>
                 </option>
-                <option>
-                    <name>OCSelectedCoreName</name>
-                    <state>1</state>
-                </option>
             </data>
         </settings>
         <debuggerPlugins>
@@ -3073,18 +3037,6 @@
             </plugin>
             <plugin>
                 <file>$TOOLKIT_DIR$\plugins\rtos\ThreadX\ThreadXArmPlugin.ENU.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-286-KA-CSpy.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-II\uCOS-II-KA-CSpy.ewplugin</file>
-                <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-III\uCOS-III-KA-CSpy.ewplugin</file>
                 <loadFlag>0</loadFlag>
             </plugin>
             <plugin>
