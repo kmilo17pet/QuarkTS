@@ -23,7 +23,7 @@
 #define QATCLI_CMD_MASK_ARG_MAX_NUM(opt)        ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
 #define QATCLI_CMD_MASK_ARG_MIN_NUM(opt)        ( (opt) & (qATCLI_Options_t)0x000Fu )
 
-static qPutChar_t cli_OutCharFcn = NULL;
+static qPutChar_t cli_OutCharFcn = NULL; // skipcq: CXX-W2009
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL; // skipcq: CXX-W2009
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );

@@ -8,11 +8,11 @@
 
 static qClock_t qClock_InternalTick( void );
 
-static volatile qClock_t qSysTick_Epochs = 0uL;
+static volatile qClock_t qSysTick_Epochs = 0uL; // skipcq: CXX-W2009
 #define QFLT_TIME_FIX_VALUE  ( 0.5f )
 
 #if ( Q_SETUP_TIME_CANONICAL != 1 )
-static qTimingBase_t timingBase;
+static qTimingBase_t timingBase; // skipcq: CXX-W2009
 
 /*============================================================================*/
 qBool_t qClock_SetTimeBase( const qTimingBase_t tb )
@@ -96,7 +96,7 @@ void qClock_SysTick( void )
     ++qSysTick_Epochs;
 }
 /*============================================================================*/
-qGetTickFcn_t qClock_GetTick = &qClock_InternalTick;
+qGetTickFcn_t qClock_GetTick = &qClock_InternalTick; // skipcq: CXX-W2009
 /*============================================================================*/
 qBool_t qClock_TimeDeadlineCheck( const qClock_t ti,
                                   const qClock_t td )
