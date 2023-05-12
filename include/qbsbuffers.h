@@ -48,7 +48,7 @@
     size_t qBSBuffer_Count( const qBSBuffer_t * const b );
 
     /**
-    * @brief Query the the full status of the Byte-sized buffer
+    * @brief Query the full status of the Byte-sized buffer
     * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return #qTrue if the BSBuffer(Byte-sized Buffer) is full, #qFalse if it
     * is not.
@@ -56,7 +56,7 @@
     qBool_t qBSBuffer_IsFull( const qBSBuffer_t * const b );
 
     /**
-    * @brief Query the the empty status of the Byte-sized buffer
+    * @brief Query the empty status of the Byte-sized buffer
     * @param[in] b a pointer to the qBSBuffer(Byte-sized Buffer) object
     * @return #qTrue if the BSBuffer(Byte-sized Buffer) is empty, #qFalse if it
     * is not.

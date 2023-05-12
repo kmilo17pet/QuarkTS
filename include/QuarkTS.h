@@ -1,7 +1,7 @@
 /*!
  * @file QuarkTS.h
  * @author J. Camilo Gomez C.
- * @version 2.12
+ * @version 2.13
  * @note This file is part of the QuarkTS distribution.
  * @brief Global inclusion header
  **/
@@ -45,8 +45,8 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 #ifndef QuarkTS_H
     #define QuarkTS_H
 
-    #define QUARKTS_VERSION         "7.3.2"
-    #define QUARKTS_VERNUM          ( 732u )
+    #define QUARKTS_VERSION         "7.3.3"
+    #define QUARKTS_VERNUM          ( 733u )
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"

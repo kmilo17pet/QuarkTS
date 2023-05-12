@@ -124,7 +124,7 @@
     * @brief Return the current tick used by the OS
     * @return time (t) in epochs.
     */
-    extern qGetTickFcn_t qClock_GetTick;
+    extern qGetTickFcn_t qClock_GetTick; // skipcq: CXX-W2009
 
      /**
     * @brief Perform a timestamp check. This function computes the amount

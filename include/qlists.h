@@ -27,23 +27,7 @@
     * The list data-structure, referenced through an object of type qList_t 
     * also has a head and a tail pointer, to allow fast operations on boundary 
     * nodes.
-    * 
-    * <center>
-    * @htmlonly
-    * <!DOCTYPE html>
-    * <html>
-    * <head>
-    * <title>qlist</title>
-    * <meta charset="utf-8"/>
-    * </head>
-    * <body><div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;zoom&quot;:1.2,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2022-10-19T20:37:00.387Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36\&quot; etag=\&quot;KSbS3wh_9uupMrEyc6ED\&quot; version=\&quot;20.4.1\&quot; type=\&quot;google\&quot;&gt;&lt;diagram id=\&quot;mmlpRbxcPcDZs_50ANYI\&quot; name=\&quot;Página-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
-    * <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
-    * </body>
-    * </html>
-    * @endhtmlonly
-    * <em>Doubly-linked list implementation</em>
-    * </center>
-    * 
+    *
     * Nodes should be an user-defined data structure of any number of members, 
     * however, they must be specially defined to be compatible with the 
     * provided APIs. All the user-defined nodes must have the 
@@ -52,7 +36,7 @@
     * 
     * @code{.c}
     * typedef struct {
-    *     qNode_MinimalFields; // required for lists
+    *     qNode_MinimalFields;
     *     int a;
     *     int b;
     *     float y;
@@ -60,8 +44,7 @@
     * @endcode
     *
     * With this special type definition on all custom data, the application 
-    * writer can take advantage of this powerful data structure.
-    * 
+    * writer can take advantage of this versatile data structure.
     *  @{
     */
 
@@ -373,11 +356,13 @@
     */
     typedef struct _qList_Iterator_s {
         /*! @cond  */
-        qList_Node_t *next;             /*< Where the iterator is currently pointing. */
-        qList_Direction_t direction;    /*< How the iterator scrolls through the list, #QLIST_FORWARD or #QLIST_BACKWARD. */
+        qList_t *l;
+        qList_Node_t *iter;
+        void *current;
         /*! @endcond  */
     }
     qList_Iterator_t;
+
 
     /**
     * @brief Setup an instance of the given iterator to traverse the list.
@@ -392,14 +377,6 @@
                                qList_t *const l,
                                void *nodeOffset,
                                qList_Direction_t d );
-
-    /**
-    * @brief Get the current node available in the iterator. After invoked,
-    * iterator will be updated to the next node.
-    * @param[in] i Pointer to the iterator instance
-    * @return Return the next node or @c NULL when no more nodes remain in the list.
-    */
-    void* qList_IteratorGetNext( qList_Iterator_t *i );
 
     /**
     * @brief Operate on each element of the list.
@@ -435,6 +412,50 @@
     */
     qBool_t qList_Swap( void *node1,
                         void *node2 );
+
+    /**
+    * @brief Returns an iterator pointing to the first element in the 
+    * list container.
+    * @param[in] xList Pointer to the list.
+    * @return An iterator to the beginning of the sequence container.
+    */
+    qList_Iterator_t qList_Begin( qList_t *const xList );
+
+    /**
+    * @brief Returns an iterator pointing to the last element in the 
+    * list container.
+    * @param[in] xList Pointer to the list.
+    * @return An iterator to the latest item of the sequence container.
+    */
+    qList_Iterator_t qList_End( qList_t *const xList );
+
+    /**
+    * @brief Check until current iterator reach the given node
+    * @param[in] i Pointer to the iterator instance
+    * @param[in] node A pointer to the node you want to reach. To ignore pass
+    * @c NULL as argument.
+    * @return  #qTrue if the iterator has reach the given node.
+    */
+    qBool_t qListIterator_Until( qList_Iterator_t *i,
+                                 void *node );
+
+    /**
+    * @brief Move the iterator forward
+    * @param[in] i Pointer to the iterator instance
+    */
+    void qListIterator_Forward( qList_Iterator_t *i );
+
+    /**
+    * @brief Move the iterator backward
+    * @param[in] i Pointer to the iterator instance
+    */
+    void qListIterator_Backward( qList_Iterator_t *i );
+
+    /**
+    * @brief Gets the node that the iterator is currently pointing to.
+    * @return A pointer to the node currently being pointed.
+    */
+    void* qListIterator_Get( qList_Iterator_t *i );
 
     /** @}*/
     #ifdef __cplusplus

@@ -7,7 +7,7 @@
 
 #if ( Q_TRACE_VARIABLES == 1 )
 
-static qPutChar_t qDebug = NULL;
+static qPutChar_t qDebug = NULL; // skipcq: CXX-W2009
 char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ] = { 0 };
 
 static void qTrace_LogTicks( char *buff );

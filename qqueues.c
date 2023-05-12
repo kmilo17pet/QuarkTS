@@ -126,7 +126,7 @@ void* qQueue_Peek( const qQueue_t * const q )
         if ( itemsWaiting > 0u ) {
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             /*cppcheck-suppress cert-EXP05-C */
-            retValue = (qUINT8_t *)( q->qPrivate.reader + q->qPrivate.itemSize );  /*MISRAC2012-Rule-11.8 allowed*/ /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
+            retValue = (qUINT8_t *)( q->qPrivate.reader + q->qPrivate.itemSize ); // skipcq: CXX-S1014
             /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
             if ( retValue >= q->qPrivate.tail ) {
                 retValue = q->qPrivate.head;

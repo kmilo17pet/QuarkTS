@@ -13,8 +13,8 @@ typedef size_t qAddress_t;  /*restrict*/
 
 #define BYTE_ALIGN_MASK     ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u )
 
-static qUINT8_t defaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = { 0 };
-static qMemMang_Pool_t defaultMemPool = {
+static qUINT8_t defaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = { 0 }; // skipcq: CXX-W2009
+static qMemMang_Pool_t defaultMemPool = { // skipcq: CXX-W2009
                                             {
                                                 NULL,
                                                 defaultPoolMemory,
@@ -22,8 +22,8 @@ static qMemMang_Pool_t defaultMemPool = {
                                                 Q_DEFAULT_HEAP_SIZE,
                                                 { NULL, 0 }
                                             }
-                                        };
-static qMemMang_Pool_t *selectedMemPool = &defaultMemPool;
+                                        }; // skipcq: CXX-W2009
+static qMemMang_Pool_t *selectedMemPool = &defaultMemPool; // skipcq: CXX-W2009
 static const size_t byteAlignmentMask = BYTE_ALIGN_MASK;
 /*
 The index of the bit that is set when a block belongs to the application.
@@ -277,7 +277,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                     qMemBlockConnect_t node at its start.
                     */
                     /* This block is being returned for use so must be.*/
-                    pAllocated = (void*)( ( (qUINT8_t*)previousBlock->next ) + heapStructSize );
+                    pAllocated = (void*)( ( (qUINT8_t*)previousBlock->next ) + heapStructSize ); // skipcq: CXX-S1014
                     /* Allocated must be removed from the list of free blocks*/
                     previousBlock->next = xBlock->next;
                     if ( ( xBlock->blockSize - pSize ) > minBlockSize ) {

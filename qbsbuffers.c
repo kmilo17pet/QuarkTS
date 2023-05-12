@@ -20,7 +20,7 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
         qIndex_t i;
 
         k--;
-        for ( i = 1u ; i < ( sizeof(qIndex_t)*8u ) ; i = (qIndex_t)( i * 2u ) ) {
+        for ( i = 1u ; i < ( sizeof(qIndex_t)*8u ) ; i = (qIndex_t)( i * 2u ) ) { // skipcq: CXX-W1240
             /*cstat -CERT-INT34-C_a*/
             k = k | (size_t)( k >> i ); /*CERT-INT34-C_a deviation allowed*/
             /*cstat +CERT-INT34-C_a*/

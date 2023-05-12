@@ -161,7 +161,7 @@ qBool_t qTask_Set_State( qTask_t * const Task,
 
     if ( NULL != Task ) {
         switch ( s ) {
-            case qDisabled: case qEnabled:
+            case qDisabled: case qEnabled: // skipcq: CXX-C1001
                 if ( s != (qState_t)qOS_Get_TaskFlag( Task, QTASK_BIT_ENABLED ) ) {
                     qOS_Set_TaskFlags( Task, QTASK_BIT_ENABLED, (qBool_t)s );
                     (void)qSTimer_Reload( &Task->qPrivate.timer );

@@ -125,7 +125,7 @@
             #define _qTrace_Kernel( msg, id, obj )
         #endif
 
-        extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];
+        extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ]; // skipcq: CXX-W2009
         void _qTrace_dgb( const char *loc,
                           const char* fcn,
                           const char *vName,

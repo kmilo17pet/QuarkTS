@@ -24,7 +24,7 @@
 #define QATCLI_CMD_MASK_ARG_MIN_NUM(opt)        ( (opt) & (qATCLI_Options_t)0x000Fu )
 
 static qPutChar_t cli_OutCharFcn = NULL;
-static qATCLI_Handler_t cli_CurrentCmdHelper = NULL;
+static qATCLI_Handler_t cli_CurrentCmdHelper = NULL; // skipcq: CXX-W2009
 static void qATCLI_Putc_Wrapper( const char c );
 static void qATCLI_Puts_Wrapper( const char *s );
 static size_t qATCLI_NumOfArgs( const char *str );
@@ -198,7 +198,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
 qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli,
                                      const qBool_t reload )
 {
-    static qATCLI_Command_t *iterator = NULL;
+    static qATCLI_Command_t *iterator = NULL; // skipcq: CXX-W2011
     qATCLI_Command_t *iCmd = NULL;
 
     if ( NULL != cli ) {
@@ -634,7 +634,9 @@ static qFloat32_t GetArgFlt( qIndex_t n )
     qFloat32_t retValue = 0.0f;
 
     if ( NULL != cli_CurrentCmdHelper ) {
+        /*cstat -CERT-FLP34-C */
         retValue = (qFloat32_t)qIOUtil_AtoF( cli_CurrentCmdHelper->GetArgPtr( n ) );
+        /*cstat +CERT-FLP34-C */
     }
 
     return retValue;

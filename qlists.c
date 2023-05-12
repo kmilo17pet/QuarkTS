@@ -427,40 +427,24 @@ qBool_t qList_IteratorSet( qList_Iterator_t *i,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != l ) && ( NULL != i ) && ( ( &QLIST_FORWARD == d ) || ( &QLIST_BACKWARD == d ) ) ) {
-        qList_Node_t *offset;
-
-        i->direction = d;
-        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
-        /*cppcheck-suppress misra-c2012-11.5 */
-        offset = (qList_Node_t*)nodeOffset; /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
-        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        if ( NULL != offset ) {
-            if ( l == offset->container ) {
-                i->next = offset;
-                retValue = qTrue;
-            }
+        qList_Node_t *ret;
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b */
+        qList_Node_t * const offset = (qList_Node_t * const)nodeOffset;
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b */
+        i->l = l;
+        if ( QLIST_FORWARD == d ) {
+            ret = ( qList_IsMember( l, nodeOffset ) ) ? offset : l->head;
+            i->iter = ( NULL != ret ) ? ret->next : NULL;
         }
         else {
-            i->next = ( QLIST_FORWARD == d ) ? l->head : l->tail;
-            retValue = qTrue;
+            ret = ( qList_IsMember( l, nodeOffset ) ) ? offset : l->tail;
+            i->iter = ( NULL != ret ) ? ret->prev : NULL;
         }
+        i->current = (void*)ret;
+        retValue = qTrue;
     }
 
     return retValue;
-}
-/*============================================================================*/
-void* qList_IteratorGetNext( qList_Iterator_t *i )
-{
-    void *iNode = NULL;
-
-    if ( NULL != i ) {
-        iNode = i->next;
-        if ( NULL != iNode ) {
-            i->next = i->direction( i->next );
-        }
-    }
-
-    return iNode;
 }
 /*============================================================================*/
 qBool_t qList_ForEach( qList_t *const l,
@@ -616,5 +600,59 @@ static void qList_GivenNodes_UpdateOuterLinks( qList_Node_t *n1,
     if ( NULL != n2->next ) {
         n2->next->prev = n2;
     }
+}
+/*============================================================================*/
+qList_Iterator_t qList_Begin( qList_t *const xList )
+{
+    qList_Iterator_t i;
+
+    (void)qList_IteratorSet( &i, xList, NULL, QLIST_FORWARD );
+
+    return i;
+}
+/*============================================================================*/
+qList_Iterator_t qList_End( qList_t *const xList )
+{
+    qList_Iterator_t i;
+
+    (void)qList_IteratorSet( &i, xList, NULL, QLIST_BACKWARD );
+
+    return i;
+}
+/*============================================================================*/
+qBool_t qListIterator_Until( qList_Iterator_t *i,
+                             void *node )
+{
+    qBool_t ret;
+
+    if ( NULL == node ) {
+        ret = ( NULL != i->current );
+    }
+    else {
+        ret = ( qList_IsMember( i->l, node ) && ( node != i->current ) );
+    }
+
+    return ret;
+}
+/*============================================================================*/
+void qListIterator_Forward( qList_Iterator_t *i )
+{
+    qList_Node_t * const ret = i->iter;
+
+    i->iter = ( NULL != i->iter ) ? i->iter->next : NULL;
+    i->current = (void*)ret;
+}
+/*============================================================================*/
+void qListIterator_Backward( qList_Iterator_t *i )
+{
+    qList_Node_t * const ret = i->iter;
+
+    i->iter = ( NULL != i->iter ) ? i->iter->prev : NULL;
+    i->current = (void*)ret;
+}
+/*============================================================================*/
+void* qListIterator_Get( qList_Iterator_t *i )
+{
+    return i->current;
 }
 /*============================================================================*/

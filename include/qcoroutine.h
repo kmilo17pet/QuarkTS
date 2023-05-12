@@ -85,7 +85,7 @@
     #define _qCR_RT( _PT_ )                                                 \
     case (_qCR_TaskPC_t)(_PT_) :                                            \
 
-    #define _qCR_JUMP( _DST_ )                              switch (_DST_)
+    #define _qCR_JUMP( _DST_ )                              switch (_DST_) // skipcq: CXX-W1164
 
     #define _qCR_LCON( _DST_ , _STATE_, _REST_, _ACTION_ )                  \
     ( _DST_ ) = (_STATE_);                                                  \
@@ -279,11 +279,11 @@
     * @see #qCR_TimedWaitUntil
     * @param[in] bCondition The logical condition to be evaluated
     * @verbatim
-     Action sequence : [Save progress]
-                     IF ( condition == False ) {
-                         [Yield]
-                     }
-      @endverbatim
+    * Action sequence : [Save progress]
+    *                 IF ( condition == False ) {
+    *                     [Yield]
+    *                 }
+    * @endverbatim
     */
     #define qCR_WaitUntil( bCondition )     _qCR_wu_Assert( bCondition )
 
@@ -294,11 +294,11 @@
     * @param[in] bCondition The logical condition to be evaluated.
     * @param[in] tValue The specific amount of time to wait given in seconds.
     * @verbatim
-     Action sequence : [Save progress]
-                     IF ( condition == False || NOT_EXPIRED(timeout) )
-                         [Yield]
-                     }
-     @endverbatim
+    * Action sequence : [Save progress]
+    *                 IF ( condition == False || NOT_EXPIRED(timeout) )
+    *                     [Yield]
+    *                 }
+    * @endverbatim
     */
     #define qCR_TimedWaitUntil( bCondition, tValue )                        \
     _qCR_wu_TmrAssert( bCondition, tValue )                                 \

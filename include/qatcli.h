@@ -292,7 +292,7 @@
                                      const char *str );
 
     /**
-    * @brief Setup an instance of the AT Command Command Line Interface.
+    * @brief Setup an instance of the AT Command Line Interface.
     * @see qOS_Add_ATCLITask()
     * @note CLI Built-in strings will be written to their default values.
     * @param[in] cli A pointer to the AT Command Line Interface instance
