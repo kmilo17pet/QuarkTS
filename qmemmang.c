@@ -23,7 +23,7 @@ static qMemMang_Pool_t defaultMemPool = { // skipcq: CXX-W2009
                                                 { NULL, 0 }
                                             }
                                         }; // skipcq: CXX-W2009
-static qMemMang_Pool_t *selectedMemPool = &defaultMemPool; // skipcq: CXX-W2009
+static qMemMang_Pool_t *selectedMemPool = &defaultMemPool; // skipcq: CXX-W2009, CXX-W2011
 static const size_t byteAlignmentMask = BYTE_ALIGN_MASK;
 /*
 The index of the bit that is set when a block belongs to the application.

@@ -174,7 +174,7 @@ static char qIOUtil_NibbleToX( qUINT8_t value )
 
     ch = (char)( (qUINT8_t)( value & 0x0Fu ) + '0' );
 
-    return (char)( ( ch > '9' ) ? (char)( ch + 7 ) : ch );
+    return ( ch <= '9' ) ? ch : ( ch + 7 );
 }
 /*============================================================================*/
 qBool_t qIOUtil_SwapBytes( void *pData,
