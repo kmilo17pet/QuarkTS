@@ -27,6 +27,8 @@ var group__qlists =
       [ "qList_WalkThrough", "group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4", null ],
       [ "qList_WalkEnd", "group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161", null ]
     ] ],
+    [ "qList_Begin", "group__qlists.html#gad1f1c5e25f2a11332afb041be466ad2a", null ],
+    [ "qList_End", "group__qlists.html#ga1f359a3f7408a63be1cdbc91a5319dc8", null ],
     [ "qList_ForEach", "group__qlists.html#gaefb60fbd13019572a02326998513c887", null ],
     [ "qList_GetBack", "group__qlists.html#ga33ff3975cd04ca2adf64edcb85efaf24", null ],
     [ "qList_GetFront", "group__qlists.html#ga8e01746c7d0272c0cf92b1ae0407ee82", null ],
@@ -34,12 +36,15 @@ var group__qlists =
     [ "qList_Insert", "group__qlists.html#ga4fbd27183cfdb3c07d7c5a64b4cc6a5e", null ],
     [ "qList_IsEmpty", "group__qlists.html#ga24887aa23cbe2670c5d84220e21d940a", null ],
     [ "qList_IsMember", "group__qlists.html#ga42241f8b14311e3ffebc0b152438d99c", null ],
-    [ "qList_IteratorGetNext", "group__qlists.html#gabb6fc627ad093715edc44d1b56433d29", null ],
     [ "qList_IteratorSet", "group__qlists.html#gae0659a0fcc6f903e707fea9d5aa78d03", null ],
     [ "qList_Length", "group__qlists.html#gaee39a44dcd8d634e952a1bac2ede929e", null ],
     [ "qList_Move", "group__qlists.html#ga0592661bc81be625f30fda047f3ee3cc", null ],
     [ "qList_Remove", "group__qlists.html#ga32fefe5679f8b066b224b66725609fca", null ],
     [ "qList_RemoveItself", "group__qlists.html#ga0c76510b8cc482f0c0f571970846a11a", null ],
     [ "qList_Sort", "group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6", null ],
-    [ "qList_Swap", "group__qlists.html#ga75f82f140bbf2911d7c445329c0d9020", null ]
+    [ "qList_Swap", "group__qlists.html#ga75f82f140bbf2911d7c445329c0d9020", null ],
+    [ "qListIterator_Backward", "group__qlists.html#ga7af314c957fbeaeef2ec9186cdbfe28a", null ],
+    [ "qListIterator_Forward", "group__qlists.html#gaced3d38798da58f037121b3ecf28d0e7", null ],
+    [ "qListIterator_Get", "group__qlists.html#ga6454d5f923fa2b3735b1b25bd4da9399", null ],
+    [ "qListIterator_Until", "group__qlists.html#ga7b8f53c9386a8fc5cd28ff777484d10e", null ]
 ];

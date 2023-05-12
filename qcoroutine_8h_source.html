@@ -68,7 +68,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.2</span>
+   &#160;<span id="projectnumber">v7.3.3</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('qcoroutine_8h_source.html',''); initRe
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">    #define _qCR_RT( _PT_ )                                                 \</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">    case (_qCR_TaskPC_t)(_PT_) :                                            \</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor"></span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #define _qCR_JUMP( _DST_ )                              switch (_DST_)</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">    #define _qCR_JUMP( _DST_ )                              switch (_DST_) </span><span class="comment">// skipcq: CXX-W1164</span></div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">    #define _qCR_LCON( _DST_ , _STATE_, _REST_, _ACTION_ )                  \</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">    ( _DST_ ) = (_STATE_);                                                  \</span></div>

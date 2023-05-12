@@ -68,7 +68,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.2</span>
+   &#160;<span id="projectnumber">v7.3.3</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -606,11 +606,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>The specific amount of time to wait given in seconds. <pre class="fragment">Action sequence : [Save progress]
-                IF ( condition == False || NOT_EXPIRED(timeout) )
-                    [Yield]
-                }
-</pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tValue</td><td>The specific amount of time to wait given in seconds. <pre class="fragment">* Action sequence : [Save progress]
+*                 IF ( condition == False || NOT_EXPIRED(timeout) )
+*                     [Yield]
+*                 }
+* </pre> </td></tr>
   </table>
   </dd>
 </dl>
@@ -715,10 +715,11 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__qcoroutines.html#ga3b15b3de92651cdc83dbc50bf1c4fe04" title="Yields until the logical condition being true or the specified timeout expires.">qCR_TimedWaitUntil</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated <pre class="fragment">Action sequence : [Save progress]
-                IF ( condition == False ) {
-                    [Yield]
-                }</pre> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bCondition</td><td>The logical condition to be evaluated <pre class="fragment">* Action sequence : [Save progress]
+*                 IF ( condition == False ) {
+*                     [Yield]
+*                 }
+* </pre> </td></tr>
   </table>
   </dd>
 </dl>

@@ -68,7 +68,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.2</span>
+   &#160;<span id="projectnumber">v7.3.3</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -240,7 +240,7 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">extern</span> <span class="keywordtype">char</span> qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ];</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">extern</span> <span class="keywordtype">char</span> qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ]; <span class="comment">// skipcq: CXX-W2009</span></div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordtype">void</span> _qTrace_dgb( <span class="keyword">const</span> <span class="keywordtype">char</span> *loc,</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* fcn,</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span> *vName,</div>

@@ -1,5 +1,10 @@
 var NAVTREEINDEX1 =
 {
+"group__qlists.html#gaee39a44dcd8d634e952a1bac2ede929e":[6,2,0,26],
+"group__qlists.html#gaefb60fbd13019572a02326998513c887":[6,2,0,18],
+"group__qlists.html#ggac443200e204bccbc22937ce7eb140d13a338bec07126aae0ca34578cd06c53161":[6,2,0,15,2],
+"group__qlists.html#ggac443200e204bccbc22937ce7eb140d13aa8a99051d458ad07f2dd1cc1bb40cecf":[6,2,0,15,0],
+"group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4":[6,2,0,15,1],
 "group__qmemmang.html":[6,1,4],
 "group__qmemmang.html#ga3e181f0109a557d2466895b5ea44bc98":[6,1,4,1],
 "group__qmemmang.html#ga3f069d7c779da101ca694b5d630e6233":[6,1,4,2],
@@ -174,8 +179,8 @@ var NAVTREEINDEX1 =
 "group__qtypes.html#gaee1ceeb4a18bb15dffbd81c28edb1525":[6,0,5,11],
 "group__qtypes.html#gaeec4abe72f63545c1ee405d3866740a6":[6,0,5,10],
 "group__qutility.html":[6,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[6],
 "pages.html":[],
 "q_atcli.html":[5,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX1 =
 "q_fsm.html#q_fsmsetup":[5,0,2],
 "q_fsm.html#qfsm_approach":[5,0,1],
 "q_fsm.html#qfsm_happroach":[5,0,11],
-"q_gettingstarted.html":[3],
-"q_gettingstarted.html#q_cloneos":[3,0,0],
-"q_gettingstarted.html#q_firststeps":[3,1],
-"q_gettingstarted.html#q_getos":[3,0],
-"q_gettingstarted.html#q_getqconfig":[3,0,2],
-"q_gettingstarted.html#q_os_demo":[3,2]
+"q_gettingstarted.html":[3]
 };

@@ -1,5 +1,10 @@
 var NAVTREEINDEX2 =
 {
+"q_gettingstarted.html#q_cloneos":[3,0,0],
+"q_gettingstarted.html#q_firststeps":[3,1],
+"q_gettingstarted.html#q_getos":[3,0],
+"q_gettingstarted.html#q_getqconfig":[3,0,2],
+"q_gettingstarted.html#q_os_demo":[3,2],
 "q_gettingstarted.html#q_os_example1":[3,2,0],
 "q_gettingstarted.html#q_os_example2":[3,2,1],
 "q_gettingstarted.html#q_submodule":[3,0,1],
