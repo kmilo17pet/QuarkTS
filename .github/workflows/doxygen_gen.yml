@@ -17,13 +17,18 @@ jobs:
     - name: create dirs
       run: mkdir docout
     - name: set repo url on corner
-      run: sed -i 's,https://github.com/jothepro/doxygen-awesome-css,https://github.com/kmilo17pet/QuarkTS,g' doc/stylesheet/doxygen-custom/header.html
+      run: |
+        sed -i 's,https://github.com/jothepro/doxygen-awesome-css,https://github.com/kmilo17pet/QuarkTS,g' doc/stylesheet/doxygen-custom/header.html
+        sed -i 's,Doxygen Awesome,QuarkTS OS,g' doc/stylesheet/doxygen-custom/header.html
+        sed -i 's,https://jothepro.github.io/doxygen-awesome-css,https://kmilo17pet.github.io/QuarkTS,g' doc/stylesheet/doxygen-custom/header.html
+        sed -i 's,https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452,https://github.com/kmilo17pet/QuarkTS/raw/master/doc/quarktslogo.png,g' doc/stylesheet/doxygen-custom/header.html
+        sed -i 's,Custom CSS theme for doxygen html-documentation with lots of customization parameters,An open-source OS for small embedded applications,g' doc/stylesheet/doxygen-custom/header.html
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.9.2
       with:
         doxyfile-path: './doc/Doxygen'
     - name: rm gitignore
-      run: rm .gitignore  
+      run: rm .gitignore
     - name: Deploy doc
       uses: peaceiris/actions-gh-pages@v3
       with:
