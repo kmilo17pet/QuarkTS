@@ -222,9 +222,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">qATCLI_CmdSubscribe</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, <a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *const cmd, char *textCommand, const <a class="el" href="group__qatcli.html#ga3985464bdb30735d016eb56745622f94">qATCLI_CommandCallback_t</a> cFcn, <a class="el" href="group__qatcli.html#gad23954e8b3b150ccd8507152b3c6f144">qATCLI_Options_t</a> cmdOpt, void *param)</td></tr>
 <tr class="memdesc:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function subscribes the CLI instance to a specific command with an associated <em>Callback</em> function, so that next time the required command is sent to the CLI input, the callback function will be executed. The CLI parser only analyze commands that follows the extended AT-Commands syntax (the + char can be ignored).  <a href="group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33">More...</a><br /></td></tr>
 <tr class="separator:gadc4fd0e693b7a1c36fb5c3b7f4f42c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2c47148bfb29111e0607a5de910f7dfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga2c47148bfb29111e0607a5de910f7dfc">qATCLI_CmdIterate</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> reload)</td></tr>
-<tr class="memdesc:ga2c47148bfb29111e0607a5de910f7dfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga2c47148bfb29111e0607a5de910f7dfc">More...</a><br /></td></tr>
-<tr class="separator:ga2c47148bfb29111e0607a5de910f7dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b25f2227af399423c58553cd0247966"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#ga4b25f2227af399423c58553cd0247966">qATCLI_CmdIterate</a> (const <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> reload)</td></tr>
+<tr class="memdesc:ga4b25f2227af399423c58553cd0247966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterate between the commands available inside the AT-CLI instance.  <a href="group__qatcli.html#ga4b25f2227af399423c58553cd0247966">More...</a><br /></td></tr>
+<tr class="separator:ga4b25f2227af399423c58553cd0247966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2">qATCLI_ISRHandler</a> (<a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const cli, const char c)</td></tr>
 <tr class="memdesc:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feed the CLI input with a single character. This call is mandatory from an interrupt context. Put it inside the desired peripheral's ISR. If your ISR get a block of data, use instead <a class="el" href="group__qatcli.html#ga514944cd933323378b33d3f3a557f1a2" title="Feed the CLI input with a string. This call is mandatory from an interrupt context....">qATCLI_ISRHandlerBlock()</a>  <a href="group__qatcli.html#gaa3787e31d4bfa59317e79097bc23a6c2">More...</a><br /></td></tr>
 <tr class="separator:gaa3787e31d4bfa59317e79097bc23a6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,8 +401,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga2c47148bfb29111e0607a5de910f7dfc" name="ga2c47148bfb29111e0607a5de910f7dfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2c47148bfb29111e0607a5de910f7dfc">&#9670;&nbsp;</a></span>qATCLI_CmdIterate()</h2>
+<a id="ga4b25f2227af399423c58553cd0247966" name="ga4b25f2227af399423c58553cd0247966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b25f2227af399423c58553cd0247966">&#9670;&nbsp;</a></span>qATCLI_CmdIterate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -410,7 +410,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structq_a_t_c_l_i___command__t.html">qATCLI_Command_t</a> * qATCLI_CmdIterate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const&#160;</td>
+          <td class="paramtype">const <a class="el" href="structq_a_t_c_l_i__t.html">qATCLI_t</a> *const&#160;</td>
           <td class="paramname"><em>cli</em>, </td>
         </tr>
         <tr>

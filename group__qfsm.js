@@ -75,7 +75,7 @@ var group__qfsm =
       [ "qSM_TRANSITION_DEEP_HISTORY", "group__qfsm.html#ggaa410ec930ead4964eaf0d75fc24d230ba4dfa279e192e2c5df451d33f87389253", null ]
     ] ],
     [ "qStateMachine_Get_Machine", "group__qfsm.html#gaa8a189906ca6ffde706a9333e5a49792", null ],
-    [ "qStateMachine_Get_State", "group__qfsm.html#ga393f37c2bd61cdc4314e7ca17256cd6c", null ],
+    [ "qStateMachine_Get_State", "group__qfsm.html#ga07afad41ea6a1371a8e97c0c62aed891", null ],
     [ "qStateMachine_InstallSignalQueue", "group__qfsm.html#ga238feabe2db7825556f716c6a403a556", null ],
     [ "qStateMachine_InstallTimeoutSpec", "group__qfsm.html#ga81a3c55cd5811420bdbb4383eabd542a", null ],
     [ "qStateMachine_Run", "group__qfsm.html#ga0b56645c3980372fc55ed5e3f5c8c31e", null ],
@@ -89,5 +89,5 @@ var group__qfsm =
     [ "qStateMachine_SubscribeToSignal", "group__qfsm.html#ga5a1bf822dc4ab8b1d0dc6ede032f3e64", null ],
     [ "qStateMachine_TimeoutSet", "group__qfsm.html#ga6801604dbc14494201068e324fe23868", null ],
     [ "qStateMachine_TimeoutStop", "group__qfsm.html#ga23612fa79cada9557ba5f0c644da9c26", null ],
-    [ "qStateMachine_UnsubscribeFromSignal", "group__qfsm.html#ga2b58dfaf923ec82a8a9e849dda72ab88", null ]
+    [ "qStateMachine_UnsubscribeFromSignal", "group__qfsm.html#ga57a36d402cdb18210f1e798aac5dc0a8", null ]
 ];

@@ -47,7 +47,7 @@ var group__qatcli =
       [ "qATCLI_NOTFOUND", "group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaaacc0fa05271709ae25c743e825f1b379", null ],
       [ "qATCLI_OUTPUT", "group__qatcli.html#ggac5402443a477397530af4e9b7140ebcaaf50cf96e5146ba1776c076d37d55ab2b", null ]
     ] ],
-    [ "qATCLI_CmdIterate", "group__qatcli.html#ga2c47148bfb29111e0607a5de910f7dfc", null ],
+    [ "qATCLI_CmdIterate", "group__qatcli.html#ga4b25f2227af399423c58553cd0247966", null ],
     [ "qATCLI_CmdSubscribe", "group__qatcli.html#gadc4fd0e693b7a1c36fb5c3b7f4f42c33", null ],
     [ "qATCLI_Exec", "group__qatcli.html#ga0410b5b7dd03a4ea0225e3d72021bbdb", null ],
     [ "qATCLI_Input_Flush", "group__qatcli.html#ga1d034827dd62faf3de920aa189619ef8", null ],

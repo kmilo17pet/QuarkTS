@@ -154,7 +154,7 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list object (Generic double-linked)  <a href="structq_list__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle of the <a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887" title="Operate on each element of the list.">qList_ForEach()</a> API that is passed as an argument to the function that operates on each node.  <a href="structq_list___for_each_handle__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle of the <a class="el" href="group__qlists.html#ga7e23b95be4ccdf58913c83b4c989545a" title="Operate on each element of the list.">qList_ForEach()</a> API that is passed as an argument to the function that operates on each node.  <a href="structq_list___for_each_handle__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structq_list___compare_handle__t.html">qList_CompareHandle_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle of the <a class="el" href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6" title="Sort the double linked list using the f function to determine the order. The sorting algorithm used b...">qList_Sort()</a> API that is passed as an argument to the compare function.  <a href="structq_list___compare_handle__t.html#details">More...</a><br /></td></tr>
@@ -192,7 +192,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:gad42c79d2d75a2cdfa3fb15043561f836"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">qList_NodeFcn_t</a>) (<a class="el" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h)</td></tr>
-<tr class="memdesc:gad42c79d2d75a2cdfa3fb15043561f836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887" title="Operate on each element of the list.">qList_ForEach()</a> API.  <a href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">More...</a><br /></td></tr>
+<tr class="memdesc:gad42c79d2d75a2cdfa3fb15043561f836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#ga7e23b95be4ccdf58913c83b4c989545a" title="Operate on each element of the list.">qList_ForEach()</a> API.  <a href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">More...</a><br /></td></tr>
 <tr class="separator:gad42c79d2d75a2cdfa3fb15043561f836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0ac18ce58031e0c1a42b7bb5f06cca35"><td class="memItemLeft" align="right" valign="top"><a id="ga0ac18ce58031e0c1a42b7bb5f06cca35" name="ga0ac18ce58031e0c1a42b7bb5f06cca35"></a>
 typedef <a class="el" href="group__qtypes.html#ga7d9daac1f82c727d47bc07e9d9cc98fe">qINT32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>qList_Position_t</b></td></tr>
@@ -250,12 +250,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0fc519c838d1b95729829aeabc2c30d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6">qList_Sort</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const l, <a class="el" href="group__qlists.html#ga3728aea0a10627dc0fde9024f73bf2a7">qList_CompareFcn_t</a> f)</td></tr>
 <tr class="memdesc:ga0fc519c838d1b95729829aeabc2c30d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sort the double linked list using the <em>f</em> function to determine the order. The sorting algorithm used by this function compares pairs of adjacent nodes by calling the specified <em>f</em> function with pointers to them as arguments. The sort is performed only modifying node's links without data swapping, improving performance if nodes have a large storage.  <a href="group__qlists.html#ga0fc519c838d1b95729829aeabc2c30d6">More...</a><br /></td></tr>
 <tr class="separator:ga0fc519c838d1b95729829aeabc2c30d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae0659a0fcc6f903e707fea9d5aa78d03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#gae0659a0fcc6f903e707fea9d5aa78d03">qList_IteratorSet</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i, <a class="el" href="structq_list__t.html">qList_t</a> *const l, void *nodeOffset, <a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a> d)</td></tr>
-<tr class="memdesc:gae0659a0fcc6f903e707fea9d5aa78d03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup an instance of the given iterator to traverse the list.  <a href="group__qlists.html#gae0659a0fcc6f903e707fea9d5aa78d03">More...</a><br /></td></tr>
-<tr class="separator:gae0659a0fcc6f903e707fea9d5aa78d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaefb60fbd13019572a02326998513c887"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887">qList_ForEach</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const l, const <a class="el" href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">qList_NodeFcn_t</a> f, void *arg, <a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a> d, void *nodeOffset)</td></tr>
-<tr class="memdesc:gaefb60fbd13019572a02326998513c887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operate on each element of the list.  <a href="group__qlists.html#gaefb60fbd13019572a02326998513c887">More...</a><br /></td></tr>
-<tr class="separator:gaefb60fbd13019572a02326998513c887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c8b83b1b7766c1471b3212e9e94126d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga5c8b83b1b7766c1471b3212e9e94126d">qList_IteratorSet</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i, <a class="el" href="structq_list__t.html">qList_t</a> *const l, void *nodeOffset, const <a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a> d)</td></tr>
+<tr class="memdesc:ga5c8b83b1b7766c1471b3212e9e94126d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup an instance of the given iterator to traverse the list.  <a href="group__qlists.html#ga5c8b83b1b7766c1471b3212e9e94126d">More...</a><br /></td></tr>
+<tr class="separator:ga5c8b83b1b7766c1471b3212e9e94126d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7e23b95be4ccdf58913c83b4c989545a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga7e23b95be4ccdf58913c83b4c989545a">qList_ForEach</a> (const <a class="el" href="structq_list__t.html">qList_t</a> *const l, const <a class="el" href="group__qlists.html#gad42c79d2d75a2cdfa3fb15043561f836">qList_NodeFcn_t</a> f, void *arg, <a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a> d, void *nodeOffset)</td></tr>
+<tr class="memdesc:ga7e23b95be4ccdf58913c83b4c989545a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operate on each element of the list.  <a href="group__qlists.html#ga7e23b95be4ccdf58913c83b4c989545a">More...</a><br /></td></tr>
+<tr class="separator:ga7e23b95be4ccdf58913c83b4c989545a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga75f82f140bbf2911d7c445329c0d9020"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga75f82f140bbf2911d7c445329c0d9020">qList_Swap</a> (void *node1, void *node2)</td></tr>
 <tr class="memdesc:ga75f82f140bbf2911d7c445329c0d9020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap two nodes that belongs to the same list by changing its own links.  <a href="group__qlists.html#ga75f82f140bbf2911d7c445329c0d9020">More...</a><br /></td></tr>
 <tr class="separator:ga75f82f140bbf2911d7c445329c0d9020"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,18 +265,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1f359a3f7408a63be1cdbc91a5319dc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga1f359a3f7408a63be1cdbc91a5319dc8">qList_End</a> (<a class="el" href="structq_list__t.html">qList_t</a> *const xList)</td></tr>
 <tr class="memdesc:ga1f359a3f7408a63be1cdbc91a5319dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator pointing to the last element in the list container.  <a href="group__qlists.html#ga1f359a3f7408a63be1cdbc91a5319dc8">More...</a><br /></td></tr>
 <tr class="separator:ga1f359a3f7408a63be1cdbc91a5319dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b8f53c9386a8fc5cd28ff777484d10e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga7b8f53c9386a8fc5cd28ff777484d10e">qListIterator_Until</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i, void *node)</td></tr>
-<tr class="memdesc:ga7b8f53c9386a8fc5cd28ff777484d10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check until current iterator reach the given node.  <a href="group__qlists.html#ga7b8f53c9386a8fc5cd28ff777484d10e">More...</a><br /></td></tr>
-<tr class="separator:ga7b8f53c9386a8fc5cd28ff777484d10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14403e854f0f4cdb3a0cd0d1fc6eb97a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga14403e854f0f4cdb3a0cd0d1fc6eb97a">qListIterator_Until</a> (const <a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *const i, const void *const node)</td></tr>
+<tr class="memdesc:ga14403e854f0f4cdb3a0cd0d1fc6eb97a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check until current iterator reach the given node.  <a href="group__qlists.html#ga14403e854f0f4cdb3a0cd0d1fc6eb97a">More...</a><br /></td></tr>
+<tr class="separator:ga14403e854f0f4cdb3a0cd0d1fc6eb97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaced3d38798da58f037121b3ecf28d0e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#gaced3d38798da58f037121b3ecf28d0e7">qListIterator_Forward</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i)</td></tr>
 <tr class="memdesc:gaced3d38798da58f037121b3ecf28d0e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the iterator forward.  <a href="group__qlists.html#gaced3d38798da58f037121b3ecf28d0e7">More...</a><br /></td></tr>
 <tr class="separator:gaced3d38798da58f037121b3ecf28d0e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7af314c957fbeaeef2ec9186cdbfe28a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga7af314c957fbeaeef2ec9186cdbfe28a">qListIterator_Backward</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i)</td></tr>
 <tr class="memdesc:ga7af314c957fbeaeef2ec9186cdbfe28a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the iterator backward.  <a href="group__qlists.html#ga7af314c957fbeaeef2ec9186cdbfe28a">More...</a><br /></td></tr>
 <tr class="separator:ga7af314c957fbeaeef2ec9186cdbfe28a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6454d5f923fa2b3735b1b25bd4da9399"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga6454d5f923fa2b3735b1b25bd4da9399">qListIterator_Get</a> (<a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *i)</td></tr>
-<tr class="memdesc:ga6454d5f923fa2b3735b1b25bd4da9399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the node that the iterator is currently pointing to.  <a href="group__qlists.html#ga6454d5f923fa2b3735b1b25bd4da9399">More...</a><br /></td></tr>
-<tr class="separator:ga6454d5f923fa2b3735b1b25bd4da9399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b27b4b74780fa4b163e6e6e3cbac062"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__qlists.html#ga2b27b4b74780fa4b163e6e6e3cbac062">qListIterator_Get</a> (const <a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *const i)</td></tr>
+<tr class="memdesc:ga2b27b4b74780fa4b163e6e6e3cbac062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the node that the iterator is currently pointing to.  <a href="group__qlists.html#ga2b27b4b74780fa4b163e6e6e3cbac062">More...</a><br /></td></tr>
+<tr class="separator:ga2b27b4b74780fa4b163e6e6e3cbac062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >The provided list implementation uses a generic doubly-linked approach in which each node, apart from storing its data, has two link pointers. The first link points to the previous node in the list and the second link, points to the next node in the list. The first node of the list has its previous link pointing to <code>NULL</code>, similarly, the last node of the list has its next node pointing to <code>NULL</code>. </p>
@@ -358,7 +358,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#gaefb60fbd13019572a02326998513c887" title="Operate on each element of the list.">qList_ForEach()</a> API. </p>
+<p>Pointer to a function that operates on every node when using the <a class="el" href="group__qlists.html#ga7e23b95be4ccdf58913c83b4c989545a" title="Operate on each element of the list.">qList_ForEach()</a> API. </p>
 <p >Example : </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> ForEach_ListExample( <a class="code hl_struct" href="structq_list___for_each_handle__t.html">qList_ForEachHandle_t</a> h ) {</div>
 <div class="line">      <span class="keywordflow">if</span> ( <a class="code hl_enumvalue" href="group__qlists.html#ggac443200e204bccbc22937ce7eb140d13af3b5f4482bbd10704c784367a859d3b4">qList_WalkThrough</a> == h-&gt;<a class="code hl_variable" href="structq_list___for_each_handle__t.html#a3a0029b84cc61be4b552d11e6770fb6f">stage</a> ) {</div>
 <div class="line"> </div>
@@ -468,8 +468,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaefb60fbd13019572a02326998513c887" name="gaefb60fbd13019572a02326998513c887"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaefb60fbd13019572a02326998513c887">&#9670;&nbsp;</a></span>qList_ForEach()</h2>
+<a id="ga7e23b95be4ccdf58913c83b4c989545a" name="ga7e23b95be4ccdf58913c83b4c989545a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7e23b95be4ccdf58913c83b4c989545a">&#9670;&nbsp;</a></span>qList_ForEach()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -477,7 +477,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qList_ForEach </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_list__t.html">qList_t</a> *const&#160;</td>
+          <td class="paramtype">const <a class="el" href="structq_list__t.html">qList_t</a> *const&#160;</td>
           <td class="paramname"><em>l</em>, </td>
         </tr>
         <tr>
@@ -724,8 +724,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gae0659a0fcc6f903e707fea9d5aa78d03" name="gae0659a0fcc6f903e707fea9d5aa78d03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae0659a0fcc6f903e707fea9d5aa78d03">&#9670;&nbsp;</a></span>qList_IteratorSet()</h2>
+<a id="ga5c8b83b1b7766c1471b3212e9e94126d" name="ga5c8b83b1b7766c1471b3212e9e94126d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c8b83b1b7766c1471b3212e9e94126d">&#9670;&nbsp;</a></span>qList_IteratorSet()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,7 +751,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__qlists.html#ga82ff0fa88da708f27f31269ba556ed1c">qList_Direction_t</a>&#160;</td>
           <td class="paramname"><em>d</em>&#160;</td>
         </tr>
         <tr>
@@ -1051,8 +1051,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga6454d5f923fa2b3735b1b25bd4da9399" name="ga6454d5f923fa2b3735b1b25bd4da9399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6454d5f923fa2b3735b1b25bd4da9399">&#9670;&nbsp;</a></span>qListIterator_Get()</h2>
+<a id="ga2b27b4b74780fa4b163e6e6e3cbac062" name="ga2b27b4b74780fa4b163e6e6e3cbac062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2b27b4b74780fa4b163e6e6e3cbac062">&#9670;&nbsp;</a></span>qListIterator_Get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1060,7 +1060,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void * qListIterator_Get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *const&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1072,8 +1072,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga7b8f53c9386a8fc5cd28ff777484d10e" name="ga7b8f53c9386a8fc5cd28ff777484d10e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7b8f53c9386a8fc5cd28ff777484d10e">&#9670;&nbsp;</a></span>qListIterator_Until()</h2>
+<a id="ga14403e854f0f4cdb3a0cd0d1fc6eb97a" name="ga14403e854f0f4cdb3a0cd0d1fc6eb97a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14403e854f0f4cdb3a0cd0d1fc6eb97a">&#9670;&nbsp;</a></span>qListIterator_Until()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1081,13 +1081,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qListIterator_Until </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structq_list___iterator__t.html">qList_Iterator_t</a> *const&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype">const void *const&#160;</td>
           <td class="paramname"><em>node</em>&#160;</td>
         </tr>
         <tr>
