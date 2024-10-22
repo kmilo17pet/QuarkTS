@@ -28,7 +28,7 @@
 
 /*an item of the priority-queue*/
 /*! @cond  */
-typedef struct _qQueueStack_s {
+typedef struct _qQueueStack_s { // skipcq: CXX-E2000
     qTask_t *Task;      /*< A pointer to the task. */
     void *QueueData;    /*< The data to queue. */
 }
@@ -39,13 +39,13 @@ typedef qUINT32_t qCoreFlags_t;
 typedef qBool_t (*qNotificationSpreaderFcn_t)( qTask_t * const Task,
                                                void* eventData );
 
-typedef struct _qNotificationSpreader_s {
+typedef struct _qNotificationSpreader_s { // skipcq: CXX-E2000
     qNotificationSpreaderFcn_t mode;
     void *eventData;
 }
 qNotificationSpreader_t;
 
-typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/
+typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/ // skipcq: CXX-E2000
     qTaskFcn_t idleCallback;                            /*< The callback function that represents the idle-task activities. */
     qTask_t *currentTask;                               /*< Points to the current running task. */
     #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
@@ -130,11 +130,11 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 {
     qBool_t retValue = qFalse;
     #if ( Q_SETUP_TIME_CANONICAL == 1 )
-        if ( NULL != waitingList ) {
+    if ( NULL != waitingList ) {
     #else
-        /*cstat -CERT-FLP36-C*/
-        if ( t > (qTimingBase_t)0 ) {
-        /*cstat +CERT-FLP36-C*/
+    /*cstat -CERT-FLP36-C*/
+    if ( t > (qTimingBase_t)0 ) {
+    /*cstat +CERT-FLP36-C*/
     #endif
         qIndex_t i;
         _qTrace_Kernel( "(*)Initializing QuarkTS kernel...", NULL, NULL );
