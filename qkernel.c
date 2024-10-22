@@ -74,10 +74,10 @@ qKernelControlBlock_t;
 
 /*=========================== Kernel Control Block ===========================*/
 static qKernelControlBlock_t kernel; // skipcq: CXX-W2009
-static qList_t *const waitingList = &kernel.coreLists[ Q_PRIORITY_LEVELS ]; // skipcq: CXX-W2011
-static qList_t *const suspendedList = &kernel.coreLists[ Q_PRIORITY_LEVELS + 1 ]; // skipcq: CXX-W2011
-static qList_t *const readyList = &kernel.coreLists[ 0 ]; // skipcq: CXX-W2011
-static _qEvent_t_ * const eventInfo = &kernel.eventInfo; // skipcq: CXX-W2011
+static qList_t *const waitingList = &kernel.coreLists[ Q_PRIORITY_LEVELS ]; // skipcq: CXX-W2011, CXX-W2009
+static qList_t *const suspendedList = &kernel.coreLists[ Q_PRIORITY_LEVELS + 1 ]; // skipcq: CXX-W2011, CXX-W2009
+static qList_t *const readyList = &kernel.coreLists[ 0 ]; // skipcq: CXX-W2011, CXX-W2009
+static _qEvent_t_ * const eventInfo = &kernel.eventInfo; // skipcq: CXX-W2011, CXX-W2009
 static const qPriority_t maxPriorityValue = (qPriority_t)Q_PRIORITY_LEVELS - 1U;
 /*=============================== Private Methods ============================*/
 static qBool_t qOS_TaskDeadLineReached( qTask_t * const Task );

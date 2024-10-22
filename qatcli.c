@@ -198,7 +198,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
 qATCLI_Command_t* qATCLI_CmdIterate( const qATCLI_t * const cli,
                                      const qBool_t reload )
 {
-    static qATCLI_Command_t *iterator = NULL; // skipcq: CXX-W2011
+    static qATCLI_Command_t *iterator = NULL; // skipcq: CXX-W2011, CXX-W2009
     /*cstat -MISRAC2012-Rule-8.13 */
     qATCLI_Command_t *iCmd = NULL;
     /*cstat +MISRAC2012-Rule-8.13 */
