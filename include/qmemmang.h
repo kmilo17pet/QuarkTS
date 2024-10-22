@@ -45,7 +45,7 @@
 
     /* List to connect the free blocks in order of their memory address. */
     /*! @cond  */
-    typedef struct _qMemMang_BlockConnect_s {
+    typedef struct _qMemMang_BlockConnect_s { // skipcq: CXX-E2000
         struct _qMemMang_BlockConnect_s *next;  /*< Points to the next free block in the list*/
         size_t blockSize;                       /*< The size of the free block*/
     }
@@ -71,9 +71,9 @@
     * before use with the qMemMang_Pool_Setup() API.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qMemMang_Pool_s {
+    typedef struct _qMemMang_Pool_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qMemMang_Pool_Private_s {
+        struct _qMemMang_Pool_Private_s { // skipcq: CXX-E2000
             qMemMang_BlockConnect_t *end;           /*< Points to the last block of the list. */
             qUINT8_t *poolMemory;                   /*< Points to the beginning of the heap area statically allocated. */
             size_t poolMemSize;                     /*< The size of the memory block pointed by "heap". */

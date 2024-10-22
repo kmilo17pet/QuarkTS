@@ -163,7 +163,7 @@
     /**
      * @brief The type to be used as a container variable for a signal.
      */
-    typedef struct _qSM_Signal_s {
+    typedef struct _qSM_Signal_s { // skipcq: CXX-E2000
         qSM_SigId_t id;                         /**< The ID of the signal */
         void *sigData;                          /**< The data associated to the signal*/
     } qSM_Signal_t;
@@ -209,11 +209,11 @@
     /*! @endcond */
 
     /*! @cond  */
-    typedef struct _qSM_uPublicData_s {
+    typedef struct _qSM_uPublicData_s { // skipcq: CXX-E2000
         _qSM_HANDLER_FIELDS( Q_NONE );
     }
     _qSM_UnprotectedPublicData_t;
-    typedef struct _qSM_pPublicData_s {
+    typedef struct _qSM_pPublicData_s { // skipcq: CXX-E2000
         _qSM_HANDLER_FIELDS( const );
     }
     _qSM_ProtectedPublicData_t;
@@ -316,7 +316,7 @@
     * @brief This structure should be used to define an item for a
     * timeout-specification table.
     */
-    typedef struct _qSM_TimeoutStateDefinition_s {
+    typedef struct _qSM_TimeoutStateDefinition_s { // skipcq: CXX-E2000
         qTime_t xTimeout;                                   /**< The value that the timeout will use*/
         qSM_TimeoutSpecOptions_t options;                   /**< Timeout options. This includes the index of the timeout to be used */
     }
@@ -343,9 +343,9 @@
     * state and define its position in the topology.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qSM_State_s {
+    typedef struct _qSM_State_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qSM_State_Private_s {
+        struct _qSM_State_Private_s { // skipcq: CXX-E2000
             struct _qSM_State_s *parent;                    /*< A pointer to the parent state*/
             struct _qSM_State_s *lastRunningChild;          /*< The last running child state*/
             struct _qSM_State_s *initState;                 /*< The initial state of this parent*/
@@ -365,7 +365,7 @@
     * @brief A FSM Timeout-specification object
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qSM_TimeoutSpec_s {
+    typedef struct _qSM_TimeoutSpec_s { // skipcq: CXX-E2000
         /*! @cond  */
         qUINT32_t isPeriodic;                               /*< witch one is periodic*/
         qSTimer_t builtin_timeout[ Q_FSM_MAX_TIMEOUTS ];    /*< the built-in timeouts*/
@@ -384,9 +384,9 @@
     * and the surrounding callback function.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qSM_s {
+    typedef struct _qSM_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qSM_Private_s {
+        struct _qSM_Private_s { // skipcq: CXX-E2000
             qSM_State_t *current;                           /*< A pointer to the current state.*/
             qSM_State_t *next;                              /*< The next state to execute. */
             qSM_State_t *source;                            /*< Source state during the last transition*/
@@ -410,7 +410,7 @@
     * @brief This structure should be used to define an item for a state
     * transition table.
     */
-    typedef struct _qSM_Transition_s {
+    typedef struct _qSM_Transition_s { // skipcq: CXX-E2000
         qSM_SigId_t xSignal;                                /**< The signal that will produce the transition*/
         qSM_SignalAction_t guard;                           /**< The signal guard/action*/
         qSM_State_t *nextState;                             /**< A pointer to the next state after the transition*/

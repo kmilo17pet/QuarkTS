@@ -33,9 +33,9 @@
     * @brief A Response Handler object.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qResponse_s {
+    typedef struct _qResponse_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qResponse_Private_s {
+        struct _qResponse_Private_s { // skipcq: CXX-E2000
             char *pattern2Match;                /*< Points to the storage area provided by the user to hold the match requested response. */
             qSTimer_t timeout;                  /*< The timeout used to wait the requested response. */
             size_t maxStrLength;                /*< The size of the storage area. */

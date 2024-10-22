@@ -128,7 +128,7 @@
         * @see qIOUtil_AtoF()
         * @param[in] n The number of the argument
         * @return The argument parsed as Float. Same behavior of qIOUtil_AtoF().
-        * If argument not found returns 0.0f
+        * If argument not found returns 0.0F
         */
         qFloat32_t (*GetArgFlt)( qIndex_t n );
         /**

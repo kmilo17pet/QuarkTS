@@ -159,7 +159,7 @@
     * @note Should be used only in task-callbacks as the only input argument.
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct _qEvent_s {
+    typedef struct _qEvent_s { // skipcq: CXX-E2000
         /**
         * @brief Task arguments defined at the time of its creation.
         * (Storage-Pointer)
@@ -213,7 +213,7 @@
     #ifdef DOXYGEN
     qEvent_t;
     #else
-    _qEvent_t_/*, *const qEvent_t*/;
+    _qEvent_t_/*, *const qEvent_t*/; // skipcq: CXX-E2000
     typedef const _qEvent_t_ *qEvent_t;
     #endif
 
@@ -265,9 +265,9 @@
     * execution-state for that task, preventing the activation of other tasks.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qTask_s { /*Task node definition*/
+    typedef struct _qTask_s { /*Task node definition*/ // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qTask_Private_s {    /*Task control block - TCB*/
+        struct _qTask_Private_s {    /*Task control block - TCB*/ // skipcq: CXX-E2000
             qNode_MinimalFields;                    /**< Linked-list pointers. */
             void *taskData, *asyncData;             /**< The task storage pointers. */
             qTaskFcn_t callback;                    /**< The callback function representing the task activities. */

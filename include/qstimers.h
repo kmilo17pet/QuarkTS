@@ -29,7 +29,7 @@
     * before any usage.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qSTimer_s {
+    typedef struct _qSTimer_s { // skipcq: CXX-E2000
         /*! @cond  */
         qClock_t tStart;    /*< The time(epochs) taken at the arming moment. */
         qClock_t tv;        /*< The required time in epochs. */

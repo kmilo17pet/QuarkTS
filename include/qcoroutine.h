@@ -21,8 +21,8 @@
     */
 
     /*! @cond  */
-    typedef qINT32_t _qCR_TaskPC_t;
-    typedef _qCR_TaskPC_t qCR_ExtPosition_t;
+    typedef qINT32_t _qCR_TaskPC_t; // skipcq: CXX-E2000
+    typedef _qCR_TaskPC_t qCR_ExtPosition_t; // skipcq: CXX-E2000
    /*! @endcond  */
 
     /** @brief A typedef to hold Co-Routine current position or progress*/
@@ -30,19 +30,19 @@
 
     /* Please don't access any members of this structure directly */
     /*! @cond  */
-    typedef struct _qCR_Instance_s {
+    typedef struct _qCR_Instance_s { // skipcq: CXX-E2000
         _qCR_TaskPC_t instr;    /*< Used to hold the local continuation. */
         _qCR_TaskPC_t prev;     /*< Temporally holds the local continuation during a coroutine suspension*/
         qSTimer_t crdelay;      /*< Used to hold the required delay for #qCR_Delay. */
     }
-    _qCR_Instance_t;
+    _qCR_Instance_t; // skipcq: CXX-E2000
     /*! @endcond  */
 
     /** @brief A typedef to instantiate a Co-Routine handle*/
     typedef _qCR_Instance_t *qCR_Handle_t;
 
     /** @brief A typedef to instantiate a Co-Routine Semaphore*/
-    typedef struct _qCR_Semaphore_s {
+    typedef struct _qCR_Semaphore_s { // skipcq: CXX-E2000
         /*! @cond  */
         size_t count;
         /*! @endcond  */
@@ -76,7 +76,7 @@
         _qCR_SEM_SIGNAL = -3,
         _qCR_SEM_TRYLOCK = -4
     }
-    _qCR_Oper_t;
+    _qCR_Oper_t; // skipcq: CXX-E2000
 
     /*Construction statements*/
     #define _qCR_LCInit                                                     \
@@ -92,7 +92,7 @@
     _ACTION_;                                                               \
     _REST_ Q_UNUSED(0)                                                      \
 
-    #define _qCR_EXIT                                       goto _qCR_ExitPoint
+    #define _qCR_EXIT                                       goto _qCR_ExitPoint // skipcq: CXX-E2000
 
     #define _qCR_DEF                                                        \
     static _qCR_Instance_t _qCRState = _qCR_LCInit;                         \

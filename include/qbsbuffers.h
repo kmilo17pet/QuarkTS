@@ -27,9 +27,9 @@
     * @brief A BSBuffer(Byte-sized buffer) object
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qBSBuffer_s {
+    typedef struct _qBSBuffer_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qBSBuffer_Private_s {
+        struct _qBSBuffer_Private_s { // skipcq: CXX-E2000
             volatile qUINT8_t *buffer;  /*< Points to the beginning of the buffer storage area. */
             volatile qIndex_t head;     /*< Used to hold the index of the head. */
             volatile qIndex_t tail;     /*< Used to hold the index of the tail. */

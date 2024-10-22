@@ -52,7 +52,7 @@
     * @brief A list-node object (Used internally)
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qList_Node_s {
+    typedef struct _qList_Node_s { // skipcq: CXX-E2000
         /*! @cond  */
         struct _qList_Node_s *next, *prev;  /*< Pointers to adjacent nodes. */
         void *container;                    /*< Pointer to the container list*/
@@ -82,7 +82,7 @@
     * @brief A list object (Generic double-linked)
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qList_s {
+    typedef struct _qList_s { // skipcq: CXX-E2000
         /*! @cond  */
         qNode_MinimalFields;        /*< To allow "list of lists" aka "nested-lists"*/
         qList_Node_t *head, *tail;  /*< Pointers to the beginning of and the end of the list. */
@@ -112,7 +112,7 @@
     * @note The user must verify the members of this structure to operate
     * correctly at each stage of the cycle.
     */
-    typedef struct _qList_ForEachHandle_s {
+    typedef struct _qList_ForEachHandle_s { // skipcq: CXX-E2000
         void *node;                     /**< Points to the node that is currently being processed*/
         void *arg;                      /**< User storage pointer */
         qList_WalkStage_t stage;        /**< Member that indicates the stage of the iterative cycle*/
@@ -120,7 +120,7 @@
     #ifdef DOXYGEN
     qList_ForEachHandle_t;
     #else
-    _qList_ForEachHandle_t;
+    _qList_ForEachHandle_t; // skipcq: CXX-E2000
     typedef _qList_ForEachHandle_t* qList_ForEachHandle_t;
     #endif
 
@@ -130,14 +130,14 @@
     * @note The user must verify the input nodes to return a boolean value
     * that determines the order in which the nodes should be ordered
     */
-    typedef struct _qList_CompareHandle_s {
+    typedef struct _qList_CompareHandle_s { // skipcq: CXX-E2000
         const void *n1;                 /**< Points to the node that is currently being processed*/
         const void *n2;                 /**< Points to the node that is currently being processed*/
     }
     #ifdef DOXYGEN
     qList_CompareHandle_t;
     #else
-    _qList_CompareHandle_t;
+    _qList_CompareHandle_t; // skipcq: CXX-E2000
     typedef _qList_CompareHandle_t* qList_CompareHandle_t;
     #endif
 

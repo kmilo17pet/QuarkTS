@@ -33,8 +33,8 @@
         #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greater o equal to 36.
     #endif
 
-    #define _qSTRINGIFY(x)              #x
-    #define _qTOSTRING(x)               _qSTRINGIFY( x )
+    #define _qSTRINGIFY(x)              #x  // skipcq: CXX-E2000
+    #define _qTOSTRING(x)               _qSTRINGIFY( x ) // skipcq: CXX-E2000
 
     #ifndef _QTRACE_FUNC
         #if defined __cplusplus && defined __GNUC__ /* Use g++'s demangled names in C++.  */
@@ -44,7 +44,7 @@
                 #define _QFCN    __func__
             #endif
         #elif defined( __GNUC__ ) || ( defined( __MWERKS__ ) && ( __MWERKS__ >= 0x3000 ) ) || ( defined( __ICC ) && ( __ICC >= 600 ) ) || defined( __ghs__ )
-            #define _QFCN       __PRETTY_FUNCTION__
+            #define _QFCN       __PRETTY_FUNCTION__  // skipcq: CXX-E2000
         #elif defined( __DMC__ ) && ( __DMC__ >= 0x810 )
             #define _QFCN       __PRETTY_FUNCTION__
         #elif defined( __FUNCSIG__ )
@@ -62,7 +62,7 @@
         #endif
     #endif
 
-    #define _qAT() ":" _qTOSTRING(__LINE__) " "
+    #define _qAT() ":" _qTOSTRING(__LINE__) " " // skipcq: CXX-E2000
 
     /** @addtogroup qtrace
     * @brief API interfaces to print out trace and debug messages.
@@ -122,11 +122,11 @@
             _qTrace_krn( (char*)(msg), (id), (obj) );                       \
 
         #else
-            #define _qTrace_Kernel( msg, id, obj )
+            #define _qTrace_Kernel( msg, id, obj ) // skipcq: CXX-E2000
         #endif
 
         extern char qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ]; // skipcq: CXX-W2009
-        void _qTrace_dgb( const char *loc,
+        void _qTrace_dgb( const char *loc, // skipcq: CXX-E2000
                           const char* fcn,
                           const char *vName,
                           const char* vValue,

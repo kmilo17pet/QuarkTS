@@ -38,9 +38,9 @@
     * @brief An input node object for edge checking.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qEdgeCheck_IONode_s {
+    typedef struct _qEdgeCheck_IONode_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qEdgeCheck_IONode_Private_s {
+        struct _qEdgeCheck_IONode_Private_s { // skipcq: CXX-E2000
             struct _qEdgeCheck_IONode_s *next;  /*< Point to the next node of the IO list. */
             void *xPort;                        /*< Point to the address of the hardware PORT/IO register. */
             qBool_t prevPinValue;               /*< The previous value of "Pin". */
@@ -61,9 +61,9 @@
     * @brief An I/O edge check object.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qEdgeCheck_s {
+    typedef struct _qEdgeCheck_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qEdgeCheck_Private_s {
+        struct _qEdgeCheck_Private_s { // skipcq: CXX-E2000
             void (*state)( struct _qEdgeCheck_s * const ec );
             qEdgeCheck_IONode_t *head;          /*< The first io-node in the list. */
             qClock_t start, debounceTime;       /*< Debounce time control*/

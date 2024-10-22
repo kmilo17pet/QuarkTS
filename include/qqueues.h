@@ -50,9 +50,9 @@
     * using the memory management extension.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qQueue_s {
+    typedef struct _qQueue_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qQueue_Private_s {
+        struct _qQueue_Private_s { // skipcq: CXX-E2000
             qUINT8_t *head;                 /*< Points to the beginning of the queue storage area. */
             qUINT8_t *tail;                 /*< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
             qUINT8_t *writer;               /*< Points to the free next place in the storage area. */
