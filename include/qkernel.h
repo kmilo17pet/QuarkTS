@@ -60,7 +60,7 @@
     /** @addtogroup qtaskcreation
      * @brief Kernel API interface to create/remove tasks and perform special
      * OS operations.
-     * @pre Before using any scheduler interface, you must first configure and 
+     * @pre Before using any scheduler interface, you must first configure and
      * initialize the operating system using qOS_Setup()
      *  @{
      */
@@ -68,13 +68,13 @@
     /*Default priority levels*/
 
     /** @brief A macro directive to indicate the lowest priority level. */
-    #define qLowest_Priority        ( (qPriority_t)0u )
+    #define qLowest_Priority        ( (qPriority_t)0U )
 
     /** @brief A macro directive to indicate the medium priority level. */
     #define qMedium_Priority        ( (qPriority_t)( Q_PRIORITY_LEVELS >> 1 ) )
 
     /** @brief A macro directive to indicate the highest priority level. */
-    #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1u ) )
+    #define qHigh_Priority          ( (qPriority_t)( Q_PRIORITY_LEVELS - 1U ) )
 
     /** @brief A directive indicating that the task will run every time its timeout has expired. */
     #define qPeriodic               ( (qIteration_t)INT32_MIN )
@@ -252,7 +252,7 @@
         * state-machine. The task is scheduled to run every @a t seconds in
         * #qPeriodic mode. The event info will be available as a generic pointer
         * inside the qSM_Handler_t::Data field.
-        * @pre The State-machine object should be previously configured with 
+        * @pre The State-machine object should be previously configured with
         * qStateMachine_Setup()
         * @see qStateMachine_Setup()
         * @param[in] Task  A pointer to the task node.

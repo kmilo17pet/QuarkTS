@@ -8,8 +8,8 @@
 
 static qClock_t qClock_InternalTick( void );
 
-static volatile qClock_t qSysTick_Epochs = 0uL; // skipcq: CXX-W2009
-#define QFLT_TIME_FIX_VALUE  ( 0.5f )
+static volatile qClock_t qSysTick_Epochs = 0UL; // skipcq: CXX-W2009
+#define QFLT_TIME_FIX_VALUE  ( 0.5F )
 
 #if ( Q_SETUP_TIME_CANONICAL != 1 )
 static qTimingBase_t timingBase; // skipcq: CXX-W2009

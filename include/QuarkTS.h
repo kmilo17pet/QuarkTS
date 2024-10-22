@@ -46,7 +46,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
     #define QuarkTS_H
 
     #define QUARKTS_VERSION         "7.3.3"
-    #define QUARKTS_VERNUM          ( 733u )
+    #define QUARKTS_VERNUM          ( 733U )
     #define QUARKTS_CAPTION         "QuarkTS OS " QUARKTS_VERSION
 
     #include "qtypes.h"
@@ -91,7 +91,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qos Operative System
-*  This section contains the documentation related to all the Interfaces and 
+*  This section contains the documentation related to all the Interfaces and
 *  intrinsic definitions of the operating system.
 */
 
@@ -143,7 +143,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
 
 /**
 *  @defgroup qmodules Kernel extensions
-*  This section contains the documentation related to all the extensions that 
+*  This section contains the documentation related to all the extensions that
 *  adds additional functionality to the operating system.
 */
 

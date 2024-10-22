@@ -77,7 +77,7 @@ qState_t qTask_Get_State( const qTask_t * const Task )
 #if ( Q_TASK_COUNT_CYCLES == 1 )
 qCycles_t qTask_Get_Cycles( const qTask_t * const Task )
 {
-    qCycles_t retValue = 0u;
+    qCycles_t retValue = 0U;
 
     if ( NULL != Task ) {
         retValue = Task->qPrivate.cycles;
@@ -213,19 +213,19 @@ qBool_t qTask_Clear( qTask_t * const Task,
                 break;
             case qTask_ClearCycles:
                 #if ( Q_TASK_COUNT_CYCLES == 1 )
-                    Task->qPrivate.cycles = 0uL;
+                    Task->qPrivate.cycles = 0UL;
                     retValue = qTrue;
                 #endif
                 break;
             case qTask_ClearNotifications:
-                Task->qPrivate.notification = 0uL;
+                Task->qPrivate.notification = 0UL;
                 #if ( Q_PRIO_QUEUE_SIZE > 0 )
                     qOS_PriorityQueue_Init();
                 #endif
                 retValue = qTrue;
                 break;
             case qTask_ClearSimpleNotifications:
-                Task->qPrivate.notification = 0uL;
+                Task->qPrivate.notification = 0UL;
                 retValue = qTrue;
                 break;
             case qTask_ClearQueuedNotifications:
@@ -258,13 +258,13 @@ qBool_t qTask_Attach_Queue( qTask_t * const Task,
     if ( ( NULL != q ) && ( NULL != Task ) && ( NULL != q->qPrivate.head ) ) {
         qOS_Set_TaskFlags( Task,
                            (qUINT32_t)mode & QTASK_QUEUE_FLAGS_MASK,
-                           ( ( 0u != arg ) ? qATTACH : qDETACH ) );
+                           ( ( 0U != arg ) ? qATTACH : qDETACH ) );
         if ( mode == qQueueMode_Count ) {
             /*if mode is qQUEUE_COUNT, use their arg value as count*/
             Task->qPrivate.aQueueCount = (qUINT32_t)arg;
         }
         /*reject, if no valid arg input*/
-        Task->qPrivate.aQueue = ( arg > 0u ) ? q : NULL;
+        Task->qPrivate.aQueue = ( arg > 0U ) ? q : NULL;
         retValue = qTrue;
         _qTrace_Kernel( "(>)Queue successfully attached to task ", Task, q );
     }
@@ -291,7 +291,7 @@ qBool_t qTask_EventFlags_Modify( qTask_t * const Task,
 /*============================================================================*/
 qTask_Flag_t qTask_EventFlags_Read( const qTask_t * const Task )
 {
-    qTask_Flag_t retValue = 0u;
+    qTask_Flag_t retValue = 0U;
 
     if ( NULL != Task ) {
         retValue = Task->qPrivate.flags & QTASK_EVENT_FLAGS_MASK;

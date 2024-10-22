@@ -17,11 +17,11 @@
 #define QATCLI_DEFAULT_NOTALLOWED_RSP_STRING    ":NOT ALLOWED"
 #define QATCLI_DEFAULT_DEVID_STRING             "QuarkTS CLI"
 #define QATCLI_DEFAULT_EOL_STRING               "\r\n"
-#define QATCLI_MIN_INPUT_LENGTH                 ( 3u )
+#define QATCLI_MIN_INPUT_LENGTH                 ( 3U )
 #define QATCLI_RECOMMENDED_INPUT_SIZE           ( (size_t)128 )
 
-#define QATCLI_CMD_MASK_ARG_MAX_NUM(opt)        ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000Fu )
-#define QATCLI_CMD_MASK_ARG_MIN_NUM(opt)        ( (opt) & (qATCLI_Options_t)0x000Fu )
+#define QATCLI_CMD_MASK_ARG_MAX_NUM(opt)        ( ( (opt)>>4 ) & (qATCLI_Options_t)0x000FU )
+#define QATCLI_CMD_MASK_ARG_MIN_NUM(opt)        ( (opt) & (qATCLI_Options_t)0x000FU )
 
 static qPutChar_t cli_OutCharFcn = NULL; // skipcq: CXX-W2009
 static qATCLI_Handler_t cli_CurrentCmdHelper = NULL; // skipcq: CXX-W2009
@@ -50,7 +50,7 @@ static char* GetArgString( qIndex_t n,
 static qBool_t qATCLI_Notify( qATCLI_t * const cli )
 {
     cli->qPrivate.xInput.ready = qTrue;
-    cli->qPrivate.xInput.index = 0u;
+    cli->qPrivate.xInput.index = 0U;
     if ( NULL != cli->qPrivate.xNotifyFcn ) {
         /*external task notification if available*/
         cli->qPrivate.xNotifyFcn( cli );
@@ -130,9 +130,9 @@ qBool_t qATCLI_Setup( qATCLI_t * const cli,
         cli->qPrivate.sizeOutput = sizeOutput;
         cli->qPrivate.xInput.storage = (char*)pInput;
         cli->qPrivate.xInput.size = sizeInput;
-        cli->qPrivate.xInput.maxIndex = sizeInput - 1u;
+        cli->qPrivate.xInput.maxIndex = sizeInput - 1U;
         cli->qPrivate.xInput.ready = qFalse;
-        cli->qPrivate.xInput.index = 0u;
+        cli->qPrivate.xInput.index = 0U;
         cli->qPrivate.xNotifyFcn = NULL;
         cli->qPrivate.xPublic.Output = pOutput;
         cli->qPrivate.xPublic.putch = &qATCLI_Putc_Wrapper;
@@ -163,13 +163,13 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
     if ( ( NULL != cli ) && ( NULL != cmd ) && ( NULL != textCommand ) && ( NULL != cFcn ) ) {
         (void)memset( cmd, 0, sizeof(qATCLI_Command_t) );
         cmd->qPrivate.cmdLen = qIOUtil_StrLen( textCommand, cli->qPrivate.xInput.size );
-        if ( cmd->qPrivate.cmdLen >= 2u ) {
+        if ( cmd->qPrivate.cmdLen >= 2U ) {
             /*command should start with an <at> at the beginning */
             if ( ( 'a' == textCommand[ 0 ] ) && ( 't' == textCommand[ 1 ] ) ) {
                 qATCLI_Command_t const *iCmd = NULL;
                 cmd->Text = (char*)textCommand;
                 cmd->qPrivate.cmdCallback = cFcn; /*install the callback*/
-                cmd->qPrivate.cmdOpt = 0x0FFFu & cmdOpt; /*high nibble not used yet*/
+                cmd->qPrivate.cmdOpt = 0x0FFFU & cmdOpt; /*high nibble not used yet*/
                 cmd->param = param;
                 /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
                 if ( NULL != cli->qPrivate.first ) { /*list already has items*/
@@ -241,7 +241,7 @@ qBool_t qATCLI_ISRHandler( qATCLI_t * const cli,
             cli->qPrivate.xInput.storage[ currentIndex ] = (char)'\0';
             /*check if the input buffer its reached*/
             if ( currentIndex >= cli->qPrivate.xInput.maxIndex ) {
-                currentIndex = 0u;
+                currentIndex = 0U;
             }
             cli->qPrivate.xInput.index = currentIndex;
         }
@@ -264,8 +264,8 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli,
         qBool_t readyInput = cli->qPrivate.xInput.ready;
         size_t maxToInsert = cli->qPrivate.xInput.maxIndex;
 
-        if ( ( n > 0u ) && ( n < maxToInsert ) &&  ( qFalse == readyInput ) ) {
-            if ( 1u == n ) {
+        if ( ( n > 0U ) && ( n < maxToInsert ) &&  ( qFalse == readyInput ) ) {
+            if ( 1U == n ) {
                 retValue = qATCLI_ISRHandler( cli, pData[ 0 ] );
             }
             else {
@@ -293,7 +293,7 @@ static char* qATCLI_Input_Fix( char *s,
     int i, j = 0;
     int noL = 0;
 
-    for ( i = 0 ; ( (char)'\0' != s[ i ] ) && ( maxlen > 0u ) ; ++i ) {
+    for ( i = 0 ; ( (char)'\0' != s[ i ] ) && ( maxlen > 0U ) ; ++i ) {
         if ( ( '=' == s[ i ] ) || ( '?' == s[ i ] ) ) {
             noL = 1;
         }
@@ -389,36 +389,36 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
                                      QATCLI_RECOMMENDED_INPUT_SIZE ) -
                                      cmd->qPrivate.cmdLen;
     params->StrData = (char*)&inputBuffer[ cmd->qPrivate.cmdLen ];
-    params->NumArgs = 0u;
+    params->NumArgs = 0U;
 
-    if ( 0u == params->StrLen ) { /*command should be an ACT command */
-        if ( 0u != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_ACT ) ) {
+    if ( 0U == params->StrLen ) { /*command should be an ACT command */
+        if ( 0U != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_ACT ) ) {
             params->Type = qATCLI_CMDTYPE_ACT;  /*set the type to ACT*/
             retValue = qTrue;
         }
     }
     else {
         if ( (char)'?' == params->StrData[ 0 ] ) { /*command should be READ command */
-            if ( 0u != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_READ ) ) {
+            if ( 0U != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_READ ) ) {
                 params->Type = qATCLI_CMDTYPE_READ; /*set the type to READ*/
                 ++params->StrData; /*move string pointer once*/
                 --params->StrLen;  /*decrease the len one*/
                 retValue = qTrue;
             }
         }
-        else if ( params->StrLen >= 2u ) { /*can be at+xx=? or at+xx=...*/
+        else if ( params->StrLen >= 2U ) { /*can be at+xx=? or at+xx=...*/
             if ( (char)'=' == params->StrData[ 0 ] ) { /*could be a TEST or PARA command*/
                 if ( (char)'?' == params->StrData[ 1 ] ) {
-                    if ( ( 2u == params->StrLen ) && ( 0u != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_TEST ) ) ) {
+                    if ( ( 2U == params->StrLen ) && ( 0U != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_TEST ) ) ) {
                         /*command should be a TEST Command*/
                         params->Type = qATCLI_CMDTYPE_TEST; /*set the type to TEST*/
                         params->StrData += 2; /*move string two positions ahead*/
-                        params->StrLen -= 2u;  /*decrease the len*/
+                        params->StrLen -= 2U;  /*decrease the len*/
                         retValue = qTrue;
                     }
                 }
                 else { /*definitely is a PARA command*/
-                    if ( 0u != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_PARA ) ) { /*check if is allowed*/
+                    if ( 0U != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_PARA ) ) { /*check if is allowed*/
                         size_t argMin, argMax;
                         /*get the args count using the default delimiter*/
                         params->NumArgs = qATCLI_NumOfArgs( params->StrData );
@@ -452,7 +452,7 @@ qBool_t qATCLI_Input_Flush( qATCLI_t * const cli )
         qATCLI_Input_t *xInput = &cli->qPrivate.xInput;
 
         xInput->ready = qFalse;
-        xInput->index = 0u;
+        xInput->index = 0U;
         xInput->storage[ 0 ] = (char)'\0';
         retValue = qTrue;
     }
@@ -559,7 +559,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
                 if ( (qBase_t)retval < 0 ) {
                     qINT32_t errorCode = qATCLI_ERROR_CODE( (qINT32_t)retval );
 
-                    (void)qIOUtil_ItoA( errorCode, cli->qPrivate.xPublic.Output, 10u );
+                    (void)qIOUtil_ItoA( errorCode, cli->qPrivate.xPublic.Output, 10U );
                     (void)qIOUtil_OutputString( putChar,
                                                 NULL,
                                                 cli->qPrivate.er_rsp,
@@ -579,7 +579,7 @@ static void qATCLI_HandleCommandResponse( qATCLI_t * const cli,
 /*============================================================================*/
 static size_t qATCLI_NumOfArgs( const char *str )
 {
-    size_t count = 0u;
+    size_t count = 0U;
 
     while ( '\0' != *str ) {
         if ( (char)QATCLI_DEFAULT_ATSET_DELIM == (char)*str++ ) {
@@ -587,7 +587,7 @@ static size_t qATCLI_NumOfArgs( const char *str )
         }
     }
 
-    return ( count + 1u );
+    return ( count + 1U );
 }
 /*============================================================================*/
 static char* GetArgPtr( qIndex_t n )
@@ -596,22 +596,22 @@ static char* GetArgPtr( qIndex_t n )
     char *retPtr = NULL;
     /*cstat +MISRAC2012-Rule-8.13 */
 
-    if ( ( NULL != cli_CurrentCmdHelper ) && ( n > 0u ) ) {
+    if ( ( NULL != cli_CurrentCmdHelper ) && ( n > 0U ) ) {
         /*cstat -MISRAC2012-Rule-8.13*/
         const qATCLI_Handler_t param = cli_CurrentCmdHelper;
         /*cstat +MISRAC2012-Rule-8.13*/
         if ( qATCLI_CMDTYPE_PARA == param->Type ) {
-            if ( 1u == n ) {
+            if ( 1U == n ) {
                 retPtr = param->StrData;
             }
             else {
-                qIndex_t i, argc = 0u;
+                qIndex_t i, argc = 0U;
 
                 --n;
-                for ( i = 0u ; (char)'\0' != param->StrData[ i ] ; ++i ) {
+                for ( i = 0U ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {
                         if ( ++argc >= (qIndex_t)n ) {
-                            retPtr = &param->StrData[ i + 1u ];
+                            retPtr = &param->StrData[ i + 1U ];
                             break;
                         }
                     }
@@ -638,7 +638,7 @@ static int GetArgInt( qIndex_t n )
 /*============================================================================*/
 static qFloat32_t GetArgFlt( qIndex_t n )
 {
-    qFloat32_t retValue = 0.0f;
+    qFloat32_t retValue = 0.0F;
 
     if ( NULL != cli_CurrentCmdHelper ) {
         /*cstat -CERT-FLP34-C */
@@ -651,7 +651,7 @@ static qFloat32_t GetArgFlt( qIndex_t n )
 /*============================================================================*/
 static qUINT32_t GetArgHex( qIndex_t n )
 {
-    qUINT32_t retValue = 0uL;
+    qUINT32_t retValue = 0UL;
 
     if ( NULL != cli_CurrentCmdHelper ) {
         /*cstat -CERT-STR34-C*/
@@ -668,18 +668,18 @@ static char* GetArgString( qIndex_t n,
     /*cstat -MISRAC2012-Rule-8.13*/
     char *retPtr = NULL;
     /*cstat +MISRAC2012-Rule-8.13*/
-    if ( ( NULL != cli_CurrentCmdHelper ) && ( NULL != pOut ) && ( n > 0u ) ) {
+    if ( ( NULL != cli_CurrentCmdHelper ) && ( NULL != pOut ) && ( n > 0U ) ) {
         /*cstat -MISRAC2012-Rule-8.13*/
         qATCLI_Handler_t param = cli_CurrentCmdHelper;
         /*cstat +MISRAC2012-Rule-8.13*/
 
         if ( qATCLI_CMDTYPE_PARA == param->Type ) {
-            qIndex_t i, j, argc = 0u;
+            qIndex_t i, j, argc = 0U;
 
             --n;
-            j = 0u;
+            j = 0U;
             /*cstat -CERT-STR34-C*/
-            for ( i = 0u ; (char)'\0' != param->StrData[ i ] ; ++i ) {
+            for ( i = 0U ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                 if ( argc == n ) {
                     retPtr = pOut;
                     if ( (char)QATCLI_DEFAULT_ATSET_DELIM == param->StrData[ i ] ) {

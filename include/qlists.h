@@ -15,25 +15,25 @@
     extern "C" {
     #endif
 
-    /** 
+    /**
     * @addtogroup qlists
-    * @brief The provided list implementation uses a generic doubly-linked 
-    * approach in which each node, apart from storing its data, has two link 
-    * pointers. The first link points to the previous node in the list and the 
-    * second link, points to the next node in the list. The first node of the 
+    * @brief The provided list implementation uses a generic doubly-linked
+    * approach in which each node, apart from storing its data, has two link
+    * pointers. The first link points to the previous node in the list and the
+    * second link, points to the next node in the list. The first node of the
     * list has its previous link pointing to @c NULL, similarly, the last node
     * of the list has its next node pointing to @c NULL.
-    * 
-    * The list data-structure, referenced through an object of type qList_t 
-    * also has a head and a tail pointer, to allow fast operations on boundary 
+    *
+    * The list data-structure, referenced through an object of type qList_t
+    * also has a head and a tail pointer, to allow fast operations on boundary
     * nodes.
     *
-    * Nodes should be an user-defined data structure of any number of members, 
-    * however, they must be specially defined to be compatible with the 
-    * provided APIs. All the user-defined nodes must have the 
-    * #qNode_MinimalFields definition on top of the structure. An example is 
+    * Nodes should be an user-defined data structure of any number of members,
+    * however, they must be specially defined to be compatible with the
+    * provided APIs. All the user-defined nodes must have the
+    * #qNode_MinimalFields definition on top of the structure. An example is
     * shown below:
-    * 
+    *
     * @code{.c}
     * typedef struct {
     *     qNode_MinimalFields;
@@ -43,7 +43,7 @@
     * } userdata_t;
     * @endcode
     *
-    * With this special type definition on all custom data, the application 
+    * With this special type definition on all custom data, the application
     * writer can take advantage of this versatile data structure.
     *  @{
     */
@@ -94,7 +94,7 @@
     /**
     * @brief This macro can be used to initialize empty lists.
     */
-    #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, NULL, 0u }
+    #define QLIST_INITIALIZER   { NULL, NULL, NULL, NULL, NULL, 0U }
 
     /**
     * @brief An enum to describe the ForEach stage.
@@ -414,7 +414,7 @@
                         void *node2 );
 
     /**
-    * @brief Returns an iterator pointing to the first element in the 
+    * @brief Returns an iterator pointing to the first element in the
     * list container.
     * @param[in] xList Pointer to the list.
     * @return An iterator to the beginning of the sequence container.
@@ -422,7 +422,7 @@
     qList_Iterator_t qList_Begin( qList_t *const xList );
 
     /**
-    * @brief Returns an iterator pointing to the last element in the 
+    * @brief Returns an iterator pointing to the last element in the
     * list container.
     * @param[in] xList Pointer to the list.
     * @return An iterator to the latest item of the sequence container.

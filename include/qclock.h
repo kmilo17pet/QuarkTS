@@ -22,27 +22,27 @@
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
         typedef qUINT32_t qTime_t;
-        #define QTIME_NULL        ( 0uL )
-        #define qTimeImmediate    ( (qTime_t)(0uL) )
-        #define QTUNIT_MINUTE     ( 60000uL )
-        #define QTUNIT_HOUR       ( 3600000uL )
-        #define QTUNIT_DAY        ( 86400000uL )
-        #define QTUNIT_WEEK       ( 604800000uL )
+        #define QTIME_NULL        ( 0UL )
+        #define qTimeImmediate    ( (qTime_t)(0UL) )
+        #define QTUNIT_MINUTE     ( 60000UL )
+        #define QTUNIT_HOUR       ( 3600000UL )
+        #define QTUNIT_DAY        ( 86400000UL )
+        #define QTUNIT_WEEK       ( 604800000UL )
     #else
         /** @brief The typedef that specified an time quantity, usually expressed in seconds.*/
         typedef qFloat32_t qTime_t;
         /** @brief To specify a @c NULL time value.*/
-        #define QTIME_NULL        ( 0.0f )
+        #define QTIME_NULL        ( 0.0F )
         /** @brief To specify a non-wait time value.*/
-        #define qTimeImmediate    ( (qTime_t)(0.0f) )
+        #define qTimeImmediate    ( (qTime_t)(0.0F) )
         /** @brief Conversion factor from seconds to minutes.*/
-        #define QTUNIT_MINUTE     ( 60.0f )
+        #define QTUNIT_MINUTE     ( 60.0F )
         /** @brief Conversion factor from seconds to hours.*/
-        #define QTUNIT_HOUR       ( 3600.0f )
+        #define QTUNIT_HOUR       ( 3600.0F )
         /** @brief Conversion factor from seconds to days.*/
-        #define QTUNIT_DAY        ( 86400.0f )
+        #define QTUNIT_DAY        ( 86400.0F )
         /** @brief Conversion factor from seconds to weeks.*/
-        #define QTUNIT_WEEK       ( 604800.0f )
+        #define QTUNIT_WEEK       ( 604800.0F )
     #endif
 
     /**

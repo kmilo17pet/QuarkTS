@@ -43,7 +43,7 @@
     * @return none.
     */
     #define qFLM_BitSet( dst, xBit, xType )                                 \
-    (dst) |= (xType)( (xType)1u << (xBit) )                                 \
+    (dst) |= (xType)( (xType)1U << (xBit) )                                 \
 
     /**
     * @brief Uses the bitwise AND operator to clear a single bit into @a dst
@@ -53,7 +53,7 @@
     * @return none.
     */
     #define qFLM_BitClear( dst, xBit, xType )                               \
-    (dst) &= (xType)( ~( (xType)1u << (xBit) ) )                            \
+    (dst) &= (xType)( ~( (xType)1U << (xBit) ) )                            \
 
     /**
     * @brief Uses the bitwise AND operator to read the value of a single bit

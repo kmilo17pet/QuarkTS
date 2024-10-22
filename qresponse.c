@@ -15,7 +15,7 @@ qBool_t qResponse_Setup( qResponse_t * const r,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != r ) && ( NULL != xLocBuff ) && ( nMax > 0u ) ) {
+    if ( ( NULL != r ) && ( NULL != xLocBuff ) && ( nMax > 0U ) ) {
         (void)memset( r, 0, sizeof( qResponse_t ) );
         r->qPrivate.pattern2Match = xLocBuff;
         r->qPrivate.maxStrLength = nMax;
@@ -30,8 +30,8 @@ qBool_t qResponse_Reset( qResponse_t * const r )
     qBool_t retValue = qFalse;
 
     if ( NULL != r ) {
-        r->qPrivate.patternLength = 0u;
-        r->qPrivate.matchedCount = 0u;
+        r->qPrivate.patternLength = 0U;
+        r->qPrivate.matchedCount = 0U;
         r->qPrivate.responseReceived = qFalse;
         retValue = qSTimer_Disarm( &r->qPrivate.timeout );
     }
@@ -54,17 +54,17 @@ qBool_t qResponse_ReceivedWithTimeout( qResponse_t * const r,
     qBool_t retValue = qFalse;
 
     if ( NULL != r ) {
-        if ( ( qFalse == r->qPrivate.responseReceived ) && ( 0u == r->qPrivate.patternLength ) ) {
+        if ( ( qFalse == r->qPrivate.responseReceived ) && ( 0U == r->qPrivate.patternLength ) ) {
             /*handler no configured yet*/
             /*set the expected response pattern*/
             (void)qIOUtil_StrlCpy( r->qPrivate.pattern2Match,
                                    (const char*)pattern,
                                    r->qPrivate.maxStrLength );
             /*set the number of chars to match*/
-            r->qPrivate.patternLength = ( 0u == n ) ?
+            r->qPrivate.patternLength = ( 0U == n ) ?
                                         qIOUtil_StrLen( pattern, r->qPrivate.maxStrLength ) :
                                         n;
-            r->qPrivate.matchedCount = 0u; /*reinitialize the chars match count*/
+            r->qPrivate.matchedCount = 0U; /*reinitialize the chars match count*/
             r->qPrivate.responseReceived = qFalse; /*clear the ready flag*/
             if ( t > qTimeImmediate ) {
                 (void)qSTimer_Set( &r->qPrivate.timeout, t );
@@ -91,7 +91,7 @@ qBool_t qResponse_ISRHandler( qResponse_t * const r,
     qBool_t retValue = qFalse;
 
     if ( NULL != r ) {
-        if ( ( qFalse == r->qPrivate.responseReceived ) && ( r->qPrivate.patternLength > 0u ) ) {
+        if ( ( qFalse == r->qPrivate.responseReceived ) && ( r->qPrivate.patternLength > 0U ) ) {
             /*check if the received char match with the expected*/
             if ( r->qPrivate.pattern2Match[ r->qPrivate.matchedCount ] == rxChar ) {/*MISRAC2004-17.4_b Deviation allowed*/
                 /*move to the next char in the expected buffer*/

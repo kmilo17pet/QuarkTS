@@ -20,14 +20,14 @@
 
 
     #ifndef  Q_MAX_FTOA_PRECISION
-        #define Q_MAX_FTOA_PRECISION    ( 10u )
+        #define Q_MAX_FTOA_PRECISION    ( 10U )
     #endif
 
     #ifndef Q_ATOF_FULL
         #define Q_ATOF_FULL             ( 0 )
     #endif
 
-    #define Q_IO_UTIL_MAX_STRLEN        ( (size_t)512u )
+    #define Q_IO_UTIL_MAX_STRLEN        ( (size_t)512U )
 
     /** @addtogroup qioutils I/O Utils
     * @brief API for input/output utilities and safe string interfaces.
@@ -69,14 +69,14 @@
     * char BSP_GetChar( void *sp, char in ) {
     *       (void)sp;
     *       HAL_UARTPutByte( in );
-    *       return 0u;
+    *       return 0U;
     * }
     * @endcode
     * @param[in] sp The user storage pointer.
     * @return If an input operation is performed, this function should return
     * the byte read from the input.
     */
-    typedef char (*qIOFcn_t)( void *arg1, 
+    typedef char (*qIOFcn_t)( void *arg1,
                               const char arg2 );
 
 
@@ -107,7 +107,7 @@
     * @param[in] s Pointer to the null-terminated byte string to be examined
     * @param[in] maxlen Maximum number of characters to examine
     * @return The length of the null-terminated byte string @a str on success,
-    * zero if @a str is a null pointer, @a maxlen if the null character was 
+    * zero if @a str is a null pointer, @a maxlen if the null character was
     * not found.
     */
     size_t qIOUtil_StrLen( const char* s,
@@ -127,19 +127,19 @@
                             size_t maxlen );
 
     /**
-    * @brief appends no more than @a maxlen−len(dst)−1 characters pointed to by 
-    * @a src into the array pointed to by @a dst and always terminates the 
-    * result with a null character if @a maxlen is greater than zero. Both 
+    * @brief appends no more than @a maxlen−len(dst)−1 characters pointed to by
+    * @a src into the array pointed to by @a dst and always terminates the
+    * result with a null character if @a maxlen is greater than zero. Both
     * the strings @a dst and @a src must be terminated with a null character on
-    * entry the function and a byte for the terminating null should be included 
-    * in @a maxlen. 
+    * entry the function and a byte for the terminating null should be included
+    * in @a maxlen.
     * @note The behavior of this function is undefined if copying takes
     * place between objects that overlap.
     * @param[out] dst The destination string
     * @param[in] src The source string
     * @param[in] maxlen Maximum number of characters to copy
-    * @return returns the number of characters it tried to copy, which is the 
-    * sum of the lengths of the strings @a dst and @a src or @a n, whichever 
+    * @return returns the number of characters it tried to copy, which is the
+    * sum of the lengths of the strings @a dst and @a src or @a n, whichever
     * is smaller.
     */
     size_t qIOUtil_StrlCat( char *dst,

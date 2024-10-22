@@ -68,11 +68,11 @@
 
     /** @brief A macro directive to indicate whether the item in the queue
      * should be sent to the back. */
-    #define QUEUE_SEND_TO_BACK     ( 0u )
+    #define QUEUE_SEND_TO_BACK     ( 0U )
 
     /** @brief A macro directive to indicate whether the item in the queue
      * should be sent to the front. */
-    #define QUEUE_SEND_TO_FRONT    ( 1u )
+    #define QUEUE_SEND_TO_FRONT    ( 1U )
 
     /** @brief A typedef to indicate the queue send mode : #QUEUE_SEND_TO_BACK
      * or #QUEUE_SEND_TO_FRONT*/
@@ -187,4 +187,4 @@
     }
     #endif
 
-#endif 
+#endif

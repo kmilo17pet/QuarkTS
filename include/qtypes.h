@@ -61,7 +61,7 @@
             #define INT8_MAX        ( 127 )
         #endif
         #ifndef UINT8_MAX
-            #define UINT8_MAX       ( 255u )
+            #define UINT8_MAX       ( 255U )
         #endif
         #ifndef INT16_MIN
             #define INT16_MIN       ( -32768 )
@@ -70,7 +70,7 @@
             #define INT16_MAX       ( 32767 )
         #endif
         #ifndef UINT16_MAX
-            #define UINT16_MAX      ( 65535u )
+            #define UINT16_MAX      ( 65535U )
         #endif
         #ifndef INT32_MIN
             #define INT32_MIN       ( -2147483647-1 )
@@ -79,7 +79,7 @@
             #define INT32_MAX       ( 2147483647 )
         #endif
         #ifndef UINT32_MAX
-            #define UINT32_MAX      ( 4294967295u )
+            #define UINT32_MAX      ( 4294967295U )
         #endif
         /*Unsigned types*/
         typedef unsigned char qUINT8_t;
@@ -154,32 +154,32 @@
     /**
     * @brief A boolean value that represents false/failure/Off or Low.
     */
-    #define qFalse                  ( (qBool_t)0x00u )
+    #define qFalse                  ( (qBool_t)0x00U )
 
     /**
     * @brief A boolean value that represents true/success/On or High.
     */
-    #define qTrue                   ( (qBool_t)0x01u )
+    #define qTrue                   ( (qBool_t)0x01U )
 
     /**
     * @brief A state value that enables a task.
     */
-    #define qEnabled                ( (qState_t)0x01u )
+    #define qEnabled                ( (qState_t)0x01U )
 
     /**
     * @brief A state value that disables a task.
     */
-    #define qDisabled               ( (qState_t)0x00u )
+    #define qDisabled               ( (qState_t)0x00U )
 
     /**
     * @brief A state value that awakes a task.
     */
-    #define qAwake                  ( 2u )
+    #define qAwake                  ( 2U )
 
     /**
     * @brief A state value that put a task in sleep mode.
     */
-    #define qAsleep                 ( 3u )
+    #define qAsleep                 ( 3U )
 
     /**
     * @brief An operation directive that links an object to a task.
@@ -192,7 +192,7 @@
     #define qUnLink                 ( qFalse )
 
     /** @cond */
-    #define qIgnore                 ( (qBool_t)0xFEu )
+    #define qIgnore                 ( (qBool_t)0xFEU )
     #define qLINK                   ( qTrue )
     #define qUNLINK                 ( qFalse )
     #define qATTACH                 ( qTrue )
@@ -204,22 +204,22 @@
     /**
     * @brief A status value that indicates a response timeout.
     */
-    #define qResponseTimeout        ( (qBool_t)0x02u )
+    #define qResponseTimeout        ( (qBool_t)0x02U )
 
     /**
     * @brief A status value that indicates a rising-edge condition.
     */
-    #define qRising                 ( (qBool_t)0x03u )
+    #define qRising                 ( (qBool_t)0x03U )
 
     /**
     * @brief A status value that indicates a falling-edge condition.
     */
-    #define qFalling                ( (qBool_t)0x04u )
+    #define qFalling                ( (qBool_t)0x04U )
 
     /**
     * @brief A status value that indicates an unknown condition.
     */
-    #define qUnknown                ( (qBool_t)0xFFu )
+    #define qUnknown                ( (qBool_t)0xFFU )
 
     /** @}*/
 

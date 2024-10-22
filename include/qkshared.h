@@ -22,17 +22,17 @@
     | (31..11)EVENTFLAGS |  (10..8)-STATE  | 7-REM.REQ  | 6-SHUTDOWN | 5-QUEUE_EMPTY | 4-QUEUE_COUNT | 3-QUEUE_FULL | 2-QUEUE_RECEIVER |  1-ENABLED  |  0-INIT   |
     |------------------------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    #define QTASK_EVENT_FLAGS_MASK      ( (qTask_Flag_t)0xFFFFF000uL )
-    #define QTASK_QUEUE_FLAGS_MASK      ( 0x0000003CuL )
+    #define QTASK_EVENT_FLAGS_MASK      ( (qTask_Flag_t)0xFFFFF000UL )
+    #define QTASK_QUEUE_FLAGS_MASK      ( 0x0000003CUL )
 
-    #define QTASK_BIT_INIT              ( 0x00000001uL )
-    #define QTASK_BIT_ENABLED           ( 0x00000002uL )
-    #define QTASK_BIT_QUEUE_RECEIVER    ( 0x00000004uL )
-    #define QTASK_BIT_QUEUE_FULL        ( 0x00000008uL )
-    #define QTASK_BIT_QUEUE_COUNT       ( 0x00000010uL )
-    #define QTASK_BIT_QUEUE_EMPTY       ( 0x00000020uL )
-    #define QTASK_BIT_SHUTDOWN          ( 0x00000040uL )
-    #define QTASK_BIT_REMOVE_REQUEST    ( 0x00000080uL )
+    #define QTASK_BIT_INIT              ( 0x00000001UL )
+    #define QTASK_BIT_ENABLED           ( 0x00000002UL )
+    #define QTASK_BIT_QUEUE_RECEIVER    ( 0x00000004UL )
+    #define QTASK_BIT_QUEUE_FULL        ( 0x00000008UL )
+    #define QTASK_BIT_QUEUE_COUNT       ( 0x00000010UL )
+    #define QTASK_BIT_QUEUE_EMPTY       ( 0x00000020UL )
+    #define QTASK_BIT_SHUTDOWN          ( 0x00000040UL )
+    #define QTASK_BIT_REMOVE_REQUEST    ( 0x00000080UL )
 
      /*Private kernel shared functions*/
     #if ( Q_PRIO_QUEUE_SIZE > 0 )

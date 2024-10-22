@@ -15,7 +15,7 @@ typedef struct _qCritical_Handler_s {
 qCritical_Handler_t;
 /*! @endcond */
 
-static qCritical_Handler_t critical = { NULL, NULL , 0uL }; // skipcq: CXX-W2009
+static qCritical_Handler_t critical = { NULL, NULL , 0UL }; // skipcq: CXX-W2009
 /*cstat -MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 void qCritical_Enter( void )

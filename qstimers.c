@@ -67,7 +67,7 @@ qBool_t qSTimer_Expired( const qSTimer_t * const t )
 /*============================================================================*/
 qClock_t qSTimer_Elapsed( const qSTimer_t * const t )
 {
-    qClock_t retValue = 0u;
+    qClock_t retValue = 0U;
 
     if ( NULL != t ) {
         if ( QSTIMER_ARMED == qSTimer_Status( t ) ) {

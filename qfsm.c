@@ -51,7 +51,7 @@ static qBool_t qStateMachine_SignalSend( qSM_t * const m,
                                          void *sData,
                                          const qBool_t isUrgent );
 
-#define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFuL )
+#define QSM_TSOPT_INDEX_MASK    ( 0x00FFFFFFUL )
 
 #if ( Q_FSM_PS_SIGNALS_MAX > 0 )  && ( Q_FSM_PS_SUB_PER_SIGNAL_MAX > 0 )
 
@@ -74,7 +74,7 @@ static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( const qSM_t * const m
 
 /*cstat -MISRAC2012-Rule-9.2 -MISRAC2012-Rule-9.3*/
 /*cppcheck-suppress misra-c2012-9.3 */
-static qSM_SigId_t psSignals[ Q_FSM_PS_SIGNALS_MAX ] = { 0xFFFFFFFFuL };
+static qSM_SigId_t psSignals[ Q_FSM_PS_SIGNALS_MAX ] = { 0xFFFFFFFFUL };
 /*cstat +MISRAC2012-Rule-9.2 +MISRAC2012-Rule-9.3*/
 static qSM_t *psSubs[ Q_FSM_PS_SIGNALS_MAX ][ Q_FSM_PS_SUB_PER_SIGNAL_MAX ];
 
@@ -83,9 +83,9 @@ static void qStateMachine_UnsubscribeAll( void )
 {
     size_t i, j;
 
-    for ( i = 0u ; i < (size_t)Q_FSM_PS_SIGNALS_MAX ; ++i ) {
+    for ( i = 0U ; i < (size_t)Q_FSM_PS_SIGNALS_MAX ; ++i ) {
         psSignals[ i ] = QSM_SIGNAL_NONE;
-        for ( j = 0u; j < (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX; ++j ) {
+        for ( j = 0U; j < (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX; ++j ) {
             psSubs[ i ][ j ] = NULL;
         }
     }
@@ -94,15 +94,15 @@ static void qStateMachine_UnsubscribeAll( void )
 static qSM_PS_Index_t qStateMachine_GetSubscriptionStatus( const qSM_t * const m,
                                                            qSM_SigId_t s )
 {
-    qSM_PS_Index_t idx = { QSM_PS_SIGNAL_NOT_FOUND, 0u ,0u };
-    size_t i, j = 0u;
+    qSM_PS_Index_t idx = { QSM_PS_SIGNAL_NOT_FOUND, 0U ,0U };
+    size_t i, j = 0U;
     const size_t maxSig = (size_t)Q_FSM_PS_SIGNALS_MAX;
     const size_t maxSub = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX;
     /*cstat -MISRAC2012-Rule-15.4*/
-    for ( i = 0u ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
+    for ( i = 0U ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
         if ( s == psSignals[ i ] ) {
             idx.status = QSM_PS_SUBSCRIBER_NOT_FOUND;
-            for ( j = 0u ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
+            for ( j = 0U ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
                 if ( m == psSubs[ i ][ j ] ) {
                     idx.status = QSM_PS_SUBSCRIBER_FOUND;
                     break;
@@ -168,18 +168,18 @@ qBool_t qStateMachine_UnsubscribeFromSignal( const qSM_t * const m,
             qSM_PS_Index_t r = qStateMachine_GetSubscriptionStatus( m, s );
 
             if ( QSM_PS_SUBSCRIBER_FOUND == r.status ) {
-                size_t i, li = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX - 1u;
+                size_t i, li = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX - 1U;
 
                 for ( i = r.sub_slot ; i < li ; ++i ) {
-                    psSubs[ r.sig_slot ][ i ] = psSubs[ r.sig_slot ][ i + 1u ];
+                    psSubs[ r.sig_slot ][ i ] = psSubs[ r.sig_slot ][ i + 1U ];
                 }
                 psSubs[ r.sig_slot ][ li ] = NULL;
 
                 if ( NULL == psSubs[ r.sig_slot ][ 0 ] ) { /*no subscribers left?*/
                     /*remove the signal from the psSignals list*/
-                    li = (size_t)Q_FSM_PS_SIGNALS_MAX - 1u;
+                    li = (size_t)Q_FSM_PS_SIGNALS_MAX - 1U;
                     for ( i = r.sig_slot ; i < li ; ++i ) {
-                        psSignals[ i ] = psSignals[ i + 1u ];
+                        psSignals[ i ] = psSignals[ i + 1U ];
                     }
                     psSignals[ li ] = QSM_SIGNAL_NONE;
                 }
@@ -231,20 +231,20 @@ static void qStateMachine_Transition( qSM_t *m,
 static qSM_LCA_t qStateMachine_LevelsToLCA( const qSM_t * const m,
                                             const qSM_State_t * const target )
 {
-    qSM_LCA_t xLca = 0u;
+    qSM_LCA_t xLca = 0U;
 
     /*
     To discover which exit actions to execute, it is necessary to find the
     LCA(LeastCommon Ancestor) of the source and target states.
     */
     if ( m->qPrivate.source == target ) {
-        xLca = 1u; /*recursive transition, only a level needs to be performed*/
+        xLca = 1U; /*recursive transition, only a level needs to be performed*/
     }
     else {
         const qSM_State_t *s;
         const qSM_State_t *t;
         qBool_t xBreak = qFalse; /*to be in compliance with MISRAC2012-Rule-15.5*/
-        qSM_LCA_t n = 0u;
+        qSM_LCA_t n = 0U;
 
         for ( s = m->qPrivate.source ;
              ( NULL != s ) && ( qFalse == xBreak ) ;
@@ -273,7 +273,7 @@ static void qStateMachine_ExitUpToLCA( qSM_t * const m,
         s = qStateMachine_StateOnExit( m, s );
     }
     /*exit all superstates up to LCA*/
-    while ( 0u != lca-- ) {
+    while ( 0U != lca-- ) {
         s = qStateMachine_StateOnExit( m, s );
     }
     m->qPrivate.current = s;
@@ -580,9 +580,9 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
         s->qPrivate.sCallback = sFcn;
         s->qPrivate.parent = ( NULL == parent ) ? &m->qPrivate.top : parent;
         s->qPrivate.tTable = NULL;
-        s->qPrivate.tEntries = (size_t)0u;
+        s->qPrivate.tEntries = (size_t)0U;
         s->qPrivate.tdef = NULL;
-        s->qPrivate.nTm = (size_t)0u;
+        s->qPrivate.nTm = (size_t)0U;
         retValue = qTrue;
     }
 
@@ -595,7 +595,7 @@ qBool_t qStateMachine_Set_StateTransitions( qSM_State_t * const s,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != s ) && ( NULL != table ) && ( n > 0u ) ) {
+    if ( ( NULL != s ) && ( NULL != table ) && ( n > 0U ) ) {
         s->qPrivate.tTable = table;
         s->qPrivate.tEntries = n;
         retValue = qTrue;
@@ -633,7 +633,7 @@ static void qStateMachine_SweepTransitionTable( const qSM_State_t * const curren
     const qSM_Transition_t *table = (qSM_Transition_t *)currentState->qPrivate.tTable;
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
     n = currentState->qPrivate.tEntries;
-    for ( i = 0u ; i < n ; ++i ) {
+    for ( i = 0U ; i < n ; ++i ) {
         qBool_t transitionAllowed = qTrue; /*allow the transition by default*/
 
         iTransition = &table[ i ]; /*get the i-element from the table*/
@@ -706,10 +706,10 @@ qBool_t qStateMachine_SendSignal( qSM_t * const m,
                 const size_t maxSig = (size_t)Q_FSM_PS_SIGNALS_MAX;
                 const size_t maxSub = (size_t)Q_FSM_PS_SUB_PER_SIGNAL_MAX;
 
-                for ( i = 0u ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
+                for ( i = 0U ; ( i < maxSig ) && ( QSM_SIGNAL_NONE != psSignals[ i ] ) ; ++i ) {
                     if ( sig == psSignals[ i ] ) {
                         retValue = qTrue;
-                        for ( j = 0u ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
+                        for ( j = 0U ; ( j < maxSub ) && ( NULL != psSubs[ i ][ j ] ) ; ++j ) {
                             /*cstat -MISRAC2012-Rule-10.1_R3 -CERT-EXP46-C*/
                             retValue &= qStateMachine_SignalSend( psSubs[ i ][ j ], sig, sData, isUrgent );
                             /*cstat +MISRAC2012-Rule-10.1_R3 +CERT-EXP46-C*/
@@ -729,12 +729,12 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
     qSM_TimeoutSpec_t *ts = m->qPrivate.timeSpec;
     size_t i;
 
-    for ( i = 0u ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
+    for ( i = 0U ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
         if ( qTrue == qSTimer_Expired( &ts->builtin_timeout[ i ] ) ) {
             #if ( Q_QUEUES == 1 )
                 (void)qStateMachine_SendSignal( m, QSM_SIGNAL_TIMEOUT( i ), NULL, qFalse );
             #endif
-            if ( 0uL  != ( ts->isPeriodic & ( 1uL <<  i ) ) ) {
+            if ( 0UL  != ( ts->isPeriodic & ( 1UL <<  i ) ) ) {
                 (void)qSTimer_Reload( &ts->builtin_timeout[ i ] );
             }
             else {
@@ -751,7 +751,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
     const qSM_TimeoutStateDefinition_t * const tbl = current->qPrivate.tdef;
     size_t n = current->qPrivate.nTm;
 
-    if ( ( n > 0u ) && ( NULL != tbl ) ) {
+    if ( ( n > 0U ) && ( NULL != tbl ) ) {
         size_t i;
         qSM_TimeoutSpecOptions_t setCheck, resetCheck;
 
@@ -763,7 +763,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
             setCheck = QSM_TSOPT_SET_EXIT;
             resetCheck = QSM_TSOPT_RST_EXIT;
         }
-        for ( i = 0u ; i < n ; ++i ) { /*loop table */
+        for ( i = 0U ; i < n ; ++i ) { /*loop table */
             qSM_TimeoutSpecOptions_t opt = tbl[ i ].options;
             qIndex_t index = (qIndex_t)( opt & QSM_TSOPT_INDEX_MASK );
             /*state match and index is valid?*/
@@ -771,11 +771,11 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
                 qSTimer_t *tmr = &m->qPrivate.timeSpec->builtin_timeout[ index ];
                 qTime_t tValue = tbl[ i ].xTimeout;
 
-                if ( 0uL != ( opt & setCheck ) ) {
-                    if ( 0uL == ( opt & QSM_TSOPT_KEEP_IF_SET ) ) {
+                if ( 0UL != ( opt & setCheck ) ) {
+                    if ( 0UL == ( opt & QSM_TSOPT_KEEP_IF_SET ) ) {
                         (void)qSTimer_Set( tmr, tValue );
                     }
-                    if ( 0uL != ( opt & QSM_TSOPT_PERIODIC ) ) {
+                    if ( 0UL != ( opt & QSM_TSOPT_PERIODIC ) ) {
                         qFLM_BitSet( m->qPrivate.timeSpec->isPeriodic,
                                      index,
                                      qUINT32_t );
@@ -786,7 +786,7 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
                                        qUINT32_t );
                     }
                 }
-                if ( 0uL != ( opt & resetCheck ) ) {
+                if ( 0UL != ( opt & resetCheck ) ) {
                     (void)qSTimer_Disarm( tmr );
                 }
             }
@@ -804,7 +804,7 @@ qBool_t qStateMachine_InstallTimeoutSpec( qSM_t * const m,
 
         (void)memset( ts, 0, sizeof(qSM_TimeoutSpec_t) );
         m->qPrivate.timeSpec = ts;
-        for ( i = 0u ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
+        for ( i = 0U ; i < (size_t)Q_FSM_MAX_TIMEOUTS ; ++i ) {
             (void)qSTimer_Disarm( &m->qPrivate.timeSpec->builtin_timeout[ i ] );
         }
         retValue = qTrue;
@@ -819,7 +819,7 @@ qBool_t qStateMachine_Set_StateTimeouts( qSM_State_t * const s,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != s ) && ( NULL != tdef ) && ( n > (size_t)0uL ) ) {
+    if ( ( NULL != s ) && ( NULL != tdef ) && ( n > (size_t)0UL ) ) {
         s->qPrivate.tdef = tdef;
         s->qPrivate.nTm= n;
         retValue = qTrue;
@@ -854,7 +854,7 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m,
             qSM_Signal_t xSignal;
 
             cnt = qQueue_Count( m->qPrivate.sQueue );
-            while ( 0u != cnt-- ) {
+            while ( 0U != cnt-- ) {
                 if ( qTrue == qQueue_Receive( m->qPrivate.sQueue, &xSignal ) ) {
                     if ( xSignal.id != QSM_SIGNAL_TIMEOUT( xTimeout ) ) {
                         /*keep non-timeout signals*/

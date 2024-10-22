@@ -13,9 +13,9 @@
 _QEDGECHECK_REG_FCN_DEC(NAME)                                               \
 {                                                                           \
     TYPE reg, mask, xBit = (TYPE)pinNumber;                                 \
-    mask = (TYPE)( (TYPE)1uL << xBit );                                     \
+    mask = (TYPE)( (TYPE)1UL << xBit );                                     \
     reg = *( (const TYPE*)addr );                                           \
-    return ( (TYPE)0u != ( reg & mask ) );                                  \
+    return ( (TYPE)0U != ( reg & mask ) );                                  \
 }                                                                           \
 
 /*! @cond  */
@@ -90,8 +90,8 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec )
 }
 /*============================================================================*/
 /*cstat -MISRAC2012-Rule-8.13*/
-static void qEdgeCheck_NodeChangeIterator( const qEdgeCheck_t * const ec, 
-                                           qEdgeCheck_NodeIteratorFcn_t fcn, 
+static void qEdgeCheck_NodeChangeIterator( const qEdgeCheck_t * const ec,
+                                           qEdgeCheck_NodeIteratorFcn_t fcn,
                                            void *arg )
 {
     /*cstat +MISRAC2012-Rule-8.13*/
@@ -106,8 +106,8 @@ static void qEdgeCheck_NodeChangeIterator( const qEdgeCheck_t * const ec,
     }
 }
 /*============================================================================*/
-static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, 
-                                           qBool_t v, 
+static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n,
+                                           qBool_t v,
                                            void *arg )
 {
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
@@ -131,8 +131,8 @@ static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n,
 }
 /*============================================================================*/
 /*cstat -MISRAC2012-Rule-8.13*/
-static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, 
-                                            qBool_t v, 
+static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n,
+                                            qBool_t v,
                                             void *arg )
 {
     /*cstat +MISRAC2012-Rule-8.13*/
@@ -147,11 +147,11 @@ static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n,
 /*============================================================================*/
 static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec )
 {
-    size_t nodeChange = 0u;
+    size_t nodeChange = 0U;
     /*iterate through all the input-nodes*/
     qEdgeCheck_NodeChangeIterator( ec, &qEdgeCheck_IterNodeStateCheck, &nodeChange );
 
-    if ( nodeChange > 0u ) {
+    if ( nodeChange > 0U ) {
         ec->qPrivate.state = &qEdgeCheck_StateWait;
     }
 }
@@ -193,7 +193,7 @@ qBool_t qEdgeCheck_Set_NodePin( qEdgeCheck_IONode_t * const n,
 {
     qBool_t retValue = qFalse;
     /*cstat -MISRAC2012-Rule-10.1_R3*/ /*false-positive*/
-    if ( ( NULL != n ) && ( pinNumber < (qBool_t)32u ) ) {
+    if ( ( NULL != n ) && ( pinNumber < (qBool_t)32U ) ) {
     /*cstat +MISRAC2012-Rule-10.1_R3*/
         n->qPrivate.xPin = pinNumber;
         retValue = qTrue;

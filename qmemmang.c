@@ -11,7 +11,7 @@
 
 typedef size_t qAddress_t;  /*restrict*/
 
-#define BYTE_ALIGN_MASK     ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u )
+#define BYTE_ALIGN_MASK     ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1U )
 /*cstat -MISRAC2012-Rule-8.9_b*/
 static qUINT8_t defaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = { 0 }; // skipcq: CXX-W2009
 /*cstat +MISRAC2012-Rule-8.9_b*/
@@ -32,15 +32,15 @@ Cleared when the block is part of the free space (only the MSB is used)
 Work out the position of the top bit in a size_t variable.
 */
 static const size_t blockAllocatedBit = (
-                                            ( (size_t)1u ) <<
+                                            ( (size_t)1U ) <<
                                             (
-                                                ( sizeof(size_t)*(size_t)8u ) -
-                                                (size_t)1u
+                                                ( sizeof(size_t)*(size_t)8U ) -
+                                                (size_t)1U
                                             )
                                         );
 static const size_t heapStructSize = (
                                         (   sizeof(qMemMang_BlockConnect_t) +
-                                            ( BYTE_ALIGN_MASK - (size_t)1u )
+                                            ( BYTE_ALIGN_MASK - (size_t)1U )
                                         )
                                         & ~BYTE_ALIGN_MASK
                                      );
@@ -135,11 +135,11 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
                                    (size_t)Q_DEFAULT_HEAP_SIZE );
     }
 
-    mPool->qPrivate.start.blockSize = (size_t)0u;
+    mPool->qPrivate.start.blockSize = (size_t)0U;
     mPool->qPrivate.start.next = NULL;
     /*cstat -MISRAC2012-Rule-11.4 -CERT-INT36-C -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     address = (qAddress_t)mPool->qPrivate.poolMemory; /*MISRAC2012-Rule-11.4,CERT-INT36-C deviation allowed*/
-    if ( 0uL != ( address & byteAlignmentMask ) ) {
+    if ( 0UL != ( address & byteAlignmentMask ) ) {
         address += byteAlignmentMask;
         address &= ~byteAlignmentMask;
         totalPoolSize -= address - (qAddress_t)mPool->qPrivate.poolMemory; /*MISRAC2012-Rule-11.4 deviation allowed*/
@@ -152,7 +152,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     */
     mPool->qPrivate.start.next = ( qMemMang_BlockConnect_t* )aligned;  /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
     /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-11.3 +CERT-EXP36-C_a +CERT-EXP39-C_d*/
-    mPool->qPrivate.start.blockSize = (size_t)0u;
+    mPool->qPrivate.start.blockSize = (size_t)0U;
     xAddrTmp = (qAddress_t)aligned; /*MISRAC2012-Rule-11.4 deviation allowed*/
     address = xAddrTmp + totalPoolSize; /*MISRAC2004-17.4_a deviation allowed*/
     address -= heapStructSize;
@@ -163,7 +163,7 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     */
     mPool->qPrivate.end = (qMemMang_BlockConnect_t*)address; /*MISRAC2012-Rule-11.4 deviation allowed*/ /*MISRAC2012-Rule-11.6 allowed*/
     mPool->qPrivate.end->next = NULL;
-    mPool->qPrivate.end->blockSize = (size_t)0u;
+    mPool->qPrivate.end->blockSize = (size_t)0U;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-11.3 -CERT-EXP36-C_a -CERT-EXP39-C_d*/
     /*
     To start with there is a single free block that is sized to take up the
@@ -244,27 +244,27 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
             qMemMang_HeapInit( mPool );
         }
 
-        if ( pSize > 0u ) {
+        if ( pSize > 0U ) {
             size_t additional = heapStructSize + (size_t)Q_BYTE_ALIGNMENT
                                       - ( pSize & byteAlignmentMask );
             /*check for heap overflow*/
-            if ( pSize > ( ( ~( ( size_t )0u ) ) - additional ) ) {
-                pSize = 0u;
+            if ( pSize > ( ( ~( ( size_t )0U ) ) - additional ) ) {
+                pSize = 0U;
             }
             else {
-                /* 
-                requested must be increased so it can contain a block 
+                /*
+                requested must be increased so it can contain a block
                 connector structure in addition to some increment required for
-                alignment 
+                alignment
                 */
-                /*cstat -ATH-overflow*/ 
+                /*cstat -ATH-overflow*/
                 pSize += additional;
                 /*cstat +ATH-overflow*/
             }
         }
 
-        if ( (size_t)0u == ( pSize & blockAllocatedBit ) ) {
-            if ( ( pSize > (size_t)0u ) && ( pSize < mPool->qPrivate.freeBytesRemaining ) ) {
+        if ( (size_t)0U == ( pSize & blockAllocatedBit ) ) {
+            if ( ( pSize > (size_t)0U ) && ( pSize < mPool->qPrivate.freeBytesRemaining ) ) {
                 qMemMang_BlockConnect_t *xBlock, *previousBlock;
                 /* Traverse list from start until one of adequate size is found */
                 previousBlock = &mPool->qPrivate.start;
@@ -275,7 +275,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                 }
 
                 if ( xBlock != mPool->qPrivate.end ) {
-                    const size_t minBlockSize = ( heapStructSize << 1u );
+                    const size_t minBlockSize = ( heapStructSize << 1U );
                     /*
                     Return the memory space pointed to - jumping over the
                     qMemBlockConnect_t node at its start.

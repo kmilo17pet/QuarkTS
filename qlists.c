@@ -31,7 +31,7 @@ qBool_t qList_Initialize( qList_t * const l )
     if ( NULL != l ) {
         l->head = NULL;
         l->tail = NULL;
-        l->size = 0u;
+        l->size = 0U;
         retValue = qTrue;
     }
 
@@ -349,7 +349,7 @@ qBool_t qList_IsEmpty( const qList_t * const l )
 /*============================================================================*/
 size_t qList_Length( const qList_t * const l )
 {
-    size_t retValue = 0u;
+    size_t retValue = 0U;
 
     if ( NULL != l ) {
         retValue = l->size;
@@ -366,16 +366,16 @@ qBool_t qList_Sort( qList_t * const l,
     if ( ( NULL != l ) && ( NULL != f ) ) {
         size_t count = l->size;
 
-        if ( count >= 2u ) {
+        if ( count >= 2U ) {
             qList_Node_t *current = NULL, *before, *after;
             _qList_CompareHandle_t xHandle;
             size_t i, j;
             qBool_t xRetCmp;
 
-            for ( i = 1u ; i < count ; ++i ) {
-                size_t n = count - i - 1u;
+            for ( i = 1U ; i < count ; ++i ) {
+                size_t n = count - i - 1U;
                 current = l->head;
-                for ( j = 0u; j <= n; ++j ) {
+                for ( j = 0U; j <= n; ++j ) {
                     xHandle.n1 = current;
                     xHandle.n2 = current->next;
                     xRetCmp = f( &xHandle );

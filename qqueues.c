@@ -36,7 +36,7 @@ qBool_t qQueue_Setup( qQueue_t * const q,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != q ) && ( NULL != pData ) && ( itemSize > 0u ) && ( itemsCount > 0u ) ) {
+    if ( ( NULL != q ) && ( NULL != pData ) && ( itemSize > 0U ) && ( itemsCount > 0U ) ) {
         (void)memset( q, 0, sizeof( qQueue_t ) );
         q->qPrivate.itemsCount = itemsCount; /* Initialise the queue members*/
         q->qPrivate.itemSize = itemSize;
@@ -59,9 +59,9 @@ qBool_t qQueue_Reset( qQueue_t * const q )
     if ( NULL != q ) {
         qCritical_Enter();
         q->qPrivate.tail = q->qPrivate.head + ( q->qPrivate.itemsCount * q->qPrivate.itemSize );
-        q->qPrivate.itemsWaiting = 0u;
+        q->qPrivate.itemsWaiting = 0U;
         q->qPrivate.writer = q->qPrivate.head;
-        q->qPrivate.reader = q->qPrivate.head + ( ( q->qPrivate.itemsCount - 1u ) * q->qPrivate.itemSize );
+        q->qPrivate.reader = q->qPrivate.head + ( ( q->qPrivate.itemsCount - 1U ) * q->qPrivate.itemSize );
         qCritical_Exit();
         retValue = qTrue;
     }
@@ -74,7 +74,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const q )
     qBool_t retValue = qTrue;
 
     if ( NULL != q ) {
-        retValue = ( 0u == q->qPrivate.itemsWaiting ) ? qTrue : qFalse;
+        retValue = ( 0U == q->qPrivate.itemsWaiting ) ? qTrue : qFalse;
     }
 
     return retValue;
@@ -82,7 +82,7 @@ qBool_t qQueue_IsEmpty( const qQueue_t * const q )
 /*============================================================================*/
 size_t qQueue_Count( const qQueue_t * const q )
 {
-    size_t retValue = 0u;
+    size_t retValue = 0U;
 
     if ( NULL != q ) {
         retValue = q->qPrivate.itemsWaiting;
@@ -93,7 +93,7 @@ size_t qQueue_Count( const qQueue_t * const q )
 /*============================================================================*/
 size_t qQueue_ItemsAvailable( const qQueue_t * const q )
 {
-    size_t retValue = 0u;
+    size_t retValue = 0U;
 
     if ( NULL != q ) {
         retValue = q->qPrivate.itemsCount - q->qPrivate.itemsWaiting;
@@ -124,7 +124,7 @@ void* qQueue_Peek( const qQueue_t * const q )
         size_t itemsWaiting;
         qCritical_Enter();
         itemsWaiting = q->qPrivate.itemsWaiting; /*to avoid side effects*/
-        if ( itemsWaiting > 0u ) {
+        if ( itemsWaiting > 0U ) {
             /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
             /*cppcheck-suppress cert-EXP05-C */
             retValue = (qUINT8_t *)( q->qPrivate.reader + q->qPrivate.itemSize ); // skipcq: CXX-S1014
@@ -147,7 +147,7 @@ qBool_t qQueue_RemoveFront( qQueue_t * const q )
         size_t itemsWaiting;
         qCritical_Enter();
         itemsWaiting = q->qPrivate.itemsWaiting; /*to avoid side effects*/
-        if ( itemsWaiting > 0u ) {
+        if ( itemsWaiting > 0U ) {
             qQueue_MoveReader( q );
             --q->qPrivate.itemsWaiting; /* remove the data. */
             retValue = qTrue;
@@ -203,7 +203,7 @@ qBool_t qQueue_Receive( qQueue_t * const q,
         size_t itemsWaiting;
         qCritical_Enter();
         itemsWaiting = q->qPrivate.itemsWaiting; /*to avoid side effects*/
-        if ( itemsWaiting > 0u ) {
+        if ( itemsWaiting > 0U ) {
             /* items available, remove one of them. */
             qQueue_CopyDataFromQueue( q, dst );
             --q->qPrivate.itemsWaiting;
@@ -221,7 +221,7 @@ qBool_t qQueue_Send( qQueue_t * const q,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != q ) && ( pos <= 1u ) ) {
+    if ( ( NULL != q ) && ( pos <= 1U ) ) {
         qCritical_Enter();
         if ( q->qPrivate.itemsWaiting < q->qPrivate.itemsCount ) {
             qQueue_CopyDataToQueue( q, itemToQueue, (qBool_t)pos );

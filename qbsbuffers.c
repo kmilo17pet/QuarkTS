@@ -16,24 +16,24 @@ static size_t qBSBuffer_CheckValidPowerOfTwo( size_t k )
 {
     size_t r = k;
 
-    if ( 0u != ( ( k - 1u ) & k ) ) {
+    if ( 0U != ( ( k - 1U ) & k ) ) {
         qIndex_t i;
 
         k--;
-        for ( i = 1u ; i < ( sizeof(qIndex_t)*8u ) ; i = (qIndex_t)( i * 2u ) ) { // skipcq: CXX-W1240
+        for ( i = 1U ; i < ( sizeof(qIndex_t)*8U ) ; i = (qIndex_t)( i * 2U ) ) { // skipcq: CXX-W1240
             /*cstat -CERT-INT34-C_a*/
             k = k | (size_t)( k >> i ); /*CERT-INT34-C_a deviation allowed*/
             /*cstat +CERT-INT34-C_a*/
         }
-        k = (size_t)( ( k + 1u ) >> 1u );
+        k = (size_t)( ( k + 1U ) >> 1U );
     }
 
-    return ( k < r ) ? ( k * 2u ) : k;
+    return ( k < r ) ? ( k * 2U ) : k;
 }
 /*============================================================================*/
 size_t qBSBuffer_Count( const qBSBuffer_t * const b )
 {
-    size_t retValue = 0u;
+    size_t retValue = 0U;
 
     if ( NULL != b ) {
         qIndex_t head = b->qPrivate.head;
@@ -61,7 +61,7 @@ qBool_t qBSBuffer_Empty( const qBSBuffer_t * const b )
     qBool_t retValue = qTrue;
 
     if ( NULL != b ) {
-        retValue = ( 0u == qBSBuffer_Count( b ) ) ? qTrue : qFalse;
+        retValue = ( 0U == qBSBuffer_Count( b ) ) ? qTrue : qFalse;
     }
 
     return retValue;
@@ -69,7 +69,7 @@ qBool_t qBSBuffer_Empty( const qBSBuffer_t * const b )
 /*============================================================================*/
 qUINT8_t qBSBuffer_Peek( const qBSBuffer_t * const b )
 {
-    qUINT8_t retValue = 0x0u;
+    qUINT8_t retValue = 0x0U;
 
     if ( NULL != b ) {
         qIndex_t index = b->qPrivate.tail % b->qPrivate.length;
@@ -102,14 +102,14 @@ qBool_t qBSBuffer_Read( qBSBuffer_t * const b,
 {
     qBool_t retValue = qFalse;
 
-    if ( n > 0u ) {
+    if ( n > 0U ) {
         size_t i;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *pData = (qUINT8_t*)dst; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         retValue = qTrue;
-        for ( i = 0u ; i < n ; ++i ) {
+        for ( i = 0U ; i < n ; ++i ) {
             retValue = qBSBuffer_Get( b, &pData[ i ] ); /*MISRAC2004-17.4_a deviation allowed*/
         }
     }
@@ -140,10 +140,10 @@ qBool_t qBSBuffer_Setup( qBSBuffer_t * const b,
 {
     qBool_t retValue = qFalse;
 
-    if ( ( NULL != b ) && ( NULL != pBuffer ) && ( length > 0u ) ) {
+    if ( ( NULL != b ) && ( NULL != pBuffer ) && ( length > 0U ) ) {
         (void)memset( b, 0, sizeof(qBSBuffer_t) );
-        b->qPrivate.head = 0u;
-        b->qPrivate.tail = 0u;
+        b->qPrivate.head = 0U;
+        b->qPrivate.tail = 0U;
         b->qPrivate.buffer = pBuffer;
         b->qPrivate.length = qBSBuffer_CheckValidPowerOfTwo( length );
         retValue = qTrue;

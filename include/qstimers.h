@@ -38,7 +38,7 @@
     qSTimer_t;
 
     /** @brief Macro that defines the value of a disarmed STimer*/
-    #define QSTIMER_DISARM_VALUE                ( 0uL )
+    #define QSTIMER_DISARM_VALUE                ( 0UL )
     /** @brief Macro that can be used to initialize a disarmed STimer instance*/
     #define QSTIMER_INITIALIZER                 { QSTIMER_DISARM_VALUE, QSTIMER_DISARM_VALUE }
     /** @brief Macro that defines the status of an armed STimer*/
@@ -46,7 +46,7 @@
     /** @brief Macro that defines the status of a disarmed STimer*/
     #define QSTIMER_DISARMED                    ( qFalse )
     /** @brief Macro that defines the value that a disarmed STimer returns when the remaining time is requested.*/
-    #define QSTIMER_REMAINING_IN_DISARMED_STATE ( (qClock_t)0xFFFFFFFFuL )
+    #define QSTIMER_REMAINING_IN_DISARMED_STATE ( (qClock_t)0xFFFFFFFFUL )
 
     /**
     * @brief Reload the STimer with the previous specified time.

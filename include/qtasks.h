@@ -30,8 +30,8 @@
 
     /** @addtogroup qtaskmanip
     * @brief API interface to manage tasks.
-    * @pre In order to be able to manage a task, make sure the task has already 
-    * been added to the scheduling scheme bt using qOS_Add_Task(), 
+    * @pre In order to be able to manage a task, make sure the task has already
+    * been added to the scheduling scheme bt using qOS_Add_Task(),
     * qOS_Add_EventTask(), qOS_Add_StateMachineTask() or qOS_Add_ATCLITask().
     *  @{
     */
@@ -108,7 +108,7 @@
     typedef qUINT32_t qTask_Flag_t;
 
     /** @brief Max allowed notification value*/
-    #define QMAX_NOTIFICATION_VALUE         ( UINT32_MAX - 1uL )
+    #define QMAX_NOTIFICATION_VALUE         ( UINT32_MAX - 1UL )
 
     /**
     * @brief An enum to describe the task global states.
@@ -125,26 +125,26 @@
     #if ( Q_TASK_EVENT_FLAGS == 1 )
         /*! @cond  */
         /*The task Bit-Flag definitions*/
-        #define QEVENTFLAG_01               ( 0x00001000uL )
-        #define QEVENTFLAG_02               ( 0x00002000uL )
-        #define QEVENTFLAG_03               ( 0x00004000uL )
-        #define QEVENTFLAG_04               ( 0x00008000uL )
-        #define QEVENTFLAG_05               ( 0x00010000uL )
-        #define QEVENTFLAG_06               ( 0x00020000uL )
-        #define QEVENTFLAG_07               ( 0x00040000uL )
-        #define QEVENTFLAG_08               ( 0x00080000uL )
-        #define QEVENTFLAG_09               ( 0x00100000uL )
-        #define QEVENTFLAG_10               ( 0x00200000uL )
-        #define QEVENTFLAG_11               ( 0x00400000uL )
-        #define QEVENTFLAG_12               ( 0x00800000uL )
-        #define QEVENTFLAG_13               ( 0x01000000uL )
-        #define QEVENTFLAG_14               ( 0x02000000uL )
-        #define QEVENTFLAG_15               ( 0x04000000uL )
-        #define QEVENTFLAG_16               ( 0x08000000uL )
-        #define QEVENTFLAG_17               ( 0x10000000uL )
-        #define QEVENTFLAG_18               ( 0x20000000uL )
-        #define QEVENTFLAG_19               ( 0x40000000uL )
-        #define QEVENTFLAG_20               ( 0x80000000uL )
+        #define QEVENTFLAG_01               ( 0x00001000UL )
+        #define QEVENTFLAG_02               ( 0x00002000UL )
+        #define QEVENTFLAG_03               ( 0x00004000UL )
+        #define QEVENTFLAG_04               ( 0x00008000UL )
+        #define QEVENTFLAG_05               ( 0x00010000UL )
+        #define QEVENTFLAG_06               ( 0x00020000UL )
+        #define QEVENTFLAG_07               ( 0x00040000UL )
+        #define QEVENTFLAG_08               ( 0x00080000UL )
+        #define QEVENTFLAG_09               ( 0x00100000UL )
+        #define QEVENTFLAG_10               ( 0x00200000UL )
+        #define QEVENTFLAG_11               ( 0x00400000UL )
+        #define QEVENTFLAG_12               ( 0x00800000UL )
+        #define QEVENTFLAG_13               ( 0x01000000UL )
+        #define QEVENTFLAG_14               ( 0x02000000UL )
+        #define QEVENTFLAG_15               ( 0x04000000UL )
+        #define QEVENTFLAG_16               ( 0x08000000UL )
+        #define QEVENTFLAG_17               ( 0x10000000UL )
+        #define QEVENTFLAG_18               ( 0x20000000UL )
+        #define QEVENTFLAG_19               ( 0x40000000UL )
+        #define QEVENTFLAG_20               ( 0x80000000UL )
         /*! @endcond  */
         /** @brief A macro directive to indicate that the eventFlags should be cleared. */
         #define QEVENTFLAG_CLEAR            ( qFalse )

@@ -57,7 +57,7 @@
     #define QSM_STATE_TOP           ( NULL )
 
     /*! @cond  */
-    #define QSM_TSOPT_MASK          ( (qSM_TimeoutSpecOptions_t)0x00FFFFFFuL )
+    #define QSM_TSOPT_MASK          ( (qSM_TimeoutSpecOptions_t)0x00FFFFFFUL )
     /*! @endcond  */
 
     /*FSM internal signals*/
@@ -67,29 +67,29 @@
     * @note Transitions by setting the qSM_Handler_t::NextState member are not
     * allowed here
     */
-    #define QSM_SIGNAL_START        ( (qSM_SigId_t)0xFFFFFFFFuL )
+    #define QSM_SIGNAL_START        ( (qSM_SigId_t)0xFFFFFFFFUL )
     /**
     * @brief Built-in signal to indicate if the current state has just exit to
     * another state.
     * @note Transitions are not allowed here
     */
-    #define QSM_SIGNAL_EXIT         ( (qSM_SigId_t)0xFFFFFFFEuL )
+    #define QSM_SIGNAL_EXIT         ( (qSM_SigId_t)0xFFFFFFFEUL )
     /**
     * @brief Built-in signal to indicate if the current state has just entered
     * from another state.
     * @note Transitions are not allowed here
     */
-    #define QSM_SIGNAL_ENTRY        ( (qSM_SigId_t)0xFFFFFFFDuL )
+    #define QSM_SIGNAL_ENTRY        ( (qSM_SigId_t)0xFFFFFFFDUL )
     /**
     * @brief Built-in signal to indicate that there is not signal available.
     */
-    #define QSM_SIGNAL_NONE         ( (qSM_SigId_t)0xFFFFFFFCuL )
+    #define QSM_SIGNAL_NONE         ( (qSM_SigId_t)0xFFFFFFFCUL )
     /**
     * @brief Built-in signal to indicate that a timeout expiration event occurs.
     * @param index The index of the timeout (0, 1, 2... ( @c Q_FSM_MAX_TIMEOUTS-1 ) )
     */
     #define QSM_SIGNAL_TIMEOUT(index)                                       \
-    ( (qSM_SigId_t)0xFFFFFFFBuL - (qSM_SigId_t)( Q_FSM_MAX_TIMEOUTS - 1 )   \
+    ( (qSM_SigId_t)0xFFFFFFFBUL - (qSM_SigId_t)( Q_FSM_MAX_TIMEOUTS - 1 )   \
     + (qSM_SigId_t)(index) )                                                \
 
     /**
@@ -105,49 +105,49 @@
     * engine should set the timeout when the specified state its entering.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_SET_ENTRY     ( (qSM_TimeoutSpecOptions_t)0x01000000uL )
+    #define QSM_TSOPT_SET_ENTRY     ( (qSM_TimeoutSpecOptions_t)0x01000000UL )
     /**
     * @brief This timeout-specification option its used to specify that the
     * engine should reset the timeout when the specified state its entering.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_RST_ENTRY     ( (qSM_TimeoutSpecOptions_t)0x02000000uL )
+    #define QSM_TSOPT_RST_ENTRY     ( (qSM_TimeoutSpecOptions_t)0x02000000UL )
     /**
     * @brief This timeout-specification option its used to specify that the
     * engine should set the timeout when the specified state its exiting*.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_SET_EXIT      ( (qSM_TimeoutSpecOptions_t)0x04000000uL )
+    #define QSM_TSOPT_SET_EXIT      ( (qSM_TimeoutSpecOptions_t)0x04000000UL )
     /**
     * @brief This timeout-specification option its used to specify that the
     * engine should reset the timeout when the specified state its exiting*.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_RST_EXIT      ( (qSM_TimeoutSpecOptions_t)0x08000000uL )
+    #define QSM_TSOPT_RST_EXIT      ( (qSM_TimeoutSpecOptions_t)0x08000000UL )
     /**
     * @brief This timeout-specification option its used to specify that the
     * engine should set the timeout only if it is in reset state.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_KEEP_IF_SET   ( (qSM_TimeoutSpecOptions_t)0x10000000uL )
+    #define QSM_TSOPT_KEEP_IF_SET   ( (qSM_TimeoutSpecOptions_t)0x10000000UL )
     /**
     * @brief This timeout-specification option its used setup the timeout in
     * periodic mode.
     * @note Can be combined with a bitwise OR
     */
-    #define QSM_TSOPT_PERIODIC      ( (qSM_TimeoutSpecOptions_t)0x20000000uL )
+    #define QSM_TSOPT_PERIODIC      ( (qSM_TimeoutSpecOptions_t)0x20000000UL )
 
     /**
     * @brief Minimum value that can be used for an user-defined signal
     */
-    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_SigId_t)0u )
+    #define QSM_SIGNAL_RANGE_MIN    ( (qSM_SigId_t)0U )
     /**
     * @brief Maximum value that can be used for an user-defined signal
     */
     #define QSM_SIGNAL_RANGE_MAX                                            \
-    ( (qSM_SigId_t)( 0xFFFFFFFBuL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )     \
+    ( (qSM_SigId_t)( 0xFFFFFFFBUL - (qSM_SigId_t)Q_FSM_MAX_TIMEOUTS ) )     \
 
-    #define QSM_SIGNAL_TM_MAX       ( (qSM_SigId_t)0xFFFFFFFBuL )
+    #define QSM_SIGNAL_TM_MAX       ( (qSM_SigId_t)0xFFFFFFFBUL )
     #define QSM_SIGNAL_TM_MIN       QSM_SIGNAL_TIMEOUT(0)
 
     /**
@@ -527,10 +527,10 @@
     * @remark To enable the functionality of sending signals to subscribers, you
     * must set the macros #Q_FSM_PS_SIGNALS_MAX and #Q_FSM_PS_SUB_PER_SIGNAL_MAX
     * in the configuration file @c qconfig.h
-    * @warning Data associated to the signal is not deep-copied to a queue or any 
+    * @warning Data associated to the signal is not deep-copied to a queue or any
     * buffer. It's only data pointer (address in memory) that is shallow-copied
-    * to a signal queue so it has to point to a globally accessible memory. 
-    * If it pointed to a sender's local variable (from the stack) it would be 
+    * to a signal queue so it has to point to a globally accessible memory.
+    * If it pointed to a sender's local variable (from the stack) it would be
     * invalid after sender returns from the function that sends the signal.
     * @note The signal-queue has the highest precedence.
     * @param[in] m A pointer to the FSM object to send the signal to a specific
