@@ -438,7 +438,7 @@
                                const qCR_ExtPosition_t pos );
 
     /*! @cond  */
-    qBool_t _qCR_Sem( qCR_Semaphore_t * const sem, const _qCR_Oper_t oper );
+    qBool_t _qCR_Sem( qCR_Semaphore_t * const sem, const _qCR_Oper_t oper ); // skipcq: CXX-E2000
     /*! @endcond */
 
     /** @}*/

@@ -7,7 +7,7 @@
 #include "qcritical.h"
 
 /*! @cond */
-typedef struct _qCritical_Handler_s {
+typedef struct _qCritical_Handler_s { // skipcq: CXX-E2000
     qInt_Disabler_t disable;     /*< Point to the user-supplied function used to disable the hardware interrupts. */
     qInt_Restorer_t restore;     /*< Point to the user-supplied function used to restore the hardware interrupts. */
     volatile qUINT32_t flags;    /*< To save the current interrupt flags before the disable action is performed. */

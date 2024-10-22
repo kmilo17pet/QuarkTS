@@ -330,8 +330,8 @@
                         qList_CompareFcn_t f ) ;
 
     /*! @cond  */
-    qList_Node_t* _qNode_Backward( const qList_Node_t *const n ); /*This function are not intended for the user usage*/
-    qList_Node_t* _qNode_Forward( const qList_Node_t *const n ); /*This function are not intended for the user usage*/
+    qList_Node_t* _qNode_Backward( const qList_Node_t *const n ); /*This function are not intended for the user usage*/ // skipcq: CXX-E2000
+    qList_Node_t* _qNode_Forward( const qList_Node_t *const n ); /*This function are not intended for the user usage*/ // skipcq: CXX-E2000
     /*! @endcond  */
 
     /**
@@ -354,7 +354,7 @@
     /**
     * @brief Typedef to hold a list-iterator instance.
     */
-    typedef struct _qList_Iterator_s {
+    typedef struct _qList_Iterator_s { // skipcq: CXX-E2000
         /*! @cond  */
         qList_t *l;
         qList_Node_t *iter;

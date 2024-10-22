@@ -212,11 +212,11 @@
     typedef struct _qSM_uPublicData_s { // skipcq: CXX-E2000
         _qSM_HANDLER_FIELDS( Q_NONE );
     }
-    _qSM_UnprotectedPublicData_t;
+    _qSM_UnprotectedPublicData_t; // skipcq: CXX-E2000
     typedef struct _qSM_pPublicData_s { // skipcq: CXX-E2000
         _qSM_HANDLER_FIELDS( const );
     }
-    _qSM_ProtectedPublicData_t;
+    _qSM_ProtectedPublicData_t; // skipcq: CXX-E2000
     typedef _qSM_UnprotectedPublicData_t* qSM_UnprotectedHandler_t;
     typedef _qSM_ProtectedPublicData_t* qSM_Handler_t;
     /*! @endcond */

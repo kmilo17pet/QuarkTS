@@ -52,7 +52,7 @@
 
 
     /*! @cond  */
-    typedef volatile struct _qATCLI_Input_s {
+    typedef volatile struct _qATCLI_Input_s { // skipcq: CXX-E2000
         char *storage;              /*< Points to the user-defined storage area for the input. */
         volatile qIndex_t index;    /*< Used to hold the index of the current input-buffer. */
         qIndex_t maxIndex;          /*< Max index  = (Size - 1) */
@@ -96,7 +96,7 @@
     * @note Should be used only in command-callbacks as the only input argument.
     * @note The members of this structure must be read as if it were a pointer.
     */
-    typedef struct _qATCLI_PublicData_s {
+    typedef struct _qATCLI_PublicData_s { // skipcq: CXX-E2000
         /**
         * @brief A pointer to the calling AT Command object.
         */
@@ -187,7 +187,7 @@
     #ifdef DOXYGEN
     qATCLI_Handler_t;
     #else
-    _qATCLI_PublicData_t;
+    _qATCLI_PublicData_t; // skipcq: CXX-E2000
     typedef _qATCLI_PublicData_t* qATCLI_Handler_t;
     #endif
 
@@ -199,7 +199,7 @@
     * The instance should be initialized using the qATCLI_Setup() API.
     * @note Do not access any member of this structure directly.
     */
-    typedef struct _qATCLI_ControlBlock_s {
+    typedef struct _qATCLI_ControlBlock_s { // skipcq: CXX-E2000
         /*! @cond  */
         struct _qATCLI_Private_s {
             void *first;                                                    /*< Points to the first command*/
@@ -252,9 +252,9 @@
     /**
     * @brief An AT-Command object
     */
-    typedef struct _qATCLI_Command_s {
+    typedef struct _qATCLI_Command_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qATCLI_Command_Private_s {              /*< Linked-list pointers. */
+        struct _qATCLI_Command_Private_s {              /*< Linked-list pointers. */ // skipcq: CXX-E2000
             qATCLI_CommandCallback_t cmdCallback;       /*< The command callback. */
             struct _qATCLI_Command_s *next;             /*< Points to the next command in the list. */
             qATCLI_Options_t cmdOpt;                    /*< The command options. */
