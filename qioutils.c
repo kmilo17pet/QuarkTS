@@ -61,7 +61,9 @@ char* qIOUtil_StrChr( const char *s,
                       int c,
                       size_t maxlen )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     char *retValue = NULL;
+    /*cstat +MISRAC2012-Rule-8.13*/
     do {
         if ( (int)(*s) == c ) {
             /*cstat -MISRAC2012-Rule-11.8*/
@@ -217,10 +219,10 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn,
     qBool_t retValue = qFalse;
 
     if ( ( NULL != fcn ) && ( NULL != s ) ) {
-        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-8.13*/
         /*cppcheck-suppress misra-c2012-11.5 */
         char *xPtr = (char*)pStorage; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-8.13*/
         if ( ( qTrue == AIP ) && ( NULL != xPtr ) ) {
             size_t i = 0u;
             while ( (char)'\0' != *s ) {
@@ -240,18 +242,20 @@ qBool_t qIOUtil_OutputString( qPutChar_t fcn,
     return retValue;
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qIOUtil_PrintXData( qPutChar_t fcn,
                             void* pStorage,
                             void *pData,
                             size_t n )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( ( NULL != fcn ) && ( n > 0u ) ) {
-        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
+        /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b -MISRAC2012-Rule-8.13*/
         /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *pdat =(qUINT8_t*)pData;  /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
-        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
+        /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b +MISRAC2012-Rule-8.13 */
         size_t i;
 
         for ( i = 0u ; i < n ; ++i ) {
@@ -303,6 +307,7 @@ static qBool_t qIOUtil_IOOperation( const qIOFcn_t fcn,
     }
     return retValue;
 }
+/*cstat -MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 qBool_t qIOUtil_OutputRaw( const qIOFcn_t oFcn,
                            void* pStorage,
@@ -321,6 +326,7 @@ qBool_t qIOUtil_InputRaw( const qIOFcn_t iFcn,
 {
     return qIOUtil_IOOperation( iFcn, pStorage, pData, n, aip, qTrue );
 }
+/*cstat +MISRAC2012-Rule-8.13*/
 /*============================================================================*/
 char* qIOUtil_U32toX( qUINT32_t value,
                       char *str,

@@ -69,9 +69,9 @@ static void qList_InsertAtBack( qList_t * const l,
 /*============================================================================*/
 static qList_Node_t* qList_RemoveFront( qList_t * const l )
 {
-    qList_Node_t *removed;
-
-    removed = l->head;
+    /*cstat -MISRAC2012-Rule-8.13*/
+    qList_Node_t * const removed = l->head;
+    /*cstat +MISRAC2012-Rule-8.13*/
     l->head = removed->next;
     if ( NULL == l->head ) {
         l->tail = l->head;
@@ -85,9 +85,9 @@ static qList_Node_t* qList_RemoveFront( qList_t * const l )
 /*============================================================================*/
 static qList_Node_t* qList_RemoveBack( qList_t * const l )
 {
-    qList_Node_t *removed;
-
-    removed = l->tail;
+    /*cstat -MISRAC2012-Rule-8.13*/
+    qList_Node_t * const removed = l->tail;
+    /*cstat +MISRAC2012-Rule-8.13*/
     l->tail = removed->prev;
     if ( NULL == l->tail ) {
         l->head = l->tail;
@@ -102,7 +102,9 @@ static qList_Node_t* qList_RemoveBack( qList_t * const l )
 static qList_Node_t* qList_GetNodeAtIndex( const qList_t *const l,
                                            const qList_Position_t p )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     qList_Node_t *iNode;
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBase_t iPos = 0;
 
     for ( iNode = l->head ; ( iPos < (qBase_t)p ) && ( NULL != iNode->next ) ; iNode = iNode->next ) {
@@ -274,8 +276,10 @@ qBool_t qList_Move( qList_t *const dst,
     return retValue;
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 static qBool_t qList_ChangeContainer( qList_ForEachHandle_t h )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( qList_WalkThrough == h->stage ) {
         qList_Node_t *xNode;
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
@@ -309,8 +313,9 @@ qBool_t qList_IsMember( const qList_t * const l,
 /*============================================================================*/
 void* qList_GetFront( const qList_t * const l )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     void *retValue = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != l ) {
         /*cppcheck-suppress cert-EXP05-C */
         retValue = (void*)l->head;
@@ -321,8 +326,9 @@ void* qList_GetFront( const qList_t * const l )
 /*============================================================================*/
 void* qList_GetBack( const qList_t * const l )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     void *retValue = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != l ) {
         /*cppcheck-suppress cert-EXP05-C */
         retValue = (void*)l->tail;
@@ -422,7 +428,7 @@ qBool_t qList_Sort( qList_t * const l,
 qBool_t qList_IteratorSet( qList_Iterator_t *i,
                            qList_t *const l,
                            void *nodeOffset,
-                           qList_Direction_t d )
+                           const qList_Direction_t d )
 {
     qBool_t retValue = qFalse;
 
@@ -447,12 +453,14 @@ qBool_t qList_IteratorSet( qList_Iterator_t *i,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qList_ForEach( qList_t *const l,
+/*cstat -MISRAC2012-Rule-8.13*/
+qBool_t qList_ForEach( const qList_t *const l,
                        const qList_NodeFcn_t f,
                        void *arg,
                        qList_Direction_t d,
                        void *nodeOffset )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( ( NULL != l ) && ( NULL != f ) && ( ( &QLIST_FORWARD == d ) || ( &QLIST_BACKWARD == d ) ) ) {
@@ -620,8 +628,8 @@ qList_Iterator_t qList_End( qList_t *const xList )
     return i;
 }
 /*============================================================================*/
-qBool_t qListIterator_Until( qList_Iterator_t *i,
-                             void *node )
+qBool_t qListIterator_Until( const qList_Iterator_t * const i,
+                             const void * const node )
 {
     qBool_t ret;
 
@@ -651,7 +659,7 @@ void qListIterator_Backward( qList_Iterator_t *i )
     i->current = (void*)ret;
 }
 /*============================================================================*/
-void* qListIterator_Get( qList_Iterator_t *i )
+void* qListIterator_Get( const qList_Iterator_t * const i )
 {
     return i->current;
 }

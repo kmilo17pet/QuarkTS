@@ -376,7 +376,7 @@
     qBool_t qList_IteratorSet( qList_Iterator_t *i,
                                qList_t *const l,
                                void *nodeOffset,
-                               qList_Direction_t d );
+                               const qList_Direction_t d );
 
     /**
     * @brief Operate on each element of the list.
@@ -394,7 +394,7 @@
     * @return #qTrue if the walk through was early terminated, otherwise returns
     * #qFalse.
     */
-    qBool_t qList_ForEach( qList_t *const l,
+    qBool_t qList_ForEach( const qList_t *const l,
                            const qList_NodeFcn_t f,
                            void *arg,
                            qList_Direction_t d,
@@ -436,8 +436,8 @@
     * @c NULL as argument.
     * @return  #qTrue if the iterator has reach the given node.
     */
-    qBool_t qListIterator_Until( qList_Iterator_t *i,
-                                 void *node );
+    qBool_t qListIterator_Until( const qList_Iterator_t * const i,
+                                 const void * const node );
 
     /**
     * @brief Move the iterator forward
@@ -455,7 +455,7 @@
     * @brief Gets the node that the iterator is currently pointing to.
     * @return A pointer to the node currently being pointed.
     */
-    void* qListIterator_Get( qList_Iterator_t *i );
+    void* qListIterator_Get( const qList_Iterator_t * const i );
 
     /** @}*/
     #ifdef __cplusplus

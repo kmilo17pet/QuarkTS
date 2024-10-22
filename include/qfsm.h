@@ -632,7 +632,7 @@
     * @return Returns a pointer to the requested attribute. Otherwise returns
     * @c NULL.
     */
-    void* qStateMachine_Get_State( qSM_State_t * const s,
+    void* qStateMachine_Get_State( const qSM_State_t * const s,
                                    const qSM_Attribute_t a );
 
     /**
@@ -672,7 +672,7 @@
     * @param[in] s Signal ID to which the subscriber FSM wants to unsubscribe.
     * @return Returns #qTrue on success, otherwise returns #qFalse.
     */
-    qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t * const m,
+    qBool_t qStateMachine_UnsubscribeFromSignal( const qSM_t * const m,
                                                  qSM_SigId_t s );
 
     /** @}*/

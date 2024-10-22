@@ -12,8 +12,9 @@
 typedef size_t qAddress_t;  /*restrict*/
 
 #define BYTE_ALIGN_MASK     ( (size_t)Q_BYTE_ALIGNMENT - (size_t)1u )
-
+/*cstat -MISRAC2012-Rule-8.9_b*/
 static qUINT8_t defaultPoolMemory[ Q_DEFAULT_HEAP_SIZE ] = { 0 }; // skipcq: CXX-W2009
+/*cstat +MISRAC2012-Rule-8.9_b*/
 static qMemMang_Pool_t defaultMemPool = { // skipcq: CXX-W2009
                                             {
                                                 NULL,
@@ -45,7 +46,7 @@ static const size_t heapStructSize = (
                                      );
 
 static void qMemMang_HeapInit( qMemMang_Pool_t *mPool );
-static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool,
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t * const mPool,
                                               qMemMang_BlockConnect_t *xBlock );
 
 /*============================================================================*/
@@ -177,11 +178,13 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
     mPool->qPrivate.freeBytesRemaining = firstFreeBlock->blockSize;
 }
 /*============================================================================*/
-static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t *mPool,
+/*cstat -MISRAC2012-Rule-8.13*/
+static void qMemMang_InsertBlockIntoFreeList( qMemMang_Pool_t * const mPool,
                                               qMemMang_BlockConnect_t *xBlock )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qMemMang_BlockConnect_t *iterator;
-    qUINT8_t *ptr;
+    const qUINT8_t *ptr;
 
     /*
     Iterate through the list until a block is found that has a higher address
@@ -232,8 +235,9 @@ void* qMalloc( size_t mSize )
 void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
                          size_t pSize )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     void *pAllocated = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != mPool ) {
         if ( NULL == mPool->qPrivate.end ) {
             /*initialize the heap to setup the list of free blocks*/
@@ -314,7 +318,7 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
     return pAllocated;
 }
 /*============================================================================*/
-size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool )
+size_t qMemMang_Get_FreeSize( const qMemMang_Pool_t *mPool )
 {
     size_t retValue;
 

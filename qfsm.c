@@ -15,15 +15,15 @@ typedef qByte_t qSM_LCA_t;
 static void qStateMachine_Transition( qSM_t *m,
                                       qSM_State_t *target,
                                       const qSM_TransitionHistoryMode_t mHistory );
-static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
-                                            qSM_State_t * const target );
+static qSM_LCA_t qStateMachine_LevelsToLCA( const qSM_t * const m,
+                                            const qSM_State_t * const target );
 static void qStateMachine_ExitUpToLCA( qSM_t * const m,
                                        qSM_LCA_t lca );
 static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h,
                                           const qSM_Signal_t sig,
                                           qSM_State_t * const s );
-static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t * const m,
-                                                       qSM_State_t * const s,
+static qSM_Status_t qStateMachine_InvokeStateCallback( const qSM_t * const m,
+                                                       const qSM_State_t * const s,
                                                        qSM_UnprotectedHandler_t h );
 static qSM_State_t* qStateMachine_StateOnExit( qSM_t * const m,
                                                qSM_State_t * const s );
@@ -40,11 +40,11 @@ static void qStateMachine_TraceOnStart( qSM_t * const m,
                                         qSM_State_t **entryPath );
 static qSM_Signal_t qStateMachine_CheckForSignals( qSM_t * const m,
                                                    const qSM_Signal_t sig );
-static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState,
+static void qStateMachine_SweepTransitionTable( const qSM_State_t * const currentState,
                                                 qSM_UnprotectedHandler_t h );
 static void qStateMachine_TimeoutCheckSignals( qSM_t * const m );
 static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
-                                                          qSM_State_t *current,
+                                                          const qSM_State_t * const current,
                                                           const qSM_SigId_t sig );
 static qBool_t qStateMachine_SignalSend( qSM_t * const m,
                                          qSM_SigId_t sig,
@@ -159,7 +159,7 @@ qBool_t qStateMachine_SubscribeToSignal( qSM_t * const m,
     return retValue;
 }
 /*============================================================================*/
-qBool_t qStateMachine_UnsubscribeFromSignal( qSM_t * const m,
+qBool_t qStateMachine_UnsubscribeFromSignal( const qSM_t * const m,
                                              qSM_SigId_t s )
 {
     qBool_t retValue = qFalse;
@@ -228,8 +228,8 @@ static void qStateMachine_Transition( qSM_t *m,
     m->qPrivate.next = target; /*notify SM that there was indeed a transition*/
 }
 /*============================================================================*/
-static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
-                                            qSM_State_t * const target )
+static qSM_LCA_t qStateMachine_LevelsToLCA( const qSM_t * const m,
+                                            const qSM_State_t * const target )
 {
     qSM_LCA_t xLca = 0u;
 
@@ -241,7 +241,8 @@ static qSM_LCA_t qStateMachine_LevelsToLCA( qSM_t * const m,
         xLca = 1u; /*recursive transition, only a level needs to be performed*/
     }
     else {
-        qSM_State_t *s, *t;
+        const qSM_State_t *s;
+        const qSM_State_t *t;
         qBool_t xBreak = qFalse; /*to be in compliance with MISRAC2012-Rule-15.5*/
         qSM_LCA_t n = 0u;
 
@@ -292,8 +293,8 @@ static void qStateMachine_PrepareHandler( qSM_UnprotectedHandler_t h,
     h->state = s;
 }
 /*============================================================================*/
-static qSM_Status_t qStateMachine_InvokeStateCallback( qSM_t *m,
-                                                       qSM_State_t * const s,
+static qSM_Status_t qStateMachine_InvokeStateCallback( const qSM_t * const m,
+                                                       const qSM_State_t * const s,
                                                        qSM_UnprotectedHandler_t h )
 {
     if ( NULL != m->qPrivate.surrounding ) {
@@ -560,6 +561,7 @@ qBool_t qStateMachine_Setup( qSM_t * const m,
     return retValue;
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
                                       qSM_State_t * const s,
                                       qSM_State_t * const parent,
@@ -567,6 +569,7 @@ qBool_t qStateMachine_StateSubscribe( qSM_t * const m,
                                       qSM_State_t * const init,
                                       void *pData )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( NULL != s ) {
@@ -620,7 +623,7 @@ qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m,
     return retValue;
 }
 /*============================================================================*/
-static void qStateMachine_SweepTransitionTable( qSM_State_t * const currentState,
+static void qStateMachine_SweepTransitionTable( const qSM_State_t * const currentState,
                                                 qSM_UnprotectedHandler_t h )
 {
     size_t i, n;
@@ -742,10 +745,10 @@ static void qStateMachine_TimeoutCheckSignals( qSM_t * const m )
 }
 /*============================================================================*/
 static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
-                                                          qSM_State_t *current,
+                                                          const qSM_State_t * const current,
                                                           const qSM_SigId_t sig )
 {
-    qSM_TimeoutStateDefinition_t *tbl = current->qPrivate.tdef;
+    const qSM_TimeoutStateDefinition_t * const tbl = current->qPrivate.tdef;
     size_t n = current->qPrivate.nTm;
 
     if ( ( n > 0u ) && ( NULL != tbl ) ) {
@@ -868,10 +871,12 @@ qBool_t qStateMachine_TimeoutStop( qSM_t * const m,
     return retValue;
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 void* qStateMachine_Get_Machine( qSM_t * const m,
                                  const qSM_Attribute_t a )
 {
     void *xAttribute = NULL;
+    /*cstat +MISRAC2012-Rule-8.13*/
 
     if ( NULL != m ) {
         switch ( a ) {
@@ -900,11 +905,12 @@ void* qStateMachine_Get_Machine( qSM_t * const m,
     return xAttribute;
 }
 /*============================================================================*/
-void* qStateMachine_Get_State( qSM_State_t * const s,
+void* qStateMachine_Get_State( const qSM_State_t * const s,
                                const qSM_Attribute_t a )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     void *xAttribute = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != s ) {
         switch ( a ) {
             case qSM_ATTRIB_COMPOSITE_INITSTATE:

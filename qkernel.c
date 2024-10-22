@@ -213,9 +213,11 @@ qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t rCallback )
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qOS_Notification_Spread( void *eventData,
                                  const qTask_NotifyMode_t mode )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     #if ( Q_NOTIFICATION_SPREADER == 1 )
@@ -277,9 +279,11 @@ static void qOS_PriorityQueue_ClearIndex( qIndex_t indexToClear )
     --kernel.queueIndex; /*decrease the index*/
 }
 /*========================== Shared Private Method ===========================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qOS_PriorityQueue_Insert( qTask_t * const Task,
                                   void *pData )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     #if ( Q_PRIO_QUEUE_SIZE > 0 )
         qBool_t retValue = qFalse;
         const qBase_t queueMaxIndex = Q_PRIO_QUEUE_SIZE - 1;
@@ -351,8 +355,9 @@ qBool_t qOS_PriorityQueue_IsTaskInside( const qTask_t * const Task )
 /*============================================================================*/
 static qTask_t* qOS_PriorityQueue_Get( void )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     qTask_t *xTask = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( kernel.queueIndex >= 0 ) { /*queue has elements*/
         qPriority_t maxPriority;
         qIndex_t indexTaskToExtract = 0u;
@@ -522,7 +527,7 @@ qBool_t qOS_Add_StateMachineTask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_FSM_TaskCallback( qEvent_t e )
 {
-    qTask_t *xTask = qTask_Self();
+    const qTask_t * const xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     /*cppcheck-suppress misra-c2012-11.5 */
     qSM_t *sm = (qSM_t *)xTask->qPrivate.aObj;
@@ -559,7 +564,7 @@ qBool_t qOS_Add_ATCLITask( qTask_t * const Task,
 /*============================================================================*/
 static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback */
 {
-    qTask_t *xTask = qTask_Self();
+    const qTask_t * const xTask = qTask_Self();
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     /*cppcheck-suppress misra-c2012-11.5 */
     qATCLI_t *cli = (qATCLI_t *)xTask->qPrivate.aObj;
@@ -572,8 +577,10 @@ static void qOS_ATCLI_TaskCallback( qEvent_t e )/*wrapper for the task callback 
     (void)qATCLI_Run( cli ); /* MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed */
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 static void qOS_ATCLI_NotifyFcn( qATCLI_t * const cli )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qTask_t *xTask;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     /*cppcheck-suppress misra-c2012-11.5 */
@@ -748,15 +755,18 @@ static qBool_t qOS_CheckForReadyTasks( void )
             qOS_Set_TaskFlags( xTask, QTASK_BIT_SHUTDOWN, qTrue );
         }
     #endif
-
+    /*cstat -MISRAC2012-Rule-14.2*/
     for ( i = qList_Begin( waitingList) ; qListIterator_Until( &i, NULL ) ; qListIterator_Forward( &i ) ) {
+    /*cstat +MISRAC2012-Rule-14.2*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*cppcheck-suppress misra-c2012-11.5 */
         xTask = (qTask_t*)qListIterator_Get( &i );
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         #if ( Q_NOTIFICATION_SPREADER == 1 )
             if ( NULL != kernel.nSpreader.mode ) {
-                void *eventData= kernel.nSpreader.eventData;
+                /*cstat -MISRAC2012-Rule-8.13*/
+                void * const eventData = kernel.nSpreader.eventData;
+                /*cstat +MISRAC2012-Rule-8.13*/
                 _qTrace_Kernel( "(*)Spreading notification on task ",
                                 xTask,
                                 kernel.nSpreader.eventData );
@@ -915,8 +925,9 @@ static void qOS_DispatchTasks( qList_t *xList )
 {
     qList_Iterator_t i;
     qTaskFcn_t taskActivities;
-
+    /*cstat -MISRAC2012-Rule-14.2*/
     for ( i = qList_Begin( xList) ; qListIterator_Until( &i, NULL ) ; qListIterator_Forward( &i ) ) {
+    /*cstat +MISRAC2012-Rule-14.2*/
         /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
         /*cppcheck-suppress misra-c2012-11.5 */
         qTask_t *xTask = (qTask_t*)qListIterator_Get( &i );
@@ -1053,8 +1064,10 @@ void qOS_Set_TaskFlags( qTask_t * const Task,
 }
 /*============================================================================*/
 #if ( Q_ALLOW_TASK_NAMING == 1 )
+/*cstat -MISRAC2012-Rule-8.13*/
 static qBool_t qOS_TaskNameLookup( qList_ForEachHandle_t h )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( qList_WalkThrough == h->stage ) {
@@ -1081,8 +1094,9 @@ static qBool_t qOS_TaskNameLookup( qList_ForEachHandle_t h )
 /*============================================================================*/
 qTask_t* qOS_FindTaskByName( const char *name )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     qTask_t *found = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != name ) {
         const void *xLookupData[ 2 ] = { (const void*)name, NULL };
         const size_t maxLists = qFLM_ArraySize( kernel.coreLists );
@@ -1112,8 +1126,10 @@ qTask_t* qOS_FindTaskByName( const char *name )
 #endif /*#if ( Q_ALLOW_TASK_NAMING == 1 )*/
 #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qOS_YieldToTask( qTask_t * const Task )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
     if ( ( NULL != kernel.currentTask ) && ( Task != kernel.currentTask ) ) {
         kernel.yieldTask = Task;

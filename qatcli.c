@@ -166,7 +166,7 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
         if ( cmd->qPrivate.cmdLen >= 2u ) {
             /*command should start with an <at> at the beginning */
             if ( ( 'a' == textCommand[ 0 ] ) && ( 't' == textCommand[ 1 ] ) ) {
-                qATCLI_Command_t *iCmd = NULL;
+                qATCLI_Command_t const *iCmd = NULL;
                 cmd->Text = (char*)textCommand;
                 cmd->qPrivate.cmdCallback = cFcn; /*install the callback*/
                 cmd->qPrivate.cmdOpt = 0x0FFFu & cmdOpt; /*high nibble not used yet*/
@@ -195,11 +195,13 @@ qBool_t qATCLI_CmdSubscribe( qATCLI_t * const cli,
     return retValue;
 }
 /*============================================================================*/
-qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli,
+qATCLI_Command_t* qATCLI_CmdIterate( const qATCLI_t * const cli,
                                      const qBool_t reload )
 {
     static qATCLI_Command_t *iterator = NULL; // skipcq: CXX-W2011
+    /*cstat -MISRAC2012-Rule-8.13 */
     qATCLI_Command_t *iCmd = NULL;
+    /*cstat +MISRAC2012-Rule-8.13 */
 
     if ( NULL != cli ) {
         if ( qTrue == reload ) {
@@ -440,8 +442,10 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
     return retValue;
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qATCLI_Input_Flush( qATCLI_t * const cli )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( NULL != cli ) {
@@ -588,11 +592,14 @@ static size_t qATCLI_NumOfArgs( const char *str )
 /*============================================================================*/
 static char* GetArgPtr( qIndex_t n )
 {
+    /*cstat -MISRAC2012-Rule-8.13 */
     char *retPtr = NULL;
+    /*cstat +MISRAC2012-Rule-8.13 */
 
     if ( ( NULL != cli_CurrentCmdHelper ) && ( n > 0u ) ) {
-        qATCLI_Handler_t param = cli_CurrentCmdHelper;
-
+        /*cstat -MISRAC2012-Rule-8.13*/
+        const qATCLI_Handler_t param = cli_CurrentCmdHelper;
+        /*cstat +MISRAC2012-Rule-8.13*/
         if ( qATCLI_CMDTYPE_PARA == param->Type ) {
             if ( 1u == n ) {
                 retPtr = param->StrData;
@@ -658,10 +665,13 @@ static qUINT32_t GetArgHex( qIndex_t n )
 static char* GetArgString( qIndex_t n,
                            char* pOut )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     char *retPtr = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( ( NULL != cli_CurrentCmdHelper ) && ( NULL != pOut ) && ( n > 0u ) ) {
+        /*cstat -MISRAC2012-Rule-8.13*/
         qATCLI_Handler_t param = cli_CurrentCmdHelper;
+        /*cstat +MISRAC2012-Rule-8.13*/
 
         if ( qATCLI_CMDTYPE_PARA == param->Type ) {
             qIndex_t i, j, argc = 0u;

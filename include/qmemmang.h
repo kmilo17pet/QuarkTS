@@ -114,7 +114,7 @@
     * select the default memory pool.
     * @return The size of the unallocated heap.
     */
-    size_t qMemMang_Get_FreeSize( qMemMang_Pool_t *mPool );
+    size_t qMemMang_Get_FreeSize( const qMemMang_Pool_t *mPool );
 
     /**
     * @brief Allocate a block of memory that is @a pSize bytes large. Allocation

@@ -117,8 +117,9 @@ qBool_t qQueue_IsFull( const qQueue_t * const q )
 /*============================================================================*/
 void* qQueue_Peek( const qQueue_t * const q )
 {
+    /*cstat -MISRAC2012-Rule-8.13*/
     qUINT8_t *retValue = NULL;
-
+    /*cstat +MISRAC2012-Rule-8.13*/
     if ( NULL != q ) {
         size_t itemsWaiting;
         qCritical_Enter();

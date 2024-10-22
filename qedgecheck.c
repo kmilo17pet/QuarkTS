@@ -34,7 +34,7 @@ static void qEdgeCheck_StateCheck( qEdgeCheck_t * const ec );
 static void qEdgeCheck_StateUpdate( qEdgeCheck_t * const ec );
 
 typedef void (*qEdgeCheck_NodeIteratorFcn_t)( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
-static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg );
+static void qEdgeCheck_NodeChangeIterator( const qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg );
 static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
 static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, qBool_t v, void *arg );
 
@@ -89,10 +89,16 @@ static void qEdgeCheck_StateWait( qEdgeCheck_t * const ec )
     }
 }
 /*============================================================================*/
-static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_NodeIteratorFcn_t fcn, void *arg )
+/*cstat -MISRAC2012-Rule-8.13*/
+static void qEdgeCheck_NodeChangeIterator( const qEdgeCheck_t * const ec, 
+                                           qEdgeCheck_NodeIteratorFcn_t fcn, 
+                                           void *arg )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qCoreRegSize_t pinReader = ec->qPrivate.reader;
+    /*cstat -MISRAC2012-Rule-8.13*/
     qEdgeCheck_IONode_t *n;
+    /*cstat +MISRAC2012-Rule-8.13*/
 
     for ( n = ec->qPrivate.head ; NULL != n ; n = n->qPrivate.next ) {
         qBool_t v = pinReader( n->qPrivate.xPort, n->qPrivate.xPin );
@@ -100,7 +106,9 @@ static void qEdgeCheck_NodeChangeIterator( qEdgeCheck_t * const ec, qEdgeCheck_N
     }
 }
 /*============================================================================*/
-static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, void *arg )
+static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, 
+                                           qBool_t v, 
+                                           void *arg )
 {
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     /*cppcheck-suppress misra-c2012-11.5 */
@@ -122,8 +130,12 @@ static void qEdgeCheck_IterNodeStateCheck( qEdgeCheck_IONode_t *n, qBool_t v, vo
     }
 }
 /*============================================================================*/
-static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, qBool_t v, void *arg )
+/*cstat -MISRAC2012-Rule-8.13*/
+static void qEdgeCheck_IterNodeStateUpdate( qEdgeCheck_IONode_t *n, 
+                                            qBool_t v, 
+                                            void *arg )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     Q_UNUSED( arg );
     if ( n->qPrivate.prevPinValue != v ) {
         /*set the edge status*/
@@ -151,8 +163,10 @@ static void qEdgeCheck_StateUpdate( qEdgeCheck_t * const ec )
     ec->qPrivate.start = qClock_GetTick(); /*reload the time*/
 }
 /*============================================================================*/
+/*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qEdgeCheck_Update( qEdgeCheck_t * const ec )
 {
+    /*cstat +MISRAC2012-Rule-8.13*/
     qBool_t retValue = qFalse;
 
     if ( NULL != ec ) {

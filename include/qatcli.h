@@ -359,7 +359,7 @@
     * @return The current iterated command. @c NULL when no more commands are
     * available.
     */
-    qATCLI_Command_t* qATCLI_CmdIterate( qATCLI_t * const cli,
+    qATCLI_Command_t* qATCLI_CmdIterate( const qATCLI_t * const cli,
                                          const qBool_t reload );
 
     /**
