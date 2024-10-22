@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 9.1\common\bin\cspybat" -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --backend -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
+"C:\iar\ewarm-9.60.2\common\bin\cspybat" -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" --backend -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files\IAR Systems\Embedded Workbench 9.1\common\bin\cspybat" -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
+"C:\iar\ewarm-9.60.2\common\bin\cspybat" -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\Camilo\Documents\GitHub\QuarkTS\check\settings\c-stat-check.Debug.driver.xcl" 
 
 @echo off 
 :end

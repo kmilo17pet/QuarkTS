@@ -15,6 +15,11 @@
         <Enabled>0</Enabled>
         <ShowSource>1</ShowSource>
     </Trace1>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ "$PROJ_DIR$\LogFile1.log"</LogFile>
+        <Category2>_ 2</Category2>
+    </LogFile>
     <InterruptLog>
         <GraphEnabled>0</GraphEnabled>
         <LogEnabled>0</LogEnabled>
