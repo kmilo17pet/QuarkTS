@@ -39,7 +39,8 @@
         "qclock.h": "c",
         "qatparser.h": "c",
         "qmemmang.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "typeinfo": "c"
     },
     "grammarly.selectors": [
         {
