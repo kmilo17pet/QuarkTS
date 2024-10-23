@@ -79,10 +79,10 @@
     _qCR_Oper_t; // skipcq: CXX-E2000
 
     /*Construction statements*/
-    #define _qCR_LCInit                                                     \
+    #define _qCR_LCInit                              /* skipcq: CXX-E2000 */\
     { _qCR_PC_INIT_VAL, _qCR_UNDEFINED, QSTIMER_INITIALIZER }               \
 
-    #define _qCR_RT( _PT_ )                                                 \
+    #define _qCR_RT( _PT_ )                         /* skipcq: CXX-E2000 */ \
     case (_qCR_TaskPC_t)(_PT_) :                                            \
 
     #define _qCR_JUMP( _DST_ )                              switch (_DST_) // skipcq: CXX-W1164
@@ -94,7 +94,7 @@
 
     #define _qCR_EXIT                                       goto _qCR_ExitPoint // skipcq: CXX-E2000
 
-    #define _qCR_DEF                                                        \
+    #define _qCR_DEF                                 /* skipcq: CXX-E2000 */\
     static _qCR_Instance_t _qCRState = _qCR_LCInit;                         \
     _qCR_Instance_t * const _qcr = &_qCRState                               \
 
@@ -103,14 +103,14 @@
     /*! @cond  */
     /*Core Statements*/
     /*=======================================================================*/
-    #define _qCR_Start                                                      \
+    #define _qCR_Start                               /* skipcq: CXX-E2000 */\
     _qCR_DEF;                                                               \
     _qCR_JUMP( _qcr->instr ) {                                              \
         _qCR_RT( _qCR_PC_INIT_VAL )                                         \
 
 
     /*=======================================================================*/
-    #define _qCR_hStart( handle )                                           \
+    #define _qCR_hStart( handle )                    /* skipcq: CXX-E2000 */\
     _qCR_DEF;                                                               \
     if ( NULL == (handle) ) {                                               \
         (handle) = &_qCRState;                                              \
@@ -120,28 +120,28 @@
         _qCR_RT( _qCR_PC_INIT_VAL )                                         \
 
     /*=======================================================================*/
-    #define _qCR_Dispose                                                    \
+    #define _qCR_Dispose                             /* skipcq: CXX-E2000 */\
         _qcr->instr = _qCR_PC_INIT_VAL;                                     \
     }                                                                       \
     _qCR_ExitPoint: Q_UNUSED(0)                                             \
 
 
     /*=======================================================================*/
-    #define _qCR_Yield                                                      \
+    #define _qCR_Yield                               /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), _qCR_EXIT );   \
     } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
-    #define _qCR_Restart                                                    \
+    #define _qCR_Restart                             /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( _qcr->instr, _qCR_PC_INIT_VAL, Q_NONE, _qCR_EXIT );      \
     } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
-    #define _qCR_wu_Assert( condition )                                     \
+    #define _qCR_wu_Assert( condition )              /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
         if ( !(condition) ) {                                               \
@@ -151,7 +151,7 @@
 
 
     /*=======================================================================*/
-    #define _qCR_GetPosition( position )                                    \
+    #define _qCR_GetPosition( position )             /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( position, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) );    \
         Q_UNUSED( (position) );                                             \
@@ -159,14 +159,14 @@
 
 
     /*=======================================================================*/
-    #define _qCR_RestoreFromPosition( position )                            \
+    #define _qCR_RestoreFromPosition( position )     /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( _qcr->instr, (position), Q_NONE, _qCR_EXIT );            \
     } while ( qFalse )                                                      \
 
 
     /*=======================================================================*/
-    #define _qCR_Delay( dTime )                                             \
+    #define _qCR_Delay( dTime )                      /* skipcq: CXX-E2000 */\
     do {                                                                    \
         qCR_TimeoutSet( dTime );                                            \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
@@ -177,7 +177,7 @@
 
 
     /*=======================================================================*/
-    #define _qCR_wu_TmrAssert( condition, timeout )                         \
+    #define _qCR_wu_TmrAssert( condition, timeout )  /* skipcq: CXX-E2000 */\
     do {                                                                    \
         qCR_TimeoutSet( timeout );                                          \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
@@ -188,13 +188,13 @@
 
 
     /*=======================================================================*/
-    #define _qCR_do                                                         \
+    #define _qCR_do                                  /* skipcq: CXX-E2000 */\
     do {                                                                    \
         _qCR_LCON( _qcr->instr, __LINE__, _qCR_RT(__LINE__), Q_UNUSED(0) ); \
 
 
     /*=======================================================================*/
-    #define _qCR_until( condition )                                         \
+    #define _qCR_until( condition )                  /* skipcq: CXX-E2000 */\
         if ( !(condition) ) {                                               \
             _qCR_EXIT;                                                      \
         }                                                                   \

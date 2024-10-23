@@ -201,7 +201,7 @@
     */
     typedef struct _qATCLI_ControlBlock_s { // skipcq: CXX-E2000
         /*! @cond  */
-        struct _qATCLI_Private_s {
+        struct _qATCLI_Private_s { // skipcq: CXX-E2000
             void *first;                                                    /*< Points to the first command*/
             const char *ok_rsp;                                             /*< The response printed when OK is needed. */
             const char *er_rsp;                                             /*< The response printed when ERROR is needed. */
