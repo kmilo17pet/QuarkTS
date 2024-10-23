@@ -615,7 +615,10 @@ static qTrigger_t qOS_AttachedQueue_CheckEvents( const qTask_t * const Task )
     qTrigger_t retValue = qTriggerNULL;
 
     if ( NULL != Task->qPrivate.aQueue ) {
-        qBool_t fullFlag, countFlag, receiverFlag, emptyFlag;
+        qBool_t fullFlag;
+        qBool_t countFlag;
+        qBool_t receiverFlag;
+        qBool_t emptyFlag;
         size_t qCount; /*current queue count*/
 
         fullFlag = qOS_Get_TaskFlag( Task, QTASK_BIT_QUEUE_FULL );

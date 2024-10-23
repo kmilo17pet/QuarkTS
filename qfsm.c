@@ -626,7 +626,8 @@ qBool_t qStateMachine_InstallSignalQueue( qSM_t * const m,
 static void qStateMachine_SweepTransitionTable( const qSM_State_t * const currentState,
                                                 qSM_UnprotectedHandler_t h )
 {
-    size_t i, n;
+    size_t i;
+    size_t n;
     const qSM_Transition_t *iTransition;
     /*cstat -MISRAC2012-Rule-11.5 -CERT-EXP36-C_b*/
     /*cppcheck-suppress misra-c2012-11.5 */
@@ -753,7 +754,8 @@ static void qStateMachine_TimeoutPerformSpecifiedActions( qSM_t * const m,
 
     if ( ( n > 0U ) && ( NULL != tbl ) ) {
         size_t i;
-        qSM_TimeoutSpecOptions_t setCheck, resetCheck;
+        qSM_TimeoutSpecOptions_t setCheck;
+        qSM_TimeoutSpecOptions_t resetCheck;
 
         if ( QSM_SIGNAL_ENTRY == sig ) {
             setCheck = QSM_TSOPT_SET_ENTRY;

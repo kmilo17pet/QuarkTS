@@ -290,7 +290,8 @@ qBool_t qATCLI_ISRHandlerBlock( qATCLI_t * const cli,
 static char* qATCLI_Input_Fix( char *s,
                                size_t maxlen )
 {
-    int i, j = 0;
+    int i;
+    int j = 0;
     int noL = 0;
 
     for ( i = 0 ; ( (char)'\0' != s[ i ] ) && ( maxlen > 0U ) ; ++i ) {
@@ -419,7 +420,8 @@ static qBool_t qATCLI_PreProcessing( qATCLI_Command_t * const cmd,
                 }
                 else { /*definitely is a PARA command*/
                     if ( 0U != ( cmd->qPrivate.cmdOpt & (qATCLI_Options_t)qATCLI_CMDTYPE_PARA ) ) { /*check if is allowed*/
-                        size_t argMin, argMax;
+                        size_t argMin;
+                        size_t argMax;
                         /*get the args count using the default delimiter*/
                         params->NumArgs = qATCLI_NumOfArgs( params->StrData );
                         argMin = QATCLI_CMD_MASK_ARG_MIN_NUM( (size_t)cmd->qPrivate.cmdOpt );
@@ -468,7 +470,8 @@ qBool_t qATCLI_Run( qATCLI_t * const cli )
         qATCLI_Input_t *xInput = &cli->qPrivate.xInput;
         /*cstat -CERT-STR32-C*/
         if ( qTrue == xInput->ready ) { /*a new input has arrived*/
-            qATCLI_Response_t outRetval, cliRetVal;
+            qATCLI_Response_t outRetval;
+            qATCLI_Response_t cliRetVal;
             char *inputBuffer = xInput->storage; /*to conform MISRAC2012-Rule-13.2_b*/
 
             inputBuffer[ xInput->maxIndex ] = (char)'\0';
@@ -605,7 +608,8 @@ static char* GetArgPtr( qIndex_t n )
                 retPtr = param->StrData;
             }
             else {
-                qIndex_t i, argc = 0U;
+                qIndex_t i;
+                qIndex_t argc = 0U;
 
                 --n;
                 for ( i = 0U ; (char)'\0' != param->StrData[ i ] ; ++i ) {
@@ -674,10 +678,11 @@ static char* GetArgString( qIndex_t n,
         /*cstat +MISRAC2012-Rule-8.13*/
 
         if ( qATCLI_CMDTYPE_PARA == param->Type ) {
-            qIndex_t i, j, argc = 0U;
+            qIndex_t i;
+            qIndex_t j = 0U;
+            qIndex_t argc = 0U;
 
             --n;
-            j = 0U;
             /*cstat -CERT-STR34-C*/
             for ( i = 0U ; (char)'\0' != param->StrData[ i ] ; ++i ) {
                 if ( argc == n ) {

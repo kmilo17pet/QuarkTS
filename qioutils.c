@@ -189,7 +189,8 @@ qBool_t qIOUtil_SwapBytes( void *pData,
         /*cppcheck-suppress misra-c2012-11.5 */
         qUINT8_t *p = (qUINT8_t*)pData; /*MISRAC2012-Rule-11.5,CERT-EXP36-C_b deviation allowed*/
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
-        size_t lo, hi;
+        size_t lo;
+        size_t hi;
 
         hi = n - 1U;
         for ( lo = 0U ; hi > lo ; ++lo ) {
@@ -292,7 +293,8 @@ static qBool_t qIOUtil_IOOperation( const qIOFcn_t fcn,
         /*cstat +MISRAC2012-Rule-11.5 +CERT-EXP36-C_b*/
         char tmp;
         char *ptmp = &tmp;
-        char **dstDat, **dstStg;
+        char **dstDat;
+        char **dstStg;
 
         /* Operation -> Output=qFalse : Input=qTrue */
         dstDat = ( qFalse == operation ) ? &ptmp : &cdata;
@@ -381,7 +383,8 @@ qUINT32_t qIOUtil_XtoU32( const char *s )
 /*============================================================================*/
 qFloat64_t qIOUtil_AtoF( const char *s )
 {
-    qFloat64_t rez = 0.0, fact;
+    qFloat64_t rez = 0.0;
+    qFloat64_t fact;
     qBool_t point_seen = qFalse;
     int sgn = 1;
     char c;

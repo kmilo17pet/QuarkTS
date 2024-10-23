@@ -367,9 +367,12 @@ qBool_t qList_Sort( qList_t * const l,
         size_t count = l->size;
 
         if ( count >= 2U ) {
-            qList_Node_t *current = NULL, *before, *after;
+            qList_Node_t *current = NULL;
+            qList_Node_t *before;
+            qList_Node_t *after;
             _qList_CompareHandle_t xHandle;
-            size_t i, j;
+            size_t i;
+            size_t j;
             qBool_t xRetCmp;
 
             for ( i = 1U ; i < count ; ++i ) {
@@ -527,7 +530,8 @@ qBool_t qList_Swap( void *node1,
 
         if ( ( NULL != n1->container ) && ( n1->container == n2->container ) ) {
             /*nodes are part of the same list*/
-            qList_Node_t *tmp1, *tmp2;
+            qList_Node_t *tmp1;
+            qList_Node_t *tmp2;
 
             if ( n2->next == n1 ) {
                 /*cppcheck-suppress misra-c2012-11.5 */

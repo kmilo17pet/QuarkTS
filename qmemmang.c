@@ -126,7 +126,8 @@ static void qMemMang_HeapInit( qMemMang_Pool_t *mPool )
 {
     qMemMang_BlockConnect_t *firstFreeBlock;
     qUINT8_t *aligned;
-    qAddress_t address, xAddrTmp;
+    qAddress_t address;
+    qAddress_t xAddrTmp;
     size_t totalPoolSize = mPool->qPrivate.poolMemSize;
 
     if ( mPool == &defaultMemPool ) { /*initialize the default memory pool */
@@ -265,7 +266,8 @@ void* qMemMang_Allocate( qMemMang_Pool_t *mPool,
 
         if ( (size_t)0U == ( pSize & blockAllocatedBit ) ) {
             if ( ( pSize > (size_t)0U ) && ( pSize < mPool->qPrivate.freeBytesRemaining ) ) {
-                qMemMang_BlockConnect_t *xBlock, *previousBlock;
+                qMemMang_BlockConnect_t *xBlock;
+                qMemMang_BlockConnect_t *previousBlock;
                 /* Traverse list from start until one of adequate size is found */
                 previousBlock = &mPool->qPrivate.start;
                 xBlock = mPool->qPrivate.start.next;
