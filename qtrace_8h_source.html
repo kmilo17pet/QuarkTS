@@ -158,8 +158,8 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">        #error Q_DEBUGTRACE_BUFSIZE its is too small. Use a value greater o equal to 36.</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">    #define _qSTRINGIFY(x)              #x</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">    #define _qTOSTRING(x)               _qSTRINGIFY( x )</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">    #define _qSTRINGIFY(x)              #x  </span><span class="comment">// skipcq: CXX-E2000</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">    #define _qTOSTRING(x)               _qSTRINGIFY( x ) </span><span class="comment">// skipcq: CXX-E2000</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">    #ifndef _QTRACE_FUNC</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">        #if defined __cplusplus &amp;&amp; defined __GNUC__ </span><span class="comment">/* Use g++&#39;s demangled names in C++.  */</span><span class="preprocessor"></span></div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">                #define _QFCN    __func__</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">            #endif</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">        #elif defined( __GNUC__ ) || ( defined( __MWERKS__ ) &amp;&amp; ( __MWERKS__ &gt;= 0x3000 ) ) || ( defined( __ICC ) &amp;&amp; ( __ICC &gt;= 600 ) ) || defined( __ghs__ )</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__  </span><span class="comment">// skipcq: CXX-E2000</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">        #elif defined( __DMC__ ) &amp;&amp; ( __DMC__ &gt;= 0x810 )</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">            #define _QFCN       __PRETTY_FUNCTION__</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">        #elif defined( __FUNCSIG__ )</span></div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">    #define _qAT() &quot;:&quot;</span> _qTOSTRING(__LINE__) &quot; &quot;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">    #define _qAT() &quot;:&quot;</span> _qTOSTRING(__LINE__) &quot; &quot; <span class="comment">// skipcq: CXX-E2000</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">    #ifndef Message</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">        #define Message             Message</span></div>
@@ -237,11 +237,11 @@ $(document).ready(function(){initNavTree('qtrace_8h_source.html',''); initResiza
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">            _qTrace_krn( (char*)(msg), (id), (obj) );                       \</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor"></span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">        #else</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj )</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">            #define _qTrace_Kernel( msg, id, obj ) </span><span class="comment">// skipcq: CXX-E2000</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">extern</span> <span class="keywordtype">char</span> qTrace_PublicBuffer[ Q_DEBUGTRACE_BUFSIZE ]; <span class="comment">// skipcq: CXX-W2009</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordtype">void</span> _qTrace_dgb( <span class="keyword">const</span> <span class="keywordtype">char</span> *loc,</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordtype">void</span> _qTrace_dgb( <span class="keyword">const</span> <span class="keywordtype">char</span> *loc, <span class="comment">// skipcq: CXX-E2000</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* fcn,</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span> *vName,</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                          <span class="keyword">const</span> <span class="keywordtype">char</span>* vValue,</div>
