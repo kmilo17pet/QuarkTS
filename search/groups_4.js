@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['finite_20state_20machines_0',['Finite State Machines',['../group__qfsm.html',1,'']]]
+  ['edge_20checking_0',['I/O Groups for edge checking',['../group__qedgecheck.html',1,'']]],
+  ['event_20flags_1',['Event Flags',['../group__qeventflags.html',1,'']]],
+  ['extensions_2',['Kernel extensions',['../group__qmodules.html',1,'']]]
 ];

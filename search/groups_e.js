@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['trace_0',['Trace',['../group__qtrace.html',1,'']]],
-  ['types_20and_20macros_1',['Types and macros',['../group__qtypes.html',1,'']]]
+  ['purpose_20macros_0',['General purpose macros',['../group__qflm.html',1,'']]]
 ];

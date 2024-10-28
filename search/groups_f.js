@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['utilities_0',['Utilities',['../group__qutility.html',1,'']]]
+  ['queues_0',['Queues',['../group__qqueues.html',1,'']]]
 ];

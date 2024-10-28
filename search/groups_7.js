@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernel_20extensions_0',['Kernel extensions',['../group__qmodules.html',1,'']]]
+  ['handler_0',['Response handler',['../group__qresponse.html',1,'']]]
 ];

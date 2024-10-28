@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['response_20handler_0',['Response handler',['../group__qresponse.html',1,'']]]
+  ['notifications_0',['Notifications',['../group__qnot.html',1,'']]]
 ];

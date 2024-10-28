@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['notifications_0',['Notifications',['../group__qnot.html',1,'']]]
+  ['kernel_20extensions_0',['Kernel extensions',['../group__qmodules.html',1,'']]]
 ];

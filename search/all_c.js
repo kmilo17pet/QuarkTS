@@ -1,10 +1,17 @@
 var searchData=
 [
-  ['n1_0',['n1',['../structq_list___compare_handle__t.html#a3448184cc3864a59ca4757a9d3a3da0d',1,'qList_CompareHandle_t']]],
-  ['n2_1',['n2',['../structq_list___compare_handle__t.html#a6ca17a8286aea578f473c9e6b669528b',1,'qList_CompareHandle_t']]],
-  ['nextstate_2',['NextState',['../structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a',1,'qSM_Handler_t']]],
-  ['nextstate_3',['nextState',['../structq_s_m___transition__t.html#a82884c556b31767feeeb9f5234f94976',1,'qSM_Transition_t']]],
-  ['node_4',['node',['../structq_list___for_each_handle__t.html#a77f6e46cab1968644fb698bf8c4b2876',1,'qList_ForEachHandle_t']]],
-  ['notifications_5',['Notifications',['../group__qnot.html',1,'']]],
-  ['numargs_6',['NumArgs',['../structq_a_t_c_l_i___handler__t.html#a4e0dcf7af0c2eddf1d9e3e88adda2ff2',1,'qATCLI_Handler_t']]]
+  ['machine_0',['machine',['../structq_s_m___handler__t.html#ad5adc63e3c09cd2b4239310d6668e31c',1,'qSM_Handler_t::machine'],['../q_fsm.html#q_fsmsetup',1,'Setting up a state machine']]],
+  ['machine_20as_20a_20task_1',['Adding a state machine as a task',['../q_fsm.html#q_fsm_astask',1,'']]],
+  ['machines_2',['Finite State Machines',['../group__qfsm.html',1,'']]],
+  ['machines_20fsm_3',['Finite State Machines (FSM)',['../q_fsm.html',1,'q_extensions']]],
+  ['macros_4',['macros',['../q_foundations.html#q_configmacros',1,'Configuration macros'],['../group__qflm.html',1,'General purpose macros'],['../group__qtypes.html',1,'Types and macros']]],
+  ['management_5',['Management',['../group__qmemmang.html',1,'Memory Management'],['../q_memmang.html',1,'Memory Management']]],
+  ['managing_20tasks_6',['Managing tasks',['../group__qtaskmanip.html',1,'']]],
+  ['manual_7',['User manual',['../index.html',1,'']]],
+  ['memory_20block_8',['Viewing a memory block',['../q_trace.html#q_trace_mblock',1,'']]],
+  ['memory_20management_9',['Memory Management',['../group__qmemmang.html',1,'Memory Management'],['../q_memmang.html',1,'Memory Management']]],
+  ['memory_20pools_10',['Memory pools',['../q_memmang.html#q_memmang_pools',1,'']]],
+  ['memory_20usage_11',['Memory usage',['../q_background.html#q_memusage',1,'']]],
+  ['model_12',['RTC(Run To Completion) model',['../q_foundations.html#rtcmodel',1,'']]],
+  ['module_13',['Including QuarkTS as a git sub-module',['../q_gettingstarted.html#q_submodule',1,'']]]
 ];

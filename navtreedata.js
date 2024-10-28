@@ -87,7 +87,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Extensions", "q_extensions.html", "q_extensions" ],
-    [ "Modules", "modules.html", "modules" ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -103,7 +103,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qlists.html#gadf97560f5644785364d4fa39252a565b",
-"q_gettingstarted.html#q_cloneos"
+"q_qcoroutines.html#q_qcoroutines_overview"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

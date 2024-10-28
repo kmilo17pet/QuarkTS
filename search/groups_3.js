@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['event_20flags_0',['Event Flags',['../group__qeventflags.html',1,'']]]
+  ['double_20linked_20lists_0',['Generic double-linked lists',['../group__qlists.html',1,'']]]
 ];
