@@ -1288,7 +1288,7 @@ HTML_EXTRA_STYLESHEET  = doc/stylesheet/doxygen-awesome.css \
                          doc/stylesheet/doxygen-awesome-sidebar-only.css \
                          doc/stylesheet/doxygen-awesome-sidebar-only-darkmode-toggle.css \
                          doc/stylesheet/doxygen-custom/custom-alternative.css \
-                         
+
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1303,6 +1303,8 @@ HTML_EXTRA_FILES       =  doc/stylesheet/doxygen-awesome-darkmode-toggle.js \
                           doc/stylesheet/doxygen-awesome-fragment-copy-button.js \
                           doc/stylesheet/doxygen-awesome-paragraph-link.js \
                           doc/stylesheet/doxygen-custom/toggle-alternative-theme.js \
+
+HTML_COLORSTYLE        = LIGHT
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
