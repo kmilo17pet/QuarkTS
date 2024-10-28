@@ -10,28 +10,28 @@ on:
       - 'tools/**'
       - 'src/unity/**'
       - 'src/x86_test_do_not_use_it/**'
-      
+
 jobs:
   analize:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with: 
+    - uses: actions/checkout@v4
+      with:
         submodules: recursive
     - name: Update OS packages list
       run: |
-        sudo apt-get update -yq 
+        sudo apt-get update -yq
     - name: Install analyzer
       run: |
         sudo apt-get install -y cppcheck python3
         mkdir sa_results
-    - name: General checks 
+    - name: General checks
       run: cppcheck --enable=all --inline-suppr  --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/general.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
-    - name: CERT checks 
+    - name: CERT checks
       run: cppcheck --addon=cert.py --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/cert.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
-    - name: MISRA checks 
+    - name: MISRA checks
       run: cppcheck --addon=./check/misra.json --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include  --output-file=./sa_results/misra.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: Static_Analisys_Results
         path: sa_results
