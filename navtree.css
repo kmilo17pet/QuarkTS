@@ -27,7 +27,7 @@
 }
 
 #nav-tree .selected .arrow {
-  color: #419FA4;
+  color: #43A4FF;
   text-shadow: none;
 }
 
@@ -122,7 +122,7 @@
 
 #nav-tree {
   background-repeat:repeat-x;
-  background-color: #F1F9F9;
+  background-color: #F3F9FE;
   -webkit-overflow-scrolling : touch; /* iOS 5+ */
 }
 
