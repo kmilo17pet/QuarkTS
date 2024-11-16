@@ -13,6 +13,8 @@
 #include "qtypes.h"
 #include "qclock.h"
 #include "qlists.h"
+#include "qstimers.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -274,7 +276,7 @@ typedef struct qChannel_t {
     qEventCallback_t  callback;
     qUpdateReading_t  updateReading;
     qEvaluateState_t  evaluateState;
-    qIsValidConfig_t  isValidation;
+    qIsValidConfig_t  isValidConfig;
     qSetInitalState_t setInitalState;
     qDispatchEvent_t  dispatchEvent;
     qGetType_t getType;
@@ -316,31 +318,62 @@ typedef struct qChannel_t {
 
 typedef struct _qDigitalChannel_t {
     qChannel_t channel;
+    
     qDigitalValue_t value;
     qDigitalValue_t *ptrValue;
     qDigitalReaderFcn_t reader;
     //qChannelStateFcn_t channelState;
+    void (*channelStateFcn)(struct _qDigitalChannel_t *);
     qBool_t negate;
     qClock_t pulsationInterval;//250U
     uint8_t pulsationCount;
 
-
-
-
+    void (*fallingEdgeStateFcn)( struct _qDigitalChannel_t * );
+    void (*risingEdgeStateFcn)( struct _qDigitalChannel_t * );
+    void (*steadyInHighStateFcn)( struct _qDigitalChannel_t * );
+    void (*steadyInLowStateFcn)( struct _qDigitalChannel_t * );
 
 } qDigitalChannel_t;
 
 #define NULL_DIGITAL_CHANNELS_INITIALIZATION \
     {\
         NULL_CHANNELS_INITIALIZATION, \
-        0, NULL/*, NULL*/, qFalse, 250, 0 \
+        0, NULL , NULL, NULL, qFalse, 250, 0, \
+        NULL, NULL, NULL, NULL \
     }
 
 typedef struct _qAnalogChannel_t {
     qChannel_t channel;
+    
+    qAnalogValue_t value;
+    qAnalogValue_t *ptrValue;
+    qAnalogReaderFcn_t reader;
+    //qChannelStateFcn_t channelState;
+    void (*channelStateFcn)(struct _qAnalogChannel_t *);
+    qAnalogValue_t high; // 800U
+    qAnalogValue_t low; //200U
+    qAnalogValue_t lastStep; //0
+    qAnalogValue_t lastSampled; //0
+    qAnalogValue_t delta; //0xFFFFFFFFU
+    qAnalogValue_t step; //0xFFFFFFFFU
+    qAnalogValue_t hysteresis; //20U
+    qClock_t tSteadyBand; //0xFFFFFFFFU
+
+    void (*lowThresholdStateFcn)( struct _qAnalogChannel_t * );
+    void (*highThresholdStateFcn)( struct _qAnalogChannel_t * );
+    void (*inBandStateFcn)( struct _qAnalogChannel_t * );
+    void (*steadyInHighStateFcn)( struct _qAnalogChannel_t * );
+    void (*steadyInLowStateFcn)( struct _qAnalogChannel_t * );
+    void (*steadyInBandStateFcn)( struct _qAnalogChannel_t * );
 } qAnalogChannel_t;
 
-
+#define NULL_ANALOG_CHANNELS_INITIALIZATION \
+    {\
+        NULL_CHANNELS_INITIALIZATION, \
+        0, NULL , NULL, NULL, 800, 200, 0, 0,\
+        0xFFFFFFFFU, 0xFFFFFFFFU, 20U, 0xFFFFFFFFU,\
+        NULL, NULL, NULL, NULL, NULL, NULL \
+    }
     
 
 #ifdef __cplusplus
