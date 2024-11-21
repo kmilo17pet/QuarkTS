@@ -374,7 +374,81 @@ typedef struct _qAnalogChannel_t {
         0xFFFFFFFFU, 0xFFFFFFFFU, 20U, 0xFFFFFFFFU,\
         NULL, NULL, NULL, NULL, NULL, NULL \
     }
-    
+
+    /**
+    * @brief Add a channel to the watcher instance
+    * @param[in] c The input-Channel to watch
+    * @return @c true on success. Otherwise @c false.
+    * Prototype: @code qBool_t addChannel( qChannel_t * c )  @endcode
+    */
+    typedef qBool_t (*addChannelFcn_t)(qChannel_t *);
+
+    /**
+    * @brief Add a channel to the watcher instance
+    * @param[in] c The input-Channel to watch
+    * @param[in] cb The callback function for the input-channel
+    * @return @c true on success. Otherwise @c false.
+    * Prototype: @code qBool_t addCallback( qChannel_t *c, qEventCallback_t cb )  @endcode
+    */
+    typedef qBool_t (*addCallbackFcn_t)(qChannel_t *, qEventCallback_t);
+
+    /**
+    * @brief Add a channel to the watcher instance
+    * @param[in] c The input-Channel to watch
+    * @param[in] fcn The reader function for the digital channel
+    * @param[in] cb The callback function for the input-channel
+    * @return @c true on success. Otherwise @c false.
+    * Prototype: @code qBool_t addCallbackDigital( qChannel_t *c, qDigitalReaderFcn_t fcn, qEventCallback_t cb )  @endcode
+    */
+    typedef qBool_t (*addCallbackDiFcn_t)( qChannel_t *, qDigitalReaderFcn_t , qEventCallback_t );
+
+    /**
+    * @brief Add a channel to the watcher instance
+    * @param[in] c The input-Channel to watch
+    * @param[in] fcn The reader function for the analog channel
+    * @param[in] cb The callback function for the input-channel
+    * @return @c true on success. Otherwise @c false.
+    * Prototype: @code qBool_t addCallbackAnalog( qChannel_t *c, qAnalogReaderFcn_t fcn, qEventCallback_t cb )  @endcode
+    */
+    typedef qBool_t (*addCallbackAnFcn_t)( qChannel_t *, qAnalogReaderFcn_t , qEventCallback_t );
+
+    /**
+    * @brief Remove a channel to the watcher instance
+    * @param[in] c The input-Channel to watch
+    * @return @c true on success. Otherwise @c false.
+    * Prototype: @code qBool_t remove( qChannel_t *c )  @endcode
+    */
+    typedef qBool_t (*removeFcn_t)( qChannel_t* );
+
+
+typedef struct _qWatcher_t {
+    qList_Node_t node;
+
+    qEventCallback_t exception;
+    qList_t digitalChannels;
+    qList_t analogChannels;
+    qSTimer_t waitDebounce; //dt 100
+    qClock_t debounceTime;//{ 100_ms };
+    qDigitalReaderFcn_t digitalReader;
+    qAnalogReaderFcn_t analogReader;
+    addChannelFcn_t addChannel;
+    addCallbackFcn_t addCallback;
+    addCallbackDiFcn_t addCallbackDigital;
+    addCallbackAnFcn_t addCallbackAnalog;
+    removeFcn_t remove;
+
+} qWatcher_t;
+
+
+#define NULL_WATCHER_INITIALIZATION \
+    {\
+        NULL, NULL, NULL, \
+        NULL , \
+        NULL, NULL, NULL, NULL, NULL, 0,\
+        NULL, NULL, NULL, NULL, NULL, 0,\
+        100, 100 \
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL \
+    }
 
 #ifdef __cplusplus
 }

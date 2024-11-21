@@ -47,11 +47,23 @@
         DEFAULT_ANALOG_INTERNAL_FUNCTIONS_PTR \
     }
 
+#define DEFAULT_WATCHER_FUNCTIONS_PTR \
+  addChannel, addCallback, addCallbackDigital, addCallbackAnalog, remove \
+
+#define DEFAULT_WATCHER_INITIALIZATION \
+    {\
+        NULL, NULL, NULL, \
+        NULL , \
+        NULL, NULL, NULL, NULL, NULL, 0,\
+        NULL, NULL, NULL, NULL, NULL, 0,\
+        100, 100 \
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL \
+    }
 
 qChannel_t channels = NULL_CHANNELS_INITIALIZATION;
 qDigitalChannel_t digitalChannels = NULL_DIGITAL_CHANNELS_INITIALIZATION;
 qAnalogChannel_t  analogChannels = NULL_ANALOG_CHANNELS_INITIALIZATION;
-
+//qWatcher_t watcher ;//= NULL_WATCHER_INITIALIZATION;
 //----------------------------------------------------
 static void analogXCallback( qChannel_t *c ) {
 
@@ -558,6 +570,84 @@ static void digitalSteadyInLowState( struct _qDigitalChannel_t * c ) {
 }
 
 
+static qBool_t addChannel( qChannel_t * c ) {
+   // qBool_t retValue;
+//
+   // if ( DIGITAL_CHANNEL == c->getType() ) {
+   //     (void)c->setDigitalReader( watcher.digitalReader );
+   //     c->setInitalState();
+   //     retValue = watcher.digitalChannels. insert( &c );    TODO
+   // }
+   // else {
+   //     (void)c->setAnalogReader( watcher.analogReader );
+   //     (void)c->setInitalState();
+   //     qAnalogChannel_t *chan = (qAnalogChannel_t*)c;
+   //     /* check if channel is shared( same channel number)*/
+   //     for ( auto i = analogChannels.begin(); i.untilEnd() ; i++ ) {
+   //         //input::analogChannel& channelInWatcher = *i.get<input::analogChannel*>();  TODO
+//
+   //         if ( chan->channel.number == channelInWatcher.number ) {
+   //             chan->ptrValue = &channelInWatcher.value;
+   //             break;
+   //         }
+   //     }
+   //     retValue = watcher.analogChannels. insert( &c ); TODO
+   // }
+   // c->tChange = qGetTick();
+
+   // return retValue;
+}
+
+static qBool_t addCallback( qChannel_t *c, qEventCallback_t cb ) {
+
+        (void)c->setCallback( cb );
+        return addChannel( c );
+}
+
+static qBool_t addCallbackDigital( qChannel_t *c, qDigitalReaderFcn_t fcn, qEventCallback_t cb ) {
+        qBool_t retValue;
+        (void)c->setCallback( cb );
+        retValue = addChannel( c );
+        (void)c->setDigitalReader( fcn );
+        return retValue;
+}
+
+static qBool_t addCallbackAnalog( qChannel_t *c, qAnalogReaderFcn_t fcn, qEventCallback_t cb ) {
+        qBool_t retValue;
+        (void)c->setCallback( cb );
+        retValue = add( c );
+        (void)c->setAnalogReader( fcn );
+        return retValue;
+}
+
+static qBool_t remove( qChannel_t *c ) {
+    //list* const channelContainer = c.getContainer();
+    //const bool retValue = channelContainer->remove( &c );
+    //(void)c.unShare();
+//
+    ///*cstat -MISRAC++2008-5-14-1*/
+    //if ( ( input::type::ANALOG_CHANNEL == c.getType() ) && !c.isShared() ) { // no side-effects here
+    ///*cstat +MISRAC++2008-5-14-1*/
+    //    analogValue_t *newPtrVal = nullptr;
+    //    /*find the next shared channel*/
+    //    for ( auto i = analogChannels.begin(); i.untilEnd() ; i++ ) {
+    //        input::analogChannel& channelInList = *i.get<input::analogChannel*>();
+//
+    //        if ( channelInList.number == c.number ) {
+    //            if ( nullptr == newPtrVal ) { /*first shared channel*/
+    //                newPtrVal = &channelInList.value;
+    //                channelInList.ptrValue = &channelInList.value;
+    //            }
+    //            else {
+    //                channelInList.ptrValue = newPtrVal;
+    //            }
+    //        }
+    //    }
+    //}
+
+    //return retValue;
+}
+
 /**
  * @brief This function should be invoked at the begining
  */
@@ -568,8 +658,10 @@ void qInputInitialize() {
     const qAnalogChannel_t  _analogChannels =
                                 DEFAULT_ANALOG_CHANNELS_INITIALIZATION;
 
+    const qWatcher_t _watcher ;
     digitalChannels = _digitalChannels;
     analogChannels = _analogChannels;
+   // watcher = _watcher;
 
 }
 
