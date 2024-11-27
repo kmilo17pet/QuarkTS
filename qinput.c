@@ -63,7 +63,7 @@
 qChannel_t channels = NULL_CHANNELS_INITIALIZATION;
 qDigitalChannel_t digitalChannels = NULL_DIGITAL_CHANNELS_INITIALIZATION;
 qAnalogChannel_t  analogChannels = NULL_ANALOG_CHANNELS_INITIALIZATION;
-//qWatcher_t watcher ;//= NULL_WATCHER_INITIALIZATION;
+qWatcher_t watcher;// = NULL_WATCHER_INITIALIZATION;
 //----------------------------------------------------
 static void analogXCallback( qChannel_t *c ) {
 
@@ -107,6 +107,8 @@ static void analogUpdateReading( qBool_t act ) {
 
 static void analogEvaluateState() {
     //channelState( *this );
+    //TODO: is this good?
+    analogChannels.channelStateFcn(&analogChannels);
 }
 
 static qBool_t analogIsValidConfig() {
@@ -389,6 +391,8 @@ static void digitalUpdateReading( qBool_t act ) {
 
 static void digitalEvaluateState() {
     //channelStateFcn =
+    //TODO: is this good?
+    digitalChannels.channelStateFcn(&digitalChannels);
 }
 
 static qBool_t digitalIsValidConfig() {
@@ -571,31 +575,36 @@ static void digitalSteadyInLowState( struct _qDigitalChannel_t * c ) {
 
 
 static qBool_t addChannel( qChannel_t * c ) {
-   // qBool_t retValue;
-//
-   // if ( DIGITAL_CHANNEL == c->getType() ) {
-   //     (void)c->setDigitalReader( watcher.digitalReader );
-   //     c->setInitalState();
-   //     retValue = watcher.digitalChannels. insert( &c );    TODO
-   // }
-   // else {
-   //     (void)c->setAnalogReader( watcher.analogReader );
-   //     (void)c->setInitalState();
-   //     qAnalogChannel_t *chan = (qAnalogChannel_t*)c;
-   //     /* check if channel is shared( same channel number)*/
-   //     for ( auto i = analogChannels.begin(); i.untilEnd() ; i++ ) {
-   //         //input::analogChannel& channelInWatcher = *i.get<input::analogChannel*>();  TODO
-//
-   //         if ( chan->channel.number == channelInWatcher.number ) {
-   //             chan->ptrValue = &channelInWatcher.value;
-   //             break;
-   //         }
-   //     }
-   //     retValue = watcher.analogChannels. insert( &c ); TODO
-   // }
-   // c->tChange = qGetTick();
+    qBool_t retValue;
+    qList_Iterator_t i;
 
-   // return retValue;
+    if ( DIGITAL_CHANNEL == c->getType() ) {
+        (void)c->setDigitalReader( watcher.digitalReader );
+        c->setInitalState();
+        retValue = qList_Insert( &watcher.digitalChannels, c, QLIST_AT_BACK );
+    }
+    else {
+        (void)c->setAnalogReader( watcher.analogReader );
+        (void)c->setInitalState();
+        qAnalogChannel_t *chan = (qAnalogChannel_t*)c;
+        /* check if channel is shared( same channel number)*/
+        for ( i = qList_Begin( &watcher.analogChannels) ;
+                    qListIterator_Until( &i, NULL ) ;
+                        qListIterator_Forward( &i ) ) {
+
+            qAnalogChannel_t * channelInWatcher =
+                                (qAnalogChannel_t *)qListIterator_Get( &i );
+
+            if ( chan->channel.number == channelInWatcher->channel.number ) {
+                chan->ptrValue = &channelInWatcher->value;
+                break;
+            }
+        }
+        retValue = qList_Insert( &watcher.analogChannels, c, QLIST_AT_BACK );
+    }
+    c->tChange = qClock_GetTick();
+
+    return retValue;
 }
 
 static qBool_t addCallback( qChannel_t *c, qEventCallback_t cb ) {
@@ -615,37 +624,89 @@ static qBool_t addCallbackDigital( qChannel_t *c, qDigitalReaderFcn_t fcn, qEven
 static qBool_t addCallbackAnalog( qChannel_t *c, qAnalogReaderFcn_t fcn, qEventCallback_t cb ) {
         qBool_t retValue;
         (void)c->setCallback( cb );
-        retValue = add( c );
+        retValue = addChannel( c );
         (void)c->setAnalogReader( fcn );
         return retValue;
 }
 
 static qBool_t remove( qChannel_t *c ) {
-    //list* const channelContainer = c.getContainer();
-    //const bool retValue = channelContainer->remove( &c );
-    //(void)c.unShare();
-//
-    ///*cstat -MISRAC++2008-5-14-1*/
-    //if ( ( input::type::ANALOG_CHANNEL == c.getType() ) && !c.isShared() ) { // no side-effects here
-    ///*cstat +MISRAC++2008-5-14-1*/
-    //    analogValue_t *newPtrVal = nullptr;
-    //    /*find the next shared channel*/
-    //    for ( auto i = analogChannels.begin(); i.untilEnd() ; i++ ) {
-    //        input::analogChannel& channelInList = *i.get<input::analogChannel*>();
-//
-    //        if ( channelInList.number == c.number ) {
-    //            if ( nullptr == newPtrVal ) { /*first shared channel*/
-    //                newPtrVal = &channelInList.value;
-    //                channelInList.ptrValue = &channelInList.value;
-    //            }
-    //            else {
-    //                channelInList.ptrValue = newPtrVal;
-    //            }
-    //        }
-    //    }
-    //}
+    qList_Iterator_t i;
+    qList_t* const channelContainer = c->node.container;
+    const qBool_t retValue =  //channelContainer->remove( &c );
+        qList_Remove(channelContainer, c, QLIST_AT_BACK) == NULL? qFalse:qTrue;
 
-    //return retValue;
+    (void)c->unShare();
+
+    if ( (ANALOG_CHANNEL == c->getType() ) && !c->isShared() ) { // no side-effects here
+        qAnalogValue_t *newPtrVal = NULL;
+        /*find the next shared channel*/
+        for ( i = qList_Begin( &watcher.analogChannels) ;
+                    qListIterator_Until( &i, NULL ) ;
+                        qListIterator_Forward( &i ) ) {
+
+            qAnalogChannel_t *channelInList =
+                                (qAnalogChannel_t *)qListIterator_Get( &i );
+
+            if ( channelInList->channel.number == c->number ) {
+                if ( NULL == newPtrVal ) { /*first shared channel*/
+                    newPtrVal = &channelInList->value;
+                    channelInList->ptrValue = &channelInList->value;
+                }
+                else {
+                    channelInList->ptrValue = newPtrVal;
+                }
+            }
+        }
+    }
+
+    return retValue;
+}
+
+/*============================================================================*/
+static qBool_t watch( void )
+{
+    qList_Iterator_t i;
+    const qBool_t act = qSTimer_FreeRun(
+                            &watcher.waitDebounce, watcher.debounceTime);
+
+    if ( ( qList_Length(&watcher.digitalChannels) > 0U ) && act ) {
+
+        for ( i = qList_Begin( &watcher.digitalChannels) ;
+                    qListIterator_Until( &i, NULL ) ;
+                        qListIterator_Forward( &i ) ) {
+
+            qChannel_t *c = (qChannel_t *)qListIterator_Get( &i );
+            if ( NULL != c->callback ) {
+                if ( NULL != watcher.digitalReader ) {
+                    c->updateReading( qTrue );
+                    c->evaluateState();
+                }
+                else {
+                    c->dispatchEvent( EXCEPTION );
+                }
+            }
+        }
+    }
+
+    if ( ( qList_Length(&watcher.analogChannels) > 0U ) > 0U ) {
+        for ( i = qList_Begin( &watcher.analogChannels) ;
+                qListIterator_Until( &i, NULL ) ;
+                    qListIterator_Forward( &i ) ) {
+
+        qChannel_t *c = (qChannel_t *)qListIterator_Get( &i );
+            if ( NULL != c->callback ) {
+                if ( ( NULL != watcher.analogReader ) && c->isValidConfig() ) { // no side-effects here
+                    c->updateReading( act );
+                    c->evaluateState();
+                }
+                else {
+                    c->dispatchEvent( EXCEPTION );
+                }
+            }
+        }
+    }
+
+    return qTrue;
 }
 
 /**
@@ -661,7 +722,9 @@ void qInputInitialize() {
     const qWatcher_t _watcher ;
     digitalChannels = _digitalChannels;
     analogChannels = _analogChannels;
-   // watcher = _watcher;
+    watcher = _watcher;
+    (void)qList_Initialize( &watcher.digitalChannels );
+    (void)qList_Initialize( &watcher.analogChannels );
 
 }
 

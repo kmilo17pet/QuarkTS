@@ -314,15 +314,12 @@ typedef struct qChannel_t {
 
 
 
-//typedef void (*qChannelStateFcn_t)(qDigitalChannel_t *);
-
 typedef struct _qDigitalChannel_t {
     qChannel_t channel;
     
     qDigitalValue_t value;
     qDigitalValue_t *ptrValue;
     qDigitalReaderFcn_t reader;
-    //qChannelStateFcn_t channelState;
     void (*channelStateFcn)(struct _qDigitalChannel_t *);
     qBool_t negate;
     qClock_t pulsationInterval;//250U
@@ -348,7 +345,6 @@ typedef struct _qAnalogChannel_t {
     qAnalogValue_t value;
     qAnalogValue_t *ptrValue;
     qAnalogReaderFcn_t reader;
-    //qChannelStateFcn_t channelState;
     void (*channelStateFcn)(struct _qAnalogChannel_t *);
     qAnalogValue_t high; // 800U
     qAnalogValue_t low; //200U
