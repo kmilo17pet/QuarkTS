@@ -38,29 +38,29 @@ extern "C" {
 * @brief An enum with all the possible events that can be detected by the
 * watcher structure for a specified input-channel.
 */
-typedef enum qEvent_t {
-    NONE = 0,
-    EXCEPTION,              /**< Error due a bad reading or channel configuration .*/
-    ON_CHANGE,              /**< Event on any input-channel change when crossing the thresholds*/
-    FALLING_EDGE,           /**< Event on falling-edge( high to low ) of the digital input-channel*/
-    RISING_EDGE,            /**< Event on rising-edge( low to high ) of the digital input-channel*/
-    PULSATION_DOUBLE,       /**< Event when the digital input is pulsated two times within the interval*/
-    PULSATION_TRIPLE,       /**< Event when the digital input is pulsated three times within the interval*/
-    PULSATION_MULTI,        /**< Event when the digital input is pulsated more than three times within the interval*/
-    HIGH_THRESHOLD,         /**< Event when the analog input-channel reading is above the high threshold*/
-    LOW_THRESHOLD,          /**< Event when the analog input-channel reading is below the low threshold*/
-    IN_BAND,                /**< Event when the analog input-channel reading enters the band defined by the low-high thresholds*/
-    STEADY_IN_HIGH,         /**< Event when the input-channel has been kept on high (or above the high threshold) for the specified time .*/
-    STEADY_IN_LOW,          /**< Event when the input-channel has been kept on low (or below the low threshold) for the specified time .*/
-    STEADY_IN_BAND,         /**< Event when the analog input-channel has remained within the band for the specified time .*/
-    DELTA,                  /**< Event when the difference of the last and latest reading of an analog input channel is greater than the defined delta*/
-    STEP_UP,                /**< Event on step reading of the analog-input channel*/
-    STEP_DOWN,              /**< Event on step reading of the analog-input channel*/
+typedef enum qInput_Event_t {
+    QINPUT_NONE = 0,
+    QINPUT_EXCEPTION,              /**< Error due a bad reading or channel configuration .*/
+    QINPUT_ON_CHANGE,              /**< Event on any input-channel change when crossing the thresholds*/
+    QINPUT_FALLING_EDGE,           /**< Event on falling-edge( high to low ) of the digital input-channel*/
+    QINPUT_RISING_EDGE,            /**< Event on rising-edge( low to high ) of the digital input-channel*/
+    QINPUT_PULSATION_DOUBLE,       /**< Event when the digital input is pulsated two times within the interval*/
+    QINPUT_PULSATION_TRIPLE,       /**< Event when the digital input is pulsated three times within the interval*/
+    QINPUT_PULSATION_MULTI,        /**< Event when the digital input is pulsated more than three times within the interval*/
+    QINPUT_HIGH_THRESHOLD,         /**< Event when the analog input-channel reading is above the high threshold*/
+    QINPUT_LOW_THRESHOLD,          /**< Event when the analog input-channel reading is below the low threshold*/
+    QINPUT_IN_BAND,                /**< Event when the analog input-channel reading enters the band defined by the low-high thresholds*/
+    QINPUT_STEADY_IN_HIGH,         /**< Event when the input-channel has been kept on high (or above the high threshold) for the specified time .*/
+    QINPUT_STEADY_IN_LOW,          /**< Event when the input-channel has been kept on low (or below the low threshold) for the specified time .*/
+    QINPUT_STEADY_IN_BAND,         /**< Event when the analog input-channel has remained within the band for the specified time .*/
+    QINPUT_DELTA,                  /**< Event when the difference of the last and latest reading of an analog input channel is greater than the defined delta*/
+    QINPUT_STEP_UP,                /**< Event on step reading of the analog-input channel*/
+    QINPUT_STEP_DOWN,              /**< Event on step reading of the analog-input channel*/
     /*! @cond  */
-    MAX_EVENTS,
-    STEP = STEP_UP
+    QINPUT__MAX_EVENTS,
+    QINPUT_STEP = QINPUT_STEP_UP
     /*! @endcond  */
-} qEvent_t;
+} qInput_Event_t;
 
 /**
 * @brief An enum class to define the types of input channels
@@ -108,43 +108,43 @@ typedef void (*qEventCallback_t) (qChannel_t *channel);
 
 
 /**
- * @brief A pointer to the  wrapper function 
- * 
+ * @brief A pointer to the  wrapper function
+ *
  * Prototype: @code void updateReading( qBool_t act ) @endcode
  */
 typedef void (*qUpdateReading_t)( qBool_t );
 
 /**
- * @brief A pointer to the  wrapper function 
- * 
+ * @brief A pointer to the  wrapper function
+ *
  * Prototype: @code void evaluateState() @endcode
  */
 typedef void (*qEvaluateState_t)( void );
 
 
 /**
- * @brief A pointer to the  wrapper function 
- * 
+ * @brief A pointer to the  wrapper function
+ *
  * Prototype: @code qBool_t isValidConfig() @endcode
  */
 typedef qBool_t (*qIsValidConfig_t)( void );
 
 
 /**
- * @brief A pointer to the  wrapper function 
- * 
+ * @brief A pointer to the  wrapper function
+ *
  * Prototype: @code void setInitalState() @endcode
  */
 typedef void (*qSetInitalState_t)( void );
 
 /**
- * @brief A pointer to the  wrapper function 
- * 
- * Prototype: @code void dispatchEvent(qEvent_t e) @endcode
+ * @brief A pointer to the  wrapper function
+ *
+ * Prototype: @code void dispatchEvent(qInput_Event_t e) @endcode
  */
-typedef void (*qDispatchEvent_t)( qEvent_t );
+typedef void (*qDispatchEvent_t)( qInput_Event_t );
 
-/* inline void dispatchEvent( qEvent_t ) 
+/* inline void dispatchEvent( qInput_Event_t )
 {
     lastEvent = e;  --> event = e
     callback( *this );  --> callback = dispatchEvent
@@ -161,9 +161,9 @@ typedef qType_t (*qGetType_t)( void );
 /**
 * @brief Retrieves the last event for the given input channel.
 * @return @c The last input-channel event.
-* Prototype: @code qEvent_t getEvent( void ) @endcode
+* Prototype: @code qInput_Event_t getEvent( void ) @endcode
 */
-typedef qEvent_t (*qGetEvent_t)( void );
+typedef qInput_Event_t (*qGetEvent_t)( void );
 
 
 /**
@@ -219,12 +219,12 @@ typedef qBool_t (*qIsShared_t)( void );
 * @param[in] e The event where the timeout will be set.
 * @param[in] t The value of the timeout.
 * @return @c true on success. Otherwise @c false.
-* Prototype: 
-*     @code 
-*     qBool_t setTime( const qEvent_t e, const qClock_t t)
+* Prototype:
+*     @code
+*     qBool_t setTime( const qInput_Event_t e, const qClock_t t)
 *     @endcode
 */
-typedef qBool_t (*qSetTime_t)( const qEvent_t , const qClock_t );
+typedef qBool_t (*qSetTime_t)( const qInput_Event_t , const qClock_t );
 
 
 /**
@@ -234,10 +234,10 @@ typedef qBool_t (*qSetTime_t)( const qEvent_t , const qClock_t );
 * @return @c true on success. Otherwise @c false.
 * Prototype:
 *   @code
-*   qBool_t setParameter( const qEvent_t e, const qAnalogValue_t p )
+*   qBool_t setParameter( const qInput_Event_t e, const qAnalogValue_t p )
 *   @endcode
 */
-typedef qBool_t (*qSetParameter_t)( const qEvent_t e, const qAnalogValue_t p);
+typedef qBool_t (*qSetParameter_t)( const qInput_Event_t e, const qAnalogValue_t p);
 
 /**
 * @brief Get pulsation count for the digital input.
@@ -269,7 +269,7 @@ typedef qBool_t (*qUnShare_t)( void );
 
 typedef struct qChannel_t {
     qList_Node_t node;
-    qEvent_t lastEvent;
+    qInput_Event_t lastEvent;
     uint8_t number;
     void *userData;
 
@@ -299,14 +299,13 @@ typedef struct qChannel_t {
     qClock_t tChange; //0U
     qClock_t tSteadyHigh; // 0xFFFFFFFFU ;
     qClock_t tSteadyLow;  // 0xFFFFFFFFU ;
-
 } qChannel_t;
 
 
 #define NULL_CHANNELS_INITIALIZATION \
         {\
             NULL, NULL, NULL, \
-            NONE, 0, NULL, \
+            QINPUT_NONE, 0, NULL, \
             NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, \
             NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,\
             0U, 0xFFFFFFFFU, 0xFFFFFFFFU \
@@ -316,7 +315,7 @@ typedef struct qChannel_t {
 
 typedef struct _qDigitalChannel_t {
     qChannel_t channel;
-    
+
     qDigitalValue_t value;
     qDigitalValue_t *ptrValue;
     qDigitalReaderFcn_t reader;
@@ -329,7 +328,6 @@ typedef struct _qDigitalChannel_t {
     void (*risingEdgeStateFcn)( struct _qDigitalChannel_t * );
     void (*steadyInHighStateFcn)( struct _qDigitalChannel_t * );
     void (*steadyInLowStateFcn)( struct _qDigitalChannel_t * );
-
 } qDigitalChannel_t;
 
 #define NULL_DIGITAL_CHANNELS_INITIALIZATION \
@@ -341,19 +339,19 @@ typedef struct _qDigitalChannel_t {
 
 typedef struct _qAnalogChannel_t {
     qChannel_t channel;
-    
+
     qAnalogValue_t value;
     qAnalogValue_t *ptrValue;
     qAnalogReaderFcn_t reader;
     void (*channelStateFcn)(struct _qAnalogChannel_t *);
-    qAnalogValue_t high; // 800U
-    qAnalogValue_t low; //200U
-    qAnalogValue_t lastStep; //0
-    qAnalogValue_t lastSampled; //0
-    qAnalogValue_t delta; //0xFFFFFFFFU
-    qAnalogValue_t step; //0xFFFFFFFFU
-    qAnalogValue_t hysteresis; //20U
-    qClock_t tSteadyBand; //0xFFFFFFFFU
+    qAnalogValue_t high;
+    qAnalogValue_t low;
+    qAnalogValue_t lastStep;
+    qAnalogValue_t lastSampled;
+    qAnalogValue_t delta;
+    qAnalogValue_t step;
+    qAnalogValue_t hysteresis;
+    qClock_t tSteadyBand;
 
     void (*lowThresholdStateFcn)( struct _qAnalogChannel_t * );
     void (*highThresholdStateFcn)( struct _qAnalogChannel_t * );
@@ -432,7 +430,6 @@ typedef struct _qWatcher_t {
     addCallbackDiFcn_t addCallbackDigital;
     addCallbackAnFcn_t addCallbackAnalog;
     removeFcn_t remove;
-
 } qWatcher_t;
 
 

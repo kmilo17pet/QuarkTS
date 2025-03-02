@@ -56,6 +56,7 @@ Read the API reference here ; https://kmilo17pet.github.io/QuarkTS/
     #include "qcoroutine.h"
     #include "qioutils.h"
     #include "qtrace.h"
+    #include "qinput.h"
 
     #if ( Q_MEMORY_MANAGER == 1 )
         #include "qmemmang.h"

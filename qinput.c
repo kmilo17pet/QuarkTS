@@ -15,7 +15,7 @@
 #define DEFAULT_DIGITAL_CHANNELS_INITIALIZATION \
     {\
         NULL, NULL, NULL, \
-        NONE, 0, NULL, \
+        QINPUT_NONE, 0, NULL, \
         DEFAULT_DIGITAL_CHANNELS_FUNCTIONS_PTR , \
         0U, 0xFFFFFFFFU, 0xFFFFFFFFU, \
         0, NULL , NULL, NULL, qFalse, 250, 0, \
@@ -39,7 +39,7 @@
 #define DEFAULT_ANALOG_CHANNELS_INITIALIZATION \
     {\
         NULL, NULL, NULL, \
-        NONE, 0, NULL, \
+        QINPUT_NONE, 0, NULL, \
         DEFAULT_ANALOG_CHANNELS_FUNCTIONS_PTR , \
         0U, 0xFFFFFFFFU, 0xFFFFFFFFU, \
         0, NULL , NULL, NULL, 800, 200, 0, 0,\
@@ -76,15 +76,15 @@ static void analogUpdateReading( qBool_t act ) {
     const qAnalogValue_t currentStep = analogChannels.value/analogChannels.step;
     if ( currentStep != analogChannels.lastStep ) {
         qAnalogValue_t diff;
-        qEvent_t dir;
+        qInput_Event_t dir;
 
         if ( currentStep > analogChannels.lastStep ) {
             diff = currentStep - analogChannels.lastStep;
-            dir = STEP_UP;
+            dir = QINPUT_STEP_UP;
         }
         else {
             diff = analogChannels.lastStep - currentStep;
-            dir = STEP_DOWN;
+            dir = QINPUT_STEP_DOWN;
         }
         for ( qAnalogValue_t i = 0; i < diff; ++i ) {
             analogChannels.channel.dispatchEvent( dir );
@@ -99,7 +99,7 @@ static void analogUpdateReading( qBool_t act ) {
                     analogChannels.lastSampled - analogChannels.value;
 
         if ( diff >= analogChannels.delta ) {
-            analogChannels.channel.dispatchEvent( DELTA );
+            analogChannels.channel.dispatchEvent( QINPUT_DELTA );
         }
         analogChannels.lastSampled = analogChannels.value;
     }
@@ -134,7 +134,7 @@ static void analogSetInitalState() {
     analogChannels.lastSampled = val;
 }
 
-static void analogDispatchEvent(qEvent_t e) {
+static void analogDispatchEvent(qInput_Event_t e) {
     analogChannels.channel.lastEvent = e;
 }
 
@@ -143,7 +143,7 @@ static qType_t analogGetType( void ) {
     return ANALOG_CHANNEL;
 }
 
-static qEvent_t analogGetEvent( void ) {
+static qInput_Event_t analogGetEvent( void ) {
     return analogChannels.channel.lastEvent;
 }
 
@@ -179,18 +179,18 @@ static qBool_t analogIsShared( void) {
     return ( &analogChannels.value != analogChannels.ptrValue );
 }
 
-static qBool_t analogSetTime( const qEvent_t e, const qClock_t t) {
+static qBool_t analogSetTime( const qInput_Event_t e, const qClock_t t) {
     qBool_t retValue = qTrue;
 
     if ( t > 0U ) {
         switch( e ) {
-            case STEADY_IN_BAND:
+            case QINPUT_STEADY_IN_BAND:
                 analogChannels.tSteadyBand = (qClock_t)t;
                 break;
-            case STEADY_IN_HIGH:
+            case QINPUT_STEADY_IN_HIGH:
                 analogChannels.channel.tSteadyHigh = (qClock_t)t;
                 break;
-            case STEADY_IN_LOW:
+            case QINPUT_STEADY_IN_LOW:
                 analogChannels.channel.tSteadyLow = (qClock_t)t;
                 break;
             default:
@@ -205,24 +205,24 @@ static qBool_t analogSetTime( const qEvent_t e, const qClock_t t) {
     return retValue;
 }
 
-static qBool_t analogSetParameter( const qEvent_t e, const qAnalogValue_t p ) {
+static qBool_t analogSetParameter( const qInput_Event_t e, const qAnalogValue_t p ) {
     qBool_t retValue = qTrue;
 
     switch( e ) {
-        case HIGH_THRESHOLD:
+        case QINPUT_HIGH_THRESHOLD:
             analogChannels.high = p;
             break;
-        case LOW_THRESHOLD:
+        case QINPUT_LOW_THRESHOLD:
             analogChannels.low = p;
             break;
-        case IN_BAND:
+        case QINPUT_IN_BAND:
             analogChannels.hysteresis = p;
             break;
-        case DELTA:
+        case QINPUT_DELTA:
             analogChannels.delta = p;
             break;
-        case STEP_UP:
-        case STEP_DOWN:
+        case QINPUT_STEP_UP:
+        case QINPUT_STEP_DOWN:
             analogChannels.step = p;
             break;
         default:
@@ -252,14 +252,14 @@ static void lowThresholdState( struct _qAnalogChannel_t * c ) {
 
     if ( c->value > c->high ) {
         c->channelStateFcn = analogChannels.highThresholdStateFcn;
-        c->channel.dispatchEvent( HIGH_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_HIGH_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else if ( c->value > ( c->low + c->hysteresis ) ) {
         c->channelStateFcn = analogChannels.inBandStateFcn;
-        c->channel.dispatchEvent( IN_BAND );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_IN_BAND );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else {
@@ -268,7 +268,7 @@ static void lowThresholdState( struct _qAnalogChannel_t * c ) {
 
     if ( ( CURRENT_TIME - c->channel.tChange ) > c->channel.tSteadyLow ) {
         c->channelStateFcn = analogChannels.steadyInLowStateFcn;
-        c->channel.dispatchEvent( STEADY_IN_LOW );
+        c->channel.dispatchEvent( QINPUT_STEADY_IN_LOW );
         c->channel.tChange = CURRENT_TIME;
     }
 }
@@ -277,14 +277,14 @@ static void highThresholdState( struct _qAnalogChannel_t * c ) {
 
     if ( c->value < c->low ) {
         c->channelStateFcn = analogChannels.lowThresholdStateFcn;
-        c->channel.dispatchEvent( LOW_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_LOW_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else if ( c->value < ( c->high - c->hysteresis ) ) {
         c->channelStateFcn = analogChannels.inBandStateFcn;
-        c->channel.dispatchEvent( IN_BAND );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_IN_BAND );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else {
@@ -293,7 +293,7 @@ static void highThresholdState( struct _qAnalogChannel_t * c ) {
 
     if ( ( CURRENT_TIME - c->channel.tChange ) > c->channel.tSteadyHigh ) {
         c->channelStateFcn = analogChannels.steadyInHighStateFcn;
-        c->channel.dispatchEvent( STEADY_IN_HIGH );
+        c->channel.dispatchEvent( QINPUT_STEADY_IN_HIGH );
         c->channel.tChange = CURRENT_TIME;
     }
 }
@@ -302,14 +302,14 @@ static void inBandState( struct _qAnalogChannel_t * c ) {
 
     if ( c->value > c->high ) {
         c->channelStateFcn = analogChannels.highThresholdStateFcn;
-        c->channel.dispatchEvent( HIGH_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_HIGH_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else if ( c->value < c->low ) {
         c->channelStateFcn = analogChannels.lowThresholdStateFcn;
-        c->channel.dispatchEvent( LOW_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_LOW_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = CURRENT_TIME;
     }
     else {
@@ -318,21 +318,21 @@ static void inBandState( struct _qAnalogChannel_t * c ) {
 
     if ( ( CURRENT_TIME - c->channel.tChange ) > c->tSteadyBand ) {
         c->channelStateFcn = analogChannels.steadyInBandStateFcn;
-        c->channel.dispatchEvent( STEADY_IN_BAND );
+        c->channel.dispatchEvent( QINPUT_STEADY_IN_BAND );
         c->channel.tChange = CURRENT_TIME;
     }
 }
 static void analogSteadyInHighState( struct _qAnalogChannel_t * c ) {
     if ( c->value < c->low ) {
         c->channelStateFcn = analogChannels.lowThresholdStateFcn;
-        c->channel.dispatchEvent( LOW_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_LOW_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else if ( c->value < ( c->high - c->hysteresis ) ) {
         c->channelStateFcn = analogChannels.inBandStateFcn;
-        c->channel.dispatchEvent( IN_BAND );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_IN_BAND );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else {
@@ -342,14 +342,14 @@ static void analogSteadyInHighState( struct _qAnalogChannel_t * c ) {
 static void analogSteadyInLowState( struct _qAnalogChannel_t * c ) {
     if ( c->value > c->high ) {
         c->channelStateFcn = analogChannels.highThresholdStateFcn;
-        c->channel.dispatchEvent( HIGH_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_HIGH_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else if ( c->value > ( c->low + c->hysteresis ) ) {
         c->channelStateFcn = analogChannels.inBandStateFcn;
-        c->channel.dispatchEvent( IN_BAND );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_IN_BAND );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else {
@@ -359,14 +359,14 @@ static void analogSteadyInLowState( struct _qAnalogChannel_t * c ) {
 static void steadyInBandState( struct _qAnalogChannel_t * c ) {
     if ( c->value > c->high ) {
         c->channelStateFcn = analogChannels.highThresholdStateFcn;
-        c->channel.dispatchEvent( HIGH_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_HIGH_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else if ( c->value < c->low ) {
         c->channelStateFcn = analogChannels.lowThresholdStateFcn;
-        c->channel.dispatchEvent( LOW_THRESHOLD );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_LOW_THRESHOLD );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
     else {
@@ -413,7 +413,7 @@ static void digitalSetInitalState() {
             : digitalChannels.risingEdgeStateFcn;
 }
 
-static void digitalDispatchEvent(qEvent_t e) {
+static void digitalDispatchEvent(qInput_Event_t e) {
     digitalChannels.channel.lastEvent = e;
 }
 
@@ -422,7 +422,7 @@ static qType_t digitalGetType( void ) {
     return DIGITAL_CHANNEL;
 }
 
-static qEvent_t digitalGetEvent( void ) {
+static qInput_Event_t digitalGetEvent( void ) {
     return digitalChannels.channel.lastEvent;
 }
 
@@ -458,20 +458,20 @@ static qBool_t digitalIsShared( void) {
     return ( &digitalChannels.value != digitalChannels.ptrValue );
 }
 
-static qBool_t digitalSetTime( const qEvent_t e, const qClock_t t) {
+static qBool_t digitalSetTime( const qInput_Event_t e, const qClock_t t) {
     qBool_t retValue = qTrue;
 
     if ( t > 0U ) {
         switch( e ) {
-            case PULSATION_DOUBLE:
-            case PULSATION_TRIPLE:
-            case PULSATION_MULTI:
+            case QINPUT_PULSATION_DOUBLE:
+            case QINPUT_PULSATION_TRIPLE:
+            case QINPUT_PULSATION_MULTI:
                 digitalChannels.pulsationInterval = (qClock_t)t;
                 break;
-            case STEADY_IN_HIGH:
+            case QINPUT_STEADY_IN_HIGH:
                 digitalChannels.channel.tSteadyHigh = (qClock_t)t;
                 break;
-            case STEADY_IN_LOW:
+            case QINPUT_STEADY_IN_LOW:
                 digitalChannels.channel.tSteadyLow = (qClock_t)t;
                 break;
             default:
@@ -486,7 +486,7 @@ static qBool_t digitalSetTime( const qEvent_t e, const qClock_t t) {
     return retValue;
 }
 
-static qBool_t digitalSetParameter( const qEvent_t e, const qAnalogValue_t p ) {
+static qBool_t digitalSetParameter( const qInput_Event_t e, const qAnalogValue_t p ) {
     (void)e;
     (void)p;
     return qFalse;
@@ -510,8 +510,8 @@ static void fallingEdgeState( struct _qDigitalChannel_t * c ) {
 
     if ( 0 != c->value ) {
         c->channelStateFcn = digitalChannels.risingEdgeStateFcn;
-        c->channel.dispatchEvent( RISING_EDGE );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_RISING_EDGE );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         if ( ( CURRENT_TIME - c->channel.tChange ) > c->pulsationInterval ) {
             c->pulsationCount = 0U;
         }
@@ -519,7 +519,7 @@ static void fallingEdgeState( struct _qDigitalChannel_t * c ) {
     }
     if ( ( CURRENT_TIME - c->channel.tChange ) > c->channel.tSteadyLow ) {
         c->channelStateFcn = digitalChannels.steadyInLowStateFcn;
-        c->channel.dispatchEvent( STEADY_IN_LOW );
+        c->channel.dispatchEvent( QINPUT_STEADY_IN_LOW );
         c->channel.tChange = CURRENT_TIME;
     }
 }
@@ -528,8 +528,8 @@ static void risingEdgeState( struct _qDigitalChannel_t * c ) {
 
     if ( 0 == c->value ) {
         c->channelStateFcn = digitalChannels.fallingEdgeStateFcn;
-        c->channel.dispatchEvent( FALLING_EDGE );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_FALLING_EDGE );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         if ( ( CURRENT_TIME - c->channel.tChange ) <= c->pulsationInterval ) {
             ++c->pulsationCount;
         }
@@ -538,19 +538,19 @@ static void risingEdgeState( struct _qDigitalChannel_t * c ) {
         switch ( c->pulsationCount ) {
             case 0 : case 1: break;
             case 2:
-                c->channel.dispatchEvent( PULSATION_DOUBLE );
+                c->channel.dispatchEvent( QINPUT_PULSATION_DOUBLE );
                 break;
             case 3:
-                c->channel.dispatchEvent( PULSATION_TRIPLE );
+                c->channel.dispatchEvent( QINPUT_PULSATION_TRIPLE );
                 break;
             default:
-                c->channel.dispatchEvent( PULSATION_MULTI );
+                c->channel.dispatchEvent( QINPUT_PULSATION_MULTI );
                 break;
         }
     }
     if ( ( CURRENT_TIME - c->channel.tChange ) > c->channel.tSteadyHigh ) {
         c->channelStateFcn = digitalChannels.steadyInHighStateFcn;
-        c->channel.dispatchEvent( STEADY_IN_HIGH );
+        c->channel.dispatchEvent( QINPUT_STEADY_IN_HIGH );
         c->channel.tChange = CURRENT_TIME;
     }
 }
@@ -558,8 +558,8 @@ static void risingEdgeState( struct _qDigitalChannel_t * c ) {
 static void digitalSteadyInHighState( struct _qDigitalChannel_t * c ) {
     if ( 0 == c->value ) {
         c->channelStateFcn = digitalChannels.fallingEdgeStateFcn;
-        c->channel.dispatchEvent( FALLING_EDGE );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_FALLING_EDGE );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
 }
@@ -567,8 +567,8 @@ static void digitalSteadyInHighState( struct _qDigitalChannel_t * c ) {
 static void digitalSteadyInLowState( struct _qDigitalChannel_t * c ) {
     if ( 0 != c->value ) {
         c->channelStateFcn = digitalChannels.risingEdgeStateFcn;
-        c->channel.dispatchEvent( RISING_EDGE );
-        c->channel.dispatchEvent( ON_CHANGE );
+        c->channel.dispatchEvent( QINPUT_RISING_EDGE );
+        c->channel.dispatchEvent( QINPUT_ON_CHANGE );
         c->channel.tChange = qClock_GetTick();
     }
 }
@@ -682,7 +682,7 @@ static qBool_t watch( void )
                     c->evaluateState();
                 }
                 else {
-                    c->dispatchEvent( EXCEPTION );
+                    c->dispatchEvent( QINPUT_EXCEPTION );
                 }
             }
         }
@@ -700,7 +700,7 @@ static qBool_t watch( void )
                     c->evaluateState();
                 }
                 else {
-                    c->dispatchEvent( EXCEPTION );
+                    c->dispatchEvent( QINPUT_EXCEPTION );
                 }
             }
         }
@@ -729,11 +729,11 @@ void qInputInitialize() {
 }
 
 
-void lala () {
+void test () {
 
     digitalChannels.channel.callback(&channels);
     analogChannels.channel.callback(&channels);
 
-    analogChannels.channel.dispatchEvent(LOW_THRESHOLD);
+    analogChannels.channel.dispatchEvent(QINPUT_LOW_THRESHOLD);
 
 }
