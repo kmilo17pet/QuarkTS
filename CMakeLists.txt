@@ -35,6 +35,7 @@ add_library( ${PROJECT_NAME}
              qedgecheck.c
              qbsbuffers.c
              qresponse.c
+             qinput.c
            )
 set( QUARKTS_CONFIG_PATH ../os_config )
 set_target_properties( ${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/QuarkTS.h )

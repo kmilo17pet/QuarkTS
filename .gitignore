@@ -60,3 +60,9 @@ Temporary Items
 # gcc code coverage
 *.gcno
 *.gcda
+
+# vscode
+.vscode
+
+# builds
+build/
