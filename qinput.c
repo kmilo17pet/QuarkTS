@@ -60,10 +60,17 @@
         NULL, NULL, NULL, NULL, NULL, NULL, NULL \
     }
 
-qChannel_t channels = NULL_CHANNELS_INITIALIZATION;
-qDigitalChannel_t digitalChannels = NULL_DIGITAL_CHANNELS_INITIALIZATION;
-qAnalogChannel_t  analogChannels = NULL_ANALOG_CHANNELS_INITIALIZATION;
-qWatcher_t watcher;// = NULL_WATCHER_INITIALIZATION;
+qChannel_t channels = NULL_CHANNELS_INITIALIZATION; // skipcq: CXX-W2009
+
+// skipcq: CXX-W2009
+qDigitalChannel_t digitalChannels =
+                    NULL_DIGITAL_CHANNELS_INITIALIZATION;
+
+// skipcq: CXX-W2009
+qAnalogChannel_t  analogChannels =
+                    NULL_ANALOG_CHANNELS_INITIALIZATION;
+
+qWatcher_t watcher; // skipcq: CXX-W2009
 //----------------------------------------------------
 static void analogXCallback( qChannel_t *c ) {
 
@@ -222,7 +229,7 @@ static qBool_t analogSetParameter( const qInput_Event_t e, const qAnalogValue_t 
             analogChannels.delta = p;
             break;
         case QINPUT_STEP_UP:
-        case QINPUT_STEP_DOWN:
+        case QINPUT_STEP_DOWN: // skipcq: CXX-C1001
             analogChannels.step = p;
             break;
         default:
@@ -464,8 +471,8 @@ static qBool_t digitalSetTime( const qInput_Event_t e, const qClock_t t) {
     if ( t > 0U ) {
         switch( e ) {
             case QINPUT_PULSATION_DOUBLE:
-            case QINPUT_PULSATION_TRIPLE:
-            case QINPUT_PULSATION_MULTI:
+            case QINPUT_PULSATION_TRIPLE: // skipcq: CXX-C1001
+            case QINPUT_PULSATION_MULTI:  // skipcq: CXX-C1001
                 digitalChannels.pulsationInterval = (qClock_t)t;
                 break;
             case QINPUT_STEADY_IN_HIGH:

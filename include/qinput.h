@@ -313,7 +313,7 @@ typedef struct qChannel_t {
 
 
 
-typedef struct _qDigitalChannel_t {
+typedef struct _qDigitalChannel_t { // skipcq: CXX-E2000
     qChannel_t channel;
 
     qDigitalValue_t value;
@@ -337,7 +337,7 @@ typedef struct _qDigitalChannel_t {
         NULL, NULL, NULL, NULL \
     }
 
-typedef struct _qAnalogChannel_t {
+typedef struct _qAnalogChannel_t { // skipcq: CXX-E2000
     qChannel_t channel;
 
     qAnalogValue_t value;
@@ -415,7 +415,7 @@ typedef struct _qAnalogChannel_t {
     typedef qBool_t (*removeFcn_t)( qChannel_t* );
 
 
-typedef struct _qWatcher_t {
+typedef struct _qWatcher_t { // skipcq: CXX-E2000
     qList_Node_t node;
 
     qEventCallback_t exception;
