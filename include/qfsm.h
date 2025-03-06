@@ -195,7 +195,8 @@
     /*fields for the qSM_Handler_t pointer*/
     /*! @cond  */
     /*cppcheck-suppress misra-c2012-20.7 */
-    #define _qSM_HANDLER_FIELDS( pAttrib )           /* skipcq: CXX-E2000 */\
+    // skipcq: CXX-E2000
+    #define _qSM_HANDLER_FIELDS( pAttrib )                                  \
         void *StartState;                                                   \
         void *NextState;                                                    \
         pAttrib void *machine;                                              \
