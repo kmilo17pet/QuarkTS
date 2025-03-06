@@ -87,8 +87,10 @@
     #define _qCR_RT( _PT_ )                                                 \
     case (_qCR_TaskPC_t)(_PT_) :                                            \
 
+    // skipcq: CXX-E2000
     #define _qCR_JUMP( _DST_ )                              switch (_DST_) // skipcq: CXX-W1164
 
+    // skipcq: CXX-E2000
     #define _qCR_LCON( _DST_ , _STATE_, _REST_, _ACTION_ )                  \
     ( _DST_ ) = (_STATE_);                                                  \
     _ACTION_;                                                               \
