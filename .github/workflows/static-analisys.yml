@@ -28,10 +28,26 @@ jobs:
     - name: General checks
       run: cppcheck --enable=all --inline-suppr  --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/general.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
     - name: CERT checks
-      run: cppcheck --addon=cert.py --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/cert.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
+      run: cppcheck --addon=./check/cert.py --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include --output-file=./sa_results/cert.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
     - name: MISRA checks
       run: cppcheck --addon=./check/misra.json --inline-suppr --inconclusive --std=c99 ./src/os -I ./src/config -I ./src/os/include  --output-file=./sa_results/misra.txt --suppress=missingIncludeSystem --suppress=unmatchedSuppression:{}
+
     - uses: actions/upload-artifact@v4
       with:
         name: Static_Analisys_Results
         path: sa_results
+    - name: Add static analysis results to summary
+      run: |
+        echo '## 🧪 Static Analysis Results' >> $GITHUB_STEP_SUMMARY
+        echo '### General:' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        cat ./sa_results/general.txt >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo '### CERT:' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        cat ./sa_results/cert.txt >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo '### MISRA:' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        cat ./sa_results/misra.txt >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
