@@ -12,7 +12,8 @@ var group__qtaskcreation =
     [ "qOS_Add_Task", "group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2", null ],
     [ "qOS_Remove_Task", "group__qtaskcreation.html#ga4d3b11b689fa9df89cf8ac4023482765", null ],
     [ "qOS_Run", "group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a", null ],
+    [ "qOS_Set_CoreIdleFcn", "group__qtaskcreation.html#ga8e019238cc555bf53c3ff6c6aaac191a", null ],
     [ "qOS_Set_IdleTask", "group__qtaskcreation.html#gaa5dcfef5ef874146d424997f78fc5def", null ],
-    [ "qOS_Setup", "group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313", null ],
+    [ "qOS_Setup", "group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7", null ],
     [ "qOS_YieldToTask", "group__qtaskcreation.html#gad380213ca91b01300d60522ba7fd8151", null ]
 ];

@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"q_qcoroutines.html#q_coroutine_positions":[5,1,4],
+"q_qcoroutines.html#q_coroutine_semaphores":[5,1,5],
 "q_qcoroutines.html#q_qcoroutines_overview":[5,1,0],
 "q_stimers.html":[5,2],
 "q_stimers.html#q_stimerexample":[5,2,2],

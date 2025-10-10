@@ -11,6 +11,7 @@ var searchData=
   ['provided_20approach_8',['The provided approach',['../q_fsm.html#qfsm_approach',1,'']]],
   ['pseudo_20states_9',['Example with history pseudo-states',['../q_fsm.html#q_fsm_example4',1,'']]],
   ['purpose_20macros_10',['General purpose macros',['../group__qflm.html',1,'']]],
-  ['putch_11',['putch',['../structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b',1,'qATCLI_Handler_t']]],
-  ['puts_12',['puts',['../structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b',1,'qATCLI_Handler_t']]]
+  ['put_20the_20cpu_20into_20idle_20mode_11',['Allow OS to put the CPU into idle mode',['../q_foundations.html#q_idle_cpu',1,'']]],
+  ['putch_12',['putch',['../structq_a_t_c_l_i___handler__t.html#ad6a6d6add1077334c02a5874c838819b',1,'qATCLI_Handler_t']]],
+  ['puts_13',['puts',['../structq_a_t_c_l_i___handler__t.html#acf3fe8ee21670552de2e333b26ea9f9b',1,'qATCLI_Handler_t']]]
 ];

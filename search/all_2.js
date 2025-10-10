@@ -31,6 +31,7 @@ var searchData=
   ['configuration_20macros_28',['Configuration macros',['../q_foundations.html#q_configmacros',1,'']]],
   ['control_29',['External control',['../q_qcoroutines.html#q_coroutine_ext',1,'']]],
   ['copy_20of_20the_20os_20configuration_20file_30',['Get a copy of the OS configuration file',['../q_gettingstarted.html#q_getqconfig',1,'']]],
-  ['critical_31',['Critical',['../group__qcritical.html',1,'']]],
-  ['critical_20sections_32',['Critical sections',['../q_foundations.html#q_critical',1,'']]]
+  ['cpu_20into_20idle_20mode_31',['Allow OS to put the CPU into idle mode',['../q_foundations.html#q_idle_cpu',1,'']]],
+  ['critical_32',['Critical',['../group__qcritical.html',1,'']]],
+  ['critical_20sections_33',['Critical sections',['../q_foundations.html#q_critical',1,'']]]
 ];

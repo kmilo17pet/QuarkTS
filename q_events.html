@@ -69,7 +69,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.3</span>
+   &#160;<span id="projectnumber">v7.3.4</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -359,9 +359,9 @@ Sending notifications</h3>
 <div class="line"><span class="comment">/*==================================================================*/</span></div>
 <div class="line"><span class="keywordtype">void</span> taskA_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <span class="keyword">static</span> <span class="keywordtype">int</span> press_counter = 0;</div>
-<div class="line">    </div>
+<div class="line"> </div>
 <div class="line">    <span class="keywordflow">switch</span> ( e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a> ) { <span class="comment">/*check the source of the event*/</span></div>
-<div class="line">        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>: </div>
+<div class="line">        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a>:</div>
 <div class="line">            <span class="comment">/*</span></div>
 <div class="line"><span class="comment">            * Do something here to process the timer event</span></div>
 <div class="line"><span class="comment">            */</span></div>
@@ -386,7 +386,7 @@ Sending notifications</h3>
 <div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_enumvalue" href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a> == e-&gt;<a class="code hl_variable" href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">Trigger</a>) {</div>
 <div class="line">        <span class="comment">/*</span></div>
 <div class="line"><span class="comment">         * we can do more here, but this is just an example,</span></div>
-<div class="line"><span class="comment">         * so, this task will only print out the received </span></div>
+<div class="line"><span class="comment">         * so, this task will only print out the received</span></div>
 <div class="line"><span class="comment">         * notification event.</span></div>
 <div class="line"><span class="comment">         */</span></div>
 <div class="line">        qDebug( e-&gt;<a class="code hl_variable" href="structq_event__t.html#aa8774ca79810e9df25e2743501ee6b74">EventData</a>, Message );</div>
@@ -397,7 +397,7 @@ Sending notifications</h3>
 <div class="line">    HAL_Setup_MCU(); <span class="comment">/*hardware dependent code*/</span></div>
 <div class="line">    qTrace_Set_OutputFcn( HAL_OutPutChar );</div>
 <div class="line">    <span class="comment">/* setup the scheduler to handle up to 10 queued notifications*/</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001f, NULL );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( HAL_GetTick, 0.001f, NULL, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;taskB, taskB_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
@@ -406,9 +406,9 @@ Sending notifications</h3>
 <div class="ttc" id="agroup__qnot_html_gaa0897bb00bc0e8b090397e7632f61f7b"><div class="ttname"><a href="group__qnot.html#gaa0897bb00bc0e8b090397e7632f61f7b">qTask_Notification_Queue</a></div><div class="ttdeci">qBool_t qTask_Notification_Queue(qTask_t *const Task, void *eventData)</div><div class="ttdoc">Insert a notification in the FIFO priority queue. The scheduler get this notification as an asynchron...</div><div class="ttdef"><b>Definition</b> qtasks.c:31</div></div>
 <div class="ttc" id="agroup__qnot_html_gab793f72b9f447c74fbabb876fd7aea4c"><div class="ttname"><a href="group__qnot.html#gab793f72b9f447c74fbabb876fd7aea4c">qTask_Notification_Send</a></div><div class="ttdeci">qBool_t qTask_Notification_Send(qTask_t *const Task, void *eventData)</div><div class="ttdoc">Sends a simple notification generating an asynchronous event. This method marks the task as ready for...</div><div class="ttdef"><b>Definition</b> qtasks.c:12</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga33bd7afc6bdd5e8a995d2cb50e006e3a"><div class="ttname"><a href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a></div><div class="ttdeci">#define qLowest_Priority</div><div class="ttdoc">A macro directive to indicate the lowest priority level.</div><div class="ttdef"><b>Definition</b> qkernel.h:71</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition</b> qkernel.c:686</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:126</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gae296358ea4dd26df7018155eef0cb456"><div class="ttname"><a href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a></div><div class="ttdeci">qBool_t qOS_Add_EventTask(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. This API creates a task with a qDisabled state by default,...</div><div class="ttdef"><b>Definition</b> qkernel.c:475</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga59e05825dcfe33f4de361233ba80f5a7"><div class="ttname"><a href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback, void(*coreIdleFcn)(void))</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:128</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition</b> qkernel.c:703</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gae296358ea4dd26df7018155eef0cb456"><div class="ttname"><a href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a></div><div class="ttdeci">qBool_t qOS_Add_EventTask(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. This API creates a task with a qDisabled state by default,...</div><div class="ttdef"><b>Definition</b> qkernel.c:492</div></div>
 <div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a6da5ef837be1720e34c9e16200c92002">byNotificationQueued</a></div><div class="ttdeci">@ byNotificationQueued</div><div class="ttdoc">When there is a queued notification in the FIFO priority queue. For this trigger, the dispatcher perf...</div><div class="ttdef"><b>Definition</b> qtasks.h:58</div></div>
 <div class="ttc" id="agroup__qtaskmanip_html_ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e"><div class="ttname"><a href="group__qtaskmanip.html#ggaf68e9306308b42db48932211e1c40334a9ab4cc29730ffdb14a249913dfbd609e">byNotificationSimple</a></div><div class="ttdeci">@ byNotificationSimple</div><div class="ttdoc">When the execution chain does, according to a requirement of asynchronous notification event prompted...</div><div class="ttdef"><b>Definition</b> qtasks.h:65</div></div>
 <div class="ttc" id="astructq_event__t_html_a61ae4900215e528bd801c8ee156ac0df"><div class="ttname"><a href="structq_event__t.html#a61ae4900215e528bd801c8ee156ac0df">qEvent_t::Trigger</a></div><div class="ttdeci">qTrigger_t Trigger</div><div class="ttdoc">This member indicates the event source that triggers the task execution. Possible values are describe...</div><div class="ttdef"><b>Definition</b> qtasks.h:180</div></div>
@@ -468,8 +468,8 @@ A queue example</h3>
 <div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> UserQueue; <span class="comment">/*Queue Handle*/</span></div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">/* The producer task puts data into the buffer if there is enough free </span></div>
-<div class="line"><span class="comment"> * space in it, otherwise the task blocks itself and wait until the queue </span></div>
+<div class="line"><span class="comment">/* The producer task puts data into the buffer if there is enough free</span></div>
+<div class="line"><span class="comment"> * space in it, otherwise the task blocks itself and wait until the queue</span></div>
 <div class="line"><span class="comment"> * is empty to resume. */</span></div>
 <div class="line"><span class="keywordtype">void</span> TSK_Producer_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a> unData = 0;</div>
@@ -482,7 +482,7 @@ A queue example</h3>
 <div class="line">    <span class="comment">/*send data to the queue*/</span></div>
 <div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_define" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7">qFalse</a> == qQueue_SendToBack( &amp;UserQueue, &amp;unData ) ) {</div>
 <div class="line">        <span class="comment">/*</span></div>
-<div class="line"><span class="comment">        * if the data insertion fails, the queue is full </span></div>
+<div class="line"><span class="comment">        * if the data insertion fails, the queue is full</span></div>
 <div class="line"><span class="comment">        * and the task disables itself</span></div>
 <div class="line"><span class="comment">        */</span></div>
 <div class="line">        <a class="code hl_define" href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a>( <a class="code hl_function" href="group__qtaskmanip.html#ga86293c10ab9d96da60d5d81867ad8f7c">qTask_Self</a>() );</div>
@@ -511,19 +511,19 @@ A queue example</h3>
 <div class="line"><span class="comment">     * interrupts at 1ms - timer tick*/</span></div>
 <div class="line">    Configure_Periodic_Timer0_Interrupt_1ms();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback, NULL );</div>
 <div class="line">    <span class="comment">/*Setup the queue*/</span></div>
-<div class="line">    <a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;UserQueue, BufferMem <span class="comment">/*Memory block used*/</span>, </div>
-<div class="line">                  <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a>) <span class="comment">/*element size*/</span>, </div>
+<div class="line">    <a class="code hl_function" href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a>( &amp;UserQueue, BufferMem <span class="comment">/*Memory block used*/</span>,</div>
+<div class="line">                  <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="group__qtypes.html#ga8a02cfd33d0381ed5c690db1e385626b">qUINT16_t</a>) <span class="comment">/*element size*/</span>,</div>
 <div class="line">                  16 <span class="comment">/* element count*/</span> );</div>
-<div class="line">                 </div>
+<div class="line"> </div>
 <div class="line">    <span class="comment">/*  Append the producer task with 100mS rate. */</span></div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;TSK_PRODUCER, TSK_Producer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, <span class="stringliteral">&quot;producer&quot;</span> );</div>
 <div class="line">    <span class="comment">/* Append the consumer as an event task. The consumer will</span></div>
 <div class="line"><span class="comment">     * wait until an event trigger their execution</span></div>
 <div class="line"><span class="comment">     */</span></div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TSK_CONSUMER, TSK_Consumer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a>, <span class="stringliteral">&quot;consumer&quot;</span> );</div>
-<div class="line">    <span class="comment">/* the queue will be attached to the consumer task </span></div>
+<div class="line">    <span class="comment">/* the queue will be attached to the consumer task</span></div>
 <div class="line"><span class="comment">     * in qQueueMode_Count mode. This mode sends an event to the consumer</span></div>
 <div class="line"><span class="comment">     * task when the queue fills to a level of 4 elements</span></div>
 <div class="line"><span class="comment">     */</span></div>
@@ -532,7 +532,7 @@ A queue example</h3>
 <div class="line"><span class="comment">     * qQueueMode_Empty mode. This mode sends an event to the producer</span></div>
 <div class="line"><span class="comment">     * task when the queue is empty</span></div>
 <div class="line"><span class="comment">     */</span></div>
-<div class="line">     </div>
+<div class="line"> </div>
 <div class="line">    <a class="code hl_function" href="group__qqueues.html#ga7f3a6f120028be075a4e8ca5431445fe">qTask_Attach_Queue</a>( &amp;TSK_PRODUCER, &amp;UserQueue, <a class="code hl_enumvalue" href="group__qtaskmanip.html#gga6a915d3ae55fdd4d60c0b4ab54a3fd58a4d6ed1f9ed93a18cfd011e0e4d025598">qQueueMode_Empty</a>, qATTACH );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
@@ -542,7 +542,7 @@ A queue example</h3>
 <div class="ttc" id="agroup__qqueues_html_ga9c09590fb964a6c0c15d2b409861c9c4"><div class="ttname"><a href="group__qqueues.html#ga9c09590fb964a6c0c15d2b409861c9c4">qQueue_Receive</a></div><div class="ttdeci">qBool_t qQueue_Receive(qQueue_t *const q, void *dst)</div><div class="ttdoc">Receive an item from a queue (and removes it). The item is received by copy so a buffer of adequate s...</div><div class="ttdef"><b>Definition</b> qqueues.c:197</div></div>
 <div class="ttc" id="agroup__qqueues_html_gac7b44df16c76bdf45d82f3b7621eec63"><div class="ttname"><a href="group__qqueues.html#gac7b44df16c76bdf45d82f3b7621eec63">qQueue_Setup</a></div><div class="ttdeci">qBool_t qQueue_Setup(qQueue_t *const q, void *pData, const size_t itemSize, const size_t itemsCount)</div><div class="ttdoc">Configures a Queue. Here, the RAM used to hold the queue data pData is statically allocated at compil...</div><div class="ttdef"><b>Definition</b> qqueues.c:32</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga13bec7f4284d45c97f512c83ed9b7744"><div class="ttname"><a href="group__qtaskcreation.html#ga13bec7f4284d45c97f512c83ed9b7744">qMedium_Priority</a></div><div class="ttdeci">#define qMedium_Priority</div><div class="ttdoc">A macro directive to indicate the medium priority level.</div><div class="ttdef"><b>Definition</b> qkernel.h:74</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition</b> qkernel.c:416</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition</b> qkernel.c:433</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_gae3758e719245db560b090d90fce96301"><div class="ttname"><a href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a></div><div class="ttdeci">#define qPeriodic</div><div class="ttdoc">A directive indicating that the task will run every time its timeout has expired.</div><div class="ttdef"><b>Definition</b> qkernel.h:80</div></div>
 <div class="ttc" id="agroup__qtaskmanip_html_ga1211609f7dba8749ae31aa73a8b072e6"><div class="ttname"><a href="group__qtaskmanip.html#ga1211609f7dba8749ae31aa73a8b072e6">qTask_Suspend</a></div><div class="ttdeci">#define qTask_Suspend(Task)</div><div class="ttdoc">Put the task into a disabled state.</div><div class="ttdef"><b>Definition</b> qtasks.h:533</div></div>
 <div class="ttc" id="agroup__qtaskmanip_html_ga86293c10ab9d96da60d5d81867ad8f7c"><div class="ttname"><a href="group__qtaskmanip.html#ga86293c10ab9d96da60d5d81867ad8f7c">qTask_Self</a></div><div class="ttdeci">qTask_t * qTask_Self(void)</div><div class="ttdoc">Get the current running-task handle.</div><div class="ttdef"><b>Definition</b> qtasks.c:245</div></div>
@@ -587,7 +587,7 @@ Using the task Event-flags</h3>
 <div class="line"><span class="preprocessor">#define DATA_READY       QEVENTFLAG_03</span></div>
 <div class="line"><span class="preprocessor">#define DATA_TXMIT       QEVENTFLAG_04</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> TaskDataProducer; </div>
+<div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> TaskDataProducer;</div>
 <div class="line"><a class="code hl_typedef" href="group__qtypes.html#ga4b730ac4f14a355d39d1daea0a0b4a54">qUINT8_t</a> dataToTransmit[ 10 ] = { 0 };</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
@@ -607,17 +607,17 @@ Using the task Event-flags</h3>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> TaskDataProducer_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
 <div class="line">    <a class="code hl_typedef" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> condition;</div>
-<div class="line">     </div>
+<div class="line"> </div>
 <div class="line">    condition = <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
 <div class="line">    <span class="keywordflow">if</span> ( <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> == condition) {</div>
 <div class="line">        GenerateData( dataToTransmit );</div>
-<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_READY, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
+<div class="line">        <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_READY, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">    }</div>
 <div class="line">    <a class="code hl_function" href="group__qeventflags.html#gadd4ede23427b94c25a064cb097f10b26">qTask_EventFlags_Check</a>( &amp;TaskDataProducer, DATA_READY | SWITCH_CHANGED | TIMER_EXPIRED, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a>, <a class="code hl_define" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd">qTrue</a> );</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
 <div class="line"><span class="keywordtype">void</span> IdleTask_Callback( <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e ) {</div>
-<div class="line">    </div>
+<div class="line"> </div>
 <div class="line">    TransmitData( dataToTransmit );</div>
 <div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">}</div>
@@ -629,17 +629,17 @@ Using the task Event-flags</h3>
 <div class="line">    Configure_Periodic_Timer0_Interrupt_1ms();</div>
 <div class="line">    Configure_Periodic_Timer1_Interrupt_2s();</div>
 <div class="line">    Configure_External_Interrupt();</div>
-<div class="line">    <span class="comment">/* Idle task will be responsible to transmit the generate the data after </span></div>
+<div class="line">    <span class="comment">/* Idle task will be responsible to transmit the generate the data after</span></div>
 <div class="line"><span class="comment">     * all conditions are met</span></div>
 <div class="line"><span class="comment">    */</span></div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback, NULL );</div>
 <div class="line">    <span class="comment">/* The task will wait until data is transmitted to generate another set of</span></div>
 <div class="line"><span class="comment">     * data */</span></div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gae296358ea4dd26df7018155eef0cb456">qOS_Add_EventTask</a>( &amp;TaskDataProducer, TaskDataProducer_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga32c8bd0870414e10a6e72b743627da5a">qHigh_Priority</a>, <span class="stringliteral">&quot;DATAPRODUCER&quot;</span> );</div>
-<div class="line">    <span class="comment">/* Set the flag DATA_TXMIT as the initial condition to allow the data </span></div>
+<div class="line">    <span class="comment">/* Set the flag DATA_TXMIT as the initial condition to allow the data</span></div>
 <div class="line"><span class="comment">     * generation at startup</span></div>
 <div class="line"><span class="comment">    */</span></div>
-<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> ); </div>
+<div class="line">    <a class="code hl_function" href="group__qeventflags.html#ga2784e9105dbff4d18965af5c09abc167">qTask_EventFlags_Modify</a>( &amp;TaskDataProducer, DATA_TXMIT, <a class="code hl_define" href="group__qtaskmanip.html#gaba32d62c0da0e1fb394f5f406202c535">QEVENTFLAG_SET</a> );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
 <div class="line">    <span class="keywordflow">for</span> ( ;; ) {}</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>

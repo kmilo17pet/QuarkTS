@@ -69,7 +69,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.3</span>
+   &#160;<span id="projectnumber">v7.3.4</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -206,13 +206,13 @@ Usage example</h1>
 <div class="line">    <span class="keywordtype">int</span> *xyoper = NULL;</div>
 <div class="line">    <span class="keywordtype">int</span> n = 20;</div>
 <div class="line">    <span class="keywordtype">int</span> i;</div>
-<div class="line">    </div>
+<div class="line"> </div>
 <div class="line">    xyoper = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) );</div>
 <div class="line">    xdata = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) );</div>
 <div class="line">    qMemMang_Pool_Select( &amp;another_heap ); <span class="comment">/*change the memory pool*/</span></div>
 <div class="line">    <span class="comment">/*ydata will point to a segment allocated in another pool*/</span></div>
-<div class="line">    ydata = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) ); </div>
-<div class="line">    </div>
+<div class="line">    ydata = (<span class="keywordtype">int</span>*)qMalloc( n*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>) );</div>
+<div class="line"> </div>
 <div class="line">    <span class="comment">/*use the memory if could be allocated*/</span></div>
 <div class="line">    <span class="keywordflow">if</span> ( xdata &amp;&amp; ydata &amp;&amp; xyoper ) {</div>
 <div class="line">        <span class="keywordflow">for</span> ( i = 0 ; i &lt; n ; i++ ) {</div>
@@ -237,15 +237,15 @@ Usage example</h1>
 <div class="line">    qTrace_Set_OutputFcn( OutPutChar );</div>
 <div class="line">    <span class="comment">/*Create a memory heap*/</span></div>
 <div class="line">    qMemMang_Pool_Setup( &amp;another_heap, area_another_heap, 512 );</div>
-<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, 0.001f, IdleTaskCallback );</div>
+<div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( HAL_GetTick, 0.001f, IdleTaskCallback, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a>( &amp;taskA, taskA_Callback, <a class="code hl_define" href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a>, 0.1f, <a class="code hl_define" href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a>, <a class="code hl_define" href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a>, NULL );</div>
 <div class="line">    <a class="code hl_function" href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a>();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition</b> qkernel.c:416</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga261c858990773b834e8129940ceef1e2"><div class="ttname"><a href="group__qtaskcreation.html#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a></div><div class="ttdeci">qBool_t qOS_Add_Task(qTask_t *const Task, qTaskFcn_t callbackFcn, const qPriority_t p, const qTime_t t, const qIteration_t n, const qState_t init, void *arg)</div><div class="ttdoc">Add a task to the scheduling scheme. The task is scheduled to run every t seconds,...</div><div class="ttdef"><b>Definition</b> qkernel.c:433</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_ga33bd7afc6bdd5e8a995d2cb50e006e3a"><div class="ttname"><a href="group__qtaskcreation.html#ga33bd7afc6bdd5e8a995d2cb50e006e3a">qLowest_Priority</a></div><div class="ttdeci">#define qLowest_Priority</div><div class="ttdoc">A macro directive to indicate the lowest priority level.</div><div class="ttdef"><b>Definition</b> qkernel.h:71</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition</b> qkernel.c:686</div></div>
-<div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="group__qtaskcreation.html#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:126</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga59e05825dcfe33f4de361233ba80f5a7"><div class="ttname"><a href="group__qtaskcreation.html#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback, void(*coreIdleFcn)(void))</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:128</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_gabd4b43371d39c5eb82b87f0900f2895a"><div class="ttname"><a href="group__qtaskcreation.html#gabd4b43371d39c5eb82b87f0900f2895a">qOS_Run</a></div><div class="ttdeci">qBool_t qOS_Run(void)</div><div class="ttdoc">Executes the scheduling scheme. It must be called once after the task pool has been defined.</div><div class="ttdef"><b>Definition</b> qkernel.c:703</div></div>
 <div class="ttc" id="agroup__qtaskcreation_html_gae3758e719245db560b090d90fce96301"><div class="ttname"><a href="group__qtaskcreation.html#gae3758e719245db560b090d90fce96301">qPeriodic</a></div><div class="ttdeci">#define qPeriodic</div><div class="ttdoc">A directive indicating that the task will run every time its timeout has expired.</div><div class="ttdef"><b>Definition</b> qkernel.h:80</div></div>
 <div class="ttc" id="agroup__qtypes_html_ga1743f4a545347fa50ab81f1e4e21b095"><div class="ttname"><a href="group__qtypes.html#ga1743f4a545347fa50ab81f1e4e21b095">qEnabled</a></div><div class="ttdeci">#define qEnabled</div><div class="ttdoc">A state value that enables a task.</div><div class="ttdef"><b>Definition</b> qtypes.h:167</div></div>
 <div class="ttc" id="astructq_event__t_html"><div class="ttname"><a href="structq_event__t.html">qEvent_t</a></div><div class="ttdoc">The task argument with all the regarding information of the task execution.</div><div class="ttdef"><b>Definition</b> qtasks.h:162</div></div>

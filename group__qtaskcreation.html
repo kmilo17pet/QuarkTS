@@ -69,7 +69,7 @@ MathJax.Hub.Config({
   <td id="projectlogo"><img alt="Logo" src="quarktslogo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OS
-   &#160;<span id="projectnumber">v7.3.3</span>
+   &#160;<span id="projectnumber">v7.3.4</span>
    </div>
    <div id="projectbrief">Documentation</div>
   </td>
@@ -183,12 +183,15 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac97ca3bd669135e0adcf07fcc2852313" id="r_gac97ca3bd669135e0adcf07fcc2852313"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a> (const <a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a> tFcn, const <a class="el" href="group__qclock.html#gae5a941bcd9940c7bc994aadea2fdc927">qTimingBase_t</a> t, <a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> idleCallback)</td></tr>
-<tr class="memdesc:gac97ca3bd669135e0adcf07fcc2852313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task Scheduler Setup. This function is required and must be called once in the application main thread before any task is being added to the OS.  <br /></td></tr>
-<tr class="separator:gac97ca3bd669135e0adcf07fcc2852313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59e05825dcfe33f4de361233ba80f5a7" id="r_ga59e05825dcfe33f4de361233ba80f5a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a> (const <a class="el" href="group__qclock.html#gab5aa8bbf739e2c7b181761ff93d20951">qGetTickFcn_t</a> tFcn, const <a class="el" href="group__qclock.html#gae5a941bcd9940c7bc994aadea2fdc927">qTimingBase_t</a> t, <a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> idleCallback, void(*coreIdleFcn)(void))</td></tr>
+<tr class="memdesc:ga59e05825dcfe33f4de361233ba80f5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task Scheduler Setup. This function is required and must be called once in the application main thread before any task is being added to the OS.  <br /></td></tr>
+<tr class="separator:ga59e05825dcfe33f4de361233ba80f5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa5dcfef5ef874146d424997f78fc5def" id="r_gaa5dcfef5ef874146d424997f78fc5def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa5dcfef5ef874146d424997f78fc5def">qOS_Set_IdleTask</a> (<a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> callbackFcn)</td></tr>
 <tr class="memdesc:gaa5dcfef5ef874146d424997f78fc5def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set/Change the callback for the Idle-task.  <br /></td></tr>
 <tr class="separator:gaa5dcfef5ef874146d424997f78fc5def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8e019238cc555bf53c3ff6c6aaac191a" id="r_ga8e019238cc555bf53c3ff6c6aaac191a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga8e019238cc555bf53c3ff6c6aaac191a">qOS_Set_CoreIdleFcn</a> (void(*pFcn)(void))</td></tr>
+<tr class="memdesc:ga8e019238cc555bf53c3ff6c6aaac191a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the function that puts the CPU into a low-power or idle state until an interrupt occurs.  <br /></td></tr>
+<tr class="separator:ga8e019238cc555bf53c3ff6c6aaac191a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga261c858990773b834e8129940ceef1e2" id="r_ga261c858990773b834e8129940ceef1e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga261c858990773b834e8129940ceef1e2">qOS_Add_Task</a> (<a class="el" href="structq_task__t.html">qTask_t</a> *const Task, <a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a> callbackFcn, const <a class="el" href="group__qtypes.html#gacd76ccab9232e6e9e64683f162c4d2b2">qPriority_t</a> p, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> t, const <a class="el" href="group__qtypes.html#ga7104c6d2e5b76f7396a9b44201d22020">qIteration_t</a> n, const <a class="el" href="group__qtypes.html#ga7782cda8db3a7769f684ab5f36b4d04f">qState_t</a> init, void *arg)</td></tr>
 <tr class="memdesc:ga261c858990773b834e8129940ceef1e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task to the scheduling scheme. The task is scheduled to run every <em class="arg">t</em> seconds, <em class="arg">n</em> times and executing <em class="arg">callbackFcn</em> method on every pass.  <br /></td></tr>
 <tr class="separator:ga261c858990773b834e8129940ceef1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,7 +216,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Kernel API interface to create/remove tasks and perform special OS operations. </p>
-<dl class="section pre"><dt>Precondition</dt><dd>Before using any scheduler interface, you must first configure and initialize the operating system using <a class="el" href="#gac97ca3bd669135e0adcf07fcc2852313" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a></dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Before using any scheduler interface, you must first configure and initialize the operating system using <a class="el" href="#ga59e05825dcfe33f4de361233ba80f5a7" title="Task Scheduler Setup. This function is required and must be called once in the application main threa...">qOS_Setup()</a></dd></dl>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaf0b51d7213c21c0afbfd4dbce865c6e2" name="gaf0b51d7213c21c0afbfd4dbce865c6e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf0b51d7213c21c0afbfd4dbce865c6e2">&#9670;&#160;</a></span>qOS_Add_ATCLITask()</h2>
@@ -476,6 +479,32 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 
 </div>
 </div>
+<a id="ga8e019238cc555bf53c3ff6c6aaac191a" name="ga8e019238cc555bf53c3ff6c6aaac191a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8e019238cc555bf53c3ff6c6aaac191a">&#9670;&#160;</a></span>qOS_Set_CoreIdleFcn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qOS_Set_CoreIdleFcn </td>
+          <td>(</td>
+          <td class="paramtype">void(*</td>          <td class="paramname"><span class="paramname"><em>pFcn&#160;</em></span>)(void)</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the function that puts the CPU into a low-power or idle state until an interrupt occurs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pFcn</td><td>A pointer to a function that puts the CPU into low-power or idle-state. To disable pass <code>NULL</code> as argument. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success. Otherwise return <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+
+</div>
+</div>
 <a id="gaa5dcfef5ef874146d424997f78fc5def" name="gaa5dcfef5ef874146d424997f78fc5def"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa5dcfef5ef874146d424997f78fc5def">&#9670;&#160;</a></span>qOS_Set_IdleTask()</h2>
 
@@ -502,8 +531,8 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 
 </div>
 </div>
-<a id="gac97ca3bd669135e0adcf07fcc2852313" name="gac97ca3bd669135e0adcf07fcc2852313"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac97ca3bd669135e0adcf07fcc2852313">&#9670;&#160;</a></span>qOS_Setup()</h2>
+<a id="ga59e05825dcfe33f4de361233ba80f5a7" name="ga59e05825dcfe33f4de361233ba80f5a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59e05825dcfe33f4de361233ba80f5a7">&#9670;&#160;</a></span>qOS_Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -521,7 +550,12 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a></td>          <td class="paramname"><span class="paramname"><em>idleCallback</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="group__qtaskmanip.html#ga4ef3d3efb0a0379f677f8a5744ebb9b4">qTaskFcn_t</a></td>          <td class="paramname"><span class="paramname"><em>idleCallback</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void(*</td>          <td class="paramname"><span class="paramname"><em>coreIdleFcn&#160;</em></span>)(void)&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -538,6 +572,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>(Optional) This parameter specifies the ISR background timer base time. This can be the period in seconds(Floating-point format) or frequency in Herzt(if <code>Q_SETUP_TICK_IN_HERTZ</code> is enabled). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">idleCallback</td><td>Callback function to the Idle Task. To disable the Idle-Task activities, pass <code>NULL</code> as argument. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">coreIdleFcn</td><td>The function that sets the CPU into low-power or idle state. To ignore, pass <code>NULL</code> as argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -549,9 +584,9 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    HAL_Init();</div>
-<div class="line">    <a class="code hl_function" href="#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line">    <a class="code hl_function" href="#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( HAL_GetTick, TIMER_TICK, IdleTask_Callback, NULL );</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__qtaskcreation_html_gac97ca3bd669135e0adcf07fcc2852313"><div class="ttname"><a href="#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback)</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:126</div></div>
+<div class="ttc" id="agroup__qtaskcreation_html_ga59e05825dcfe33f4de361233ba80f5a7"><div class="ttname"><a href="#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a></div><div class="ttdeci">qBool_t qOS_Setup(const qGetTickFcn_t tFcn, const qTimingBase_t t, qTaskFcn_t idleCallback, void(*coreIdleFcn)(void))</div><div class="ttdoc">Task Scheduler Setup. This function is required and must be called once in the application main threa...</div><div class="ttdef"><b>Definition</b> qkernel.c:128</div></div>
 </div><!-- fragment --><p>Example : When the tick is not provided </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;QuarkTS.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;DeviceHeader.h&quot;</span></div>
 <div class="line"> </div>
@@ -564,7 +599,7 @@ Asynchronous triggers do not affect the iteration counter. </dd></dl>
 <div class="line"><span class="keywordtype">void</span> main( <span class="keywordtype">void</span> ) {</div>
 <div class="line">    MCU_Init();</div>
 <div class="line">    BSP_Setup_Timer0();</div>
-<div class="line">    <a class="code hl_function" href="#gac97ca3bd669135e0adcf07fcc2852313">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback );</div>
+<div class="line">    <a class="code hl_function" href="#ga59e05825dcfe33f4de361233ba80f5a7">qOS_Setup</a>( NULL, TIMER_TICK, IdleTask_Callback, NULL );</div>
 <div class="line"> </div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qclock_html_gacdc3d27983dcc08e28d9eb9844a55c53"><div class="ttname"><a href="group__qclock.html#gacdc3d27983dcc08e28d9eb9844a55c53">qClock_SysTick</a></div><div class="ttdeci">void qClock_SysTick(void)</div><div class="ttdoc">Feed the system tick.</div><div class="ttdef"><b>Definition</b> qclock.c:94</div></div>

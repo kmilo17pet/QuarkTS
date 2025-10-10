@@ -12,6 +12,7 @@ var searchData=
   ['memory_20management_9',['Memory Management',['../group__qmemmang.html',1,'Memory Management'],['../q_memmang.html',1,'Memory Management']]],
   ['memory_20pools_10',['Memory pools',['../q_memmang.html#q_memmang_pools',1,'']]],
   ['memory_20usage_11',['Memory usage',['../q_background.html#q_memusage',1,'']]],
-  ['model_12',['RTC(Run To Completion) model',['../q_foundations.html#rtcmodel',1,'']]],
-  ['module_13',['Including QuarkTS as a git sub-module',['../q_gettingstarted.html#q_submodule',1,'']]]
+  ['mode_12',['Allow OS to put the CPU into idle mode',['../q_foundations.html#q_idle_cpu',1,'']]],
+  ['model_13',['RTC(Run To Completion) model',['../q_foundations.html#rtcmodel',1,'']]],
+  ['module_14',['Including QuarkTS as a git sub-module',['../q_gettingstarted.html#q_submodule',1,'']]]
 ];

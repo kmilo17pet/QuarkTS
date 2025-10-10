@@ -52,6 +52,7 @@ var NAVTREE =
         ] ]
       ] ],
       [ "Critical sections", "q_foundations.html#q_critical", null ],
+      [ "Allow OS to put the CPU into idle mode", "q_foundations.html#q_idle_cpu", null ],
       [ "Configuration macros", "q_foundations.html#q_configmacros", null ]
     ] ],
     [ "Getting started", "q_gettingstarted.html", [
@@ -103,7 +104,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__qlists.html#gadf97560f5644785364d4fa39252a565b",
-"q_qcoroutines.html#q_qcoroutines_overview"
+"q_qcoroutines.html#q_coroutine_positions"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
