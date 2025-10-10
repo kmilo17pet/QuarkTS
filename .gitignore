@@ -60,3 +60,21 @@ Temporary Items
 # gcc code coverage
 *.gcno
 *.gcda
+
+build/
+
+check/Debug/
+check/settings/sa_check.wsdt
+
+doc/doxyout/html/
+doc/doxyout/
+
+# C-stat temp files
+*.pbi
+*.ninja
+*.ninja_log
+*.ninja_deps
+*.xcl
+
+*.dep
+*.wsdt
