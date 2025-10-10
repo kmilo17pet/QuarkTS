@@ -47,6 +47,7 @@ qNotificationSpreader_t;
 
 typedef struct _qKernelControlBlock_s { /*KCB(Kernel Control Block) definition*/ // skipcq: CXX-E2000
     qTaskFcn_t idleCallback;                            /*< The callback function that represents the idle-task activities. */
+    void(*cpuIdle)(void);
     qTask_t *currentTask;                               /*< Points to the current running task. */
     #if ( Q_ALLOW_YIELD_TO_TASK == 1 )
         qTask_t *yieldTask;
@@ -121,11 +122,13 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
 /*============================================================================*/
 #if (Q_SETUP_TIME_CANONICAL == 1)
     qBool_t qOS_Setup( const qGetTickFcn_t tFcn,
-                       qTaskFcn_t idleCallback )
+                       qTaskFcn_t idleCallback,
+                       void(*coreIdleFcn)(void) )
 #else
     qBool_t qOS_Setup( const qGetTickFcn_t tFcn,
                        const qTimingBase_t t,
-                       qTaskFcn_t idleCallback )
+                       qTaskFcn_t idleCallback,
+                       void(*coreIdleFcn)(void) )
 #endif
 {
     qBool_t retValue = qFalse;
@@ -161,6 +164,7 @@ static void qOS_Dispatch_xTask_FillEventInfo( qTask_t *Task );
         #if ( Q_PRESERVE_TASK_ENTRY_ORDER == 1 )
             kernel.taskEntries = (size_t)0U;
         #endif
+        kernel.cpuIdle = coreIdleFcn;
         kernel.currentTask = NULL;
         (void)qClock_SetTickProvider( tFcn );
         retValue = qTrue;
@@ -212,6 +216,19 @@ qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t rCallback )
     return retValue;
 }
 #endif /* #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 ) */
+/*============================================================================*/
+qBool_t qOS_Set_CoreIdleFcn( void(*pFcn)(void) )
+{
+    qBool_t retValue = qFalse;
+
+    if ( pFcn != kernel.cpuIdle ) {
+        kernel.cpuIdle = pFcn;
+        retValue = qTrue;
+        _qTrace_Kernel( "(>)Scheduler CPU-Idle function changed", NULL, NULL );
+    }
+
+    return retValue;
+}
 /*============================================================================*/
 /*cstat -MISRAC2012-Rule-8.13*/
 qBool_t qOS_Notification_Spread( void *eventData,
@@ -690,7 +707,9 @@ qBool_t qOS_Run( void )
     /*cstat +MISRAC2012-Rule-2.2_c*/
     do {
         /*check for ready tasks in the waiting-list*/
-        if ( qOS_CheckForReadyTasks() ) {
+        const qBool_t anyActiveTask = qOS_CheckForReadyTasks();
+
+        if ( anyActiveTask ) {
             qPriority_t xPriorityListIndex = maxPriorityValue;
 
             do { /*loop every ready-list in descending priority order*/
@@ -702,11 +721,6 @@ qBool_t qOS_Run( void )
                 }
             } while ( 0U != xPriorityListIndex-- ); /*move to the next ready-list*/
         }
-        else { /*no task in the scheme is ready*/
-            if ( NULL != kernel.idleCallback ) { /*check if idle-task is available*/
-                qOS_DispatchIdleTask();
-            }
-        }
         /*check for a non-empty suspended-list*/
         if ( suspendedList->size > (size_t)0U ) {
             /*move the remaining suspended tasks to the waiting-list*/
@@ -715,6 +729,12 @@ qBool_t qOS_Run( void )
                 /*preseve the entry order by sorting the new waiting-list*/
                 (void)qList_Sort( waitingList, qOS_TaskEntryOrderPreserver );
             #endif
+        }
+        if ( qFalse == anyActiveTask ) { /*no task in the scheme is ready*/
+            qOS_DispatchIdleTask();
+            if ( NULL != kernel.cpuIdle ) {
+                kernel.cpuIdle();
+            }
         }
     }
     #if ( Q_ALLOW_SCHEDULER_RELEASE == 1 )
@@ -989,7 +1009,9 @@ static void qOS_DispatchIdleTask( void )
     eventInfo->TaskData = NULL;
     eventInfo->Trigger = byNoReadyTasks;
     /*some compilers can not deal with function pointers inside structs*/
-    taskActivities( eventInfo ); /*run the idle callback*/
+    if ( NULL != taskActivities ) {
+        taskActivities( eventInfo ); /*run the idle callback*/
+    }
     QKERNEL_CORE_FLAG_SET( kernel.flag, QKERNEL_BIT_FCALL_IDLE );
 }
 /*============================================================================*/

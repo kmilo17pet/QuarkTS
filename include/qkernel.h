@@ -1,7 +1,7 @@
 /*!
  * @file qkernel.h
  * @author J. Camilo Gomez C.
- * @version 3.38
+ * @version 3.39
  * @note This file is part of the QuarkTS distribution.
  * @brief Kernel API interface to create/remove tasks and perform special OS
  * operations.
@@ -86,7 +86,9 @@
     #define qSingleShot             ( (qIteration_t)1 )
 
     #if (Q_SETUP_TIME_CANONICAL == 1)
-        qBool_t qOS_Setup( const qGetTickFcn_t tFcn, qTaskFcn_t idleCallback );
+        qBool_t qOS_Setup( const qGetTickFcn_t tFcn,
+                           qTaskFcn_t idleCallback,
+                           void(*coreIdleFcn)(void) );
     #else
         /**
         * @brief Task Scheduler Setup. This function is required and must be
@@ -101,6 +103,8 @@
         * format) or frequency in Herzt(if @c Q_SETUP_TICK_IN_HERTZ is enabled).
         * @param[in] idleCallback  Callback function to the Idle Task. To
         * disable the Idle-Task activities, pass @c NULL as argument.
+        * @param[in] coreIdleFcn The function that sets the CPU into low-power
+        * or idle state. To ignore, pass @c NULL as argument.
         * @return #qTrue on success. Otherwise return #qFalse.
         *
         * Example : When tick is already provided
@@ -112,7 +116,7 @@
         *
         * void main( void ) {
         *     HAL_Init();
-        *     qOS_Setup( HAL_GetTick, TIMER_TICK, IdleTask_Callback );
+        *     qOS_Setup( HAL_GetTick, TIMER_TICK, IdleTask_Callback, NULL );
         * }
         * @endcode
         *
@@ -130,14 +134,15 @@
         * void main( void ) {
         *     MCU_Init();
         *     BSP_Setup_Timer0();
-        *     qOS_Setup( NULL, TIMER_TICK, IdleTask_Callback );
+        *     qOS_Setup( NULL, TIMER_TICK, IdleTask_Callback, NULL );
         *
         * }
         * @endcode
         */
         qBool_t qOS_Setup( const qGetTickFcn_t tFcn,
                            const qTimingBase_t t,
-                           qTaskFcn_t idleCallback );
+                           qTaskFcn_t idleCallback,
+                           void(*coreIdleFcn)(void) );
     #endif
 
     /**
@@ -164,6 +169,15 @@
         */
         qBool_t qOS_Set_SchedulerReleaseCallback( qTaskFcn_t rCallback );
     #endif
+
+    /**
+    * @brief Set the function that puts the CPU into a low-power or
+    * idle state until an interrupt occurs.
+    * @param[in] pFcn A pointer to a function that puts the CPU into low-power
+    * or idle-state. To disable pass @c NULL as argument.
+    * @return #qTrue on success. Otherwise return #qFalse.
+    */
+    qBool_t qOS_Set_CoreIdleFcn( void(*pFcn)(void) );
 
     /** @}*/
 
