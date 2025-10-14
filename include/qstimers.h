@@ -48,6 +48,11 @@
     /** @brief Macro that defines the value that a disarmed STimer returns when the remaining time is requested.*/
     #define QSTIMER_REMAINING_IN_DISARMED_STATE ( (qClock_t)0xFFFFFFFFUL )
 
+    /*! @cond  */
+    /*Only for backward compatibility*/
+    #define qSTimer_FreeRun                     qSTimer_ReloadIfExpired
+    /*! @endcond  */
+
     /**
     * @brief Reload the STimer with the previous specified time.
     * @note STimer should be armed before this operation
@@ -86,7 +91,7 @@
     * If armed, the time argument is ignored and the API only checks for
     * expiration. When the time expires, the STimer gets armed immediately
     * taking the specified time.
-    * @note After the STimer expiration, qSTimer_FreeRun() re-arms the STimer
+    * @note After the STimer expiration, qSTimer_ReloadIfExpired() re-arms the STimer
     * @note The OS must be running before using STimers.
     * @note The expiration time should be at least, two times greater than
     * the clock-Tick.
@@ -95,8 +100,8 @@
     * @return Returns #qTrue on success, otherwise, returns #qFalse.
     * @note A disarmed STimer also returns #qFalse.
     */
-    qBool_t qSTimer_FreeRun( qSTimer_t * const t,
-                             const qTime_t tTime );
+    qBool_t qSTimer_ReloadIfExpired( qSTimer_t * const t,
+                                     const qTime_t tTime );
 
     /**
     * @brief Retrieve the elapsed time in epochs
