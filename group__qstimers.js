@@ -9,8 +9,8 @@ var group__qstimers =
     [ "qSTimer_Disarm", "group__qstimers.html#ga56ac8d637d8078647931f1846201a570", null ],
     [ "qSTimer_Elapsed", "group__qstimers.html#ga1c707ea49120d558336f5be41f4c08e5", null ],
     [ "qSTimer_Expired", "group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a", null ],
-    [ "qSTimer_FreeRun", "group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0", null ],
     [ "qSTimer_Reload", "group__qstimers.html#ga7b1fd8123693bd8acf2a527fa0a3ef36", null ],
+    [ "qSTimer_ReloadIfExpired", "group__qstimers.html#ga1b92c996bc230f3dd286a478935cac18", null ],
     [ "qSTimer_Remaining", "group__qstimers.html#ga90373b67fa8c27df60e5bdb1183f3076", null ],
     [ "qSTimer_Set", "group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a", null ],
     [ "qSTimer_Status", "group__qstimers.html#ga633dce3b82f46a68a86a3aff37cb22cf", null ]

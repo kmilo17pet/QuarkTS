@@ -195,9 +195,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d76c7505a0aa2f10af0f867843afa5a" id="r_ga0d76c7505a0aa2f10af0f867843afa5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a> (const <a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const t)</td></tr>
 <tr class="memdesc:ga0d76c7505a0aa2f10af0f867843afa5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-Blocking STimer check.  <br /></td></tr>
 <tr class="separator:ga0d76c7505a0aa2f10af0f867843afa5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b25e8ad7bb0b4e87bc07262a6f402d0" id="r_ga7b25e8ad7bb0b4e87bc07262a6f402d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a> (<a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const t, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> tTime)</td></tr>
-<tr class="memdesc:ga7b25e8ad7bb0b4e87bc07262a6f402d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-Blocking STimer check with automatic arming.  <br /></td></tr>
-<tr class="separator:ga7b25e8ad7bb0b4e87bc07262a6f402d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1b92c996bc230f3dd286a478935cac18" id="r_ga1b92c996bc230f3dd286a478935cac18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1b92c996bc230f3dd286a478935cac18">qSTimer_ReloadIfExpired</a> (<a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const t, const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a> tTime)</td></tr>
+<tr class="memdesc:ga1b92c996bc230f3dd286a478935cac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-Blocking STimer check with automatic arming.  <br /></td></tr>
+<tr class="separator:ga1b92c996bc230f3dd286a478935cac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1c707ea49120d558336f5be41f4c08e5" id="r_ga1c707ea49120d558336f5be41f4c08e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__qclock.html#ga166565f14c43c0fb055b6f1f73f8b910">qClock_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1c707ea49120d558336f5be41f4c08e5">qSTimer_Elapsed</a> (const <a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const t)</td></tr>
 <tr class="memdesc:ga1c707ea49120d558336f5be41f4c08e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the elapsed time in epochs.  <br /></td></tr>
 <tr class="separator:ga1c707ea49120d558336f5be41f4c08e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,44 +294,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga7b25e8ad7bb0b4e87bc07262a6f402d0" name="ga7b25e8ad7bb0b4e87bc07262a6f402d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7b25e8ad7bb0b4e87bc07262a6f402d0">&#9670;&#160;</a></span>qSTimer_FreeRun()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qSTimer_FreeRun </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const</td>          <td class="paramname"><span class="paramname"><em>t</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a></td>          <td class="paramname"><span class="paramname"><em>tTime</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Non-Blocking STimer check with automatic arming. </p>
-<p>Behavior: If disarmed, it gets armed immediately with the specified time.</p>
-<p>If armed, the time argument is ignored and the API only checks for expiration. When the time expires, the STimer gets armed immediately taking the specified time. </p><dl class="section note"><dt>Note</dt><dd>After the STimer expiration, <a class="el" href="#ga7b25e8ad7bb0b4e87bc07262a6f402d0" title="Non-Blocking STimer check with automatic arming.">qSTimer_FreeRun()</a> re-arms the STimer </dd>
-<dd>
-The OS must be running before using STimers. </dd>
-<dd>
-The expiration time should be at least, two times greater than the clock-Tick. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>A pointer to the STimer object. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">tTime</td><td>The expiration time(Must be specified in seconds). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise, returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>A disarmed STimer also returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
-
-</div>
-</div>
 <a id="ga7b1fd8123693bd8acf2a527fa0a3ef36" name="ga7b1fd8123693bd8acf2a527fa0a3ef36"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7b1fd8123693bd8acf2a527fa0a3ef36">&#9670;&#160;</a></span>qSTimer_Reload()</h2>
 
@@ -356,6 +318,44 @@ The expiration time should be at least, two times greater than the clock-Tick. <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns qTrue on success, otherwise, returns qFalse. </dd></dl>
+
+</div>
+</div>
+<a id="ga1b92c996bc230f3dd286a478935cac18" name="ga1b92c996bc230f3dd286a478935cac18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1b92c996bc230f3dd286a478935cac18">&#9670;&#160;</a></span>qSTimer_ReloadIfExpired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__qtypes.html#ga131b2258b5135d0b1e3ded5ecbe309d7">qBool_t</a> qSTimer_ReloadIfExpired </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structq_s_timer__t.html">qSTimer_t</a> *const</td>          <td class="paramname"><span class="paramname"><em>t</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__qclock.html#gac7b81fb14df7cba7c4bc212c6226e1ec">qTime_t</a></td>          <td class="paramname"><span class="paramname"><em>tTime</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Non-Blocking STimer check with automatic arming. </p>
+<p>Behavior: If disarmed, it gets armed immediately with the specified time.</p>
+<p>If armed, the time argument is ignored and the API only checks for expiration. When the time expires, the STimer gets armed immediately taking the specified time. </p><dl class="section note"><dt>Note</dt><dd>After the STimer expiration, <a class="el" href="#ga1b92c996bc230f3dd286a478935cac18" title="Non-Blocking STimer check with automatic arming.">qSTimer_ReloadIfExpired()</a> re-arms the STimer </dd>
+<dd>
+The OS must be running before using STimers. </dd>
+<dd>
+The expiration time should be at least, two times greater than the clock-Tick. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>A pointer to the STimer object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tTime</td><td>The expiration time(Must be specified in seconds). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="group__qtypes.html#ga9cd31c446d7a5ead8f65aa28e4d1f2cd" title="A boolean value that represents true/success/On or High.">qTrue</a> on success, otherwise, returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>A disarmed STimer also returns <a class="el" href="group__qtypes.html#gabcfc51cee68e399f81b5c109c8e615c7" title="A boolean value that represents false/failure/Off or Low.">qFalse</a>. </dd></dl>
 
 </div>
 </div>

@@ -349,7 +349,7 @@ Adding a state machine as a task</h1>
 <p>Now that a task is running a dedicated state machine, the specific task event-information can be obtained in every state callback through the <code>Data</code> field of the <a class="el" href="structq_s_m___handler__t.html" title="The callback argument to handle the state-machine dynamics and provide execution information....">qSM_Handler_t</a> argument.</p>
 <p>Check the example below:</p>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> Example_State( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e = h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">Data</a>; </div>
+<div class="line">    <a class="code hl_struct" href="structq_event__t.html">qEvent_t</a> e = h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#afd75d67662a1d310a64c44f30a50f088">Data</a>;</div>
 <div class="line">    <span class="comment">/* Get the event info of the task that owns this state machine*/</span></div>
 <div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
@@ -439,9 +439,9 @@ A demonstrative example for a FSM</h1>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*---------------------------------------------------------------------*/</span></div>
 <div class="line"><a class="code hl_enumeration" href="group__qfsm.html#gae3b8425bb28440f3b2d9decfb65ec5bb">qSM_Status_t</a> State_LEDBlink_Callback( <a class="code hl_struct" href="structq_s_m___handler__t.html">qSM_Handler_t</a> h ) {</div>
-<div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout; </div>
+<div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> timeout;</div>
 <div class="line">    <span class="keyword">static</span> <a class="code hl_struct" href="structq_s_timer__t.html">qSTimer_t</a> blinktime;</div>
-<div class="line">    </div>
+<div class="line"> </div>
 <div class="line">    <span class="keywordflow">switch</span> ( h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a185fb13f4184b5f4cc05b01059e31964">Signal</a> ) {</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga66ead48ca76fb2f583f2c7aef8371062">QSM_SIGNAL_ENTRY</a>:</div>
 <div class="line">            <a class="code hl_function" href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a>( &amp;timeout, 10.0f );</div>
@@ -452,7 +452,7 @@ A demonstrative example for a FSM</h1>
 <div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a>( &amp;timeout ) || BUTTON_PRESSED ) {</div>
 <div class="line">                h-&gt;<a class="code hl_variable" href="structq_s_m___handler__t.html#a4c1b6f2888b8fd07e4bb8ec65d85b86a">NextState</a> = &amp;State_LEDOff;</div>
 <div class="line">            }</div>
-<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a>( &amp;blinktime, 0.5f ) ) {</div>
+<div class="line">            <span class="keywordflow">if</span> ( <a class="code hl_function" href="group__qstimers.html#ga1b92c996bc230f3dd286a478935cac18">qSTimer_ReloadIfExpired</a>( &amp;blinktime, 0.5f ) ) {</div>
 <div class="line">               BSP_LED_TOGGLE();</div>
 <div class="line">            }</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
@@ -460,8 +460,8 @@ A demonstrative example for a FSM</h1>
 <div class="line">    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group__qfsm.html#ggae3b8425bb28440f3b2d9decfb65ec5bbae0589365d6a41f782f97d53348e542c9">qSM_STATUS_EXIT_SUCCESS</a>;</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__qstimers_html_ga0d76c7505a0aa2f10af0f867843afa5a"><div class="ttname"><a href="group__qstimers.html#ga0d76c7505a0aa2f10af0f867843afa5a">qSTimer_Expired</a></div><div class="ttdeci">qBool_t qSTimer_Expired(const qSTimer_t *const t)</div><div class="ttdoc">Non-Blocking STimer check.</div><div class="ttdef"><b>Definition</b> qstimers.c:55</div></div>
+<div class="ttc" id="agroup__qstimers_html_ga1b92c996bc230f3dd286a478935cac18"><div class="ttname"><a href="group__qstimers.html#ga1b92c996bc230f3dd286a478935cac18">qSTimer_ReloadIfExpired</a></div><div class="ttdeci">qBool_t qSTimer_ReloadIfExpired(qSTimer_t *const t, const qTime_t tTime)</div><div class="ttdoc">Non-Blocking STimer check with automatic arming.</div><div class="ttdef"><b>Definition</b> qstimers.c:36</div></div>
 <div class="ttc" id="agroup__qstimers_html_ga3eb4d7620b2b14a28ea7bbe39935976a"><div class="ttname"><a href="group__qstimers.html#ga3eb4d7620b2b14a28ea7bbe39935976a">qSTimer_Set</a></div><div class="ttdeci">qBool_t qSTimer_Set(qSTimer_t *const t, const qTime_t tTime)</div><div class="ttdoc">Set the expiration time for a STimer. On success, the STimer gets armed immediately.</div><div class="ttdef"><b>Definition</b> qstimers.c:22</div></div>
-<div class="ttc" id="agroup__qstimers_html_ga7b25e8ad7bb0b4e87bc07262a6f402d0"><div class="ttname"><a href="group__qstimers.html#ga7b25e8ad7bb0b4e87bc07262a6f402d0">qSTimer_FreeRun</a></div><div class="ttdeci">qBool_t qSTimer_FreeRun(qSTimer_t *const t, const qTime_t tTime)</div><div class="ttdoc">Non-Blocking STimer check with automatic arming.</div><div class="ttdef"><b>Definition</b> qstimers.c:36</div></div>
 <div class="ttc" id="astructq_s_timer__t_html"><div class="ttname"><a href="structq_s_timer__t.html">qSTimer_t</a></div><div class="ttdoc">A STimer(Software Timer) object.</div><div class="ttdef"><b>Definition</b> qstimers.h:32</div></div>
 </div><!-- fragment --><p>Finally, we add the task to the scheduling scheme running the dedicated state machine. Remember that you must set up the scheduler before adding a task to the scheduling scheme.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="group__qfsm.html#gabf14a12eeeb56b06ffca7341c302293c">qStateMachine_Setup</a>( &amp;LED_FSM , NULL , &amp;State_LEDOff , NULL , NULL );</div>
@@ -568,7 +568,7 @@ Demonstrative example using transition tables</h2>
 <div class="line"><a class="code hl_struct" href="structq_task__t.html">qTask_t</a> LED_Task; <span class="comment">/*The task node*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m__t.html">qSM_t</a> LED_FSM; <span class="comment">/*The state-machine handler*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___state__t.html">qSM_State_t</a> State_LEDOff, State_LEDOn, State_LEDBlink;</div>
-<div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> LEDsigqueue; <span class="comment">/*the signal-queue*/</span> </div>
+<div class="line"><a class="code hl_struct" href="structq_queue__t.html">qQueue_t</a> LEDsigqueue; <span class="comment">/*the signal-queue*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___signal__t.html">qSM_Signal_t</a> led_sig_stack[ 5 ];  <span class="comment">/*the signal-queue storage area*/</span></div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___timeout_spec__t.html">qSM_TimeoutSpec_t</a> tm_spectimeout;</div>
 <div class="line"> </div>
@@ -770,7 +770,7 @@ Example using a hierarchical FSM</h2>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">        <span class="keywordflow">case</span> <a class="code hl_define" href="group__qfsm.html#ga79160319d03d53c51e372bf6c8319e33">QSM_SIGNAL_EXIT</a>:</div>
 <div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">    } </div>
+<div class="line">    }</div>
 <div class="line">    <span class="keywordflow">return</span> RetVal;</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">/*=======================================================================*/</span></div>
