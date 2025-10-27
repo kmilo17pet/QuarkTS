@@ -725,13 +725,15 @@ Example using a hierarchical FSM</h2>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> cruising_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_OFF,       NULL,                     &amp;state_cruisingoff  , 0, NULL },</div>
-<div class="line">{ SIGNAL_ACCEL,     NULL,                     &amp;state_accelerating , 0, NULL }</div>
+<div class="line">{ SIGNAL_OFF,              NULL,              &amp;state_cruisingoff  , 0, NULL },</div>
+<div class="line">{ SIGNAL_ACCEL,            NULL,              &amp;state_accelerating , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> resuming_transitions[] =</div>
 <div class="line">{</div>
-<div class="line">{ SIGNAL_ACCEL,      NULL,                    &amp;state_accelerating , 0, NULL }</div>
+<div class="line">{ SIGNAL_OFF,              NULL,              &amp;state_cruisingoff  , 0, NULL },</div>
+<div class="line">{ SIGNAL_ACCEL,            NULL,              &amp;state_accelerating , 0, NULL },</div>
+<div class="line">{ SIGNAL_REACHED_CRUISING, NULL,              &amp;state_cruising     , 0, NULL }</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_struct" href="structq_s_m___transition__t.html">qSM_Transition_t</a> cruisingoff_transitions[] =</div>
